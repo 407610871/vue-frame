@@ -1,6 +1,6 @@
 <template>
   <div class="dashboard-container">
-    123
+    这里是内容
   </div>
 </template>
 
@@ -17,6 +17,5 @@ export default {
 <style rel="stylesheet/scss" lang="scss" scoped>
 .dashboard-container {
   padding: 32px;
-  background-color: rgb(240, 242, 245);
 }
 </style>

@@ -1,6 +1,6 @@
  //覆盖一些element-ui样式
 
- .el-breadcrumb__inner, .el-breadcrumb__inner a{
+.el-breadcrumb__inner, .el-breadcrumb__inner a{
   font-weight: 400!important;
 }
 
@@ -20,7 +20,7 @@
    }
  }
 
- .small-padding {
+.small-padding {
    .cell {
      padding-left: 5px;
      padding-right: 5px;
@@ -79,4 +79,25 @@
   a{
     display: block
   }
+}
+
+.el-menu--horizontal>.el-submenu .el-submenu__title {
+  height: $enc-nav-header-height;
+  line-height: $enc-nav-header-height;
+}
+
+.el-menu--popup {
+  background-color: #e6eaed;
+}
+
+.el-menu--horizontal .el-menu .el-menu-item, .el-menu--horizontal .el-menu .el-submenu__title {
+  background-color: #e6eaed;
+  // height: 36px;
+  // line-height: 36px;
+  color: #b2b6b9;
+}
+
+.el-menu--horizontal .el-menu-item:not(.is-disabled):focus, .el-menu--horizontal .el-menu-item:not(.is-disabled):hover {
+  background: #469bde;
+  color: #fff!important;
 }
