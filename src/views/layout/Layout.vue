@@ -5,6 +5,11 @@
       <img :src="logo" alt="">
     </div>
     <nav-menu />
+    <div class="right-menu">
+      <el-button class="user" type="primary" icon="enc-icon-user"></el-button>
+      <el-button class="setting" type="primary" icon="enc-icon-setting"></el-button>
+      <el-button class="document" type="primary" icon="enc-icon-documents"></el-button>
+    </div>
   </el-header>
   <el-container>
     <el-aside width="210px" class="enc-aside">
@@ -74,6 +79,36 @@ export default {
     height: $enc-nav-header-height;
     line-height: $enc-nav-header-height;
     background: #e6eaed;
+
+    .right-menu {
+      float: right;
+      height: 100%;
+
+      .el-button {
+        width: 88px;
+        height: 100%;
+        margin: 0;
+        border-radius: 0;
+        border: 0;
+        padding: 0;
+        
+        &.user {
+          background: #cacfd5;
+        }
+        &.setting {
+          background: #50609c;
+          i {
+            color: #fff;
+          }
+        }
+        &.document {
+          background: #479bd9;
+          i {
+            color: #fff;
+          }
+        }
+      }
+    }
   }
 
   .enc-aside {
@@ -95,4 +130,30 @@ export default {
     background: #eff3f6;
   }
 
+</style>
+<style rel="stylesheet/scss" lang="scss">
+.enc-header {
+    .right-menu {
+      .el-button {
+        &.user {
+          i {
+            font-size: 32px;
+            color: #425365;
+          }
+        }
+        &.setting {
+          i {
+            font-size: 32px;
+            color: #fff;
+          }
+        }
+        &.document {
+          i {
+            font-size: 32px;
+            color: #fff;
+          }
+        }
+      }
+    }
+  }
 </style>
