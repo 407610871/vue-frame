@@ -1,0 +1,126 @@
+/* checkbox */
+.el-checkbox {
+  color: #425365;
+}
+
+.el-checkbox__inner {
+  border: 1px solid #425365;
+  background-color: #fff;
+  border-radius: 0;
+}
+
+.el-checkbox__input.is-checked .el-checkbox__inner, .el-checkbox__input.is-indeterminate .el-checkbox__inner {
+  background-color: #425365;
+  border-color: #425365;
+}
+
+.el-checkbox__input.is-checked+.el-checkbox__label {
+  color: #425365;
+}
+
+
+/* radio */
+.el-radio {
+  color: #425365;
+}
+
+.el-radio__inner {
+  border: 1px solid #425365;
+  background-color: #fff;
+}
+
+.el-radio__input.is-checked .el-radio__inner {
+  border-color: #425365;
+  background: #fff;
+}
+
+.el-radio__inner::after {
+  width: 6px;
+  height: 6px;
+  border-radius: 100%;
+  background-color: #425365;
+}
+
+.el-radio__input.is-checked+.el-radio__label {
+  color: #425365;
+}
+
+.el-form-item__label {
+  color: #425365;
+}
+
+.el-input__inner {
+  background-color: #f0f3f6;
+  color: #4f609d;
+  border-radius: 0;
+  border: 1px solid #c9cdd0;
+}
+
+.el-select .el-input.is-focus .el-input__inner {
+  border-color: #c9cdd0;
+}
+
+.el-input--medium .el-input__inner {
+  height: 30px;
+  line-height: 30px;
+}
+
+.el-form-item--medium .el-form-item__content, .el-form-item--medium .el-form-item__label {
+  line-height: 30px;
+}
+
+.el-select .el-input__inner:focus {
+  border-color: #c9cdd0;
+}
+
+.el-input--medium .el-input__icon {
+  width: 24px;
+  line-height: 24px;
+}
+
+.el-select .el-input .el-select__caret {
+  color: #fff;
+  vertical-align: top;
+}
+
+.el-select .el-input__suffix {
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  top: 3px;
+  background-color: #4f609d;
+}
+
+.el-select-dropdown {
+  border-radius: 0;
+}
+
+.el-textarea__inner {
+  color: #4f609d;
+  background-color: #f0f3f6;
+  border: 1px solid #c9cdd0;
+  border-radius: 0;
+}
+
+.el-switch.is-checked .el-switch__core {
+  border-color: #489bd9;
+  background-color: #489bd9;
+}
+
+.el-button--medium {
+  padding: 10px 20px;
+  font-size: 14px;
+  border-radius: 0;
+}
+
+.el-button--primary {
+  color: #fff;
+  background-color: #489bd9;
+  border-color: #489bd9;
+}
+
+.el-button:focus, .el-button:hover {
+  color: #489bd9;
+  border-color: #c9cdd0;
+  background-color: #f0f3f6;
+}
