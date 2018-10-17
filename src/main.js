@@ -43,8 +43,8 @@ new Vue({
   render: h => h(App)
 });
 
-new Vue({
-  router,
-  store,
-  render: h => h(App)
-}).$mount("#app");
+// new Vue({
+//   router,
+//   store,
+//   render: h => h(App)
+// }).$mount("#app");
