@@ -1,6 +1,7 @@
  //覆盖一些element-ui样式
 @import './el-table-override.scss';
 @import './el-form-ovdrride.scss';
+@import './el-datepicker-override.scss';
 
 .el-breadcrumb__inner, .el-breadcrumb__inner a{
   font-weight: 400!important;
