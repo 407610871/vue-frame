@@ -1,16 +1,29 @@
 <template>
   <div>
-    <el-container style="height:100%;">
+    <el-container style="height:100%;" class="dashboard-container">
       <el-header class="filter-container">
-        <div class="filter-container">
-          查询条件区域<el-button v-on:click="showAdd">add</el-button><el-button v-on:click="showEdit">edit</el-button>
-        </div>
+
+        <el-form :inline="true" :model="formFilter" class="demo-form-inline">
+          <el-form-item label="审批人">
+            <el-input placeholder="审批人" v-model="formFilter.user"></el-input>
+          </el-form-item>
+          <el-form-item label="活动区域">
+            <el-select placeholder="活动区域" v-model="formFilter.region">
+              <el-option label="区域一" value="shanghai"></el-option>
+              <el-option label="区域二" value="beijing"></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item>
+            <el-button type="primary">查询</el-button>
+          </el-form-item>
+        </el-form>
+        查询条件区域<el-button v-on:click="showAdd">add</el-button><el-button v-on:click="showEdit">edit</el-button>
       </el-header>
       <el-main>
         <el-table
           :data="mainTableData"
           stripe
-          height="100%"
+          :height="tableHeight"
           border
           style="width: 100%"
           >
@@ -18,7 +31,6 @@
             label="接入源名称"
             width="180">
             <template slot-scope="scope">
-              <!-- <router-link to="/dashboardsub">{{ scope.row.name }}</router-link> -->
               <a href="javascript:void(0)" v-on:click="goSubPage(scope.$index)">{{ scope.row.name }}</a>
             </template>
           </el-table-column>
@@ -84,7 +96,6 @@
 
 <script>
 import { mapState} from 'vuex'
-import add from './add'
 import add1 from './../dialog/'
 
 
@@ -92,14 +103,22 @@ export default {
   name: 'DashboardAdmin',
   data() {
     return {
+      tableHeight: window.innerHeight - 300,
       mainTableReady:true,
       mainTableData: this.$store.state.mainTableData,
       mainTablePage: 1,
       mainTableDataTotal: 0,
       dialogVisible:false,
       myDialogRouter:'adminAdd',
-      dialogTitle:'新增'
+      dialogTitle:'新增',
+      formFilter:{
+        user: '',
+        region: ''
+      }
     }
+  },
+  components: {
+    add1
   },
   mounted(){
     var _self = this;
@@ -145,10 +164,6 @@ export default {
       this.dialogTitle = '修改';
       this.dialogVisible = true;
     }
-  },
-  components: {
-    add,
-    add1
   }
 }
 </script>
