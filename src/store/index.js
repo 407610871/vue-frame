@@ -7,6 +7,17 @@ import getters from "./getters";
 Vue.use(Vuex);
 
 const store = new Vuex.Store({
+  state: {
+    mainTableData:[],
+    dialogRouter:{
+      'adminAdd':'adminAdd'
+    }
+  },
+  mutations: {
+    setMainTableData (state,obj) {
+      state.mainTableData = obj.data;
+    }
+  },
   modules: {
     app,
     errorLog

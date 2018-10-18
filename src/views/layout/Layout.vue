@@ -42,10 +42,10 @@ export default {
     NavMenu
   },
   computed: {
-  
+
   },
   methods: {
-   
+
   }
 }
 </script>
@@ -91,7 +91,7 @@ export default {
         border-radius: 0;
         border: 0;
         padding: 0;
-        
+
         &.user {
           background: #cacfd5;
         }
