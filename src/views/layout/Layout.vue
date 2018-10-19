@@ -1,27 +1,31 @@
 <template>
   <el-container>
-  <el-header height="66px" class="enc-header">
-    <div class="enc-logo">
-      <img :src="logo" alt="">
-    </div>
-    <nav-menu />
-    <div class="right-menu">
-      <el-button class="user" type="primary" icon="enc-icon-user"></el-button>
-      <el-button class="setting" type="primary" icon="enc-icon-setting"></el-button>
-      <el-button class="document" type="primary" icon="enc-icon-documents"></el-button>
-    </div>
-  </el-header>
-  <el-container>
-    <el-aside width="210px" class="enc-aside">
-      <aside-tree></aside-tree>
-    </el-aside>
-    <el-main class="enc-main">
-      <div class="enc-sub-header">
-        原始区
+    <el-header height="66px" class="enc-header">
+      <div class="enc-logo">
+        <img :src="logo" alt="">
       </div>
-      <app-main />
-    </el-main>
-  </el-container>
+      <nav-menu />
+      <div class="right-menu">
+        <el-button class="user" type="primary" icon="enc-icon-user"></el-button>
+        <el-button class="setting" type="primary" icon="enc-icon-setting"></el-button>
+        <el-button class="document" type="primary" icon="enc-icon-documents"></el-button>
+      </div>
+    </el-header>
+    <el-container>
+      <el-aside width="210px" class="enc-aside">
+        <aside-tree></aside-tree>
+      </el-aside>
+      <el-main class="enc-main">
+        <div class="enc-search">
+          <input type="text" v-model="keyword" placeholder="输入查询..." />
+          <a href="javascript:void(0)" v-on:click="search"><i class="el-icon-search"></i></a>
+        </div>
+        <div class="enc-sub-header">
+          原始区
+        </div>
+        <app-main ref="mainTable" />
+      </el-main>
+    </el-container>
   </el-container>
 </template>
 <script>
@@ -34,6 +38,7 @@ export default {
   data() {
     return {
       logo: logo + '?' + +new Date(),
+      keyword:''
     }
   },
   components: {
@@ -45,7 +50,15 @@ export default {
 
   },
   methods: {
-
+    search:function(){
+      // console.log(this.keyword);
+      // console.log(this.$route.path);
+      // console.log(this.$route.router);
+      // console.log(this.$route.matched);
+      console.log(this.$root.eventHub);
+      console.log(this.keyword);
+      this.$root.eventHub.$emit('search',this.keyword);
+    }
   }
 }
 </script>
@@ -121,13 +134,47 @@ export default {
   }
 
   .enc-sub-header {
-    padding-left: 30px;
+    text-indent: 30px;
     margin-top: 3px;
+    margin-right:300px;
     height: $enc-nav-sub-header-height;
     line-height: $enc-nav-sub-header-height;
     color: #465167;
     font-size: 18px;
     background: #eff3f6;
+  }
+  .enc-search{
+    float:right;
+    margin-top: 3px;
+    height: $enc-nav-sub-header-height;
+    width: 300px;
+    line-height: $enc-nav-sub-header-height;
+    background-color: #E2E4E7;
+    border-left:3px solid #fff;
+    input{
+      margin-left:5px;
+      width:250px;
+      background-color: transparent;
+      border:0 none;
+      outline: 0 none;
+    }
+    ::-webkit-input-placeholder{color:#999;}    /* 使用webkit内核的浏览器 */
+    :-moz-placeholder{color:#999;}                  /* Firefox版本4-18 */
+    ::-moz-placeholder{color:#999;}                  /* Firefox版本19+ */
+    :-ms-input-placeholder{color:#999;}           /* IE浏览器 */
+    a{
+      display:inline-block;
+      margin-left:10px;
+      font-size:18px;
+      :link,
+      :visited{
+        color:#EFF2F5;
+      }
+      :hover,
+      :active{
+        color:#479AD8;
+      }
+    }
   }
 
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <component :is="currentRole"/>
+  <component :is="currentRole" ref="mainTable" />
 </template>
 
 <script>
