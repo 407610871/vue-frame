@@ -1,5 +1,5 @@
 # enc-vue-boilerplate
-
+## 修改config等配置文件是需重启项目使之生效
 ## Project setup
 ```
 npm install
