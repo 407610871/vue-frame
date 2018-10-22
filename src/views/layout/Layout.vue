@@ -20,12 +20,15 @@
         原始区
       </div>
       <app-main />
+
+      <percent-vis/>
     </el-main>
   </el-container>
   </el-container>
 </template>
 <script>
-import { AppMain, AsideTree, NavMenu } from './components'
+import { AppMain, AsideTree, NavMenu, PercentVis} from './components'
+
 import logo from '@/assets/images/enc-logo.png'
 
 
@@ -39,13 +42,14 @@ export default {
   components: {
     AppMain,
     AsideTree,
-    NavMenu
+    NavMenu,
+    PercentVis
   },
   computed: {
-  
+
   },
   methods: {
-   
+
   }
 }
 </script>
@@ -91,7 +95,7 @@ export default {
         border-radius: 0;
         border: 0;
         padding: 0;
-        
+
         &.user {
           background: #cacfd5;
         }
