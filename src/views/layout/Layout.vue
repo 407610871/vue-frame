@@ -23,14 +23,12 @@
         </el-breadcrumb>
       </div>
       <app-main />
-      <percent-vis/>
-      <pie-chart></pie-chart>
     </el-main>
   </el-container>
   </el-container>
 </template>
 <script>
-import { AppMain, AsideTree, NavMenu, PercentVis, NewAsideTree, PieChart} from './components'
+import { AppMain, AsideTree, NavMenu,  NewAsideTree} from './components'
 
 import logo from '@/assets/images/enc-logo.png'
 
@@ -55,9 +53,7 @@ export default {
     AppMain,
     AsideTree,
     NavMenu,
-    PercentVis,
     NewAsideTree,
-    PieChart
   },
   computed: {
 

@@ -31,6 +31,15 @@ export const constantRouterMap = [
           icon: "form",
           noCache: true
         }
+      }, {
+        path: "charts",
+        component: () => import("@/views/charts/index"),
+        name: "charts",
+        meta: {
+          title: "charts",
+          icon: "charts",
+          noCache: true
+        }
       }
     ]
   }
