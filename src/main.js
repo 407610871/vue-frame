@@ -24,7 +24,9 @@ import * as filters from "./filters"; // global filters
 import "./registerServiceWorker";
 
 import VJstree from 'vue-jstree'
+import Viser from 'viser-vue'
 
+Vue.use(Viser);
 Vue.use(VJstree);
 
 Vue.use(Element, {
