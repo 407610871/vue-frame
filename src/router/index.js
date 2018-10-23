@@ -17,7 +17,7 @@ export const constantRouterMap = [
         component: () => import("@/views/dashboard/index"),
         name: "Dashboard",
         meta: {
-          title: "dashboard",
+          title: "首页",
           icon: "dashboard",
           noCache: true
         }
@@ -25,10 +25,10 @@ export const constantRouterMap = [
       {
         path: "form",
         component: () => import("@/views/form/index"),
-        name: "Dashboard",
+        name: "Form",
         meta: {
-          title: "form",
-          icon: "dashboard",
+          title: "表单",
+          icon: "form",
           noCache: true
         }
       }

@@ -18,10 +18,11 @@
     </el-aside>
     <el-main class="enc-main">
       <div class="enc-sub-header">
-        原始区
+        <el-breadcrumb class="breadcrumb-container" separator-class="el-icon-arrow-right">
+          <el-breadcrumb-item v-for="item in levelList":key="item.path" :to="item.path">{{item.meta.title}}</el-breadcrumb-item>
+        </el-breadcrumb>
       </div>
       <app-main />
-
       <percent-vis/>
     </el-main>
   </el-container>
@@ -38,7 +39,16 @@ export default {
   data() {
     return {
       logo: logo + '?' + +new Date(),
+      levelList: []
     }
+  },
+  watch: {
+    $route() {
+        this.getBreadcrumb()
+    }
+  },
+  created(){
+    this.getBreadcrumb()
   },
   components: {
     AppMain,
@@ -51,7 +61,14 @@ export default {
 
   },
   methods: {
-
+    getBreadcrumb() {
+      let matched = this.$route.matched.filter(item => item.name)
+      const first = matched[0];
+      if (first && first.name.trim().toLocaleLowerCase() !== 'Dashboard'.toLocaleLowerCase()) {
+        matched = [{ path: '/dashboard', meta: { title: '首页' }}].concat(matched)
+      }
+      this.levelList = matched
+    }
   }
 }
 </script>
@@ -134,6 +151,10 @@ export default {
     color: #465167;
     font-size: 18px;
     background: #eff3f6;
+
+    .el-breadcrumb {
+      line-height: $enc-nav-sub-header-height;
+    }
   }
 
 </style>
