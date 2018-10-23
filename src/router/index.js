@@ -40,6 +40,15 @@ export const constantRouterMap = [
           icon: "charts",
           noCache: true
         }
+      },{
+        path: "*",
+        component: () => import("@/views/dashboard/index"),
+        name: "Dashboard",
+        meta: {
+          title: "首页",
+          icon: "dashboard",
+          noCache: true
+        }
       }
     ]
   }
