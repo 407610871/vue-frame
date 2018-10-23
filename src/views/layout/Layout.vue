@@ -13,7 +13,8 @@
   </el-header>
   <el-container>
     <el-aside width="210px" class="enc-aside">
-      <aside-tree></aside-tree>
+      <!--<aside-tree></aside-tree>-->
+      <new-aside-tree></new-aside-tree>
     </el-aside>
     <el-main class="enc-main">
       <div class="enc-sub-header">
@@ -27,7 +28,7 @@
   </el-container>
 </template>
 <script>
-import { AppMain, AsideTree, NavMenu, PercentVis} from './components'
+import { AppMain, AsideTree, NavMenu, PercentVis, NewAsideTree} from './components'
 
 import logo from '@/assets/images/enc-logo.png'
 
@@ -43,7 +44,8 @@ export default {
     AppMain,
     AsideTree,
     NavMenu,
-    PercentVis
+    PercentVis,
+    NewAsideTree
   },
   computed: {
 
@@ -136,6 +138,9 @@ export default {
 
 </style>
 <style rel="stylesheet/scss" lang="scss">
+
+
+
 .enc-header {
     .right-menu {
       .el-button {
