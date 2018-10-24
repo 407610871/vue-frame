@@ -1,7 +1,7 @@
 <template>
   <div>
     <p style="text-align: center">{{title}}</p>
-    <v-chart :forceFit="true" :height="height" :data="data" :scale="scale" >
+    <v-chart :forceFit="true" :height="height" :data="data" :scale="scale" renderer='svg'>
       <v-tooltip :showTitle="false" dataKey="item*percent" />
       <v-axis />
       <v-legend dataKey="item" />

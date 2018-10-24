@@ -6,15 +6,18 @@
       <percent-vis></percent-vis>
     </div>
     <hr/>
+    <bar-chart></bar-chart>
   </div>
 </template>
 
 <script>
-  import {PercentVis, PieChart} from '../charts/components'
+  import {PercentVis, PieChart, BarChart} from '../charts/components'
+
 
     export default {
         name: "index",
       components:{
+        BarChart,
           PercentVis,
         PieChart
       }
