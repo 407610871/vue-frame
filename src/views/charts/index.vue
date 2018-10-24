@@ -2,16 +2,18 @@
   <div>
     <pie-chart></pie-chart>
     <hr/>
+    <bar-chart></bar-chart>
+    <hr/>
+    <multi-linechart></multi-linechart>
+    <hr/>
     <div style="margin-left: 40%">
       <percent-vis></percent-vis>
     </div>
-    <hr/>
-    <bar-chart></bar-chart>
   </div>
 </template>
 
 <script>
-  import {PercentVis, PieChart, BarChart} from '../charts/components'
+  import {PercentVis, PieChart, BarChart, MultiLinechart} from '../charts/components'
 
 
     export default {
@@ -19,7 +21,8 @@
       components:{
         BarChart,
           PercentVis,
-        PieChart
+        PieChart,
+        MultiLinechart
       }
     }
 </script>
