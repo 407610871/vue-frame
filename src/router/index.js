@@ -15,7 +15,7 @@ export const constantRouterMap = [
       {
         path: "dashboard",
         component: () => import("@/views/dashboard/index"),
-        name: "Dashboard",
+        name: "dashboard",
         meta: {
           title: "dashboard",
           icon: "dashboard",
@@ -23,9 +23,19 @@ export const constantRouterMap = [
         }
       },
       {
-        path: "dashboardsub",
-        component: () => import("@/views/dashboardsub/index"),
-        name: "Dashboard",
+        path: "accessObjManage/:sourceId/:sourceName",
+        component: () => import("@/views/accessObjManage/index"),
+        name: "accessObjManage",
+        meta: {
+          title: "dashboard",
+          icon: "dashboard",
+          noCache: true
+        }
+      },
+      {
+        path: "accessObjInfo/:sourceId/:sourceName/:objId/:objName",
+        component: () => import("@/views/accessObjInfo/index"),
+        name: "accessObjInfo",
         meta: {
           title: "dashboard",
           icon: "dashboard",
@@ -42,6 +52,28 @@ export const constantRouterMap = [
           noCache: true
         }
       }
+      // {
+      //   path:"test/:sourceId/:sourceName/:objId/:objName",
+      //   component: () => import("@/views/dataAccess/index"),
+      //   name: "test",
+      //   meta: {
+      //     title: "test",
+      //     icon: "dashboard",
+      //     noCache: true
+      //   },
+      //   children:[
+      //     {
+      //       path:"testManage/:sourceId/:sourceName",
+      //       component: () => import("@/views/dataAccess/accessObjManage/index"),
+      //       name: "test",
+      //       meta: {
+      //         title: "test",
+      //         icon: "dashboard",
+      //         noCache: true
+      //       }
+      //     }
+      //   ]
+      // }
     ]
   }
 ];

@@ -11,11 +11,27 @@ const store = new Vuex.Store({
     mainTableData:[],
     dialogRouter:{
       'adminAdd':'adminAdd'
-    }
+    },
+    accessSourceType:[],
+    accessDataSource:[],
+    exchangePlatform:[],
+    breadcrumb:[]
   },
   mutations: {
     setMainTableData (state,obj) {
       state.mainTableData = obj.data;
+    },
+    setAccessSourceType(state,obj){
+      state.accessSourceType = obj.data;
+    },
+    setAccessDataSource(state,obj){
+      state.accessDataSource = obj.data;
+    },
+    setExchangePlatform(state,obj){
+      state.exchangePlatform = obj.data;
+    },
+    setBreadcrumb(state,obj){
+      state.breadcrumb = obj.data;
     }
   },
   modules: {

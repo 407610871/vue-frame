@@ -12,39 +12,21 @@
           <div class="line"></div>
           <dataCount v-bind:dataObj="count2Data" class="countData" />
         </div>
-        <el-button v-on:click="showAdd" class="add-btn">add</el-button>
+        <el-button v-on:click="handleAdd" class="add-btn">add</el-button>
         <el-form :model="formFilter" label-width="150px">
           <el-form-item label="接入源类型：">
-            <el-checkbox-group v-model="formFilter.type">
-              <el-checkbox label="mysql" name="type"></el-checkbox>
-              <el-checkbox label="oracle" name="type"></el-checkbox>
-              <el-checkbox label="sqlserver" name="type"></el-checkbox>
-              <el-checkbox label="postgresql" name="type"></el-checkbox>
-              <el-checkbox label="ftp" name="type"></el-checkbox>
-              <el-checkbox label="rabbitmq" name="type"></el-checkbox>
-              <el-checkbox label="activemq" name="type"></el-checkbox>
-              <el-checkbox label="mongodb" name="type"></el-checkbox>
-              <el-checkbox label="本地文件" name="type"></el-checkbox>
-              <el-checkbox label="其他" name="type"></el-checkbox>
+            <el-checkbox-group v-model="formFilter.type" @change="search">
+              <el-checkbox v-for="item in accessSourceType" :label="item.id" :key="item.id">{{item.name}}</el-checkbox>
             </el-checkbox-group>
           </el-form-item>
           <el-form-item label="接入数据来源：">
             <el-checkbox-group v-model="formFilter.source">
-              <el-checkbox label="公安网" name="source"></el-checkbox>
-              <el-checkbox label="私网" name="source"></el-checkbox>
-              <el-checkbox label="委办网" name="source"></el-checkbox>
+              <el-checkbox v-for="item in accessDataSource" :label="item.static_CODE" :key="item.static_CODE">{{item.static_NAME}}</el-checkbox>
             </el-checkbox-group>
           </el-form-item>
           <el-form-item label="对接平台：">
             <el-checkbox-group v-model="formFilter.platform">
-              <el-checkbox label="治安电动车" name="platform"></el-checkbox>
-              <el-checkbox label="刑侦电围" name="platform"></el-checkbox>
-              <el-checkbox label="WIFI平台" name="platform"></el-checkbox>
-              <el-checkbox label="移动警务" name="platform"></el-checkbox>
-              <el-checkbox label="廊坊资源平台" name="platform"></el-checkbox>
-              <el-checkbox label="可视化警务平台" name="platform"></el-checkbox>
-              <el-checkbox label="海燕车辆二次识别" name="platform"></el-checkbox>
-              <el-checkbox label="卡口过车数据" name="platform"></el-checkbox>
+              <el-checkbox v-for="item in accessSourceType" :label="item.id" :key="item.id">{{item.name}}</el-checkbox>
             </el-checkbox-group>
           </el-form-item>
         </el-form>
@@ -93,8 +75,10 @@
                 @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
               <el-button
                 size="mini"
-                type="danger"
-                @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+                @click="handleCopy(scope.$index, scope.row)">复制</el-button>
+              <el-button
+                size="mini"
+                @click="handleDelete(scope.$index, scope.row)">废止</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -122,6 +106,7 @@
         <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
       </span>
     </el-dialog>
+    <router-view />
   </div>
 </template>
 
@@ -138,15 +123,19 @@ export default {
       tableHeight: window.innerHeight - 400,
       mainTableReady:true,
       mainTableData: this.$store.state.mainTableData,
-      mainTablePage: 1,
+      mainTablePage: this.$route.query.pageNum?parseInt(this.$route.query.pageNum):1,
       mainTableDataTotal: 0,
+      tableFliter:{},
       dialogVisible:false,
       myDialogRouter:'adminAdd',
       dialogTitle:'新增',
+      accessSourceType:[],
+      accessDataSource:[],
+      exchangePlatform:[],
       formFilter:{
-        type: '',
-        source: '',
-        platform:''
+        type: [],
+        source: [],
+        platform:[]
       },
       count1Data:{
         name:'批式接入统计',
@@ -195,18 +184,42 @@ export default {
     .catch(function(err){
       console.log(err)
     });
-  },
-  created(){
-    this.$root.eventHub.$on('search',(keyword)=>{
-      this.loadPage(1,keyword);
+    this.$ajax.get('./getAccessSourceType').then(function(res){
+      _self.accessSourceType = res.data;
+      _self.$store.commit('setAccessSourceType', {
+        data:res.data
+      });
+    })
+    .catch(function(err){
+      console.log(err)
+    });
+    this.$ajax.get('./getAccessDataSource').then(function(res){
+      _self.accessDataSource = res.data.staticDatas.SJLY;
+      _self.$store.commit('setAccessDataSource', {
+        data:res.data.staticDatas.SJLY
+      });
+    })
+    .catch(function(err){
+      console.log(err)
+    });
+    this.$ajax.get('./getExchangePlatform').then(function(res){
+      _self.exchangePlatform = res.data;
+      _self.$store.commit('setExchangePlatform', {
+        data:res.data
+      });
+    })
+    .catch(function(err){
+      console.log(err)
     });
   },
+  created(){
+
+  },
   methods:{
-    loadPage:function(val,extraParam){
+    loadPage:function(val){
       var _self = this;
       _self.mainTablePage = val;
-      var param = extraParam?extraParam:{};
-      this.$ajax.get('./list?pageNum=1&pageSize=20',param).then(function(res){
+      this.$ajax.get('./list?pageNum=1&pageSize=20',this.tableFliter).then(function(res){
         _self.mainTableData = res.data.page.list;
         // Vue.set(_self.$store.state,'mainTableData',res.data);
         _self.$store.commit('setMainTableData', {
@@ -219,24 +232,51 @@ export default {
       });
     },
     goSubPage:function(index){
-      this.$router.push({path:'/dashboardsub'});
+      this.$router.push({path:'accessObjManage/'+this.mainTableData[index].id+'/'+encodeURI(this.mainTableData[index].name)});
     },
-    showAdd:function(){
+    handleAdd:function(){
       this.myDialogRouter = 'adminAdd';
       this.dialogTitle = '新增';
       this.dialogVisible = true;
     },
-    showEdit:function(){
+    handleEdit:function(index,row){
       this.myDialogRouter = 'adminEdit';
       this.dialogTitle = '修改';
       this.dialogVisible = true;
+    },
+    handleCopy:function(index,row){
+      this.$ajax.post('./copy',{
+        params:{
+          id:row.id
+        }
+      }).then(function(res){
+        loadPage(1);
+      })
+      .catch(function(err){
+        console.log(err)
+      });
+    },
+    handleDelete:function(index,row){
+      this.$ajax.post('./delete',{
+        params:{
+          id:row.id
+        }
+      }).then(function(res){
+        loadPage(this.mainTablePage);
+      })
+      .catch(function(err){
+        console.log(err)
+      });
+    },
+    search:function(){
+      this.tableFliter.keywords = '';
+      this.loadPage(1);
     }
   }
 }
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
-
 
 .dashboard-container {
   .filter-container {

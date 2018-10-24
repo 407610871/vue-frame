@@ -23,7 +23,7 @@ export default {
   methods: {
     handleSelect(key, keyPath) {
       console.log(key, keyPath);
-      this.$router.push({path:'/dashboardsub'});
+      this.$router.push({path:'/dashboard'});
     }
   }
 }

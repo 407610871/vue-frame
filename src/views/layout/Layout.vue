@@ -21,7 +21,10 @@
           <a href="javascript:void(0)" v-on:click="search"><i class="el-icon-search"></i></a>
         </div>
         <div class="enc-sub-header">
-          原始区
+          <el-breadcrumb separator="/">
+            <el-breadcrumb-item v-for="item in breadcrumb" :to="{ name: item.name, params:item.params}">{{item.breadcrumbName}}111</el-breadcrumb-item>
+          </el-breadcrumb>
+          <!-- <span v-for="item in breadcrumb"> / <a href="javascript:void(0)" v-on:click="goToPage(item.path)">{{item.name}}</a></span> -->
         </div>
         <app-main ref="mainTable" />
       </el-main>
@@ -38,7 +41,8 @@ export default {
   data() {
     return {
       logo: logo + '?' + +new Date(),
-      keyword:''
+      keyword:'',
+      breadcrumb:[]
     }
   },
   components: {
@@ -49,15 +53,71 @@ export default {
   computed: {
 
   },
+  created(){
+    this.getBreadcrumb();
+  },
+  watch: {
+    $route(to,from){
+      this.getBreadcrumb();
+      // this.$route.matched.forEach((item, index) => {
+      //   console.log(item)
+      // })
+    }
+  },
   methods: {
     search:function(){
-      // console.log(this.keyword);
-      // console.log(this.$route.path);
-      // console.log(this.$route.router);
-      // console.log(this.$route.matched);
-      console.log(this.$root.eventHub);
-      console.log(this.keyword);
       this.$root.eventHub.$emit('search',this.keyword);
+    },
+    goToPage:function(path){
+      var list = [];
+      for(var value of this.$store.state.breadcrumb){
+        list.push(value);
+        if(this.$route.path == value.path){
+          break;
+        }
+      }
+      this.$store.commit('setBreadcrumb',{
+        data:list
+      });
+      this.$set(this.breadcrumb,list);
+
+      this.$router.push({path:path});
+    },
+    getBreadcrumb(){
+      var routeName = this.$route.name;
+      var list = [];
+      if(routeName =='dashboard' || routeName == 'accessObjManage' || routeName == 'accessObjInfo'){
+        this.breadcrumb = [
+          {
+            name:'dashboard',
+            breadcrumbName:'数据接入',
+            params:{}
+          }
+        ]
+        if(this.$route.params.sourceId && this.$route.params.sourceName){
+          this.breadcrumb.push({
+            name:'accessObjManage',
+            breadcrumbName:this.$route.params.sourceName,
+            params:{
+              sourceId:this.$route.params.sourceId,
+              sourceName:this.$route.params.sourceName
+            }
+          });
+        }
+        if(this.$route.params.objId && this.$route.params.objName){
+          this.breadcrumb.push({
+            name:'accessObjInfo',
+            breadcrumbName:this.$route.params.objName,
+            params:{
+              sourceId:this.$route.params.sourceId,
+              sourceName:this.$route.params.sourceName,
+              objId:this.$route.params.objId,
+              objName:this.$route.params.objName
+            }
+          });
+        }
+      }
+      //end of getBreadcrumb
     }
   }
 }
@@ -137,12 +197,20 @@ export default {
     text-indent: 30px;
     margin-top: 3px;
     margin-right:300px;
+    padding-left:20px;
     height: $enc-nav-sub-header-height;
     line-height: $enc-nav-sub-header-height;
     color: #465167;
     font-size: 18px;
     background: #eff3f6;
   }
+
+  .el-breadcrumb {
+    line-height: $enc-nav-sub-header-height;
+    text-indent: 0;
+  }
+
+
   .enc-search{
     float:right;
     margin-top: 3px;
