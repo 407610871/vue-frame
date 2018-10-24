@@ -1,113 +1,113 @@
-//覆盖一些element-ui样式
+ //覆盖一些element-ui样式
 @import './el-table-override.scss';
 @import './el-form-ovdrride.scss';
 @import './el-datepicker-override.scss';
 
 .el-breadcrumb__inner, .el-breadcrumb__inner a{
- font-weight: 400!important;
+  font-weight: 400!important;
 }
 
-.el-upload {
-  input[type="file"] {
-    display: none !important;
-  }
-}
+ .el-upload {
+   input[type="file"] {
+     display: none !important;
+   }
+ }
 
-.el-upload__input {
-  display: none;
-}
+ .el-upload__input {
+   display: none;
+ }
 
-.cell {
-  .el-tag {
-    margin-right: 0px;
-  }
-}
+ .cell {
+   .el-tag {
+     margin-right: 0px;
+   }
+ }
 
 .small-padding {
-  .cell {
-    padding-left: 5px;
-    padding-right: 5px;
-  }
-}
-
-.fixed-width{
- .el-button--mini{
-   padding: 7px 10px;
-   width: 60px;
+   .cell {
+     padding-left: 5px;
+     padding-right: 5px;
+   }
  }
-}
 
-.status-col {
-  .cell {
-    padding: 0 10px;
-    text-align: center;
-    .el-tag {
-      margin-right: 0px;
-    }
+ .fixed-width{
+  .el-button--mini{
+    padding: 7px 10px;
+    width: 60px;
   }
-}
+ }
 
-//暂时性解决dialog 问题 https://github.com/ElemeFE/element/issues/2461
-.el-dialog {
-  transform: none;
-  left: 0;
-  position: relative;
-  margin: 0 auto;
-}
+ .status-col {
+   .cell {
+     padding: 0 10px;
+     text-align: center;
+     .el-tag {
+       margin-right: 0px;
+     }
+   }
+ }
 
-//文章页textarea修改样式
-.article-textarea {
-  textarea {
-    padding-right: 40px;
-    resize: none;
-    border: none;
-    border-radius: 0px;
-    border-bottom: 1px solid #bfcbd9;
-  }
-}
+ //暂时性解决dialog 问题 https://github.com/ElemeFE/element/issues/2461
+ .el-dialog {
+   transform: none;
+   left: 0;
+   position: relative;
+   margin: 0 auto;
+ }
 
-//element ui upload
-.upload-container {
-  .el-upload {
-    width: 100%;
-    .el-upload-dragger {
-      width: 100%;
-      height: 200px;
-    }
-  }
-}
+ //文章页textarea修改样式
+ .article-textarea {
+   textarea {
+     padding-right: 40px;
+     resize: none;
+     border: none;
+     border-radius: 0px;
+     border-bottom: 1px solid #bfcbd9;
+   }
+ }
+
+ //element ui upload
+ .upload-container {
+   .el-upload {
+     width: 100%;
+     .el-upload-dragger {
+       width: 100%;
+       height: 200px;
+     }
+   }
+ }
 
 //dropdown
-.el-dropdown-menu{
- a{
-   display: block
- }
+ .el-dropdown-menu{
+  a{
+    display: block
+  }
 }
 
 .enc-header {
- .el-menu--horizontal>.el-submenu .el-submenu__title {
-   height: $enc-nav-header-height;
-   line-height: $enc-nav-header-height;
- }
+  .el-menu--horizontal>.el-submenu .el-submenu__title {
+    height: $enc-nav-header-height;
+    line-height: $enc-nav-header-height;
+  }
 
- .el-menu--popup {
-   background-color: #e6eaed;
- }
+  .el-menu--popup {
+    background-color: #e6eaed;
+  }
 
- .el-menu--horizontal .el-menu .el-menu-item, .el-menu--horizontal .el-menu .el-submenu__title {
-   background-color: #e6eaed;
-   // height: 36px;
-   // line-height: 36px;
-   color: #b2b6b9;
- }
+  .el-menu--horizontal .el-menu .el-menu-item, .el-menu--horizontal .el-menu .el-submenu__title {
+    background-color: #e6eaed;
+    // height: 36px;
+    // line-height: 36px;
+    color: #b2b6b9;
+  }
 
- .el-dropdown-menu__item--divided:before, .el-menu, .el-menu--horizontal>.el-menu-item:not(.is-disabled):focus, .el-menu--horizontal>.el-menu-item:not(.is-disabled):hover, .el-menu--horizontal>.el-submenu .el-submenu__title:hover {
-   background-color: #469bde;
-   color: #fff!important;
- }
+  .el-dropdown-menu__item--divided:before, .el-menu, .el-menu--horizontal>.el-menu-item:not(.is-disabled):focus, .el-menu--horizontal>.el-menu-item:not(.is-disabled):hover, .el-menu--horizontal>.el-submenu .el-submenu__title:hover {
+    background-color: #469bde;
+    color: #fff!important;
+  }
 }
 
 .el-menu--horizontal .el-menu-item:not(.is-disabled):focus, .el-menu--horizontal .el-menu-item:not(.is-disabled):hover {
- background: #469bde;
- color: #fff!important;
+  background: #469bde;
+  color: #fff!important;
 }

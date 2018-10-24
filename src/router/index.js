@@ -17,7 +17,7 @@ export const constantRouterMap = [
         component: () => import("@/views/dashboard/index"),
         name: "dashboard",
         meta: {
-          title: "dashboard",
+          title: "数据接入",
           icon: "dashboard",
           noCache: true
         }
@@ -27,7 +27,7 @@ export const constantRouterMap = [
         component: () => import("@/views/accessObjManage/index"),
         name: "accessObjManage",
         meta: {
-          title: "dashboard",
+          title: "接入源管理",
           icon: "dashboard",
           noCache: true
         }
@@ -37,7 +37,7 @@ export const constantRouterMap = [
         component: () => import("@/views/accessObjInfo/index"),
         name: "accessObjInfo",
         meta: {
-          title: "dashboard",
+          title: "数据对象详情",
           icon: "dashboard",
           noCache: true
         }
