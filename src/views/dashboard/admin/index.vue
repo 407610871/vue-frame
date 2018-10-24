@@ -171,8 +171,18 @@ export default {
     add1,
     dataCount
   },
+  $route(){
+    this.getTableParam();
+  },
+  created(){
+    this.getTableParam();
+  },
   mounted(){
     var _self = this;
+
+    // setTimeout(function(){
+    //   _self.getTableParam();
+    // },2000)
     this.$ajax.get('./list?pageNum=1&pageSize=20').then(function(res){
       _self.mainTableData = res.data.page.list;
       _self.$store.commit('setMainTableData', {
@@ -211,9 +221,6 @@ export default {
     .catch(function(err){
       console.log(err)
     });
-  },
-  created(){
-
   },
   methods:{
     loadPage:function(val){
@@ -271,6 +278,11 @@ export default {
     search:function(){
       this.tableFliter.keywords = '';
       this.loadPage(1);
+    },
+    getTableParam:function(){
+      console.log(this.mainTablePage);
+      this.mainTablePage = this.$route.query.pageNum?parseInt(this.$route.query.pageNum):1;
+      console.log(this.mainTablePage);
     }
   }
 }
