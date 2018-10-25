@@ -24,6 +24,7 @@
 }
 
 .el-popper[x-placement^=bottom] .popper__arrow {
+  display: none;
   border-bottom-color: #489bd9;
   &::after {
     border-bottom-color: #489bd9;

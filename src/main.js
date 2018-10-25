@@ -24,7 +24,12 @@ import * as filters from "./filters"; // global filters
 import "./registerServiceWorker";
 
 import Authen from "./Authen.js";
+import VJstree from 'vue-jstree'
+import Viser from 'viser-vue'
+
 Vue.use(Authen);
+Vue.use(Viser);
+Vue.use(VJstree);
 
 Vue.use(Element, {
   size: Cookies.get("size") || "medium", // set element-ui default size

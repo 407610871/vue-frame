@@ -9,7 +9,7 @@
       active-text-color="#499bd7">
       <el-menu-item index="1"><router-link to="/dashboard">首页</router-link></el-menu-item>
       <el-menu-item index="3"><router-link to="/form">表单</router-link></el-menu-item>
-      <el-menu-item index="4"><a href="https://www.ele.me" target="_blank">饿了么</a></el-menu-item>
+      <el-menu-item index="4"><router-link to="/charts">图表组件</router-link></el-menu-item>
       <el-submenu class="enc-submenu" index="2">
         <template slot="title">我的工作台</template>
         <el-menu-item index="2-1">选项1</el-menu-item>

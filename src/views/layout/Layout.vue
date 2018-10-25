@@ -13,11 +13,14 @@
   </el-header>
   <el-container>
     <el-aside width="210px" class="enc-aside">
-      <aside-tree></aside-tree>
+      <!--<aside-tree></aside-tree>-->
+      <new-aside-tree></new-aside-tree>
     </el-aside>
     <el-main class="enc-main">
       <div class="enc-sub-header">
-        原始区
+        <el-breadcrumb class="breadcrumb-container" separator-class="el-icon-arrow-right">
+          <el-breadcrumb-item v-for="item in levelList":key="item.path" :to="item.path">{{item.meta.title}}</el-breadcrumb-item>
+        </el-breadcrumb>
       </div>
       <app-main />
     </el-main>
@@ -25,7 +28,8 @@
   </el-container>
 </template>
 <script>
-import { AppMain, AsideTree, NavMenu } from './components'
+import { AppMain, AsideTree, NavMenu,  NewAsideTree} from './components'
+
 import logo from '@/assets/images/enc-logo.png'
 
 
@@ -34,18 +38,35 @@ export default {
   data() {
     return {
       logo: logo + '?' + +new Date(),
+      levelList: []
     }
+  },
+  watch: {
+    $route() {
+        this.getBreadcrumb()
+    }
+  },
+  created(){
+    this.getBreadcrumb()
   },
   components: {
     AppMain,
     AsideTree,
-    NavMenu
+    NavMenu,
+    NewAsideTree,
   },
   computed: {
-  
+
   },
   methods: {
-   
+    getBreadcrumb() {
+      let matched = this.$route.matched.filter(item => item.name)
+      const first = matched[0];
+      if (first && first.name.trim().toLocaleLowerCase() !== 'Dashboard'.toLocaleLowerCase()) {
+        matched = [{ path: '/dashboard', meta: { title: '首页' }}].concat(matched)
+      }
+      this.levelList = matched
+    }
   }
 }
 </script>
@@ -91,7 +112,7 @@ export default {
         border-radius: 0;
         border: 0;
         padding: 0;
-        
+
         &.user {
           background: #cacfd5;
         }
@@ -128,10 +149,17 @@ export default {
     color: #465167;
     font-size: 18px;
     background: #eff3f6;
+
+    .el-breadcrumb {
+      line-height: $enc-nav-sub-header-height;
+    }
   }
 
 </style>
 <style rel="stylesheet/scss" lang="scss">
+
+
+
 .enc-header {
     .right-menu {
       .el-button {
