@@ -24,21 +24,19 @@ import * as filters from "./filters"; // global filters
 import "./registerServiceWorker";
 
 import Authen from "./Authen.js";
+Vue.use(Authen);
 
-Vue.use(Authen)
 Vue.use(Element, {
   size: Cookies.get("size") || "medium", // set element-ui default size
   i18n: (key, value) => i18n.t(key, value)
 });
 
-// Vue.use(VueKeycloak)
 // register global utility filters.
 Object.keys(filters).forEach(key => {
   Vue.filter(key, filters[key]);
 });
 
 Vue.config.productionTip = false;
-
 
 const vm = new Vue({
   // el: "#app",
@@ -47,12 +45,9 @@ const vm = new Vue({
   i18n,
   render: h => h(App)
 });
-// Vue.prototype.keycloak.onAuthSuccess = function() {
 vm.$keycloak.onAuthSuccess = () => {
-  vm.$mount("#app")
+  vm.$mount("#app");
 }
-
-// }
 
 // new Vue({
 //   router,
