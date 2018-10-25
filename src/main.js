@@ -49,6 +49,8 @@ vm.$keycloak.onAuthSuccess = () => {
   vm.$mount("#app");
 }
 
+// }
+
 // new Vue({
 //   router,
 //   store,
