@@ -10,7 +10,7 @@
           placement="top-start"
           width="200"
           trigger="hover"
-          content="这是一段内容,这是一段内容,这是一段内容,这是一段内容。">
+          >
             <ul class="popup-menu">
               <li><router-link :to="{ name: 'recyclingBins' }">回收箱</router-link></li>
             </ul>
@@ -43,7 +43,7 @@
 <script>
 import { AppMain, AsideTree, NavMenu } from './components'
 import logo from '@/assets/images/enc-logo.png'
-
+import release from '@/views/mainLay/dialog/release'
 
 export default {
   name: 'Layout',
@@ -57,7 +57,8 @@ export default {
   components: {
     AppMain,
     AsideTree,
-    NavMenu
+    NavMenu,
+    release
   },
   computed: {
 

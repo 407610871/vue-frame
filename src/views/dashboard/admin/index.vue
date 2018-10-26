@@ -12,57 +12,39 @@
           <div class="line"></div>
           <dataCount v-bind:dataObj="count2Data" class="countData" />
         </div>
-        <el-button v-on:click="handleAdd" class="right-btn">add</el-button>
+        <!-- <el-button v-on:click="handleAdd" class="right-btn">add</el-button> -->
+        <div class="regbtn fr">
+          <reg-dialog></reg-dialog>
+        </div>
+        <div class="regbtn fr">
+          <hdfs-add></hdfs-add>
+        </div>
         <el-button v-on:click="collapseExpand" size="mini" class="right-btn"><i :class="{'el-icon-plus':collapse,'el-icon-minus':!collapse}"></i></el-button>
         <formFliter v-if="queryParamReady" v-bind:formCollapse="collapse" v-bind:dataObj="formFilterData" @formFilter="changeFormFilter" />
       </el-header>
       <el-main style="padding-bottom:0;">
-        <el-table
-          :data="mainTableData"
-          stripe
-          :height="tableHeight"
-          border
-          style="width: 100%"
-          >
-          <el-table-column
-            label="接入源名称"
-            width="180">
+        <el-table :data="mainTableData" stripe :height="tableHeight" border style="width: 100%">
+          <el-table-column label="接入源名称" width="180">
             <template slot-scope="scope">
               <a href="javascript:void(0)" v-on:click="goSubPage(scope.$index)">{{ scope.row.name }}</a>
             </template>
           </el-table-column>
-          <el-table-column
-            prop="verfication_code"
-            label="接入源ID"
-            width="180">
+          <el-table-column prop="verfication_code" label="接入源ID" width="180">
           </el-table-column>
-          <el-table-column
-            prop="accessSysDialect.name"
-            label="接入源类型">
+          <el-table-column prop="accessSysDialect.name" label="接入源类型">
           </el-table-column>
-          <el-table-column
-            prop="accessSysType.name"
-            label="对接平台">
+          <el-table-column prop="accessSysType.name" label="对接平台">
           </el-table-column>
-          <el-table-column
-            prop="accessSysType.name"
-            label="接入数据来源">
+          <el-table-column prop="accessSysType.name" label="接入数据来源">
           </el-table-column>
-          <el-table-column
-            prop="createTime"
-            label="注册时间">
+          <el-table-column prop="createTime" label="注册时间">
           </el-table-column>
           <el-table-column label="操作">
             <template slot-scope="scope">
-              <el-button
-                size="mini"
-                @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-              <el-button
-                size="mini"
-                @click="handleCopy(scope.$index, scope.row)">复制</el-button>
-              <el-button
-                size="mini"
-                @click="handleDelete(scope.$index, scope.row)">废止</el-button>
+              <!-- <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button> -->
+              <edit-dialog></edit-dialog>
+              <el-button size="mini" @click="handleCopy(scope.$index, scope.row)">复制</el-button>
+              <el-button size="mini" @click="handleDelete(scope.$index, scope.row)">废止</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -80,7 +62,7 @@
         </div>
       </el-footer>
     </el-container>
-    <el-dialog
+    <!-- <el-dialog
       :title="dialogTitle"
       :visible.sync="dialogVisible"
       width="30%">
@@ -89,18 +71,19 @@
         <el-button @click="dialogVisible = false">取 消</el-button>
         <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
       </span>
-    </el-dialog>
+    </el-dialog> -->
     <router-view />
   </div>
 </template>
-
 <script>
-import { mapState} from 'vuex'
+import { mapState } from 'vuex'
 import add1 from './../dialog/'
 import dataCount from './../../../components/dataCount'
 import formFliter from './../../../components/formFliter'
 
-
+import regDialog from './../dialog/admin/reg_dialog'
+import editDialog from './../dialog/admin/edit_dialog'
+import hdfsAdd from '@/views/mainLay/dialog/hdfs_add'
 export default {
   name: 'DashboardAdmin',
   data() {
@@ -119,32 +102,32 @@ export default {
         exchangePlatform:'',
         pageNum:1
       },
-      count1Data:{
-        name:'批式接入统计',
-        list:[{
-          name:'mysql',
-          number:111,
-          color:'#f90'
-        },{
-          name:'oracle',
-          number:163,
-          color:'#069'
+      count1Data: {
+        name: '批式接入统计',
+        list: [{
+          name: 'mysql',
+          number: 111,
+          color: '#f90'
+        }, {
+          name: 'oracle',
+          number: 163,
+          color: '#069'
         }]
       },
-      count2Data:{
-        name:'实时统计',
-        list:[{
-          name:'mysql',
-          number:41,
-          color:'#f90'
-        },{
-          name:'oracle',
-          number:22,
-          color:'#069'
-        },{
-          name:'kafka',
-          number:37,
-          color:'#990'
+      count2Data: {
+        name: '实时统计',
+        list: [{
+          name: 'mysql',
+          number: 41,
+          color: '#f90'
+        }, {
+          name: 'oracle',
+          number: 22,
+          color: '#069'
+        }, {
+          name: 'kafka',
+          number: 37,
+          color: '#990'
         }]
       }
     }
@@ -185,7 +168,10 @@ export default {
   components: {
     add1,
     dataCount,
-    formFliter
+    formFliter,
+    regDialog,
+    hdfsAdd,
+    editDialog
   },
   watch: {
   },
@@ -239,39 +225,39 @@ export default {
     goSubPage:function(index){
       this.$router.push({path:'accessObjManage/'+this.mainTableData[index].id+'/'+encodeURI(this.mainTableData[index].name)});
     },
-    handleAdd:function(){
+    handleAdd: function() {
       this.myDialogRouter = 'adminAdd';
       this.dialogTitle = '新增';
       this.dialogVisible = true;
     },
-    handleEdit:function(index,row){
+    handleEdit: function(index, row) {
       this.myDialogRouter = 'adminEdit';
       this.dialogTitle = '修改';
       this.dialogVisible = true;
     },
-    handleCopy:function(index,row){
-      this.$ajax.post('./copy',{
-        params:{
-          id:row.id
-        }
-      }).then(function(res){
-        loadPage(1);
-      })
-      .catch(function(err){
-        console.log(err)
-      });
+    handleCopy: function(index, row) {
+      this.$ajax.post('./copy', {
+          params: {
+            id: row.id
+          }
+        }).then(function(res) {
+          loadPage(1);
+        })
+        .catch(function(err) {
+          console.log(err)
+        });
     },
-    handleDelete:function(index,row){
-      this.$ajax.post('./delete',{
-        params:{
-          id:row.id
-        }
-      }).then(function(res){
-        loadPage(this.mainTablePage);
-      })
-      .catch(function(err){
-        console.log(err)
-      });
+    handleDelete: function(index, row) {
+      this.$ajax.post('./delete', {
+          params: {
+            id: row.id
+          }
+        }).then(function(res) {
+          loadPage(this.mainTablePage);
+        })
+        .catch(function(err) {
+          console.log(err)
+        });
     },
     search:function(){
       console.log('search')
@@ -298,53 +284,52 @@ export default {
     }
   }
 }
+
 </script>
-
 <style rel="stylesheet/scss" lang="scss" scoped>
-
 .dashboard-container {
   .filter-container {
-    padding-top:10px;
+    padding-top: 5px;
     background: #fff;
-    .count-container{
+    .count-container {
       border-bottom: 1px solid #d9d9d9;
-      margin:0 20px 10px 20px;
-      .count-title{
-        display:inline-block;
-        margin:10px 5% 10px 40px;
-        width:8%;
+      margin: 0 20px 10px 20px;
+      .count-title {
+        display: inline-block;
+        margin: 10px 5% 10px 40px;
+        width: 8%;
         text-align: center;
-        label{
+        label {
           display: inline-block;
           margin-bottom: 10px;
-          color:#999;
-          font-size:14px;
+          color: #999;
+          font-size: 14px;
         }
-        .all-number{
-          color:#425365;
+        .all-number {
+          color: #425365;
           font-size: 24px;
           font-weight: bold;
         }
       }
-      .countData{
-        display:inline-block;
-        margin:10px 5%;
-        width:25%;
+      .countData {
+        display: inline-block;
+        margin: 10px 5%;
+        width: 25%;
       }
-      .line{
-        display:inline-block;
-        margin:32px 0 12px 0;
-        height:30px;
-        width:3px;
+      .line {
+        display: inline-block;
+        margin: 32px 0 12px 0;
+        height: 30px;
+        width: 3px;
         background-color: #999;
         border-radius: 2px;
       }
     }
-    form{
-      margin-right:100px;
+    form {
+      margin-right: 100px;
     }
-    .el-form-item{
-      margin-bottom:2px;
+    .el-form-item {
+      margin-bottom: 2px;
     }
     .right-btn{
       float:right;
@@ -357,4 +342,5 @@ export default {
     float: right;
   }
 }
+
 </style>

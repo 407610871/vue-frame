@@ -1,0 +1,168 @@
+//elementui form
+.el-dialog .el-form-item__label {
+  font-size: $font-size-small;
+}
+
+.hr {
+  width: 100%;
+  border-top: 1px solid $color-background;
+}
+
+//con
+.el-icon-info {
+  margin-right: 10px;
+  color: #0095e7;
+  cursor: pointer;
+}
+
+.bank {
+  opacity: 0;
+}
+
+.taskMDialog {
+  text-align: left;
+  .el-dialog {
+    .el-dialog__header {
+      margin: 0 20px;
+      padding: 20px 10px 0px;
+
+      .el-dialog__title {
+        font-size: $font-size-medium;
+        color: $color-text-title;
+      }
+    }
+    .el-dialog__headerbtn {
+      /* top: -15px;
+      right: -15px;
+      font-size: 16px;
+      background-color: $color-background;
+      width: 30px;
+      height: 30px;
+      border-radius: 15px;
+      font-size: 14px; */
+      .el-dialog__close {
+       /*  color: #fff; */
+      }
+    }
+  }
+  .title-gra {
+    margin-bottom: 20px;
+    .grab {
+      height: 4px;
+      display: inline-block;
+    }
+    .gra-l {
+      width: 30%;
+      background: $color-background-lp;
+    }
+    .gra-r {
+      width: 70%;
+      background: $color-background-rp;
+    }
+  }
+  .el-dialog__body {
+    padding-top: 0px;
+    padding-left: 30px;
+    padding-right: 30px;
+    .daiInfo-title {
+      border-bottom: 1px solid $border-color-dai;
+      margin-bottom: 20px;
+    }
+    h2 {
+      font-size: $font-size-medium;
+      color: $color-text-stitle;
+      padding: 0;
+      margin: 0;
+      line-height: 40px;
+    }
+    .daiInfo-box {
+      padding: 0 20px;
+    }
+  }
+}
+
+.el-radio__label {
+  font-size: $font-size-small;
+}
+
+.el-table .cell .taskMDialog .el-button {
+  background: #fff;
+  border: 1px solid #dcdfe6;
+  color: #606266;
+}
+
+.el-table .cell .taskMDialog .el-button--primary {
+  color: #fff;
+  background-color: #489bd9;
+  border-color: #489bd9;
+}
+
+.ml0 .el-form-item--medium .el-form-item__content {
+  margin-left: 0px !important;
+}
+.tcenter .el-form-item--medium .el-form-item__content {
+  text-align: center;
+}
+.mt20{
+  margin-top:20px;
+}
+.mt10{
+  margin-top:10px;
+}
+.mt30{
+  margin-top:30px;
+}
+.mt25{
+  margin-top:25px;
+}
+.plr10{
+  padding-left: 10px;
+}
+.mr10{
+  margin-right: 10px;
+}
+.ml10{
+  margin-left: 10px;
+}
+.ptb20{padding:20px 0px;}
+.tcenter{
+  text-align: center;
+}
+.el-icon-circle{
+  width:30px;
+  height:30px;
+  border-radius: 50%;
+  display: inline-block;
+  border:1px solid #d8dbdd;
+  line-height: 30px;
+  color:#d8dbdd;
+  text-align: center;
+  margin-right:5px;
+ 
+}
+.surveybg {
+  background: #f0f3f6;
+  padding-top: 20px;
+}
+
+//表格
+.comTable .el-table th > .cell{
+  line-height: 20px;
+    font-size: $font-size-medium;
+    font-weight: bold;
+}
+.comTable .el-table--medium td, .el-table--medium th{
+      padding: 8px 0;
+}
+//内部按钮
+.el-table .cell .taskMDialog .diabtn{
+   background: transparent;
+   border:none;
+
+}
+.el-table .cell .taskMDialog .incbtn{
+  color:$color-btn-inner;
+}
+.dataInfo-box {
+  border:none !important;
+}
