@@ -7,7 +7,8 @@
       <nav-menu />
       <div class="right-menu">
         <el-button class="user" type="primary" icon="enc-icon-user"></el-button>
-        <el-button class="setting" type="primary" icon="enc-icon-setting"></el-button>
+       <!--  <el-button class="setting" type="primary" icon="enc-icon-setting"></el-button> -->
+        <release></release>
         <el-button class="document" type="primary" icon="enc-icon-documents"></el-button>
       </div>
     </el-header>
@@ -34,7 +35,7 @@
 <script>
 import { AppMain, AsideTree, NavMenu } from './components'
 import logo from '@/assets/images/enc-logo.png'
-
+import release from '@/views/mainLay/dialog/release'
 
 export default {
   name: 'Layout',
@@ -48,7 +49,8 @@ export default {
   components: {
     AppMain,
     AsideTree,
-    NavMenu
+    NavMenu,
+    release
   },
   computed: {
 
