@@ -1,3 +1,4 @@
+
 // this is vue config
 module.exports = {
   devServer: {
@@ -14,3 +15,4 @@ module.exports = {
     }
   }
 }
+

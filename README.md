@@ -1,5 +1,9 @@
 # enc-vue-boilerplate
+<<<<<<< HEAD
 
+=======
+## 修改config等配置文件是需重启项目使之生效
+>>>>>>> 13cee708e0d47163f3aaee0fd02dce1d22e4fc64
 ## Project setup
 ```
 npm install

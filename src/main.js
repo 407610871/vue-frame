@@ -27,7 +27,11 @@ import "./registerServiceWorker";
 import axios from 'axios'
 
 Vue.prototype.$ajax = axios;
+import VJstree from 'vue-jstree'
+import Viser from 'viser-vue'
 
+Vue.use(Viser);
+Vue.use(VJstree);
 Vue.use(Element, {
   size: Cookies.get("size") || "medium", // set element-ui default size
   i18n: (key, value) => i18n.t(key, value)
