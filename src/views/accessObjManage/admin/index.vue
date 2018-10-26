@@ -61,7 +61,7 @@
                 type="danger"
                 @click="handleDelete(scope.$index, scope.row)">用户调研</el-button> -->
               <div class="survey">
-                <userSurvey></userSurvey>
+                <userSurvey :pdata="scope"></userSurvey>
               </div>
               <div class="survey">
                 <single-task :pdata="scope"></single-task>
