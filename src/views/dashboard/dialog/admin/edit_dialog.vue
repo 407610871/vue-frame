@@ -664,5 +664,7 @@ export default {
 .el-dialog .otherInfo .fileItem .el-form-item__label {
   width: 235px !important;
 }
-
+.taskMDialog{
+  display: inline-block;
+}
 </style>

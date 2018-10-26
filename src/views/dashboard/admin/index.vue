@@ -57,7 +57,8 @@
           </el-table-column>
           <el-table-column label="操作">
             <template slot-scope="scope">
-              <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+              <!-- <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button> -->
+              <edit-dialog></edit-dialog>
               <el-button size="mini" @click="handleCopy(scope.$index, scope.row)">复制</el-button>
               <el-button size="mini" @click="handleDelete(scope.$index, scope.row)">废止</el-button>
             </template>
@@ -90,6 +91,7 @@ import add1 from './../dialog/'
 import dataCount from './../../../components/dataCount'
 
 import regDialog from './../dialog/admin/reg_dialog'
+import editDialog from './../dialog/admin/edit_dialog'
 import hdfsAdd from '@/views/mainLay/dialog/hdfs_add'
 export default {
   name: 'DashboardAdmin',
@@ -146,7 +148,8 @@ export default {
     add1,
     dataCount,
     regDialog,
-    hdfsAdd
+    hdfsAdd,
+    editDialog
   },
   $route() {
     this.getTableParam();
