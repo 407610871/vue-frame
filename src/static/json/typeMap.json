@@ -1,0 +1,1609 @@
+{
+  "result": "succeed",
+  "page":
+  {
+    "pageNum": 1,
+    "pageSize": 500,
+    "size": 22,
+    "startRow": 1,
+    "endRow": 22,
+    "total": 22,
+    "pages": 1,
+    "list": [
+    {
+      "id": 195981,
+      "name": "id",
+      "tableName": null,
+      "datatype": "int",
+      "length": "255",
+      "isNull": "NO",
+      "nullRowCount": 0,
+      "defaultValue": "",
+      "foreignKey": false,
+      "comments": "",
+      "commentsFrom": "0",
+      "oldComments": null,
+      "isHistory": "1",
+      "isDeleted": "2",
+      "diyComments": "",
+      "accessSysObjInfoId": null,
+      "accessSysObjInfo":
+      {
+        "id": 10203122,
+        "name": "apply_info",
+        "owner": "test_pc_smp2",
+        "accessSys":
+        {
+          "id": 92465,
+          "name": "mysql_103_Copy_92465",
+          "accessSysType": null,
+          "accessSysWay": null,
+          "accessSysDialect":
+          {
+            "id": 10001,
+            "name": "mysql",
+            "accSysWay": null,
+            "accessSyses": []
+          },
+          "contactsPhone": null,
+          "contactsEmail": null,
+          "comments": null,
+          "verfication_code": null,
+          "accessSysAttributes": [],
+          "accessSysObjInfos": [],
+          "accessSysStatistics": [],
+          "extendParams":
+          {},
+          "accessSysDeptInfo": null,
+          "status": null,
+          "lastOperatingTime": null,
+          "createTime": null
+        },
+        "comments": "",
+        "diyComments": "",
+        "accessSysId": null,
+        "totalRows": "80",
+        "collectName": null,
+        "diyCommentsFrom": "0",
+        "isHistory": "1",
+        "isDeleted": "2",
+        "exitTask": false,
+        "exitDataSurvey": false,
+        "extendParams":
+        {},
+        "accessSysObjInfoStatistics": [],
+        "accessConnectorSource":
+        {},
+        "lastChangeTime": "2018-09-11 14/14/59",
+        "createImpalaTable": false
+      },
+      "extendParams":
+      {},
+      "index": true,
+      "primaryKey": true
+    },
+    {
+      "id": 195982,
+      "name": "interfaceId",
+      "tableName": null,
+      "datatype": "varchar",
+      "length": "100",
+      "isNull": "YES",
+      "nullRowCount": 0,
+      "defaultValue": "",
+      "foreignKey": false,
+      "comments": "服务ID",
+      "commentsFrom": "0",
+      "oldComments": null,
+      "isHistory": "1",
+      "isDeleted": "2",
+      "diyComments": "服务ID",
+      "accessSysObjInfoId": null,
+      "accessSysObjInfo":
+      {
+        "id": 10203122,
+        "name": "apply_info",
+        "owner": "test_pc_smp2",
+        "accessSys":
+        {
+          "id": 92465,
+          "name": "mysql_103_Copy_92465",
+          "accessSysType": null,
+          "accessSysWay": null,
+          "accessSysDialect":
+          {
+            "id": 10001,
+            "name": "mysql",
+            "accSysWay": null,
+            "accessSyses": []
+          },
+          "contactsPhone": null,
+          "contactsEmail": null,
+          "comments": null,
+          "verfication_code": null,
+          "accessSysAttributes": [],
+          "accessSysObjInfos": [],
+          "accessSysStatistics": [],
+          "extendParams":
+          {},
+          "accessSysDeptInfo": null,
+          "status": null,
+          "lastOperatingTime": null,
+          "createTime": null
+        },
+        "comments": "",
+        "diyComments": "",
+        "accessSysId": null,
+        "totalRows": "80",
+        "collectName": null,
+        "diyCommentsFrom": "0",
+        "isHistory": "1",
+        "isDeleted": "2",
+        "exitTask": false,
+        "exitDataSurvey": false,
+        "extendParams":
+        {},
+        "accessSysObjInfoStatistics": [],
+        "accessConnectorSource":
+        {},
+        "lastChangeTime": "2018-09-11 14/14/59",
+        "createImpalaTable": false
+      },
+      "extendParams":
+      {},
+      "index": false,
+      "primaryKey": false
+    },
+    {
+      "id": 195983,
+      "name": "interfaceName",
+      "tableName": null,
+      "datatype": "varchar",
+      "length": "100",
+      "isNull": "YES",
+      "nullRowCount": 0,
+      "defaultValue": "",
+      "foreignKey": false,
+      "comments": "服务名称",
+      "commentsFrom": "0",
+      "oldComments": null,
+      "isHistory": "1",
+      "isDeleted": "2",
+      "diyComments": "服务名称",
+      "accessSysObjInfoId": null,
+      "accessSysObjInfo":
+      {
+        "id": 10203122,
+        "name": "apply_info",
+        "owner": "test_pc_smp2",
+        "accessSys":
+        {
+          "id": 92465,
+          "name": "mysql_103_Copy_92465",
+          "accessSysType": null,
+          "accessSysWay": null,
+          "accessSysDialect":
+          {
+            "id": 10001,
+            "name": "mysql",
+            "accSysWay": null,
+            "accessSyses": []
+          },
+          "contactsPhone": null,
+          "contactsEmail": null,
+          "comments": null,
+          "verfication_code": null,
+          "accessSysAttributes": [],
+          "accessSysObjInfos": [],
+          "accessSysStatistics": [],
+          "extendParams":
+          {},
+          "accessSysDeptInfo": null,
+          "status": null,
+          "lastOperatingTime": null,
+          "createTime": null
+        },
+        "comments": "",
+        "diyComments": "",
+        "accessSysId": null,
+        "totalRows": "80",
+        "collectName": null,
+        "diyCommentsFrom": "0",
+        "isHistory": "1",
+        "isDeleted": "2",
+        "exitTask": false,
+        "exitDataSurvey": false,
+        "extendParams":
+        {},
+        "accessSysObjInfoStatistics": [],
+        "accessConnectorSource":
+        {},
+        "lastChangeTime": "2018-09-11 14/14/59",
+        "createImpalaTable": false
+      },
+      "extendParams":
+      {},
+      "index": false,
+      "primaryKey": false
+    },
+    {
+      "id": 195984,
+      "name": "department",
+      "tableName": null,
+      "datatype": "varchar",
+      "length": "100",
+      "isNull": "YES",
+      "nullRowCount": 0,
+      "defaultValue": "",
+      "foreignKey": false,
+      "comments": "申请部门",
+      "commentsFrom": "0",
+      "oldComments": null,
+      "isHistory": "1",
+      "isDeleted": "2",
+      "diyComments": "申请部门",
+      "accessSysObjInfoId": null,
+      "accessSysObjInfo":
+      {
+        "id": 10203122,
+        "name": "apply_info",
+        "owner": "test_pc_smp2",
+        "accessSys":
+        {
+          "id": 92465,
+          "name": "mysql_103_Copy_92465",
+          "accessSysType": null,
+          "accessSysWay": null,
+          "accessSysDialect":
+          {
+            "id": 10001,
+            "name": "mysql",
+            "accSysWay": null,
+            "accessSyses": []
+          },
+          "contactsPhone": null,
+          "contactsEmail": null,
+          "comments": null,
+          "verfication_code": null,
+          "accessSysAttributes": [],
+          "accessSysObjInfos": [],
+          "accessSysStatistics": [],
+          "extendParams":
+          {},
+          "accessSysDeptInfo": null,
+          "status": null,
+          "lastOperatingTime": null,
+          "createTime": null
+        },
+        "comments": "",
+        "diyComments": "",
+        "accessSysId": null,
+        "totalRows": "80",
+        "collectName": null,
+        "diyCommentsFrom": "0",
+        "isHistory": "1",
+        "isDeleted": "2",
+        "exitTask": false,
+        "exitDataSurvey": false,
+        "extendParams":
+        {},
+        "accessSysObjInfoStatistics": [],
+        "accessConnectorSource":
+        {},
+        "lastChangeTime": "2018-09-11 14/14/59",
+        "createImpalaTable": false
+      },
+      "extendParams":
+      {},
+      "index": false,
+      "primaryKey": false
+    },
+    {
+      "id": 195985,
+      "name": "app_name",
+      "tableName": null,
+      "datatype": "varchar",
+      "length": "100",
+      "isNull": "YES",
+      "nullRowCount": 0,
+      "defaultValue": "",
+      "foreignKey": false,
+      "comments": "应用名称",
+      "commentsFrom": "0",
+      "oldComments": null,
+      "isHistory": "1",
+      "isDeleted": "2",
+      "diyComments": "应用名称",
+      "accessSysObjInfoId": null,
+      "accessSysObjInfo":
+      {
+        "id": 10203122,
+        "name": "apply_info",
+        "owner": "test_pc_smp2",
+        "accessSys":
+        {
+          "id": 92465,
+          "name": "mysql_103_Copy_92465",
+          "accessSysType": null,
+          "accessSysWay": null,
+          "accessSysDialect":
+          {
+            "id": 10001,
+            "name": "mysql",
+            "accSysWay": null,
+            "accessSyses": []
+          },
+          "contactsPhone": null,
+          "contactsEmail": null,
+          "comments": null,
+          "verfication_code": null,
+          "accessSysAttributes": [],
+          "accessSysObjInfos": [],
+          "accessSysStatistics": [],
+          "extendParams":
+          {},
+          "accessSysDeptInfo": null,
+          "status": null,
+          "lastOperatingTime": null,
+          "createTime": null
+        },
+        "comments": "",
+        "diyComments": "",
+        "accessSysId": null,
+        "totalRows": "80",
+        "collectName": null,
+        "diyCommentsFrom": "0",
+        "isHistory": "1",
+        "isDeleted": "2",
+        "exitTask": false,
+        "exitDataSurvey": false,
+        "extendParams":
+        {},
+        "accessSysObjInfoStatistics": [],
+        "accessConnectorSource":
+        {},
+        "lastChangeTime": "2018-09-11 14/14/59",
+        "createImpalaTable": false
+      },
+      "extendParams":
+      {},
+      "index": false,
+      "primaryKey": false
+    },
+    {
+      "id": 195986,
+      "name": "apply_user",
+      "tableName": null,
+      "datatype": "varchar",
+      "length": "255",
+      "isNull": "YES",
+      "nullRowCount": 0,
+      "defaultValue": "",
+      "foreignKey": false,
+      "comments": "申请人",
+      "commentsFrom": "0",
+      "oldComments": null,
+      "isHistory": "1",
+      "isDeleted": "2",
+      "diyComments": "申请人",
+      "accessSysObjInfoId": null,
+      "accessSysObjInfo":
+      {
+        "id": 10203122,
+        "name": "apply_info",
+        "owner": "test_pc_smp2",
+        "accessSys":
+        {
+          "id": 92465,
+          "name": "mysql_103_Copy_92465",
+          "accessSysType": null,
+          "accessSysWay": null,
+          "accessSysDialect":
+          {
+            "id": 10001,
+            "name": "mysql",
+            "accSysWay": null,
+            "accessSyses": []
+          },
+          "contactsPhone": null,
+          "contactsEmail": null,
+          "comments": null,
+          "verfication_code": null,
+          "accessSysAttributes": [],
+          "accessSysObjInfos": [],
+          "accessSysStatistics": [],
+          "extendParams":
+          {},
+          "accessSysDeptInfo": null,
+          "status": null,
+          "lastOperatingTime": null,
+          "createTime": null
+        },
+        "comments": "",
+        "diyComments": "",
+        "accessSysId": null,
+        "totalRows": "80",
+        "collectName": null,
+        "diyCommentsFrom": "0",
+        "isHistory": "1",
+        "isDeleted": "2",
+        "exitTask": false,
+        "exitDataSurvey": false,
+        "extendParams":
+        {},
+        "accessSysObjInfoStatistics": [],
+        "accessConnectorSource":
+        {},
+        "lastChangeTime": "2018-09-11 14/14/59",
+        "createImpalaTable": false
+      },
+      "extendParams":
+      {},
+      "index": false,
+      "primaryKey": false
+    },
+    {
+      "id": 195987,
+      "name": "apply_time",
+      "tableName": null,
+      "datatype": "datetime",
+      "length": "0",
+      "isNull": "YES",
+      "nullRowCount": 0,
+      "defaultValue": "",
+      "foreignKey": false,
+      "comments": "申请时间",
+      "commentsFrom": "0",
+      "oldComments": null,
+      "isHistory": "1",
+      "isDeleted": "2",
+      "diyComments": "申请时间",
+      "accessSysObjInfoId": null,
+      "accessSysObjInfo":
+      {
+        "id": 10203122,
+        "name": "apply_info",
+        "owner": "test_pc_smp2",
+        "accessSys":
+        {
+          "id": 92465,
+          "name": "mysql_103_Copy_92465",
+          "accessSysType": null,
+          "accessSysWay": null,
+          "accessSysDialect":
+          {
+            "id": 10001,
+            "name": "mysql",
+            "accSysWay": null,
+            "accessSyses": []
+          },
+          "contactsPhone": null,
+          "contactsEmail": null,
+          "comments": null,
+          "verfication_code": null,
+          "accessSysAttributes": [],
+          "accessSysObjInfos": [],
+          "accessSysStatistics": [],
+          "extendParams":
+          {},
+          "accessSysDeptInfo": null,
+          "status": null,
+          "lastOperatingTime": null,
+          "createTime": null
+        },
+        "comments": "",
+        "diyComments": "",
+        "accessSysId": null,
+        "totalRows": "80",
+        "collectName": null,
+        "diyCommentsFrom": "0",
+        "isHistory": "1",
+        "isDeleted": "2",
+        "exitTask": false,
+        "exitDataSurvey": false,
+        "extendParams":
+        {},
+        "accessSysObjInfoStatistics": [],
+        "accessConnectorSource":
+        {},
+        "lastChangeTime": "2018-09-11 14/14/59",
+        "createImpalaTable": false
+      },
+      "extendParams":
+      {},
+      "index": false,
+      "primaryKey": false
+    },
+    {
+      "id": 195988,
+      "name": "reason",
+      "tableName": null,
+      "datatype": "varchar",
+      "length": "1000",
+      "isNull": "YES",
+      "nullRowCount": 0,
+      "defaultValue": "",
+      "foreignKey": false,
+      "comments": "申请理由",
+      "commentsFrom": "0",
+      "oldComments": null,
+      "isHistory": "1",
+      "isDeleted": "2",
+      "diyComments": "申请理由",
+      "accessSysObjInfoId": null,
+      "accessSysObjInfo":
+      {
+        "id": 10203122,
+        "name": "apply_info",
+        "owner": "test_pc_smp2",
+        "accessSys":
+        {
+          "id": 92465,
+          "name": "mysql_103_Copy_92465",
+          "accessSysType": null,
+          "accessSysWay": null,
+          "accessSysDialect":
+          {
+            "id": 10001,
+            "name": "mysql",
+            "accSysWay": null,
+            "accessSyses": []
+          },
+          "contactsPhone": null,
+          "contactsEmail": null,
+          "comments": null,
+          "verfication_code": null,
+          "accessSysAttributes": [],
+          "accessSysObjInfos": [],
+          "accessSysStatistics": [],
+          "extendParams":
+          {},
+          "accessSysDeptInfo": null,
+          "status": null,
+          "lastOperatingTime": null,
+          "createTime": null
+        },
+        "comments": "",
+        "diyComments": "",
+        "accessSysId": null,
+        "totalRows": "80",
+        "collectName": null,
+        "diyCommentsFrom": "0",
+        "isHistory": "1",
+        "isDeleted": "2",
+        "exitTask": false,
+        "exitDataSurvey": false,
+        "extendParams":
+        {},
+        "accessSysObjInfoStatistics": [],
+        "accessConnectorSource":
+        {},
+        "lastChangeTime": "2018-09-11 14/14/59",
+        "createImpalaTable": false
+      },
+      "extendParams":
+      {},
+      "index": false,
+      "primaryKey": false
+    },
+    {
+      "id": 195989,
+      "name": "status",
+      "tableName": null,
+      "datatype": "int",
+      "length": "2",
+      "isNull": "YES",
+      "nullRowCount": 0,
+      "defaultValue": "",
+      "foreignKey": false,
+      "comments": "申请状态 （0 待审核  1已生效 2已驳回 3已失效）",
+      "commentsFrom": "0",
+      "oldComments": null,
+      "isHistory": "1",
+      "isDeleted": "2",
+      "diyComments": "申请状态 （0 待审核  1已生效 2已驳回 3已失效）",
+      "accessSysObjInfoId": null,
+      "accessSysObjInfo":
+      {
+        "id": 10203122,
+        "name": "apply_info",
+        "owner": "test_pc_smp2",
+        "accessSys":
+        {
+          "id": 92465,
+          "name": "mysql_103_Copy_92465",
+          "accessSysType": null,
+          "accessSysWay": null,
+          "accessSysDialect":
+          {
+            "id": 10001,
+            "name": "mysql",
+            "accSysWay": null,
+            "accessSyses": []
+          },
+          "contactsPhone": null,
+          "contactsEmail": null,
+          "comments": null,
+          "verfication_code": null,
+          "accessSysAttributes": [],
+          "accessSysObjInfos": [],
+          "accessSysStatistics": [],
+          "extendParams":
+          {},
+          "accessSysDeptInfo": null,
+          "status": null,
+          "lastOperatingTime": null,
+          "createTime": null
+        },
+        "comments": "",
+        "diyComments": "",
+        "accessSysId": null,
+        "totalRows": "80",
+        "collectName": null,
+        "diyCommentsFrom": "0",
+        "isHistory": "1",
+        "isDeleted": "2",
+        "exitTask": false,
+        "exitDataSurvey": false,
+        "extendParams":
+        {},
+        "accessSysObjInfoStatistics": [],
+        "accessConnectorSource":
+        {},
+        "lastChangeTime": "2018-09-11 14/14/59",
+        "createImpalaTable": false
+      },
+      "extendParams":
+      {},
+      "index": false,
+      "primaryKey": false
+    },
+    {
+      "id": 195990,
+      "name": "token",
+      "tableName": null,
+      "datatype": "varchar",
+      "length": "255",
+      "isNull": "YES",
+      "nullRowCount": 0,
+      "defaultValue": "",
+      "foreignKey": false,
+      "comments": "授权码",
+      "commentsFrom": "0",
+      "oldComments": null,
+      "isHistory": "1",
+      "isDeleted": "2",
+      "diyComments": "授权码",
+      "accessSysObjInfoId": null,
+      "accessSysObjInfo":
+      {
+        "id": 10203122,
+        "name": "apply_info",
+        "owner": "test_pc_smp2",
+        "accessSys":
+        {
+          "id": 92465,
+          "name": "mysql_103_Copy_92465",
+          "accessSysType": null,
+          "accessSysWay": null,
+          "accessSysDialect":
+          {
+            "id": 10001,
+            "name": "mysql",
+            "accSysWay": null,
+            "accessSyses": []
+          },
+          "contactsPhone": null,
+          "contactsEmail": null,
+          "comments": null,
+          "verfication_code": null,
+          "accessSysAttributes": [],
+          "accessSysObjInfos": [],
+          "accessSysStatistics": [],
+          "extendParams":
+          {},
+          "accessSysDeptInfo": null,
+          "status": null,
+          "lastOperatingTime": null,
+          "createTime": null
+        },
+        "comments": "",
+        "diyComments": "",
+        "accessSysId": null,
+        "totalRows": "80",
+        "collectName": null,
+        "diyCommentsFrom": "0",
+        "isHistory": "1",
+        "isDeleted": "2",
+        "exitTask": false,
+        "exitDataSurvey": false,
+        "extendParams":
+        {},
+        "accessSysObjInfoStatistics": [],
+        "accessConnectorSource":
+        {},
+        "lastChangeTime": "2018-09-11 14/14/59",
+        "createImpalaTable": false
+      },
+      "extendParams":
+      {},
+      "index": false,
+      "primaryKey": false
+    },
+    {
+      "id": 195991,
+      "name": "start_time",
+      "tableName": null,
+      "datatype": "datetime",
+      "length": "0",
+      "isNull": "YES",
+      "nullRowCount": 0,
+      "defaultValue": "",
+      "foreignKey": false,
+      "comments": "服务时效开始时间",
+      "commentsFrom": "0",
+      "oldComments": null,
+      "isHistory": "1",
+      "isDeleted": "2",
+      "diyComments": "服务时效开始时间",
+      "accessSysObjInfoId": null,
+      "accessSysObjInfo":
+      {
+        "id": 10203122,
+        "name": "apply_info",
+        "owner": "test_pc_smp2",
+        "accessSys":
+        {
+          "id": 92465,
+          "name": "mysql_103_Copy_92465",
+          "accessSysType": null,
+          "accessSysWay": null,
+          "accessSysDialect":
+          {
+            "id": 10001,
+            "name": "mysql",
+            "accSysWay": null,
+            "accessSyses": []
+          },
+          "contactsPhone": null,
+          "contactsEmail": null,
+          "comments": null,
+          "verfication_code": null,
+          "accessSysAttributes": [],
+          "accessSysObjInfos": [],
+          "accessSysStatistics": [],
+          "extendParams":
+          {},
+          "accessSysDeptInfo": null,
+          "status": null,
+          "lastOperatingTime": null,
+          "createTime": null
+        },
+        "comments": "",
+        "diyComments": "",
+        "accessSysId": null,
+        "totalRows": "80",
+        "collectName": null,
+        "diyCommentsFrom": "0",
+        "isHistory": "1",
+        "isDeleted": "2",
+        "exitTask": false,
+        "exitDataSurvey": false,
+        "extendParams":
+        {},
+        "accessSysObjInfoStatistics": [],
+        "accessConnectorSource":
+        {},
+        "lastChangeTime": "2018-09-11 14/14/59",
+        "createImpalaTable": false
+      },
+      "extendParams":
+      {},
+      "index": false,
+      "primaryKey": false
+    },
+    {
+      "id": 195992,
+      "name": "end_time",
+      "tableName": null,
+      "datatype": "datetime",
+      "length": "0",
+      "isNull": "YES",
+      "nullRowCount": 0,
+      "defaultValue": "",
+      "foreignKey": false,
+      "comments": "服务时效结束时间",
+      "commentsFrom": "0",
+      "oldComments": null,
+      "isHistory": "1",
+      "isDeleted": "2",
+      "diyComments": "服务时效结束时间",
+      "accessSysObjInfoId": null,
+      "accessSysObjInfo":
+      {
+        "id": 10203122,
+        "name": "apply_info",
+        "owner": "test_pc_smp2",
+        "accessSys":
+        {
+          "id": 92465,
+          "name": "mysql_103_Copy_92465",
+          "accessSysType": null,
+          "accessSysWay": null,
+          "accessSysDialect":
+          {
+            "id": 10001,
+            "name": "mysql",
+            "accSysWay": null,
+            "accessSyses": []
+          },
+          "contactsPhone": null,
+          "contactsEmail": null,
+          "comments": null,
+          "verfication_code": null,
+          "accessSysAttributes": [],
+          "accessSysObjInfos": [],
+          "accessSysStatistics": [],
+          "extendParams":
+          {},
+          "accessSysDeptInfo": null,
+          "status": null,
+          "lastOperatingTime": null,
+          "createTime": null
+        },
+        "comments": "",
+        "diyComments": "",
+        "accessSysId": null,
+        "totalRows": "80",
+        "collectName": null,
+        "diyCommentsFrom": "0",
+        "isHistory": "1",
+        "isDeleted": "2",
+        "exitTask": false,
+        "exitDataSurvey": false,
+        "extendParams":
+        {},
+        "accessSysObjInfoStatistics": [],
+        "accessConnectorSource":
+        {},
+        "lastChangeTime": "2018-09-11 14/14/59",
+        "createImpalaTable": false
+      },
+      "extendParams":
+      {},
+      "index": false,
+      "primaryKey": false
+    },
+    {
+      "id": 195993,
+      "name": "frequency",
+      "tableName": null,
+      "datatype": "int",
+      "length": "50",
+      "isNull": "YES",
+      "nullRowCount": 0,
+      "defaultValue": "",
+      "foreignKey": false,
+      "comments": "次数限制（为空代表不限制次数）",
+      "commentsFrom": "0",
+      "oldComments": null,
+      "isHistory": "1",
+      "isDeleted": "2",
+      "diyComments": "次数限制（为空代表不限制次数）",
+      "accessSysObjInfoId": null,
+      "accessSysObjInfo":
+      {
+        "id": 10203122,
+        "name": "apply_info",
+        "owner": "test_pc_smp2",
+        "accessSys":
+        {
+          "id": 92465,
+          "name": "mysql_103_Copy_92465",
+          "accessSysType": null,
+          "accessSysWay": null,
+          "accessSysDialect":
+          {
+            "id": 10001,
+            "name": "mysql",
+            "accSysWay": null,
+            "accessSyses": []
+          },
+          "contactsPhone": null,
+          "contactsEmail": null,
+          "comments": null,
+          "verfication_code": null,
+          "accessSysAttributes": [],
+          "accessSysObjInfos": [],
+          "accessSysStatistics": [],
+          "extendParams":
+          {},
+          "accessSysDeptInfo": null,
+          "status": null,
+          "lastOperatingTime": null,
+          "createTime": null
+        },
+        "comments": "",
+        "diyComments": "",
+        "accessSysId": null,
+        "totalRows": "80",
+        "collectName": null,
+        "diyCommentsFrom": "0",
+        "isHistory": "1",
+        "isDeleted": "2",
+        "exitTask": false,
+        "exitDataSurvey": false,
+        "extendParams":
+        {},
+        "accessSysObjInfoStatistics": [],
+        "accessConnectorSource":
+        {},
+        "lastChangeTime": "2018-09-11 14/14/59",
+        "createImpalaTable": false
+      },
+      "extendParams":
+      {},
+      "index": false,
+      "primaryKey": false
+    },
+    {
+      "id": 195994,
+      "name": "auditor",
+      "tableName": null,
+      "datatype": "varchar",
+      "length": "255",
+      "isNull": "YES",
+      "nullRowCount": 0,
+      "defaultValue": "",
+      "foreignKey": false,
+      "comments": "审核人",
+      "commentsFrom": "0",
+      "oldComments": null,
+      "isHistory": "1",
+      "isDeleted": "2",
+      "diyComments": "审核人",
+      "accessSysObjInfoId": null,
+      "accessSysObjInfo":
+      {
+        "id": 10203122,
+        "name": "apply_info",
+        "owner": "test_pc_smp2",
+        "accessSys":
+        {
+          "id": 92465,
+          "name": "mysql_103_Copy_92465",
+          "accessSysType": null,
+          "accessSysWay": null,
+          "accessSysDialect":
+          {
+            "id": 10001,
+            "name": "mysql",
+            "accSysWay": null,
+            "accessSyses": []
+          },
+          "contactsPhone": null,
+          "contactsEmail": null,
+          "comments": null,
+          "verfication_code": null,
+          "accessSysAttributes": [],
+          "accessSysObjInfos": [],
+          "accessSysStatistics": [],
+          "extendParams":
+          {},
+          "accessSysDeptInfo": null,
+          "status": null,
+          "lastOperatingTime": null,
+          "createTime": null
+        },
+        "comments": "",
+        "diyComments": "",
+        "accessSysId": null,
+        "totalRows": "80",
+        "collectName": null,
+        "diyCommentsFrom": "0",
+        "isHistory": "1",
+        "isDeleted": "2",
+        "exitTask": false,
+        "exitDataSurvey": false,
+        "extendParams":
+        {},
+        "accessSysObjInfoStatistics": [],
+        "accessConnectorSource":
+        {},
+        "lastChangeTime": "2018-09-11 14/14/59",
+        "createImpalaTable": false
+      },
+      "extendParams":
+      {},
+      "index": false,
+      "primaryKey": false
+    },
+    {
+      "id": 195995,
+      "name": "audit_opinion",
+      "tableName": null,
+      "datatype": "varchar",
+      "length": "255",
+      "isNull": "YES",
+      "nullRowCount": 0,
+      "defaultValue": "",
+      "foreignKey": false,
+      "comments": "审核意见",
+      "commentsFrom": "0",
+      "oldComments": null,
+      "isHistory": "1",
+      "isDeleted": "2",
+      "diyComments": "审核意见",
+      "accessSysObjInfoId": null,
+      "accessSysObjInfo":
+      {
+        "id": 10203122,
+        "name": "apply_info",
+        "owner": "test_pc_smp2",
+        "accessSys":
+        {
+          "id": 92465,
+          "name": "mysql_103_Copy_92465",
+          "accessSysType": null,
+          "accessSysWay": null,
+          "accessSysDialect":
+          {
+            "id": 10001,
+            "name": "mysql",
+            "accSysWay": null,
+            "accessSyses": []
+          },
+          "contactsPhone": null,
+          "contactsEmail": null,
+          "comments": null,
+          "verfication_code": null,
+          "accessSysAttributes": [],
+          "accessSysObjInfos": [],
+          "accessSysStatistics": [],
+          "extendParams":
+          {},
+          "accessSysDeptInfo": null,
+          "status": null,
+          "lastOperatingTime": null,
+          "createTime": null
+        },
+        "comments": "",
+        "diyComments": "",
+        "accessSysId": null,
+        "totalRows": "80",
+        "collectName": null,
+        "diyCommentsFrom": "0",
+        "isHistory": "1",
+        "isDeleted": "2",
+        "exitTask": false,
+        "exitDataSurvey": false,
+        "extendParams":
+        {},
+        "accessSysObjInfoStatistics": [],
+        "accessConnectorSource":
+        {},
+        "lastChangeTime": "2018-09-11 14/14/59",
+        "createImpalaTable": false
+      },
+      "extendParams":
+      {},
+      "index": false,
+      "primaryKey": false
+    },
+    {
+      "id": 195996,
+      "name": "audit_time",
+      "tableName": null,
+      "datatype": "datetime",
+      "length": "0",
+      "isNull": "YES",
+      "nullRowCount": 0,
+      "defaultValue": "",
+      "foreignKey": false,
+      "comments": "审核时间",
+      "commentsFrom": "0",
+      "oldComments": null,
+      "isHistory": "1",
+      "isDeleted": "2",
+      "diyComments": "审核时间",
+      "accessSysObjInfoId": null,
+      "accessSysObjInfo":
+      {
+        "id": 10203122,
+        "name": "apply_info",
+        "owner": "test_pc_smp2",
+        "accessSys":
+        {
+          "id": 92465,
+          "name": "mysql_103_Copy_92465",
+          "accessSysType": null,
+          "accessSysWay": null,
+          "accessSysDialect":
+          {
+            "id": 10001,
+            "name": "mysql",
+            "accSysWay": null,
+            "accessSyses": []
+          },
+          "contactsPhone": null,
+          "contactsEmail": null,
+          "comments": null,
+          "verfication_code": null,
+          "accessSysAttributes": [],
+          "accessSysObjInfos": [],
+          "accessSysStatistics": [],
+          "extendParams":
+          {},
+          "accessSysDeptInfo": null,
+          "status": null,
+          "lastOperatingTime": null,
+          "createTime": null
+        },
+        "comments": "",
+        "diyComments": "",
+        "accessSysId": null,
+        "totalRows": "80",
+        "collectName": null,
+        "diyCommentsFrom": "0",
+        "isHistory": "1",
+        "isDeleted": "2",
+        "exitTask": false,
+        "exitDataSurvey": false,
+        "extendParams":
+        {},
+        "accessSysObjInfoStatistics": [],
+        "accessConnectorSource":
+        {},
+        "lastChangeTime": "2018-09-11 14/14/59",
+        "createImpalaTable": false
+      },
+      "extendParams":
+      {},
+      "index": false,
+      "primaryKey": false
+    },
+    {
+      "id": 195997,
+      "name": "disable",
+      "tableName": null,
+      "datatype": "varchar",
+      "length": "1000",
+      "isNull": "YES",
+      "nullRowCount": 0,
+      "defaultValue": "",
+      "foreignKey": false,
+      "comments": "失效原因",
+      "commentsFrom": "0",
+      "oldComments": null,
+      "isHistory": "1",
+      "isDeleted": "2",
+      "diyComments": "失效原因",
+      "accessSysObjInfoId": null,
+      "accessSysObjInfo":
+      {
+        "id": 10203122,
+        "name": "apply_info",
+        "owner": "test_pc_smp2",
+        "accessSys":
+        {
+          "id": 92465,
+          "name": "mysql_103_Copy_92465",
+          "accessSysType": null,
+          "accessSysWay": null,
+          "accessSysDialect":
+          {
+            "id": 10001,
+            "name": "mysql",
+            "accSysWay": null,
+            "accessSyses": []
+          },
+          "contactsPhone": null,
+          "contactsEmail": null,
+          "comments": null,
+          "verfication_code": null,
+          "accessSysAttributes": [],
+          "accessSysObjInfos": [],
+          "accessSysStatistics": [],
+          "extendParams":
+          {},
+          "accessSysDeptInfo": null,
+          "status": null,
+          "lastOperatingTime": null,
+          "createTime": null
+        },
+        "comments": "",
+        "diyComments": "",
+        "accessSysId": null,
+        "totalRows": "80",
+        "collectName": null,
+        "diyCommentsFrom": "0",
+        "isHistory": "1",
+        "isDeleted": "2",
+        "exitTask": false,
+        "exitDataSurvey": false,
+        "extendParams":
+        {},
+        "accessSysObjInfoStatistics": [],
+        "accessConnectorSource":
+        {},
+        "lastChangeTime": "2018-09-11 14/14/59",
+        "createImpalaTable": false
+      },
+      "extendParams":
+      {},
+      "index": false,
+      "primaryKey": false
+    },
+    {
+      "id": 195998,
+      "name": "reject",
+      "tableName": null,
+      "datatype": "varchar",
+      "length": "2000",
+      "isNull": "YES",
+      "nullRowCount": 0,
+      "defaultValue": "",
+      "foreignKey": false,
+      "comments": "驳回理由",
+      "commentsFrom": "0",
+      "oldComments": null,
+      "isHistory": "1",
+      "isDeleted": "2",
+      "diyComments": "驳回理由",
+      "accessSysObjInfoId": null,
+      "accessSysObjInfo":
+      {
+        "id": 10203122,
+        "name": "apply_info",
+        "owner": "test_pc_smp2",
+        "accessSys":
+        {
+          "id": 92465,
+          "name": "mysql_103_Copy_92465",
+          "accessSysType": null,
+          "accessSysWay": null,
+          "accessSysDialect":
+          {
+            "id": 10001,
+            "name": "mysql",
+            "accSysWay": null,
+            "accessSyses": []
+          },
+          "contactsPhone": null,
+          "contactsEmail": null,
+          "comments": null,
+          "verfication_code": null,
+          "accessSysAttributes": [],
+          "accessSysObjInfos": [],
+          "accessSysStatistics": [],
+          "extendParams":
+          {},
+          "accessSysDeptInfo": null,
+          "status": null,
+          "lastOperatingTime": null,
+          "createTime": null
+        },
+        "comments": "",
+        "diyComments": "",
+        "accessSysId": null,
+        "totalRows": "80",
+        "collectName": null,
+        "diyCommentsFrom": "0",
+        "isHistory": "1",
+        "isDeleted": "2",
+        "exitTask": false,
+        "exitDataSurvey": false,
+        "extendParams":
+        {},
+        "accessSysObjInfoStatistics": [],
+        "accessConnectorSource":
+        {},
+        "lastChangeTime": "2018-09-11 14/14/59",
+        "createImpalaTable": false
+      },
+      "extendParams":
+      {},
+      "index": false,
+      "primaryKey": false
+    },
+    {
+      "id": 195999,
+      "name": "app_id",
+      "tableName": null,
+      "datatype": "int",
+      "length": "255",
+      "isNull": "YES",
+      "nullRowCount": 0,
+      "defaultValue": "",
+      "foreignKey": false,
+      "comments": "应用id",
+      "commentsFrom": "0",
+      "oldComments": null,
+      "isHistory": "1",
+      "isDeleted": "2",
+      "diyComments": "应用id",
+      "accessSysObjInfoId": null,
+      "accessSysObjInfo":
+      {
+        "id": 10203122,
+        "name": "apply_info",
+        "owner": "test_pc_smp2",
+        "accessSys":
+        {
+          "id": 92465,
+          "name": "mysql_103_Copy_92465",
+          "accessSysType": null,
+          "accessSysWay": null,
+          "accessSysDialect":
+          {
+            "id": 10001,
+            "name": "mysql",
+            "accSysWay": null,
+            "accessSyses": []
+          },
+          "contactsPhone": null,
+          "contactsEmail": null,
+          "comments": null,
+          "verfication_code": null,
+          "accessSysAttributes": [],
+          "accessSysObjInfos": [],
+          "accessSysStatistics": [],
+          "extendParams":
+          {},
+          "accessSysDeptInfo": null,
+          "status": null,
+          "lastOperatingTime": null,
+          "createTime": null
+        },
+        "comments": "",
+        "diyComments": "",
+        "accessSysId": null,
+        "totalRows": "80",
+        "collectName": null,
+        "diyCommentsFrom": "0",
+        "isHistory": "1",
+        "isDeleted": "2",
+        "exitTask": false,
+        "exitDataSurvey": false,
+        "extendParams":
+        {},
+        "accessSysObjInfoStatistics": [],
+        "accessConnectorSource":
+        {},
+        "lastChangeTime": "2018-09-11 14/14/59",
+        "createImpalaTable": false
+      },
+      "extendParams":
+      {},
+      "index": false,
+      "primaryKey": false
+    },
+    {
+      "id": 196000,
+      "name": "count",
+      "tableName": null,
+      "datatype": "int",
+      "length": "255",
+      "isNull": "YES",
+      "nullRowCount": 0,
+      "defaultValue": "0",
+      "foreignKey": false,
+      "comments": "统计应用访问接口的次数",
+      "commentsFrom": "0",
+      "oldComments": null,
+      "isHistory": "1",
+      "isDeleted": "2",
+      "diyComments": "统计应用访问接口的次数",
+      "accessSysObjInfoId": null,
+      "accessSysObjInfo":
+      {
+        "id": 10203122,
+        "name": "apply_info",
+        "owner": "test_pc_smp2",
+        "accessSys":
+        {
+          "id": 92465,
+          "name": "mysql_103_Copy_92465",
+          "accessSysType": null,
+          "accessSysWay": null,
+          "accessSysDialect":
+          {
+            "id": 10001,
+            "name": "mysql",
+            "accSysWay": null,
+            "accessSyses": []
+          },
+          "contactsPhone": null,
+          "contactsEmail": null,
+          "comments": null,
+          "verfication_code": null,
+          "accessSysAttributes": [],
+          "accessSysObjInfos": [],
+          "accessSysStatistics": [],
+          "extendParams":
+          {},
+          "accessSysDeptInfo": null,
+          "status": null,
+          "lastOperatingTime": null,
+          "createTime": null
+        },
+        "comments": "",
+        "diyComments": "",
+        "accessSysId": null,
+        "totalRows": "80",
+        "collectName": null,
+        "diyCommentsFrom": "0",
+        "isHistory": "1",
+        "isDeleted": "2",
+        "exitTask": false,
+        "exitDataSurvey": false,
+        "extendParams":
+        {},
+        "accessSysObjInfoStatistics": [],
+        "accessConnectorSource":
+        {},
+        "lastChangeTime": "2018-09-11 14/14/59",
+        "createImpalaTable": false
+      },
+      "extendParams":
+      {},
+      "index": false,
+      "primaryKey": false
+    },
+    {
+      "id": 196001,
+      "name": "login_id",
+      "tableName": null,
+      "datatype": "varchar",
+      "length": "255",
+      "isNull": "YES",
+      "nullRowCount": 0,
+      "defaultValue": "",
+      "foreignKey": false,
+      "comments": "登录名",
+      "commentsFrom": "0",
+      "oldComments": null,
+      "isHistory": "1",
+      "isDeleted": "2",
+      "diyComments": "登录名",
+      "accessSysObjInfoId": null,
+      "accessSysObjInfo":
+      {
+        "id": 10203122,
+        "name": "apply_info",
+        "owner": "test_pc_smp2",
+        "accessSys":
+        {
+          "id": 92465,
+          "name": "mysql_103_Copy_92465",
+          "accessSysType": null,
+          "accessSysWay": null,
+          "accessSysDialect":
+          {
+            "id": 10001,
+            "name": "mysql",
+            "accSysWay": null,
+            "accessSyses": []
+          },
+          "contactsPhone": null,
+          "contactsEmail": null,
+          "comments": null,
+          "verfication_code": null,
+          "accessSysAttributes": [],
+          "accessSysObjInfos": [],
+          "accessSysStatistics": [],
+          "extendParams":
+          {},
+          "accessSysDeptInfo": null,
+          "status": null,
+          "lastOperatingTime": null,
+          "createTime": null
+        },
+        "comments": "",
+        "diyComments": "",
+        "accessSysId": null,
+        "totalRows": "80",
+        "collectName": null,
+        "diyCommentsFrom": "0",
+        "isHistory": "1",
+        "isDeleted": "2",
+        "exitTask": false,
+        "exitDataSurvey": false,
+        "extendParams":
+        {},
+        "accessSysObjInfoStatistics": [],
+        "accessConnectorSource":
+        {},
+        "lastChangeTime": "2018-09-11 14/14/59",
+        "createImpalaTable": false
+      },
+      "extendParams":
+      {},
+      "index": false,
+      "primaryKey": false
+    },
+    {
+      "id": 196002,
+      "name": "login_name",
+      "tableName": null,
+      "datatype": "varchar",
+      "length": "255",
+      "isNull": "YES",
+      "nullRowCount": 0,
+      "defaultValue": "",
+      "foreignKey": false,
+      "comments": "中文名",
+      "commentsFrom": "0",
+      "oldComments": null,
+      "isHistory": "1",
+      "isDeleted": "2",
+      "diyComments": "中文名",
+      "accessSysObjInfoId": null,
+      "accessSysObjInfo":
+      {
+        "id": 10203122,
+        "name": "apply_info",
+        "owner": "test_pc_smp2",
+        "accessSys":
+        {
+          "id": 92465,
+          "name": "mysql_103_Copy_92465",
+          "accessSysType": null,
+          "accessSysWay": null,
+          "accessSysDialect":
+          {
+            "id": 10001,
+            "name": "mysql",
+            "accSysWay": null,
+            "accessSyses": []
+          },
+          "contactsPhone": null,
+          "contactsEmail": null,
+          "comments": null,
+          "verfication_code": null,
+          "accessSysAttributes": [],
+          "accessSysObjInfos": [],
+          "accessSysStatistics": [],
+          "extendParams":
+          {},
+          "accessSysDeptInfo": null,
+          "status": null,
+          "lastOperatingTime": null,
+          "createTime": null
+        },
+        "comments": "",
+        "diyComments": "",
+        "accessSysId": null,
+        "totalRows": "80",
+        "collectName": null,
+        "diyCommentsFrom": "0",
+        "isHistory": "1",
+        "isDeleted": "2",
+        "exitTask": false,
+        "exitDataSurvey": false,
+        "extendParams":
+        {},
+        "accessSysObjInfoStatistics": [],
+        "accessConnectorSource":
+        {},
+        "lastChangeTime": "2018-09-11 14/14/59",
+        "createImpalaTable": false
+      },
+      "extendParams":
+      {},
+      "index": false,
+      "primaryKey": false
+    }],
+    "firstPage": 1,
+    "prePage": 1,
+    "nextPage": 1,
+    "lastPage": 1,
+    "isFirstPage": true,
+    "isLastPage": true,
+    "hasPreviousPage": false,
+    "hasNextPage": false,
+    "navigatePages": 0,
+    "navigatepageNums": [1]
+  },
+  "message": ""
+}
