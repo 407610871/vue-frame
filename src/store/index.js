@@ -15,23 +15,41 @@ const store = new Vuex.Store({
     accessSourceType:[],
     accessDataSource:[],
     exchangePlatform:[],
-    breadcrumb:[]
+    pageSize:20
   },
   mutations: {
     setMainTableData (state,obj) {
       state.mainTableData = obj.data;
     },
     setAccessSourceType(state,obj){
-      state.accessSourceType = obj.data;
+      var list = [];
+      for(var value of obj.data){
+        list.push({
+          id:value.id,
+          name:value.name
+        });
+      }
+      state.accessSourceType = list;
     },
     setAccessDataSource(state,obj){
-      state.accessDataSource = obj.data;
+      var list = [];
+      for(var value of obj.data){
+        list.push({
+          id:value.static_CODE,
+          name:value.static_NAME
+        });
+      }
+      state.accessDataSource = list;
     },
     setExchangePlatform(state,obj){
-      state.exchangePlatform = obj.data;
-    },
-    setBreadcrumb(state,obj){
-      state.breadcrumb = obj.data;
+      var list = [];
+      for(var value of obj.data){
+        list.push({
+          id:value.static_CODE,
+          name:value.static_NAME
+        });
+      }
+      state.exchangePlatform = list;
     }
   },
   modules: {

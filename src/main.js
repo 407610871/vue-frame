@@ -52,5 +52,32 @@ new Vue({
   render: h => h(App),
   data:{
     eventHub:new Vue()
+  },
+  mounted(){
+    var _self = this;
+    this.$ajax.get('./getAccessSourceType').then(function(res){
+      _self.$store.commit('setAccessSourceType', {
+        data:res.data
+      });
+    })
+    .catch(function(err){
+      console.log(err)
+    });
+    this.$ajax.get('./getAccessDataSource').then(function(res){
+      _self.$store.commit('setAccessDataSource', {
+        data:res.data.staticDatas.SJLY
+      });
+    })
+    .catch(function(err){
+      console.log(err)
+    });
+    this.$ajax.get('./getExchangePlatform').then(function(res){
+      _self.$store.commit('setExchangePlatform', {
+        data:res.data.staticDatas.SSJZ
+      });
+    })
+    .catch(function(err){
+      console.log(err)
+    });
   }
 });

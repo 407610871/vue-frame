@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-container style="height:100%;" class="dashboard-container">
-      <el-header class="filter-container" height="200px">
+      <el-header class="filter-container" :height="headerHeight" >
         <div class="count-container">
           <div class="count-title">
             <label>数据元注册总数</label>
@@ -12,25 +12,9 @@
           <div class="line"></div>
           <dataCount v-bind:dataObj="count2Data" class="countData" />
         </div>
-        <el-button v-on:click="handleAdd" class="add-btn">add</el-button>
-        <el-form :model="formFilter" label-width="150px">
-          <el-form-item label="接入源类型：">
-            <el-checkbox-group v-model="formFilter.type" @change="search">
-              <el-checkbox v-for="item in accessSourceType" :label="item.id" :key="item.id">{{item.name}}</el-checkbox>
-            </el-checkbox-group>
-          </el-form-item>
-          <el-form-item label="接入数据来源：">
-            <el-checkbox-group v-model="formFilter.source">
-              <el-checkbox v-for="item in accessDataSource" :label="item.static_CODE" :key="item.static_CODE">{{item.static_NAME}}</el-checkbox>
-            </el-checkbox-group>
-          </el-form-item>
-          <el-form-item label="对接平台：">
-            <el-checkbox-group v-model="formFilter.platform">
-              <el-checkbox v-for="item in accessSourceType" :label="item.id" :key="item.id">{{item.name}}</el-checkbox>
-            </el-checkbox-group>
-          </el-form-item>
-        </el-form>
-        <!-- <el-button v-on:click="showAdd">add</el-button><el-button v-on:click="showEdit">edit</el-button> -->
+        <el-button v-on:click="handleAdd" class="right-btn">add</el-button>
+        <el-button v-on:click="collapseExpand" size="mini" class="right-btn"><i :class="{'el-icon-plus':collapse,'el-icon-minus':!collapse}"></i></el-button>
+        <formFliter v-if="queryParamReady" v-bind:formCollapse="collapse" v-bind:dataObj="formFilterData" @formFilter="changeFormFilter" />
       </el-header>
       <el-main style="padding-bottom:0;">
         <el-table
@@ -85,13 +69,13 @@
       </el-main>
       <el-footer>
         <div class="enc-pagination">
-          <el-pagination v-if="mainTableReady" style="float:right; margin:10px;"
-            @current-change="loadPage"
+          <el-pagination v-if="queryParamReady" style="float:right; margin:10px;"
+            @current-change="goPage"
             background
             :page-size="20"
             :total="mainTableDataTotal"
             layout="prev, pager, next, jumper"
-            :current-page.sync="mainTablePage">
+            :current-page.sync="currentPage">
           </el-pagination>
         </div>
       </el-footer>
@@ -114,28 +98,26 @@
 import { mapState} from 'vuex'
 import add1 from './../dialog/'
 import dataCount from './../../../components/dataCount'
+import formFliter from './../../../components/formFliter'
 
 
 export default {
   name: 'DashboardAdmin',
   data() {
     return {
-      tableHeight: window.innerHeight - 400,
-      mainTableReady:true,
+      queryParamReady:false,
+      currentPage:1,
       mainTableData: this.$store.state.mainTableData,
-      mainTablePage: this.$route.query.pageNum?parseInt(this.$route.query.pageNum):1,
       mainTableDataTotal: 0,
-      tableFliter:{},
       dialogVisible:false,
       myDialogRouter:'adminAdd',
       dialogTitle:'新增',
-      accessSourceType:[],
-      accessDataSource:[],
-      exchangePlatform:[],
-      formFilter:{
-        type: [],
-        source: [],
-        platform:[]
+      collapse:true,
+      tableParams:{
+        accessSourceType:'',
+        accessDataSource:'',
+        exchangePlatform:'',
+        pageNum:1
       },
       count1Data:{
         name:'批式接入统计',
@@ -167,76 +149,92 @@ export default {
       }
     }
   },
+  computed:{
+    tableHeight: function(){
+      return window.innerHeight - 430
+    },
+    headerHeight:function(){
+      return this.collapse?'160px':'230px';
+    },
+    formFilterData:function(){
+      var accessSourceType = this.tableParams.accessSourceType?this.tableParams.accessSourceType.split(','):[];
+      var accessDataSource = this.tableParams.accessDataSource?this.tableParams.accessDataSource.split(','):[];
+      var exchangePlatform = this.tableParams.exchangePlatform?this.tableParams.exchangePlatform.split(','):[];
+      for(var i=0;i<accessSourceType.length;i++){
+        accessSourceType[i] = parseInt(accessSourceType[i]);
+      }
+      var list = [{
+        name:"接入源类型：",
+        id:'accessSourceType',
+        checkData:this.$store.state.accessSourceType,
+        seledData:accessSourceType
+      },{
+        name:"接入数据来源：",
+        id:'accessDataSource',
+        checkData:this.$store.state.accessDataSource,
+        seledData:accessDataSource
+      },{
+        name:"对接平台：",
+        id:'exchangePlatform',
+        checkData:this.$store.state.exchangePlatform,
+        seledData:exchangePlatform
+      }];
+      return list;
+    }
+  },
   components: {
     add1,
-    dataCount
+    dataCount,
+    formFliter
   },
-  $route(){
+  watch: {
+  },
+  // created(){
+  //   this.getTableParam();
+  // },
+  // mounted(){
+  //   this.loadTable()
+  // },
+  activated(){
     this.getTableParam();
-  },
-  created(){
-    this.getTableParam();
-  },
-  mounted(){
-    var _self = this;
-
-    // setTimeout(function(){
-    //   _self.getTableParam();
-    // },2000)
-    this.$ajax.get('./list?pageNum=1&pageSize=20').then(function(res){
-      _self.mainTableData = res.data.page.list;
-      _self.$store.commit('setMainTableData', {
-        data:res.data.page.list
-      });
-      _self.mainTableDataTotal = res.data.page.total;
-      _self.mainTableReady = true;
-    })
-    .catch(function(err){
-      console.log(err)
-    });
-    this.$ajax.get('./getAccessSourceType').then(function(res){
-      _self.accessSourceType = res.data;
-      _self.$store.commit('setAccessSourceType', {
-        data:res.data
-      });
-    })
-    .catch(function(err){
-      console.log(err)
-    });
-    this.$ajax.get('./getAccessDataSource').then(function(res){
-      _self.accessDataSource = res.data.staticDatas.SJLY;
-      _self.$store.commit('setAccessDataSource', {
-        data:res.data.staticDatas.SJLY
-      });
-    })
-    .catch(function(err){
-      console.log(err)
-    });
-    this.$ajax.get('./getExchangePlatform').then(function(res){
-      _self.exchangePlatform = res.data;
-      _self.$store.commit('setExchangePlatform', {
-        data:res.data
-      });
-    })
-    .catch(function(err){
-      console.log(err)
-    });
   },
   methods:{
-    loadPage:function(val){
+    collapseExpand:function(){
+      this.collapse = !this.collapse;
+    },
+    loadTable:function(){
       var _self = this;
-      _self.mainTablePage = val;
-      this.$ajax.get('./list?pageNum=1&pageSize=20',this.tableFliter).then(function(res){
+      this.$ajax.get('./list',{
+        params:this.tableParams
+      }).then(function(res){
         _self.mainTableData = res.data.page.list;
-        // Vue.set(_self.$store.state,'mainTableData',res.data);
         _self.$store.commit('setMainTableData', {
           data:res.data.page.list
         });
         _self.mainTableDataTotal = res.data.page.total;
+        // setTimeout(function(){
+        //这里是异步的，存在延迟，所以没问题,如果是同步的话可能存在问题
+          _self.currentPage = _self.tableParams.pageNum;
+        // },100)
       })
       .catch(function(err){
         console.log(err)
       });
+    },
+    goPage:function(val){
+      var paramsObj = {
+        pageNum:val
+      };
+      if(this.tableParams.accessSourceType){
+        paramsObj.accessSourceType = this.tableParams.accessSourceType;
+      }
+      if(this.tableParams.accessDataSource){
+        paramsObj.accessDataSource = this.tableParams.accessDataSource;
+      }
+      if(this.tableParams.exchangePlatform){
+        paramsObj.exchangePlatform = this.tableParams.exchangePlatform;
+      }
+      this.$router.push({name:this.$route.name,query:paramsObj});
     },
     goSubPage:function(index){
       this.$router.push({path:'accessObjManage/'+this.mainTableData[index].id+'/'+encodeURI(this.mainTableData[index].name)});
@@ -276,13 +274,27 @@ export default {
       });
     },
     search:function(){
+      console.log('search')
       this.tableFliter.keywords = '';
       this.loadPage(1);
     },
     getTableParam:function(){
-      console.log(this.mainTablePage);
-      this.mainTablePage = this.$route.query.pageNum?parseInt(this.$route.query.pageNum):1;
-      console.log(this.mainTablePage);
+      this.tableParams.pageNum = this.$route.query.pageNum?parseInt(this.$route.query.pageNum):1;
+      this.tableParams.accessSourceType = this.$route.query.accessSourceType?this.$route.query.accessSourceType:'';
+      this.tableParams.accessDataSource = this.$route.query.accessDataSource?this.$route.query.accessDataSource:'';
+      this.tableParams.exchangePlatform = this.$route.query.exchangePlatform?this.$route.query.exchangePlatform:'';
+      this.loadTable();
+      this.queryParamReady = true;
+        // _self.$set(_self.$data, 'mainTablePage',_self.$route.query.pageNum?parseInt(_self.$route.query.pageNum):1);
+    },
+    changeFormFilter:function(fliterParams){
+      console.log(fliterParams);
+      for(var i in fliterParams){
+        // this.$set(this.$data, 'tableParams.'+i,fliterParams[i].join(','));
+        this.tableParams[i] = fliterParams[i].join(',');
+      }
+      console.log(this.tableParams);
+      this.goPage(this.currentPage);
     }
   }
 }
@@ -334,7 +346,7 @@ export default {
     .el-form-item{
       margin-bottom:2px;
     }
-    .add-btn{
+    .right-btn{
       float:right;
     }
   }

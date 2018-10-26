@@ -43,6 +43,16 @@ export const constantRouterMap = [
         }
       },
       {
+        path: "recyclingBins",
+        component: () => import("@/views/recyclingBins/index"),
+        name: "recyclingBins",
+        meta: {
+          title: "回收箱",
+          icon: "dashboard",
+          noCache: true
+        }
+      },
+      {
         path: "form",
         component: () => import("@/views/form/index"),
         name: "Dashboard",

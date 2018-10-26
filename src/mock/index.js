@@ -7,9 +7,11 @@ import accessObjType from "./../static/json/accessObjType.json";
 export default Mock;
 var mainTableData = data;
 function getTableData(options){
-  return mainTableData;
+  setTimeout(function(){
+    return mainTableData;
+  },10)
 }
-Mock.mock(/\/list\?pageNum=([\d]){1,}&pageSize=([\d]){1,}/,/get|post/i,mainTableData);
+Mock.mock(/\/list\?[a-z0-9A-Z=,]{0,}/,/get|post/i,mainTableData);
 
 Mock.mock(/\/getAccessSourceType/,/get|post/i,accessSourceType);
 

@@ -6,7 +6,16 @@
       </div>
       <nav-menu />
       <div class="right-menu">
-        <el-button class="user" type="primary" icon="enc-icon-user"></el-button>
+        <el-popover
+          placement="top-start"
+          width="200"
+          trigger="hover"
+          content="这是一段内容,这是一段内容,这是一段内容,这是一段内容。">
+            <ul class="popup-menu">
+              <li><router-link :to="{ name: 'recyclingBins' }">回收箱</router-link></li>
+            </ul>
+            <el-button slot="reference" class="user" type="primary" icon="enc-icon-user"></el-button>
+        </el-popover>
         <el-button class="setting" type="primary" icon="enc-icon-setting"></el-button>
         <el-button class="document" type="primary" icon="enc-icon-documents"></el-button>
       </div>
@@ -22,7 +31,7 @@
         </div>
         <div class="enc-sub-header">
           <el-breadcrumb separator="/">
-            <el-breadcrumb-item v-for="item in breadcrumb" :to="{ name: item.name, params:item.params}">{{item.breadcrumbName}}111</el-breadcrumb-item>
+            <el-breadcrumb-item v-for="item in breadcrumb" :to="{ name: item.name, params:item.params}">{{item.breadcrumbName}}</el-breadcrumb-item>
           </el-breadcrumb>
           <!-- <span v-for="item in breadcrumb"> / <a href="javascript:void(0)" v-on:click="goToPage(item.path)">{{item.name}}</a></span> -->
         </div>
@@ -68,24 +77,8 @@ export default {
     search:function(){
       this.$root.eventHub.$emit('search',this.keyword);
     },
-    goToPage:function(path){
-      var list = [];
-      for(var value of this.$store.state.breadcrumb){
-        list.push(value);
-        if(this.$route.path == value.path){
-          break;
-        }
-      }
-      this.$store.commit('setBreadcrumb',{
-        data:list
-      });
-      this.$set(this.breadcrumb,list);
-
-      this.$router.push({path:path});
-    },
     getBreadcrumb(){
       var routeName = this.$route.name;
-      var list = [];
       if(routeName =='dashboard' || routeName == 'accessObjManage' || routeName == 'accessObjInfo'){
         this.breadcrumb = [
           {
@@ -116,6 +109,17 @@ export default {
             }
           });
         }
+      }else{
+        var list = [];
+        this.$route.matched.forEach((item, index) => {
+          if(item.path!=''){
+            list.push({
+              name:this.$route.name,
+              breadcrumbName:this.$route.meta.title,
+            })
+          }
+        });
+        this.$set(this.$data, 'breadcrumb',list);
       }
       //end of getBreadcrumb
     }
@@ -156,7 +160,6 @@ export default {
     .right-menu {
       float: right;
       height: 100%;
-
       .el-button {
         width: 88px;
         height: 100%;
@@ -244,7 +247,22 @@ export default {
       }
     }
   }
-
+  .popup-menu{
+    margin:0;
+    padding:0;
+    li{
+      list-style: none;
+      a{
+        display: block;
+        width:100%;
+        height: 100%;
+      }
+      a:hover,
+      a:active{
+        color:#069;
+      }
+    }
+  }
 </style>
 <style rel="stylesheet/scss" lang="scss">
 .enc-header {
