@@ -326,6 +326,7 @@ export default {
       }
     }
     form {
+      padding-top:0;
       margin-right: 100px;
     }
     .el-form-item {
