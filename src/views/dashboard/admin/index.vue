@@ -134,7 +134,7 @@ export default {
   },
   computed:{
     tableHeight: function(){
-      return window.innerHeight - 430
+      return this.collapse?window.innerHeight - 360:window.innerHeight - 430;
     },
     headerHeight:function(){
       return this.collapse?'160px':'230px';
