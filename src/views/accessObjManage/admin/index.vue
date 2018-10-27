@@ -1,31 +1,16 @@
 <template>
   <div>
     <el-container style="height:100%;" class="dashboard-container">
-      <el-header class="filter-container" height="90px">
-        <el-button v-on:click="updataSource" class="add-btn" style="margin-left:10px;">接入源更新</el-button>
-        <!--  <el-button v-on:click="showAdd" class="add-btn">验核报告</el-button> -->
-          <table-inver></table-inver>
-          <set-task></set-task>
-       <!--  <el-button v-on:click="showAdd" class="add-btn">批量采集</el-button> -->
-        <el-form :model="formFilter" label-width="150px">
-          <el-form-item label="接入对象类型">
-            <el-checkbox-group v-model="formFilter.type">
-              <el-checkbox label="table" value="table">表</el-checkbox>
-              <el-checkbox label="view" value="view">视图</el-checkbox>
-              <el-checkbox label="other" value="other">其他</el-checkbox>
-            </el-checkbox-group>
-          </el-form-item>
-          <el-form-item label="数据范围：">
-            <el-checkbox-group v-model="formFilter.source">
-              <el-checkbox label="city" value="city">全市</el-checkbox>
-              <el-checkbox label="province" value="province">全省</el-checkbox>
-              <el-checkbox label="country" value="country">全国</el-checkbox>
-              <el-checkbox label="other" value="other">其他</el-checkbox>
-            </el-checkbox-group>
-          </el-form-item>
-        </el-form>
+      <el-header class="filter-container" :height="headerHeight">
+        <el-button v-on:click="collapseExpand" size="mini" class="right-btn"><i :class="{'el-icon-plus':collapse,'el-icon-minus':!collapse}"></i></el-button>
+        <formFliter v-if="queryParamReady" v-bind:formCollapse="collapse" v-bind:dataObj="formFilterData" @formFilter="changeFormFilter" />
       </el-header>
-      <el-main style="padding-bottom:0;">
+      <el-main class="main-container">
+        <div class="table-tools">
+            <el-button v-on:click="updataSource" class="right-btn" style="margin-left:10px;">接入源更新</el-button>
+            <table-inver></table-inver>
+            <set-task></set-task>
+        </div>
         <el-table :data="mainTableData" stripe :height="tableHeight" border style="width: 100%">
           <el-table-column type="selection" @selection-change="handleSelectionChange">
           </el-table-column>
@@ -33,8 +18,7 @@
           </el-table-column>
           <el-table-column prop="verfication_code" label="接入对象" width="180">
             <template slot-scope="scope">
-              <router-link :to="{ name: 'accessObjInfo', params: {objId:scope.row.id,objName:encodeURI(scope.row.name)} }">{{ scope.row.name }}</router-link>
-              <!-- <a href="javascript:void(0)" v-on:click="goAccessObjInfo(scope.$index)">{{ scope.row.name }}</a> -->
+              <a href="javascript:void(0)" v-on:click="goAccessObjInfo(scope.row)">{{ scope.row.name }}</a>
             </template>
           </el-table-column>
           <el-table-column prop="accessSysDialect.name" label="接入对象类型">
@@ -56,10 +40,6 @@
           <el-table-column label="操作">
             <template slot-scope="scope">
               <el-button size="mini" @click="updataSource(scope.$index, scope.row)">数据量更新</el-button>
-              <!-- <el-button
-                size="mini"
-                type="danger"
-                @click="handleDelete(scope.$index, scope.row)">用户调研</el-button> -->
               <div class="survey">
                 <userSurvey :pdata="scope"></userSurvey>
               </div>
@@ -69,7 +49,7 @@
               <div class="survey">
                 <data-inver :pdata="scope"></data-inver>
               </div>
-             
+
               <div class="survey">
                 <norela-coll :pdata="scope"></norela-coll>
               </div>
@@ -86,18 +66,17 @@
       </el-main>
       <el-footer>
         <div class="enc-pagination">
-          <el-pagination v-if="mainTableReady" style="float:right; margin:10px;" @current-change="loadPage" background :page-size="20" :total="mainTableDataTotal" layout="prev, pager, next, jumper" :current-page.sync="mainTablePage">
+          <el-pagination v-if="queryParamReady" style="float:right; margin:10px;"
+            @current-change="goPage"
+            background
+            :page-size="20"
+            :total="mainTableDataTotal"
+            layout="prev, pager, next, jumper"
+            :current-page.sync="currentPage">
           </el-pagination>
         </div>
       </el-footer>
     </el-container>
-    <!-- <el-dialog :title="dialogTitle" :visible.sync="dialogVisible" width="30%">
-      <add1 :dialogRouter="myDialogRouter" />
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="dialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
-      </span>
-    </el-dialog> -->
     <el-dialog title="提示" :visible.sync="alertVisible" width="30%">
       <span>{{alertContent}}</span>
       <span slot="footer" class="dialog-footer">
@@ -109,6 +88,7 @@
 <script>
 import { mapState } from 'vuex'
 import add1 from './../dialog/'
+import formFliter from './../../../components/formFliter'
 import userSurvey from '@/views/accessObjManage/dialog/admin/user_survey'
 import setTask from '@/views/accessObjManage/dialog/admin/set_task'
 import singleTask from '@/views/accessObjManage/dialog/admin/single_task'
@@ -120,10 +100,11 @@ export default {
   name: 'DashboardAdmin',
   data() {
     return {
-      tableHeight: window.innerHeight - 290,
+      queryParamReady:false,
+      collapse:true,
       mainTableReady: true,
       mainTableData: this.$store.state.mainTableData,
-      mainTablePage: 1,
+      currentPage: 1,
       mainTableDataTotal: 0,
       dialogVisible: false,
       myDialogRouter: 'adminAdd',
@@ -131,14 +112,60 @@ export default {
       alertVisible: false,
       alertContent: '',
       seledRows: [],
-      formFilter: {
-        type: [],
-        source: []
+      collapse:true,
+      tableParams:{
+        accessObjType:'',
+        dataArea:'',
+        pageNum:1
       }
+    }
+  },
+  computed:{
+    tableHeight: function(){
+      return this.collapse?window.innerHeight - 280:window.innerHeight - 315;
+    },
+    headerHeight:function(){
+      return this.collapse?'50px':'85px';
+    },
+    formFilterData:function(){
+      var arr = [{
+        name:"接入对象类型：",
+        id:'accessObjType',
+        checkData:[{
+          id:'table',
+          name:'表'
+        },{
+          id:'view',
+          name:'视图'
+        },{
+          id:'other',
+          name:'其他'
+        }],
+        seledData:this.tableParams.accessObjType?this.tableParams.accessObjType.split(','):[]
+      },{
+        name:"数据范围：",
+        id:'dataArea',
+        checkData:[{
+          id:'city',
+          name:'全市'
+        },{
+          id:'province',
+          name:'全省'
+        },{
+          id:'country',
+          name:'全国'
+        },{
+          id:'other',
+          name:'其他'
+        }],
+        seledData:this.tableParams.dataArea?this.tableParams.dataArea.split(','):[]
+      }];
+      return arr;
     }
   },
   components: {
     add1,
+    formFliter,
     userSurvey,
     setTask,
     singleTask,
@@ -146,7 +173,6 @@ export default {
     dataInver,
     pathFtp,
     norelaColl
-
   },
   mounted() {
     var _self = this;
@@ -162,29 +188,50 @@ export default {
         console.log(err)
       });
   },
-  created() {
-
+  // created() {
+  //
+  // },
+  activated(){
+    this.getTableParam();
   },
   methods: {
-    loadPage: function(val, extraParam) {
-      var _self = this;
-      _self.mainTablePage = val;
-      var param = extraParam ? extraParam : {};
-      this.$ajax.get('./list?pageNum=1&pageSize=20', param).then(function(res) {
-          _self.mainTableData = res.data.page.list;
-          // Vue.set(_self.$store.state,'mainTableData',res.data);
-          _self.$store.commit('setMainTableData', {
-            data: res.data.page.list
-          });
-          _self.mainTableDataTotal = res.data.page.total;
-        })
-        .catch(function(err) {
-          console.log(err)
-        });
+    collapseExpand:function(){
+      this.collapse = !this.collapse;
     },
-    goAccessObjInfo: function(index) {
-      // console.log(this.$route.path);
-      this.$router.go({ path: "accessObjInfo/" + this.mainTableData[index].id + "/" + encodeURI(this.mainTableData[index].name) });
+    loadTable:function(){
+      var _self = this;
+      this.$ajax.get('./list',{
+        params:this.tableParams
+      }).then(function(res){
+        _self.mainTableData = res.data.page.list;
+        _self.mainTableDataTotal = res.data.page.total;
+        //这里是异步的，存在延迟，所以没问题,如果是同步的话可能存在问题
+        _self.currentPage = _self.tableParams.pageNum;
+      })
+      .catch(function(err){
+        _self.currentPage = _self.tableParams.pageNum;
+        console.log(err);
+      });
+    },
+    goPage:function(val){
+      var paramsObj = {
+        pageNum:val
+      };
+      if(this.tableParams.accessObjType){
+        paramsObj.accessObjType = this.tableParams.accessObjType;
+      }
+      if(this.tableParams.dataArea){
+        paramsObj.dataArea = this.tableParams.dataArea;
+      }
+      this.$router.push({name:this.$route.name,query:paramsObj});
+    },
+    goAccessObjInfo: function(row) {
+      this.$router.push({ name: "accessObjInfo",params:{
+        sourceId:this.$route.params.sourceId,
+        sourceName:this.$route.params.sourceName,
+        objId:row.id,
+        objName:encodeURI(row.name)
+      }});
     },
     showAdd: function() {
       this.myDialogRouter = 'adminAdd';
@@ -220,6 +267,26 @@ export default {
     },
     handleSelectionChange: function(val) {
       this.seledRows = val;
+    },
+    getTableParam:function(){
+      this.tableParams.pageNum = this.$route.query.pageNum?parseInt(this.$route.query.pageNum):1;
+      this.tableParams.accessObjType = this.$route.query.accessObjType?this.$route.query.accessObjType:'';
+      this.tableParams.dataArea = this.$route.query.dataArea?this.$route.query.dataArea:'';
+      this.loadTable();
+      this.queryParamReady = true;
+      this.$store.commit('setQueryParams', {
+        name:this.$route.name,
+        data:this.$route.query
+      });
+    },
+    changeFormFilter:function(fliterParams){
+      console.log(fliterParams);
+      for(var i in fliterParams){
+        // this.$set(this.$data, 'tableParams.'+i,fliterParams[i].join(','));
+        this.tableParams[i] = fliterParams[i].join(',');
+      }
+      console.log(this.tableParams);
+      this.goPage(this.currentPage);
     }
   }
 }
@@ -227,6 +294,7 @@ export default {
 </script>
 <style rel="stylesheet/scss" lang="scss" scoped>
 .dashboard-container {
+  background: #fff;
   .filter-container {
     padding-top: 10px;
     background: #fff;
@@ -236,8 +304,20 @@ export default {
     .el-form-item {
       margin-bottom: 2px;
     }
-    .add-btn {
+    .right-btn {
       float: right;
+    }
+  }
+  .main-container{
+    padding-bottom:0;
+    padding-top:0;
+    .table-tools{
+      padding-top:10px;
+      height:55px;
+      border-top:1px solid #eee;
+      .right-btn {
+        float: right;
+      }
     }
   }
   .table-container {
@@ -246,6 +326,8 @@ export default {
   .enc-pagination {
     float: right;
   }
+
+
 }
 
 </style>

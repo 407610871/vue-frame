@@ -7,7 +7,7 @@
       <nav-menu />
       <div class="right-menu">
         <el-popover
-          placement="top-start"
+          placement="bottom-start"
           width="200"
           trigger="hover"
           >
@@ -31,7 +31,7 @@
         </div>
         <div class="enc-sub-header">
           <el-breadcrumb separator="/">
-            <el-breadcrumb-item v-for="item in breadcrumb" :to="{ name: item.name, params:item.params}">{{item.breadcrumbName}}</el-breadcrumb-item>
+            <el-breadcrumb-item v-for="item in breadcrumb" :to="{ name: item.name, params:item.params,query:item.query}">{{item.breadcrumbName}}</el-breadcrumb-item>
           </el-breadcrumb>
           <!-- <span v-for="item in breadcrumb"> / <a href="javascript:void(0)" v-on:click="goToPage(item.path)">{{item.name}}</a></span> -->
         </div>
@@ -81,11 +81,14 @@ export default {
     getBreadcrumb(){
       var routeName = this.$route.name;
       if(routeName =='dashboard' || routeName == 'accessObjManage' || routeName == 'accessObjInfo'){
+        console.log('-----------------------------------');
+        console.log(this.$store.state.queryParams);
         this.breadcrumb = [
           {
             name:'dashboard',
             breadcrumbName:'数据接入',
-            params:{}
+            params:{},
+            query:this.$store.state.queryParams['dashboard']
           }
         ]
         if(this.$route.params.sourceId && this.$route.params.sourceName){
@@ -95,7 +98,8 @@ export default {
             params:{
               sourceId:this.$route.params.sourceId,
               sourceName:this.$route.params.sourceName
-            }
+            },
+            query:this.$store.state.queryParams['accessObjManage']
           });
         }
         if(this.$route.params.objId && this.$route.params.objName){

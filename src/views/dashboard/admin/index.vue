@@ -204,6 +204,7 @@ export default {
         // },100)
       })
       .catch(function(err){
+        _self.currentPage = _self.tableParams.pageNum;
         console.log(err)
       });
     },
@@ -223,7 +224,7 @@ export default {
       this.$router.push({name:this.$route.name,query:paramsObj});
     },
     goSubPage:function(index){
-      this.$router.push({path:'accessObjManage/'+this.mainTableData[index].id+'/'+encodeURI(this.mainTableData[index].name)});
+      this.$router.push({name:'accessObjManage',params:{sourceId:this.mainTableData[index].id,sourceName:encodeURI(this.mainTableData[index].name)}});
     },
     handleAdd: function() {
       this.myDialogRouter = 'adminAdd';
@@ -271,6 +272,10 @@ export default {
       this.tableParams.exchangePlatform = this.$route.query.exchangePlatform?this.$route.query.exchangePlatform:'';
       this.loadTable();
       this.queryParamReady = true;
+      this.$store.commit('setQueryParams', {
+        name:this.$route.name,
+        data:this.$route.query
+      });
         // _self.$set(_self.$data, 'mainTablePage',_self.$route.query.pageNum?parseInt(_self.$route.query.pageNum):1);
     },
     changeFormFilter:function(fliterParams){

@@ -12,11 +12,11 @@
           <el-radio-button label="dataPreview">数据预览</el-radio-button>
         </el-radio-group>
       </el-header>
-      <el-main style="padding-bottom:0;">
+      <el-main style="padding:0;">
         <el-container style="height:100%;" class="dashboard-container" v-show="tabPosition == 'metadataManage'">
           <el-main style="padding-bottom:0;">
             <el-table
-              :data="mainTableData"
+              :data="mainTableData1"
               stripe
               :height="tableHeight"
               border
@@ -63,12 +63,12 @@
           <el-footer>
             <div class="enc-pagination">
               <el-pagination v-if="mainTableReady" style="float:right; margin:10px;"
-                @current-change="loadPage"
+                @current-change="goPage"
                 background
                 :page-size="20"
-                :total="mainTableDataTotal"
+                :total="mainTableDataTotal1"
                 layout="prev, pager, next, jumper"
-                :current-page.sync="mainTablePage">
+                :current-page.sync="currentPage1">
               </el-pagination>
             </div>
           </el-footer>
@@ -77,7 +77,7 @@
         <el-container style="height:100%;" class="dashboard-container" v-show="tabPosition != 'metadataManage'">
           <el-main style="padding-bottom:0;">
             <el-table
-              :data="mainTableData"
+              :data="mainTableData2"
               stripe
               :height="tableHeight"
               border
@@ -116,11 +116,19 @@
               <el-table-column
                 label="描述">
                 <template slot-scope="scope">
-                  <span>{{ scope.row.name }}</span>
-                  <el-tooltip placement="bottom">
-                    <div slot="content">多行信息<br/>第二行信息</div>
-                    <el-button><i class="el-icon-caret-bottom"></i></el-button>
-                  </el-tooltip>
+                  <el-popover
+                    placement="bottom-start"
+                    width="200"
+                    trigger="hover"
+                    >
+                      <ul class="popup-menu">
+                        <li>姓名：XXX</li>
+                        <li>身份证号：XXX</li>
+                        <li>年龄：XXX</li>
+                        <li>地址：XXX</li>
+                      </ul>
+                      <a slot="reference" href="javascript:void(0)">{{ scope.row.name }}<i class="el-icon-caret-bottom"></i></a>
+                  </el-popover>
                 </template>
               </el-table-column>
             </el-table>
@@ -128,12 +136,12 @@
           <el-footer>
             <div class="enc-pagination">
               <el-pagination v-if="mainTableReady" style="float:right; margin:10px;"
-                @current-change="loadPage"
+                @current-change="goPreviewPage"
                 background
                 :page-size="20"
-                :total="mainTableDataTotal"
+                :total="mainTableDataTotal2"
                 layout="prev, pager, next, jumper"
-                :current-page.sync="mainTablePage">
+                :current-page.sync="currentPage2">
               </el-pagination>
             </div>
           </el-footer>
@@ -162,54 +170,78 @@ export default {
   name: 'DashboardAdmin',
   data() {
     return {
-      tableHeight: window.innerHeight - 300,
+      queryParamReady:true,
+      currentPage1:1,
+      currentPage2:1,
+      tableHeight: window.innerHeight - 280,
       mainTableReady:true,
-      mainTableData: this.$store.state.mainTableData,
-      mainTablePage: 1,
-      mainTableDataTotal: 0,
+      mainTableData1: [],
+      mainTableData2: [],
+      mainTableDataTotal1: 0,
+      mainTableDataTotal2: 0,
       dialogVisible:false,
       myDialogRouter:'adminAdd',
       dialogTitle:'新增',
-      tabPosition:'metadataManage'
+      tabPosition:'metadataManage',
+      tableParams:{
+        pageNum1:1,
+        pageNum2:1
+      }
     }
   },
   components: {
     add1
   },
-  mounted(){
-    var _self = this;
-    this.$ajax.get('./list?pageNum=1&pageSize=20').then(function(res){
-      _self.mainTableData = res.data.page.list;
-      _self.$store.commit('setMainTableData', {
-        data:res.data.page.list
-      });
-      _self.mainTableDataTotal = res.data.page.total;
-      _self.mainTableReady = true;
-    })
-    .catch(function(err){
-      console.log(err)
-    });
+  activated(){
+    this.getTableParam();
   },
-  created(){
-
-  },
+  // mounted(){
+  // },
+  // created(){
+  // },
   methods:{
-    loadPage:function(val,extraParam){
+    loadTable:function(){
       var _self = this;
-      _self.mainTablePage = val;
-      var param = extraParam?extraParam:{};
-      this.$ajax.get('./list?pageNum=1&pageSize=20',param).then(function(res){
-        _self.mainTableData = res.data.page.list;
-        // Vue.set(_self.$store.state,'mainTableData',res.data);
-        _self.$store.commit('setMainTableData', {
-          data:res.data.page.list
-        });
-        _self.mainTableDataTotal = res.data.page.total;
+      this.$ajax.get('./list',{
+        params:this.tableParams
+      }).then(function(res){
+        _self.mainTableData1 = res.data.page.list;
+        _self.mainTableDataTotal1 = res.data.page.total;
+        //这里是异步的，存在延迟，所以没问题,如果是同步的话可能存在问题
+        _self.currentPage1 = _self.tableParams.pageNum1;
       })
       .catch(function(err){
+        _self.currentPage1 = _self.tableParams.pageNum1;
         console.log(err)
       });
-      this.breadListLast();
+      this.$ajax.get('./list',{
+        params:this.tableParams
+      }).then(function(res){
+        _self.mainTableData2 = res.data.page.list;
+        _self.mainTableDataTotal2 = res.data.page.total;
+        //这里是异步的，存在延迟，所以没问题,如果是同步的话可能存在问题
+        _self.currentPage2 = _self.tableParams.pageNum2;
+      })
+      .catch(function(err){
+        _self.currentPage2 = _self.tableParams.pageNum2;
+        console.log(err)
+      });
+    },
+    goPage:function(val){
+      var paramsObj = {
+        pageNum1:val,
+        pageNum2:this.tableParams.pageNum2,
+        tabPosition:this.tabPosition
+      };
+      this.$router.push({name:this.$route.name,query:paramsObj});
+    },
+    goPreviewPage:function(val){
+      var paramsObj = {
+        pageNum1:this.tableParams.pageNum1,
+        pageNum2:val,
+        tabPosition:this.tabPosition
+      };
+      this.$router.push({name:this.$route.name,query:paramsObj});
     },
     showAdd:function(){
       this.myDialogRouter = 'adminAdd';
@@ -220,6 +252,17 @@ export default {
       this.myDialogRouter = 'adminEdit';
       this.dialogTitle = '修改';
       this.dialogVisible = true;
+    },
+    getTableParam:function(){
+      this.tableParams.pageNum1 = this.$route.query.pageNum1?parseInt(this.$route.query.pageNum1):1;
+      this.tableParams.pageNum2 = this.$route.query.pageNum2?parseInt(this.$route.query.pageNum2):1;
+      this.tabPosition = this.$route.query.tabPosition == 'metadataManage' || this.$route.query.tabPosition == 'dataPreview'?this.$route.query.tabPosition:'metadataManage';
+      this.loadTable();
+      this.queryParamReady = true;
+      // this.$store.commit('setQueryParams', {
+      //   name:this.$route.name,
+      //   data:this.$route.query
+      // });
     }
   }
 }
@@ -227,9 +270,9 @@ export default {
 
 <style rel="stylesheet/scss" lang="scss" scoped>
 .dashboard-container {
+  background: #fff;
   .filter-container {
     padding-top:40px;
-    background: #fff;
     .right-tools{
       float:right;
       margin-right:10px;

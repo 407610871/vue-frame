@@ -15,7 +15,8 @@ const store = new Vuex.Store({
     accessSourceType:[],
     accessDataSource:[],
     exchangePlatform:[],
-    pageSize:20
+    pageSize:20,
+    queryParams:{}
   },
   mutations: {
     setMainTableData (state,obj) {
@@ -50,6 +51,9 @@ const store = new Vuex.Store({
         });
       }
       state.exchangePlatform = list;
+    },
+    setQueryParams(state,obj){
+      state.queryParams[obj.name] = obj.data;
     }
   },
   modules: {

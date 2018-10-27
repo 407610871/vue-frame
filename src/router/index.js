@@ -35,12 +35,30 @@ export const constantRouterMap = [
       {
         path: "accessObjInfo/:sourceId/:sourceName/:objId/:objName",
         component: () => import("@/views/accessObjInfo/index"),
+        // components:{
+        //   // default:() => import("@/views/accessObjInfo/index"),
+        //   metadataManage: () => import("@/views/accessObjInfo/admin/metadataManage"),
+        //   test:() => import("@/views/accessObjInfo/admin/test")
+        // },
         name: "accessObjInfo",
         meta: {
           title: "数据对象详情",
           icon: "dashboard",
           noCache: true
         }
+        // ,
+        // children:[
+        //   {
+        //     path: "test",
+        //     component: () => import("@/views/accessObjInfo/admin/test"),
+        //     name: "test",
+        //     meta: {
+        //       title: "test",
+        //       icon: "dashboard",
+        //       noCache: true
+        //     }
+        //   }
+        // ]
       },
       {
         path: "recyclingBins",
