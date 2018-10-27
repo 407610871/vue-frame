@@ -3,7 +3,7 @@
     <el-button class="diabtn tin-btn add-btn" @click="dialogVisible = true">核验报告</el-button>
     <!--  <i class="el-icon-info" @click="dialogVisible = true">用户调研</i> -->
     <el-dialog title="核验报告" :visible.sync="dialogVisible" width="60%" :before-close="closeDialog">
-      <div class="title-gra">
+      <div class="title-gra plr30">
         <span class="grab gra-l"></span>
         <span class="grab gra-r"></span>
       </div>
@@ -230,5 +230,10 @@ textarea {
   float: right;
   margin-left: 10px;
 }
+textarea{
+  margin-left: 30px;
+}
+.title-gra{
 
+}
 </style>

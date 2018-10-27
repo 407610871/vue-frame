@@ -1,16 +1,27 @@
 <template>
   <div class="taskMDialog userSurveyDialog">
+    <div class="delimiter-box"><span>分隔符:</span>
+      <el-input v-model="delimiter"></el-input>
+    </div>
     <div class="comTable">
       <el-table stripe :data="tableData" height="250" style="width: 100%">
-        <el-table-column width="180" label="+" @click="addTable()">
+        <el-table-column width="180" label="" :render-header="renderHeader">
           <template slot-scope="scope">
-            <i class="el-icon-time"></i>
-            <span style="margin-left: 10px">454545</span>
+            <i class="el-icon-remove" @click="handleDelete(scope.$index, scope.row)"></i>
           </template>
         </el-table-column>
-        <el-table-column prop="name" label="姓名" width="180">
+        <el-table-column label="字段名称">
+          <template slot-scope="scope">
+            <el-input v-model="scope.row.name"></el-input>
+          </template>
         </el-table-column>
-        <el-table-column prop="address" label="地址">
+        <el-table-column prop="datatype" label="字段类型">
+          <template slot-scope="scope">
+            <el-select v-model="scope.row.mapdata" placeholder="请选择">
+              <el-option v-for="item in TypeData" :key="item" :label="item" :value="item">
+              </el-option>
+            </el-select>
+          </template>
         </el-table-column>
       </el-table>
     </div>
@@ -22,29 +33,48 @@ export default {
   data: function() {
     return {
       dialogVisible: false,
-      tableData: [{
-        date: '2016-05-02',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1518 弄'
-      }, {
-        date: '2016-05-04',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1517 弄'
-      }, {
-        date: '2016-05-01',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1519 弄'
-      }, {
-        date: '2016-05-03',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1516 弄'
-      }]
+      delimiter: '',
+      tableData: [],
+      TypeData: [],
+
     }
   },
   methods: {
-    addTable(){
-      alert("454545");
-    }
+    // 在渲染表头的时候,会调用此方法, h为createElement的缩写版, 也可以添加事件click、change等
+    renderHeader(h, { column, $index }) {
+      return h('span', [
+        h('span', column.label),
+        h('span', {
+          class: 'el-icon-circle-plus',
+          on: {
+            click: () => {
+              /*console.log(`${column.label}   ${$index}`)*/
+              this.tableData.push({
+                name: '',
+                datatype: '',
+                mapdata:'',
+              })
+            }
+          }
+        })
+      ])
+    },
+    handleDelete(index, row) {
+      this.tableData.splice(index, 1);
+    },
+    //得到字段类型
+    _getType() {
+      var _self = this;
+      this.$ajax.get('./getColumnType').then(function(res) {
+          _self.TypeData = res.data[0].datas;
+          
+          //console.log(_self.TypeData);
+        })
+        .catch(function(err) {
+          console.log(err)
+        });
+
+    },
   },
 
   components: {
@@ -54,7 +84,7 @@ export default {
 
   },
   created() {
-
+     this._getType();
   },
   computed: {
 
@@ -119,38 +149,11 @@ export default {
   padding-right: 30px;
 }
 
-.mtsItem {
-  .el-form-item--medium .el-form-item__content {
-    margin-left: 10px !important;
-  }
-}
-
-.mtsItem .wildbg {
-  .el-form-item--medium .el-form-item__content {
-    margin-left: 0px !important;
-  }
-}
-
-.wildbg .el-input,
-.wildbg .el-select {
-  width: 30%;
-}
-
-.wildbg .el-select .el-input {
-  width: 100%;
-}
-
-.el-radio-group.wid100 {
-  width: 100%;
-}
-
-.wildbg {
-  margin-left: 10px;
-
-  padding-top: 10px;
-  padding-bottom: 15px;
-  .el-radio__label {
-    line-height: 30px;
+.delimiter-box {
+  padding: 0px 30px;
+  .el-input {
+    width: 13%;
+    margin-left: 20px;
   }
 }
 

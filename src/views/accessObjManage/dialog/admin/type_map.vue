@@ -13,7 +13,7 @@
         </el-table-column>
         <el-table-column prop="toType" label="目标字段类型" width="180">
           <template slot-scope="scope">
-            <el-select v-model="scope.row.Typevalue" placeholder="请选择">
+            <el-select v-model="cloneData[scope.$index]" placeholder="请选择">
               <el-option v-for="item in TypeData" :key="item" :label="item" :value="item">
               </el-option>
             </el-select>
@@ -33,6 +33,10 @@ export default {
       dialogVisible: false,
       tableData: [],
       TypeData: [],
+      cloneData: [],
+      mapData: [],
+      smapData: [],
+
     }
   },
   methods: {
@@ -41,6 +45,8 @@ export default {
       var _self = this;
       this.$ajax.get('./getTypeMap').then(function(res) {
           _self.tableData = res.data.page.list;
+          _self._getAllType();
+
         })
         .catch(function(err) {
           console.log(err)
@@ -59,26 +65,54 @@ export default {
       var _self = this;
       this.$ajax.get('./getColumnType').then(function(res) {
           _self.TypeData = res.data[0].datas_mapping;
-          console.log(_self.TypeData);
+          //console.log(_self.TypeData);
         })
         .catch(function(err) {
           console.log(err)
         });
-      /*this.$ajax({
-        methods: 'get',
-        url: '/api/ctablesDetail/datas',
-        params: {
-          id:'10203122'
-        }
-      }).then(res => {
-          console.log(res);
-      })*/
+
+    },
+    _getAllType() {
+      var _self = this;
+      this.$ajax.get('./getColumnType').then(function(res) {
+          _self.mapData = res.data[1];
+          for (let i = 0; i < _self.tableData.length; i++) {
+            let flag = false;
+            let temp;
+            for (let j = 0; j < _self.mapData.datas.length; j++) {
+              if (_self.tableData[i].datatype.toUpperCase() == _self.mapData.datas[j]) {
+                debugger;
+                flag = true;
+                temp = j;
+                /*_self.cloneData.push({
+                  'mapping': _self.mapData.datas_mapping[j]
+                })*/
+              }
+            }
+            debugger;
+            if (flag) {
+              _self.cloneData.push(
+                _self.mapData.datas_mapping[temp]
+              )
+            } else {
+              _self.cloneData.push(
+               _self.mapData.datas_mapping[0]
+              )
+            }
+            console.log(_self.cloneData);
+          }
+        })
+        .catch(function(err) {
+          console.log(err)
+        });
+
     }
   },
   components: {
 
   },
   mounted() {
+
     this._getMap()
     this._getType()
   },
@@ -86,7 +120,15 @@ export default {
 
   },
   computed: {
+    typeTran: {
+      set(val) {
+        console.log(val)
+      },
+      get() {
+        return "STRING"
+      }
 
+    }
   },
   props: ['tableId']
 
