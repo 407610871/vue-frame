@@ -27,7 +27,6 @@ import Authen from "./Authen.js";
 import VJstree from 'vue-jstree'
 import Viser from 'viser-vue'
 
-console.log(process.env)
 Vue.use(Authen,{
   url: process.env.VUE_APP_AUTH_SERVER_URL,
   realm: process.env.VUE_APP_REALM,
