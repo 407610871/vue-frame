@@ -6,14 +6,7 @@ let Authen = {
     if (installed) return
     installed = true;
 
-    const keycloak = Keycloak({
-      url: "http://10.37.146.48:8080/auth",
-      realm: "bocom_nanjing",
-      clientId: "js-console",
-      credentials: {
-        secret: "3608819f-5174-4420-b669-5c6036e1ccb5"
-      },
-    })
+    const keycloak = Keycloak(options)
 
     // const watch = new Vue({
     //   data() {

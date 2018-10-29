@@ -24,7 +24,20 @@ import * as filters from "./filters"; // global filters
 import "./registerServiceWorker";
 
 import Authen from "./Authen.js";
-Vue.use(Authen);
+import VJstree from 'vue-jstree'
+import Viser from 'viser-vue'
+
+console.log(process.env)
+Vue.use(Authen,{
+  url: process.env.VUE_APP_AUTH_SERVER_URL,
+  realm: process.env.VUE_APP_REALM,
+  clientId: process.env.VUE_APP_RESOURCE,
+  credentials: {
+    secret: process.env.VUE_APP_CREDENTIALS_SECRET
+  }
+});
+Vue.use(Viser);
+Vue.use(VJstree);
 
 Vue.use(Element, {
   size: Cookies.get("size") || "medium", // set element-ui default size
@@ -38,7 +51,7 @@ Object.keys(filters).forEach(key => {
 
 Vue.config.productionTip = false;
 
-const vm = new Vue({
+window.vm = new Vue({
   // el: "#app",
   router,
   store,
