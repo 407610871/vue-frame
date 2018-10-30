@@ -103,9 +103,9 @@ export default {
       queryParamReady:false,
       collapse:true,
       mainTableReady: true,
-      mainTableData: this.$store.state.mainTableData,
+      mainTableData: [],
       currentPage: 1,
-      mainTableDataTotal: 0,
+      mainTableDataTotal: 1,
       dialogVisible: false,
       myDialogRouter: 'adminAdd',
       dialogTitle: '新增',
@@ -113,54 +113,18 @@ export default {
       alertContent: '',
       seledRows: [],
       collapse:true,
-      tableParams:{
-        accessObjType:'',
-        dataArea:'',
-        pageNum:1
-      }
+      formFilterData:[]
     }
   },
   computed:{
+    tableParams:function(){
+      return this.$store.state.queryParams.accessObjManage;
+    },
     tableHeight: function(){
       return this.collapse?window.innerHeight - 280:window.innerHeight - 315;
     },
     headerHeight:function(){
       return this.collapse?'50px':'85px';
-    },
-    formFilterData:function(){
-      var arr = [{
-        name:"接入对象类型：",
-        id:'accessObjType',
-        checkData:[{
-          id:'table',
-          name:'表'
-        },{
-          id:'view',
-          name:'视图'
-        },{
-          id:'other',
-          name:'其他'
-        }],
-        seledData:this.tableParams.accessObjType?this.tableParams.accessObjType.split(','):[]
-      },{
-        name:"数据范围：",
-        id:'dataArea',
-        checkData:[{
-          id:'city',
-          name:'全市'
-        },{
-          id:'province',
-          name:'全省'
-        },{
-          id:'country',
-          name:'全国'
-        },{
-          id:'other',
-          name:'其他'
-        }],
-        seledData:this.tableParams.dataArea?this.tableParams.dataArea.split(','):[]
-      }];
-      return arr;
     }
   },
   components: {
@@ -174,25 +138,52 @@ export default {
     pathFtp,
     norelaColl
   },
-  mounted() {
-    var _self = this;
-    this.$ajax.get('./list?pageNum=1&pageSize=20').then(function(res) {
-        _self.mainTableData = res.data.page.list;
-        _self.$store.commit('setMainTableData', {
-          data: res.data.page.list
-        });
-        _self.mainTableDataTotal = res.data.page.total;
-        _self.mainTableReady = true;
-      })
-      .catch(function(err) {
-        console.log(err)
-      });
+  watch: {
+    tableParams(newVal,oldVal){
+      this.loadTable();
+    },
   },
-  // created() {
-  //
-  // },
-  activated(){
-    this.getTableParam();
+  mounted() {
+    var queryParams = this.$store.state.queryParams.dashboard;
+    this.loadTable();
+    this.formFilterData = [{
+      name:"接入对象类型：",
+      id:'accessObjType',
+      checkData:[{
+        id:'table',
+        name:'表'
+      },{
+        id:'view',
+        name:'视图'
+      },{
+        id:'other',
+        name:'其他'
+      }],
+      seledData:this.tableParams.accessObjType?this.tableParams.accessObjType:[]
+    },{
+      name:"数据范围：",
+      id:'dataArea',
+      checkData:[{
+        id:'city',
+        name:'全市'
+      },{
+        id:'province',
+        name:'全省'
+      },{
+        id:'country',
+        name:'全国'
+      },{
+        id:'other',
+        name:'其他'
+      }],
+      seledData:this.tableParams.dataArea?this.tableParams.dataArea:[]
+    }];
+    this.queryParamReady = true;
+  },
+  created(){
+    this.$root.eventHub.$on('search', (keyword)=>{
+      this.search(keyword);
+    })
   },
   methods: {
     collapseExpand:function(){
@@ -200,9 +191,10 @@ export default {
     },
     loadTable:function(){
       var _self = this;
-      this.$ajax.get('./list',{
+      this.$ajax.get('http://localhost:8080/list',{
         params:this.tableParams
       }).then(function(res){
+        console.log('tableLoaded:accessObjManage');
         _self.mainTableData = res.data.page.list;
         _self.mainTableDataTotal = res.data.page.total;
         //这里是异步的，存在延迟，所以没问题,如果是同步的话可能存在问题
@@ -213,17 +205,20 @@ export default {
         console.log(err);
       });
     },
+    setStore:function(obj){
+      let storeData = JSON.parse(JSON.stringify(this.$store.state.queryParams[this.$route.name]));
+      for(var i in obj){
+        storeData[i] = obj[i];
+      }
+      this.$store.commit('setQueryParams', {
+        name:this.$route.name,
+        data:storeData
+      });
+    },
     goPage:function(val){
-      var paramsObj = {
+      this.setStore({
         pageNum:val
-      };
-      if(this.tableParams.accessObjType){
-        paramsObj.accessObjType = this.tableParams.accessObjType;
-      }
-      if(this.tableParams.dataArea){
-        paramsObj.dataArea = this.tableParams.dataArea;
-      }
-      this.$router.push({name:this.$route.name,query:paramsObj});
+      });
     },
     goAccessObjInfo: function(row) {
       this.$router.push({ name: "accessObjInfo",params:{
@@ -232,6 +227,12 @@ export default {
         objId:row.id,
         objName:encodeURI(row.name)
       }});
+    },
+    search:function(keyword){
+      this.setStore({
+        pageNum:1,
+        keyword:keyword
+      });
     },
     showAdd: function() {
       this.myDialogRouter = 'adminAdd';
@@ -268,25 +269,8 @@ export default {
     handleSelectionChange: function(val) {
       this.seledRows = val;
     },
-    getTableParam:function(){
-      this.tableParams.pageNum = this.$route.query.pageNum?parseInt(this.$route.query.pageNum):1;
-      this.tableParams.accessObjType = this.$route.query.accessObjType?this.$route.query.accessObjType:'';
-      this.tableParams.dataArea = this.$route.query.dataArea?this.$route.query.dataArea:'';
-      this.loadTable();
-      this.queryParamReady = true;
-      this.$store.commit('setQueryParams', {
-        name:this.$route.name,
-        data:this.$route.query
-      });
-    },
     changeFormFilter:function(fliterParams){
-      console.log(fliterParams);
-      for(var i in fliterParams){
-        // this.$set(this.$data, 'tableParams.'+i,fliterParams[i].join(','));
-        this.tableParams[i] = fliterParams[i].join(',');
-      }
-      console.log(this.tableParams);
-      this.goPage(this.currentPage);
+      this.setStore(fliterParams);
     }
   }
 }

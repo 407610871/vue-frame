@@ -71,6 +71,16 @@ export const constantRouterMap = [
         }
       },
       {
+        path: "setting",
+        component: () => import("@/views/setting/index"),
+        name: "setting",
+        meta: {
+          title: "设置",
+          icon: "dashboard",
+          noCache: true
+        }
+      },
+      {
         path: "form",
         component: () => import("@/views/form/index"),
         name: "Dashboard",
