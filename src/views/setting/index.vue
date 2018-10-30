@@ -2,7 +2,11 @@
   <div style="padding:20px; background: #fff; overflow-y:auto;" v-bind:style="{height:mainHeight}">
     <div class="panel">
       <div class="panel-title" style="margin-bottom:10px;">库区设置</div>
-      <el-collapse v-model="activeName" accordion v-if="dataReady">
+      <collapsePanel v-if="dataReady" v-bind:settingList="settingList" />
+
+
+
+      <!-- <el-collapse v-model="activeName" accordion v-if="dataReady">
         <el-collapse-item :title="item.name" name="1" v-for="item in settingList">
           <el-row :gutter="20">
             <el-col :span="4">
@@ -34,7 +38,7 @@
 
         </el-collapse-item>
       </el-collapse>
-      <el-button>添加</el-button>
+      <el-button>添加</el-button> -->
     </div>
 
     <div class="panel">
@@ -106,11 +110,13 @@
 
 <script>
 import { mapState} from 'vuex'
+import collapsePanel from './collapsepanel.vue'
 
 export default {
   name: 'config',
   data() {
     return {
+      dataReady:false,
       activeName: '1',
       mainHeight:window.innerHeight - 118+'px',
       dataReady:true,
@@ -127,6 +133,7 @@ export default {
     }
   },
   components: {
+    collapsePanel
   },
   computed: {
   },
@@ -151,7 +158,7 @@ export default {
               url:value.config['hdfs.url'],
               bak:bakList.join(','),
               root:value.config['topics.dir'],
-              impalaPath:value.dataCenter.serviceUrl
+              impalaPath:value.dataCenter.serviceUrl.split(";")[0]
             }
             list.push(obj);
             break;
@@ -160,6 +167,7 @@ export default {
         }
       }
       _self.settingList = list;
+      _self.dataReady = true;
     })
     .catch(function(err){
       console.log(err);
@@ -246,14 +254,6 @@ export default {
       .col-inside{
         padding-left:0 !important;
         padding-right:0 !important;
-      }
-    }
-    .el-collapse{
-      margin-bottom:10px;
-      border-top:0 none;
-      .setinfo{
-        padding-left:80px !important;
-        border-left: 1px solid #eee;
       }
     }
     .theme-preview{
