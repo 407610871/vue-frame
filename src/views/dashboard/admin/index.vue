@@ -24,8 +24,8 @@
       </el-header>
       <el-main style="padding-bottom:0;">
         <router-view />
-        <el-table :data="mainTableData" stripe :height="tableHeight" border style="width: 100%">
-          <el-table-column label="接入源名称" width="180">
+        <el-table :data="mainTableData" stripe :height="tableHeight" border style="width: 100%" tooltip-effect="light">
+          <el-table-column label="接入源名称" width="250" show-overflow-tooltip>
             <template slot-scope="scope">
               <a href="javascript:void(0)" v-on:click="goSubPage(scope.$index)">{{ scope.row.name }}</a>
             </template>
