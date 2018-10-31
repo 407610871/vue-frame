@@ -72,6 +72,7 @@ export default {
     .collapsepanel-title{
       line-height: 30px;
       padding-bottom:10px;
+      cursor:pointer;
       i{
         margin-left:20px;
       }

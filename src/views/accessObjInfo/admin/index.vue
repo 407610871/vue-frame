@@ -21,10 +21,11 @@
               :height="tableHeight"
               border
               style="width: 100%"
+              tooltip-effect="light"
               >
               <el-table-column
                 label="字段中文名"
-                width="180">
+                width="180" show-overflow-tooltip>
                 <template slot-scope="scope">
                   <a href="javascript:void(0)">{{ scope.row.name }}</a>
                 </template>
@@ -82,6 +83,7 @@
               :height="tableHeight"
               border
               style="width: 100%"
+              tooltip-effect="light"
               >
               <el-table-column
                 prop="name"

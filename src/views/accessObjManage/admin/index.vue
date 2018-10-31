@@ -8,15 +8,15 @@
       <el-main class="main-container">
         <div class="table-tools">
             <el-button v-on:click="updataSource" class="right-btn" style="margin-left:10px;">接入源更新</el-button>
-            <table-inver></table-inver>
-            <set-task></set-task>
+            <table-inver class="right-btn"></table-inver>
+            <set-task class="right-btn"></set-task>
         </div>
-        <el-table :data="mainTableData" stripe :height="tableHeight" border style="width: 100%">
+        <el-table :data="mainTableData" stripe :height="tableHeight" border style="width: 100%" tooltip-effect="light">
           <el-table-column type="selection" @selection-change="handleSelectionChange">
           </el-table-column>
-          <el-table-column prop="verfication_code" label="资源名称" width="180">
+          <el-table-column prop="verfication_code" label="资源名称" width="180" show-overflow-tooltip>
           </el-table-column>
-          <el-table-column prop="verfication_code" label="接入对象" width="180">
+          <el-table-column prop="verfication_code" label="接入对象" width="180" show-overflow-tooltip>
             <template slot-scope="scope">
               <a href="javascript:void(0)" v-on:click="goAccessObjInfo(scope.row)">{{ scope.row.name }}</a>
             </template>
