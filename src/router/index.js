@@ -89,6 +89,16 @@ export const constantRouterMap = [
           icon: "dashboard",
           noCache: true
         }
+      },
+      {
+        path: "task",
+        component: () => import("@/views/task/Task"),
+        name: "task",
+        meta: {
+          title: "task",
+          icon: "dashboard",
+          noCache: true
+        }
       }
       // {
       //   path:"test/:sourceId/:sourceName/:objId/:objName",
