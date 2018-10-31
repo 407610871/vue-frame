@@ -49,8 +49,7 @@ Object.keys(filters).forEach(key => {
 });
 
 Vue.config.productionTip = false;
-
-window.vm = new Vue({
+const vm = new Vue({
   // el: "#app",
   router,
   store,
@@ -58,6 +57,9 @@ window.vm = new Vue({
   render: h => h(App)
 });
 vm.$keycloak.onAuthSuccess = () => {
+  //初始化 将token放入store
+  store.commit("SET_TOKEN", vm.$keycloak.tokenParsed.typ + ' ' + vm.$keycloak.token);
+
   vm.$mount("#app");
 }
 
