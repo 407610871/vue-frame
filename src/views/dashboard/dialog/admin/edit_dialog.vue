@@ -1,5 +1,5 @@
 <template>
-  <div class="taskMDialog">
+<div class="taskMDialog">
     <!-- <el-button @click="dialogVisible = true" class="add-btn">add</el-button> -->
     <el-button class="diabtn incbtn" size="mini" @click="dialogVisible = true">编辑</el-button>
     <el-dialog title="接入数据源" :visible.sync="dialogVisible" width="60%" :before-close="closeDialog">
@@ -284,7 +284,7 @@
         </div>
       </el-form>
     </el-dialog>
-  </div>
+ </div>
 </template>
 <script>
 export default {
@@ -627,6 +627,7 @@ export default {
 <style lang="scss">
 @import "@/assets/css/base.scss";
 @import "@/assets/css/dialog.scss";
+
 .el-select {
   width: 100%;
 }

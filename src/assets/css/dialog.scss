@@ -14,7 +14,9 @@
   color: #0095e7;
   cursor: pointer;
 }
-
+.bornone{
+  border:none !important;
+}
 .bank {
   opacity: 0;
 }
@@ -22,6 +24,8 @@
 .taskMDialog {
   text-align: left;
   .el-dialog {
+    height: 600px;
+    overflow: auto;
     .el-dialog__header {
       margin: 0 20px;
       padding: 20px 10px 0px;
@@ -41,7 +45,7 @@
       border-radius: 15px;
       font-size: 14px; */
       .el-dialog__close {
-       /*  color: #fff; */
+        /*  color: #fff; */
       }
     }
   }
@@ -100,69 +104,111 @@
 .ml0 .el-form-item--medium .el-form-item__content {
   margin-left: 0px !important;
 }
+
 .tcenter .el-form-item--medium .el-form-item__content {
   text-align: center;
 }
-.mt20{
-  margin-top:20px;
+
+.mt20 {
+  margin-top: 20px;
 }
-.mt10{
-  margin-top:10px;
+
+.mt10 {
+  margin-top: 10px;
 }
-.mt30{
-  margin-top:30px;
+
+.mt30 {
+  margin-top: 30px;
 }
-.mt25{
-  margin-top:25px;
+
+.mt25 {
+  margin-top: 25px;
 }
-.plr10{
+
+.plr10 {
   padding-left: 10px;
 }
-.mr10{
+
+.mr10 {
   margin-right: 10px;
 }
-.ml10{
+
+.ml10 {
   margin-left: 10px;
 }
-.ptb20{padding:20px 0px;}
-.tcenter{
+
+.ptb20 {
+  padding: 20px 0px;
+}
+
+.tcenter {
   text-align: center;
 }
-.el-icon-circle{
-  width:30px;
-  height:30px;
+
+.el-icon-circle {
+  width: 30px;
+  height: 30px;
   border-radius: 50%;
   display: inline-block;
-  border:1px solid #d8dbdd;
+  border: 1px solid #d8dbdd;
   line-height: 30px;
-  color:#d8dbdd;
+  color: #d8dbdd;
   text-align: center;
-  margin-right:5px;
- 
+  margin-right: 5px;
 }
+
 .surveybg {
   background: #f0f3f6;
   padding-top: 20px;
 }
 
 //表格
-.comTable .el-table th > .cell{
+.comTable .el-table th>.cell {
   line-height: 20px;
-    font-size: $font-size-medium;
-    font-weight: bold;
+  font-size: $font-size-medium;
+  font-weight: bold;
 }
-.comTable .el-table--medium td, .el-table--medium th{
-      padding: 8px 0;
-}
-//内部按钮
-.el-table .cell .taskMDialog .diabtn{
-   background: transparent;
-   border:none;
 
+.comTable .el-table--medium td,
+.el-table--medium th {
+  padding: 8px 0;
 }
-.el-table .cell .taskMDialog .incbtn{
-  color:$color-btn-inner;
+
+//内部按钮
+.el-table .cell .taskMDialog .diabtn {
+  background: transparent;
+  border: none;
 }
+
+.el-table .cell .taskMDialog .incbtn {
+  color: $color-btn-inner;
+}
+
 .dataInfo-box {
-  border:none !important;
+  border: none !important;
 }
+
+/* .el-dialog::-webkit-scrollbar-thumb {
+  background: #50609c;
+  border-radius: 4px;
+}
+
+.el-dialog::-webkit-scrollbar-track {
+  background: #489bd9;
+  border-radius: 5px;
+}
+
+.el-dialog::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+  background: transparent;
+}
+
+.el-dialog::-webkit-scrollbar-button {
+  background-color: #f6f6f6;
+}
+
+.el-dialog::-webkit-scrollbar-corner {
+  background: transparent;
+}
+ */

@@ -14,7 +14,7 @@
         </div>
         <!-- <el-button v-on:click="handleAdd" class="right-btn">add</el-button> -->
         <div class="regbtn fr">
-          <reg-dialog></reg-dialog>
+          <reg-dialog @refreshTable="loadTable"></reg-dialog>
         </div>
         <div class="regbtn fr">
           <hdfs-add></hdfs-add>
@@ -182,6 +182,7 @@ export default {
       this.collapse = !this.collapse;
     },
     loadTable:function(){
+      console.log("refresh");
       var _self = this;
       var paramsObj = {
         pageSize:this.$store.state.pageSize,

@@ -16,8 +16,10 @@
             </ul>
             <el-button slot="reference" class="user" type="primary" icon="enc-icon-user"></el-button>
         </el-popover>
+       <!--  <el-button class="document" type="primary" icon="enc-icon-documents"></el-button> -->
         <el-button class="setting" type="primary" icon="enc-icon-setting" v-on:click="goRoute('setting')"></el-button>
-        <el-button class="document" type="primary" icon="enc-icon-documents"></el-button>
+ <release></release>
+
       </div>
     </el-header>
     <el-container>
@@ -272,10 +274,10 @@ export default {
       border:0 none;
       outline: 0 none;
     }
-    ::-webkit-input-placeholder{color:#999;}    /* 使用webkit内核的浏览器 */
-    :-moz-placeholder{color:#999;}                  /* Firefox版本4-18 */
-    ::-moz-placeholder{color:#999;}                  /* Firefox版本19+ */
-    :-ms-input-placeholder{color:#999;}           /* IE浏览器 */
+    ::-webkit-input-placeholder{color:#999;}    ///* 使用webkit内核的浏览器 */
+    :-moz-placeholder{color:#999;}                  ///* Firefox版本4-18 */
+    ::-moz-placeholder{color:#999;}                  ///* Firefox版本19+ */
+    :-ms-input-placeholder{color:#999;}           ///* IE浏览器 */
     a{
       display:inline-block;
       margin-left:10px;
