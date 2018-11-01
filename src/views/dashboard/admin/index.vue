@@ -16,9 +16,9 @@
         <div class="regbtn fr">
           <reg-dialog @refreshTable="loadTable"></reg-dialog>
         </div>
-        <div class="regbtn fr">
-          <hdfs-add></hdfs-add>
-        </div>
+<!--         <div class="regbtn fr">
+  <hdfs-add></hdfs-add>
+</div> -->
         <el-button v-on:click="collapseExpand" size="mini" class="right-btn"><i :class="{'el-icon-plus':collapse,'el-icon-minus':!collapse}"></i></el-button>
         <formFliter v-if="queryParamReady" v-bind:formCollapse="collapse" v-bind:dataObj="formFilterData" @formFilter="changeFormFilter" />
       </el-header>
@@ -74,7 +74,7 @@ import formFliter from './../../../components/formFliter'
 
 import regDialog from './../dialog/admin/reg_dialog'
 import editDialog from './../dialog/admin/edit_dialog'
-import hdfsAdd from '@/views/mainLay/dialog/hdfs_add'
+
 export default {
   name: 'DashboardAdmin',
   data() {
@@ -134,7 +134,6 @@ export default {
     dataCount,
     formFliter,
     regDialog,
-    hdfsAdd,
     editDialog
   },
   watch: {
