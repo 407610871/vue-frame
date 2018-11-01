@@ -22,7 +22,8 @@
     </el-header>
     <el-container>
       <el-aside width="210px" class="enc-aside">
-        <aside-tree></aside-tree>
+        <!-- <aside-tree></aside-tree> -->
+        <new-aside-tree></new-aside-tree>
       </el-aside>
       <el-main class="enc-main">
         <div class="enc-search">
@@ -41,7 +42,7 @@
   </el-container>
 </template>
 <script>
-import { AppMain, AsideTree, NavMenu } from './components'
+import { AppMain, AsideTree, NavMenu, NewAsideTree } from './components'
 import logo from '@/assets/images/enc-logo.png'
 import release from '@/views/mainLay/dialog/release'
 
@@ -58,7 +59,8 @@ export default {
     AppMain,
     AsideTree,
     NavMenu,
-    release
+    release,
+    NewAsideTree
   },
   computed: {
 
@@ -230,6 +232,7 @@ export default {
   .enc-aside {
     width: 210px;
     background: #494f5b;
+    padding:20px;
   }
 
   .enc-main {

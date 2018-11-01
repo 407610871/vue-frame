@@ -27,9 +27,19 @@ import "./registerServiceWorker";
 import axios from 'axios'
 
 Vue.prototype.$ajax = axios;
+
+import Authen from "./Authen.js";
 import VJstree from 'vue-jstree'
 import Viser from 'viser-vue'
 
+Vue.use(Authen,{
+  url: process.env.VUE_APP_AUTH_SERVER_URL,
+  realm: process.env.VUE_APP_REALM,
+  clientId: process.env.VUE_APP_RESOURCE,
+  credentials: {
+    secret: process.env.VUE_APP_CREDENTIALS_SECRET
+  }
+});
 Vue.use(Viser);
 Vue.use(VJstree);
 Vue.use(Element, {
@@ -44,8 +54,8 @@ Object.keys(filters).forEach(key => {
 
 Vue.config.productionTip = false;
 
-new Vue({
-  el: "#app",
+window.vm = new Vue({
+  // el: "#app",
   router,
   store,
   i18n,
@@ -55,16 +65,18 @@ new Vue({
   },
   mounted(){
     var _self = this;
-    this.$ajax.get('./getAccessSourceType').then(function(res){
-      _self.$store.commit('setAccessSourceType', {
-        data:res.data
-      });
+    this.$ajax.get('http://10.19.160.176:8088/demo/caccess/sysdialect').then(function(res){
+      if(res.data.success){
+        _self.$store.commit('setNetwork', {
+          data:res.data.data
+        });
+      }
     })
     .catch(function(err){
       console.log(err)
     });
     this.$ajax.get('./getAccessDataSource').then(function(res){
-      _self.$store.commit('setAccessDataSource', {
+      _self.$store.commit('setDataSourceName', {
         data:res.data.staticDatas.SJLY
       });
     })
@@ -72,7 +84,7 @@ new Vue({
       console.log(err)
     });
     this.$ajax.get('./getExchangePlatform').then(function(res){
-      _self.$store.commit('setExchangePlatform', {
+      _self.$store.commit('setPlatform', {
         data:res.data.staticDatas.SSJZ
       });
     })
@@ -81,3 +93,12 @@ new Vue({
     });
   }
 });
+vm.$keycloak.onAuthSuccess = () => {
+  vm.$mount("#app");
+}
+
+// new Vue({
+//   router,
+//   store,
+//   render: h => h(App)
+// }).$mount("#app");

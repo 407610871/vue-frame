@@ -3,9 +3,9 @@
     <el-container style="height:100%;" class="dashboard-container">
       <el-header class="filter-container" height="86px">
         <div class="right-tools" v-if="tabPosition == 'metadataManage'">
-          <a href="javascript:void(0)"><i class="el-icon-upload2"></i></a>
-          <a href="javascript:void(0)"><i class="el-icon-download"></i></a>
-          <a href="javascript:void(0)"><i class="el-icon-refresh"></i></a>
+          <a href="javascript:void(0)"><i class="enc-icon-daochu"></i></a>
+          <a href="javascript:void(0)"><i class="enc-icon-daoru"></i></a>
+          <a href="javascript:void(0)"><i class="enc-icon-shuaxin"></i></a>
         </div>
         <el-radio-group v-model="tabPosition" style="margin-bottom: 30px;">
           <el-radio-button label="metadataManage">元数据管理</el-radio-button>
@@ -302,6 +302,9 @@ export default {
         :hover,
         :active{
           color:#f93;
+        }
+        i{
+          font-size: 32px;
         }
       }
     }

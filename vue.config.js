@@ -1,6 +1,7 @@
 
 // this is vue config
 module.exports = {
+  baseUrl: 'CIRCLES',
   devServer: {
     proxy: {
       '/api': {
@@ -15,4 +16,3 @@ module.exports = {
     }
   }
 }
-

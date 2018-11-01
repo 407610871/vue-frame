@@ -30,13 +30,13 @@
               <a href="javascript:void(0)" v-on:click="goSubPage(scope.$index)">{{ scope.row.name }}</a>
             </template>
           </el-table-column>
-          <el-table-column prop="verfication_code" label="接入源ID" width="180">
+          <el-table-column prop="id" label="接入源ID" width="180">
           </el-table-column>
-          <el-table-column prop="accessSysDialect.name" label="接入源类型">
+          <el-table-column prop="network" label="接入源类型">
           </el-table-column>
-          <el-table-column prop="accessSysType.name" label="对接平台">
+          <el-table-column prop="platform" label="对接平台">
           </el-table-column>
-          <el-table-column prop="accessSysType.name" label="接入数据来源">
+          <el-table-column prop="dataSourceName" label="接入数据来源">
           </el-table-column>
           <el-table-column prop="createTime" label="注册时间">
           </el-table-column>
@@ -148,30 +148,32 @@ export default {
     })
   },
   mounted(){
-    console.log(this.$store.state);
     var queryParams = this.$store.state.queryParams.dashboard;
     this.loadTable();
-    var accessSourceType = queryParams.accessSourceType?queryParams.accessSourceType:[];
-    var accessDataSource = queryParams.accessDataSource?queryParams.accessDataSource:[];
-    var exchangePlatform = queryParams.exchangePlatform?queryParams.exchangePlatform:[];
-    for(var i=0;i<accessSourceType.length;i++){
-      accessSourceType[i] = parseInt(accessSourceType[i]);
+    var network = queryParams.network?queryParams.network:[];
+    var dataSourceName = queryParams.dataSourceName?queryParams.dataSourceName:[];
+    var platform = queryParams.platform?queryParams.platform:[];
+    for(var i=0;i<network.length;i++){
+      network[i] = parseInt(network[i]);
     }
     this.formFilterData = [{
       name:"接入源类型：",
-      id:'accessSourceType',
-      checkData:this.$store.state.accessSourceType,
-      seledData:accessSourceType
+      id:'network',
+      type:'checkbox',
+      checkData:this.$store.state.network,
+      seledData:network
     },{
       name:"接入数据来源：",
-      id:'accessDataSource',
-      checkData:this.$store.state.accessDataSource,
-      seledData:accessDataSource
+      id:'dataSourceName',
+      type:'radio',
+      checkData:this.$store.state.dataSourceName,
+      seledData:dataSourceName
     },{
       name:"对接平台：",
-      id:'exchangePlatform',
-      checkData:this.$store.state.exchangePlatform,
-      seledData:exchangePlatform
+      id:'platform',
+      type:'checkbox',
+      checkData:this.$store.state.platform,
+      seledData:platform
     }];
     this.queryParamReady = true;
   },
@@ -181,13 +183,23 @@ export default {
     },
     loadTable:function(){
       var _self = this;
-      this.$ajax.get('http://localhost:8080/list',{
-        params:this.tableParams
-      }).then(function(res){
+      var paramsObj = {
+        pageSize:this.$store.state.pageSize,
+        pageNum:this.tableParams.pageNum
+      };
+      paramsObj.name = this.tableParams.name?this.tableParams.name:"";
+      paramsObj.dataSourceName = this.tableParams.dataSourceName.length>0?this.tableParams.dataSourceName.join(','):"";
+      paramsObj.network = this.tableParams.network.lengtgh>0?this.tableParams.network.join(','):"";
+      paramsObj.platform = this.tableParams.platform.lengtgh>0?this.tableParams.platform.join(','):"";
+      this.$ajax.post('http://10.19.160.175:8088/demo/caccess/query',paramsObj).then(function(res){
         console.log('tableLoaded:dashboard');
-        _self.mainTableData = res.data.page.list;
-        _self.mainTableDataTotal = res.data.page.total;
-        _self.currentPage = _self.tableParams.pageNum;
+        if(res.data.success){
+          _self.mainTableData = res.data.data.list;
+          _self.mainTableDataTotal = res.data.data.total;
+          _self.currentPage = _self.tableParams.pageNum;
+        }else{
+          console.log(res.data.code)
+        }
         // setTimeout(function(){
         //这里是异步的，存在延迟，所以没问题,如果是同步的话可能存在问题
         // },100)
@@ -248,7 +260,7 @@ export default {
     search:function(keyword){
       this.setStore({
         pageNum:1,
-        keyword:keyword
+        name:keyword
       });
     },
     changeFormFilter:function(fliterParams){
