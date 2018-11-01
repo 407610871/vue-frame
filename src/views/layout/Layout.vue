@@ -12,13 +12,14 @@
           trigger="hover"
           >
             <ul class="popup-menu">
-              <li><router-link :to="{ name: 'recyclingBins' }">回收箱</router-link></li>
+              <li><a href="javascript:void(0)" v-on:click="goRoute('recyclingBins')">回收箱</a></li>
             </ul>
             <el-button slot="reference" class="user" type="primary" icon="enc-icon-user"></el-button>
         </el-popover>
-        <el-button class="setting" type="primary" icon="enc-icon-setting"></el-button>
-        <release></release>
        <!--  <el-button class="document" type="primary" icon="enc-icon-documents"></el-button> -->
+        <el-button class="setting" type="primary" icon="enc-icon-setting" v-on:click="goRoute('setting')"></el-button>
+ <release></release>
+
       </div>
     </el-header>
     <el-container>
@@ -32,7 +33,7 @@
         </div>
         <div class="enc-sub-header">
           <el-breadcrumb separator="/">
-            <el-breadcrumb-item v-for="item in breadcrumb" :to="{ name: item.name, params:item.params,query:item.query}">{{item.breadcrumbName}}</el-breadcrumb-item>
+            <el-breadcrumb-item v-for="(item,index) in breadcrumb"><a href="javascript:void(0)" v-on:click="breadcrumbChange(index,item)">{{item.breadcrumbName}}</a></el-breadcrumb-item>
           </el-breadcrumb>
           <!-- <span v-for="item in breadcrumb"> / <a href="javascript:void(0)" v-on:click="goToPage(item.path)">{{item.name}}</a></span> -->
         </div>
@@ -65,25 +66,60 @@ export default {
 
   },
   created(){
+    if (sessionStorage.getItem("store")) {
+      this.$store.replaceState(Object.assign({}, this.$store.state,JSON.parse(sessionStorage.getItem("store"))))
+    }
+    window.addEventListener("beforeunload",()=>{
+      sessionStorage.setItem("store",JSON.stringify(this.$store.state));
+    });
+    this.$root.eventHub.$on('setKeyword', (keyword)=>{
+      this.keyword = keyword;
+    });
     this.getBreadcrumb();
   },
   watch: {
     $route(to,from){
       this.getBreadcrumb();
+      this.keyword = this.$route.query.keyword;
       // this.$route.matched.forEach((item, index) => {
       //   console.log(item)
       // })
     }
   },
   methods: {
+    goRoute:function(name){
+      var obj = {
+        data:[],
+        resetData:[]
+      }
+      for(var i = 0;i<this.breadcrumb.length;i++){
+        obj.resetData.push(this.breadcrumb[i].name)
+      }
+      this.$store.commit('resetQueryParam', obj);
+      this.$router.push({ name: name});
+    },
     search:function(){
       this.$root.eventHub.$emit('search',this.keyword);
+    },
+    breadcrumbChange:function(index,item){
+      if(index != this.breadcrumb.length-1){
+        var obj = {
+          data:[],
+          resetData:[]
+        };
+        for(var i = 0;i<index+1;i++){
+          obj.data.push(this.breadcrumb[i].name)
+        }
+        for(var i = index+1;i<this.breadcrumb.length;i++){
+          obj.resetData.push(this.breadcrumb[i].name)
+        }
+        this.$store.commit('resetQueryParam', obj);
+        this.$router.push({ name: item.name, params:item.params,query:item.query});
+      }
     },
     getBreadcrumb(){
       var routeName = this.$route.name;
       if(routeName =='dashboard' || routeName == 'accessObjManage' || routeName == 'accessObjInfo'){
-        console.log('-----------------------------------');
-        console.log(this.$store.state.queryParams);
         this.breadcrumb = [
           {
             name:'dashboard',

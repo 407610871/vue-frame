@@ -9,7 +9,9 @@
       active-text-color="#499bd7">
       <el-menu-item index="1">数据接入</el-menu-item>
       <el-menu-item index="2">数据处理</el-menu-item>
-      <el-menu-item index="3">任务中心</el-menu-item>
+      <el-menu-item index="3">
+        <router-link to="task">任务中心</router-link>
+        </el-menu-item>
     </el-menu>
   </div>
 </template>

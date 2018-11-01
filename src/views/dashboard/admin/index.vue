@@ -23,8 +23,9 @@
         <formFliter v-if="queryParamReady" v-bind:formCollapse="collapse" v-bind:dataObj="formFilterData" @formFilter="changeFormFilter" />
       </el-header>
       <el-main style="padding-bottom:0;">
-        <el-table :data="mainTableData" stripe :height="tableHeight" border style="width: 100%">
-          <el-table-column label="接入源名称" width="180">
+        <router-view />
+        <el-table :data="mainTableData" stripe :height="tableHeight" border style="width: 100%" tooltip-effect="light">
+          <el-table-column label="接入源名称" width="250" show-overflow-tooltip>
             <template slot-scope="scope">
               <a href="javascript:void(0)" v-on:click="goSubPage(scope.$index)">{{ scope.row.name }}</a>
             </template>
@@ -62,16 +63,6 @@
         </div>
       </el-footer>
     </el-container>
-    <!-- <el-dialog
-      :title="dialogTitle"
-      :visible.sync="dialogVisible"
-      width="30%">
-      <add1 :dialogRouter="myDialogRouter" />
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="dialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
-      </span>
-    </el-dialog> -->
     <router-view />
   </div>
 </template>
@@ -90,18 +81,12 @@ export default {
     return {
       queryParamReady:false,
       currentPage:1,
-      mainTableData: this.$store.state.mainTableData,
-      mainTableDataTotal: 0,
+      mainTableData: [],
+      mainTableDataTotal: 1,
       dialogVisible:false,
       myDialogRouter:'adminAdd',
       dialogTitle:'新增',
       collapse:true,
-      tableParams:{
-        accessSourceType:'',
-        accessDataSource:'',
-        exchangePlatform:'',
-        pageNum:1
-      },
       count1Data: {
         name: '批式接入统计',
         list: [{
@@ -129,40 +114,19 @@ export default {
           number: 37,
           color: '#990'
         }]
-      }
+      },
+      formFilterData:[]
     }
   },
   computed:{
+    tableParams:function(){
+      return this.$store.state.queryParams.dashboard
+    },
     tableHeight: function(){
       return this.collapse?window.innerHeight - 360:window.innerHeight - 430;
     },
     headerHeight:function(){
       return this.collapse?'160px':'230px';
-    },
-    formFilterData:function(){
-      var accessSourceType = this.tableParams.accessSourceType?this.tableParams.accessSourceType.split(','):[];
-      var accessDataSource = this.tableParams.accessDataSource?this.tableParams.accessDataSource.split(','):[];
-      var exchangePlatform = this.tableParams.exchangePlatform?this.tableParams.exchangePlatform.split(','):[];
-      for(var i=0;i<accessSourceType.length;i++){
-        accessSourceType[i] = parseInt(accessSourceType[i]);
-      }
-      var list = [{
-        name:"接入源类型：",
-        id:'accessSourceType',
-        checkData:this.$store.state.accessSourceType,
-        seledData:accessSourceType
-      },{
-        name:"接入数据来源：",
-        id:'accessDataSource',
-        checkData:this.$store.state.accessDataSource,
-        seledData:accessDataSource
-      },{
-        name:"对接平台：",
-        id:'exchangePlatform',
-        checkData:this.$store.state.exchangePlatform,
-        seledData:exchangePlatform
-      }];
-      return list;
     }
   },
   components: {
@@ -174,15 +138,42 @@ export default {
     editDialog
   },
   watch: {
+    tableParams(newVal,oldVal){
+      this.loadTable();
+    }
   },
-  // created(){
-  //   this.getTableParam();
-  // },
-  // mounted(){
-  //   this.loadTable()
-  // },
-  activated(){
-    this.getTableParam();
+  created(){
+    this.$root.eventHub.$on('search', (keyword)=>{
+      this.search(keyword);
+    })
+  },
+  mounted(){
+    console.log(this.$store.state);
+    var queryParams = this.$store.state.queryParams.dashboard;
+    this.loadTable();
+    var accessSourceType = queryParams.accessSourceType?queryParams.accessSourceType:[];
+    var accessDataSource = queryParams.accessDataSource?queryParams.accessDataSource:[];
+    var exchangePlatform = queryParams.exchangePlatform?queryParams.exchangePlatform:[];
+    for(var i=0;i<accessSourceType.length;i++){
+      accessSourceType[i] = parseInt(accessSourceType[i]);
+    }
+    this.formFilterData = [{
+      name:"接入源类型：",
+      id:'accessSourceType',
+      checkData:this.$store.state.accessSourceType,
+      seledData:accessSourceType
+    },{
+      name:"接入数据来源：",
+      id:'accessDataSource',
+      checkData:this.$store.state.accessDataSource,
+      seledData:accessDataSource
+    },{
+      name:"对接平台：",
+      id:'exchangePlatform',
+      checkData:this.$store.state.exchangePlatform,
+      seledData:exchangePlatform
+    }];
+    this.queryParamReady = true;
   },
   methods:{
     collapseExpand:function(){
@@ -191,17 +182,15 @@ export default {
     loadTable:function(){
       console.log("refresh");
       var _self = this;
-      this.$ajax.get('./list',{
+      this.$ajax.get('http://localhost:8080/list',{
         params:this.tableParams
       }).then(function(res){
+        console.log('tableLoaded:dashboard');
         _self.mainTableData = res.data.page.list;
-        _self.$store.commit('setMainTableData', {
-          data:res.data.page.list
-        });
         _self.mainTableDataTotal = res.data.page.total;
+        _self.currentPage = _self.tableParams.pageNum;
         // setTimeout(function(){
         //这里是异步的，存在延迟，所以没问题,如果是同步的话可能存在问题
-          _self.currentPage = _self.tableParams.pageNum;
         // },100)
       })
       .catch(function(err){
@@ -209,84 +198,62 @@ export default {
         console.log(err)
       });
     },
+    setStore:function(obj){
+      let storeData = JSON.parse(JSON.stringify(this.$store.state.queryParams[this.$route.name]));
+      for(var i in obj){
+        storeData[i] = obj[i];
+      }
+      this.$store.commit('setQueryParams', {
+        name:this.$route.name,
+        data:storeData
+      });
+    },
     goPage:function(val){
-      var paramsObj = {
+      this.setStore({
         pageNum:val
-      };
-      if(this.tableParams.accessSourceType){
-        paramsObj.accessSourceType = this.tableParams.accessSourceType;
-      }
-      if(this.tableParams.accessDataSource){
-        paramsObj.accessDataSource = this.tableParams.accessDataSource;
-      }
-      if(this.tableParams.exchangePlatform){
-        paramsObj.exchangePlatform = this.tableParams.exchangePlatform;
-      }
-      this.$router.push({name:this.$route.name,query:paramsObj});
+      });
     },
     goSubPage:function(index){
       this.$router.push({name:'accessObjManage',params:{sourceId:this.mainTableData[index].id,sourceName:encodeURI(this.mainTableData[index].name)}});
     },
     handleAdd: function() {
-      this.myDialogRouter = 'adminAdd';
-      this.dialogTitle = '新增';
-      this.dialogVisible = true;
+      //新增
     },
     handleEdit: function(index, row) {
-      this.myDialogRouter = 'adminEdit';
-      this.dialogTitle = '修改';
-      this.dialogVisible = true;
+      //修改
     },
     handleCopy: function(index, row) {
       this.$ajax.post('./copy', {
-          params: {
-            id: row.id
-          }
-        }).then(function(res) {
-          loadPage(1);
-        })
-        .catch(function(err) {
-          console.log(err)
-        });
+        params: {
+          id: row.id
+        }
+      }).then(function(res) {
+        this.loadTable(1);
+      })
+      .catch(function(err) {
+        console.log(err)
+      });
     },
     handleDelete: function(index, row) {
       this.$ajax.post('./delete', {
-          params: {
-            id: row.id
-          }
-        }).then(function(res) {
-          loadPage(this.mainTablePage);
-        })
-        .catch(function(err) {
-          console.log(err)
-        });
-    },
-    search:function(){
-      console.log('search')
-      this.tableFliter.keywords = '';
-      this.loadPage(1);
-    },
-    getTableParam:function(){
-      this.tableParams.pageNum = this.$route.query.pageNum?parseInt(this.$route.query.pageNum):1;
-      this.tableParams.accessSourceType = this.$route.query.accessSourceType?this.$route.query.accessSourceType:'';
-      this.tableParams.accessDataSource = this.$route.query.accessDataSource?this.$route.query.accessDataSource:'';
-      this.tableParams.exchangePlatform = this.$route.query.exchangePlatform?this.$route.query.exchangePlatform:'';
-      this.loadTable();
-      this.queryParamReady = true;
-      this.$store.commit('setQueryParams', {
-        name:this.$route.name,
-        data:this.$route.query
+        params: {
+          id: row.id
+        }
+      }).then(function(res) {
+        this.loadTable(this.mainTablePage);
+      })
+      .catch(function(err) {
+        console.log(err)
       });
-        // _self.$set(_self.$data, 'mainTablePage',_self.$route.query.pageNum?parseInt(_self.$route.query.pageNum):1);
+    },
+    search:function(keyword){
+      this.setStore({
+        pageNum:1,
+        keyword:keyword
+      });
     },
     changeFormFilter:function(fliterParams){
-      console.log(fliterParams);
-      for(var i in fliterParams){
-        // this.$set(this.$data, 'tableParams.'+i,fliterParams[i].join(','));
-        this.tableParams[i] = fliterParams[i].join(',');
-      }
-      console.log(this.tableParams);
-      this.goPage(this.currentPage);
+      this.setStore(fliterParams);
     }
   }
 }

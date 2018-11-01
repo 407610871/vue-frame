@@ -21,10 +21,11 @@
               :height="tableHeight"
               border
               style="width: 100%"
+              tooltip-effect="light"
               >
               <el-table-column
                 label="字段中文名"
-                width="180">
+                width="180" show-overflow-tooltip>
                 <template slot-scope="scope">
                   <a href="javascript:void(0)">{{ scope.row.name }}</a>
                 </template>
@@ -82,6 +83,7 @@
               :height="tableHeight"
               border
               style="width: 100%"
+              tooltip-effect="light"
               >
               <el-table-column
                 prop="name"
@@ -136,7 +138,7 @@
           <el-footer>
             <div class="enc-pagination">
               <el-pagination v-if="mainTableReady" style="float:right; margin:10px;"
-                @current-change="goPreviewPage"
+                @current-change="goPage"
                 background
                 :page-size="20"
                 :total="mainTableDataTotal2"
@@ -177,71 +179,90 @@ export default {
       mainTableReady:true,
       mainTableData1: [],
       mainTableData2: [],
-      mainTableDataTotal1: 0,
-      mainTableDataTotal2: 0,
+      mainTableDataTotal1: 1,
+      mainTableDataTotal2: 1,
       dialogVisible:false,
       myDialogRouter:'adminAdd',
       dialogTitle:'新增',
-      tabPosition:'metadataManage',
-      tableParams:{
-        pageNum1:1,
-        pageNum2:1
-      }
+      tabPosition:'metadataManage'
     }
+  },
+  computed:{
+    tableParams:function(){
+      return this.$store.state.queryParams.accessObjInfo;
+    },
   },
   components: {
     add1
   },
-  activated(){
-    this.getTableParam();
+  watch: {
+    tableParams(newVal,oldVal){
+      if(newVal.pageNum1 != oldVal.pageNum1 || newVal.pageNum2 != oldVal.pageNum2){
+        this.loadTable();
+      }
+      this.tabPosition = newVal.tabPosition;
+    },
+    tabPosition(newVal,oldVal){
+      this.setStore({
+        tabPosition:newVal
+      });
+    }
   },
-  // mounted(){
-  // },
-  // created(){
-  // },
+  mounted(){
+    var tableParams = this.$store.state.queryParams.accessObjInfo;
+    this.loadTable(true);
+  },
+  created(){
+    this.$root.eventHub.$on('search', (keyword)=>{
+      this.search(keyword);
+    })
+  },
   methods:{
-    loadTable:function(){
+    loadTable:function(flag){
+      console.log(flag)
       var _self = this;
-      this.$ajax.get('./list',{
-        params:this.tableParams
-      }).then(function(res){
-        _self.mainTableData1 = res.data.page.list;
-        _self.mainTableDataTotal1 = res.data.page.total;
-        //这里是异步的，存在延迟，所以没问题,如果是同步的话可能存在问题
-        _self.currentPage1 = _self.tableParams.pageNum1;
-      })
-      .catch(function(err){
-        _self.currentPage1 = _self.tableParams.pageNum1;
-        console.log(err)
-      });
-      this.$ajax.get('./list',{
-        params:this.tableParams
-      }).then(function(res){
-        _self.mainTableData2 = res.data.page.list;
-        _self.mainTableDataTotal2 = res.data.page.total;
-        //这里是异步的，存在延迟，所以没问题,如果是同步的话可能存在问题
-        _self.currentPage2 = _self.tableParams.pageNum2;
-      })
-      .catch(function(err){
-        _self.currentPage2 = _self.tableParams.pageNum2;
-        console.log(err)
-      });
+      if(this.tabPosition == 'metadataManage' || flag){
+        this.$ajax.get('http://localhost:8080/list',{
+          params:this.tableParams
+        }).then(function(res){
+          console.log('tableLoaded:metadataManage');
+          _self.mainTableData1 = res.data.page.list;
+          _self.mainTableDataTotal1 = res.data.page.total;
+          //这里是异步的，存在延迟，所以没问题,如果是同步的话可能存在问题
+          _self.currentPage1 = _self.tableParams.pageNum1;
+        })
+        .catch(function(err){
+          _self.currentPage1 = _self.tableParams.pageNum1;
+          console.log(err)
+        });
+      }
+      if(this.tabPosition != 'metadataManage' || flag){
+        this.$ajax.get('http://localhost:8080/list',{
+          params:this.tableParams
+        }).then(function(res){
+          console.log('tableLoaded:dataPreview');
+          _self.mainTableData2 = res.data.page.list;
+          _self.mainTableDataTotal2 = res.data.page.total;
+          //这里是异步的，存在延迟，所以没问题,如果是同步的话可能存在问题
+          _self.currentPage2 = _self.tableParams.pageNum2;
+        })
+        .catch(function(err){
+          _self.currentPage2 = _self.tableParams.pageNum2;
+          console.log(err)
+        });
+      }
     },
     goPage:function(val){
-      var paramsObj = {
-        pageNum1:val,
-        pageNum2:this.tableParams.pageNum2,
-        tabPosition:this.tabPosition
-      };
-      this.$router.push({name:this.$route.name,query:paramsObj});
+      var obj = {};
+      var paramName = this.tabPosition == 'metadataManage'?'pageNum1':'pageNum2';
+      obj[paramName] = val;
+      this.setStore(obj);
     },
-    goPreviewPage:function(val){
-      var paramsObj = {
-        pageNum1:this.tableParams.pageNum1,
-        pageNum2:val,
-        tabPosition:this.tabPosition
-      };
-      this.$router.push({name:this.$route.name,query:paramsObj});
+    search:function(keyword){
+      this.setStore({
+        pageNum:1,
+        keyword:keyword
+      });
     },
     showAdd:function(){
       this.myDialogRouter = 'adminAdd';
@@ -253,17 +274,16 @@ export default {
       this.dialogTitle = '修改';
       this.dialogVisible = true;
     },
-    getTableParam:function(){
-      this.tableParams.pageNum1 = this.$route.query.pageNum1?parseInt(this.$route.query.pageNum1):1;
-      this.tableParams.pageNum2 = this.$route.query.pageNum2?parseInt(this.$route.query.pageNum2):1;
-      this.tabPosition = this.$route.query.tabPosition == 'metadataManage' || this.$route.query.tabPosition == 'dataPreview'?this.$route.query.tabPosition:'metadataManage';
-      this.loadTable();
-      this.queryParamReady = true;
-      // this.$store.commit('setQueryParams', {
-      //   name:this.$route.name,
-      //   data:this.$route.query
-      // });
-    }
+    setStore:function(obj){
+      let storeData = JSON.parse(JSON.stringify(this.$store.state.queryParams[this.$route.name]));
+      for(var i in obj){
+        storeData[i] = obj[i];
+      }
+      this.$store.commit('setQueryParams', {
+        name:this.$route.name,
+        data:storeData
+      });
+    },
   }
 }
 </script>

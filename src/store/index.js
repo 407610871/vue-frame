@@ -6,22 +6,71 @@ import getters from "./getters";
 
 Vue.use(Vuex);
 
+const queryParamsDefault = {
+  dashboard:{
+    accessSourceType:[],
+    accessDataSource:[],
+    exchangePlatform:[],
+    keyword:'',
+    pageNum:1
+  },
+  accessObjManage:{
+    accessObjType:[],
+    dataArea:[],
+    keyword:'',
+    pageNum:1
+  },
+  accessObjInfo:{
+    pageNum1:1,
+    pageNum2:1,
+    keyword:'',
+    tabPosition:'metadataManage'
+  },
+  recyclingBins:{
+    accessSourceType:[],
+    accessDataSource:[],
+    exchangePlatform:[],
+    keyword:'',
+    pageNum:1
+  }
+}
+
 const store = new Vuex.Store({
   state: {
-    mainTableData:[],
-    dialogRouter:{
-      'adminAdd':'adminAdd'
-    },
     accessSourceType:[],
     accessDataSource:[],
     exchangePlatform:[],
     pageSize:20,
-    queryParams:{}
+    queryParams:{
+      dashboard:{
+        accessSourceType:[],
+        accessDataSource:[],
+        exchangePlatform:[],
+        keyword:'',
+        pageNum:1
+      },
+      accessObjManage:{
+        accessObjType:[],
+        dataArea:[],
+        keyword:'',
+        pageNum:1
+      },
+      accessObjInfo:{
+        pageNum1:1,
+        pageNum2:1,
+        keyword:'',
+        tabPosition:'metadataManage'
+      },
+      recyclingBins:{
+        accessSourceType:[],
+        accessDataSource:[],
+        exchangePlatform:[],
+        keyword:'',
+        pageNum:1
+      }
+    }
   },
   mutations: {
-    setMainTableData (state,obj) {
-      state.mainTableData = obj.data;
-    },
     setAccessSourceType(state,obj){
       var list = [];
       for(var value of obj.data){
@@ -54,6 +103,15 @@ const store = new Vuex.Store({
     },
     setQueryParams(state,obj){
       state.queryParams[obj.name] = obj.data;
+    },
+    resetQueryParam(state,obj){
+      var newObj = JSON.parse(JSON.stringify(queryParamsDefault));
+      for(var value of obj.data){  //这里obj.data是一个数组，表示不需要重置的
+        if(state.queryParams[value]){
+          newObj[value] = JSON.parse(JSON.stringify(state.queryParams[value]));
+        }
+      }
+      state.queryParams = newObj;
     }
   },
   modules: {

@@ -1,10 +1,11 @@
 <template>
   <div>
     <el-container style="height:100%;" class="dashboard-container">
-      <el-header class="filter-container" height="106px">
-        <formFilter v-bind:dataObj="formFilterData" @formFilter="formFilter" />
+      <el-header class="filter-container" :height="headerHeight">
+        <el-button v-on:click="collapseExpand" size="mini" class="right-btn"><i :class="{'el-icon-plus':collapse,'el-icon-minus':!collapse}"></i></el-button>
+        <formFliter v-if="queryParamReady" v-bind:formCollapse="collapse" v-bind:dataObj="formFilterData" @formFilter="changeFormFilter" />
       </el-header>
-      <el-main style="padding-bottom:0;">
+      <el-main style="padding-bottom:0; padding-top:0;">
         <el-table
           :data="mainTableData"
           stripe
@@ -54,13 +55,13 @@
       </el-main>
       <el-footer>
         <div class="enc-pagination">
-          <el-pagination v-if="mainTableReady" style="float:right; margin:10px;"
-            @current-change="loadPage"
+          <el-pagination v-if="queryParamReady" style="float:right; margin:10px;"
+            @current-change="goPage"
             background
             :page-size="20"
             :total="mainTableDataTotal"
             layout="prev, pager, next, jumper"
-            :current-page.sync="mainTablePage">
+            :current-page.sync="currentPage">
           </el-pagination>
         </div>
       </el-footer>
@@ -81,18 +82,17 @@
 <script>
 import { mapState} from 'vuex'
 import add1 from './dialog/'
-import formFilter from './../../components/formFliter'
-
+import formFliter from './../../components/formFliter'
 
 export default {
   name: 'DashboardAdmin',
   data() {
     return {
-      tableHeight: window.innerHeight - 300,
-      mainTableReady:true,
-      mainTableData: this.$store.state.mainTableData,
-      mainTablePage: 1,
-      mainTableDataTotal: 0,
+      queryParamReady:false,
+      collapse:true,
+      mainTableData: [],
+      currentPage: 1,
+      mainTableDataTotal: 1,
       dialogVisible:false,
       myDialogRouter:'adminAdd',
       dialogTitle:'新增'
@@ -100,67 +100,75 @@ export default {
   },
   components: {
     add1,
-    formFilter
+    formFliter
   },
   computed: {
-    formFilterData:function(){
-      var list = [{
-        name:"接入源类型：",
-        id:'accessSourceType',
-        checkData:this.$store.state.accessSourceType,
-        seledData:[]
-      },{
-        name:"接入数据来源：",
-        id:'accessDataSource',
-        checkData:this.$store.state.accessDataSource,
-        seledData:[]
-      },{
-        name:"对接平台：",
-        id:'exchangePlatform',
-        checkData:this.$store.state.exchangePlatform,
-        seledData:[]
-      }];
-      return list;
+    tableParams:function(){
+      return this.$store.state.queryParams.recyclingBins
+    },
+    tableHeight: function(){
+      return this.collapse?window.innerHeight - 226:window.innerHeight - 305;
+    },
+    headerHeight:function(){
+      return this.collapse?'50px':'130px';
     }
   },
-  mounted(){
-    var _self = this;
-    setTimeout(function(){
-      console.log('1231231')
-      console.log(_self.$store.state.accessSourceType)
-    },3000)
-    this.$ajax.get('./list?pageNum=1&pageSize=20').then(function(res){
-      _self.mainTableData = res.data.page.list;
-      _self.$store.commit('setMainTableData', {
-        data:res.data.page.list
-      });
-      _self.mainTableDataTotal = res.data.page.total;
-      _self.mainTableReady = true;
-    })
-    .catch(function(err){
-      console.log(err)
-    });
+  watch: {
+    tableParams(newVal,oldVal){
+      this.loadTable();
+    }
   },
   created(){
-
+    this.$root.eventHub.$on('search', (keyword)=>{
+      this.search(keyword);
+    })
+  },
+  mounted(){
+    var queryParams = this.$store.state.queryParams.recyclingBins;
+    this.loadTable();
+    var accessSourceType = queryParams.accessSourceType?queryParams.accessSourceType:[];
+    var accessDataSource = queryParams.accessDataSource?queryParams.accessDataSource:[];
+    var exchangePlatform = queryParams.exchangePlatform?queryParams.exchangePlatform:[];
+    for(var i=0;i<accessSourceType.length;i++){
+      accessSourceType[i] = parseInt(accessSourceType[i]);
+    }
+    this.formFilterData = [{
+      name:"接入源类型：",
+      id:'accessSourceType',
+      checkData:this.$store.state.accessSourceType,
+      seledData:accessSourceType
+    },{
+      name:"接入数据来源：",
+      id:'accessDataSource',
+      checkData:this.$store.state.accessDataSource,
+      seledData:accessDataSource
+    },{
+      name:"对接平台：",
+      id:'exchangePlatform',
+      checkData:this.$store.state.exchangePlatform,
+      seledData:exchangePlatform
+    }];
+    this.queryParamReady = true;
   },
   methods:{
-    loadPage:function(val,extraParam){
+    collapseExpand:function(){
+      this.collapse = !this.collapse;
+    },
+    loadTable:function(){
       var _self = this;
-      _self.mainTablePage = val;
-      var param = extraParam?extraParam:{};
-      this.$ajax.get('./list?pageNum=1&pageSize=20',param).then(function(res){
+      this.$ajax.get('http://localhost:8080/list',{
+        params:this.tableParams
+      }).then(function(res){
+        console.log('tableLoaded:recyclingBins');
         _self.mainTableData = res.data.page.list;
-        // Vue.set(_self.$store.state,'mainTableData',res.data);
-        _self.$store.commit('setMainTableData', {
-          data:res.data.page.list
-        });
         _self.mainTableDataTotal = res.data.page.total;
+        //这里是异步的，存在延迟，所以没问题,如果是同步的话可能存在问题
+        _self.currentPage = _self.tableParams.pageNum;
       })
       .catch(function(err){
-        console.log(err)
+        _self.currentPage = _self.tableParams.pageNum;
+        console.log(err);
       });
-      this.breadListLast();
     },
     showAdd:function(){
       this.myDialogRouter = 'adminAdd';
@@ -172,9 +180,29 @@ export default {
       this.dialogTitle = '修改';
       this.dialogVisible = true;
     },
-    formFilter:function(fliterParams){
-      console.log('formFilter:');
-      console.log(fliterParams);
+    setStore:function(obj){
+      let storeData = JSON.parse(JSON.stringify(this.$store.state.queryParams[this.$route.name]));
+      for(var i in obj){
+        storeData[i] = obj[i];
+      }
+      this.$store.commit('setQueryParams', {
+        name:this.$route.name,
+        data:storeData
+      });
+    },
+    goPage:function(val){
+      this.setStore({
+        pageNum:val
+      });
+    },
+    search:function(keyword){
+      this.setStore({
+        pageNum:1,
+        keyword:keyword
+      });
+    },
+    changeFormFilter:function(fliterParams){
+      this.setStore(fliterParams);
     }
   }
 }
@@ -182,6 +210,7 @@ export default {
 
 <style rel="stylesheet/scss" lang="scss" scoped>
 .dashboard-container {
+  background-color: #fff;
   .filter-container {
     padding-top:10px;
     background: #fff;
@@ -197,13 +226,14 @@ export default {
         }
       }
     }
-    form{
-      margin-right:100px;
+    form {
+      padding-top:0;
+      margin-right: 100px;
     }
-    .el-form-item{
-      margin-bottom:2px;
+    .el-form-item {
+      margin-bottom: 2px;
     }
-    .add-btn{
+    .right-btn{
       float:right;
     }
   }
