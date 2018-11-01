@@ -14,14 +14,14 @@
               <el-radio-group v-model="ruleForm.setVer">
                 <el-col :span="24">
                   <el-col :span="6">
-                    <el-radio :label="1">全量核验</el-radio>
+                    <el-radio :label="0">全量核验</el-radio>
                   </el-col>
                   <el-col :span="4" class="bank">bank</el-col>
                   <el-col :span="6">
-                    <el-radio :label="2">根据时间范围核验</el-radio>
+                    <el-radio :label="1">根据时间范围核验</el-radio>
                   </el-col>
                   <el-col :span="10">
-                    <el-button type="primary" size="small" @click="inverCheck()">开始核验</el-button>
+                    <el-button type="primary" size="small" @click="inverCheck()">{{status}}</el-button>
                   </el-col>
                 </el-col>
               </el-radio-group>
@@ -34,7 +34,7 @@
               </el-form-item>
             </el-col>
             <el-col :span="12">
-              <div class="time" v-show="ruleForm.setVer=='2'">
+              <div class="time" v-show="ruleForm.setVer=='1'">
                 <el-date-picker size="small" :picker-options="ruleForm.pickerOptions" v-model="ruleForm.startTime" type="daterange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" value-format="yyyy-MM-dd">
                 </el-date-picker>
               </div>
@@ -52,9 +52,9 @@
             </el-col>
             <el-col :span="14">
               <ul>
-                <li title="">{{"无"}}</li>
-                <li title="">{{"无"}}</li>
-                <li title="">{{"无"}}</li>
+                <li :title="resData.source_library">{{resData.source_library || '无'}}</li>
+                <li :title="resData.source_tableName">{{resData.source_tableName || "无"}}</li>
+                <li :title="resData.source_tableNum">{{resData.source_tableNum || "无"}}</li>
               </ul>
             </el-col>
           </el-col>
@@ -69,30 +69,30 @@
             </el-col>
             <el-col :span="14">
               <ul>
-                <li title="">{{"无"}}</li>
-                <li title="">{{"无"}}</li>
-                <li title="">{{"无"}}</li>
+                <li :title="resData.target_library">{{resData.target_library || "无"}}</li>
+                <li :title="resData.target_tableName">{{resData.target_tableName || "无"}}</li>
+                <li :title="resData.target_tableNum">{{resData.target_tableNum || "无"}}</li>
               </ul>
             </el-col>
           </el-col>
         </div>
-        <div class="proInfo-box clearfix ptb20">
+        <div class="proInfo-box clearfix ptb20 resultIcon">
           <el-col :span="8">
-             <span>核验结果:</span>
-             <span class="yes" v-if="result==0"></span>
-             <span class="wrong" v-else-if="result==1"></span>
-             <span v-else-if="result==null" style="color:#606266">无</span>
+            <span>核验结果:</span>
+            <span class="yes" v-if="resData.testresults_result=='0'"></span>
+            <span class="wrong" v-else-if="resData.testresults_result=='1'"></span>
+            <span v-else-if="resData.testresults_result=='null'" style="color:#606266">无</span>
           </el-col>
           <el-col :span="8">
-             <span>数据量差值:</span>
+            <span>数据量差值: {{resData.testresults_dvalue}}</span>
           </el-col>
           <el-col :span="8">
-             <el-button type="primary" size="small" >查看日志</el-button>
+            <el-button type="primary" size="small" @click="checkLog()">查看日志</el-button>
           </el-col>
         </div>
-         <div class="proInfo-box log-box clearfix ptb20">
-           <textarea name="" id="" disabled="disabled" v-show="textShow" >{{loginfo}}</textarea>
-         </div>
+        <div class="proInfo-box log-box clearfix ptb20" v-loading="loading2">
+          <textarea name="" id="" disabled="disabled" v-show="textShow">{{loginfo}}</textarea>
+        </div>
       </el-form>
     </el-dialog>
   </div>
@@ -102,15 +102,21 @@ export default {
   name: "dataInver",
   data: function() {
     return {
+      taskInfoId: '1',
+      taskId: '1',
       dialogVisible: false,
-      loginfo: '123123',
-      textShow:'true',
+      loginfo: '',
+      loading2: false,
+      textShow: false,
+      status: '开始核验',
       result: '0',
+      timer: null,
+      loading: false,
+      resData: {},
       ruleForm: {
-        setVer: 1, //核验设置
+        setVer: 0, //核验设置
         range: 0, //核验误差范围
         startTime: [],
-
         pickerOptions: {
           disabledDate(time) {
             return time.getTime() > Date.now() - 8.64e7;
@@ -124,6 +130,156 @@ export default {
     closeDialog() {
       this.dialogVisible = false;
       this.$refs['ruleForm'].resetFields();
+    },
+    setTimer: function() {
+      this.timer = setTimeout(() => {
+        this._queryInver();
+      }, 5000);
+    },
+    _queryInver() {
+      this.$ajax({
+        method: "GET",
+        url: 'http://10.19.160.59:8088/demo/ccheckData/tableNum',
+        // headers:{
+        //   'Content-Type':'application/json;charset=utf-8',
+        // },
+        params: {
+          taskId: this.taskId
+        }
+
+      }).then(res => {
+        if (res.data.result == "true" || res.data.result == true) {
+          this.resData = res.data;
+          if (res.data.status == "1") {
+            this.textShow = false;
+            window.clearInterval(this.timer);
+            this.timer = null;
+            this.loading = false;
+            this.status = '开始核验';
+            if (res.data.config_key != undefined && res.data.config_key != null) {
+              //全量
+              if (res.data.config_key == "0") {
+                this.ruleForm.setVer = 0;
+                this.ruleForm.startTime = [];
+              } else {
+                //时间范围
+                this.ruleForm.setVer = 1;
+                this.ruleForm.startTime = [
+                  res.data.config_startTime,
+                  res.data.config_endTime
+                ]
+              }
+              this.ruleForm.range = res.data.config_range;
+
+            }
+          } else if (res.data.status == "0") {
+            this.loading = true;
+            this.setTimer();
+            this.status = '核验中'
+          } else {
+            this.$alert("还未核验暂无数据,请核验", "核验结果", {
+              confirmButtonText: "确定"
+            });
+          }
+        } else {
+          this.$alert("核验数据失败", "核验结果", {
+            confirmButtonText: "确定",
+            callback: action => {
+              this.dialogVisible = false;
+            }
+          });
+        }
+      }, res => {
+        this.$alert("核验数据失败", "核验结果", {
+          confirmButtonText: "确定",
+          callback: action => {
+            this.dialogVisible = false;
+          }
+        });
+      })
+    },
+    //查询日志
+    checkLog() {
+      this.loading2 = true;
+      this.$ajax({
+        method: "GET",
+        url: 'http://10.19.160.59:8088/demo/ccheckData/checkLog',
+        // headers:{
+        //   'Content-Type':'application/json;charset=utf-8',
+        // },
+        params: {
+          taskId: this.taskId
+        }
+
+      }).then(res => {
+        this.loading2 = false;
+        if (res.data.result == "true" || res.data.result == true) {
+          this.textShow = true;
+          let logData = res.data.testresults_result == 0 ? "一致" : "不一致";
+          this.loginfo = `源库：${res.data.source_library}\n
+源表：${res.data.source_tableName}\n
+数据核验查询语句：${res.data.source_sql}\n
+执行结果：${res.data.source_tableNum}\n
+\n
+目标库：${res.data.target_library}\n
+目标表：${res.data.target_tableName}\n
+数据核验查询语句：${res.data.target_sql}\n
+执行结果：${res.data.target_tableNum}\n
+\n
+核验结果:${logData}\n
+核验差值:${res.data.testresults_dvalue}\n
+`;
+        } else {
+          this.loading2 = false;
+          if (res.result == "false") {
+            this.textShow = false;
+            this.$alert("查看日志失败", "查看日志", {
+              confirmButtonText: "确定"
+            });
+          }
+        }
+      })
+    },
+    //开始核验
+    inverCheck() {
+      if (this.ruleForm.setVer == "0") {
+        this.startTime = ["", ""];
+        debugger;
+      } else if (this.ruleForm.setVer == "1" && this.ruleForm.startTime == null) {
+        this.$alert("请填写开始与结束时间", "核验", {
+          confirmButtonText: "确定"
+        });
+        return;
+      } else if (this.ruleForm.setVer == "1" && this.ruleForm.startTime.length == 0) {
+        this.$alert("请填写开始与结束时间", "核验", {
+          confirmButtonText: "确定"
+        });
+        return;
+      }
+       this.$ajax({
+        method: "get",
+        url: `http://10.19.160.59:8088/demo/ccheckData/tableCheck`,
+        params: {
+          taskId:this.taskId,
+          key: this.ruleForm.setVer,
+          range: this.ruleForm.range,
+          startTime: this.ruleForm.startTime[0],
+          endTime: this.ruleForm.startTime[1]
+        }
+      }).then(res => {
+        if (res.data.result == true || res.data.result=="true") {
+          this.$alert(res.data.message, "核验结果", {
+            confirmButtonText: "确定",
+            callback: action => {
+              this._queryInver();
+            }
+          });
+        } else {
+          this.$alert("核验请求失败！", "核验结果", {
+            confirmButtonText: "确定"
+          });
+        }
+      });
     }
   },
   components: {
@@ -141,7 +297,7 @@ export default {
   watch: {
     dialogVisible() {
       if (this.dialogVisible) {
-
+        this._queryInver();
       }
     }
 
@@ -233,21 +389,40 @@ form {
   text-align: left;
   margin-top: 30px;
 }
+
 .resultIcon .yes {
   background: url("../../../../assets/images/data_ri.png") no-repeat;
-  width: 16px;
-  height: 16px;
+  width: 14px;
+  height: 14px;
   display: inline-block;
   background-size: 100% 100%;
+  margin-left: 10px;
 }
+
 .resultIcon .wrong {
   background: url("../../../../assets/images/data_err.png") no-repeat;
-  width: 16px;
-  height: 16px;
+  width: 14px;
+  height: 14px;
   display: inline-block;
   background-size: 100% 100%;
+  margin-left: 10px;
 }
-textarea{
-  width:80%;
+
+textarea {
+  width: 90%;
+  height: 230px;
 }
+
+li {
+  white-space: nowrap;
+}
+
+.log-box {
+  border-bottom: none;
+}
+
+.resultIcon {
+  padding-left: 35px !important;
+}
+
 </style>

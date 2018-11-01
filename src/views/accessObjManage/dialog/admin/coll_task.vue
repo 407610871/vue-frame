@@ -58,15 +58,19 @@
                     </el-radio>
                   </el-col>
                   <el-col :span="10">
-                   <el-col :span="4">
-                    <el-form-item class="clearfix">
-                      <span class="mr10">每隔</span>
-                    </el-form-item>
+                    <el-col :span="4">
+                      <el-form-item class="clearfix">
+                        <span class="mr10">每隔</span>
+                      </el-form-item>
                     </el-col>
                     <el-col :span="8">
                       <el-form-item>
-                        <el-time-picker  v-model="value2"  placeholder="天小时分"> 
-                        </el-time-picker>
+                        <el-input v-model="ruleForm.jday"></el-input>
+                      </el-form-item>
+                    </el-col>
+                     <el-col :span="4">
+                      <el-form-item class="clearfix tcenter">
+                        <span class="mr10">天</span>
                       </el-form-item>
                     </el-col>
                   </el-col>
@@ -107,6 +111,7 @@ export default {
         increment: '', //增量字段
         actech: '', //采集技术
         cycleSet: '', //周期设置
+        jday: '',//间隔执行天数
       },
       formRules: {},
       value2: new Date(2016, 9, 10, 18, 40)
@@ -126,13 +131,13 @@ export default {
     },
     //增量字段弹框的再次打开
     showIncrement() {
-      
+
       this.innerVisible = false;
     },
     saveIncrement(value) {
       this.increArr = value;
       console.log("****" + this.increArr);
-       this.innerVisible = false;
+      this.innerVisible = false;
     }
   },
   components: {

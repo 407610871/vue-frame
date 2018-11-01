@@ -3,42 +3,6 @@
     <div class="panel">
       <div class="panel-title" style="margin-bottom:10px;">库区设置</div>
       <collapsePanel v-if="dataReady" v-bind:settingList="settingList" />
-
-
-
-      <!-- <el-collapse v-model="activeName" accordion v-if="dataReady">
-        <el-collapse-item :title="item.name" name="1" v-for="item in settingList">
-          <el-row :gutter="20">
-            <el-col :span="4">
-              <div class="grid-content">
-                <span class="title1">{{item.name}}</span>
-              </div>
-            </el-col>
-            <el-col :span="11" class="setinfo">
-              <div class="grid-content">
-                <p>
-                  <span class="title1">{{item.name}}</span><br />
-                  {{item.type}}<br />
-                  {{item.port}}<br />
-                  {{item.url}}<br />
-                  {{item.bak}}<br />
-                  {{item.root}}<br />
-                  {{item.impalaPath}}
-                </p>
-              </div>
-            </el-col>
-            <el-col :span="9">
-              <div class="grid-content">
-                <el-button type="primary">关联</el-button>
-                <el-button type="primary">修改</el-button>
-                <el-button type="primary">删除</el-button>
-              </div>
-            </el-col>
-          </el-row>
-
-        </el-collapse-item>
-      </el-collapse>
-      <el-button>添加</el-button> -->
     </div>
 
     <div class="panel">
@@ -173,8 +137,32 @@ export default {
       console.log(err);
     });
 
-    this.$ajax.get('./sysParamConfig').then(function(res){
-      for(var value of res.data){
+
+    const promist0 = new Promise((resolve, reject) => {
+      this.$ajax.get('http://10.19.160.175:8088/demo/commonInterUtils/getAreas', {
+        params:{
+          parentid:0
+        }
+      }).then((res) => {
+        console.log(1);
+        resolve(res);
+      }, (err) => {
+        console.log(err)
+        reject(err);
+      })
+    });
+    const promist1 = new Promise((resolve, reject) => {
+      this.$ajax.get('./sysParamConfig').then((res) => {
+        resolve(res);
+      }, (err) => {
+        console.log(err)
+        reject(err);
+      })
+    });
+    Promise.all([promist0, promist1]).then((resultList) => {
+      console.log(resultList);
+      _self.provinceList = resultList[0].data.data;
+      for(var value of resultList[1].data){
         switch (value.key.trim()) {
           case '数据资源事权单位机构代码':
             _self.sysParam.mecodeOrg = value.name;
@@ -187,29 +175,24 @@ export default {
             break;
           case '行政区域':
             _self.sysParam.province = value.name[0].pro;
-            _self.$ajax.get('./getCityList').then(function(res){
-              _self.cityList = res.data;
+            var city = value.name[0].city
+            _self.$ajax.get('http://10.19.160.175:8088/demo/commonInterUtils/getAreas',{
+              params:{
+                parentid:_self.sysParam.province
+              }
+            }).then(function(res){
+              _self.cityList = res.data.data;
+              _self.sysParam.city = city;
             })
             .catch(function(err){
               console.log(err);
             });
-            _self.sysParam.city = value.name[0].city;
+
             break;
           default:
             break;
         }
       }
-      console.log(_self.sysParam)
-    })
-    .catch(function(err){
-      console.log(err);
-    });
-
-    this.$ajax.get('./getProvinceList').then(function(res){
-      _self.provinceList = res.data;
-    })
-    .catch(function(err){
-      console.log(err);
     });
   },
   methods:{

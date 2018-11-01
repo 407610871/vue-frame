@@ -1,9 +1,10 @@
 <template>
   <el-form label-width="150px" class="form-fliter" :style="{height:formHeight}">
     <el-form-item v-for="item in dataObj" :label="item.name">
-      <el-checkbox-group v-model="formSeled[item.id]" @change="formFilter">
+      <el-checkbox-group v-if="item.type=='checkbox'" v-model="formSeled[item.id]" @change="formFilter">
         <el-checkbox v-for="subItem in item.checkData" :label="subItem.id" :key="subItem.id">{{subItem.name}}</el-checkbox>
       </el-checkbox-group>
+      <el-radio v-if="item.type=='radio'" v-for="subItem in item.checkData" v-model="formSeled[item.id]" :label="subItem.id" :key="subItem.id" @change="formFilter">{{subItem.name}}</el-radio>
     </el-form-item>
   </el-form>
 </template>
@@ -38,6 +39,8 @@ export default {
       this.$emit('formFilter',this.formSeled);
     },
     getFormSeled:function(){
+      console.log('this.dataObj');
+      console.log(this.dataObj);
       var obj = {};
       for(var value of this.dataObj){
         obj[value.id] = value.seledData;
