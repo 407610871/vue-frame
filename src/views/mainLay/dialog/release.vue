@@ -1,32 +1,43 @@
 <template>
   <div class="taskMDialog release">
-    <el-button @click="dialogVisible = true" class="setting" icon="enc-icon-setting"></el-button>
+    <el-button @click="dialogVisible = true" class="document" icon="enc-icon-documents"></el-button>
     <el-dialog :title="versionDes + '  '+ versionDate" :visible.sync="dialogVisible" width="60%" :before-close="closeDialog">
       <div class="title-gra">
         <span class="grab gra-l"></span>
         <span class="grab gra-r"></span>
       </div>
-      <div class="proInfo-box clearfix">
-        <ul class="directory">
-          <li><a href="#txqd">特性清单</a></li>
-          <li><a href="#zdbglb">重大变更列表</a></li>
-          <li><a href="#wtjjqd">解决问题清单</a></li>
-          <li><a href="#yzwthxz">已知问题和限制</a></li>
-        </ul>
-        <div class="daiInfo-title proInfo-title" id="txqd">
-          <h2>特性清单</h2>
-        </div>
-        <div class="proInfo-box clearfix">
-          <el-table :data="tableData" stripe style="width: 100%">
-            <el-table-column prop="date" label="日期" width="180">
-            </el-table-column>
-            <el-table-column prop="name" label="姓名" width="180">
-            </el-table-column>
-            <el-table-column prop="address" label="地址">
-            </el-table-column>
-          </el-table>
-        </div>
-       
+      <el-col :span="4">
+        <el-tabs tab-position="left" style="height: 200px;">
+          <el-tab-pane label="当前"></el-tab-pane>
+          <el-tab-pane v-for="item in versionData" :label="item"></el-tab-pane>
+          <!-- <el-tab-pane label="用户管理"></el-tab-pane>
+          <el-tab-pane label="配置管理"></el-tab-pane>
+          <el-tab-pane label="角色管理"></el-tab-pane>
+          <el-tab-pane label="定时任务补偿"></el-tab-pane> -->
+        </el-tabs>
+      </el-col>
+      <el-col :span="18" class="release-box">
+        <version></version>
+        <!--  <div class="proInfo-box clearfix">
+         <ul class="directory">
+           <li><a href="#txqd">特性清单</a></li>
+           <li><a href="#zdbglb">重大变更列表</a></li>
+           <li><a href="#wtjjqd">解决问题清单</a></li>
+           <li><a href="#yzwthxz">已知问题和限制</a></li>
+         </ul>
+         <div class="daiInfo-title proInfo-title" id="txqd">
+           <h2>特性清单</h2>
+         </div>
+         <div class="proInfo-box clearfix">
+           <el-table :data="tableData" stripe style="width: 100%">
+             <el-table-column prop="date" label="日期" width="180">
+             </el-table-column>
+             <el-table-column prop="name" label="姓名" width="180">
+             </el-table-column>
+             <el-table-column prop="address" label="地址">
+             </el-table-column>
+           </el-table>
+         </div>
          <div class="proInfo-box clearfix" id="zdbglb">
            <h2>重大更新列表</h2>
            <ul class="imlist">
@@ -45,46 +56,26 @@
              <li>N/A</li>
            </ul>
          </div>
-      </div>
+       </div> -->
+      </el-col>
     </el-dialog>
   </div>
 </template>
+<script type="text/javascript" src="../release/js/xml2json.min.js"></script>
 <script>
+import version from '@/views/mainLay/dialog/release_version'
+// import versionBank from '@/views/mainLay/release/data/version1.2.2.xml'
+/*console.log(versionBank);*/
 export default {
   name: "taskMDialog",
   data: function() {
-    //判断是否必选项为空
-    const validateNull = (rule, value, callback) => {
-      debugger;
-      if (value == "") {
-        callback(new Error("不能为空"));
-      } else {
-        debugger;
-        callback();
-      }
-    };
     return {
       dialogVisible: false,
       versionDes: '数据引擎产品版本发布说明书(V1.2.2)',
       versionDate: '2018/09/28',
-      tableData: [{
-        date: '2016-05-02',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1518 弄'
-      }, {
-        date: '2016-05-04',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1517 弄'
-      }, {
-        date: '2016-05-01',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1519 弄'
-      }, {
-        date: '2016-05-03',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1516 弄'
-      }]
-      // msgId:this.dialogMsg?this.dialogMsg[1]:''
+      versionData: [
+        '1.1.2', '1.2.1', '1.2.2'
+      ]
     };
   },
   methods: {
@@ -94,16 +85,27 @@ export default {
       this.$refs['ruleForm'].resetFields();
     },
     //滚动
-    godToId(ID){
-      $('html,body').animate({scrollTop: $("#"+ID).offset().top}, 500);
+    godToId(ID) {
+      $('html,body').animate({ scrollTop: $("#" + ID).offset().top }, 500);
+    },
+    _getVersion() {
+      let _self = this;
+      this.$ajax.get('/data/version1.1.2.xml').then(function(res) {
+          console.log(res);
+
+        })
+        .catch(function(err) {
+          console.log(err)
+        });
     }
   },
   components: {
-
+    version
   },
   watch: {
     dialogVisible() {
       if (this.dialogVisible) {
+        this._getVersion();
 
       }
     }
@@ -118,6 +120,11 @@ export default {
 @import "@/assets/css/dialog.scss";
 .el-select {
   width: 100%;
+}
+
+.release {
+  max-height: 600px;
+  height: 600px;
 }
 
 .otherInfo .el-radio {
@@ -181,9 +188,9 @@ export default {
 
 .release {
   display: inline-block;
-.daiInfo-title{
-  margin-top:40px;
-}
+  .daiInfo-title {
+    margin-top: 40px;
+  }
   .el-dialog .el-dialog__header {
     height: 30px;
     padding-top: 0px !important;
@@ -191,6 +198,7 @@ export default {
   ul {
     margin: 0px;
     line-height: 20px;
+    padding: 0px;
     li {
       display: inline-block;
       line-height: 20px;
@@ -200,14 +208,25 @@ export default {
       }
     }
   }
-  .proInfo-box{
+  .proInfo-box {
     padding: 10px 0px;
     margin-top: 10px;
     margin-bottom: 10px;
   }
-  h2{
+  h2 {
     line-height: 50px;
   }
+}
+
+.taskMDialog .el-dialog__body {
+  float: none;
+  clear: both;
+  overflow: hidden;
+}
+
+.release-box {
+
+  padding-left: 70px;
 }
 
 </style>

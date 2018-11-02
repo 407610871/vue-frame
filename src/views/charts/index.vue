@@ -6,6 +6,8 @@
     <hr/>
     <multi-linechart></multi-linechart>
     <hr/>
+    <horizontal-barchart></horizontal-barchart>
+    <hr/>
     <div style="margin-left: 40%">
       <percent-vis></percent-vis>
     </div>
@@ -13,7 +15,7 @@
 </template>
 
 <script>
-  import {PercentVis, PieChart, BarChart, MultiLinechart} from '../charts/components'
+  import {PercentVis, PieChart, BarChart, MultiLinechart, HorizontalBarchart} from '../charts/components'
 
 
     export default {
@@ -22,7 +24,8 @@
         BarChart,
           PercentVis,
         PieChart,
-        MultiLinechart
+        MultiLinechart,
+        HorizontalBarchart
       }
     }
 </script>

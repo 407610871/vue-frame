@@ -16,13 +16,16 @@
             </ul>
             <el-button slot="reference" class="user" type="primary" icon="enc-icon-user"></el-button>
         </el-popover>
+       <!--  <el-button class="document" type="primary" icon="enc-icon-documents"></el-button> -->
         <el-button class="setting" type="primary" icon="enc-icon-setting" v-on:click="goRoute('setting')"></el-button>
-        <el-button class="document" type="primary" icon="enc-icon-documents"></el-button>
+ <release></release>
+
       </div>
     </el-header>
     <el-container>
       <el-aside width="210px" class="enc-aside">
-        <aside-tree></aside-tree>
+        <!-- <aside-tree></aside-tree> -->
+        <new-aside-tree></new-aside-tree>
       </el-aside>
       <el-main class="enc-main">
         <div class="enc-search">
@@ -41,7 +44,7 @@
   </el-container>
 </template>
 <script>
-import { AppMain, AsideTree, NavMenu } from './components'
+import { AppMain, AsideTree, NavMenu, NewAsideTree } from './components'
 import logo from '@/assets/images/enc-logo.png'
 import release from '@/views/mainLay/dialog/release'
 
@@ -58,7 +61,8 @@ export default {
     AppMain,
     AsideTree,
     NavMenu,
-    release
+    release,
+    NewAsideTree
   },
   computed: {
 
@@ -230,6 +234,7 @@ export default {
   .enc-aside {
     width: 210px;
     background: #494f5b;
+    padding:20px;
   }
 
   .enc-main {
@@ -269,10 +274,10 @@ export default {
       border:0 none;
       outline: 0 none;
     }
-    ::-webkit-input-placeholder{color:#999;}    /* 使用webkit内核的浏览器 */
-    :-moz-placeholder{color:#999;}                  /* Firefox版本4-18 */
-    ::-moz-placeholder{color:#999;}                  /* Firefox版本19+ */
-    :-ms-input-placeholder{color:#999;}           /* IE浏览器 */
+    ::-webkit-input-placeholder{color:#999;}    ///* 使用webkit内核的浏览器 */
+    :-moz-placeholder{color:#999;}                  ///* Firefox版本4-18 */
+    ::-moz-placeholder{color:#999;}                  ///* Firefox版本19+ */
+    :-ms-input-placeholder{color:#999;}           ///* IE浏览器 */
     a{
       display:inline-block;
       margin-left:10px;

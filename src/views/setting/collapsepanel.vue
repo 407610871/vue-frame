@@ -11,13 +11,12 @@
         <el-col :span="11" class="setinfo">
           <div class="grid-content">
             <p>
-              <span class="title1">{{item.name}}</span><br />
-              hdfs主机名:{{item.name}}<br />
-              端口号：{{item.port}}
-              hdfs.url：{{item.url}}<br />
-              备用节点字符串：{{item.bak}}<br />
-              根目录：{{item.root}}<br />
-              impala服务器地址：{{item.impalaPath}}
+              <span class="title1">{{item.name}}</span>
+              <br /> hdfs主机名:{{item.name}}
+              <br /> 端口号：{{item.port}} hdfs.url：{{item.url}}
+              <br /> 备用节点字符串：{{item.bak}}
+              <br /> 根目录：{{item.root}}
+              <br /> impala服务器地址：{{item.impalaPath}}
             </p>
           </div>
         </el-col>
@@ -30,14 +29,17 @@
         </el-col>
       </el-row>
     </div>
-    <el-button>添加</el-button>
+    <div class="regbtn">
+      <hdfs-add></hdfs-add>
+    </div>
   </div>
 </template>
 <script>
+import hdfsAdd from '@/views/mainLay/dialog/hdfs_add'
 export default {
-  data(){
+  data() {
     return {
-      activeIndex:0
+      activeIndex: 0
     }
   },
   props: {
@@ -46,52 +48,56 @@ export default {
       required: true
     },
   },
-  computed:{
+  computed: {
 
   },
-  mounted(){
+  mounted() {
 
   },
   methods: {
 
+  },
+  components:{
+     hdfsAdd
   }
 }
-</script>
 
+</script>
 <style rel="stylesheet/scss" lang="scss" scoped>
-  .collapsepanel{
-    margin-bottom:10px;
-    color:#666;
-    border-bottom:1px solid #ddd;
-    .collapsepanel-title,
-    .collapsepanel-subtitle{
-      padding-left:20px;
-      font-size:18px;
-      font-weight:bold;
-    }
-    .collapsepanel-title{
-      line-height: 30px;
-      padding-bottom:10px;
-      cursor:pointer;
-      i{
-        margin-left:20px;
-      }
-    }
-    .collapsepanel-subtitle{
-      margin:50px 0;
-      height:100px;
-      line-height: 100px;
-      border-right:2px solid #ddd;
-    }
-    .setinfo{
-      padding-left:80px !important;
-      line-height:30px;
-    }
-    .collapsepanel-tools{
-      margin:50px 0;
-      padding-left:20px;
-      height:100px;
-      line-height: 100px;
+.collapsepanel {
+  margin-bottom: 10px;
+  color: #666;
+  border-bottom: 1px solid #ddd;
+  .collapsepanel-title,
+  .collapsepanel-subtitle {
+    padding-left: 20px;
+    font-size: 18px;
+    font-weight: bold;
+  }
+  .collapsepanel-title {
+    line-height: 30px;
+    padding-bottom: 10px;
+    cursor: pointer;
+    i {
+      margin-left: 20px;
     }
   }
+  .collapsepanel-subtitle {
+    margin: 50px 0;
+    height: 100px;
+    line-height: 100px;
+    border-right: 2px solid #ddd;
+  }
+  .setinfo {
+    padding-left: 80px !important;
+    line-height: 30px;
+  }
+  .collapsepanel-tools {
+    margin: 50px 0;
+    padding-left: 20px;
+    height: 100px;
+    line-height: 100px;
+  }
+}
+
 </style>

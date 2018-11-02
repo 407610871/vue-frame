@@ -7,28 +7,35 @@
         <span class="grab gra-l"></span>
         <span class="grab gra-r"></span>
       </div>
-      <div class="proInfo-box ">
+      <div class="proInfo-box">
         <div class="comTable">
-          <el-table :data="tableData" stripe style="width: 100%">
-            <el-table-column prop="date" label="源表">
+          <el-table :data="tableData" style="width: 100%" height="250" stripe>
+            <el-table-column prop="source_library" label="源表">
             </el-table-column>
-            <el-table-column prop="name" label="状态">
-            </el-table-column>
-            <el-table-column prop="address" label="源数据量">
-            </el-table-column>
-            <el-table-column prop="address" label="目标表">
-            </el-table-column>
-            <el-table-column prop="address" label="数据量">
-            </el-table-column>
-            <el-table-column prop="address" label="数据差值">
-            </el-table-column>
-            <el-table-column prop="address" label="检验结果">
-            </el-table-column>
-            <el-table-column prop="address" label="操作" width="180">
+            <el-table-column prop="flag" label="状态">
               <template slot-scope="scope">
-                <el-button size="mini" type="primary" @click="innerVisible = true" class="fl mr10">核验</el-button>
-                <data-top :msg='innerVisible' @showIncre="showInver()" @saveIncre="saveInver($event)"></data-top>
-                <el-button size="mini" type="primary" class="fl">查看日志</el-button>
+                <span>{{scope.row.flag=="1"?'已核验':'未核验'}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column prop="source_tableNum" label="源数据量">
+            </el-table-column>
+            <el-table-column prop="target_library" label="目标表">
+            </el-table-column>
+            <el-table-column prop="target_tableNum" label="数据量">
+            </el-table-column>
+            <el-table-column prop="testresults_dvalue" label="数据差值">
+            </el-table-column>
+            <el-table-column label="检验结果">
+              <template slot-scope="scope">
+                <span>{{scope.row.testresults_result=="1"?'不一致':'一致'}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column label="操作" width="180" class="clearfix">
+              <template slot-scope="scope">
+                <el-button size="mini" type="info" v-if="scope.row.status=='0'"  class="fl mr10">核验中</el-button>
+                <el-button v-if="scope.row.status=='1'" size="mini" type="primary" @click="startDaver(scope.row.taskId)" class="fl mr10">核验</el-button>
+                <data-top :msg='innerVisible' :taskId='taskId' @showIncre="showInver()" @saveIncre="saveInver($event)"></data-top>
+                <el-button size="mini" type="primary" class="fl" @click="checkLog(scope.row.taskId,scope.$index)">查看日志</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -46,28 +53,16 @@ export default {
   name: "dataInver",
   data: function() {
     return {
+      cindex:'',
       dialogVisible: false,
       innerVisible: false,
+      accessSysId: '5811',
+      loading2:false,
+      taskId: '',
       loginfo: '123123',
-      textShow: 'true',
+      textShow: false,
       result: '0',
-      tableData: [{
-        date: '2016-05-02',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1518 弄'
-      }, {
-        date: '2016-05-04',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1517 弄'
-      }, {
-        date: '2016-05-01',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1519 弄'
-      }, {
-        date: '2016-05-03',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1516 弄'
-      }]
+      tableData: []
 
     }
   },
@@ -75,16 +70,84 @@ export default {
     //关闭对话框
     closeDialog() {
       this.dialogVisible = false;
-     
+
     },
     //核验弹框的再次打开
     showInver() {
+
       this.innerVisible = false;
     },
     saveInver() {
       this.innerVisible = false;
+      this._getTableNum();
       //刷新数据
-    }
+    },
+    //数据表核验
+    _getTableNum() {
+      console.log(this.cindex);
+      this.$ajax({
+        method: "GET",
+        url: 'http://10.19.160.59:8088/demo/ccheckData/tableSourceNum',
+        // headers:{
+        //   'Content-Type':'application/json;charset=utf-8',
+        // },
+        params: {
+          accessSysId: this.accessSysId
+        }
+
+      }).then(res => {
+        this.tableData = res.data.data;
+      })
+    },
+    //开始核验
+    startDaver(value){
+            console.log(value);
+      this.taskId = value;
+      this.innerVisible = true;
+    },
+    //查询日志
+    checkLog(value,tindex) {
+      this.cindex = tindex;
+      this.loading2 = true;
+      this.$ajax({
+        method: "GET",
+        url: 'http://10.19.160.59:8088/demo/ccheckData/checkLog',
+        // headers:{
+        //   'Content-Type':'application/json;charset=utf-8',
+        // },
+        params: {
+          taskId: value
+        }
+
+      }).then(res => {
+        this.loading2 = false;
+        if (res.data.result == "true" || res.data.result == true) {
+          this.textShow = true;
+          let logData = res.data.testresults_result == 0 ? "一致" : "不一致";
+          this.loginfo = `源库：${res.data.source_library}\n
+源表：${res.data.source_tableName}\n
+数据核验查询语句：${res.data.source_sql}\n
+执行结果：${res.data.source_tableNum}\n
+\n
+目标库：${res.data.target_library}\n
+目标表：${res.data.target_tableName}\n
+数据核验查询语句：${res.data.target_sql}\n
+执行结果：${res.data.target_tableNum}\n
+\n
+核验结果:${logData}\n
+核验差值:${res.data.testresults_dvalue}\n
+`;
+        } else {
+          this.loading2 = false;
+          if (res.result == "false") {
+            this.textShow = false;
+            this.$alert("查看日志失败", "查看日志", {
+              confirmButtonText: "确定"
+            });
+          }
+        }
+      })
+    },
   },
   components: {
     dataTop
@@ -101,7 +164,7 @@ export default {
   watch: {
     dialogVisible() {
       if (this.dialogVisible) {
-
+        this._getTableNum();
       }
     }
 
@@ -180,9 +243,11 @@ export default {
     width: 100%;
   }
 }
-.log-box{
-    padding: 20px 30px;
+
+.log-box {
+  padding: 20px 30px;
 }
+
 .comTable {
   padding: 20px 30px;
   .el-table .cell .el-button--primary {
@@ -230,10 +295,15 @@ textarea {
   float: right;
   margin-left: 10px;
 }
-textarea{
+
+textarea {
   margin-left: 30px;
 }
-.title-gra{
 
+.title-gra {}
+
+.el-table .cell {
+  white-space: nowrap;
 }
+
 </style>

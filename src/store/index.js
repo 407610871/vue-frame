@@ -8,10 +8,10 @@ Vue.use(Vuex);
 
 const queryParamsDefault = {
   dashboard:{
-    accessSourceType:[],
-    accessDataSource:[],
-    exchangePlatform:[],
-    keyword:'',
+    network:[],
+    dataSourceName:[],
+    platform:[],
+    name:'',
     pageNum:1
   },
   accessObjManage:{
@@ -37,41 +37,18 @@ const queryParamsDefault = {
 
 const store = new Vuex.Store({
   state: {
-    accessSourceType:[],
-    accessDataSource:[],
-    exchangePlatform:[],
+    deptId:'',
+    network:[],
+    dataSourceName:[],
+    platform:[],
     pageSize:20,
-    queryParams:{
-      dashboard:{
-        accessSourceType:[],
-        accessDataSource:[],
-        exchangePlatform:[],
-        keyword:'',
-        pageNum:1
-      },
-      accessObjManage:{
-        accessObjType:[],
-        dataArea:[],
-        keyword:'',
-        pageNum:1
-      },
-      accessObjInfo:{
-        pageNum1:1,
-        pageNum2:1,
-        keyword:'',
-        tabPosition:'metadataManage'
-      },
-      recyclingBins:{
-        accessSourceType:[],
-        accessDataSource:[],
-        exchangePlatform:[],
-        keyword:'',
-        pageNum:1
-      }
-    }
+    queryParams:JSON.parse(JSON.stringify(queryParamsDefault))
   },
   mutations: {
-    setAccessSourceType(state,obj){
+    selDept(state,id){
+      state.deptId = id;
+    },
+    setNetwork(state,obj){
       var list = [];
       for(var value of obj.data){
         list.push({
@@ -79,9 +56,9 @@ const store = new Vuex.Store({
           name:value.name
         });
       }
-      state.accessSourceType = list;
+      state.network = list;
     },
-    setAccessDataSource(state,obj){
+    setDataSourceName(state,obj){
       var list = [];
       for(var value of obj.data){
         list.push({
@@ -89,9 +66,9 @@ const store = new Vuex.Store({
           name:value.static_NAME
         });
       }
-      state.accessDataSource = list;
+      state.dataSourceName = list;
     },
-    setExchangePlatform(state,obj){
+    setPlatform(state,obj){
       var list = [];
       for(var value of obj.data){
         list.push({
@@ -99,7 +76,7 @@ const store = new Vuex.Store({
           name:value.static_NAME
         });
       }
-      state.exchangePlatform = list;
+      state.platform = list;
     },
     setQueryParams(state,obj){
       state.queryParams[obj.name] = obj.data;
