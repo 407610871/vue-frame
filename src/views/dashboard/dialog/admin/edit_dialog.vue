@@ -257,15 +257,7 @@
                   </el-select>
                 </el-form-item>
               </el-col>
-              <el-col :span="24" v-show="ruleForm.syskind=='本地文件'" class="fileItem">
-                <el-form-item label="选择本地文件(仅支持txt,excel,csv文件):" prop="upfile">
-                  <el-upload class="upload-demo" ref="upload" action="https://jsonplaceholder.typicode.com/posts/" :on-preview="handlePreview" :on-remove="handleRemove" :file-list="fileList" :auto-upload="false">
-                    <el-button slot="trigger" size="small" type="primary">选择文件</el-button>
-                    <!-- <el-button style="margin-left: 10px;" size="small" type="success" @click="submitUpload">上传到服务器</el-button> -->
-                    <!--  <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div> -->
-                  </el-upload>
-                </el-form-item>
-              </el-col>
+             
             </el-col>
             <el-col :span="6">
               <el-button type="primary" v-show="ruleForm.syskind!=''&&ruleForm.syskind!='本地文件'" @click="testForm('ruleForm')">测试连接</el-button>

@@ -167,18 +167,35 @@ export default {
       this.dialogVisible = false;
       this.$refs['ruleForm'].resetFields();
     },
-    save(){
-      if(this.ruleForm.ftpurl==''){
+    save() {
+      if (this.ruleForm.ftpurl == '') {
         this.$message({
           message: '请选择文件路径',
           type: 'warning'
         });
-      }
-      else{
+      } else {
         this.dialogVisible = false;
-      this.$refs['ruleForm'].resetFields();
-      }  
-    
+        this.$refs['ruleForm'].resetFields();
+      }
+
+    },
+    //得到ftp树
+    _getPath() {
+      var params = {
+        accessSysId:'89311',
+        linkPath:'/'
+      }
+      this.$ajax({
+        method: "POST",
+        url: 'http://10.19.160.25:8088/demo/ctables/getStructure',
+        // headers:{
+        //   'Content-Type':'application/json;charset=utf-8',
+        // },
+        data: params
+
+      }).then(res => {
+        console.log(res);
+      })
     }
   },
   components: {
@@ -186,6 +203,13 @@ export default {
   },
   created() {
 
+  },
+  watch: {
+    dialogVisible() {
+      if (this.dialogVisible) {
+        this._getPath();
+      }
+    }
   }
 
 };

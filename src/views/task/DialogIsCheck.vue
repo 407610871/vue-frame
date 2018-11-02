@@ -426,14 +426,14 @@ export default {
 .resultIcon span {
 }
 .resultIcon .yes {
-  background: url("../../assets/image/yes.png") no-repeat;
+  background: url("../../assets/images/data_ri.png") no-repeat;
   width: 16px;
   height: 16px;
   display: inline-block;
   background-size: 100% 100%;
 }
 .resultIcon .wrong {
-  background: url("../../assets/image/wrong.png") no-repeat;
+  background: url("../../assets/images/data_err.png") no-repeat;
   width: 16px;
   height: 16px;
   display: inline-block;
