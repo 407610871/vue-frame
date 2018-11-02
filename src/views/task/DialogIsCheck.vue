@@ -1,50 +1,39 @@
 <template>
-	
-  <el-dialog  :title="diaTitle" :visible.sync="dialogVisible"	:width="dialogWidth"  top="8vh"  @close='closeDialog' 
- 
-   v-if="resData.table">
-
-   <div  v-loading="loading" 
+<div style="padding-bottom:15px;">
+<el-dialog width="60%" :title="title" :visible.sync="showInnerDialog" class="check-data-dialog" @closed="closeDia">
+  <div class="title-gra">
+<span class="grab gra-l"></span>
+<span class="grab gra-r"></span>
+</div>
+  <div  v-loading="loading" 
      element-loading-text="核验中，请稍等..."
      element-loading-spinner="el-icon-loading"
-     element-loading-background="rgba(255, 251, 251, 0.77)"
-     >
-
-   
-   <div class="dialig_table"  id="dialig_table"  >
-  
-  </div>
-  <div class="checkData">
-    校验设置：
-    <el-radio v-model="radio" label="0" @change="checkChange" style="color:rgb(96, 98, 102);">全量核验</el-radio>
-    <el-radio v-model="radio" label="1" @change="checkChange" style="color:rgb(96, 98, 102);">根据时间范围核验</el-radio>
-    <el-button type="" size="small" class="checkBtn" @click="doCheck" v-model="status" >{{status}}</el-button>
-
-
-<div class="" >
-  <div class="range">
-        <span style="color:rgb(96, 98, 102);">核验误差范围:&nbsp;&nbsp;</span>      
-      <el-input-number v-model="range"  controls-position="right"  size="small" :min="0" :max="100" :step="1"></el-input-number>%
-  </div>
-
-<div class="time"  v-show="timeCheck">
-<el-date-picker
-      size="small"
-       :picker-options="pickerOptions"
-      v-model="startTime"
-      type="daterange"
-      range-separator="至"
-      start-placeholder="开始日期"
-      end-placeholder="结束日期" value-format="yyyy-MM-dd">
-    </el-date-picker>
-</div>
-     
-  </div>
-
-
-
-
-  </div>
+     element-loading-background="rgba(255, 251, 251, 0.77)">
+      <div class="dialig_table"  id="dialig_table"  >
+      </div>
+      <div class="checkData">
+        校验设置：
+        <el-radio v-model="radio" label="0" @change="checkChange" style="color:rgb(96, 98, 102);">全量核验</el-radio>
+        <el-radio v-model="radio" label="1" @change="checkChange" style="color:rgb(96, 98, 102);">根据时间范围核验</el-radio>
+        <el-button type="" size="small" class="checkBtn" @click="doCheck" v-model="status" >{{status}}</el-button>
+        <div class="" >
+          <div class="range">
+              <span style="color:rgb(96, 98, 102);">核验误差范围:&nbsp;&nbsp;</span>      
+              <el-input-number v-model="range"  controls-position="right"  size="small" :min="0" :max="100" :step="1"></el-input-number>%
+          </div>
+          <div class="time"  v-show="timeCheck">
+            <el-date-picker
+              size="small"
+                :picker-options="pickerOptions"
+              v-model="startTime"
+              type="daterange"
+              range-separator="至"
+              start-placeholder="开始日期"
+              end-placeholder="结束日期" value-format="yyyy-MM-dd">
+            </el-date-picker>
+          </div>  
+        </div>
+      </div>
 <div class="contanst">
   <div class="contanst_source">
     <ul>
@@ -64,19 +53,16 @@
   <div class="contanst_vs">
     vs
   </div>
-<div class="contanst_goal">
+  <div class="contanst_goal">
     <ul>
       <li>目标库</li>
       <li>目标表：</li>
       <li>平台数据量：</li>
-
     </ul>
     <ul>
       <li :title="resData.table.target.library">{{resData.table.target.library||"无"}}</li>
       <li :title="resData.table.target.tableName">{{resData.table.target.tableName||"无"}}</li>
       <li :title="resData.table.target.tableNum">{{resData.table.target.tableNum||"无"}}</li>
-     
-
     </ul>
   </div>
 </div>
@@ -86,59 +72,69 @@
     <ul >
       <li>核验结果：</li>
       <li>数据量差值：</li>
-      
-
     </ul>
     <ul>
       <li class="resultIcon"> 
-<span class="yes" v-if="this.resData.testresults.result==0"></span>        
-<span class="wrong" v-else-if="this.resData.testresults.result==1"></span>
-<span v-else-if="this.resData.testresults.result==null" style="color:#606266">无</span>
-
-   </li>
+        <span class="yes" v-if="this.resData.testresults.result==0"></span>        
+        <span class="wrong" v-else-if="this.resData.testresults.result==1"></span>
+        <span v-else-if="this.resData.testresults.result==null" style="color:#606266">无</span>
+      </li>
        <li>{{resData.testresults.dvalue||"无"}}</li>
-     
-
     </ul>
   </div>
-  
-
   <div class="checkResultData">
-  <ul>
+    <ul>
       <li>纠错：</li>
-       <li><a @click="doDetail">查看日志</a></li>
-      
-
+        <li><a @click="doDetail">查看日志</a></li>
     </ul>
     <ul>
-      <li class="manual_check_result">  
-      
-       <el-radio  v-if="this.resData.testresults.manual_check_result==='0'"  >合格</el-radio>
+      <li class="manual_check_result"> 
+        <el-radio  v-if="this.resData.testresults.manual_check_result==='0'"  >合格</el-radio>
       <el-radio v-else-if="this.resData.testresults.manual_check_result==='1'"  >不合格</el-radio>
       <span v-else-if="this.resData.testresults.manual_check_result==null" style="color:#606266">无</span>
-      
-         </li>
-      
-     <li style="opacity:0">h</li>
-
+      </li>
+      <li style="opacity:0">h</li>
     </ul>
  </div>
 </div>
 
 
-<div class="checkDetail" style="height:261px;" v-loading="loading2" >
-<textarea name="" id="" disabled="disabled" v-show="textShow" >{{loginfo}}</textarea>
+  <div class="checkDetail" style="height:261px;" v-loading="loading2" >
+    <textarea name="" id="" disabled="disabled" v-show="textShow" >{{loginfo}}</textarea>
+  </div>
 
+  <h5>核验历史记录：</h5>
+  <el-table :data="checkHistoryData" class="check-history-table">
+    <el-table-column
+      prop="date"
+      label="核验时间">
+    </el-table-column>
+    <el-table-column
+      prop="way"
+      label="核验方式">
+    </el-table-column>
+    <el-table-column
+      prop="dis"
+      label="核验误差"
+      width="100">
+    </el-table-column>
+    <el-table-column
+      prop="result"
+      label="核验结果"
+      width="100">
+    </el-table-column>
+    <el-table-column
+      prop="report"
+      label="核验报告"
+      width="100">
+      <template slot-scope="scope">
+        <el-button @click="handleExport(scope.row)" type="text" size="small">导出</el-button>
+      </template>
+    </el-table-column>
+  </el-table>
 </div>
-</div>
-
-
-
-
 </el-dialog>
-
-
-
+</div>
 </template>
 
 <script>
@@ -153,6 +149,13 @@ export default {
   },
   data: function() {
     return {
+      checkHistoryData:[
+        {date:'2018-10-10',way:'1212',dis:'1212',result:'121',report:'1212'},
+         {date:'2018-10-10',way:'1212',dis:'1212',result:'121',report:'1212'},
+          {date:'2018-10-10',way:'1212',dis:'1212',result:'121',report:'1212'},
+      ],
+      title:'数据核验',
+      showInnerDialog: true,
       dialogVisible: false,
       diaTitle: "",
       radio: "0",
@@ -163,11 +166,23 @@ export default {
       status: "开始核验",
       timeCheck: false,
       resData: {
-
-
-
-
-        
+        table:{
+          source:{
+            library:1212,
+            tableName:2222,
+            tableNum:3434,
+          },
+          target:{
+            library:1212,
+            tableName:2222,
+            tableNum:3434,
+          },
+        },
+        testresults:{
+          result:0,
+          dvalue:11,
+          manual_check_result:'0'
+        }
       },
       loginfo: "",
       loading: false,
@@ -183,6 +198,13 @@ export default {
   },
 
   methods: {
+    //导出
+    handleExport(){
+
+    },
+    closeDia(){
+      this.$emit('closeDia',);
+    },
     setTimer: function() {
       this.timer = setTimeout(() => {
         // this.init();
@@ -334,7 +356,7 @@ export default {
 };
 </script>
 
-<style  lang="scss">
+<style  lang="scss" scoped>
 .time {
   display: inline-block;
   margin-left: 50px;
@@ -365,7 +387,7 @@ export default {
   padding-bottom: 20px;
 }
 .contanst_source {
-  width: 30%;
+  width: 35%;
   display: inline-block;
 }
 .contanst_goal {
@@ -390,7 +412,7 @@ export default {
 .contanst_vs {
   font-size: 150px;
   color: #2f6ac5;
-  width: 23%;
+ // width: 23%;
   text-align: left;
   max-width: 260px;
   display: inline-block;
@@ -429,20 +451,54 @@ export default {
   text-decoration: underline;
   cursor: pointer;
 }
-.resultIcon span {
-}
 .resultIcon .yes {
-  background: url("../../assets/images/yes.png") no-repeat;
+ // background: url("../../assets/image/yes.png") no-repeat;
   width: 16px;
   height: 16px;
   display: inline-block;
   background-size: 100% 100%;
 }
 .resultIcon .wrong {
-  background: url("../../assets/images/wrong.png") no-repeat;
+ // background: url("../../assets/image/wrong.png") no-repeat;
   width: 16px;
   height: 16px;
   display: inline-block;
   background-size: 100% 100%;
+}
+h5{
+  font-size:14px;
+}
+</style>
+<style lang="scss">
+.check-data-dialog{
+  .el-dialog{
+    min-width:810px;
+    max-height:calc(100% - 100px);
+    overflow:auto;
+  }
+}
+.el-picker-panel__icon-btn{
+  color: #303133;
+  &:hover{
+    color: #303133;
+  }
+}
+.check-history-table{
+  width:100%;
+  th > .cell{
+    line-height:normal;
+    font-size:14px;
+  }
+  thead{
+    color:#333;
+    background-color:#FFF;
+  }
+  th.is-leaf{
+    border-bottom:1px solid #dcdddd;
+  }
+  .el-table__body tr:hover > td{
+    background-color:#e6eaed!important;
+    color:#333;
+  }
 }
 </style>

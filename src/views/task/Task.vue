@@ -95,7 +95,7 @@
                   <el-button  v-if="scope.row.status==0||scope.row.status==3||scope.row.status==2"  type="text" size="small" @click="doRun(scope.$index, scope.row)">运行</el-button>
                   <el-button  v-else-if="scope.row.status==1"  type="text" size="small" @click="doRun(scope.$index, scope.row)">暂停</el-button>
                   <el-button  v-else-if="scope.row.status==4"  type="text" size="small" @click="doDel(scope.$index, scope.row)">处理完毕</el-button>
-                 <el-button type="text" size="small" >数据核验</el-button>
+                 <el-button type="text" size="small" @click = 'showTaskCheck = true'>数据核验</el-button>
                  <el-button type="text" size="small">重新汇聚</el-button>
                 </template>
              </el-table-column>
@@ -121,10 +121,12 @@
       
 <!-- 任务详情 -->
       <dialogTaskDetail  :reqObj="reqObj" v-if="showTaskDetail" v-on:closeDia="showTaskDetail=false"></dialogTaskDetail>
+
+      <DialogIsCheck v-if="showTaskCheck" v-on:closeDia="showTaskCheck=false"></DialogIsCheck>
     </div>
 </template>
 <script>
-import { DialogIsCheck } from "./DialogIsCheck";
+import  DialogIsCheck  from "./DialogIsCheck";
 import DialogTaskDetail from "./DialogTaskDetail";
 export default {
   data() {
@@ -137,6 +139,8 @@ export default {
       pageSize: 10,
       departmentId: 1,
       showTaskDetail: false,
+            showTaskCheck:false,
+
       isDeleted: 0,
       tableData: [],
       selectionChangeData: [],
