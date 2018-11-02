@@ -1,10 +1,10 @@
 <template>
-<div style="padding-bottom:15px;">
-<el-dialog width="60%" :title="title" :visible.sync="showInnerDialog" class="check-data-dialog" @closed="closeDia">
+<div class="taskMDialog" style="padding-bottom:15px;">
+<el-dialog width="60%" :title="title"  top="25px" :visible.sync="showInnerDialog" class="check-data-dialog" @closed="closeDia">
   <div class="title-gra">
-<span class="grab gra-l"></span>
-<span class="grab gra-r"></span>
-</div>
+    <span class="grab gra-l"></span>
+    <span class="grab gra-r"></span>
+  </div>
   <div  v-loading="loading" 
      element-loading-text="核验中，请稍等..."
      element-loading-spinner="el-icon-loading"
@@ -473,7 +473,7 @@ h5{
 .check-data-dialog{
   .el-dialog{
     min-width:810px;
-    max-height:calc(100% - 100px);
+    max-height:calc(100% - 50px);
     overflow:auto;
   }
 }
