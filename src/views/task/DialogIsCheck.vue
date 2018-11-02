@@ -1,5 +1,6 @@
 <template>
-<div>
+<div style="padding-bottom:15px;">
+<el-dialog width="60%" :title="title" :visible.sync="showInnerDialog" class="check-data-dialog" @closed="closeDia">
   <div class="title-gra">
 <span class="grab gra-l"></span>
 <span class="grab gra-r"></span>
@@ -132,6 +133,7 @@
     </el-table-column>
   </el-table>
 </div>
+</el-dialog>
 </div>
 </template>
 
@@ -152,6 +154,8 @@ export default {
          {date:'2018-10-10',way:'1212',dis:'1212',result:'121',report:'1212'},
           {date:'2018-10-10',way:'1212',dis:'1212',result:'121',report:'1212'},
       ],
+      title:'数据核验',
+      showInnerDialog: true,
       dialogVisible: false,
       diaTitle: "",
       radio: "0",
@@ -197,6 +201,9 @@ export default {
     //导出
     handleExport(){
 
+    },
+    closeDia(){
+      this.$emit('closeDia',);
     },
     setTimer: function() {
       this.timer = setTimeout(() => {
@@ -444,8 +451,6 @@ export default {
   text-decoration: underline;
   cursor: pointer;
 }
-.resultIcon span {
-}
 .resultIcon .yes {
  // background: url("../../assets/image/yes.png") no-repeat;
   width: 16px;
@@ -460,8 +465,18 @@ export default {
   display: inline-block;
   background-size: 100% 100%;
 }
+h5{
+  font-size:14px;
+}
 </style>
 <style lang="scss">
+.check-data-dialog{
+  .el-dialog{
+    min-width:810px;
+    max-height:calc(100% - 100px);
+    overflow:auto;
+  }
+}
 .el-picker-panel__icon-btn{
   color: #303133;
   &:hover{

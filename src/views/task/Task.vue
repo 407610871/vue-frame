@@ -95,7 +95,7 @@
              <el-table-column  label="操作"  width="200">
                 <template slot-scope="scope">
                  <el-button type="text" size="small">运行</el-button>
-                 <el-button type="text" size="small" >数据核验</el-button>
+                 <el-button type="text" size="small" @click = 'showTaskCheck = true'>数据核验</el-button>
                  <el-button type="text" size="small">重新汇聚</el-button>
                 </template>
 
@@ -125,6 +125,8 @@
       
 <!-- 任务详情 -->
       <dialogTaskDetail  :reqObj="reqObj" v-if="showTaskDetail" v-on:closeDia="showTaskDetail=false"></dialogTaskDetail>
+
+      <DialogIsCheck v-if="showTaskCheck" v-on:closeDia="showTaskCheck=false"></DialogIsCheck>
     </div>
 </template>
 <script>
@@ -141,6 +143,7 @@ export default {
       pageSize: 10,
       departmentId: 1,
       showTaskDetail:false,
+      showTaskCheck:false,
       isDeleted: 0,
       tableData: [],
       selectionChangeData: [],
