@@ -96,7 +96,7 @@ export const constantRouterMap = [
         name: "task",
         meta: {
           title: "task",
-          icon: "dashboard",
+          icon: "task",
           noCache: true
         }
       }

@@ -1,5 +1,5 @@
 <template>
-    <div >
+    <div v-loading="loading">
       <!-- 搜索栏 -->
        <div class="count-container"  >
         <el-form ref="form"  label-width="80px" class="formGroup">
@@ -89,21 +89,17 @@
                   <span v-else-if="scope.row.status==4">完成</span>
                 </template>
             </el-table-column>
-
-                        <el-table-column  label="已接入数据量" :show-overflow-tooltip='true' width="150"></el-table-column>
-
+            <el-table-column  label="已接入数据量" :show-overflow-tooltip='true' width="150"></el-table-column>
              <el-table-column  label="操作"  width="200">
                 <template slot-scope="scope">
-                 <el-button type="text" size="small">运行</el-button>
+                  <el-button  v-if="scope.row.status==0||scope.row.status==3||scope.row.status==2"  type="text" size="small" @click="doRun(scope.$index, scope.row)">运行</el-button>
+                  <el-button  v-else-if="scope.row.status==1"  type="text" size="small" @click="doRun(scope.$index, scope.row)">暂停</el-button>
+                  <el-button  v-else-if="scope.row.status==4"  type="text" size="small" @click="doDel(scope.$index, scope.row)">处理完毕</el-button>
                  <el-button type="text" size="small" @click = 'showTaskCheck = true'>数据核验</el-button>
                  <el-button type="text" size="small">重新汇聚</el-button>
                 </template>
-
-
              </el-table-column>
-
   </el-table>
-
 </div>
       
 
@@ -130,7 +126,7 @@
     </div>
 </template>
 <script>
-import DialogIsCheck from "./DialogIsCheck";
+import  DialogIsCheck  from "./DialogIsCheck";
 import DialogTaskDetail from "./DialogTaskDetail";
 export default {
   data() {
@@ -142,13 +138,14 @@ export default {
       pageNum: 1,
       pageSize: 10,
       departmentId: 1,
-      showTaskDetail:false,
-      showTaskCheck:false,
+      showTaskDetail: false,
+            showTaskCheck:false,
+
       isDeleted: 0,
       tableData: [],
       selectionChangeData: [],
-      mainTableDataTotal: "",
-      reqObj:"",
+      mainTableDataTotal: 0,
+      reqObj: "",
 
       pickerOptions: {
         disabledDate(time) {
@@ -163,7 +160,6 @@ export default {
     // taskPeriodType(newA, oldA) { this.init()},
     // status(newA, oldA) { init()},
     // time() {
-    //   console.log(this.time);
     // }
   },
   computed: {
@@ -176,19 +172,65 @@ export default {
     this.$root.eventHub.$on("search", keyword => {
       this.init(keyword);
     });
-    console.log(this.tableData);
   },
 
   components: {
     DialogIsCheck,
     DialogTaskDetail
-
   },
   methods: {
     //详情
-    doDetail(index,row){
-      this.reqObj=row;
-      this.showTaskDetail=true;
+    doDetail(index, row) {
+      this.reqObj = row;
+      this.showTaskDetail = true;
+    },
+    //运行
+    doRun(index, row) {
+      let _self = this;
+      let url = "";
+      _self.loading=true;
+      if (row.status == 0 || row.status == 2 || row.status == 3) {
+        //执行运行
+        url =
+          "http://10.19.160.67:8081/DEMO/manager/taskOperate/start/" +
+          row.taskInfoId;
+        this.$ajax
+          .put(url)
+          .then(function(res) {
+            console.log(res);
+             _self.loading=false;
+            if (res.data.success) {
+              _self.doMsg("运行成功", "success");
+              row.status= 1;
+            } else {
+              _self.doMsg(res.data.message, "error");
+            }
+          })
+          .catch(function(err) {
+            console.log(err);
+          });
+      } else if (row.status == 1) {
+        //执行暂停
+        url =
+          "http://10.19.160.67:8081/DEMO/manager/taskOperate/pause/" +
+          row.taskInfoId;
+        this.$ajax
+          .put(url)
+          .then(function(res) {
+            console.log(res);
+             _self.loading=false;
+            if (res.data.code == "0000") {
+              _self.doMsg("暂停成功", "success");
+               row.status = 2;
+            } else {
+              _self.doMsg(res.data.message, "error");
+            }
+          })
+          .catch(function(err) {
+            console.log(err);
+          });
+      }
+
     },
     doCheck() {
       this.$nextTick(() => {
@@ -198,6 +240,15 @@ export default {
     //分页切换
     handleCurrentChange() {
       this.init();
+    },
+
+    doMsg(msg, type) {
+      this.$message({
+        showClose: true,
+        message: msg,
+        type: type,
+        duration: 1500
+      });
     },
     //表格数据获取
     init(keyword) {
@@ -225,7 +276,7 @@ export default {
         .then(function(res) {
           if (res.data.code == 200) {
             _self.tableData = res.data.data.result;
-            _self.mainTableDataTotal = res.data.data.total;
+            _self.mainTableDataTotal = res.data.data.total * 1;
             _self.loading = false;
           }
         })
@@ -282,14 +333,14 @@ export default {
   float: right;
 }
 
-.mainTable{
+.mainTable {
   width: 95%;
   margin: 0 auto;
 }
 </style>
 <style>
-.el-picker-panel__icon-btn{
-color:#303133!important;
+.el-picker-panel__icon-btn {
+  color: #303133 !important;
 }
 </style>
 
