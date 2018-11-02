@@ -40,13 +40,11 @@
       <li>源库：</li>
       <li>源端表：</li>
       <li>源端数据量：</li>
-
     </ul>
     <ul>
       <li :title="resData.table.source.library">{{resData.table.source.library||"无"}}</li>
       <li :title="resData.table.source.tableName">{{resData.table.source.tableName||"无"}}</li>
       <li :title="resData.table.source.tableNum">{{resData.table.source.tableNum||"无"}}</li>
-
     </ul>
   </div>
 
@@ -90,8 +88,8 @@
     <ul>
       <li class="manual_check_result"> 
         <el-radio  v-if="this.resData.testresults.manual_check_result==='0'"  >合格</el-radio>
-      <el-radio v-else-if="this.resData.testresults.manual_check_result==='1'"  >不合格</el-radio>
-      <span v-else-if="this.resData.testresults.manual_check_result==null" style="color:#606266">无</span>
+        <el-radio v-else-if="this.resData.testresults.manual_check_result==='1'"  >不合格</el-radio>
+        <span v-else-if="this.resData.testresults.manual_check_result==null" style="color:#606266">无</span>
       </li>
       <li style="opacity:0">h</li>
     </ul>
@@ -382,7 +380,6 @@ export default {
 }
 .contanst {
   font-size: 14px;
-  margin-top: 20px;
   border-bottom: 1px solid #2f6ac5;
   padding-bottom: 20px;
 }
@@ -418,8 +415,6 @@ export default {
   display: inline-block;
 }
 .checkResult {
-  margin-top: 20px;
-
   border-bottom: 1px solid #2f6ac5;
   padding-bottom: 20px;
 }
@@ -452,14 +447,14 @@ export default {
   cursor: pointer;
 }
 .resultIcon .yes {
- // background: url("../../assets/image/yes.png") no-repeat;
+  background: url("../../assets/images/yes.png") no-repeat;
   width: 16px;
   height: 16px;
   display: inline-block;
   background-size: 100% 100%;
 }
 .resultIcon .wrong {
- // background: url("../../assets/image/wrong.png") no-repeat;
+  background: url("../../assets/images/wrong.png") no-repeat;
   width: 16px;
   height: 16px;
   display: inline-block;
@@ -488,6 +483,12 @@ h5{
   th > .cell{
     line-height:normal;
     font-size:14px;
+  }
+  td{
+    padding:5px 0;
+  }
+  td > .cell{
+    line-height:normal;
   }
   thead{
     color:#333;
