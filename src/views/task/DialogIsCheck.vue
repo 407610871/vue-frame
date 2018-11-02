@@ -1,6 +1,6 @@
 <template>
 	
-  <el-dialog  :title="diaTitle" :visible.sync="dialogVisible"	:width="dialogWidth"  top="8vh" id="addPersonnel" @close='closeDialog' 
+  <el-dialog  :title="diaTitle" :visible.sync="dialogVisible"	:width="dialogWidth"  top="8vh"  @close='closeDialog' 
  
    v-if="resData.table">
 
@@ -162,7 +162,13 @@ export default {
       range: 0,
       status: "开始核验",
       timeCheck: false,
-      resData: {},
+      resData: {
+
+
+
+
+        
+      },
       loginfo: "",
       loading: false,
       timer: null,
@@ -179,7 +185,7 @@ export default {
   methods: {
     setTimer: function() {
       this.timer = setTimeout(() => {
-        this.init();
+        // this.init();
       }, 1000);
     },
     beforeDestroy() {
@@ -188,52 +194,52 @@ export default {
     },
     openDialog() {
       this.dialogVisible = true;
-      this.diaTitle = `表 ${this.MsgCheck.dataTableName}  数据核验`;
-      this.init();
+      // this.diaTitle = `表 ${this.MsgCheck.dataTableName}  数据核验`;
+      // this.init();
     },
-    init() {
-      this.$ajax({
-        methods: "get",
-        url: `/manager/cricles/tableNum?taskInfoId=${this.MsgCheck.taskInfoId}`
-      }).then(res => {
-        // if (res.result == "false" || res.message == "还未核验暂无数据,请核验") {
-        //   this.$alert(res.message, "核验结果", {
-        //     confirmButtonText: "确定"
-        //   });
-        // }
-        if (!this.dialogVisible) {
-          return;
-        }
-        this.resData = res.datas;
-        if (res.datas.status == "1") {
-          this.textShow = false;
+    // init() {
+    //   this.$ajax({
+    //     methods: "get",
+    //     url: `/manager/cricles/tableNum?taskInfoId=${this.MsgCheck.taskInfoId}`
+    //   }).then(res => {
+    //     // if (res.result == "false" || res.message == "还未核验暂无数据,请核验") {
+    //     //   this.$alert(res.message, "核验结果", {
+    //     //     confirmButtonText: "确定"
+    //     //   });
+    //     // }
+    //     if (!this.dialogVisible) {
+    //       return;
+    //     }
+    //     this.resData = res.datas;
+    //     if (res.datas.status == "1") {
+    //       this.textShow = false;
 
-          window.clearInterval(this.timer);
-          this.timer = null;
-          this.loading = false;
-          this.status = "开始核验";
-          this.radio = res.datas.config.key;
-          this.radio == 1 ? (this.timeCheck = true) : (this.timeCheck = false);
+    //       window.clearInterval(this.timer);
+    //       this.timer = null;
+    //       this.loading = false;
+    //       this.status = "开始核验";
+    //       this.radio = res.datas.config.key;
+    //       this.radio == 1 ? (this.timeCheck = true) : (this.timeCheck = false);
 
-          if (res.datas.config.key == 1) {
-            this.startTime = [
-              res.datas.config.startTime,
-              res.datas.config.endTime
-            ];
-          } else {
-            this.startTime = [];
-          }
+    //       if (res.datas.config.key == 1) {
+    //         this.startTime = [
+    //           res.datas.config.startTime,
+    //           res.datas.config.endTime
+    //         ];
+    //       } else {
+    //         this.startTime = [];
+    //       }
 
-          this.range = res.datas.config.range;
-          //  let loadingInstance = Loading.service({text:"核验中，请稍等...",target:document.getElementsByName("el-dialog")});
-        } else if (res.datas.status == "0") {
-          this.loading = true;
-          this.setTimer();
-          this.status = "核验中";
-        }
-        // this.liData = res.data.result;
-      });
-    },
+    //       this.range = res.datas.config.range;
+    //       //  let loadingInstance = Loading.service({text:"核验中，请稍等...",target:document.getElementsByName("el-dialog")});
+    //     } else if (res.datas.status == "0") {
+    //       this.loading = true;
+    //       this.setTimer();
+    //       this.status = "核验中";
+    //     }
+    //     // this.liData = res.data.result;
+    //   });
+    // },
     checkChange() {
       this.radio == 1 ? (this.timeCheck = true) : (this.timeCheck = false);
     },
@@ -278,7 +284,7 @@ export default {
           this.$alert(res.message, "核验结果", {
             confirmButtonText: "确定",
             callback: action => {
-              this.init();
+              // this.init();
             }
           });
         } else {
@@ -426,14 +432,14 @@ export default {
 .resultIcon span {
 }
 .resultIcon .yes {
-  background: url("../../assets/image/yes.png") no-repeat;
+  background: url("../../assets/images/yes.png") no-repeat;
   width: 16px;
   height: 16px;
   display: inline-block;
   background-size: 100% 100%;
 }
 .resultIcon .wrong {
-  background: url("../../assets/image/wrong.png") no-repeat;
+  background: url("../../assets/images/wrong.png") no-repeat;
   width: 16px;
   height: 16px;
   display: inline-block;
