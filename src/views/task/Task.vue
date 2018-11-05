@@ -122,7 +122,7 @@
 <!-- 任务详情 -->
       <dialogTaskDetail  :reqObj="reqObj" v-if="showTaskDetail" v-on:closeDia="showTaskDetail=false"></dialogTaskDetail>
 
-      <DialogIsCheck v-if="showTaskCheck" v-on:closeDia="showTaskCheck=false" :msgCheck="check" ></DialogIsCheck>
+      <DialogIsCheck v-if="showTaskCheck" v-on:closeDiaChk="showTaskCheck=false" :msgCheck="check" ></DialogIsCheck>
     </div>
 </template>
 <script>

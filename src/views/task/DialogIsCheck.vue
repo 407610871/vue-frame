@@ -1,6 +1,6 @@
 <template>
 <div class="taskMDialog" style="padding-bottom:15px;">
-<el-dialog width="60%" :title="title"  top="25px" :visible.sync="showInnerDialog" class="check-data-dialog" @closed="closeDia">
+<el-dialog width="60%" :title="title"  top="25px" :visible.sync="showInnerDialog" class="check-data-dialog" @closed="closeDiaChk">
   <div class="title-gra">
     <span class="grab gra-l"></span>
     <span class="grab gra-r"></span>
@@ -108,7 +108,6 @@
       label="核验时间">
     </el-table-column>
     <el-table-column
-      prop="way"
       label="核验方式">
       <template slot-scope="scope">
         <span v-if="scope.row.config_key == '0'">全量核验</span>
@@ -126,11 +125,10 @@
       width="100">
     </el-table-column>
     <el-table-column
-      prop="report"
       label="核验报告"
       width="100">
       <template slot-scope="scope">
-        <el-button @click="handleExport(scope.row.id)" type="text" size="small">导出</el-button>
+        <a :href='baseUrl+"/ccheckData/downloadCheckDataById?browser=fox&accessName=ww&id="+scope.row.id'>导出</a>
       </template>
     </el-table-column>
   </el-table>
@@ -152,6 +150,7 @@ export default {
   },
   data: function() {
     return {
+      baseUrl:baseUrl,
       title:'数据核验',
       showInnerDialog: true,
       dialogVisible: false,
@@ -164,7 +163,7 @@ export default {
       status: "开始核验",
       timeCheck: false,
       resData: {},
-      resDataHistory:{},
+      resDataHistory:[],
       loginfo: "",
       loading: false,
       timer: null,
@@ -179,17 +178,8 @@ export default {
   },
 
   methods: {
-    //导出
-    handleExport(id){
-       this.$ajax.get(baseUrl+'/ccheckData/downloadCheckDataById?browser=fox&accessName=ww',{
-        params:{
-          id
-        }
-      }).then(res => {
-      });
-    },
-    closeDia(){
-      this.$emit('closeDia',);
+    closeDiaChk(){
+      this.$emit('closeDiaChk',);
     },
     setTimer: function() {
       this.timer = setTimeout(() => {
@@ -259,7 +249,7 @@ export default {
         }
       }).then(res => {
         if(res.data.success){
-          this.resDataHistory = Object.assign({}, res.data.data);
+          this.resDataHistory = res.data.data;
         }
       });
     },
@@ -292,19 +282,18 @@ export default {
         return;
       }
 
-      this.$ajax({
-        methods: "get",
-        url: `manager/cricles/tableCheck`,
+      this.$ajax.get(baseUrl+`/ccheckData/tableCheck`,{
         params: {
-          taskInfoId: this.msgCheck.taskInfoId,
+         // taskId: this.msgCheck.taskInfoId,
+         taskId:92066,
           key: this.radio,
           range: this.range,
           startTime: this.startTime[0],
           endTime: this.startTime[1]
         }
       }).then(res => {
-        if (res.result) {
-          this.$alert(res.message, "核验结果", {
+        if (res.data.result) {
+          this.$alert(res.data.message, "核验结果", {
             confirmButtonText: "确定",
             callback: action => {
               // this.init();
