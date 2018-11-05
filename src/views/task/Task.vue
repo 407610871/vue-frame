@@ -138,11 +138,10 @@ export default {
       check: "",
       pageNum: 1,
       pageSize: 10,
-      departmentId: 1,
       showTaskDetail: false,
       showTaskCheck: false,
 
-      allSecectData:{},
+      allSecectData: {},
 
       isDeleted: 0,
       tableData: [],
@@ -166,6 +165,10 @@ export default {
     // }
   },
   computed: {
+    departmentId: function() {
+      // return this.$store.state.deptId.join(",");
+      return 1;
+    },
     tableHeight: function() {
       return window.innerHeight - 390;
     }
@@ -181,6 +184,7 @@ export default {
     DialogIsCheck,
     DialogTaskDetail
   },
+
   methods: {
     //详情
     doDetail(index, row) {
@@ -188,8 +192,7 @@ export default {
       this.showTaskDetail = true;
     },
     //选择事件
-    select(val){
-    },
+    select(val) {},
     //核验弹窗
     doCheck(index, row) {
       this.check = row;
@@ -290,8 +293,6 @@ export default {
     //分页切换
     handleCurrentChange() {
       this.init();
-     
-           
     },
     //信息提示
     doMsg(msg, type) {
@@ -313,43 +314,41 @@ export default {
         endTime: this.time[1],
         pageNum: this.pageNum,
         pageSize: this.pageSize,
-        taskName: keyword
+        taskName: keyword,
+        departmentId:_self.departmentId
       };
 
       this.$ajax
         .get(
-          "http://10.19.160.67:8081/DEMO/manager/task/show/" +
-            _self.departmentId +
-            "/0",
+          "http://10.19.160.67:8081/DEMO/manager/task/show/0",
           {
             params: tableParams
           }
         )
         .then(function(res) {
-
           if (res.data.code == 200) {
             _self.tableData = res.data.data.result;
             _self.mainTableDataTotal = res.data.data.total * 1;
             _self.loading = false;
-            debugger;
-             let row=[];
-
-            let row1=Object.keys(_self.allSecectData)
-            for(let i=0;i<row1.length;i++){
-              for(let j=0;j<_self.allSecectData[row1[i]].length;j++){
-                row.push(_self.allSecectData[row1[i]][j]);
+            _self.$nextTick(function() {
+              let row = [];
+              let row1 = Object.keys(this.allSecectData);
+              for (let i = 0; i < row1.length; i++) {
+                for (let j = 0; j < this.allSecectData[row1[i]].length; j++) {
+                  row.push(this.allSecectData[row1[i]][j]);
+                }
               }
-            }
-console.log(row);
- row.forEach(rows => {
-            _self.$refs.multipleTable.toggleRowSelection(rows,true);
-          });
-            // let row=[];
-            // for(key in _self.allSecectData){
-            //   row= row.concat(_self.allSecectData[key]);
-
-            // }
-                        
+              for (let a = 0; a < row.length; a++) {
+                for (let z = 0; z < this.tableData.length; z++) {
+                  if (row[a].taskInfoId == this.tableData[z].taskInfoId) {
+                    this.$refs.multipleTable.toggleRowSelection(
+                      this.tableData[z],
+                      true
+                    );
+                  }
+                }
+              }
+            });
           }
         })
         .catch(function(err) {});
@@ -357,40 +356,45 @@ console.log(row);
     //选中事件
     handleSelectionChange(val) {
       this.selectionChangeData = val;
-
-      this.allSecectData[this.pageNum]=val;
-console.log(this.allSecectData)
-      
+    },
+    //手动选择事件
+    select(selection, row) {
+      this.allSecectData[this.pageNum] = selection;
     },
     //批量操作
-    doMore(url){
-       var _self = this;
-      let tableParams=[];
-      for(let i=0;i<_self.selectionChangeData.length;i++){
-        tableParams.push(_self.selectionChangeData[i].taskInfoId)
+    doMore(url) {
+      let tableParams = [];
+      let _self = this;
+      console.log(_self.allSecectData[_self.pageNum]);
+      let row = [];
+      let row1 = Object.keys(this.allSecectData);
+      for (let i = 0; i < row1.length; i++) {
+        for (let j = 0; j < this.allSecectData[row1[i]].length; j++) {
+          row.push(this.allSecectData[row1[i]][j]);
+        }
       }
-    
-      let params={
-        taskInfoIds:tableParams.join(",")}
-        console.log(params)
-        this.$ajax({
-          url:url,
-          method:"POST",
-          data:{},
-          params:params,
-        })
+      for (let i = 0; i < row.length; i++) {
+        tableParams.push(row[i].taskInfoId);
+      }
+
+      let params = {
+        taskInfoIds: tableParams.join(",")
+      };
+      this.$ajax({
+        url: url,
+        method: "POST",
+        data: {},
+        params: params
+      })
         .then(function(res) {
           if (res.data.success) {
-             _self.doMsg("操作成功", "success");
-             _self.init();
-           console.log(res);
-          }else{
-             _self.doMsg("操作失败", "error");
-
+            _self.doMsg("操作成功", "success");
+            _self.init();
+          } else {
+            _self.doMsg(res, data.message, "error");
           }
         })
         .catch(function(err) {});
-
     }
   }
 };
