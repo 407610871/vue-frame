@@ -234,7 +234,8 @@ export default {
   .enc-aside {
     width: 210px;
     background: #494f5b;
-    padding:20px;
+    /*padding:20px;*/
+   	overflow: hidden;
   }
 
   .enc-main {

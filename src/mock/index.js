@@ -73,6 +73,8 @@ var sysParamConfig = [{
     "status": "U"
 }]
 
+var deptJson = [];
+
 
 Mock.mock(/\/list\?[a-z0-9A-Z=,]{0,}/,/get|post/i,mainTableData);
 Mock.mock(/http:\/\/localhost:8080\/list\?[*]{0,}/,/get|post/i,mainTableData);
@@ -89,9 +91,13 @@ Mock.mock(/\/sysParamConfig/,/get|post/i,sysParamConfig);
 Mock.mock(/\/getProvinceList/,/get|post/i,provinceList);
 Mock.mock(/\/getCityList/,/get|post/i,cityList);
 
-
+// Mock.mock(/\/getDept/,/get|post/i,deptJson);
 
 Mock.mock(/\/sysParamConfig/,/get|post/i,);
 Mock.mock(/\/getAccessObjType/,/get|post/i,accessObjType);
 Mock.mock(/\/getTypeMap/,/get|post/i,typeMap);
 Mock.mock(/\/getColumnType/,/get|post/i,columnType);
+
+
+Mock.mock(/\/success/,/get|post/i,{"success":true});
+Mock.mock(/\/addDept/,/get|post/i,{"success":true,"id":parseInt(Math.random()*10000)});

@@ -5,19 +5,24 @@
       <a href="javascript:void(0)" v-on:click="editNode"><i class="el-icon-edit"></i></a>
       <a href="javascript:void(0)" v-on:click="delNode"><i class="el-icon-close"></i></a>
     </div>
-    <v-jstree v-if="dataReady" :data="data" :multiple="false" allow-batch whole-row text-field-name="deptName" value-field-name="id" @item-click="itemClick">
-      <!-- <template scope="_">
-        <div style="display: inherit; width: 200px" @click.ctrl="customItemClickWithCtrl">
-          <i :class="_.vm.themeIconClasses" role="presentation" v-if="!_.model.loading"></i>
-          <span>{{_.model.deptName}}</span>
-          <button style="border: 0px; background-color: transparent; cursor: pointer;" v-if="_.model.id != 0"><i class="el-icon-plus"></i></button>
-          <button style="border: 0px; background-color: transparent; cursor: pointer;"><i class="el-icon-edit"></i></button>
-          <button style="border: 0px; background-color: transparent; cursor: pointer;"><i class="el-icon-close"></i></button>
-        </div>
-      </template> -->
-    </v-jstree>
+    <el-tree
+      v-if="dataReady"
+      :data="data"
+      node-key="id"
+      show-checkbox
+      default-expand-all
+      draggable
+      :props="defaultProps"
+      @node-click="handleNodeClick"
+      check-strictly
+      :default-checked-keys="checkedDepts"
+      @check="selDept"
+      @node-drop="dragDept"
+      ref="tree"
+      >
+    </el-tree>
     <el-dialog
-      title="部门节点名称修改"
+      title="请输入部门节点名称"
       :visible.sync="dialogVisible"
       width="30%"
       class="input-dialog">
@@ -36,66 +41,84 @@
       data() {
         return {
           data: [],
+          defaultProps: {
+            children: 'children',
+            label: 'deptName'
+          },
           editingNode:null,
-          editingItem:{},
+          editingData:{},
           itemTxt:'',
           dataReady:false,
           dialogVisible:false,
           actionFlag:''
         }
       },
+			computed:{
+				checkedDepts:function(){
+					return this.$store.state.queryParams[this.$route.name].deptId?this.$store.state.queryParamsDefault[this.$route.name].deptId:this.$store.state.deptId;
+				}
+			},
       mounted(){
-        this.loadTree();
+        this.loadData();
       },
       methods: {
-        loadTree(){
+        loadData(){
           var _self = this;
-          this.$ajax.post('http://10.19.160.29:8088/demo/deptInfo/getDeptInfo').then(function(res){
-            console.log('dataLoaded:treeData');
-            console.log(res);
-            _self.data = res.data.datas;
-            _self.dataReady = true;
-            console.log(_self.data);
+          this.$ajax.post('http://10.19.160.29:8088/demo/deptInfo/getDeptInfo?t=' + new Date().getTime()).then(function(res){
+            if(res.data.success){
+              _self.data = res.data.datas;
+              _self.dataReady = true;
+							
+							// _self.$root.eventHub.$on('selDeptTree', (ids)=>{
+								// _self.$refs.tree.setCheckedKeys(ids)
+							// });
+            }else{
+              console.log(res.code);
+            }
           })
           .catch(function(err){
             console.log(err)
           });
         },
-        itemClick (node) {
-          // console.log(node.model.text + ' clicked !')
-          this.$store.commit('selDept',node.model.id);
+        handleNodeClick(node,data){
           this.editingNode = node;
-          this.editingItem = node.model;
+          this.editingData = data;
+					var seledIds = this.$refs.tree.getCheckedKeys();
+          this.$store.commit('selDept',seledIds);
+					this.$root.eventHub.$emit('selDept',seledIds);
         },
         addNode(){
-          if(this.editingItem.id !== undefined){
+          if(this.editingNode){
             this.itemTxt = '';
             this.actionFlag = 'add';
             this.dialogVisible = true;
           }else{
-            alert('请先选择一个部门节点');
+            this.selDeptFirst();
           }
         },
         editNode(){
-          if(this.editingItem.id !== undefined){
-            this.itemTxt = this.editingItem.deptName;
+          if(this.editingNode){
+            this.itemTxt = this.editingNode.deptName;
             this.actionFlag = 'edit';
             this.dialogVisible = true;
           }else{
-            alert('请先选择一个部门节点');
+            this.selDeptFirst();
           }
         },
         nodeAJax(){
           var _self = this;
           if(this.actionFlag == 'add'){
-            this.$ajax.post('http://10.19.160.29:8088/demo/deptInfo/insertDeptInfo?pid='+this.editingItem.id+'&deptName='+this.itemTxt+'&level='+(this.editingItem.children?this.editingItem.children.length:0)).then(function(res){
+            this.$ajax.post('http://10.19.160.29:8088/demo/deptInfo/insertDeptInfo?pid='+this.editingNode.id+'&deptName='+this.itemTxt+'&level='+(this.editingNode.children?this.editingNode.children.length:0)).then(function(res){
+            // this.$ajax.post('./addDept').then(function(res){
               console.log('addsuccess');
+              console.log(res);
               if(res.data.success){
                 _self.dialogVisible = false;
-                _self.editingItem.addChild({
-                  deptName: _self.itemTxt,
-                  id: res.data.id
-                });
+                const newChild = { id:res.data.id, deptName: _self.itemTxt, children: [] };
+                if (!_self.editingNode.children) {
+                  _self.$set(_self.editingNode, 'children', []);
+                }
+                _self.editingNode.children.push(newChild);
               }else{
                 console.log(res.data.code)
               }
@@ -104,11 +127,12 @@
               console.log(err)
             });
           }else{
-            this.$ajax.post('http://10.19.160.29:8088/demo/deptInfo/updateDeptInfo?id='+this.editingItem.id+'&deptName='+this.itemTxt).then(function(res){
+            this.$ajax.post('http://10.19.160.29:8088/demo/deptInfo/updateDeptInfo?id='+this.editingNode.id+'&deptName='+this.itemTxt).then(function(res){
+            // this.$ajax.post('./success').then(function(res){
               console.log('editsuccess');
               if(res.data.success){
                 _self.dialogVisible = false;
-                _self.editingItem.deptName = _self.itemTxt;
+                _self.editingNode.deptName = _self.itemTxt;
               }else{
                 console.log(res.data.code)
               }
@@ -119,14 +143,16 @@
           }
         },
         delNode(){
-          if(this.editingItem.id !== undefined){
+          if(this.$refs.tree.getCurrentKey()){
             var _self = this;
-            this.$ajax.post('http://10.19.160.29:8088/demo/deptInfo/delDeptInfo?id='+this.editingItem.id).then(function(res){
+            this.$ajax.post('http://10.19.160.29:8088/demo/deptInfo/delDeptInfo?id='+this.editingNode.id).then(function(res){
+            // this.$ajax.post('./success').then(function(res){
               console.log('delsuccess');
               if(res.data.success){
-                var index = _self.editingNode.parentItem.indexOf(_self.editingItem)
-                _self.editingNode.parentItem.splice(index, 1);
-                _self.dialogVisible = false;
+                const parent = _self.editingData.parent;
+                const children = parent.data.children || parent.data;
+                const index = children.findIndex(d => d.id === _self.editingNode.id);
+                children.splice(index, 1);
               }else{
                 console.log(res.data.code)
               }
@@ -135,8 +161,59 @@
               console.log(err)
             });
           }else{
-            alert('请先选择一个部门节点');
+            this.selDeptFirst();
           }
+        },
+        selDeptFirst(){
+          this.$alert('请先选择一个部门节点','提示', {
+            confirmButtonText: '确定'
+          });
+        },
+        selDept(node,nodeStatus){
+          if(nodeStatus.checkedKeys.indexOf(node.id) == -1){
+            this.$refs.tree.setChecked(node.id,false)
+          }else{
+            var list = this.$refs.tree.getCheckedNodes();
+            var deptIds = this.$refs.tree.getCheckedKeys();
+
+            var factorial=(function f(obj,tree){
+                list.push(obj);
+                deptIds.push(obj.id);
+                if(obj.children){
+                  for(var value of obj.children){
+                    f(value,tree)
+                  }
+                }
+            });
+            var anotherFactorial=factorial;
+            factorial=null;
+            anotherFactorial(node,this.$refs.tree);
+            this.$refs.tree.setCheckedNodes(list);
+            this.$store.commit('selDept',deptIds);
+          }
+        },
+        dragDept(Node,toDragNode,position,e){
+          const parent = position=='inner'?toDragNode:toDragNode.parent;
+          const children = parent.data.children || parent.data;
+          var list = [];
+          for(var i=0;i<children.length;i++){
+            list.push({
+              id:children[i].id,
+              pid:parent.data.id, //不能直接用parent.id，否则就是tree自己内部的id了
+              name:children[i].deptName,
+              level:i
+            })
+          }
+          this.$ajax.post('http://10.19.160.29:8088/demo/deptInfo/updateDeptLevel',list).then(function(res){
+            if(res.data.success){
+              console.log('move success!')
+            }else{
+              console.log(res.data.code)
+            }
+          })
+          .catch(function(err){
+            console.log(err)
+          });
         }
       }
     }
@@ -164,23 +241,25 @@
       }
     }
   }
-  #NewAisdeTree .tree{
+  #NewAisdeTree .el-tree{
     margin-top:26px;
-  }
-  .tree-anchor i{
-    display: none !important;
-  }
-  .tree-anchor span{
-    color: #eeeeee;
-  }
-  .tree-selected span{
-    font-weight:bold;
-    color:#489bd9;
-  }
-  .input-dialog{
-    .el-dialog__body{
-      padding-top:10px;
-      padding-bottom:10px;
+    background-color: transparent;
+    color:#fff;
+    .el-tree-node__content:focus,
+    .el-tree-node__content:hover{
+      background-color: transparent;
+      color:#409EFF;
+    }
+    .el-tree-node:focus>.el-tree-node__content{
+      background-color:transparent;
+      color:#409EFF;
+    }
+    .is-current>.el-tree-node__content{
+      color:#409EFF;
+    }
+    .el-checkbox__input.is-checked .el-checkbox__inner, .el-checkbox__input.is-indeterminate .el-checkbox__inner{
+      background-color:#409EFF;
+      border-color:#409EFF;
     }
   }
 </style>

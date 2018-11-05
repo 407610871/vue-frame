@@ -108,7 +108,9 @@ export default {
   },
   mounted(){
     var _self = this;
-    this.$ajax.get('./getDbConfig').then(function(res){
+
+    // this.$ajax.post('http://10.19.160.176:8088/demo/caccesssysRelationWorkInfo/getDataCenterInfo?id=0').then(function(res){
+    this.$ajax.post('./getDbConfig').then(function(res){
       var list = [];
       for(var value of res.data){
         switch (value.type) {

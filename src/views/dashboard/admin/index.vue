@@ -1,25 +1,21 @@
 <template>
   <div>
-    <el-container style="height:100%;" class="dashboard-container">
+    <el-container style="height:100%;" class="dashboard-container" v-loading="loading">
       <el-header class="filter-container" :height="headerHeight" >
         <div class="count-container">
           <div class="count-title">
             <label>数据元注册总数</label>
-            <div class="all-number">{{mainTableDataTotal}}</div>
+            <div class="all-number">{{countTotal}}</div>
           </div>
           <div class="line"></div>
-          <dataCount v-bind:dataObj="count1Data" class="countData" />
+          <dataCount v-if="countReady" v-bind:dataObj="count1Data" class="countData" />
           <div class="line"></div>
-          <dataCount v-bind:dataObj="count2Data" class="countData" />
+          <dataCount v-if="countReady" v-bind:dataObj="count2Data" class="countData" />
         </div>
-        <!-- <el-button v-on:click="handleAdd" class="right-btn">add</el-button> -->
         <div class="regbtn fr">
           <reg-dialog @refreshTable="loadTable"></reg-dialog>
         </div>
-<!--         <div class="regbtn fr">
-  <hdfs-add></hdfs-add>
-</div> -->
-        <el-button v-on:click="collapseExpand" size="mini" class="right-btn"><i :class="{'el-icon-plus':collapse,'el-icon-minus':!collapse}"></i></el-button>
+        <a v-on:click="collapseExpand" class="right-btn collapse-btn"><i :class="{'el-icon-circle-plus':collapse,'el-icon-remove':!collapse}"></i></a>
         <formFliter v-if="queryParamReady" v-bind:formCollapse="collapse" v-bind:dataObj="formFilterData" @formFilter="changeFormFilter" />
       </el-header>
       <el-main style="padding-bottom:0;">
@@ -32,20 +28,25 @@
           </el-table-column>
           <el-table-column prop="id" label="接入源ID" width="180">
           </el-table-column>
-          <el-table-column prop="network" label="接入源类型">
+          <el-table-column prop="dataSourceName" label="接入源类型">
           </el-table-column>
-          <el-table-column prop="platform" label="对接平台">
+          <el-table-column label="对接平台">
+            <template slot-scope="scope">
+              {{getPlatfrom(scope.row.platform)}}
+            </template>
           </el-table-column>
-          <el-table-column prop="dataSourceName" label="接入数据来源">
+          <el-table-column label="接入数据来源">
+						<template slot-scope="scope">
+              {{getNetwork(scope.row.network)}}
+            </template>
           </el-table-column>
           <el-table-column prop="createTime" label="注册时间">
           </el-table-column>
           <el-table-column label="操作">
             <template slot-scope="scope">
-              <!-- <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button> -->
               <edit-dialog></edit-dialog>
-              <el-button size="mini" @click="handleCopy(scope.$index, scope.row)">复制</el-button>
-              <el-button size="mini" @click="handleDelete(scope.$index, scope.row)">废止</el-button>
+              <i @click="handleCopy(scope.$index, scope.row)" class="enc-icon-documents table-action-btn"></i>
+              <i @click="handleDelete(scope.$index, scope.row)" class="el-icon-delete table-action-btn"></i>
             </template>
           </el-table-column>
         </el-table>
@@ -69,7 +70,7 @@
 <script>
 import { mapState } from 'vuex'
 import add1 from './../dialog/'
-import dataCount from './../../../components/dataCount'
+import dataCount from './../../../components/dataCountNew'
 import formFliter from './../../../components/formFliter'
 
 import regDialog from './../dialog/admin/reg_dialog'
@@ -79,41 +80,26 @@ export default {
   name: 'DashboardAdmin',
   data() {
     return {
+      loading:false,
       queryParamReady:false,
       currentPage:1,
       mainTableData: [],
       mainTableDataTotal: 1,
+      countTotal:'',
       dialogVisible:false,
+      countReady:false,
       myDialogRouter:'adminAdd',
       dialogTitle:'新增',
       collapse:true,
       count1Data: {
         name: '批式接入统计',
-        list: [{
-          name: 'mysql',
-          number: 111,
-          color: '#f90'
-        }, {
-          name: 'oracle',
-          number: 163,
-          color: '#069'
-        }]
+        total:0,
+        list:0
       },
       count2Data: {
         name: '实时统计',
-        list: [{
-          name: 'mysql',
-          number: 41,
-          color: '#f90'
-        }, {
-          name: 'oracle',
-          number: 22,
-          color: '#069'
-        }, {
-          name: 'kafka',
-          number: 37,
-          color: '#990'
-        }]
+        total:0,
+        list: []
       },
       formFilterData:[]
     }
@@ -138,59 +124,83 @@ export default {
   },
   watch: {
     tableParams(newVal,oldVal){
-      this.loadTable();
+      if(this.queryParamReady){
+        this.loadTable();
+      }
     }
   },
   created(){
     this.$root.eventHub.$on('search', (keyword)=>{
       this.search(keyword);
-    })
+    });
+		this.$root.eventHub.$on('selDept', (ids)=>{
+      this.setStore({
+				deptId:ids
+			});
+    });
   },
   mounted(){
-    var queryParams = this.$store.state.queryParams.dashboard;
-    this.loadTable();
-    var network = queryParams.network?queryParams.network:[];
-    var dataSourceName = queryParams.dataSourceName?queryParams.dataSourceName:[];
-    var platform = queryParams.platform?queryParams.platform:[];
-    for(var i=0;i<network.length;i++){
-      network[i] = parseInt(network[i]);
-    }
-    this.formFilterData = [{
-      name:"接入源类型：",
-      id:'network',
-      type:'checkbox',
-      checkData:this.$store.state.network,
-      seledData:network
-    },{
-      name:"接入数据来源：",
-      id:'dataSourceName',
-      type:'radio',
-      checkData:this.$store.state.dataSourceName,
-      seledData:dataSourceName
-    },{
-      name:"对接平台：",
-      id:'platform',
-      type:'checkbox',
-      checkData:this.$store.state.platform,
-      seledData:platform
-    }];
-    this.queryParamReady = true;
+		this.$root.eventHub.$emit('selDeptTree',this.tableParams.deptId);
+    this.storeReady();
+    var _self = this;
+    this.$ajax.get('http://10.19.160.176:8088/demo/caccess/dataAccessStatistics').then(function(res){
+      if(res.data.success){
+        _self.countTotal=res.data.data.total;
+        _self.count1Data.list=res.data.data.discontinuousPercentage;
+        _self.count2Data.list=res.data.data.constantlyPercentage;
+        _self.countReady = true;
+      }else{
+        console.log(res.data.code)
+      }
+    })
+    .catch(function(err){
+      _self.loading = false;
+      console.log(err)
+    });
   },
   methods:{
+    setFliter(data){
+      var queryParams = this.$store.state.queryParams[this.$route.name];
+      var dataSourceName = queryParams.dataSourceName?queryParams.dataSourceName:[];
+      var network = queryParams.network;
+      var platform = queryParams.platform?queryParams.platform:[];
+      this.formFilterData = [{
+        name:"接入源类型：",
+        id:'dataSourceName',
+        type:'checkbox',
+        checkData:data.dataSourceName.data,
+        seledData:dataSourceName
+      },{
+        name:"接入数据来源：",
+        id:'network',
+        type:'radio',
+        checkData:data.network.data,
+        seledData:network
+      },{
+        name:"对接平台：",
+        id:'platform',
+        type:'checkbox',
+        checkData:data.platform.data,
+        seledData:platform
+      }];
+      this.queryParamReady = true;
+    },
     collapseExpand:function(){
       this.collapse = !this.collapse;
     },
     loadTable:function(){
-      console.log("refresh");
       var _self = this;
+      _self.loading = true;
       var paramsObj = {
         pageSize:this.$store.state.pageSize,
-        pageNum:this.tableParams.pageNum
+        pageNum:this.tableParams.pageNum,
+        domain:0
       };
-      paramsObj.name = this.tableParams.name?this.tableParams.name:"";
-      paramsObj.dataSourceName = this.tableParams.dataSourceName.length>0?this.tableParams.dataSourceName.join(','):"";
-      paramsObj.network = this.tableParams.network.lengtgh>0?this.tableParams.network.join(','):"";
-      paramsObj.platform = this.tableParams.platform.lengtgh>0?this.tableParams.platform.join(','):"";
+      paramsObj.condition = this.tableParams.condition?this.tableParams.condition:"";
+      paramsObj.network = this.tableParams.network;
+      paramsObj.dataSourceName = this.tableParams.dataSourceName;
+      paramsObj.platform = this.tableParams.platform;
+			paramsObj.deptIds = this.tableParams.deptId;
       this.$ajax.post('http://10.19.160.175:8088/demo/caccess/query',paramsObj).then(function(res){
         console.log('tableLoaded:dashboard');
         if(res.data.success){
@@ -200,12 +210,11 @@ export default {
         }else{
           console.log(res.data.code)
         }
-        // setTimeout(function(){
-        //这里是异步的，存在延迟，所以没问题,如果是同步的话可能存在问题
-        // },100)
+        _self.loading = false;
       })
       .catch(function(err){
         _self.currentPage = _self.tableParams.pageNum;
+        _self.loading = false;
         console.log(err)
       });
     },
@@ -235,23 +244,20 @@ export default {
     },
     handleCopy: function(index, row) {
       this.$ajax.post('./copy', {
-        params: {
-          id: row.id
-        }
+        ids: row.id
       }).then(function(res) {
-        this.loadTable(1);
+        _self.$store.dashboard.pageNum = 1;
       })
       .catch(function(err) {
         console.log(err)
       });
     },
     handleDelete: function(index, row) {
-      this.$ajax.post('./delete', {
-        params: {
-          id: row.id
-        }
+      var _self = this;
+      this.$ajax.post('http://localhost:8088/demo/caccess/delete', {
+        ids: row.id
       }).then(function(res) {
-        this.loadTable(this.mainTablePage);
+        _self.loadTable();
       })
       .catch(function(err) {
         console.log(err)
@@ -260,11 +266,48 @@ export default {
     search:function(keyword){
       this.setStore({
         pageNum:1,
-        name:keyword
+        condition:keyword
       });
     },
     changeFormFilter:function(fliterParams){
       this.setStore(fliterParams);
+    },
+    storeReady:function(){
+      var fliterItemList = this.$store.state.fliterItemList
+      if(fliterItemList.network.ready&&fliterItemList.dataSourceName.ready&&fliterItemList.platform.ready){
+				console.log(fliterItemList);
+        this.setFliter(fliterItemList);
+        this.loadTable();
+      }else{
+        var _self = this;
+        setTimeout(function(){
+          _self.storeReady();
+        },200);
+      }
+    },
+    getPlatfrom(id){
+      if(!id){
+        return '无';
+      }
+      var list = this.$store.state.fliterItemList.platform.data;
+      for(var value of list){
+        if(parseInt(id) == parseInt(value.id)){
+          return value.name
+        }
+      }
+      return '未知平台'
+    },
+		getNetwork(id){
+      if(!id){
+        return '无';
+      }
+      var list = this.$store.state.fliterItemList.network.data;
+      for(var value of list){
+        if(parseInt(id) == parseInt(value.id)){
+          return value.name
+        }
+      }
+      return '未知类型'
     }
   }
 }
@@ -319,12 +362,23 @@ export default {
     .right-btn{
       float:right;
     }
+    .collapse-btn{
+      margin:5px 20px 0 0;
+      color:#069;
+      font-size:22px;
+    }
   }
   .table-container {
     padding: 32px;
   }
   .enc-pagination {
     float: right;
+  }
+
+  .table-action-btn{
+    display: inline-block;
+    font-size:16px;
+    margin:0 5px;
   }
 }
 
