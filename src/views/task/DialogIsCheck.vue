@@ -448,26 +448,25 @@ export default {
   cursor: pointer;
 }
 .resultIcon .yes {
-<<<<<<< HEAD
+
+
+
+
 
   background: url("../../assets/images/data_ri.png") no-repeat;
 
-=======
-  background: url("../../assets/images/data_ri.png") no-repeat;
->>>>>>> d25efb6dd2ada0fa7f3046271dce25471717379a
   width: 16px;
   height: 16px;
   display: inline-block;
   background-size: 100% 100%;
 }
 .resultIcon .wrong {
-<<<<<<< HEAD
+
 
   background: url("../../assets/images/data_err.png") no-repeat;
 
-=======
-  background: url("../../assets/images/data_err.png") no-repeat;
->>>>>>> d25efb6dd2ada0fa7f3046271dce25471717379a
+
+
   width: 16px;
   height: 16px;
   display: inline-block;
