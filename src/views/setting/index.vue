@@ -109,31 +109,40 @@ export default {
   mounted(){
     var _self = this;
 
-    // this.$ajax.post('http://10.19.160.176:8088/demo/caccesssysRelationWorkInfo/getDataCenterInfo?id=0').then(function(res){
-    this.$ajax.post('./getDbConfig').then(function(res){
-      var list = [];
-      for(var value of res.data){
-        switch (value.type) {
-          case 'hdfs':
-            var bakList = value.config['hdfs.url'].split(",");
-            bakList = bakList.splice(1,bakList.length-1);
-            var obj = {
-              name:value.name,
-              type:value.type,
-              port:value.config['hdfs.url'].split(",")[0].split(":")[1],
-              url:value.config['hdfs.url'],
-              bak:bakList.join(','),
-              root:value.config['topics.dir'],
-              impalaPath:value.dataCenter.serviceUrl.split(";")[0]
-            }
-            list.push(obj);
-            break;
-          default:
-            break
-        }
-      }
-      _self.settingList = list;
-      _self.dataReady = true;
+    this.$ajax.get('http://10.19.160.176:8088/demo/caccesssysRelationWorkInfo/showInfo',{
+			params:{
+				nodeId:this.$store.state.deptId[0]
+			}
+		}).then(function(res){
+			if(res.data.result){
+				var list = [];
+				for(var value of res.data.data){
+					var IPindex = value.config['hdfs.url'].split('//')[1].indexOf(':');
+					console.log('IPindex:'+IPindex);
+					var bakList = value.config['hdfs.url'].split(",");
+					bakList = bakList.splice(1,bakList.length-1);
+					var serv = value.dataCenter;
+					var seda = serv.serviceDatabase;
+					var seurl = serv.serviceUrl;
+					var sindex = seurl.indexOf(seda);
+					seurl = seurl.substring(0,sindex);
+					var obj = {
+						name:value.config['hdfs.url'].split('//')[1].substring(7, IPindex),
+						type:value.config['hdfs.url'].split(':')[1].substring(IPindex, value.config['hdfs.url'].length),
+						port:value.config['hdfs.url'].split(",")[0].split(":")[2],
+						url:value.config['hdfs.url'],
+						bak:bakList.join(','),
+						root:value.config['topics.dir'],
+						impalaPath:seurl + seda
+					}
+					list.push(obj);
+				}
+				console.log(list);
+				_self.settingList = list;
+				_self.dataReady = true;
+			}else{
+				console.log(res.code);
+			}
     })
     .catch(function(err){
       console.log(err);
