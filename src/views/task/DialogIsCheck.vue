@@ -151,7 +151,6 @@ export default {
   data: function() {
     return {
       baseUrl:baseUrl,
-      title:'数据核验',
       showInnerDialog: true,
       dialogVisible: false,
       diaTitle: "",
@@ -176,7 +175,11 @@ export default {
       }
     };
   },
-
+  computed:{
+    title(){
+      return `表 ${this.msgCheck.dataTableName}  数据核验`;
+    },
+  },
   methods: {
     closeDiaChk(){
       this.$emit('closeDiaChk',);
@@ -199,8 +202,8 @@ export default {
       let that = this;
       this.$ajax.get(baseUrl+'/ccheckData/tableNum',{
         params:{
-          //taskId:that.msgCheck.taskInfoId
-          taskId:92066
+          taskId:that.msgCheck.taskInfoId
+          //taskId:92066
         }
       }).then(res => {
         // if (res.result == "false" || res.message == "还未核验暂无数据,请核验") {
@@ -212,7 +215,7 @@ export default {
           //return;
         }
         //this.resData = res.datas;
-       this.resData = Object.assign({}, res.data);
+       this.resData = res.data;
         if (res.data.status == "1") {
           this.textShow = false;
 
@@ -244,8 +247,8 @@ export default {
       //核验历史记录
       this.$ajax.get(baseUrl+'/ccheckData/tableNumAllByTaskId',{
         params:{
-          //taskId:that.msgCheck.taskInfoId
-          taskId:92066
+          taskId:that.msgCheck.taskInfoId
+         // taskId:92066
         }
       }).then(res => {
         if(res.data.success){
@@ -284,8 +287,8 @@ export default {
 
       this.$ajax.get(baseUrl+`/ccheckData/tableCheck`,{
         params: {
-         // taskId: this.msgCheck.taskInfoId,
-         taskId:92066,
+          taskId: this.msgCheck.taskInfoId,
+         //taskId:92066,
           key: this.radio,
           range: this.range,
           startTime: this.startTime[0],
