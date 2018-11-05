@@ -139,10 +139,6 @@ export default {
       var network = queryParams.network?queryParams.network:'';
       var dataSourceName = queryParams.dataSourceName?queryParams.dataSourceName:[];
       var platform = queryParams.platform?queryParams.platform:[];
-
-      for(var i=0;i<network.length;i++){
-        network[i] = parseInt(network[i]);
-      }
       this.formFilterData = [{
         name:"接入源类型：",
         id:'dataSourceName',

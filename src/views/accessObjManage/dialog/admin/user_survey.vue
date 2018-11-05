@@ -108,23 +108,23 @@
               <el-col :span="3" class="ml0" v-if="ruleForm.datarange!='3'">
                 <el-form-item prop="pro">
                   <el-select v-model="ruleForm.pro" placeholder="请选择" @change="proChange()">
-                   <el-option v-for="item in proArr" :label="item.name" :value="item.code" :id="item.code"></el-option>
+                    <el-option v-for="item in proArr" :label="item.name" :value="item.code" :id="item.code"></el-option>
                   </el-select>
                 </el-form-item>
               </el-col>
               <el-col :span="1" class="bank" v-if="ruleForm.datarange!='3'">bank</el-col>
-              <el-col :span="3" class="ml0" v-if="ruleForm.datarange=='2'||ruleForm.datarange=='1'">
+              <el-col :span="3" class="ml0" v-if="ruleForm.datarange=='0'||ruleForm.datarange=='1'">
                 <el-form-item prop="city">
-                  <el-select v-model="ruleForm.city" placeholder="请选择" @change = "cityChange()">
+                  <el-select v-model="ruleForm.city" placeholder="请选择" @change="cityChange()">
                     <el-option v-for="item in cityArr" :label="item.name" :value="item.code" :id="item.code"></el-option>
                   </el-select>
                 </el-form-item>
               </el-col>
-              <el-col :span="1" class="bank" v-if="ruleForm.datarange=='1'||ruleForm.datarange=='2'">bank</el-col>
-              <el-col :span="3" class="ml0" v-if="ruleForm.datarange=='4'">
+              <el-col :span="1" class="bank" v-if="ruleForm.datarange=='0'||ruleForm.datarange=='1'">bank</el-col>
+              <el-col :span="3" class="ml0" v-if="ruleForm.datarange=='0'">
                 <el-form-item prop="urban">
                   <el-select v-model="ruleForm.urban" placeholder="请选择">
-                   <el-option v-for="item in urbanArr" :label="item.name" :value="item.code" :id="item.code"></el-option>
+                    <el-option v-for="item in urbanArr" :label="item.name" :value="item.code" :id="item.code"></el-option>
                   </el-select>
                 </el-form-item>
               </el-col>
@@ -179,7 +179,7 @@ export default {
       loading: true,
       sIndustry: [],
       id: "",
-      tableid: '10101623',
+      tableid: '10085525',
       sZnb: [],
       sFcc: [],
       sTlc: [],
@@ -187,9 +187,9 @@ export default {
       sAbc: [],
       sDum: [],
       sDrg: [],
-      proArr:[],
-      cityArr:[],
-      urbanArr:[],
+      proArr: [],
+      cityArr: [],
+      urbanArr: [],
       ruleForm: {
         rename: '', //资源名称
         tablename: '', //表名
@@ -239,8 +239,22 @@ export default {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           this.loading = true;
+          var areaData = [];
+          if (this.ruleForm.datarange == "3") //全国
+          {
+            areaData = [];
+          }
+          if (this.ruleForm.datarange == "2") { //全省
+            areaData = [{ "pro": this.ruleForm.pro }]
+          }
+          if (this.ruleForm.datarange == "1") { //全市
+            areaData = [{ "pro": this.ruleForm.pro }, { "city": this.ruleForm.city }]
+          }
+          if (this.ruleForm.datarange == "0") { //行政区
+            areaData = [{ "pro": this.ruleForm.pro }, { "city": this.ruleForm.city }, { "urban": this.ruleForm.urban }]
+          }
           var saveInfo = {
-            iD: "44952", //非必填
+            iD: "45443", //非必填
             tABLE_ID: this.tableid, //表id
             rESOURCE_DIRECTORY_NUMBER: "D-010000300000ZNB-01-111127262", // '资源目录编号',
             iNDUSTRY_CATEGORY: this.ruleForm.industry, // '行业类别',
@@ -253,7 +267,7 @@ export default {
             dATA_UPDATE_MODE: this.ruleForm.datamode, // '数据更新方式',
             iNITIAL_DATA_VOLUME: this.ruleForm.datanum, // '初始数据量',
             dATA_RANGE: this.ruleForm.datarange, //'数据范围',
-            xzqy: [{ "pro": this.ruleForm.pro }, { "city": this.ruleForm.city }, { "urban": this.ruleForm.urban }], //行政区域
+            xzqy: areaData, //行政区域
             remarks: "" //备注，非必填
           }
           this.$ajax({
@@ -268,6 +282,10 @@ export default {
                 callback: action => {
                   this.dialogVisible = false;
                 }
+              });
+            } else {
+              this.$alert('数据标记失败', '信息', {
+                confirmButtonText: '确定'
               });
             }
           }, (res) => {
@@ -346,12 +364,21 @@ export default {
         this.ruleForm.datanum = res.data.data.iNITIAL_DATA_VOLUME;
         this.ruleForm.datarange = res.data.data.dATA_RANGE;
         let xzqyData = JSON.parse(res.data.data.xzqy);
-        this.ruleForm.pro = xzqyData[0].pro;
-        this.ruleForm.city = xzqyData[1].city;
-        this._queryCity(this.ruleForm.pro,'city');
-        this.ruleForm.urban = xzqyData[2].urban;
-        this._queryCity(this.ruleForm.city,'urban');
-
+        if (xzqyData == "") {
+          //查询系统配置
+          this._querySys();
+        } else {
+          xzqyData = JSON.parse(res.data.data.xzqy);
+          this.ruleForm.pro = xzqyData[0].pro;
+          this._queryCity(this.ruleForm.pro, 'city');
+          if (this.ruleForm.city != '') {
+            this.ruleForm.city = xzqyData[1].city;
+            this._queryCity(this.ruleForm.city, 'urban');
+          }
+          if (this.ruleForm.urban != '') {
+            this.ruleForm.urban = xzqyData[2].urban;
+          }
+        }
 
       }, res => {
         this.loading = false;
@@ -359,46 +386,46 @@ export default {
       })
     },
     //查询全省市
-    _queryCity(value,flag) {
+    _queryCity(value, flag) {
       this.$ajax({
         method: "get",
-        url: 'http://10.19.160.171:8088/demo/commonInterUtils/getAreas?parentid='+value,
+        url: 'http://10.19.160.171:8088/demo/commonInterUtils/getAreas?parentid=' + value,
         // headers:{
         //   'Content-Type':'application/json;charset=utf-8',
         // },
         params: {
-         
+
         }
 
       }).then(res => {
-           if(flag=='pro'){
-             this.proArr = res.data.data;
-           }
-           if(flag == 'city'){
-            this.cityArr = res.data.data;
-           }
-           if(flag == 'urban'){
-            this.urbanArr = res.data.data;
-           }
-           
-        })
+        if (flag == 'pro') {
+          this.proArr = res.data.data;
+        }
+        if (flag == 'city') {
+          this.cityArr = res.data.data;
+        }
+        if (flag == 'urban') {
+          this.urbanArr = res.data.data;
+        }
+
+      })
     },
     //资源目录下载
     downTxt() {
       window.location.href = "/api/dataTable/downloadSpecification";
     },
     //通过省查询市
-    proChange(){
+    proChange() {
       console.log(this.ruleForm.pro);
-      this._queryCity(this.ruleForm.pro,'city');
+      this._queryCity(this.ruleForm.pro, 'city');
     },
     //通过市获取区域
-    cityChange(){
+    cityChange() {
       console.log(this.ruleForm.city);
-      this._queryCity(this.ruleForm.city,'urban');
+      this._queryCity(this.ruleForm.city, 'urban');
     },
     //查詢系統配置
-    _querySys(){
+    _querySys() {
       this.$ajax({
         method: "get",
         url: 'http://10.19.160.176:8088/demo/caccesssysRelationWorkInfo/getSystemSet.do',
@@ -406,11 +433,26 @@ export default {
         //   'Content-Type':'application/json;charset=utf-8',
         // },
         params: {
-         
+
         }
 
       }).then(res => {
-        console.log(res);
+        if (res.data.result == "success") {
+          var mes = JSON.parse(res.data.message);
+          if (mes[0].name == '') {
+            mes[0].name = '[]';
+          }
+          var sysmes = JSON.parse(mes[0].name);
+          console.log(sysmes);
+          if (sysmes.length != 0) {
+            this.ruleForm.pro = sysmes[0].pro;
+            this._queryCity(this.ruleForm.pro, 'city');
+            if (sysmes[0].city != '') {
+              this.ruleForm.city = sysmes[0].city;
+              this._queryCity(this.ruleForm.city, 'urban');
+            }
+          }
+        }
       })
     }
   },
@@ -432,8 +474,8 @@ export default {
         console.log("----");
         console.log(this.pdata);
         this._getStaticDatas();
-        this._queryCity('0','pro');
-        this._querySys();
+        this._queryCity('0', 'pro');
+
         //资源名称
         if (this.pdata.comments == '' || this.pdata.comments == null) {
           this.ruleForm.rename = this.pdata.diyComments

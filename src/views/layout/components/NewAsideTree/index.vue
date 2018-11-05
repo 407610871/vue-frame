@@ -50,13 +50,14 @@
           itemTxt:'',
           dataReady:false,
           dialogVisible:false,
-          actionFlag:''
+          actionFlag:'',
+					checkedDepts:[]
         }
       },
 			computed:{
-				checkedDepts:function(){
-					return this.$store.state.queryParams[this.$route.name].deptId?this.$store.state.queryParamsDefault[this.$route.name].deptId:this.$store.state.deptId;
-				}
+				// checkedDepts:function(){
+					// return this.$store.state.queryParams[this.$route.name].deptId?this.$store.state.queryParamsDefault[this.$route.name].deptId:this.$store.state.deptId;
+				// }
 			},
       mounted(){
         this.loadData();

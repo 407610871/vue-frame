@@ -7,6 +7,9 @@
         <span class="grab gra-l"></span>
         <span class="grab gra-r"></span>
       </div>
+      <div class="proInfo-box bornone clearfix">
+        <el-button size="mini" type="info" @click="downTable()" class="dowBtn">导出报告</el-button>
+      </div>
       <div class="proInfo-box">
         <div class="comTable">
           <el-table :data="tableData" style="width: 100%" height="250" stripe>
@@ -35,7 +38,7 @@
                 <el-button size="mini" type="info" v-if="scope.row.status=='0'"  class="fl mr10">核验中</el-button>
                 <el-button v-if="scope.row.status=='1'" size="mini" type="primary" @click="startDaver(scope.row.taskId)" class="fl mr10">核验</el-button>
                 <data-top :msg='innerVisible' :taskId='taskId' @showIncre="showInver()" @saveIncre="saveInver($event)"></data-top>
-                <el-button size="mini" type="primary" class="fl" @click="checkLog(scope.row.taskId,scope.$index)">查看日志</el-button>
+                <el-button size="mini" type="primary" class="fl" @click="checkLog(scope.row.id,scope.$index)">查看日志</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -49,6 +52,7 @@
 </template>
 <script>
 import dataTop from '@/views/accessObjManage/dialog/admin/data_top_inver'
+import {myBrowser} from '@/utils/mix.js'
 export default {
   name: "dataInver",
   data: function() {
@@ -116,7 +120,7 @@ export default {
         //   'Content-Type':'application/json;charset=utf-8',
         // },
         params: {
-          taskId: value
+          id: value
         }
 
       }).then(res => {
@@ -148,6 +152,14 @@ export default {
         }
       })
     },
+    //导出数据源报告
+    downTable(){
+       var browser = myBrowser();
+      if (!browser) {
+        browser = 'IE'
+      }
+      window.location.href = `http://10.19.160.59:8088/demo/ccheckData/downloadCheckDataById?id=${this.pdata.id}&browser=${browser}&accessName=ww`
+    }
   },
   components: {
     dataTop
@@ -181,7 +193,10 @@ export default {
   padding-left: 0px;
   padding-right: 0px;
 }
-
+.dowBtn{
+  float: right;
+  margin-right: 33px;
+}
 .el-select {
   width: 100%;
 }
