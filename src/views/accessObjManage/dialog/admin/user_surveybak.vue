@@ -1,139 +1,144 @@
 <template>
   <div class="taskMDialog userSurveyDialog">
-    <el-form :model="ruleForm" ref="ruleForm" label-width="100px" class="demo-ruleForm" :rules="formRules">
-      <div class="daiInfo proInfo" ref="h1">
-        <div class="proInfo-box clearfix">
-          <el-col :span="24" class="plr30">
-            <el-col :span="10">
-              <el-form-item label="资源名称:" prop="rename">
-                <el-input v-model="ruleForm.rename" :disabled="true"></el-input>
-              </el-form-item>
+    <el-button size="mini" class="diabtn incbtn" type="danger" @click="dialogVisible = true">用户调研</el-button>
+    <!--  <i class="el-icon-info" @click="dialogVisible = true">用户调研</i> -->
+    <el-dialog title="用户调研" :visible.sync="dialogVisible" width="60%" :before-close="closeDialog">
+      <div class="title-gra">
+        <span class="grab gra-l"></span>
+        <span class="grab gra-r"></span>
+      </div>
+      <el-form :model="ruleForm" ref="ruleForm" label-width="100px" class="demo-ruleForm" :rules="formRules" v-loading="loading">
+        <div class="daiInfo proInfo">
+          <div class="proInfo-box bornone clearfix">
+            <el-col :span="24" class="plr30">
+              <el-col :span="10">
+                <el-form-item label="资源名称:" prop="rename">
+                  <el-input v-model="ruleForm.rename" :disabled="true"></el-input>
+                </el-form-item>
+              </el-col>
+              <el-col :span="4" class="bank">bank</el-col>
+              <el-col :span="10">
+                <el-form-item label="表名:" prop="tablename">
+                  <el-input v-model="ruleForm.tablename" :disabled="true"></el-input>
+                </el-form-item>
+              </el-col>
             </el-col>
-            <el-col :span="4" class="bank">bank</el-col>
-            <el-col :span="10">
-              <el-form-item label="表名:" prop="tablename">
-                <el-input v-model="ruleForm.tablename" :disabled="true"></el-input>
-              </el-form-item>
-            </el-col>
-          </el-col>
-          <el-col :span="24" class="surveybg plr30">
-            <el-form-item label="资源目录编号:">
-              <el-col :span="4" class="ml0">
-                <el-form-item prop="industry">
-                  <el-select v-model="ruleForm.industry" placeholder="请选择">
-                    <el-option v-for="item in sIndustry" :label="item.static_NAME" :value="item.static_CODE" :id="item.dict_ID"></el-option>
-                    <!-- <el-option label="一次性接入" value="1"></el-option>
+            <el-col :span="24" class="surveybg plr30">
+              <el-form-item label="资源目录编号:">
+                <el-col :span="4" class="ml0">
+                  <el-form-item prop="industry">
+                    <el-select v-model="ruleForm.industry" placeholder="请选择">
+                      <el-option v-for="item in sIndustry" :label="item.sTATIC_NAME" :value="item.sTATIC_CODE" :id="item.dICT_ID"></el-option>
+                      <!-- <el-option label="一次性接入" value="1"></el-option>
                       <el-option label="全量接入" value="2"></el-option>
                       <el-option label="实时接入" value="3"></el-option> -->
-                  </el-select>
-                </el-form-item>
-              </el-col>
-              <el-col :span="4" class="ml0">
-                <el-form-item prop="znb">
-                  <el-select v-model="ruleForm.znb" placeholder="请选择">
-                    <el-option v-for="item in sZnb" :label="item.static_NAME" :value="item.static_CODE" :id="item.dict_ID"></el-option>
-                  </el-select>
-                </el-form-item>
-              </el-col>
-              <el-col :span="4" class="ml0">
-                <el-form-item prop="fcc">
-                  <el-select v-model="ruleForm.fcc" placeholder="请选择">
-                    <el-option v-for="item in sFcc" :label="item.static_NAME" :value="item.static_CODE" :id="item.dict_ID"></el-option>
-                  </el-select>
-                </el-form-item>
-              </el-col>
-              <el-col :span="4" class="ml0">
-                <el-form-item prop="tlc">
-                  <el-select v-model="ruleForm.tlc" placeholder="请选择">
-                    <el-option v-for="item in sTlc" :label="item.static_NAME" :value="item.static_CODE" :id="item.dict_ID"></el-option>
-                  </el-select>
-                </el-form-item>
-              </el-col>
-              <el-col :span="4" class="ml0">
-                <el-form-item prop="bdc">
-                  <el-select v-model="ruleForm.bdc" placeholder="请选择">
-                    <el-option v-for="item in sBdc" :label="item.static_NAME" :value="item.static_CODE" :id="item.dict_ID"></el-option>
-                  </el-select>
-                </el-form-item>
-              </el-col>
-              <el-col :span="4" class="ml0">
-                <el-form-item prop="abc">
-                  <el-select v-model="ruleForm.abc" placeholder="请选择">
-                    <el-option v-for="item in sAbc" :label="item.static_NAME" :value="item.static_CODE" :id="item.dict_ID"></el-option>
-                  </el-select>
-                </el-form-item>
-              </el-col>
-              <el-col :span="4" class="ml0 tcenter mt10">
-                <el-form-item>
-                  <span>{{rnum}}</span>
-                </el-form-item>
-              </el-col>
-              <el-col :span="4" class="ml0 mt10">
-                <el-form-item>
-                  <el-input v-model="ruleForm.industry + '-' + ruleForm.znb + '-' + ruleForm.fcc + ruleForm.tlc + ruleForm.bdc + ruleForm.abc+ruleForm.randomId" disabled></el-input>
-                </el-form-item>
-              </el-col>
-              <el-col :span="4" class="ml0 tcenter mt10">
-                <el-form-item>
-                  <el-button size="small" type="primary" @click="downTxt()">资源目录规范下载</el-button>
-                </el-form-item>
-              </el-col>
-            </el-form-item>
-          </el-col>
-          <el-col :span="24" class="plr30 mt25">
-            <el-col :span="6">
-              <el-form-item label="数据接入方式:" prop="datamode">
-                <el-select v-model="ruleForm.datamode" placeholder="请选择">
-                  <el-option v-for="item in sDum" :label="item.static_NAME" :value="item.static_CODE" :id="item.dict_ID"></el-option>
-                </el-select>
+                    </el-select>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="4" class="ml0">
+                  <el-form-item prop="znb">
+                    <el-select v-model="ruleForm.znb" placeholder="请选择">
+                      <el-option v-for="item in sZnb" :label="item.sTATIC_NAME" :value="item.sTATIC_CODE" :id="item.dICT_ID"></el-option>
+                    </el-select>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="4" class="ml0">
+                  <el-form-item prop="fcc">
+                    <el-select v-model="ruleForm.fcc" placeholder="请选择">
+                      <el-option v-for="item in sFcc" :label="item.sTATIC_NAME" :value="item.sTATIC_CODE" :id="item.dICT_ID"></el-option>
+                    </el-select>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="4" class="ml0">
+                  <el-form-item prop="tlc">
+                    <el-select v-model="ruleForm.tlc" placeholder="请选择">
+                      <el-option v-for="item in sTlc" :label="item.sTATIC_NAME" :value="item.sTATIC_CODE" :id="item.dICT_ID"></el-option>
+                    </el-select>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="4" class="ml0">
+                  <el-form-item prop="bdc">
+                    <el-select v-model="ruleForm.bdc" placeholder="请选择">
+                      <el-option v-for="item in sBdc" :label="item.sTATIC_NAME" :value="item.sTATIC_CODE" :id="item.dICT_ID"></el-option>
+                    </el-select>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="4" class="ml0">
+                  <el-form-item prop="abc">
+                    <el-select v-model="ruleForm.abc" placeholder="请选择">
+                      <el-option v-for="item in sAbc" :label="item.sTATIC_NAME" :value="item.sTATIC_CODE" :id="item.dICT_ID"></el-option>
+                    </el-select>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="4" class="ml0 tcenter mt10">
+                  <el-form-item>
+                    <span>{{rnum}}</span>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="5" class="ml0 mt10">
+                  <el-form-item>
+                    <el-input v-model="ruleForm.industry + '-' + ruleForm.znb + '-' + ruleForm.fcc + ruleForm.tlc + ruleForm.bdc + ruleForm.abc+ruleForm.randomId" disabled></el-input>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="4" class="ml0 tcenter mt10">
+                  <el-form-item>
+                    <el-button size="small" type="primary" @click="downTxt()">资源目录规范下载</el-button>
+                  </el-form-item>
+                </el-col>
               </el-form-item>
             </el-col>
-          </el-col>
-          <el-col :span="24" class="plr30 mt20">
-            <el-col :span="6">
-              <el-form-item label="数据范围:" prop="datarange">
-                <el-select v-model="ruleForm.datarange" placeholder="请选择">
-                  <el-option label="全国" value="0"></el-option>
-                  <el-option label="全省" value="1"></el-option>
-                  <el-option label="全市" value="2"></el-option>
-                  <el-option label="行政区" value="3"></el-option>
-                </el-select>
+            <el-col :span="24" class="plr30 mt25">
+              <el-col :span="6">
+                <el-form-item label="数据接入方式:" prop="datamode">
+                  <el-select v-model="ruleForm.datamode" placeholder="请选择">
+                    <el-option v-for="item in sDum" :label="item.sTATIC_NAME" :value="item.sTATIC_CODE" :id="item.dICT_ID"></el-option>
+                  </el-select>
+                </el-form-item>
+              </el-col>
+            </el-col>
+            <el-col :span="24" class="plr30 mt20">
+              <el-col :span="6">
+                <el-form-item label="数据范围:" prop="datarange">
+                  <el-select v-model="ruleForm.datarange" placeholder="请选择">
+                    <el-option v-for="item in sDrg" :label="item.sTATIC_NAME" :value="item.sTATIC_CODE" :id="item.dICT_ID"></el-option>
+                  </el-select>
+                </el-form-item>
+              </el-col>
+              <el-col :span="2" class="bank">bank</el-col>
+              <el-col :span="3" class="ml0" v-if="ruleForm.datarange!='3'">
+                <el-form-item prop="pro">
+                  <el-select v-model="ruleForm.pro" placeholder="请选择" @change="proChange()">
+                    <el-option v-for="item in proArr" :label="item.name" :value="item.code" :id="item.code"></el-option>
+                  </el-select>
+                </el-form-item>
+              </el-col>
+              <el-col :span="1" class="bank" v-if="ruleForm.datarange!='3'">bank</el-col>
+              <el-col :span="3" class="ml0" v-if="ruleForm.datarange=='0'||ruleForm.datarange=='1'">
+                <el-form-item prop="city">
+                  <el-select v-model="ruleForm.city" placeholder="请选择" @change="cityChange()">
+                    <el-option v-for="item in cityArr" :label="item.name" :value="item.code" :id="item.code"></el-option>
+                  </el-select>
+                </el-form-item>
+              </el-col>
+              <el-col :span="1" class="bank" v-if="ruleForm.datarange=='0'||ruleForm.datarange=='1'">bank</el-col>
+              <el-col :span="3" class="ml0" v-if="ruleForm.datarange=='0'">
+                <el-form-item prop="urban">
+                  <el-select v-model="ruleForm.urban" placeholder="请选择">
+                    <el-option v-for="item in urbanArr" :label="item.name" :value="item.code" :id="item.code"></el-option>
+                  </el-select>
+                </el-form-item>
+              </el-col>
+            </el-col>
+            <el-col :span="10" class="plr30">
+              <el-form-item label="初始数据量:" prop="datanum">
+                <el-input v-model="ruleForm.datanum" required></el-input>
               </el-form-item>
             </el-col>
-            <el-col :span="2" class="bank">bank</el-col>
-            <el-col :span="3" class="ml0" v-if="ruleForm.datarange!='0'">
-              <el-form-item prop="pro">
-                <el-select v-model="ruleForm.pro" placeholder="请选择">
-                  <el-option label="江苏省" value="0"></el-option>
-                </el-select>
-              </el-form-item>
-            </el-col>
-            <el-col :span="1" class="bank" v-if="ruleForm.datarange!='0'">bank</el-col>
-            <el-col :span="3" class="ml0" v-if="ruleForm.datarange=='3'||ruleForm.datarange=='2'">
-              <el-form-item prop="city">
-                <el-select v-model="ruleForm.city" placeholder="请选择">
-                  <el-option label="南京市" value="0"></el-option>
-                </el-select>
-              </el-form-item>
-            </el-col>
-            <el-col :span="1" class="bank" v-if="ruleForm.datarange=='3'||ruleForm.datarange=='2'">bank</el-col>
-            <el-col :span="3" class="ml0" v-if="ruleForm.datarange=='3'">
-              <el-form-item prop="urban">
-                <el-select v-model="ruleForm.urban" placeholder="请选择">
-                  <el-option label="江宁区" value="0"></el-option>
-                </el-select>
-              </el-form-item>
-            </el-col>
-          </el-col>
-          <el-col :span="10" class="plr30">
-            <el-form-item label="初始数据量:" prop="datanum">
-              <el-input v-model="ruleForm.datanum" required></el-input>
-            </el-form-item>
-          </el-col>
-          
+           
+          </div>
         </div>
-      </div>
-    </el-form>
+      </el-form>
+    </el-dialog>
   </div>
 </template>
 <script>
@@ -166,14 +171,20 @@ export default {
     return {
       dialogVisible: false,
       rnum: '234234',
+      loading: true,
       sIndustry: [],
-      tableId: '',
+      id: "",
+      tableid: '10085525',
       sZnb: [],
       sFcc: [],
       sTlc: [],
       sBdc: [],
       sAbc: [],
       sDum: [],
+      sDrg: [],
+      proArr: [],
+      cityArr: [],
+      urbanArr: [],
       ruleForm: {
         rename: '', //资源名称
         tablename: '', //表名
@@ -183,24 +194,20 @@ export default {
         city: '',
         urban: '',
         datanum: '', //初始数据量
-        industry: '0',
-        znb: '0',
-        fcc: '0',
-        tlc: '0',
+        industry: '',
+        znb: '',
+        fcc: '',
+        tlc: '',
         bdc: '0',
         abc: '0',
         renumber: '',
         randomId: ''
-
       },
       formRules: {
         datanum: [
           { required: true, validator: validateNum, trigger: "blur" }
         ]
       },
-
-
-
       // msgId:this.dialogMsg?this.dialogMsg[1]:''
     };
   },
@@ -215,100 +222,184 @@ export default {
       this.dialogVisible = false;
       this.$refs['ruleForm'].resetFields();
     },
-
-    //保存信息
-    submitForm(formName) {
-      this.$refs[formName].validate((valid) => {
-        if (valid) {
-          this.$ajax({
-            methods: 'post',
-            url: '/api/dataTable/inputSurvey',
-            params: {
-              ID: "", //非必填
-              tableId: "", //表id
-              resourceDirectoryNumber: "", // '资源目录编号',
-              industryCategory: this.ruleForm.industry, // '行业类别',
-              policeBusiness: this.ruleForm.znb, // '公安业务',
-              firstClassClassification: this.ruleForm.fcc, //'一级分类',
-              twoLevelClassification: this.ruleForm.tlc, // '二级分类',
-              taxonomy: this.ruleForm.bdc, //'细目分类',
-              attributeClassification: this.ruleForm.abc, // '属性分类',
-              dataTimeliness: "", // '数据时效性',
-              dataUpdateMode: "", // '数据更新方式',
-              initialDataVolume: this.ruleForm.datanum, // '初始数据量',
-              dateRange: "", //'数据范围',
-              xzqy: [{ "pro": "320000" }, { "city": "320100" }, { "urban": "320104" }], //行政区域
-              remarks: "" //备注，非必填
-
-            }
-          }).then(res => {
-
-          }, (res) => {
-            console.log('error');
-          })
-        } else {
-          console.log('error submit!!');
-          return false;
-        }
-      });
-    },
     //_getStaticDatas
     _getStaticDatas() {
       this.$ajax({
         methods: 'post',
-        url: '/api/dataTable/queryDictionary.do',
+        url: 'http://10.19.160.171:8088/demo/dataTable/queryDictionary',
         params: {
 
         }
       }).then(res => {
+
         //得到Industry
         this.sIndustry = res.data.staticDatas.INDUSTRY;
-        this.ruleForm.industry = this.sIndustry[0].static_CODE;
+        this.ruleForm.industry = this.sIndustry[0].sTATIC_CODE;
         //ZNB
         this.sZnb = res.data.staticDatas.ZNB;
-        this.ruleForm.znb = this.sZnb[0].static_CODE;
+        this.ruleForm.znb = this.sZnb[0].sTATIC_CODE;
         //FCC
         this.sFcc = res.data.staticDatas.FCC;
-        this.ruleForm.fcc = this.sFcc[0].static_CODE;
+        this.ruleForm.fcc = this.sFcc[0].sTATIC_CODE;
         //TLC
         this.sTlc = res.data.staticDatas.TLC;
-        this.ruleForm.tlc = this.sTlc[0].static_CODE;
+        this.ruleForm.tlc = this.sTlc[0].sTATIC_CODE;
         //BDC
         this.sBdc = res.data.staticDatas.BDC;
-        this.ruleForm.bdc = this.sBdc[0].static_CODE;
+        this.ruleForm.bdc = this.sBdc[0].sTATIC_CODE;
         //ABC
         this.sAbc = res.data.staticDatas.ABC;
-        this.ruleForm.abc = this.sAbc[0].static_CODE;
+        this.ruleForm.abc = this.sAbc[0].sTATIC_CODE;
         //romId
         this.ruleForm.randomId = res.data.randomId
         //DUM
         this.sDum = res.data.staticDatas.DUM;
-        this.ruleForm.datamode = this.sDum[0].static_CODE;
+        this.ruleForm.datamode = this.sDum[0].sTATIC_CODE;
+        //DRG
+        this.sDrg = res.data.staticDatas.DRG;
+        this.ruleForm.datarange = this.sDrg[2].sTATIC_CODE;
+        this._queryStaticDatas();
       })
     },
+    //查询标记信息
+    _queryStaticDatas() {
+      console.log(this.tableid);
+      this.$ajax({
+        method: "get",
+        url: 'http://10.19.160.171:8088/demo/dataTable/getSurvey',
+        // headers:{
+        //   'Content-Type':'application/json;charset=utf-8',
+        // },
+        params: {
+          tableId: this.tableid
+        }
+
+      }).then(res => {
+        this.loading = false;
+        this.ruleForm.industry = res.data.data.iNDUSTRY_CATEGORY;
+        this.ruleForm.znb = res.data.data.pOLICE_BUSINESS;
+        this.ruleForm.fcc = res.data.data.fIRST_CLASS_CLASSIFICATION;
+        this.ruleForm.tlc = res.data.data.tWO_LEVEL_CLASSIFICATION;
+        this.ruleForm.bdc = res.data.data.tAXONOMY;
+        this.ruleForm.abc = res.data.data.aTTRIBUTE_CLASSIFICATION;
+        this.ruleForm.datamode = res.data.data.dATA_UPDATE_MODE;
+        this.ruleForm.datanum = res.data.data.iNITIAL_DATA_VOLUME;
+        this.ruleForm.datarange = res.data.data.dATA_RANGE;
+        let xzqyData = JSON.parse(res.data.data.xzqy);
+        if (xzqyData == "") {
+          //查询系统配置
+          this._querySys();
+        } else {
+          xzqyData = JSON.parse(res.data.data.xzqy);
+          this.ruleForm.pro = xzqyData[0].pro;
+          this._queryCity(this.ruleForm.pro, 'city');
+          if (this.ruleForm.city != '') {
+            this.ruleForm.city = xzqyData[1].city;
+            this._queryCity(this.ruleForm.city, 'urban');
+          }
+          if (this.ruleForm.urban != '') {
+            this.ruleForm.urban = xzqyData[2].urban;
+          }
+        }
+
+      }, res => {
+        this.loading = false;
+        console.log("error");
+      })
+    },
+    //查询全省市
+    _queryCity(value, flag) {
+      this.$ajax({
+        method: "get",
+        url: 'http://10.19.160.171:8088/demo/commonInterUtils/getAreas?parentid=' + value,
+        // headers:{
+        //   'Content-Type':'application/json;charset=utf-8',
+        // },
+        params: {
+
+        }
+
+      }).then(res => {
+        if (flag == 'pro') {
+          this.proArr = res.data.data;
+        }
+        if (flag == 'city') {
+          this.cityArr = res.data.data;
+        }
+        if (flag == 'urban') {
+          this.urbanArr = res.data.data;
+        }
+
+      })
+    },
+    //资源目录下载
     //资源目录下载
     downTxt() {
       window.location.href = "/api/dataTable/downloadSpecification";
     },
+    //通过省查询市
+    proChange() {
+      console.log(this.ruleForm.pro);
+      this._queryCity(this.ruleForm.pro, 'city');
+    },
+    //通过市获取区域
+    cityChange() {
+      console.log(this.ruleForm.city);
+      this._queryCity(this.ruleForm.city, 'urban');
+    },
+    //查詢系統配置
+    _querySys() {
+      this.$ajax({
+        method: "get",
+        url: 'http://10.19.160.176:8088/demo/caccesssysRelationWorkInfo/getSystemSet.do',
+        // headers:{
+        //   'Content-Type':'application/json;charset=utf-8',
+        // },
+        params: {
+
+        }
+
+      }).then(res => {
+        if (res.data.result == "success") {
+          var mes = JSON.parse(res.data.message);
+          if (mes[0].name == '') {
+            mes[0].name = '[]';
+          }
+          var sysmes = JSON.parse(mes[0].name);
+          console.log(sysmes);
+          if (sysmes.length != 0) {
+            this.ruleForm.pro = sysmes[0].pro;
+            this._queryCity(this.ruleForm.pro, 'city');
+            if (sysmes[0].city != '') {
+              this.ruleForm.city = sysmes[0].city;
+              this._queryCity(this.ruleForm.city, 'urban');
+            }
+          }
+        }
+      })
+    },
     //清空表格
-    _clearForm(){
+    _clearForm() {
       this.$refs['ruleForm'].resetFields();
     }
-   
+
   },
   components: {
 
   },
   mounted() {
     //清空form的值
-     this._clearForm();
+    this._clearForm();
   },
   watch: {
 
   },
   created() {
-    
+
+    console.log("----");
+    console.log(this.pdata);
     this._getStaticDatas();
+    this._queryCity('0', 'pro');
     if (this.info.comments == '' || this.info.comments == null) {
       this.ruleForm.rename = this.info.diyComments
     } else {

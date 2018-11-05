@@ -24,7 +24,7 @@
       </el-header>
       <el-main style="padding-bottom:0;">
         <router-view />
-        <el-table :data="mainTableData" stripe :height="tableHeight" border style="width: 100%" tooltip-effect="light">
+        <el-table :data="tableData" stripe :height="tableHeight" border style="width: 100%" tooltip-effect="light">
           <el-table-column label="接入源名称" width="250" show-overflow-tooltip>
             <template slot-scope="scope">
               <a href="javascript:void(0)" v-on:click="goSubPage(scope.$index)">{{ scope.row.name }}</a>
@@ -115,7 +115,18 @@ export default {
           color: '#990'
         }]
       },
-      formFilterData:[]
+      formFilterData:[],
+      tableData:[{
+    "id": 10001,
+    "name": "mysql",
+    "accSysWay": null,
+    "accessSyses": []
+}, {
+    "id": 10002,
+    "name": "oracle",
+    "accSysWay": null,
+    "accessSyses": []
+}],
     }
   },
   computed:{
@@ -148,7 +159,8 @@ export default {
   },
   mounted(){
     var queryParams = this.$store.state.queryParams.dashboard;
-    this.loadTable();
+/* this.loadTable();
+*/
     var network = queryParams.network?queryParams.network:[];
     var dataSourceName = queryParams.dataSourceName?queryParams.dataSourceName:[];
     var platform = queryParams.platform?queryParams.platform:[];
@@ -187,11 +199,11 @@ export default {
         pageSize:this.$store.state.pageSize,
         pageNum:this.tableParams.pageNum
       };
-      paramsObj.name = this.tableParams.name?this.tableParams.name:"";
+      /*paramsObj.name = this.tableParams.name?this.tableParams.name:"";
       paramsObj.dataSourceName = this.tableParams.dataSourceName.length>0?this.tableParams.dataSourceName.join(','):"";
       paramsObj.network = this.tableParams.network.lengtgh>0?this.tableParams.network.join(','):"";
-      paramsObj.platform = this.tableParams.platform.lengtgh>0?this.tableParams.platform.join(','):"";
-      this.$ajax.post('http://10.19.160.175:8088/demo/caccess/query',paramsObj).then(function(res){
+      paramsObj.platform = this.tableParams.platform.lengtgh>0?this.tableParams.platform.join(','):"";*/
+      this.$ajax.post('./getAccessDataSource').then(function(res){
         console.log('tableLoaded:dashboard');
         if(res.data.success){
           _self.mainTableData = res.data.data.list;
@@ -225,7 +237,7 @@ export default {
       });
     },
     goSubPage:function(index){
-      this.$router.push({name:'accessObjManage',params:{sourceId:this.mainTableData[index].id,sourceName:encodeURI(this.mainTableData[index].name)}});
+      this.$router.push({name:'accessObjManage',params:{sourceId:this.tableData[index].id,sourceName:encodeURI(this.tableData[index].name)}});
     },
     handleAdd: function() {
       //新增

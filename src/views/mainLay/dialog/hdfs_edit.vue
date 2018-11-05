@@ -1,7 +1,7 @@
 <template>
   <div class="taskMDialog">
-    <el-button @click="dialogVisible = true" class="add-btn">add</el-button>
-    <el-dialog title="新增" :visible.sync="dialogVisible" width="50%" :before-close="closeDialog">
+    <el-button @click="dialogVisible = true" class="add-btn" type="primary">修改</el-button>
+    <el-dialog title="修改" :visible.sync="dialogVisible" width="50%" :before-close="closeDialog">
       <div class="title-gra">
         <span class="grab gra-l"></span>
         <span class="grab gra-r"></span>
@@ -35,7 +35,7 @@
               <el-form-item class="collbg" label="impala信息:" prop="iminfo">
                 <el-input v-model="ruleForm.iminfo" class="fl"></el-input>
                 <el-button type="primary" class="fl increbtn" @click="innerVisible = true">选择</el-button>
-                <impala-map :msg='innerVisible' :alincre="this.increArr" @showIncre="showIncrement()" @saveIncre="saveIncrement($event)"></impala-map>
+                <impala-map :msg='innerVisible' :uid="ruleForm.imId" :alincre="this.increArr" @showIncre="showIncrement()" @saveIncre="saveIncrement($event)"></impala-map>
               </el-form-item>
             </el-col>
             <el-col :span="4" class="bank">bank</el-col>
@@ -97,7 +97,8 @@ export default {
         iminfo: '',
         isha: true,
         bakip: '',
-        bakport: ''
+        bakport: '',
+        imId:'',
 
       },
       formRules: {
@@ -165,25 +166,26 @@ export default {
           var params = {
             mode: "helium",
             pid: "2",
-            sys_impala_id: "1",
+            sys_impala_id: this.ruleForm.imId.toString(),
             type: "hdfs",
-            config: config
+            config: config,
+            id:this.ownId.toString()
           }
           this.$ajax({
             method: "POST",
-            url: 'http://10.19.160.176:8088/demo/caccesssysRelationWorkInfo/add',
+            url: 'http://10.19.160.176:8088/demo/caccesssysRelationWorkInfo/update',
             data: params
 
           }).then(res => {
-            if (res.data.result == "succeed") {
-              this.$alert('新增hdfs成功', '信息', {
+            if (res.data.result=="succeed") {
+              this.$alert('修改hdfs成功', '信息', {
                 confirmButtonText: '确定',
                 callback: action => {
                   this.dialogVisible = false;
                 }
               });
             } else {
-              this.$alert('新增hdfs成功', '信息', {
+              this.$alert('修改hdfs失败', '信息', {
                 confirmButtonText: '确定'
               });
             }
@@ -194,17 +196,49 @@ export default {
       });
     },
     //获取预设接口
-    _getProData() {
+    _getData() {
       this.$ajax({
         method: "get",
-        url: 'http://10.19.160.176:8088/demo/caccesssysRelationWorkInfo/presetData',
+        url: 'http://10.19.160.176:8088/demo/caccesssysRelationWorkInfo/getStorages',
         // headers:{
         //   'Content-Type':'application/json;charset=utf-8',
         // },
+        params: {
+          pid: 2,
+          nodeId: 2
+        }
       }).then(res => {
-        if (res.data.result) {
-          this.ruleForm.hdfsname = res.data.ip;
-          this.ruleForm.hdfsport = res.data.port;
+        if (res.data.result == "succeed") {
+          var data = res.data.storages[this.indexEq];
+          var config = JSON.parse(data.config);
+          this.ruleForm.imId = data.dataCenterInfos.id;
+          this.ruleForm.iminfo = data.dataCenterInfos.serviceName;
+          this.ruleForm.rootdire = config['topics.dir'];
+          var URL = config["hdfs.url"];
+          URL = URL.split(",")[0];
+          var Iindex = URL.lastIndexOf(':');
+          var hName = URL.substring(7, Iindex);
+          var hPort = URL.substring(Iindex + 1, URL.length);
+          this.ruleForm.hdfsname = hName;
+          this.ruleForm.hdfsport = hPort;
+          if (config["hdfs.url"].indexOf(',') != -1) {
+            var bakurl = config["hdfs.url"].split(',')[1];
+            bakurl = bakurl.substring(7, bakurl.length);
+            var IPindex = bakurl.lastIndexOf(':');
+            var hdfsName = bakurl.substring(0, IPindex);
+            var hdfsPort = bakurl.substring(IPindex + 1, bakurl.length);
+            this.ruleForm.bakip = hdfsName;
+            this.ruleForm.bakport = hdfsPort
+
+            //impala信息
+          } else {
+            this.ruleForm.isha = false;
+
+            /*  $(".bakip").hide();
+              $('#subdirectory').removeAttr('checked');
+              flag = false;
+              form.render();*/
+          }
         }
       })
     }
@@ -215,11 +249,12 @@ export default {
   watch: {
     dialogVisible() {
       if (this.dialogVisible) {
-        this._getProData();
+        this._getData();
       }
     }
 
-  }
+  },
+  props: ['indexEq','ownId']
 
 };
 

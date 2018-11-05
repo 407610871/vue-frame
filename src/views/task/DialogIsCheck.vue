@@ -447,22 +447,18 @@ export default {
   cursor: pointer;
 }
 .resultIcon .yes {
-<<<<<<< HEAD
+
   background: url("../../assets/images/data_ri.png") no-repeat;
-=======
-  background: url("../../assets/images/yes.png") no-repeat;
->>>>>>> 37e23ccc9f06ea71f65962d751d80b0a870bd79c
+
   width: 16px;
   height: 16px;
   display: inline-block;
   background-size: 100% 100%;
 }
 .resultIcon .wrong {
-<<<<<<< HEAD
+
   background: url("../../assets/images/data_err.png") no-repeat;
-=======
-  background: url("../../assets/images/wrong.png") no-repeat;
->>>>>>> 37e23ccc9f06ea71f65962d751d80b0a870bd79c
+
   width: 16px;
   height: 16px;
   display: inline-block;

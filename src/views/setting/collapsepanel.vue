@@ -23,19 +23,23 @@
         <el-col :span="9" class="collapsepanel-tools">
           <div class="grid-content">
             <el-button type="primary">关联</el-button>
-            <el-button type="primary">修改</el-button>
+            <div class="edithdd" style="display: inline-block; margin-left:10px; margin-right: 10px;">
+             <hdfs-edit :indexEq="1" :ownId="97796"></hdfs-edit>
+            </div>
+           <!--  <el-button type="primary">修改</el-button> -->
             <el-button type="primary">删除</el-button>
           </div>
         </el-col>
       </el-row>
     </div>
     <div class="regbtn">
-      <hdfs-add></hdfs-add>
+      <hdfs-add :msg="1"></hdfs-add>
     </div>
   </div>
 </template>
 <script>
 import hdfsAdd from '@/views/mainLay/dialog/hdfs_add'
+import hdfsEdit from '@/views/mainLay/dialog/hdfs_edit'
 export default {
   data() {
     return {
@@ -58,7 +62,8 @@ export default {
 
   },
   components:{
-     hdfsAdd
+     hdfsAdd,
+     hdfsEdit
   }
 }
 

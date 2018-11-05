@@ -93,17 +93,47 @@
         <div class="proInfo-box log-box clearfix ptb20" v-loading="loading2">
           <textarea name="" id="" disabled="disabled" v-show="textShow">{{loginfo}}</textarea>
         </div>
+        <div class="proInfo-box clearfix ptb20 hisInver">
+          <span>核验历史记录:</span>
+          <div class="comTable">
+            <el-table :data="tableData" style="width: 100%" height="250" stripe>
+              <el-table-column prop="accessCheckTime" label="核验时间">
+              </el-table-column>
+              <el-table-column label="核验方式">
+                <template slot-scope="scope">
+                  <span>{{scope.row.config_key=="0"?'全量':'时间范围'}}</span>
+                </template>
+              </el-table-column>
+              <el-table-column prop="source_library" label="核验误差">
+                <template slot-scope="scope">
+                  <span>{{scope.row.config_range}}%</span>
+                </template>
+              </el-table-column>
+              <el-table-column prop="source_library" label="核验结果">
+                <template slot-scope="scope">
+                  <span>{{scope.row.testresults_manual_check_result=="1"?'不一致':'一致'}}</span>
+                </template>
+              </el-table-column>
+              <el-table-column prop="source_library" label="核验报告">
+                <template slot-scope="scope">
+                  <el-button size="mini" type="info" class="" @click="download(scope.row)">导出</el-button>
+                </template>
+              </el-table-column>
+            </el-table>
+          </div>
+        </div>
       </el-form>
     </el-dialog>
   </div>
 </template>
 <script>
+import {myBrowser} from '@/utils/mix.js'
 export default {
   name: "dataInver",
   data: function() {
     return {
       taskInfoId: '1',
-      taskId: '1',
+      taskId: '92066',
       dialogVisible: false,
       loginfo: '',
       loading2: false,
@@ -112,7 +142,9 @@ export default {
       result: '0',
       timer: null,
       loading: false,
+      logId: '',
       resData: {},
+      tableData: [],
       ruleForm: {
         setVer: 0, //核验设置
         range: 0, //核验误差范围
@@ -150,6 +182,7 @@ export default {
       }).then(res => {
         if (res.data.result == "true" || res.data.result == true) {
           this.resData = res.data;
+          this.logId = res.data.id;
           if (res.data.status == "1") {
             this.textShow = false;
             window.clearInterval(this.timer);
@@ -208,7 +241,7 @@ export default {
         //   'Content-Type':'application/json;charset=utf-8',
         // },
         params: {
-          taskId: this.taskId
+          id: this.logId
         }
 
       }).then(res => {
@@ -256,18 +289,18 @@ export default {
         });
         return;
       }
-       this.$ajax({
+      this.$ajax({
         method: "get",
         url: `http://10.19.160.59:8088/demo/ccheckData/tableCheck`,
         params: {
-          taskId:this.taskId,
+          taskId: this.taskId,
           key: this.ruleForm.setVer,
           range: this.ruleForm.range,
           startTime: this.ruleForm.startTime[0],
           endTime: this.ruleForm.startTime[1]
         }
       }).then(res => {
-        if (res.data.result == true || res.data.result=="true") {
+        if (res.data.result == true || res.data.result == "true") {
           this.$alert(res.data.message, "核验结果", {
             confirmButtonText: "确定",
             callback: action => {
@@ -280,6 +313,33 @@ export default {
           });
         }
       });
+    },
+    //核验历史记录
+    _queryHis() {
+      this.$ajax({
+        method: "get",
+        url: `http://10.19.160.59:8088/demo/ccheckData/tableNumAllByTaskId`,
+        params: {
+          taskId: this.taskId
+        }
+      }).then(res => {
+        if (res.data.success) {
+          this.tableData = res.data.data;
+          console.log(this.tableData);
+        } else {
+          this.$alert('获取核验历史记录失败', '信息', {
+            confirmButtonText: '确定'
+          });
+        }
+      })
+    },
+    //导出报告
+    download(item) {
+      var browser = myBrowser();
+      if (!browser) {
+        browser = 'IE'
+      }
+      window.location.href = `http://10.19.160.59:8088/demo/ccheckData/downloadCheckDataById?id=${item.id}&browser=${browser}&accessName=ww`
     }
   },
   components: {
@@ -298,6 +358,7 @@ export default {
     dialogVisible() {
       if (this.dialogVisible) {
         this._queryInver();
+        this._queryHis();
       }
     }
 
@@ -425,4 +486,11 @@ li {
   padding-left: 35px !important;
 }
 
+.hisInver .el-table--medium td,.hisInver
+.el-table--medium th {
+  padding: 0px !important;
+}
+.hisInver .el-table th > .cell{
+  line-height: 32px !important;
+}
 </style>
