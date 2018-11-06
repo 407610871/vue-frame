@@ -6,7 +6,7 @@
         <span class="grab gra-l"></span>
         <span class="grab gra-r"></span>
       </div>
-      <el-form :model="ruleForm" ref="ruleForm" label-width="100px" class="demo-ruleForm" :rules="formRules">
+      <el-form :model="ruleForm" ref="ruleForm" label-width="100px" class="demo-ruleForm" :rules="formRules" v-loading="loading">
         <div class="daiInfo proInfo">
           <div class="daiInfo-title proInfo-title">
             <h2>提供方信息</h2>
@@ -313,7 +313,8 @@ export default {
       DJPT: [], //对接平台
       fileList: [], //上传的文件列表
       tableMsg: [],
-      appId: '108767',
+      loading: false,
+      appId: '',
       ruleForm: {
         jrname: '',
         proname: '',
@@ -506,15 +507,10 @@ export default {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           if (_self.ruleForm.syskind != '10023') {
-            const loading = this.$loading({
-              lock: true,
-              text: 'Loading',
-              spinner: 'el-icon-loading',
-              background: 'rgba(0, 0, 0, 0.7)'
-            });
+
             let save = {};
             save = {
-              "id" :this.appId,
+              "id": this.appId,
               "name": _self.ruleForm.jrname, // 接入源名称
               "accessSysDialectId": _self.ruleForm.syskind, //mysql,oracle接入源类型
               "registerName": _self.ruleForm.dockname, // 注册人姓名 
@@ -636,38 +632,99 @@ export default {
             }
             console.log(typeof(save));
             this.$ajax({
-              method: "POST",
-              url: 'http://10.19.160.211:8088/demo/register/dataSourceInsert',
+              method: "get",
+              url: 'http://10.19.160.211:8088/demo/register/dataSourceCheck',
               // headers:{
               //   'Content-Type':'application/json;charset=utf-8',
               // },
-              data: save
-
-            }).then(res => {
-              loading.close();
-              if (res.data.success) {
-                this.$alert('更新成功', '信息', {
-                  confirmButtonText: '确定',
-                  callback: action => {
-                    this.$refs['ruleForm'].resetFields();
-                    this.dialogVisible = false;
-                    this.$emit('refreshTable');
-                  }
-                });
-
-              } else {
-                this.$alert('更新失败', '信息', {
-                  confirmButtonText: '确定',
-                  callback: action => {
-
-                  }
-                });
+              params: {
+                ip: this.ruleForm.ipname,
+                username: this.ruleForm.username,
+                name: this.ruleForm.jrname,
+                id: appId
               }
 
+            }).then(res => {
+              if (res.data.exist) {
+                if (res.data.existName) {
+                  this.$message.warning('接入源名称已存在');
+                  return false;
+                }
+                this.$confirm('已经存在同IP地址同用户的数据源，确定保存?', '信息', {
+                  confirmButtonText: '确定',
+                  cancelButtonText: '取消',
+                }).then(() => {
+                  this.loading = true;
+                  this.$ajax({
+                    method: "POST",
+                    url: 'http://10.19.160.211:8088/demo/register/dataSourceInsert',
+                    // headers:{
+                    //   'Content-Type':'application/json;charset=utf-8',
+                    // },
+                    data: save
+
+                  }).then(res => {
+                    this.loading = false;
+                    if (res.data.success) {
+                      this.$alert('更新成功', '信息', {
+                        confirmButtonText: '确定',
+                        callback: action => {
+                          this.$refs['ruleForm'].resetFields();
+                          this.dialogVisible = false;
+                          this.$emit('refreshTable');
+                        }
+                      });
+
+                    } else {
+                      this.$alert('更新失败', '信息', {
+                        confirmButtonText: '确定',
+                        callback: action => {}
+                      });
+                    }
+
+                  })
+
+                }).catch(()=>{
+                  
+                })
+              } else {
+                this.loading = true;
+                this.$ajax({
+                  method: "POST",
+                  url: 'http://10.19.160.211:8088/demo/register/dataSourceInsert',
+                  // headers:{
+                  //   'Content-Type':'application/json;charset=utf-8',
+                  // },
+                  data: save
+
+                }).then(res => {
+                  this.loading = false;
+                  if (res.data.success) {
+                    this.$alert('更新成功', '信息', {
+                      confirmButtonText: '确定',
+                      callback: action => {
+                        this.$refs['ruleForm'].resetFields();
+                        this.dialogVisible = false;
+                        this.$emit('refreshTable');
+                      }
+                    });
+
+                  } else {
+                    this.$alert('更新失败', '信息', {
+                      confirmButtonText: '确定',
+                      callback: action => {
+
+                      }
+                    });
+                  }
+
+                })
+              }
             })
-          } 
+
+          }
         } else {
-          
+
 
         }
       });
@@ -718,14 +775,15 @@ export default {
     },
     //初始化数据
     _getInit() {
+      this.loading = true;
       this.$ajax({
-        methods: "post",
+        method: "post",
         url: 'http://10.19.160.211:8088/demo/update/dataSourceSelect',
         params: {
           id: this.appId
         }
       }).then(res => {
-
+        this.loading = false;
         if (res.data.success) {
           var data = res.data.data;
           this.ruleForm.jrname = data.name;
@@ -808,6 +866,7 @@ export default {
           });
         }
       }, (res) => {
+        this.loading = false;
         console.log('error');
       })
     },
@@ -815,9 +874,11 @@ export default {
   components: {
 
   },
+  props:['acId'],
   watch: {
     dialogVisible() {
       if (this.dialogVisible) {
+        this.appId = this.acId;
         //得到数据库方言
         this._getAccessDialect();
         //数据来源

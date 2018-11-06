@@ -1,6 +1,6 @@
 <template>
   <div class="taskMDialog collTaskDia">
-    <el-form :model="ruleForm" ref="ruleForm" label-width="100px" class="demo-ruleForm" :rules="formRules">
+    <el-form :model="ruleForm" ref="ruleForm" label-width="100px" class="demo-ruleForm" :rules="formRules" v-loading="loading">
       <div class="daiInfo proInfo">
         <div class="proInfo-box clearfix">
           <el-col :span="24">
@@ -22,14 +22,30 @@
           <el-col :span="24">
             <el-form-item label="接入方式:" prop="accessMode">
               <el-radio-group v-model="ruleForm.accessMode">
-                <el-radio label="一次性接入"></el-radio>
-                <el-radio label="周期接入"></el-radio>
-                <el-radio label="实时接入"></el-radio>
-                <el-radio label="全量接入"></el-radio>
+                <el-radio label="0">实时</el-radio>
+                <el-radio label="1">增量</el-radio>
+                <el-radio label="2">一次性接入</el-radio>
+                <el-radio label="3">全量</el-radio>
               </el-radio-group>
             </el-form-item>
           </el-col>
           <el-col :span="24">
+            <el-form-item label="接入优先级:" prop="accessPri">
+              <el-radio-group v-model="ruleForm.accessPri">
+                <el-radio label="1">高</el-radio>
+                <el-radio label="3">低</el-radio>
+              </el-radio-group>
+            </el-form-item>
+          </el-col>
+          <el-col :span="24">
+            <el-form-item label="任务提交方式:" prop="taskSubMode">
+              <el-radio-group v-model="ruleForm.taskSubMode">
+                <el-radio label="true">自动提交</el-radio>
+                <el-radio label="false">手工提交</el-radio>
+              </el-radio-group>
+            </el-form-item>
+          </el-col>
+          <el-col :span="24" v-show="ruleForm.accessMode=='1'||ruleForm.accessMode=='3'">
             <el-col :span="8" class="collbg">
               <el-form-item label="增量字段:" prop="increment">
                 <el-input v-model="ruleForm.increment" class="fl"></el-input>
@@ -39,38 +55,61 @@
             </el-col>
             <el-col :span="6">
               <el-form-item label="采集技术:" prop="actech">
-                <el-select v-model="ruleForm.actech" placeholder="请选择">
-                  <el-option label="全国" value="0"></el-option>
-                  <el-option label="全省" value="1"></el-option>
-                  <el-option label="全市" value="2"></el-option>
-                  <el-option label="行政区" value="3"></el-option>
+                <el-select v-model="ruleForm.actech" placeholder="请选择" disabled>
+                  <el-option label="JDBC" value="JDBC"></el-option>
                 </el-select>
               </el-form-item>
             </el-col>
           </el-col>
-          <el-col :span="24">
+          <el-col :span="24" v-show="ruleForm.accessMode=='1'||ruleForm.accessMode=='3'">
             <el-form-item label="周期设置:" prop="cycleSet">
-              <el-radio-group v-model="ruleForm.cycleSet" class="wid100 collradio">
+              <div class="wid100 collradio cycdiv">
                 <el-col :span="24">
                   <el-col :span="1" class="bank">bank</el-col>
                   <el-col :span="4" class="line40">
-                    <el-radio label="间隔执行">
+                    <el-radio label="0" v-model="ruleForm.cycleSet">间隔执行
                     </el-radio>
                   </el-col>
-                  <el-col :span="10">
-                    <el-col :span="4">
+                  <el-col :span="19">
+                    <el-col :span="2">
                       <el-form-item class="clearfix">
                         <span class="mr10">每隔</span>
                       </el-form-item>
                     </el-col>
-                    <el-col :span="8">
+                    <el-col :span="3">
                       <el-form-item>
                         <el-input v-model="ruleForm.jday"></el-input>
                       </el-form-item>
                     </el-col>
-                     <el-col :span="4">
+                    <el-col :span="2">
                       <el-form-item class="clearfix tcenter">
                         <span class="mr10">天</span>
+                      </el-form-item>
+                    </el-col>
+                    <el-col :span="4">
+                      <el-form-item>
+                        <el-select v-model="ruleForm.jhour" placeholder="请选择">
+                          <el-option v-for="item in hourData" :key="item" :label="item" :value="item">
+                          </el-option>
+                        </el-select>
+                      </el-form-item>
+                    </el-col>
+                    <el-col :span="2">
+                      <el-form-item class="clearfix tcenter">
+                        <span class="mr10">时</span>
+                      </el-form-item>
+                    </el-col>
+                    <el-col :span="4">
+                      <el-form-item>
+                        <el-select v-model="ruleForm.jmin" placeholder="请选择">
+                          <el-option v-for="item in minData" :key="item" :label="item" :value="item">
+                          </el-option>
+                        </el-select>
+                      </el-form-item>
+                    </el-col>
+                    <el-col :span="4">
+                      <el-form-item class="clearfix tcenter">
+                        <span class="mr10">分</span>
                       </el-form-item>
                     </el-col>
                   </el-col>
@@ -78,40 +117,202 @@
                 <el-col :span="24">
                   <el-col :span="1" class="bank">bank</el-col>
                   <el-col :span="4" class="line40">
-                    <el-radio label="定时执行">
+                    <el-radio label="1" v-model="ruleForm.cycleSet">定时执行
                     </el-radio>
                   </el-col>
-                  <el-col :span="10">
-                    <el-form-item class="clearfix">
-                      <span class="mr10">每隔</span>
-                    </el-form-item>
+                  <el-col :span="19">
+                    <el-col :span="24" class="line40">
+                      <el-col :span="1" class="oparadio">
+                        <el-radio v-model="radio" label="2"> </el-radio>
+                      </el-col>
+                      <el-col :span="21">
+                        <el-col :span="2">
+                          <el-form-item class="clearfix">
+                            <span class="mr10">每月</span>
+                          </el-form-item>
+                        </el-col>
+                        <el-col :span="4">
+                          <el-form-item>
+                            <el-select v-model="ruleForm.dfmon" placeholder="请选择">
+                              <el-option v-for="item in monthData" :key="item" :label="item" :value="item">
+                              </el-option>
+                            </el-select>
+                          </el-form-item>
+                        </el-col>
+                        <el-col :span="2">
+                          <el-form-item class="clearfix tcenter">
+                            <span class="mr10">号</span>
+                          </el-form-item>
+                        </el-col>
+                        <el-col :span="4">
+                          <el-form-item>
+                            <el-select v-model="ruleForm.dfhour" placeholder="请选择">
+                              <el-option v-for="item in hourData" :key="item" :label="item" :value="item">
+                              </el-option>
+                            </el-select>
+                          </el-form-item>
+                        </el-col>
+                        <el-col :span="2">
+                          <el-form-item class="clearfix tcenter">
+                            <span class="mr10">时</span>
+                          </el-form-item>
+                        </el-col>
+                        <el-col :span="4">
+                          <el-form-item>
+                            <el-select v-model="ruleForm.dfmin" placeholder="请选择">
+                              <el-option v-for="item in minData" :key="item" :label="item" :value="item">
+                              </el-option>
+                            </el-select>
+                          </el-form-item>
+                        </el-col>
+                        <el-col :span="4">
+                          <el-form-item class="clearfix tcenter">
+                            <span class="mr10">分</span>
+                          </el-form-item>
+                        </el-col>
+                      </el-col>
+                    </el-col>
+                    <el-col :span="24" class="line40">
+                      <el-col :span="1" class="oparadio">
+                        <el-radio v-model="radio" label="3"> </el-radio>
+                      </el-col>
+                      <el-col :span="21">
+                        <el-col :span="2">
+                          <el-form-item class="clearfix">
+                            <span class="mr10">每周</span>
+                          </el-form-item>
+                        </el-col>
+                        <el-col :span="2">
+                          <el-form-item class="clearfix tcenter">
+                            <span class="mr10">星期</span>
+                          </el-form-item>
+                        </el-col>
+                        <el-col :span="4">
+                          <el-form-item>
+                            <el-select v-model="ruleForm.dsweek" placeholder="请选择">
+                              <el-option v-for="item in weekData" :label="item.name" :value="item.val">
+                              </el-option>
+                            </el-select>
+                          </el-form-item>
+                        </el-col>
+                        <el-col :span="4">
+                          <el-form-item>
+                            <el-select v-model="ruleForm.dshour" placeholder="请选择">
+                              <el-option v-for="item in hourData" :key="item" :label="item" :value="item">
+                              </el-option>
+                            </el-select>
+                          </el-form-item>
+                        </el-col>
+                        <el-col :span="2">
+                          <el-form-item class="clearfix tcenter">
+                            <span class="mr10">时</span>
+                          </el-form-item>
+                        </el-col>
+                        <el-col :span="4">
+                          <el-form-item>
+                            <el-select v-model="ruleForm.dsmin" placeholder="请选择">
+                              <el-option v-for="item in minData" :key="item" :label="item" :value="item">
+                              </el-option>
+                            </el-select>
+                          </el-form-item>
+                        </el-col>
+                        <el-col :span="4">
+                          <el-form-item class="clearfix tcenter">
+                            <span class="mr10">分</span>
+                          </el-form-item>
+                        </el-col>
+                      </el-col>
+                    </el-col>
+                    <el-col :span="24" class="line40">
+                      <el-col :span="1" class="oparadio">
+                        <el-radio v-model="radio" label="4"> </el-radio>
+                      </el-col>
+                      <el-col :span="21">
+                        <el-col :span="2">
+                          <el-form-item class="clearfix">
+                            <span class="mr10">每天</span>
+                          </el-form-item>
+                        </el-col>
+                        <el-col :span="4">
+                          <el-form-item>
+                            <el-select v-model="ruleForm.dthour" placeholder="请选择">
+                              <el-option v-for="item in hourData" :key="item" :label="item" :value="item">
+                              </el-option>
+                            </el-select>
+                          </el-form-item>
+                        </el-col>
+                        <el-col :span="2">
+                          <el-form-item class="clearfix tcenter">
+                            <span class="mr10">时</span>
+                          </el-form-item>
+                        </el-col>
+                        <el-col :span="4">
+                          <el-form-item>
+                            <el-select v-model="ruleForm.dtmin" placeholder="请选择">
+                              <el-option v-for="item in minData" :key="item" :label="item" :value="item">
+                              </el-option>
+                            </el-select>
+                          </el-form-item>
+                        </el-col>
+                        <el-col :span="2">
+                          <el-form-item class="clearfix tcenter">
+                            <span class="mr10">分</span>
+                          </el-form-item>
+                        </el-col>
+                      </el-col>
+                    </el-col>
                   </el-col>
                 </el-col>
-              </el-radio-group>
+              </div>
             </el-form-item>
           </el-col>
         </div>
       </div>
     </el-form>
+    <div class="btn tcenter mt30">
+      <el-button type="primary" style="margin-top: 12px;" @click="pre()">上一步</el-button>
+      <el-button type="primary" style="margin-top: 12px;" @click="finish()">完成</el-button>
+    </div>
   </div>
 </template>
 <script>
 import increMap from '@/views/mainLay/dialog/incre_map' //增量字段
+
 export default {
   name: "userSurvey",
   data: function() {
     return {
       dialogVisible: false,
       innerVisible: false,
-      increArr: [],
+      increArr: {},
+      monthData: [],
+      minData: [],
+      hourData: [],
+      weekData: [],
+      appId: '97304',
+      accId: '10528771',
+      loading: false,
+      radio: '',
       ruleForm: {
         dLibrary: '', //接入目的库
         tablename: '', //建立的表名
-        accessMode: '', //接入方式
+        accessMode: '0', //接入方式
         increment: '', //增量字段
-        actech: '', //采集技术
-        cycleSet: '', //周期设置
-        jday: '',//间隔执行天数
+        actech: 'JDBC', //采集技术
+        cycleSet: '0', //周期设置
+        jday: '', //间隔执行天数
+        jmin: '',
+        jhour: '',
+        dfmon: '', //定时执行月数
+        dfmin: '',
+        dsmin: '',
+        dshour: '',
+        dsweek: '',
+        dfhour: '',
+        dthour: '',
+        dtmin: '',
+        accessPri: '1', //优先级
+        taskSubMode: 'true' //提交方式
       },
       formRules: {},
       value2: new Date(2016, 9, 10, 18, 40)
@@ -137,14 +338,226 @@ export default {
     saveIncrement(value) {
       this.increArr = value;
       console.log("****" + this.increArr);
+      this.ruleForm.increment = this.increArr.name;
       this.innerVisible = false;
+    },
+    //月数
+    _monthData() {
+      for (let i = 1; i < 29; i++) {
+        this.$set(this.monthData, i, i);
+      }
+      console.log(this.monthData);
+    },
+    _minData() {
+      for (let i = 1; i < 60; i++) {
+        this.$set(this.minData, i, i);
+      }
+    },
+    _hourData() {
+      for (let i = 1; i < 24; i++) {
+        this.$set(this.hourData, i, i);
+      }
+    },
+    _weekData() {
+      for (let i = 1; i < 8; i++) {
+        var weekday = '';
+        if (i == 1) {
+          weekday = '一';
+        }
+        if (i == 2) {
+          weekday = '二';
+        }
+        if (i == 3) {
+          weekday = '三';
+        }
+        if (i == 4) {
+          weekday = '四';
+        }
+        if (i == 5) {
+          weekday = '五';
+        }
+        if (i == 6) {
+          weekday = '六';
+        }
+        if (i == 7) {
+          weekday = '日';
+        }
+        this.weekData.push({
+          name: weekday,
+          val: i
+        })
+      }
+    },
+    _saveUser() {
+
+    },
+    pre() {
+      this.$emit('pre');
+    },
+    finish() {
+      //间隔执行
+      var pollIntervalMs;
+      if (this.ruleForm.cycleSet == '0') {
+        let jday = 0;
+        let jhour = 0;
+        let jmin = 0;
+        if (this.ruleForm.jday != '' && this.ruleForm.jday != undefined) {
+          jday = this.ruleForm.jday;
+        }
+        if (this.ruleForm.jhour != '' && this.ruleForm.jhour != undefined) {
+          jhour = this.ruleForm.jhour;
+        }
+        if (this.ruleForm.jmin != '' && this.ruleForm.jmin != undefined) {
+          jmin = this.ruleForm.jmin;
+        }
+        var pollIntervalMs = this.formateTime(parseInt(jday), parseInt(jhour), parseInt(jmin));
+        console.log(pollIntervalMs);
+      } else if (this.ruleForm.cycleSet == '1') {
+        if (this.radio == '') {
+           this.$message.warning('请选择定时执行时间');
+          return false;
+        }
+        if (this.radio == '2') {
+          //第一队列
+          let dfmin = '?';
+          let dfhour = '?';
+          let dfmon = '?';
+          if (this.ruleForm.dfmin != '' && this.ruleForm.dfmin != undefined) {
+            dfmin = this.ruleForm.dfmin;
+          }
+          if (this.ruleForm.dfhour != '' && this.ruleForm.dfhour != undefined) {
+            dfhour = this.ruleForm.dfhour;
+          }
+          if (this.ruleForm.dfmon != '' && this.ruleForm.dfmon != undefined) {
+            dfmon = this.ruleForm.dfmon;
+          }
+          var pollIntervalMs = `0 ${dfmin} ${dfhour} ${dfmon} ? ? *`;
+          console.log(pollIntervalMs);
+        }
+        if (this.radio == '3') {
+          //第二队列
+          let dsmin = '?';
+          let dshour = '?';
+          let dsweek = '?';
+          if (this.ruleForm.dsmin != '' && this.ruleForm.dsmin != undefined) {
+            dsmin = this.ruleForm.dsmin;
+          }
+          if (this.ruleForm.dshour != '' && this.ruleForm.dshour != undefined) {
+            dshour = this.ruleForm.dshour;
+          }
+          if (this.ruleForm.dsweek != '' && this.ruleForm.dsweek != undefined) {
+            dsweek = this.ruleForm.dsweek;
+          }
+          var pollIntervalMs = `0 ${dsmin} ${dshour} ? ? ${dsweek} *`;
+          console.log(pollIntervalMs);
+        }
+        if (this.radio == '4') {
+          //第三队列
+          let dtmin = '?';
+          let dthour = '?';
+          if (this.ruleForm.dtmin != '' && this.ruleForm.dtmin != undefined) {
+            dtmin = this.ruleForm.dtmin;
+          }
+          if (this.ruleForm.dthour != '' && this.ruleForm.dthour != undefined) {
+            dthour = this.ruleForm.dthour;
+          }
+
+          var pollIntervalMs = `0 ${dtmin} ${dthour} ? ? ? *`;
+          console.log(pollIntervalMs);
+        }
+      }
+      var ctt = '';
+      if (this.ruleForm.accessMode == "0") { //实时
+        ctt = '0'
+      }
+      if (this.ruleForm.accessMode == "2") { //实时
+        ctt = '3'
+      }
+      if (this.ruleForm.accessMode == "1" && this.ruleForm.cycleSet == "0") { //间隔
+        ctt = '1'
+      }
+      if (this.ruleForm.accessMode == "1" && this.ruleForm.cycleSet == "1") { //实时
+        ctt = '2'
+      }
+      if (this.ruleForm.accessMode == "3" && this.ruleForm.cycleSet == "0") { //间隔
+        ctt = '4'
+      }
+      if (this.ruleForm.accessMode == "3" && this.ruleForm.cycleSet == "1") { //实时
+        ctt = '5'
+      }
+      var save = {
+        "accessSysObjDetails": this.increArr,
+        "priority": this.ruleForm.accessPri,
+        "jobType": this.ruleForm.actech,
+        "accessSysObjInfoId": this.accId,
+        "pollIntervalMs": pollIntervalMs,
+        "schemaMappingDTOList": this.$store.state.schemaList,
+        "separator": '',
+        "accessRelationWorkInfoId": this.appId,
+        "collectionTaskType": ctt,
+        "isStartOverTask": this.ruleForm.taskSubMode,
+        "timeType": this.radio
+      }
+      this.loading = true;
+      this.$ajax({
+        method: 'post',
+        url: 'http://10.19.160.171:8081/DEMO/dataTable/inputSurvey',
+        data: this.$store.state.userList
+      }).then(res => {
+        this.loading = false;
+        if (res.data.success) {
+          this.$ajax({
+            method: "post",
+            url: 'http://10.19.160.168:8088/demo/task/saveHeliumTask',
+            // headers:{
+            //   'Content-Type':'application/json;charset=utf-8',
+            // },
+            data: save
+
+          }).then(res => {
+            this.loading = false;
+            if (res.data.success) {
+              this.$alert('采集任务启动成功！', '信息', {
+                confirmButtonText: '确定',
+                callback: action => {
+                  this.$emit('close');
+                }
+              });
+            } else {
+              this.$alert('采集任务启动失败！', '信息', {
+                confirmButtonText: '确定',
+                callback: action => {
+
+                }
+              });
+            }
+          })
+        } else {
+          this.loading = false;
+          this.$alert('数据标记失败', '信息', {
+            confirmButtonText: '确定'
+          });
+        }
+      }, (res) => {
+        this.loading = false;
+        this.$alert('数据标记失败', '信息', {
+          confirmButtonText: '确定'
+        });
+      })
+
+    },
+    formateTime(day, hour, min) {
+      return parseInt(day * 86400000 + hour * 3600000 + min * 60000);
     }
   },
   components: {
     increMap
   },
   mounted() {
-
+    this._monthData();
+    this._minData();
+    this._hourData();
+    this._weekData();
   },
   created() {
 
@@ -159,6 +572,13 @@ export default {
 <style lang="scss">
 @import "@/assets/css/base.scss";
 @import "@/assets/css/dialog.scss";
+.cycdiv {
+  display: inline-block;
+  line-height: 1;
+  vertical-align: middle;
+  font-size: 0;
+}
+
 .userSurveyDialog .el-dialog__body {
   padding-left: 0px;
   padding-right: 0px;
@@ -228,6 +648,12 @@ export default {
 .collradio {
   .line40 {
     line-height: 40px;
+  }
+}
+
+.oparadio {
+  .el-radio__label {
+    display: none;
   }
 }
 

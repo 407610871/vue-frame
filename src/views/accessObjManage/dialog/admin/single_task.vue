@@ -16,36 +16,32 @@
                 <h2>提供方信息</h2>
               </div>
             </div>
-            <user-surveybak :info="this.pdata" ref="survey"></user-surveybak>
-            <div class="btn tcenter">
-              <el-button type="primary" style="margin-top: 12px;" @click="next('second')">下一步</el-button>
-              <el-button style="margin-top: 12px;" @click="closeDialog">取消</el-button>
-            </div>
+            <user-surveybak :info="this.pdata" @pre="next('second')" @closeuser="closeDialog()" ref="survey"></user-surveybak>
+           <!--  <div class="btn tcenter">
+             <el-button type="primary" style="margin-top: 12px;" @click="next('second')">下一步</el-button>
+             <el-button style="margin-top: 12px;" @click="closeDialog">取消</el-button>
+           </div> -->
           </el-tab-pane>
-         
           <el-tab-pane name="second" disabled><span slot="label"><i class="el-icon-circle">2</i> 建立数据映射关系</span>
             <div class="daiInfo proInfo">
               <div class="daiInfo-title proInfo-title">
                 <h2>字段类型映射</h2>
               </div>
             </div>
-            <type-map :tableId="this.pdata.id"></type-map>
-            <div class="btn tcenter mt30">
-            <el-button type="primary" style="margin-top: 12px;" @click="next('first')">上一步</el-button>
-              <el-button type="primary" style="margin-top: 12px;" @click="next('third')">下一步</el-button>
-              
-            </div>
+            <type-map :tableId="this.pdata.id" @pre="next('first')" @nre="next('third')"></type-map>
           </el-tab-pane>
-          <el-tab-pane name="third" disabled><span slot="label"><i class="el-icon-circle">3</i>设置接入信息</span><div class="daiInfo proInfo">
+          <el-tab-pane name="third" disabled><span slot="label"><i class="el-icon-circle">3</i>设置接入信息</span>
+            <div class="daiInfo proInfo">
               <div class="daiInfo-title proInfo-title">
                 <h2>设置采集任务</h2>
               </div>
             </div>
-            <coll-task></coll-task>
-            <div class="btn tcenter mt30">
+            <coll-task @pre="next('second')" @close="closeDialog()"></coll-task>
+            <!-- <div class="btn tcenter mt30">
               <el-button type="primary" style="margin-top: 12px;" @click="next('second')">上一步</el-button>
               <el-button type="primary" style="margin-top: 12px;">完成</el-button>
-            </div></el-tab-pane>
+            </div> -->
+          </el-tab-pane>
         </el-tabs>
       </div>
     </el-dialog>
@@ -54,8 +50,8 @@
 <script>
 import userSurveybak from '@/views/accessObjManage/dialog/admin/user_surveybak' //用户调研
 import wildCard from '@/views/accessObjManage/dialog/admin/wild_card' //设置通配符
-import typeMap from '@/views/accessObjManage/dialog/admin//type_map' //建立数据映射关系
-import collTask from '@/views/accessObjManage/dialog/admin/coll_task'//设置采集任务
+import typeMap from '@/views/accessObjManage/dialog/admin/type_map' //建立数据映射关系
+import collTask from '@/views/accessObjManage/dialog/admin/coll_task' //设置采集任务
 export default {
   name: "userSurvey",
   data: function() {
@@ -97,7 +93,7 @@ export default {
   computed: {
 
   },
-  props:['pdata'],
+  props: ['pdata'],
 
 };
 
@@ -186,10 +182,13 @@ export default {
 .taskSteps .proInfo {
   margin-bottom: 30px;
 }
-.setTaskDia .el-tabs__item.is-disabled{
-  color:#303133;
+
+.setTaskDia .el-tabs__item.is-disabled {
+  color: #303133;
 }
-.setTaskDia .el-tabs__item.is-active{
-  color:$color-background-tabs;
+
+.setTaskDia .el-tabs__item.is-active {
+  color: $color-background-tabs;
 }
+
 </style>

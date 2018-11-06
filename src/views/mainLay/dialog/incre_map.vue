@@ -23,18 +23,18 @@
         </div>
         <div class="proInfo-box clearfix">
           <div class="comTable">
-            <el-table :data="tableData" stripe height="250">
+            <el-table :data="tableData" stripe height="250" :span-method="arraySpanMethod">
               <el-table-column label="增量字段选择" width="180">
                 <template slot-scope="scope">
                   <!-- class="textRadio" -->
-                  <el-radio @change.native="getCurrentRow(scope.$index)" :label="scope.$index" v-model="radio" class="textRadio">&nbsp;</el-radio>
+                  <el-radio @change.native="getCurrentRow(scope.row)" :label="scope.$index" v-model="radio" class="textRadio">&nbsp;</el-radio>
                 </template>
               </el-table-column>
-              <el-table-column prop="fromType" label="字段名" width="180">
+              <el-table-column prop="name" label="字段名" width="180">
               </el-table-column>
-              <el-table-column prop="toName" label="字段类型">
+              <el-table-column prop="datatype" label="字段类型">
               </el-table-column>
-              <el-table-column prop="toDes" label="字段描述" width="180">
+              <el-table-column prop="diyComments" label="字段描述" width="180">
               </el-table-column>
             </el-table>
           </div>
@@ -56,57 +56,10 @@ export default {
     return {
       radio: '',
       innerVisible: this.msg,
+      appId: '10650590',
       cincreArr: [],
-      tableData: [{
-        fromName: '2016-05-03',
-        fromType: '王小虎',
-        toName: '上海市普陀区金沙江路 1518 弄',
-        toType: ['string', 'int'],
-        toDes: '45654',
-        Typevalue: '',
-      }, {
-        fromName: '2016-05-03',
-        fromType: '王小虎',
-        toName: '上海市普陀区金沙江路 1518 弄',
-        toType: ['string', 'int'],
-        toDes: '45654',
-        Typevalue: '',
-      }, {
-        fromName: '2016-05-03',
-        fromType: '王小虎',
-        toName: '上海市普陀区金沙江路 1518 弄',
-        toType: ['string', 'int'],
-        toDes: '45654',
-        Typevalue: '',
-      }, {
-        fromName: '2016-05-03',
-        fromType: '王小虎',
-        toName: '上海市普陀区金沙江路 1518 弄',
-        toType: ['string', 'int'],
-        toDes: '45654',
-        Typevalue: '',
-      }, {
-        fromName: '2016-05-03',
-        fromType: '王小虎',
-        toName: '上海市普陀区金沙江路 1518 弄',
-        toType: ['string', 'int'],
-        toDes: '45654',
-        Typevalue: '',
-      }, {
-        fromName: '2016-05-03',
-        fromType: '王小虎',
-        toName: '上海市普陀区金沙江路 1518 弄',
-        toType: ['string', 'int'],
-        toDes: '45654',
-        Typevalue: '',
-      }, {
-        fromName: '2016-05-03',
-        fromType: '王小虎',
-        toName: '上海市普陀区金沙江路 1518 弄',
-        toType: ['string', 'int'],
-        toDes: '45654',
-        Typevalue: '',
-      }]
+      tableData: [],
+
     }
   },
   methods: {
@@ -118,13 +71,11 @@ export default {
     },
     getCurrentRow(value) {
       console.log(value);
-      this.cincreArr = [];
-      this.cincreArr.push({
-        tid: '0',
-        name: '1',
-        type: '3',
-        text: '2'
-      })
+      this.cincreArr = {
+        id: value.id,
+        name: value.name,
+        datatype: value.datatype
+      };
     },
     save() {
       if (this.cincreArr.length == 0) {
@@ -136,6 +87,77 @@ export default {
       console.log(this.cincreArr + "*****");
       this.$emit('saveIncre', this.cincreArr);
       this.innerVisible = false;
+    },
+    _getIncreType() {
+      this.$ajax({
+        methods: "get",
+        url: '/api/ctablesDetail/datas',
+        params: {
+          id: this.appId,
+          pagnum: 1,
+          count: 500
+        }
+      }).then(res => {
+        this.tableData = [];
+        if (res.data.result == "succeed") {
+          var first = [];
+          var second = [];
+          var data = res.data.page.list;
+          if (data.length > 0) {
+            for (let i = 0; i < data.length; i++) {
+              if (data[i].isNull == "N" || data[i].isNull == "NO") {
+                if (data[i].datatype.toLowerCase().indexOf('int') != -1 || data[i].datatype.toLowerCase() == "bigint" || data[i].datatype.toLowerCase() == "long" || data[i].datatype.toLowerCase().indexOf('time') != -1 || data[i].datatype.toLowerCase().indexOf('date') != -1 || data[i].datatype.toLowerCase() == "number") {
+                  first.push({
+                    datatype: data[i].datatype,
+                    name: data[i].name,
+                    comments: data[i].comments,
+                    id: data[i].id
+                  })
+                } else {
+                  second.push({
+                    datatype: data[i].datatype,
+                    name: data[i].name,
+                    comments: data[i].comments,
+                    id: data[i].id
+                  })
+                }
+              } else {
+                second.push({
+                  datatype: data[i].datatype,
+                  name: data[i].name,
+                  comments: data[i].comments,
+                  id: data[i].id
+                })
+              }
+
+            }
+            for (let m = 0; m < first.length; m++) {
+              this.tableData.push({
+                datatype: first[m].datatype,
+                name: first[m].name,
+                comments: first[m].comments,
+                id: first[m].id
+              })
+            }
+            console.log(first);
+            console.log(second);
+        
+            for (let m = 0; m < second.length; m++) {
+              this.tableData.push({
+                datatype: second[m].datatype,
+                name: second[m].name,
+                comments: second[m].comments,
+                id: second[m].id
+              })
+            }
+          }
+
+        }
+      })
+    },
+    //合并行
+    arraySpanMethod() {
+
     }
   },
   components: {
@@ -144,13 +166,14 @@ export default {
   created() {
 
   },
-  props: ['msg','increArr'],
+  props: ['msg', 'increArr'],
   watch: {
     msg() {
       this.innerVisible = this.msg;
+      this._getIncreType();
     },
-   increArr(){
-        this.cincreArr = this.increArr;
+    increArr() {
+      this.cincreArr = this.increArr;
     }
   }
 
