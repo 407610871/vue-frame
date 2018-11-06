@@ -174,7 +174,7 @@ export default {
   },
   computed:{
     title(){
-      return `表 ${this.msgCheck.dataTableName}  数据核验`;
+      return `表 ${this.msgCheck.taskName}数据核验`;
     },
   },
   methods: {
@@ -295,9 +295,9 @@ export default {
         if (res.data.result) {
           this.$alert(res.data.message, "核验结果", {
             confirmButtonText: "确定",
-            callback: action => {
+           // callback: action => {
               // this.init();
-            }
+            //}
           });
         } else {
           this.$alert("核验请求失败！", "核验结果", {
