@@ -6,7 +6,7 @@
         <span class="grab gra-l"></span>
         <span class="grab gra-r"></span>
       </div>
-      <el-form :model="ruleForm" ref="ruleForm" label-width="100px" class="demo-ruleForm" :rules="formRules">
+      <el-form :model="ruleForm" ref="ruleForm" label-width="100px" class="demo-ruleForm" :rules="formRules" v-loading="loading">
         <div class="daiInfo proInfo">
           <div class="daiInfo-title proInfo-title">
             <h2>提供方信息</h2>
@@ -25,11 +25,14 @@
             </el-col>
             <el-col :span="10">
               <el-form-item label="接入数据来源:" prop="resource">
-                <el-radio-group v-model="ruleForm.resource">
+                <!-- <el-radio-group v-model="ruleForm.resource">
                   <el-radio v-for="item in SJLY" :label="item.static_CODE" :key="item.static_CODE">{{item.static_NAME}}</el-radio>
-                  <!--  <el-radio label="私网"></el-radio>
-                 <el-radio label="委办网"></el-radio> -->
-                </el-radio-group>
+                  <el-radio label="私网"></el-radio>
+                 <el-radio label="委办网"></el-radio>
+                </el-radio-group> -->
+                <el-select v-model="ruleForm.resource" placeholder="请选择">
+                  <el-option :label="item.static_NAME" :value="item.static_CODE" :key="item.static_CODE" v-for="item in SJLY"></el-option>
+                </el-select>
               </el-form-item>
             </el-col>
             <el-col :span="4" class="bank">bank</el-col>
@@ -319,6 +322,7 @@ export default {
       DJPT: [], //对接平台
       fileList: [], //上传的文件列表
       tableMsg: [],
+      loading: false,
       ruleForm: {
         jrname: '',
         proname: '',
@@ -511,12 +515,6 @@ export default {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           if (_self.ruleForm.syskind != '10023') {
-            const loading = this.$loading({
-              lock: true,
-              text: 'Loading',
-              spinner: 'el-icon-loading',
-              background: 'rgba(0, 0, 0, 0.7)'
-            });
             let save = {};
             save = {
               "name": _self.ruleForm.jrname, // 接入源名称
@@ -635,35 +633,99 @@ export default {
             }
             console.log(typeof(save));
             this.$ajax({
-              method: "POST",
-              url: 'http://10.19.160.211:8088/demo/register/dataSourceInsert',
+              method: "get",
+              url: 'http://10.19.160.211:8088/demo/register/dataSourceCheck',
               // headers:{
               //   'Content-Type':'application/json;charset=utf-8',
               // },
-              data: save
+              params: {
+                ip: this.ruleForm.ipname,
+                username: this.ruleForm.username,
+                name: this.ruleForm.jrname
+              }
 
             }).then(res => {
-              loading.close();
-              if (res.data.success) {
-                this.$alert('注册成功', '信息', {
+              console.log(res);
+              if (res.data.data.exist) {
+                if (res.data.data.existName) {
+                  this.$message.warning('接入源名称已存在');
+                  return false;
+                }
+                this.$confirm('已经存在同IP地址同用户的数据源，确定保存?', '信息', {
                   confirmButtonText: '确定',
-                  callback: action => {
-                    this.$refs['ruleForm'].resetFields();
-                    this.dialogVisible = false;
-                    this.$emit('refreshTable');
-                  }
-                });
+                  cancelButtonText: '取消',
+                }).then(() => {
+                  this.loading = true;
+                  this.$ajax({
+                    method: "POST",
+                    url: 'http://10.19.160.211:8088/demo/register/dataSourceInsert',
+                    // headers:{
+                    //   'Content-Type':'application/json;charset=utf-8',
+                    // },
+                    data: save
+
+                  }).then(res => {
+                    this.loading = false;
+                    if (res.data.success) {
+                      this.$alert('注册成功', '信息', {
+                        confirmButtonText: '确定',
+                        callback: action => {
+                          this.$refs['ruleForm'].resetFields();
+                          this.dialogVisible = false;
+                          this.$emit('refreshTable');
+                        }
+                      });
+
+                    } else {
+                      this.$alert('注册失败', '信息', {
+                        confirmButtonText: '确定',
+                        callback: action => {
+
+                        }
+                      });
+                    }
+
+                  })
+                }).catch(()=>{
+
+                })
 
               } else {
-                this.$alert('注册失败', '信息', {
-                  confirmButtonText: '确定',
-                  callback: action => {
+                this.loading = true;
+                this.$ajax({
+                  method: "POST",
+                  url: 'http://10.19.160.211:8088/demo/register/dataSourceInsert',
+                  // headers:{
+                  //   'Content-Type':'application/json;charset=utf-8',
+                  // },
+                  data: save
 
+                }).then(res => {
+                  this.loading = false;
+                  if (res.data.success) {
+                    this.$alert('注册成功', '信息', {
+                      confirmButtonText: '确定',
+                      callback: action => {
+                        this.$refs['ruleForm'].resetFields();
+                        this.dialogVisible = false;
+                        this.$emit('refreshTable');
+                      }
+                    });
+
+                  } else {
+                    this.$alert('注册失败', '信息', {
+                      confirmButtonText: '确定',
+                      callback: action => {
+
+                      }
+                    });
                   }
-                });
+
+                })
               }
 
             })
+
           } else {
             if (this.ruleForm.syskind == '10023' && this.ruleForm.jrname != '') {
               var formData = new FormData();
@@ -792,8 +854,8 @@ export default {
                 }
                 formData.append('save', JSON.stringify(save));
                 this.$message.success('正在上传,请稍后刷新');
-                 this.$refs.upload.clearFiles();
-                 this.$refs['ruleForm'].resetFields();
+                this.$refs.upload.clearFiles();
+                this.$refs['ruleForm'].resetFields();
                 this.dialogVisible = false;
                 //this.dialogVisible = false;
                 this.$ajax({
@@ -946,8 +1008,8 @@ export default {
               }
               formData.append('save', JSON.stringify(save));
               this.$message.success('正在上传,请稍后刷新');
-               this.$refs.upload.clearFiles();
-               this.$refs['ruleForm'].resetFields();
+              this.$refs.upload.clearFiles();
+              this.$refs['ruleForm'].resetFields();
               this.dialogVisible = false;
               this.$ajax({
                 method: "POST",

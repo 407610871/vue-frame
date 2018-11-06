@@ -56,7 +56,9 @@ const store = new Vuex.Store({
       }
     },
     pageSize:20,
-    queryParams:JSON.parse(JSON.stringify(queryParamsDefault))
+    queryParams:JSON.parse(JSON.stringify(queryParamsDefault)),
+    schemaList:[],//增量字段列表
+    userList:{},//数据调研列表
   },
   mutations: {
     setFilterItmeList(state,obj){
@@ -114,7 +116,16 @@ const store = new Vuex.Store({
 				state.queryParams[obj.name][i] = obj.data[i];
       }
 			console.log(state.queryParams[obj.name]);
-		}
+		},
+    setSchemaList(state,obj){
+      state.schemaList = [];
+      state.schemaList = obj;
+    },
+    //数据调研列表
+    setUserList(state,obj){
+      state.userList = {};
+      state.userList= obj;
+    }
   },
   modules: {
     app,

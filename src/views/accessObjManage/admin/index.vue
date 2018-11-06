@@ -7,9 +7,9 @@
       </el-header>
       <el-main class="main-container">
         <div class="table-tools">
-            <el-button v-on:click="updataSource" class="right-btn" style="margin-left:10px;">接入源更新</el-button>
-            <table-inver class="right-btn"></table-inver>
-            <set-task class="right-btn"></set-task>
+          <el-button v-on:click="updataSource" class="right-btn" style="margin-left:10px;">接入源更新</el-button>
+          <table-inver class="right-btn"></table-inver>
+          <set-task class="right-btn"></set-task>
         </div>
         <el-table :data="mainTableData" stripe :height="tableHeight" border style="width: 100%" tooltip-effect="light">
           <el-table-column type="selection" @selection-change="handleSelectionChange">
@@ -49,7 +49,6 @@
               <div class="survey">
                 <data-inver :pdata="scope"></data-inver>
               </div>
-
               <div class="survey">
                 <norela-coll :pdata="scope"></norela-coll>
               </div>
@@ -62,13 +61,7 @@
       </el-main>
       <el-footer>
         <div class="enc-pagination">
-          <el-pagination v-if="queryParamReady" style="float:right; margin:10px;"
-            @current-change="goPage"
-            background
-            :page-size="20"
-            :total="mainTableDataTotal"
-            layout="prev, pager, next, jumper"
-            :current-page.sync="currentPage">
+          <el-pagination v-if="queryParamReady" style="float:right; margin:10px;" @current-change="goPage" background :page-size="20" :total="mainTableDataTotal" layout="prev, pager, next, jumper" :current-page.sync="currentPage">
           </el-pagination>
         </div>
       </el-footer>
@@ -96,11 +89,11 @@ export default {
   name: 'DashboardAdmin',
   data() {
     return {
-      loading:false,
-      queryParamReady:false,
-      collapse:true,
+      loading: false,
+      queryParamReady: false,
+      collapse: true,
       mainTableReady: true,
-      mainTableData: [],
+      mainTableData: [{ "id": 10650589, "name": "nam4", "owner": "jkl1", "accessSys": { "id": 92955, "name": "10.37.149.191-100_Copy_92955", "accessSysType": { "id": 10003, "name": null }, "accessSysWay": { "id": 1001, "name": null }, "accessSysDialect": { "id": 10001, "name": "mysql", "accSysWay": null, "accessSyses": [] }, "contactsPhone": "", "contactsEmail": "", "comments": "", "verfication_code": "", "accessSysAttributes": [], "accessSysObjInfos": [], "accessSysStatistics": [], "extendParams": {}, "accessSysDeptInfo": null, "status": "0", "lastOperatingTime": "2018-11-05 10:39:07", "createTime": null }, "comments": "", "diyComments": "", "accessSysId": null, "totalRows": "0", "collectName": null, "diyCommentsFrom": "0", "isHistory": "1", "isDeleted": "2", "exitTask": false, "exitDataSurvey": false, "extendParams": { "isRefresh": "0", "separator": "\t", "objectType": "1" }, "accessSysObjInfoStatistics": [], "accessConnectorSource": {}, "createImpalaTable": false, "lastChangeTime": "2018-09-08 19:14:48" }],
       currentPage: 1,
       mainTableDataTotal: 1,
       dialogVisible: false,
@@ -109,19 +102,19 @@ export default {
       alertVisible: false,
       alertContent: '',
       seledRows: [],
-      collapse:true,
-      formFilterData:[]
+      collapse: true,
+      formFilterData: []
     }
   },
-  computed:{
-    tableParams:function(){
+  computed: {
+    tableParams: function() {
       return this.$store.state.queryParams.accessObjManage;
     },
-    tableHeight: function(){
-      return this.collapse?window.innerHeight - 280:window.innerHeight - 315;
+    tableHeight: function() {
+      return this.collapse ? window.innerHeight - 280 : window.innerHeight - 315;
     },
-    headerHeight:function(){
-      return this.collapse?'50px':'85px';
+    headerHeight: function() {
+      return this.collapse ? '50px' : '85px';
     }
   },
   components: {
@@ -136,85 +129,88 @@ export default {
     norelaColl
   },
   watch: {
-    tableParams(newVal,oldVal){
+    tableParams(newVal, oldVal) {
       this.loadTable();
     },
   },
   mounted() {
     this.storeReady();
   },
-  created(){
-    this.$root.eventHub.$on('search', (keyword)=>{
+  created() {
+    this.$root.eventHub.$on('search', (keyword) => {
       this.search(keyword);
     })
   },
   methods: {
-    collapseExpand:function(){
+    collapseExpand: function() {
       this.collapse = !this.collapse;
     },
-    loadTable:function(){
+    loadTable: function() {
       var _self = this;
       _self.loading = true;
-      var paramsObj = {   //不要问我为什么，后台接口就是这2个参数名
-        pagNum:this.tableParams.pageNum,
-        count:this.$store.state.pageSize
+      var paramsObj = { //不要问我为什么，后台接口就是这2个参数名
+        pagNum: this.tableParams.pageNum,
+        count: this.$store.state.pageSize
       };
-      paramsObj.condition = this.tableParams.condition?this.tableParams.condition:"";
-      paramsObj.objectType = this.tableParams.objectType.length>0?this.tableParams.objectType.join(','):"";
-      paramsObj.dataRange = this.tableParams.dataRange.length>0?this.tableParams.dataRange.join(','):"";
+      paramsObj.condition = this.tableParams.condition ? this.tableParams.condition : "";
+      paramsObj.objectType = this.tableParams.objectType.length > 0 ? this.tableParams.objectType.join(',') : "";
+      paramsObj.dataRange = this.tableParams.dataRange.length > 0 ? this.tableParams.dataRange.join(',') : "";
       paramsObj.accessSysId = this.$route.params.sourceId;
-      this.$ajax.post('http://10.19.160.25:8088/demo/ctables/datas',paramsObj).then(function(res){
-        console.log(res)
-        if(res.data.success){
-          _self.mainTableData = res.data.data.list;
-          _self.mainTableDataTotal = res.data.data.total;
-          //这里是异步的，存在延迟，所以没问题,如果是同步的话可能存在问题
+      this.$ajax.post('http://10.19.160.25:8088/demo/ctables/datas', paramsObj).then(function(res) {
+          console.log(res)
+          if (res.data.success) {
+            _self.mainTableData = res.data.data.list;
+            _self.mainTableDataTotal = res.data.data.total;
+            //这里是异步的，存在延迟，所以没问题,如果是同步的话可能存在问题
+            _self.currentPage = _self.tableParams.pageNum;
+          } else {
+            console.log(res.code);
+          }
+          _self.loading = false;
+        })
+        .catch(function(err) {
           _self.currentPage = _self.tableParams.pageNum;
-        }else{
-          console.log(res.code);
-        }
-        _self.loading = false;
-      })
-      .catch(function(err){
-        _self.currentPage = _self.tableParams.pageNum;
-        console.log(err);
-        _self.loading = false;
-      });
+          console.log(err);
+          _self.loading = false;
+        });
     },
-    setStore:function(obj){
+    setStore: function(obj) {
       let storeData = JSON.parse(JSON.stringify(this.$store.state.queryParams[this.$route.name]));
-      for(var i in obj){
+      for (var i in obj) {
         storeData[i] = obj[i];
       }
       this.$store.commit('setQueryParams', {
-        name:this.$route.name,
-        data:storeData
+        name: this.$route.name,
+        data: storeData
       });
     },
-    goPage:function(val){
+    goPage: function(val) {
       this.setStore({
-        pageNum:val
+        pageNum: val
       });
     },
     goAccessObjInfo: function(row) {
-			this.$store.commit('setParamItem',{
-				name:'accessObjInfo',
-				data:{
-					ACCESS_SYS_DIALECT_ID:this.mainTableData[0].accessSys.accessSysDialectId,
-					accessSysId:this.mainTableData[0].accessSys.id
-				}
-			});
-      this.$router.push({ name: "accessObjInfo",params:{
-        sourceId:this.$route.params.sourceId,
-        sourceName:this.$route.params.sourceName,
-        objId:row.id,
-        objName:encodeURI(row.name)
-      }});
+      this.$store.commit('setParamItem', {
+        name: 'accessObjInfo',
+        data: {
+          ACCESS_SYS_DIALECT_ID: this.mainTableData[0].accessSys.accessSysDialectId,
+          accessSysId: this.mainTableData[0].accessSys.id
+        }
+      });
+      this.$router.push({
+        name: "accessObjInfo",
+        params: {
+          sourceId: this.$route.params.sourceId,
+          sourceName: this.$route.params.sourceName,
+          objId: row.id,
+          objName: encodeURI(row.name)
+        }
+      });
     },
-    search:function(keyword){
+    search: function(keyword) {
       this.setStore({
-        pageNum:1,
-        condition:keyword
+        pageNum: 1,
+        condition: keyword
       });
     },
     showAdd: function() {
@@ -239,7 +235,7 @@ export default {
         id = ids.join(',');
       }
       this.$ajax.get('http://10.19.160.25:8088/demo/ctables/refreshAmount', {
-        objectInfoId:id
+        objectInfoId: id
       }).then(function(res) {
         this.alertContent = '更新成功';
         this.alertVisible = true;
@@ -249,9 +245,9 @@ export default {
     },
     updataSourceSingle: function(index, row) {
       this.$ajax.get('http://10.19.160.25:8088/demo/ctables/refreshAmount', {
-      	params:{
-        	objectInfoId:row.id
-      	}
+        params: {
+          objectInfoId: row.id
+        }
       }).then(function(res) {
         this.alertContent = '更新成功';
         this.alertVisible = true;
@@ -262,47 +258,47 @@ export default {
     handleSelectionChange: function(val) {
       this.seledRows = val;
     },
-    changeFormFilter:function(fliterParams){
+    changeFormFilter: function(fliterParams) {
       console.log('---------fliterParams-----------');
       console.log(fliterParams);
       this.setStore(fliterParams);
     },
-    storeReady(){
+    storeReady() {
       var queryParams = this.$store.state.queryParams.accessObjManage;
       this.loadTable();
       this.formFilterData = [{
-        name:"接入对象类型：",
-        id:'objectType',
-        type:'checkbox',
-        checkData:[{
-          id:'TABLE',
-          name:'表'
-        },{
-          id:'VIEW',
-          name:'视图'
-        },{
-          id:'OTHER',
-          name:'其他'
+        name: "接入对象类型：",
+        id: 'objectType',
+        type: 'checkbox',
+        checkData: [{
+          id: 'TABLE',
+          name: '表'
+        }, {
+          id: 'VIEW',
+          name: '视图'
+        }, {
+          id: 'OTHER',
+          name: '其他'
         }],
-        seledData:this.tableParams.objectType?this.tableParams.objectType:[]
-      },{
-        name:"数据范围：",
-        id:'dataRange',
-        type:'radio',
-        checkData:[{
-          id:'city',
-          name:'全市'
-        },{
-          id:'province',
-          name:'全省'
-        },{
-          id:'country',
-          name:'全国'
-        },{
-          id:'other',
-          name:'其他'
+        seledData: this.tableParams.objectType ? this.tableParams.objectType : []
+      }, {
+        name: "数据范围：",
+        id: 'dataRange',
+        type: 'radio',
+        checkData: [{
+          id: 'city',
+          name: '全市'
+        }, {
+          id: 'province',
+          name: '全省'
+        }, {
+          id: 'country',
+          name: '全国'
+        }, {
+          id: 'other',
+          name: '其他'
         }],
-        seledData:this.tableParams.dataRange?this.tableParams.dataRange:[]
+        seledData: this.tableParams.dataRange ? this.tableParams.dataRange : []
       }];
       this.queryParamReady = true;
       // var fliterItemList = this.$store.state.fliterItemList
@@ -335,19 +331,19 @@ export default {
     .right-btn {
       float: right;
     }
-    .collapse-btn{
-      margin:5px 20px 0 0;
-      color:#069;
-      font-size:22px;
+    .collapse-btn {
+      margin: 5px 20px 0 0;
+      color: #069;
+      font-size: 22px;
     }
   }
-  .main-container{
-    padding-bottom:0;
-    padding-top:0;
-    .table-tools{
-      padding-top:10px;
-      height:55px;
-      border-top:1px solid #eee;
+  .main-container {
+    padding-bottom: 0;
+    padding-top: 0;
+    .table-tools {
+      padding-top: 10px;
+      height: 55px;
+      border-top: 1px solid #eee;
       .right-btn {
         float: right;
       }
@@ -359,8 +355,6 @@ export default {
   .enc-pagination {
     float: right;
   }
-
-
 }
 
 </style>
