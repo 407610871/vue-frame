@@ -6,7 +6,7 @@
         <span class="grab gra-l"></span>
         <span class="grab gra-r"></span>
       </div>
-      <el-form :model="ruleForm" ref="ruleForm" label-width="100px" class="demo-ruleForm" :rules="formRules">
+      <el-form :model="ruleForm" ref="ruleForm" label-width="100px" class="demo-ruleForm" :rules="formRules" v-loading="loading">
         <div class="daiInfo ftpInfo clearfix">
           <el-col :span="24">
             <el-col :span="8">
@@ -19,7 +19,7 @@
             <el-col :span="2" class="bank">bank</el-col>
             <el-col :span="8">
               <div class="path-box">
-                <el-tree :data="treedata" show-checkbox node-key="id" :check-strictly="true" :props="defaultProps" accordion @check-change="handleClick" @check="nodeClick" ref="treeForm">
+                <el-tree show-checkbox node-key="id" :check-strictly="true" :props="defaultProps" accordion @check-change="handleClick" @check="nodeClick" ref="treeForm" :load="loadNode1" lazy>
                 </el-tree>
               </div>
             </el-col>
@@ -59,9 +59,11 @@ export default {
     return {
       i: 0, //树节点只允许单选
       dialogVisible: false,
+      loading: true,
       ruleForm: {
         ftpurl: '',
-        delete: "1"
+        delete: "1",
+        ftpId: '',
       },
       formRules: {
         ftpurl: [
@@ -69,75 +71,11 @@ export default {
         ]
 
       },
-      treedata: [{
-        id: 1,
-        label: '一级 1',
-        children: [{
-          id: 11,
-          label: '二级 1-1',
-          children: [{
-            id: 111,
-            label: '三级 1-1-1'
-          }]
-        }]
-      }, {
-        id: 2,
-        label: '一级 2',
-        children: [{
-          id: 22,
-          label: '二级 2-1',
-          children: [{
-            id: 222,
-            label: '三级 2-1-1'
-          }]
-        }, {
-          id: 23,
-          label: '二级 2-2',
-          children: [{
-            id: 233,
-            label: '三级 2-2-1'
-          }]
-        }]
-      }, {
-        id: 3,
-        label: '一级 3',
-        children: [{
-          id: 31,
-          label: '二级 3-1',
-          children: [{
-            id: 32,
-            label: '三级 3-1-1'
-          }]
-        }, {
-          id: 33,
-          label: '二级 3-2',
-          children: [{
-            id: 34,
-            label: '三级 3-2-1'
-          }]
-        }]
-      }, {
-        label: '一级 3',
-        id: 353,
-        children: [{
-          id: 36,
-          label: '二级 3-1',
-          children: [{
-            id: 37,
-            label: '三级 3-1-1'
-          }]
-        }, {
-          id: 38,
-          label: '二级 3-2',
-          children: [{
-            id: 39,
-            label: '三级 3-2-1'
-          }]
-        }]
-      }],
+      treedata: [],
       defaultProps: {
         children: 'children',
-        label: 'label'
+        label: 'label',
+        isLeaf: 'leaf'
       },
 
       // msgId:this.dialogMsg?this.dialogMsg[1]:''
@@ -160,7 +98,8 @@ export default {
     nodeClick(data, checked, node) {
       this.checkedId = data.id
       this.$refs.treeForm.setCheckedNodes([data]);
-      this.ruleForm.ftpurl = data.label;
+      this.ruleForm.ftpurl = data.linkPath;
+      this.ruleForm.ftpId = data.id;
     },
     //关闭
     closeForm() {
@@ -174,29 +113,106 @@ export default {
           type: 'warning'
         });
       } else {
-        this.dialogVisible = false;
-        this.$refs['ruleForm'].resetFields();
-      }
+        this.loading = true;
+        /*this.dialogVisible = false;
+        this.$refs['ruleForm'].resetFields();*/
 
+        console.log(this.ruleForm.ftpurl);
+        var params = {
+          filepath: this.ruleForm.ftpurl,
+          accessSysId: this.ruleForm.ftpId,
+          isdelete: "true",
+          shecmas: "",
+          subdirectory: "true",
+        }
+        this.$ajax({
+          method: "POST",
+          url: 'http://10.19.160.25:8088/demo/ctables/addRecord',
+          // headers:{
+          //   'Content-Type':'application/json;charset=utf-8',
+          // },
+          data: params
+
+        }).then(res => {
+          this.loading = false;
+          if (res.data.success) {
+            this.$alert('保存路径成功', '信息', {
+              confirmButtonText: '确定',
+              callback: action => {
+                this.dialogVisible = false;
+              }
+            });
+          } else {
+            this.$alert('保存路径失败', '信息', {
+              confirmButtonText: '确定'
+            });
+          }
+          console.log(res);
+        },(res) =>{
+           this.$alert('保存路径失败', '信息', {
+              confirmButtonText: '确定'
+            });
+        })
+      }
     },
-    //得到ftp树
-    _getPath() {
-      var params = {
-        accessSysId:'89311',
-        linkPath:'/'
-      }
-      this.$ajax({
-        method: "POST",
-        url: 'http://10.19.160.25:8088/demo/ctables/getStructure',
-        // headers:{
-        //   'Content-Type':'application/json;charset=utf-8',
-        // },
-        data: params
+    //懒加载
+    loadNode1(node, resolve) {
+      let _self = this;
+      console.log(node);
+      if (node.level == 0) {
+        var params = {
+          accessSysId: '89311',
+          linkPath: '/'
+        }
+        this.$ajax({
+          method: "POST",
+          url: 'http://10.19.160.25:8088/demo/ctables/getStructure',
+          // headers:{
+          //   'Content-Type':'application/json;charset=utf-8',
+          // },
+          data: params
 
-      }).then(res => {
-        console.log(res);
-      })
+        }).then(res => {
+          this.loading = false;
+          console.log(res.data.data);
+          let treeData = [];
+          res.data.data.forEach(e => {
+            treeData.push(e)
+          })
+          resolve(treeData)
+        }).catch(res => {
+          this.loading = false;
+          resolve([]);
+        })
+      } else {
+
+        var params = {
+          accessSysId: node.data.id,
+          linkPath: node.data.linkPath
+          /* accessSysId :'58714',
+           linkPath: '/boot/'*/
+        }
+        this.$ajax({
+          method: "POST",
+          url: 'http://10.19.160.25:8088/demo/ctables/getStructure',
+          // headers:{
+          //   'Content-Type':'application/json;charset=utf-8',
+          // },
+          data: params
+
+        }).then(res => {
+          console.log(res.data.data);
+          let myList = [];
+          res.data.data.forEach(e => {
+            myList.push(e)
+          })
+          resolve(myList)
+        }).catch(res => {
+          resolve([]);
+        })
+      }
     }
+
   },
   components: {
 
@@ -207,7 +223,7 @@ export default {
   watch: {
     dialogVisible() {
       if (this.dialogVisible) {
-        this._getPath();
+
       }
     }
   }

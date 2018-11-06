@@ -1,8 +1,8 @@
 <template>
   <div>
-    <el-container style="height:100%;" class="dashboard-container">
+    <el-container style="height:100%;" class="dashboard-container" v-loading="loading">
       <el-header class="filter-container" :height="headerHeight">
-        <el-button v-on:click="collapseExpand" size="mini" class="right-btn"><i :class="{'el-icon-plus':collapse,'el-icon-minus':!collapse}"></i></el-button>
+        <a v-on:click="collapseExpand" class="right-btn collapse-btn"><i :class="{'el-icon-circle-plus':collapse,'el-icon-remove':!collapse}"></i></a>
         <formFliter v-if="queryParamReady" v-bind:formCollapse="collapse" v-bind:dataObj="formFilterData" @formFilter="changeFormFilter" />
       </el-header>
       <el-main style="padding-bottom:0; padding-top:0;">
@@ -12,33 +12,38 @@
           :height="tableHeight"
           border
           style="width: 100%"
+          tooltip-effect="light"
           >
           <el-table-column
             label="接入源名称"
-            width="180">
+            width="180"
+            show-overflow-tooltip
+            >
             <template slot-scope="scope">
               <a href="javascript:void(0)">{{ scope.row.name }}</a>
             </template>
           </el-table-column>
           <el-table-column
-            prop="verfication_code"
+            prop="id"
             label="接入源ID"
             width="180">
           </el-table-column>
           <el-table-column
-            prop="accessSysDialect.name"
+            prop="dataSourceName"
             label="接入源类型">
           </el-table-column>
           <el-table-column
-            prop="accessSysType.name"
             label="对接平台">
+            <template slot-scope="scope">
+            	{{getPlatfrom(scope.row.platform)}}
+          	</template>
           </el-table-column>
           <el-table-column
-            prop="accessSysType.name"
+            prop="network"
             label="接入数据来源">
           </el-table-column>
           <el-table-column
-            prop="accessSysType.name"
+            prop="createTime"
             label="注册时间">
           </el-table-column>
           <el-table-column label="操作">
@@ -88,6 +93,7 @@ export default {
   name: 'DashboardAdmin',
   data() {
     return {
+    	loading:false,
       queryParamReady:false,
       collapse:true,
       mainTableData: [],
@@ -95,7 +101,8 @@ export default {
       mainTableDataTotal: 1,
       dialogVisible:false,
       myDialogRouter:'adminAdd',
-      dialogTitle:'新增'
+      dialogTitle:'新增',
+      formFilterData:[]
     }
   },
   components: {
@@ -124,50 +131,66 @@ export default {
     })
   },
   mounted(){
-    var queryParams = this.$store.state.queryParams.recyclingBins;
-    this.loadTable();
-    var accessSourceType = queryParams.accessSourceType?queryParams.accessSourceType:[];
-    var accessDataSource = queryParams.accessDataSource?queryParams.accessDataSource:[];
-    var exchangePlatform = queryParams.exchangePlatform?queryParams.exchangePlatform:[];
-    for(var i=0;i<accessSourceType.length;i++){
-      accessSourceType[i] = parseInt(accessSourceType[i]);
-    }
-    this.formFilterData = [{
-      name:"接入源类型：",
-      id:'accessSourceType',
-      checkData:this.$store.state.accessSourceType,
-      seledData:accessSourceType
-    },{
-      name:"接入数据来源：",
-      id:'accessDataSource',
-      checkData:this.$store.state.accessDataSource,
-      seledData:accessDataSource
-    },{
-      name:"对接平台：",
-      id:'exchangePlatform',
-      checkData:this.$store.state.exchangePlatform,
-      seledData:exchangePlatform
-    }];
-    this.queryParamReady = true;
+  	this.storeReady();
   },
   methods:{
+  	setFliter(data){
+      var queryParams = this.$store.state.queryParams[this.$route.name];
+      var network = queryParams.network?queryParams.network:'';
+      var dataSourceName = queryParams.dataSourceName?queryParams.dataSourceName:[];
+      var platform = queryParams.platform?queryParams.platform:[];
+      this.formFilterData = [{
+        name:"接入源类型：",
+        id:'dataSourceName',
+        type:'checkbox',
+        checkData:data.dataSourceName.data,
+        seledData:dataSourceName
+      },{
+        name:"接入数据来源：",
+        id:'network',
+        type:'radio',
+        checkData:data.network.data,
+        seledData:network
+      },{
+        name:"对接平台：",
+        id:'platform',
+        type:'checkbox',
+        checkData:data.platform.data,
+        seledData:platform
+      }];
+      this.queryParamReady = true;
+    },
     collapseExpand:function(){
       this.collapse = !this.collapse;
     },
     loadTable:function(){
       var _self = this;
-      this.$ajax.get('http://localhost:8080/list',{
-        params:this.tableParams
-      }).then(function(res){
-        console.log('tableLoaded:recyclingBins');
-        _self.mainTableData = res.data.page.list;
-        _self.mainTableDataTotal = res.data.page.total;
-        //这里是异步的，存在延迟，所以没问题,如果是同步的话可能存在问题
-        _self.currentPage = _self.tableParams.pageNum;
+      _self.loading = true;
+      var paramsObj = {
+        pageSize:this.$store.state.pageSize,
+        pageNum:this.tableParams.pageNum,
+        domain:1
+      };
+      paramsObj.condition = this.tableParams.condition?this.tableParams.condition:"";
+      paramsObj.network = this.tableParams.network;
+      paramsObj.dataSourceName = this.tableParams.dataSourceName;
+      paramsObj.platform = this.tableParams.platform;
+			paramsObj.deptIds = this.tableParams.deptId;
+      this.$ajax.post('http://10.19.160.175:8088/demo/caccess/query',paramsObj).then(function(res){
+        console.log('tableLoaded:dashboard');
+        if(res.data.success){
+          _self.mainTableData = res.data.data.list;
+          _self.mainTableDataTotal = res.data.data.total;
+          _self.currentPage = _self.tableParams.pageNum;
+        }else{
+          console.log(res.data.code)
+        }
+        _self.loading = false;
       })
       .catch(function(err){
         _self.currentPage = _self.tableParams.pageNum;
-        console.log(err);
+        _self.loading = false;
+        console.log(err)
       });
     },
     showAdd:function(){
@@ -203,6 +226,30 @@ export default {
     },
     changeFormFilter:function(fliterParams){
       this.setStore(fliterParams);
+    },
+    storeReady:function(){
+      var fliterItemList = this.$store.state.fliterItemList
+      if(fliterItemList.network.ready&&fliterItemList.dataSourceName.ready&&fliterItemList.platform.ready){
+        this.setFliter(fliterItemList);
+        this.loadTable();
+      }else{
+        var _self = this;
+        setTimeout(function(){
+          _self.storeReady();
+        },200);
+      }
+    },
+    getPlatfrom(id){
+      if(!id){
+        return '无';
+      }
+      var list = this.$store.state.fliterItemList.platform.data;
+      for(var value of list){
+        if(parseInt(id) == value.id){
+          return value.name
+        }
+      }
+      return '未找到相应对接平台'
     }
   }
 }
@@ -235,6 +282,11 @@ export default {
     }
     .right-btn{
       float:right;
+    }
+    .collapse-btn{
+      margin:5px 20px 0 0;
+      color:#069;
+      font-size:22px;
     }
   }
   .table-container {

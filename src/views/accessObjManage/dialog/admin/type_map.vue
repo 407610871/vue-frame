@@ -20,6 +20,9 @@
           </template>
         </el-table-column>
         <el-table-column prop="foreignKey" label="目标描述信息" width="180">
+         <template slot-scope="scope">
+            <el-input v-model="scope.row.comments"></el-input>
+            </template>
         </el-table-column>
       </el-table>
     </div>

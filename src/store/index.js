@@ -8,76 +8,94 @@ Vue.use(Vuex);
 
 const queryParamsDefault = {
   dashboard:{
-    network:[],
     dataSourceName:[],
+    network:'',
     platform:[],
-    name:'',
+    condition:'',
+		deptId:[],
     pageNum:1
   },
   accessObjManage:{
-    accessObjType:[],
-    dataArea:[],
-    keyword:'',
+    objectType:[],
+    dataRange:[],
+    condition:'',
     pageNum:1
   },
   accessObjInfo:{
+		ACCESS_SYS_DIALECT_ID:'',
+		accessSysId:'',
     pageNum1:1,
     pageNum2:1,
     keyword:'',
     tabPosition:'metadataManage'
   },
   recyclingBins:{
-    accessSourceType:[],
-    accessDataSource:[],
-    exchangePlatform:[],
-    keyword:'',
+    dataSourceName:[],
+    network:'',
+    platform:[],
+    condition:'',
     pageNum:1
   }
 }
 
 const store = new Vuex.Store({
   state: {
-    deptId:'',
-    network:[],
-    dataSourceName:[],
-    platform:[],
+    deptId:[],
+    fliterItemList:{
+      network:{
+        ready:false,
+        data:[]
+      },
+      dataSourceName:{
+        ready:false,
+        data:[]
+      },
+      platform:{
+        ready:false,
+        data:[]
+      }
+    },
     pageSize:20,
     queryParams:JSON.parse(JSON.stringify(queryParamsDefault))
   },
   mutations: {
+    setFilterItmeList(state,obj){
+      state.fliterItemList[obj.name].ready = true;
+      state.fliterItemList[obj.name].data = obj.data;
+    },
     selDept(state,id){
       state.deptId = id;
     },
-    setNetwork(state,obj){
-      var list = [];
-      for(var value of obj.data){
-        list.push({
-          id:value.id,
-          name:value.name
-        });
-      }
-      state.network = list;
-    },
-    setDataSourceName(state,obj){
-      var list = [];
-      for(var value of obj.data){
-        list.push({
-          id:value.static_CODE,
-          name:value.static_NAME
-        });
-      }
-      state.dataSourceName = list;
-    },
-    setPlatform(state,obj){
-      var list = [];
-      for(var value of obj.data){
-        list.push({
-          id:value.static_CODE,
-          name:value.static_NAME
-        });
-      }
-      state.platform = list;
-    },
+    // setNetwork(state,obj){
+    //   var list = [];
+    //   for(var value of obj.data){
+    //     list.push({
+    //       id:value.id,
+    //       name:value.name
+    //     });
+    //   }
+    //   state.network = list;
+    // },
+    // setDataSourceName(state,obj){
+    //   var list = [];
+    //   for(var value of obj.data){
+    //     list.push({
+    //       id:value.static_CODE,
+    //       name:value.static_NAME
+    //     });
+    //   }
+    //   state.dataSourceName = list;
+    // },
+    // setPlatform(state,obj){
+    //   var list = [];
+    //   for(var value of obj.data){
+    //     list.push({
+    //       id:value.static_CODE,
+    //       name:value.static_NAME
+    //     });
+    //   }
+    //   state.platform = list;
+    // },
     setQueryParams(state,obj){
       state.queryParams[obj.name] = obj.data;
     },
@@ -89,7 +107,14 @@ const store = new Vuex.Store({
         }
       }
       state.queryParams = newObj;
-    }
+    },
+		setParamItem(state,obj){
+			console.log('-----------------');
+			for(var i in obj.data){  //这里obj.data是一个数组，表示不需要重置的
+				state.queryParams[obj.name][i] = obj.data[i];
+      }
+			console.log(state.queryParams[obj.name]);
+		}
   },
   modules: {
     app,

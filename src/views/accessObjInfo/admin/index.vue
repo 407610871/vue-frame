@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-container style="height:100%;" class="dashboard-container">
+    <el-container style="height:100%;" class="dashboard-container" v-loading="loading">
       <el-header class="filter-container" height="86px">
         <div class="right-tools" v-if="tabPosition == 'metadataManage'">
           <a href="javascript:void(0)"><i class="enc-icon-daochu"></i></a>
@@ -172,6 +172,7 @@ export default {
   name: 'DashboardAdmin',
   data() {
     return {
+	  loading:false,
       queryParamReady:true,
       currentPage1:1,
       currentPage2:1,
@@ -222,9 +223,15 @@ export default {
       console.log(flag)
       var _self = this;
       if(this.tabPosition == 'metadataManage' || flag){
-        this.$ajax.get('http://localhost:8080/list',{
-          params:this.tableParams
-        }).then(function(res){
+				console.log(this.tableParams);
+				var paramsObj = {
+					pagNum:this.tableParams.pageNum1,
+					count:this.$store.state.pageSize,
+					objectInfoId:this.$route.params.objId,
+					ACCESS_SYS_DIALECT_ID:this.tableParams.ACCESS_SYS_DIALECT_ID,
+					accessSysId:this.tableParams.accessSysId
+				}
+        this.$ajax.post('http://10.19.160.171:8081/DEMO/objDetail/dataList',paramsObj).then(function(res){
           console.log('tableLoaded:metadataManage');
           _self.mainTableData1 = res.data.page.list;
           _self.mainTableDataTotal1 = res.data.page.total;
@@ -237,6 +244,7 @@ export default {
         });
       }
       if(this.tabPosition != 'metadataManage' || flag){
+				return;
         this.$ajax.get('http://localhost:8080/list',{
           params:this.tableParams
         }).then(function(res){
