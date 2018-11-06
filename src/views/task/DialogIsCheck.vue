@@ -212,6 +212,7 @@ export default {
           //return;
         }
         //this.resData = res.datas;
+        res.data = res.data.data;
        this.resData = res.data;
         if (res.data.status == "1") {
           this.textShow = false;
@@ -248,6 +249,7 @@ export default {
          // taskId:92066
         }
       }).then(res => {
+        res.data = res.data.data;
         if(res.data.success){
           this.resDataHistory = res.data.data;
         }
@@ -292,6 +294,7 @@ export default {
           endTime: this.startTime[1]
         }
       }).then(res => {
+        res.data = res.data.data;
         if (res.data.result) {
           this.$alert(res.data.message, "核验结果", {
             confirmButtonText: "确定",
@@ -316,7 +319,7 @@ export default {
         }
       }).then(res => {
         this.loading2 = false;
-
+        res = res.data;
         if (res.result == "false") {
           this.textShow = false;
 
