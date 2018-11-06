@@ -9,7 +9,7 @@
       active-text-color="#499bd7">
       <el-menu-item index="1"><i class="enc-icon-shujujieru"></i>数据接入</el-menu-item>
       <el-menu-item index="2"><i class="enc-icon-shujuchuli"></i>数据处理</el-menu-item>
-      <el-menu-item index="3"><i class="enc-icon-renwuzhongxin"></i>任务中心</el-menu-item>
+      <el-menu-item index="3">  <i class="enc-icon-renwuzhongxin"></i>任务中心    </el-menu-item>
     </el-menu>
   </div>
 </template>
@@ -22,8 +22,22 @@ export default {
   },
   methods: {
     handleSelect(key, keyPath) {
-      console.log(key, keyPath);
+      console.log(key);
+            console.log( keyPath);
+
+      // this.$router.push({path:'/dashboard'});
+      switch (key){
+        case '3':
+      this.$router.push({path:'/task'});
+      break;
+      case '1':
       this.$router.push({path:'/dashboard'});
+      break;
+
+
+
+      }
+      
     }
   }
 }

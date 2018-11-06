@@ -129,6 +129,7 @@
 import DialogIsCheck from "./DialogIsCheck";
 import DialogTaskDetail from "./DialogTaskDetail";
 export default {
+  name:"task",
   data() {
     return {
       loading: false,
@@ -163,11 +164,17 @@ export default {
     // status(newA, oldA) { init()},
     // time() {
     // }
+//监听树节点deptID,操作数据
+    departmentId(newVal, oldVal) {
+      //do something
+      this.init("");
+    }
   },
   computed: {
     departmentId: function() {
-      // return this.$store.state.deptId.join(",");
-      return 1;
+      return this.$store.state.deptId;
+
+      // return 1;
     },
     tableHeight: function() {
       return window.innerHeight - 390;
@@ -315,16 +322,13 @@ export default {
         pageNum: this.pageNum,
         pageSize: this.pageSize,
         taskName: keyword,
-        departmentId:_self.departmentId
+        departmentId: _self.departmentId.join(",")
       };
 
       this.$ajax
-        .get(
-          "http://10.19.160.67:8081/DEMO/manager/task/show/0",
-          {
-            params: tableParams
-          }
-        )
+        .get("http://10.19.160.67:8081/DEMO/manager/task/show/0", {
+          params: tableParams
+        })
         .then(function(res) {
           if (res.data.code == 200) {
             _self.tableData = res.data.data.result;
