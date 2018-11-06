@@ -98,7 +98,7 @@
 
 
   <div class="checkDetail" style="height:261px;" v-loading="loading2" >
-    <textarea name="" id="" disabled="disabled" v-show="textShow" >{{loginfo}}</textarea>
+    <textarea name="" id="" disabled="disabled" v-show="textShow" v-model="loginfo"></textarea>
   </div>
 
   <h5>核验历史记录：</h5>
@@ -116,17 +116,14 @@
     </el-table-column>
     <el-table-column
       prop="config_range"
-      label="核验误差"
-      width="100">
+      label="核验误差">
     </el-table-column>
     <el-table-column
       prop="testresults_manual_check_result"
-      label="核验结果"
-      width="100">
+      label="核验结果">
     </el-table-column>
     <el-table-column
-      label="核验报告"
-      width="100">
+      label="核验报告">
       <template slot-scope="scope">
         <a :href='baseUrl+"/ccheckData/downloadCheckDataById?browser=fox&accessName=ww&id="+scope.row.id'>导出</a>
       </template>
@@ -379,14 +376,17 @@ export default {
   font-size: 14px;
   border-bottom: 1px solid #2f6ac5;
   padding-bottom: 20px;
+  display:flex;
 }
 .contanst_source {
-  width: calc(50%-75px);
-  display: inline-block;
+  width:calc(50% - 75px);
+  //display: inline-block;
+  display:flex;
 }
 .contanst_goal {
-   width: calc(50%-75px);
-  display: inline-block;
+   width:calc(50% - 75px);
+  //display: inline-block;
+  display:flex;
 }
 .contanst_source ul,
 .contanst_goal ul {
@@ -463,6 +463,7 @@ export default {
 }
 h5{
   font-size:14px;
+  margin-bottom:10px;
 }
 </style>
 <style lang="scss">
