@@ -22,9 +22,6 @@ export default {
   },
   methods: {
     handleSelect(key, keyPath) {
-      console.log(key);
-            console.log( keyPath);
-
       // this.$router.push({path:'/dashboard'});
       switch (key){
         case '3':

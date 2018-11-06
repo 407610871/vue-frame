@@ -41,25 +41,27 @@
        <!-- 操作按钮 -->
        <div class="count-operate">
          <div>
-            <el-button type="primary" @click="doMore('http://10.19.160.67:8081/DEMO/manager/taskOperate/batchConverge')">重新汇聚</el-button>
-            <el-button type="primary" @click="doMore('http://10.19.160.67:8081/DEMO/manager/taskOperate/batchStart')">批量启动</el-button>
-            <el-button type="primary" @click="doMore('http://10.19.160.67:8081/DEMO/manager/taskOperate/batchPause')">批量暂停</el-button>
+            <el-button type="primary" @click="doMore('http://10.19.160.67:8081/DEMO/manager/taskOperate/batchConverge',1)">重新汇聚</el-button>
+            <el-button type="primary" @click="doMore('http://10.19.160.67:8081/DEMO/manager/taskOperate/batchStart',2)">批量启动</el-button>
+            <el-button type="primary" @click="doMore('http://10.19.160.67:8081/DEMO/manager/taskOperate/batchPause',3)">批量停止</el-button>
          </div>
        </div>
 
        <!-- 表格数据 -->
 <div class="mainTable">
-<el-table ref="multipleTable" :data="tableData" tooltip-effect="light"  :height="tableHeight" style="width: 100%"  @select="select"  @selection-change="handleSelectionChange" >
+<el-table ref="multipleTable" :data="tableData" tooltip-effect="light"  :height="tableHeight" style="width: 100%"   @select-all="selectAll"  @select="select"  @selection-change="handleSelectionChange" >
             <el-table-column type="selection" width="55"></el-table-column>
              <el-table-column label="接入指示" width="100"> 
                 <template slot-scope="scope">
-                  <i v-if="scope.row.networkStatus==0" class="indicate" style="backgroundColor:green" title="成功"></i>
-                   <i v-else-if="scope.row.networkStatus==1" class="indicate" style="backgroundColor:yellow" title="主机网络不通"></i>
-                    <i v-else-if="scope.row.networkStatus==2" class="indicate" style="backgroundColor:yellow" title="数据库不通"></i>
-                    <i v-else class="indicate" style="backgroundColor:red" title="主机网络和数据库都不通"></i>
+                  <i v-if="scope.row.networkStatus==0" class="indicate" style="backgroundColor:green" title="数据源连接正常"></i>
+                   <i v-else-if="scope.row.networkStatus==1" class="indicate" style="backgroundColor:yellow" title="数据源链接不稳定"></i>
+                    <i v-else-if="scope.row.networkStatus==2" class="indicate" style="backgroundColor:red" title="数据源不通"></i>
+                  
                 </template>
 
              </el-table-column>
+                         <el-table-column prop="taskInfoId" label="ID"  width="100" :show-overflow-tooltip='true'></el-table-column>
+
             <el-table-column  label="任务名称" width="200" :show-overflow-tooltip='true' @click="showTaskDetail=true">
 <template slot-scope="scope">
                  <el-button @click="doDetail(scope.$index, scope.row)">{{scope.row.taskName}}</el-button>
@@ -92,7 +94,9 @@
             <el-table-column  label="已接入数据量" :show-overflow-tooltip='true' width="150"></el-table-column>
              <el-table-column  label="操作"  width="200">
                 <template slot-scope="scope">
-                  <el-button  v-if="scope.row.status==0||scope.row.status==3||scope.row.status==2"  type="text" size="small" @click="doRun(scope.$index, scope.row)">运行</el-button>
+                  <el-button  v-if="scope.row.status==0||scope.row.status==2"  type="text" size="small" @click="doRun(scope.$index, scope.row)">运行</el-button>
+                                    <el-button  v-else-if="scope.row.status==3"  type="text" size="small" @click="doRun(scope.$index, scope.row)">重启</el-button>
+
                   <el-button  v-else-if="scope.row.status==1"  type="text" size="small" @click="doRun(scope.$index, scope.row)">暂停</el-button>
                   <el-button  v-else-if="scope.row.status==4"  type="text" size="small" @click="doDel(scope.$index, scope.row)">处理完毕</el-button>
                  <el-button type="text" size="small" @click="doCheck(scope.$index, scope.row)">数据核验</el-button>
@@ -129,7 +133,7 @@
 import DialogIsCheck from "./DialogIsCheck";
 import DialogTaskDetail from "./DialogTaskDetail";
 export default {
-  name:"task",
+  name: "task",
   data() {
     return {
       loading: false,
@@ -164,7 +168,7 @@ export default {
     // status(newA, oldA) { init()},
     // time() {
     // }
-//监听树节点deptID,操作数据
+    //监听树节点deptID,操作数据
     departmentId(newVal, oldVal) {
       //do something
       this.init("");
@@ -208,24 +212,37 @@ export default {
     //重新汇聚
     doConverge(index, row) {
       let _self = this;
-      _self.loading = true;
-      this.$ajax
-        .put(
-          "http://10.19.160.67:8081/DEMO/manager/taskOperate/converge/" +
-            row.taskInfoId
-        )
-        .then(function(res) {
-          console.log(res);
-          _self.loading = false;
-          if (res.data.success) {
-            _self.doMsg("重新汇聚成功", "success");
-          } else {
-            _self.doMsg(res.data.message, "error");
-          }
+      this.$confirm(
+        "重新汇聚完成之前，当前表的数据将会被全部删除，相应数据服务将终止，直到汇聚完成。 请确认！",
+        "提示",
+        {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "info"
+        }
+      )
+        .then(() => {
+          _self.loading = true;
+
+          this.$ajax
+            .put(
+              "http://10.19.160.67:8081/DEMO/manager/taskOperate/converge/" +
+                row.taskInfoId
+            )
+            .then(function(res) {
+              console.log(res);
+              _self.loading = false;
+              if (res.data.success) {
+                _self.doMsg("重新汇聚成功", "success");
+              } else {
+                _self.doMsg(res.data.message, "error");
+              }
+            })
+            .catch(function(err) {
+              console.log(err);
+            });
         })
-        .catch(function(err) {
-          console.log(err);
-        });
+        .catch(() => {});
     },
     //处理完毕
     doDel(index, row) {
@@ -301,15 +318,6 @@ export default {
     handleCurrentChange() {
       this.init();
     },
-    //信息提示
-    doMsg(msg, type) {
-      this.$message({
-        showClose: true,
-        message: msg,
-        type: type,
-        duration: 3500
-      });
-    },
     //表格数据获取
     init(keyword) {
       var _self = this;
@@ -365,12 +373,16 @@ export default {
     select(selection, row) {
       this.allSecectData[this.pageNum] = selection;
     },
+    //手动全选事件
+    selectAll(selection) {
+      this.allSecectData[this.pageNum] = selection;
+    },
     //批量操作
-    doMore(url) {
+    doMore(url, a) {
       let tableParams = [];
       let _self = this;
-      console.log(_self.allSecectData[_self.pageNum]);
       let row = [];
+
       let row1 = Object.keys(this.allSecectData);
       for (let i = 0; i < row1.length; i++) {
         for (let j = 0; j < this.allSecectData[row1[i]].length; j++) {
@@ -384,21 +396,259 @@ export default {
       let params = {
         taskInfoIds: tableParams.join(",")
       };
-      this.$ajax({
-        url: url,
-        method: "POST",
-        data: {},
-        params: params
-      })
-        .then(function(res) {
-          if (res.data.success) {
-            _self.doMsg("操作成功", "success");
-            _self.init();
-          } else {
-            _self.doMsg(res, data.message, "error");
+      if (a == 1) {
+        //批量汇聚
+        let errorData = [];
+        for (let i = 0; i < row.length; i++) {
+          if (row[i].status == 1) {
+            errorData.push(row[i]);
           }
-        })
-        .catch(function(err) {});
+        }
+        if (errorData.length == 0) {
+          _self
+            .$confirm(
+              "重新汇聚完成之前，当前表的数据将会被全部删除，相应数据服务将终止，直到汇聚完成。 请确认！",
+              "重新汇聚",
+              {
+                confirmButtonText: "确定",
+                cancelButtonText: "取消",
+                type: "info"
+              }
+            )
+            .then(() => {
+              _self.loading = true;
+              _self
+                .$ajax({
+                  url: url,
+                  method: "POST",
+                  data: {},
+                  params: params
+                })
+                .then(function(res) {
+                  _self.loading = false;
+                  if (res.data.success) {
+                    let successHtml = "";
+                    let errorHtml = "";
+                    for (let i = 0; i < res.data.data.successList.length; i++) {
+                      successHtml +=
+                        i + 1 + "." + res.data.data.successList[i] + "</br>";
+                    }
+                    for (let i = 0; i < res.data.data.errorList.length; i++) {
+                      errorHtml +=
+                        i + 1 + "." + res.data.data.errorList[i] + "</br>";
+                    }
+                    _self.$alert(
+                      "操作成功！重新汇聚成功的任务如下：</br>" +
+                        successHtml +
+                        "重新汇聚失败的任务如下：</br>" +
+                        errorHtml,
+                      "重新汇聚",
+                      {
+                        dangerouslyUseHTMLString: true
+                      }
+                    );
+                  } else {
+                    this.$alert("重新汇聚失败", "重新汇聚", {
+                      dangerouslyUseHTMLString: true
+                    });
+                  }
+                })
+                .catch(function(err) {
+                  console.log(err);
+                });
+            })
+            .catch(() => {});
+        } else {
+          let errerHtml = "";
+          for (let j = 0; j < errorData.length; j++) {
+            errerHtml +=
+              j +
+              1 +
+              "." +
+              errorData[j].taskName +
+              "：" +
+              errorData[j].taskInfoId +
+              "</br>";
+          }
+          this.$alert(
+            "重新汇聚时，以下任务不能被汇聚,请重新选择：</br>" + errerHtml,
+            "重新汇聚",
+            {
+              dangerouslyUseHTMLString: true
+            }
+          );
+        }
+      } else if (a == 2) {
+        //批量启动
+        let errorData = [];
+        for (let i = 0; i < row.length; i++) {
+          if (row[i].status == 1 || row[i].status == 4) {
+            errorData.push(row[i]);
+          }
+        }
+        if (errorData.length == 0) {
+          _self.loading = true;
+          _self
+            .$ajax({
+              url: url,
+              method: "POST",
+              data: {},
+              params: params
+            })
+            .then(function(res) {
+              _self.loading = false;
+              if (res.data.success) {
+                let successHtml = "";
+                let errorHtml = "";
+                for (let i = 0; i < res.data.data.successList.length; i++) {
+                  successHtml +=
+                    i + 1 + "." + res.data.data.successList[i] + "</br>";
+                }
+                for (let i = 0; i < res.data.data.errorList.length; i++) {
+                  errorHtml +=
+                    i + 1 + "." + res.data.data.errorList[i] + "</br>";
+                }
+                _self.$alert(
+                  "操作成功！批量启动成功的任务如下：</br>" +
+                    successHtml +
+                    "批量启动失败的任务如下：</br>" +
+                    errorHtml,
+                  "批量启动",
+                  {
+                    dangerouslyUseHTMLString: true
+                  }
+                );
+                _self.init();
+              } else {
+                this.$alert("批量启动失败", "批量启动", {
+                  dangerouslyUseHTMLString: true
+                });
+              }
+            })
+            .catch(function(err) {
+              console.log(err);
+            });
+        } else {
+          let errerHtml = "";
+          for (let j = 0; j < errorData.length; j++) {
+            errerHtml +=
+              j +
+              1 +
+              "." +
+              errorData[j].taskName +
+              "：" +
+              errorData[j].taskInfoId +
+              "</br>";
+          }
+          this.$alert(
+            "批量启动时，以下任务不能被启动,请重新选择：</br>" + errerHtml,
+            "批量启动",
+            {
+              dangerouslyUseHTMLString: true
+            }
+          );
+        }
+      } else if (a == 3) {
+        //批量停止
+        let errorData = [];
+        for (let i = 0; i < row.length; i++) {
+          if (row[i].status != 1) {
+            errorData.push(row[i]);
+          }
+        }
+        if (errorData.length == 0) {
+          _self.loading = true;
+          _self
+            .$ajax({
+              url: url,
+              method: "POST",
+              data: {},
+              params: params
+            })
+            .then(function(res) {
+              _self.loading = false;
+              if (res.data.success) {
+                let successHtml = "";
+                let errorHtml = "";
+                for (let i = 0; i < res.data.data.successList.length; i++) {
+                  successHtml +=
+                    i + 1 + "." + res.data.data.successList[i] + "</br>";
+                }
+                for (let i = 0; i < res.data.data.errorList.length; i++) {
+                  errorHtml +=
+                    i + 1 + "." + res.data.data.errorList[i] + "</br>";
+                }
+                _self.$alert(
+                  "操作成功！批量停止成功的任务如下：</br>" +
+                    successHtml +
+                    "批量停止失败的任务如下：</br>" +
+                    errorHtml,
+                  "批量停止",
+                  {
+                    dangerouslyUseHTMLString: true
+                  }
+                );
+                _self.init();
+              } else {
+                this.$alert("批量停止失败", "批量停止", {
+                  dangerouslyUseHTMLString: true
+                });
+              }
+            })
+            .catch(function(err) {
+              console.log(err);
+            });
+        } else {
+          let errerHtml = "";
+          for (let j = 0; j < errorData.length; j++) {
+            errerHtml +=
+              j +
+              1 +
+              "." +
+              errorData[j].taskName +
+              "：" +
+              errorData[j].taskInfoId +
+              "</br>";
+          }
+          this.$alert(
+            "批量停止时，以下任务不能被停止,请重新选择：</br>" + errerHtml,
+            "提示",
+            {
+              dangerouslyUseHTMLString: true
+            }
+          );
+        }
+      }
+    },
+
+    //批量汇聚
+    // doConverge() {
+    //   let tableParams = [];
+    //   let _self = this;
+    //   let row = [];
+
+    //   let row1 = Object.keys(this.allSecectData);
+    //   for (let i = 0; i < row1.length; i++) {
+    //     for (let j = 0; j < this.allSecectData[row1[i]].length; j++) {
+    //       row.push(this.allSecectData[row1[i]][j]);
+    //     }
+    //   }
+    //   for (let i = 0; i < row.length; i++) {
+    //     tableParams.push(row[i].taskInfoId);
+    //   }
+
+    //   let params = {
+    //     taskInfoIds: tableParams.join(",")
+    //   };
+
+    // },
+
+    //弹框信息提示1
+    doMessage(message) {
+      this.$alert(message, "提示", {
+        confirmButtonText: "确定",
+        callback: action => {}
+      });
     }
   }
 };
