@@ -28,12 +28,7 @@ export default {
   overflow: hidden;
   background: #eff3f6;
 }
-<<<<<<< HEAD
 .app-main>div{
   height:calc(100vh - 113px);
 }
 </style>
-=======
-</style>
-
->>>>>>> 13cee708e0d47163f3aaee0fd02dce1d22e4fc64
