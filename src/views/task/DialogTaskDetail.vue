@@ -533,7 +533,7 @@ export default {
         params:{
           taskInfoId:that.reqObj.taskInfoId
         }
-      }
+      }  
       axios.get('http://10.19.160.67:8081/DOMN/manager/task/testTaskNetworkStatus',reqData).then(
         function(res){
           if(res.data==undefined||res.data==null||res.data===''){
