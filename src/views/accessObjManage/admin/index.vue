@@ -130,15 +130,20 @@ export default {
   },
   watch: {
     tableParams(newVal,oldVal){
+			console.log(newVal);
+			console.log(oldVal);
 			if(JSON.stringify(newVal) != JSON.stringify(oldVal)){
+			console.log('change');
 				this.loadTable();
 			}
     },
   },
   mounted() {
+		console.log('mounted');
     this.storeReady();
   },
   created() {
+		console.log('created');
     this.$root.eventHub.$on('search', (keyword) => {
       this.search(keyword);
     })
@@ -196,11 +201,12 @@ export default {
 				name:'accessObjInfo',
 				data:{
 					ACCESS_SYS_DIALECT_ID:this.mainTableData[0].accessSys.accessSysDialectId,
-					accessSysId:this.mainTableData[0].accessSys.id
+					accessSysId:this.mainTableData[0].accessSys.id,
+					diyComments:row.diyComments
 				}
 			});
 			this.$store.commit('resetQueryParam', {
-				resetData:['accessObjInfo']
+				resetData:'accessObjInfo'
 			});
       this.$router.push({ name: "accessObjInfo",params:{
         sourceId:this.$route.params.sourceId,

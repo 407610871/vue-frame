@@ -8,9 +8,9 @@
             <div class="all-number">{{countTotal}}</div>
           </div>
           <div class="line"></div>
-         <!--  <dataCount v-if="countReady" v-bind:dataObj="count1Data" class="countData" />
+         <dataCount v-if="countReady" v-bind:dataObj="count1Data" class="countData" />
          <div class="line"></div>
-         <dataCount v-if="countReady" v-bind:dataObj="count2Data" class="countData" /> -->
+         <dataCount v-if="countReady" v-bind:dataObj="count2Data" class="countData" />
         </div>
         <div class="regbtn fr">
           <reg-dialog @refreshTable="loadTable"></reg-dialog>
@@ -71,7 +71,7 @@
 <script>
 import { mapState } from 'vuex'
 import add1 from './../dialog/'
-/*import dataCount from './../../../components/dataCountNew'*/
+import dataCount from './../../../components/dataCountNew'
 import formFliter from './../../../components/formFliter'
 
 import regDialog from './../dialog/admin/reg_dialog'
@@ -95,7 +95,7 @@ export default {
       count1Data: {
         name: '批式接入统计',
         total:0,
-        list:0
+        list:[]
       },
       count2Data: {
         name: '实时统计',
@@ -118,7 +118,7 @@ export default {
   },
   components: {
     add1,
-    /*dataCount,*/
+    dataCount,
     formFliter,
     regDialog,
     editDialog
@@ -130,7 +130,8 @@ export default {
       }
     }
   },
-  created(){
+  created(){		
+		console.log('created');
     this.$root.eventHub.$on('search', (keyword)=>{
       this.search(keyword);
     });
@@ -239,7 +240,7 @@ export default {
     },
     goSubPage:function(index){
 			this.$store.commit('resetQueryParam', {
-				resetData:['accessObjManage']
+				resetData:'accessObjManage'
 			});
       this.$router.push({name:'accessObjManage',params:{sourceId:this.mainTableData[index].id,sourceName:encodeURI(this.mainTableData[index].name)}});
     },
