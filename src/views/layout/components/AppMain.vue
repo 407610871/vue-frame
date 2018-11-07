@@ -2,7 +2,7 @@
   <section class="app-main">
     <transition name="fade-transform" mode="out-in">
       <keep-alive>
-        <router-view :key="key"/>
+        <router-view :key="key" />
       </keep-alive>
     </transition>
   </section>
@@ -14,6 +14,7 @@ export default {
   computed: {
     key() {
       return this.$route.fullPath
+      // return this.$store.state.routeFlag[this.$route.name]
     }
   }
 }

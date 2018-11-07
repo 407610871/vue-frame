@@ -129,8 +129,10 @@ export default {
     norelaColl
   },
   watch: {
-    tableParams(newVal, oldVal) {
-      this.loadTable();
+    tableParams(newVal,oldVal){
+			if(JSON.stringify(newVal) != JSON.stringify(oldVal)){
+				this.loadTable();
+			}
     },
   },
   mounted() {
@@ -190,22 +192,22 @@ export default {
       });
     },
     goAccessObjInfo: function(row) {
-      this.$store.commit('setParamItem', {
-        name: 'accessObjInfo',
-        data: {
-          ACCESS_SYS_DIALECT_ID: this.mainTableData[0].accessSys.accessSysDialectId,
-          accessSysId: this.mainTableData[0].accessSys.id
-        }
-      });
-      this.$router.push({
-        name: "accessObjInfo",
-        params: {
-          sourceId: this.$route.params.sourceId,
-          sourceName: this.$route.params.sourceName,
-          objId: row.id,
-          objName: encodeURI(row.name)
-        }
-      });
+			this.$store.commit('setParamItem',{
+				name:'accessObjInfo',
+				data:{
+					ACCESS_SYS_DIALECT_ID:this.mainTableData[0].accessSys.accessSysDialectId,
+					accessSysId:this.mainTableData[0].accessSys.id
+				}
+			});
+			this.$store.commit('resetQueryParam', {
+				resetData:['accessObjInfo']
+			});
+      this.$router.push({ name: "accessObjInfo",params:{
+        sourceId:this.$route.params.sourceId,
+        sourceName:this.$route.params.sourceName,
+        objId:row.id,
+        objName:encodeURI(row.name)
+      }});
     },
     search: function(keyword) {
       this.setStore({
@@ -258,9 +260,7 @@ export default {
     handleSelectionChange: function(val) {
       this.seledRows = val;
     },
-    changeFormFilter: function(fliterParams) {
-      console.log('---------fliterParams-----------');
-      console.log(fliterParams);
+    changeFormFilter:function(fliterParams){
       this.setStore(fliterParams);
     },
     storeReady() {
@@ -301,16 +301,6 @@ export default {
         seledData: this.tableParams.dataRange ? this.tableParams.dataRange : []
       }];
       this.queryParamReady = true;
-      // var fliterItemList = this.$store.state.fliterItemList
-      // if(fliterItemList.network.ready&&fliterItemList.dataSourceName.ready&&fliterItemList.platform.ready){
-      //   this.setFliter(fliterItemList);
-      //   this.loadTable();
-      // }else{
-      //   var _self = this;
-      //   setTimeout(function(){
-      //     _self.storeReady();
-      //   },200);
-      // }
     }
   }
 }

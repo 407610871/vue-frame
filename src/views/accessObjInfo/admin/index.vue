@@ -27,36 +27,46 @@
                 label="字段中文名"
                 width="180" show-overflow-tooltip>
                 <template slot-scope="scope">
-                  <a href="javascript:void(0)">{{ scope.row.name }}</a>
+                  <a href="javascript:void(0)">{{ scope.row.diyComments }}</a>
                 </template>
               </el-table-column>
               <el-table-column
-                prop="verfication_code"
+                prop="name"
                 label="字段名"
                 width="180">
               </el-table-column>
               <el-table-column
-                prop="accessSysDialect.name"
+                prop="datatype"
                 label="字段类型">
               </el-table-column>
               <el-table-column
-                prop="accessSysType.name"
+                prop="length"
                 label="字段长度">
               </el-table-column>
               <el-table-column
-                prop="accessSysType.name"
+                prop="isNull"
                 label="是否为空">
+								<template slot-scope="scope">
+									<span v-if="scope.row.isNull!='NO'">是</span>
+									<span v-if="scope.row.isNull=='NO'">否</span>
+								</template>
               </el-table-column>
               <el-table-column
-                prop="accessSysType.name"
                 label="是否为主键">
+								<template slot-scope="scope">
+									<span v-if="scope.row.primaryKey">是</span>
+									<span v-if="!scope.row.primaryKey">否</span>
+								</template>
               </el-table-column>
               <el-table-column
-                prop="createTime"
                 label="是否为索引">
+								<template slot-scope="scope">
+									<span v-if="scope.row.index">是</span>
+									<span v-if="!scope.row.index">否</span>
+								</template>
               </el-table-column>
               <el-table-column
-                prop="accessSysType.name"
+                prop="comments"
                 label="描述">
               </el-table-column>
             </el-table>
@@ -198,7 +208,7 @@ export default {
   },
   watch: {
     tableParams(newVal,oldVal){
-      if(newVal.pageNum1 != oldVal.pageNum1 || newVal.pageNum2 != oldVal.pageNum2){
+      if((newVal.pageNum1 != oldVal.pageNum1 || newVal.pageNum2 != oldVal.pageNum2)){
         this.loadTable();
       }
       this.tabPosition = newVal.tabPosition;
@@ -223,7 +233,6 @@ export default {
       console.log(flag)
       var _self = this;
       if(this.tabPosition == 'metadataManage' || flag){
-				console.log(this.tableParams);
 				var paramsObj = {
 					pagNum:this.tableParams.pageNum1,
 					count:this.$store.state.pageSize,
@@ -233,10 +242,14 @@ export default {
 				}
         this.$ajax.post('http://10.19.160.171:8081/DEMO/objDetail/dataList',paramsObj).then(function(res){
           console.log('tableLoaded:metadataManage');
-          _self.mainTableData1 = res.data.page.list;
-          _self.mainTableDataTotal1 = res.data.page.total;
-          //这里是异步的，存在延迟，所以没问题,如果是同步的话可能存在问题
-          _self.currentPage1 = _self.tableParams.pageNum1;
+					if(res.data.success){
+						_self.mainTableData1 = res.data.data.list;
+						_self.mainTableDataTotal1 = res.data.data.total;
+						//这里是异步的，存在延迟，所以没问题,如果是同步的话可能存在问题
+						_self.currentPage1 = _self.tableParams.pageNum1;
+					}else{
+						console.log(res.data.code);
+					}
         })
         .catch(function(err){
           _self.currentPage1 = _self.tableParams.pageNum1;
@@ -244,10 +257,14 @@ export default {
         });
       }
       if(this.tabPosition != 'metadataManage' || flag){
-				return;
-        this.$ajax.get('http://localhost:8080/list',{
-          params:this.tableParams
-        }).then(function(res){
+				var paramsObj = {
+					count:this.$store.state.pageSize,
+					objectInfoId:this.$route.params.objId,
+					ACCESS_SYS_DIALECT_ID:this.tableParams.ACCESS_SYS_DIALECT_ID,
+					accessSysId:this.tableParams.accessSysId,
+					filter:null
+				}
+        this.$ajax.post('http://10.19.160.171:8081/DEMO/objDetail/previewData',paramsObj).then(function(res){
           console.log('tableLoaded:dataPreview');
           _self.mainTableData2 = res.data.page.list;
           _self.mainTableDataTotal2 = res.data.page.total;
