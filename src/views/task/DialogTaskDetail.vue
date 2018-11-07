@@ -1,142 +1,138 @@
 <template>
-  <div class="taskMDialog" style="padding-bottom:15px;">
-    <el-dialog width="60%" :title="title" :visible.sync="showInnerDialog" @closed="closeDia">
+  <div class="taskMDialog" style="padding-bottom:15px;" >
+    <el-dialog width="60%" :title="reqObj.taskName" :visible.sync="showInnerDialog" @closed="closeDia" v-loading="loading">
       <div class="title-gra">
         <span class="grab gra-l"></span>
         <span class="grab gra-r"></span>
       </div>
       <el-form label-width="150px" class="demo-ruleForm">
-        <span style="float:right">当前状态:<el-button style="margin-left:10px" type="primary" size="small" >{{taskBaseInfo.statusDesc}}</el-button></span>
-        <div class="daiInfo proInfo">
+        <span style="float:right">当前状态:
+          <el-select v-model="flagDesc" placeholder="请选择" :change="changeStatus">
+            <el-option
+              v-for="item in operateList"
+              :key="item.value"
+              :label="item.type"
+              :value="item.value"
+              :disabled="item.disabled">
+            </el-option>
+          </el-select>
+          <!-- <el-button style="margin-left:10px" type="primary" size="small" @click="changeStatus">{{flagDesc=='stop'?'暂停':'运行'}}</el-button> -->
+          </span>
+        <!-- 接入基本信息 模块开始-->
+        <!-- <div class="daiInfo proInfo">
           <div class="daiInfo-title proInfo-title">
             <h2>接入基本信息</h2>
           </div>
           <div class="proInfo-box clearfix">
             <el-col :span="10">
               <el-form-item label="接入源名称:">
-                <span>接入源名称</span>
+                <span>{{sourceBaseInfo.resourceName}}</span>
               </el-form-item>
             </el-col>
             <el-col :span="4" class="bank">bank</el-col>
             <el-col :span="10">
               <el-form-item label="目标库:">
-                <span>接入源名称</span>
+                <span>{{sourceBaseInfo.targetDBName}}</span>
               </el-form-item>
             </el-col>
             <el-col :span="10">
               <el-form-item label="接入源ID:">
-                <span>接入源名称</span>
+                <span>{{sourceBaseInfo.sourceId}}</span>
               </el-form-item>
             </el-col>
             <el-col :span="4" class="bank">bank</el-col>
             <el-col :span="10">
               <el-form-item label="目标表:">
-                <span>接入源名称</span>
+                <span>{{sourceBaseInfo.targetTableName}}</span>
               </el-form-item>
             </el-col>
             <el-col :span="10">
               <el-form-item label="接入源类型:">
-                <span>接入源名称</span>
+                <span>{{sourceBaseInfo.dbType}}</span>
               </el-form-item>
             </el-col>
             <el-col :span="4" class="bank">bank</el-col>
             <el-col :span="10">
               <el-form-item label="接入类型:">
-                <span>周期 间隔5分钟运行一次</span>
+                <span>{{sourceBaseInfo.periodDesc}}</span>
               </el-form-item>
             </el-col>
             <el-col :span="10">
               <el-form-item label="接入对象:">
-                <span>接入源名称</span>
+                <span>{{sourceBaseInfo.sourceObjName}}</span>
               </el-form-item>
             </el-col>
             <el-col :span="4" class="bank">bank</el-col>
             <el-col :span="10">
               <el-form-item label="增量字段:">
-                <span>接入源名称</span>
+                <span>{{sourceBaseInfo.incrementColumn}}</span>
               </el-form-item>
             </el-col>
             <el-col :span="10" class="bank">bank</el-col>
             <el-col :span="4" class="bank">bank</el-col>
             <el-col :span="10">
               <el-form-item label="增量字段类型:">
-                <span>接入源名称</span>
+                <span>{{sourceBaseInfo.columnType}}</span>
               </el-form-item>
             </el-col>
           </div>
-        </div>
+        </div> -->
+        <!-- 接入基本信息 模块结束 -->
 
-        <div class="daiInfo dockInfo">
+        <!-- 接入数据更新 模块开始 -->
+        <!-- <div class="daiInfo dockInfo">
           <div class="daiInfo-title">
             <h2>接入数据更新</h2>
           </div>
           <div class="daiInfo-box clearfix">
             <el-col :span="10">
               <el-form-item label="已接入数据量:">
-                <span>1230000</span>
+                <span>{{sourceDataInfo.writeNum}}</span>
               </el-form-item>
             </el-col>
             <el-col :span="4">
-              <el-button type="primary" size="small" @click="testConnect()">数据核验</el-button>
+              <el-button type="primary" size="small" @click="isShowCheck=true">数据核验</el-button>
             </el-col>
             <el-col :span="10">
               <el-form-item label="剩余数据量预估:">
-                <span>1230000</span>
+                <span>{{sourceDataInfo.left}}</span>
               </el-form-item>
             </el-col>
             <el-col :span="10">
               <el-form-item label="当前数据接入速率:">
-                <span>10Mbps</span>
+                <span>{{sourceDataInfo.source_record_poll_rate}}</span>
               </el-form-item>
             </el-col>
             <el-col :span="4" class="bank">bank</el-col>
             <el-col :span="10">
               <el-form-item label="待处理数据量:">
-                <span>12300</span>
-              </el-form-item>
-            </el-col>
-            <el-col :span="10">
-              <el-form-item label="缓存数据量:">
-                <span>1230000</span>
-              </el-form-item>
-            </el-col>
-            <el-col :span="4" class="bank">bank</el-col>
-            <el-col :span="10">
-              <el-form-item label="接入队列数据量:" >
-                <span>2018-10-07 22:23:49</span>
-              </el-form-item>
-            </el-col>
-            <el-col :span="10">
-              <el-form-item label="待存储数据量:">
-                <span>1230000</span>
+                <span>{{sourceDataInfo.waiting4processing}}</span>
               </el-form-item>
             </el-col>
             <el-col :span="10" class="bank">bank</el-col>
           </div>
-        </div>
+        </div> -->
+        <!-- 接入数据更新 模块结束 -->
 
+        <!-- 任务基本信息 模块开始 -->
         <div class="daiInfo dockInfo">
           <div class="daiInfo-title">
             <h2>任务基本信息</h2>
           </div>
-          <div class="daiInfo-box clearfix">
+          <div class="daiInfo-box clearfix" v-loading="innerLoading">
             <el-col :span="10">
               <el-form-item label="当前任务状态:">
                 <span>{{taskBaseInfo.statusDesc}}</span>
               </el-form-item>
             </el-col>
             <el-col :span="4" class="bank">bank</el-col>
-            <el-col :span="10">
-              <el-form-item label="任务创建时间:">
-                <span>{{taskBaseInfo.createTime}}</span>
-              </el-form-item>
-            </el-col>
-            <el-col :span="10">
+            <el-col :span="10" class="bank">bank</el-col>
+            <el-col :span="16">
               <el-form-item label="任务指示灯:">
                 <div class="item-label">
                   <span class="label-color" v-bind:style="lightBackground"></span>{{taskBaseInfo.newWorkDesc}}
                 </div>
-                <!-- <span>网络当前不问题，当前速率为20kbps/s</span> -->
+              <!-- <span>网络当前不问题，当前速率为20kbps/s</span> -->
               </el-form-item>
             </el-col>
             <el-col :span="4">
@@ -147,17 +143,19 @@
                 <span>{{taskBaseInfo.startTime}}</span>
               </el-form-item>
             </el-col>
+            <el-col :span="4" class="bank">bank</el-col>
+            <!-- <el-col :span="10" class="bank">bank</el-col> -->
             <el-col :span="10">
-              <el-form-item label="接入数量:">
-                <span>暂时未有数据</span>
+              <el-form-item label="任务创建时间:">
+                <span>{{taskBaseInfo.createTime}}</span>
               </el-form-item>
             </el-col>
-            <el-col :span="4" class="bank">bank</el-col>
             <el-col :span="10">
               <el-form-item label="最近一次任务结束时间:" >
                 <span>{{taskBaseInfo.endTime}}</span>
               </el-form-item>
             </el-col>
+            <el-col :span="4" class="bank">bank</el-col>
             <el-col :span="10">
               <el-form-item label="任务创建人:">
                 <span>暂时未有数据</span>
@@ -165,111 +163,76 @@
             </el-col>
             <el-col :span="10" class="bank">bank</el-col>
           </div>
+          <!-- 四个日志tab 开始 -->
           <div class="daiInfo-tabs">
             <el-tabs type="border-card">
-              <el-tab-pane label="汇聚任务日志信息">汇聚任务日志信息</el-tab-pane>
-              <el-tab-pane label="数据核验日志信息">数据核验日志信息</el-tab-pane>
-              <el-tab-pane label="网络连接信息">网络连接信息</el-tab-pane>
-              <el-tab-pane label="数据预览">数据预览</el-tab-pane>
+              <el-tab-pane label="汇聚任务日志信息">{{taskLog}}</el-tab-pane>
+              <el-tab-pane label="数据核验日志信息">
+                <div class="dataCheck-tab">
+                  <div class="logItem" v-for="item in dataCheckList" :key="item.source_library">
+                    <span class="lab">源库：</span><span>{{item.source_library}}</span>
+                    <br>
+                    <span class="lab">源表：</span><span>{{item.source_tableName}}</span>
+                    <br>
+                    <span class="lab">执行结果：</span><span>{{item.source_tableNum}}</span>
+                    <br>
+                    <span class="lab">数据核验查询语句：</span><span>{{item.source_sql}}</span>
+                    <br>
+                    <br>
+                    <span class="lab">目标库：</span><span>{{item.target_library}}</span>
+                    <br>
+                    <span class="lab">目标表：</span><span>{{item.target_tableName}}</span>
+                    <br>
+                    <span class="lab">执行结果：</span><span>{{item.target_tableNum}}</span>
+                    <br>
+                    <span class="lab">数据核验查询语句：</span><span>{{item.target_sql}}</span>
+                    <br>
+                    <br>
+                    <span class="lab">核验结果：</span><span>{{item.testresults_result==0?'成功':'失败'}}</span>
+                    <br>
+                    <span class="lab">核验差值</span><span>{{item.testresults_dvalue}}</span>
+                    <br>
+                    <br>
+                    <div class="logItem-line"></div>
+                    <br>
+                    <br>
+                  </div>
+                </div>
+              </el-tab-pane>
+              <el-tab-pane label="网络连接信息">{{taskBaseInfo.newWorkDesc}}</el-tab-pane>
+              <el-tab-pane class="test" label="数据预览">
+                <!-- 数据预览 表格开始 -->
+                <!-- 数据预览表头不确定，根据接口返回的list集合对象里的key值来确定，所以采用如下写法实现 -->
+                <div class="dataViews-table">
+                  <div class="table-header">
+                    <div class="table-th">
+                      <span v-for="keyitem in keyList" :key="keyitem">{{keyitem}}</span>
+                    </div>
+                    <div class=table-tr-line></div>
+                  </div>
+                  <div class="table-body">
+                    <div class="table-tr" v-for="item in dataViewsList" :key="item[keyList[0]]">
+                      <div class=table-tr-context>
+                        <span v-for="keyitem in keyList" :key="keyitem">{{item[keyitem]}}</span>
+                      </div>
+                      <div class=table-tr-line></div>
+                    </div>
+                  </div>
+                  <div class="tips-none" v-show="keyList.length==0">暂无数据</div>
+                </div>
+                <!-- 数据预览 表格结束 -->
+              </el-tab-pane>
             </el-tabs>
           </div>
-          
+          <!-- 四个日志tab 结束 -->
         </div>
+        <!-- 任务基本信息 模块结束 -->
         
       </el-form>
     </el-dialog>
+    <dialogIsCheck :MsgCheck="reqObj" v-if="isShowCheck"></dialogIsCheck>
   </div>
 </template>
-<script>
-import axios from "axios";
-export default {
-  name: "taskMDialog",
-  data: function() {
-    return {
-      showInnerDialog: true,
-      activeName:"first",
-      taskBaseInfo:{
-        createTime: "",
-        endTime: "",  
-        networkStatus: "",
-        startTime: "",
-        status: "1" ,  
-      },
-      lightBackground: {
-        'background':''
-      }
-    };
-  },
-  props: ["title",'reqObj'],
-  created(){
-    this.getTaskInfo();
-  },
-  methods: {
-    //关闭对话框
-    closeDia(){
-      console.log("广播事件进入")
-      this.$emit('closeDia',);
-    },
-    //测试连接
-    testConnect(){
-      alert("方法待添加！");
-    },
-    //查询任务基本信息
-    getTaskInfo(){
-
-      let that = this;
-      //数据获取
-      let searchData = {
-        params: {
-          taskInfoId:that.reqObj.taskInfoId
-        }
-      };
-      axios
-        .get("http://10.19.160.67:8081/DEMO/manager/task/taskinfo", searchData)
-        .then(function(response) {
-          response.data = {
-            createTime: "2018-07-25 19:08:50", // ---任务创建时间
-            endTime: "2018-07-25 19:08:50",    //---最近一次任务结束时间
-            networkStatus: 0,                  //---任务指示灯 
-            startTime: "2018-07-25 19:08:47",  //---最近一次任务开始时间
-            status: "1",                       //---当前任务状态:0--CREATE, 1--RUNNING, 2--PAUSED, 3--FAILED, 4--FINISH
-          }
-          that.taskBaseInfo = response.data;
-          let statusMap = {
-            0:'创建',
-            1:'运行',
-            2:'暂停',
-            3:'失败',
-            4:'完成'
-          }
-          that.taskBaseInfo.statusDesc = statusMap[that.taskBaseInfo.status];
-          let newWorkMap = {
-            0:'rgb(27, 255, 0)',
-            1:'rgb(255, 153, 0)',
-            2:'rgb(255, 153, 0)',
-            3:'rgb(255, 35, 0)'
-          }
-          that.lightBackground.background = newWorkMap[that.taskBaseInfo.networkStatus];
-          let newWorkDescMap = {
-            0:'正常',
-            1:'主机网络中断',
-            2:'数据库中断',
-            3:'主机网络和数据库均中断'
-          }
-          that.taskBaseInfo.newWorkDesc = newWorkDescMap[that.taskBaseInfo.networkStatus];
-        })
-        .catch(function(err) {
-          console.log(err);
-        });
-    }
-    
-},
-components: {
-
-  },
-};
-
-</script>
 <style lang="scss" scoped>
 // @import "@/assets/css/base.scss";
 // @import "@/assets/css/dialog.scss";
@@ -284,4 +247,459 @@ components: {
   height: 12px;
   border-radius: 6px;
 }
+.dataViews-table{
+  height: 200px;
+    overflow: auto;
+}
+.dataViews-table span{
+  display:inline-block;
+  width:20%;
+  text-align: center;
+  vertical-align: middle;
+  height: 30px;
+}
+.dataViews-table .table-tr-line{
+  border-bottom: 1px solid #e4e7ed;
+  margin-bottom: 10px;
+}
+.dataCheck-tab{
+  padding-left: 12px;
+  padding-top: 12px;
+}
+.dataCheck-tab .logItem span{
+  display: inline-block;
+  margin-top: 2px;
+  margin-bottom: 2px;
+  
+}
+.dataCheck-tab .logItem .logItem-line{
+  width: 100%;
+  border-bottom: 1px solid #e4e7ed;
+}
+.dataCheck-tab .lab{
+  letter-spacing: 6px;
+}
+.tips-none{
+  text-align: center;
+  margin-top: 40px;
+  font-size: 16px;
+  color: #a7a2a2;
+}
+
 </style>
+<script>
+import axios from "axios";
+import DialogIsCheck from "./DialogIsCheck";
+export default {
+  name: "taskMDialog",
+  data: function() {
+    return {
+      //外层loading
+      loading:true,
+      //任务基本信息loading
+      innerLoading:false,
+      serveFinishCount:0,
+      flagDesc:'',
+      showInnerDialog: true,
+      isShowCheck:false,
+      operateList:[
+        {'value':'stop','type':'暂停','disabled':false},
+        {'value':'run','type':'运行','disabled':false},
+      ],
+      //任务基本信息
+      taskBaseInfo:{
+        createTime: "",
+        endTime: "",  
+        networkStatus: "",
+        startTime: "",
+        status: "1" ,  
+      },
+      //接入基本信息
+      sourceBaseInfo:{
+        resourceName :"",
+        targetDBName :"",
+        sourceId :"",
+        targetTableName :"", 
+        dbType :"",
+        period :"",
+        sourceObjName :"",
+        incrementColumn :"",
+        columnType :""
+      },
+      //接入数据更新信息
+      sourceDataInfo:{
+        left:'',
+        source_record_poll_rate:'',
+        waiting4processing:'',
+        writeNum:''
+      },
+      //数据预览列表集合
+      dataViewsList:[],
+      keyList:[],
+      //数据核验日志集合
+      dataCheckList:[],
+      //任务指示灯背景颜色
+      lightBackground: {
+        'background':''
+      },
+      //汇聚任务日志信息
+      taskLog:'',
+    };
+  },
+  props: ["title",'reqObj'],
+  components:{
+    DialogIsCheck
+  },
+  created(){
+    console.log("页面入参",this.reqObj);
+    //查询接入基本信息
+    this.getSourceInfo();
+    //查询任务基本信息
+    this.getTaskInfo();
+    //查询接入数据更新
+    this.getSourceDataInfo();
+    //查询接入任务日志信息
+    this.getSourceTaskLog();
+    //查询数据核验日志信息
+    this.getDataCheckLog();
+    //查询网络连接信息--与上面查询任务基本信息一个接口，所以在此不需要调用专门的查询
+    //this.getNewworkConLog();
+    //查询数据预览
+    this.getDataViews();
+  },
+  methods: {
+    setHeadStyle(){
+      return {
+        background:"#fff",
+        color:"#909399"
+      }
+    },
+    //关闭对话框
+    closeDia(){
+
+      this.$emit('closeDia',);
+    },
+    //切换当前任务状态
+    changeStatus(){
+      let that = this;
+      that.innerLoading=true;
+      if(that.flagDesc=='stop'){
+        //调用暂停接口
+        axios.put('http://10.19.160.67:8081/DOMN/manager/taskOperate/pause/'+that.reqObj.taskInfoId).then(
+          function(res){
+            if(res.data.code!='200'&&res.data.code!='0000'){
+              that.doMsg(res.data.message,'error');
+              that.innerLoading=false;
+            }else{
+              that.doMsg(res.data.message,'success');
+              //重新查询任务基本信息
+              that.getTaskInfo();
+            }
+          }
+        ).catch(function(err){
+          console.log(err);
+          that.innerLoading=false;
+        })
+      }else if(that.flagDesc=='run'){
+        //调用运行接口
+        axios.put('http://10.19.160.67:8081/DOMN/manager/taskOperate/start/'+that.reqObj.taskInfoId).then(
+          function(res){
+            if(res.data.code!='200'&&res.data.code!='0000'){
+              that.doMsg(res.data.message,'error');
+              that.innerLoading=false;
+            }else{
+              that.doMsg(res.data.message,'success');
+              //重新查询任务基本信息
+              that.getTaskInfo();
+            }
+          }
+        ).catch(function(err){
+          console.log(err);
+          that.innerLoading=false;
+        })
+      }
+    },
+    //查询接入基本信息
+    getSourceInfo(){
+      let that = this;
+      let reqData = {
+        params:{
+          taskInfoDetailId:that.reqObj.taskInfoDetailId,
+          sourceObjType:that.reqObj.sourceObjType
+        }
+      };
+      axios.get("http://10.19.160.67:8081/DOMN/manager/task/detail/source",reqData).then(function(res){
+        if(res.data.code==undefined||res.data.code==null||res.data.code==""){
+          that.doMsg("“/manager/task/detail/source”服务响应为空！","error");
+          that.serveFinishCount++;
+          return;
+        }
+        if(res.data.code != "200"&&res.data.code != "0000"){
+          that.doMsg('“/manager/task/detail/source”'+res.data.message,"error");
+          that.serveFinishCount++;
+          return;
+        }
+        that.serveFinishCount++;
+        let innerReqData = {
+          params:{
+            taskInfoDetailId:that.reqObj.taskInfoDetailId,
+            sourceTableName:res.data.data.sourceTableName[0]
+          }
+        }
+        axios.get('http://10.19.160.67:8081/DOMN/manager/task/detail/target',innerReqData).then(function(innerRes){
+          if(innerRes.data.code==undefined||innerRes.data.code==null||innerRes.data.code==""){
+            that.doMsg("“/manager/task/detail/target”服务响应为空！","error");
+            that.serveFinishCount++;
+            return;
+          }
+          if(innerRes.data.code != "200"&&innerRes.data.code != "0000"){
+            that.doMsg('“/manager/task/detail/target”'+innerRes.data.message,"error");
+            that.serveFinishCount++;
+            return;
+          }
+
+          that.sourceBaseInfo = innerRes.data.data;
+          that.sourceBaseInfo.dbType = res.data.data.dbType;
+          let periodMap={
+            0:'实时性任务',
+            1:'一次性任务',
+            2:'周期任务',
+            3:'全量任务'        
+          }
+          //接入类型翻译
+          that.sourceBaseInfo.periodDesc = periodMap[innerRes.data.data.period];
+          that.serveFinishCount++;
+        }).catch(function(err) {
+          console.log(err);
+          that.serveFinishCount++;
+        });
+      }).catch(function(err) {
+        console.log(err);
+        that.serveFinishCount++;
+      });
+    },
+    //查询任务基本信息
+    getTaskInfo(){
+
+      let that = this;
+      that.innerLoading=true;
+      //数据获取
+      let searchData = {
+        params: {
+          taskInfoId:that.reqObj.taskInfoId
+        }
+      };
+      axios
+        .get("http://10.19.160.67:8081/DOMN/manager/task/taskinfo", searchData)
+        .then(function(response) {
+          if(response.data.code!='200'&&response.data.code!='0000'){
+            that.doMsg("/manager/task/taskinfo"+response.data.message,error);
+            that.serveFinishCount++;
+          }else{
+            that.taskBaseInfo = response.data.data;
+            let statusMap = {
+              0:'创建',
+              1:'运行',
+              2:'暂停',
+              3:'失败',
+              4:'完成'
+            }
+            that.taskBaseInfo.statusDesc = statusMap[that.taskBaseInfo.status];
+            //网络指示灯判断
+            that.newWorkTrans(that.taskBaseInfo.networkStatus);
+            //可操作类型
+            let t=that.taskBaseInfo.status;
+            that.flagDesc=(t==0||t==1)?'stop':'run';
+            if(flagDesc=='stop'){
+              that.operateList[0].disabled=false;
+              that.operateList[1].disabled=true;
+            }else{
+              that.operateList[0].disabled=true;
+              that.operateList[1].disabled=false;
+            }
+            that.serveFinishCount++;
+          }
+        })
+        .catch(function(err) {
+          console.log(err);
+          that.serveFinishCount++;
+        });
+    },
+    //点击测试连接按钮，进行接口条用
+    testConnect(){
+      let that = this;
+      that.innerLoading=true;
+      let reqData = {
+        params:{
+          taskInfoId:that.reqObj.taskInfoId
+        }
+      }
+      axios.get('http://10.19.160.67:8081/DOMN/manager/task/testTaskNetworkStatus',reqData).then(
+        function(res){
+          if(res.data==undefined||res.data==null||res.data===''){
+            that.doMsg('服务无数据返回','error');
+          }else if(res.data.code!="200"&&res.data.code!="0000"){
+            that.doMsg("/manager/task/testTaskNetworkStatus:"+res.data.message,'error');
+          }else{
+            that.newWorkTrans(res.data.data);
+          }
+          that.innerLoading=false;
+        }
+      ).catch(
+        function(err){
+          console.log(err);
+          that.innerLoading=false;
+        }
+      )
+    },
+    //查询接入数据更新
+    getSourceDataInfo(){
+      let that = this;
+      axios.put('http://10.19.160.67:8081/DOMN/manager/taskOperate/dataInfo/'+that.reqObj.taskInfoId).then(
+        function(res){
+          if(res.data==undefined||res.data==null||res.data===''){
+            that.doMsg('服务无数据返回','error');
+            that.serveFinishCount++;
+          }else if(res.data.code!="0000"&&res.data.code!="200"){
+            that.doMsg("/manager/taskOperate/dataInfo/"+res.data.data.message,'error');
+            that.serveFinishCount++;
+          }else{
+            that.sourceDataInfo = res.data.data; 
+            that.serveFinishCount++;
+          }
+          
+          //that.serveFinishCount++;
+        }
+      ).catch(
+        function(err){
+          console.log(err);
+          that.serveFinishCount++;
+        }
+      )
+    },
+    //查询接入任务日志信息
+    getSourceTaskLog(){
+      let that = this;
+      axios.put('http://10.19.160.67:8081/DOMN/manager/taskOperate/taskLogInfo/'+that.reqObj.taskInfoId).then(
+        function(res){
+          //判断响应是否异常
+          if(res.data.code!="200"&&res.data.code!="0000"){
+            that.doMsg("/manager/taskOperate/taskLogInfo/"+res.data.data.message,'error');
+            that.serveFinishCount++;
+          }else{
+            that.taskLog = res.data.data.logInfo==""?"暂无日志信息！":res.data.data.logInfo;
+            that.serveFinishCount++;
+          }
+        }
+      ).catch(
+        function(err){
+          console.log(err);
+          that.serveFinishCount++;
+        }
+      )
+    },
+    //查询数据核验日志信息
+    getDataCheckLog(){
+      let that = this;
+      let reqData = {
+        params:{
+          // 'taskId':that.reqObj.taskInfoId
+          'taskId':92066
+        }
+      }
+      axios.get('http://10.19.160.59:8088/demo/ccheckData/checkLogByTaskId',reqData).then(
+        function(res){
+          console.log('数据核验日志信息',res)
+          if(res.data.code!="200"&&res.data.code!="0000"){
+            that.doMsg("/ccheckData/checkLogByTaskId"+res.data.message,'error');
+            that.serveFinishCount++;
+          }else{
+            that.dataCheckList = res.data.data;
+            that.serveFinishCount++;
+          }
+        }
+      ).catch(
+        function(err){
+          console.log(err);
+          that.serveFinishCount++;
+        }
+      )
+    },
+    //查询数据预览
+    getDataViews(){
+      let that = this;
+      axios.put('http://10.19.160.67:8081/DOMN/manager/taskOperate/dataPreview/'+that.reqObj.taskInfoId).then(
+        function(res){
+          if(res.data.code!="200"&&res.data.code!="0000"){
+            that.serveFinishCount++;
+            that.doMsg("/manager/taskOperate/dataPreview："+res.data.message,'error');
+          }else{
+            that.dataViewsList = res.data.data;
+            that.keyList = [];
+            for (var p in that.dataViewsList[0]){
+              that.keyList.push(p);
+            }  
+            that.keyList.reverse();  
+            that.serveFinishCount++;
+          }
+        }
+      ).catch(
+        function(err){
+          console.log(err);
+          that.serveFinishCount++;
+        }
+      )
+    },
+    //网络测试指示灯及内容翻译
+    newWorkTrans(value){
+      let newWorkMap = {
+        0:'rgb(27, 255, 0)',
+        1:'rgb(255, 153, 0)',
+        2:'rgb(255, 35, 0)'
+      }
+      this.lightBackground.background = newWorkMap[value];
+      let newWorkDescMap = {
+        0:'数据源连接正常（数据源访问正常，ping的响应时间在10秒内）',
+        1:'数据源连接不稳定（数据源能访问，ping的响应时间在10秒-30秒内）',
+        2:'数据源不通',
+      }
+      this.taskBaseInfo.newWorkDesc = newWorkDescMap[value];
+    },
+    //信息提示
+    doMsg(msg, type) {
+      this.$message({
+        showClose: true,
+        message: msg,
+        type: type,
+        duration: 3500
+      });
+    },
+  },
+  watch:{
+    serveFinishCount:{
+      handler: function (val, oldVal) {
+        //alert(val);
+        if(val==7){//说明页面结构已经调用完毕
+          this.loading=false;
+          this.innerLoading=false;
+        }
+        if(val>7){
+          this.innerLoading=false;
+        }
+       },
+      deep: true
+    },
+    // serveFinishCount:function(val,oldVal){
+    //   let that = this;
+    //   if(val==7){
+    //     //当val=7时，表示初始化时，所有接口调用完成，此时需要将loading加载遮罩去掉
+    //     //that.loading = true;
+    //     alert("监控成功")
+    //   }
+    // }
+  }
+
+};
+
+</script>
+
