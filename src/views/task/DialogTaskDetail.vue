@@ -111,7 +111,7 @@
             </el-col>
             <el-col :span="10" class="bank">bank</el-col>
           </div>
-        </div>
+        </div>  
         <!-- 接入数据更新 模块结束 -->
 
         <!-- 任务基本信息 模块开始 -->
@@ -197,6 +197,7 @@
                     <br>
                     <br>
                   </div>
+                  <div class="tips-none" >暂无数据核验日志信息</div>
                 </div>
               </el-tab-pane>
               <el-tab-pane label="网络连接信息">{{taskBaseInfo.newWorkDesc}}</el-tab-pane>
