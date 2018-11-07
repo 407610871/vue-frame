@@ -7,7 +7,7 @@
       </div>
       <el-form label-width="150px" class="demo-ruleForm">
         <span style="float:right">当前状态:
-          <el-select v-model="flagDesc" placeholder="请选择" :change="changeStatus">
+          <el-select v-model="flagDesc" placeholder="请选择" @change="changeStatus" class="select">
             <el-option
               v-for="item in operateList"
               :key="item.value"
@@ -285,6 +285,9 @@
   font-size: 16px;
   color: #a7a2a2;
 }
+.select{
+  width: 70%;
+}
 
 </style>
 <script>
@@ -390,6 +393,8 @@ export default {
             if(res.data.code!='200'&&res.data.code!='0000'){
               that.doMsg(res.data.message,'error');
               that.innerLoading=false;
+              //如果任务状态未切换成功，任务状态下拉框仍显示原来的值“run--运行”
+              that.flagDesc=='run';
             }else{
               that.doMsg(res.data.message,'success');
               //重新查询任务基本信息
@@ -399,6 +404,8 @@ export default {
         ).catch(function(err){
           console.log(err);
           that.innerLoading=false;
+          //如果任务状态未切换成功，任务状态下拉框仍显示原来的值“run--运行”
+          that.flagDesc=='run';
         })
       }else if(that.flagDesc=='run'){
         //调用运行接口
@@ -407,6 +414,8 @@ export default {
             if(res.data.code!='200'&&res.data.code!='0000'){
               that.doMsg(res.data.message,'error');
               that.innerLoading=false;
+              //如果任务状态未切换成功，任务状态下拉框仍显示原来的值“stop--暂停”
+              that.flagDesc=='stop';
             }else{
               that.doMsg(res.data.message,'success');
               //重新查询任务基本信息
@@ -416,6 +425,8 @@ export default {
         ).catch(function(err){
           console.log(err);
           that.innerLoading=false;
+          //如果任务状态未切换成功，任务状态下拉框仍显示原来的值“stop--暂停”
+          that.flagDesc=='stop';
         })
       }
     },
@@ -509,13 +520,13 @@ export default {
             that.newWorkTrans(that.taskBaseInfo.networkStatus);
             //可操作类型
             let t=that.taskBaseInfo.status;
-            that.flagDesc=(t==0||t==1)?'stop':'run';
-            if(flagDesc=='stop'){
-              that.operateList[0].disabled=false;
-              that.operateList[1].disabled=true;
-            }else{
-              that.operateList[0].disabled=true;
+            that.flagDesc=(t==0||t==1)?'run':'stop';
+            if(that.flagDesc=='stop'){
               that.operateList[1].disabled=false;
+              that.operateList[0].disabled=true;
+            }else{
+              that.operateList[1].disabled=true;
+              that.operateList[0].disabled=false;
             }
             that.serveFinishCount++;
           }
@@ -607,7 +618,7 @@ export default {
           'taskId':92066
         }
       }
-      axios.get('http://10.19.160.59:8088/demo/ccheckData/checkLogByTaskId',reqData).then(
+      axios.get('http://10.19.160.59:8081/DEMO/ccheckData/checkLogByTaskId',reqData).then(
         function(res){
           console.log('数据核验日志信息',res)
           if(res.data.code!="200"&&res.data.code!="0000"){
