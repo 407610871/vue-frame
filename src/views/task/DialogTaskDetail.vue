@@ -197,6 +197,7 @@
                     <br>
                     <br>
                   </div>
+                  <div class="tips-none" v-show="dataCheckList.length==0">暂无数据核验日志信息</div>
                 </div>
               </el-tab-pane>
               <el-tab-pane label="网络连接信息">{{taskBaseInfo.newWorkDesc}}</el-tab-pane>
