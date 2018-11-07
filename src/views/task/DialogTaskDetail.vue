@@ -400,7 +400,7 @@ export default {
               //重新查询任务基本信息
               that.getTaskInfo();
             }
-          }
+          }  
         ).catch(function(err){
           console.log(err);
           that.innerLoading=false;
