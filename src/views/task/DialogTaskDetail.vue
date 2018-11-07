@@ -19,7 +19,7 @@
           <!-- <el-button style="margin-left:10px" type="primary" size="small" @click="changeStatus">{{flagDesc=='stop'?'暂停':'运行'}}</el-button> -->
           </span>
         <!-- 接入基本信息 模块开始-->
-        <!-- <div class="daiInfo proInfo">
+        <div class="daiInfo proInfo">
           <div class="daiInfo-title proInfo-title">
             <h2>接入基本信息</h2>
           </div>
@@ -76,11 +76,11 @@
               </el-form-item>
             </el-col>
           </div>
-        </div> -->
+        </div>
         <!-- 接入基本信息 模块结束 -->
 
         <!-- 接入数据更新 模块开始 -->
-        <!-- <div class="daiInfo dockInfo">
+        <div class="daiInfo dockInfo">
           <div class="daiInfo-title">
             <h2>接入数据更新</h2>
           </div>
@@ -111,7 +111,7 @@
             </el-col>
             <el-col :span="10" class="bank">bank</el-col>
           </div>
-        </div> -->
+        </div>
         <!-- 接入数据更新 模块结束 -->
 
         <!-- 任务基本信息 模块开始 -->
@@ -400,7 +400,7 @@ export default {
               //重新查询任务基本信息
               that.getTaskInfo();
             }
-          }
+          }  
         ).catch(function(err){
           console.log(err);
           that.innerLoading=false;

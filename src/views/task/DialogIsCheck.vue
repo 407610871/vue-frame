@@ -135,7 +135,7 @@
 </template>
 
 <script>
-const baseUrl = 'http://10.19.160.59:8088/DOMN';
+const baseUrl = 'http://10.19.160.59:8081/DEMO';
 export default {
   name: "check",
   beforeCreate() {
