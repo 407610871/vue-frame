@@ -198,7 +198,7 @@
                     <br>
                   </div>
                   <div class="tips-none" >暂无数据核验日志信息</div>
-                </div>
+                </div>  
               </el-tab-pane>
               <el-tab-pane label="网络连接信息">{{taskBaseInfo.newWorkDesc}}</el-tab-pane>
               <el-tab-pane class="test" label="数据预览">
