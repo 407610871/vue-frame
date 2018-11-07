@@ -125,7 +125,7 @@ export default {
   },
   watch: {
     tableParams(newVal,oldVal){
-      if(this.queryParamReady){
+      if(this.queryParamReady && JSON.stringify(newVal) != JSON.stringify(oldVal)){
         this.loadTable();
       }
     }
@@ -142,6 +142,7 @@ export default {
     });
   },
   mounted(){
+		this.$root.eventHub.$emit('selTreeNode',this.$store.state.queryParams[this.$route.name].deptId);
 		this.$root.eventHub.$emit('selDeptTree',this.tableParams.deptId);
     this.storeReady();
     var _self = this;
@@ -196,14 +197,15 @@ export default {
       var paramsObj = {
         pageSize:this.$store.state.pageSize,
         pageNum:this.tableParams.pageNum,
-        domain:0
+        domain:'0',
+				_:new Date().getTime()
       };
       paramsObj.condition = this.tableParams.condition?this.tableParams.condition:"";
       paramsObj.network = this.tableParams.network;
       paramsObj.dataSourceName = this.tableParams.dataSourceName;
       paramsObj.platform = this.tableParams.platform;
 			paramsObj.deptIds = this.tableParams.deptId;
-      this.$ajax.post('http://10.19.160.175:8088/demo/caccess/query',paramsObj).then(function(res){
+      this.$ajax.post('http://10.19.160.175:8081/DEMO/caccess/query',paramsObj).then(function(res){
         console.log('tableLoaded:dashboard');
         if(res.data.success){
           _self.mainTableData = res.data.data.list;
@@ -236,6 +238,9 @@ export default {
       });
     },
     goSubPage:function(index){
+			this.$store.commit('resetQueryParam', {
+				resetData:['accessObjManage']
+			});
       this.$router.push({name:'accessObjManage',params:{sourceId:this.mainTableData[index].id,sourceName:encodeURI(this.mainTableData[index].name)}});
     },
     handleAdd: function() {
@@ -245,10 +250,13 @@ export default {
       //修改
     },
     handleCopy: function(index, row) {
-      this.$ajax.post('./copy', {
-        ids: row.id
+			var _self = this;
+      this.$ajax.get('http://10.19.160.211:8088/demo/update/dataSourceCopy', {
+				params:{
+					id: row.id
+				}
       }).then(function(res) {
-        _self.$store.dashboard.pageNum = 1;
+        _self.$store.state[this.$route.name].pageNum = 1;
       })
       .catch(function(err) {
         console.log(err)
@@ -256,9 +264,7 @@ export default {
     },
     handleDelete: function(index, row) {
       var _self = this;
-      this.$ajax.post('http://localhost:8088/demo/caccess/delete', {
-        ids: row.id
-      }).then(function(res) {
+      this.$ajax.post('http://10.19.160.175:8088/demo/caccess/delete?ids='+row.id).then(function(res) {
         _self.loadTable();
       })
       .catch(function(err) {
@@ -280,6 +286,7 @@ export default {
 				console.log(fliterItemList);
         this.setFliter(fliterItemList);
         this.loadTable();
+				this.$store.commit('setChangingRoute',true);
       }else{
         var _self = this;
         setTimeout(function(){
@@ -382,6 +389,9 @@ export default {
     font-size:16px;
     margin:0 5px;
   }
+	.cell i{
+		cursor:pointer;
+	}
 }
 
 </style>

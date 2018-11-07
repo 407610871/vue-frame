@@ -122,7 +122,9 @@ export default {
   },
   watch: {
     tableParams(newVal,oldVal){
-      this.loadTable();
+			if(this.queryParamReady){
+				this.loadTable();
+			}
     }
   },
   created(){
