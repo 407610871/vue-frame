@@ -1,6 +1,23 @@
 // this is vue config
+/* eslint-disable */ 
 module.exports = {
-  baseUrl: '/DAM/',
+  chainWebpack: config => {
+    config
+      .plugin("define")
+      .when(process.env.NODE_ENV === 'production', plugin => {
+        plugin.tap(definitions => {
+          definitions[0] = Object.assign(definitions[0], {
+            ENV: "ENV"
+          });
+          return definitions;
+        });
+      });
+    config.plugin("copy").tap(args => {
+        args[0].push({from: require('path').resolve("env.js"), to: require('path').resolve("dist") });
+        return args;             
+    })
+  },
+  // baseUrl: process.env.NODE_ENV === 'production'? "": "/DAM/",
   // devServer: {
   //   proxy: {
   //     '/DAM': {
@@ -14,4 +31,4 @@ module.exports = {
   //     }
   //   }
   // }
-}
+};
