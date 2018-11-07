@@ -257,10 +257,14 @@ export default {
         });
       }
       if(this.tabPosition != 'metadataManage' || flag){
-				return;
-        this.$ajax.get('http://localhost:8080/list',{
-          params:this.tableParams
-        }).then(function(res){
+				var paramsObj = {
+					count:this.$store.state.pageSize,
+					objectInfoId:this.$route.params.objId,
+					ACCESS_SYS_DIALECT_ID:this.tableParams.ACCESS_SYS_DIALECT_ID,
+					accessSysId:this.tableParams.accessSysId,
+					filter:null
+				}
+        this.$ajax.post('http://10.19.160.171:8081/DEMO/objDetail/previewData',paramsObj).then(function(res){
           console.log('tableLoaded:dataPreview');
           _self.mainTableData2 = res.data.page.list;
           _self.mainTableDataTotal2 = res.data.page.total;

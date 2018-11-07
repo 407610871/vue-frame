@@ -179,7 +179,7 @@ export default {
       loading: true,
       sIndustry: [],
       id: "",
-      tableid: '10085525',
+      tableid: '91936601',
       sZnb: [],
       sFcc: [],
       sTlc: [],
@@ -272,7 +272,7 @@ export default {
           }
           this.$ajax({
             method: 'post',
-            url: 'http://10.19.160.171:8088/demo/dataTable/inputSurvey',
+            url: 'http://10.19.160.171:8081/DEMO/dataTable/inputSurvey',
             data: saveInfo
           }).then(res => {
             this.loading = false;
@@ -304,37 +304,37 @@ export default {
     _getStaticDatas() {
       this.$ajax({
         methods: 'post',
-        url: 'http://10.19.160.171:8088/demo/dataTable/queryDictionary',
+        url: 'http://10.19.160.171:8081/DEMO/dataTable/queryDictionary',
         params: {
 
         }
       }).then(res => {
-
+         
         //得到Industry
-        this.sIndustry = res.data.staticDatas.INDUSTRY;
+        this.sIndustry = res.data.data.staticDatas.INDUSTRY;
         this.ruleForm.industry = this.sIndustry[0].sTATIC_CODE;
         //ZNB
-        this.sZnb = res.data.staticDatas.ZNB;
+        this.sZnb = res.data.data.staticDatas.ZNB;
         this.ruleForm.znb = this.sZnb[0].sTATIC_CODE;
         //FCC
-        this.sFcc = res.data.staticDatas.FCC;
+        this.sFcc = res.data.data.staticDatas.FCC;
         this.ruleForm.fcc = this.sFcc[0].sTATIC_CODE;
         //TLC
-        this.sTlc = res.data.staticDatas.TLC;
+        this.sTlc = res.data.data.staticDatas.TLC;
         this.ruleForm.tlc = this.sTlc[0].sTATIC_CODE;
         //BDC
-        this.sBdc = res.data.staticDatas.BDC;
+        this.sBdc = res.data.data.staticDatas.BDC;
         this.ruleForm.bdc = this.sBdc[0].sTATIC_CODE;
         //ABC
-        this.sAbc = res.data.staticDatas.ABC;
+        this.sAbc = res.data.data.staticDatas.ABC;
         this.ruleForm.abc = this.sAbc[0].sTATIC_CODE;
         //romId
-        this.ruleForm.randomId = res.data.randomId
+        this.ruleForm.randomId = res.data.data.randomId
         //DUM
-        this.sDum = res.data.staticDatas.DUM;
+        this.sDum = res.data.data.staticDatas.DUM;
         this.ruleForm.datamode = this.sDum[0].sTATIC_CODE;
         //DRG
-        this.sDrg = res.data.staticDatas.DRG;
+        this.sDrg = res.data.data.staticDatas.DRG;
         this.ruleForm.datarange = this.sDrg[2].sTATIC_CODE;
         this._queryStaticDatas();
       })
@@ -344,7 +344,7 @@ export default {
       console.log(this.tableid);
       this.$ajax({
         method: "get",
-        url: 'http://10.19.160.171:8088/demo/dataTable/getSurvey',
+        url: 'http://10.19.160.171:8081/DEMO/dataTable/getSurvey',
         // headers:{
         //   'Content-Type':'application/json;charset=utf-8',
         // },
@@ -389,7 +389,7 @@ export default {
     _queryCity(value, flag) {
       this.$ajax({
         method: "get",
-        url: 'http://10.19.160.171:8088/demo/commonInterUtils/getAreas?parentid=' + value,
+        url: 'http://10.19.160.171:8081/DEMO/commonInterUtils/getAreas?parentid=' + value,
         // headers:{
         //   'Content-Type':'application/json;charset=utf-8',
         // },
@@ -412,7 +412,7 @@ export default {
     },
     //资源目录下载
     downTxt() {
-      window.location.href = "/api/dataTable/downloadSpecification";
+      window.location.href = "http://10.19.160.171:8081/DEMO/dataTable/downloadSpecification";
     },
     //通过省查询市
     proChange() {

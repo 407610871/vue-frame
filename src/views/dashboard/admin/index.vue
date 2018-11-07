@@ -8,9 +8,9 @@
             <div class="all-number">{{countTotal}}</div>
           </div>
           <div class="line"></div>
-          <dataCount v-if="countReady" v-bind:dataObj="count1Data" class="countData" />
-          <div class="line"></div>
-          <dataCount v-if="countReady" v-bind:dataObj="count2Data" class="countData" />
+         <!--  <dataCount v-if="countReady" v-bind:dataObj="count1Data" class="countData" />
+         <div class="line"></div>
+         <dataCount v-if="countReady" v-bind:dataObj="count2Data" class="countData" /> -->
         </div>
         <div class="regbtn fr">
           <reg-dialog @refreshTable="loadTable"></reg-dialog>
@@ -44,7 +44,8 @@
           </el-table-column>
           <el-table-column label="操作">
             <template slot-scope="scope">
-              <edit-dialog></edit-dialog>
+             
+              <edit-dialog :acId="scope.row.id"></edit-dialog>
               <i @click="handleCopy(scope.$index, scope.row)" class="enc-icon-documents table-action-btn"></i>
               <i @click="handleDelete(scope.$index, scope.row)" class="el-icon-delete table-action-btn"></i>
             </template>
@@ -70,7 +71,7 @@
 <script>
 import { mapState } from 'vuex'
 import add1 from './../dialog/'
-import dataCount from './../../../components/dataCountNew'
+/*import dataCount from './../../../components/dataCountNew'*/
 import formFliter from './../../../components/formFliter'
 
 import regDialog from './../dialog/admin/reg_dialog'
@@ -117,7 +118,7 @@ export default {
   },
   components: {
     add1,
-    dataCount,
+    /*dataCount,*/
     formFliter,
     regDialog,
     editDialog
@@ -134,6 +135,7 @@ export default {
       this.search(keyword);
     });
 		this.$root.eventHub.$on('selDept', (ids)=>{
+      alert(ids);
       this.setStore({
 				deptId:ids
 			});

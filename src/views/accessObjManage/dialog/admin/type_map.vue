@@ -1,34 +1,39 @@
 <template>
   <div class="taskMDialog typeMapDia">
     <div class="comTable">
-      <el-table :data="tableData" stripe height="250">
-        <el-table-column prop="name" label="数据源字段名称" width="180">
+      <el-table :data="schemaMappingDTOList" stripe height="250">
+        <el-table-column prop="orgColumnName" label="数据源字段名称" width="180">
         </el-table-column>
-        <el-table-column prop="datatype" label="数据源字段类型" width="180">
+        <el-table-column prop="orgColumnType" label="数据源字段类型" width="180">
         </el-table-column>
-        <el-table-column prop="commentsFrom" label="目标字段名称">
+        <el-table-column prop="" label="目标字段名称">
           <template slot-scope="scope">
-            <el-input v-model="scope.row.commentsFrom"></el-input>
+            <el-input v-model="scope.row.newColumnName"></el-input>
           </template>
         </el-table-column>
         <el-table-column prop="toType" label="目标字段类型" width="180">
           <template slot-scope="scope">
-            <el-select v-model="cloneData[scope.$index]" placeholder="请选择">
+            <el-select v-model="scope.row.newColumnType" placeholder="请选择">
               <el-option v-for="item in TypeData" :key="item" :label="item" :value="item">
               </el-option>
             </el-select>
           </template>
         </el-table-column>
         <el-table-column prop="foreignKey" label="目标描述信息" width="180">
-         <template slot-scope="scope">
-            <el-input v-model="scope.row.comments"></el-input>
-            </template>
+          <template slot-scope="scope">
+            <el-input v-model="scope.row.orgColumnComment"></el-input>
+          </template>
         </el-table-column>
       </el-table>
+    </div>
+    <div class="btn tcenter mt30">
+      <el-button type="primary" style="margin-top: 12px;" @click="pre()">上一步</el-button>
+      <el-button type="primary" style="margin-top: 12px;" @click="next()">下一步</el-button>
     </div>
   </div>
 </template>
 <script>
+import { mapState, mapMutations, mapActions } from 'vuex'
 export default {
   name: "userSurvey",
   data: function() {
@@ -39,15 +44,29 @@ export default {
       cloneData: [],
       mapData: [],
       smapData: [],
+      schemaMappingDTOList: [],
 
     }
   },
   methods: {
+     //测试使用mapMutations的用法
+    ...mapMutations([
+        'setSchemaList'
+      ]),
     //得到map的值
     _getMap() {
       var _self = this;
       this.$ajax.get('./getTypeMap').then(function(res) {
           _self.tableData = res.data.page.list;
+          for (let j = 0; j < _self.tableData.length; j++) {
+            _self.schemaMappingDTOList.push({
+              "newColumnName": _self.tableData[j].name,
+              "newColumnType": '',
+              "orgColumnName": _self.tableData[j].name,
+              "orgColumnType": _self.tableData[j].datatype,
+              "orgColumnComment": _self.tableData[j].comments
+            })
+          }
           _self._getAllType();
 
         })
@@ -84,7 +103,7 @@ export default {
             let temp;
             for (let j = 0; j < _self.mapData.datas.length; j++) {
               if (_self.tableData[i].datatype.toUpperCase() == _self.mapData.datas[j]) {
-                debugger;
+
                 flag = true;
                 temp = j;
                 /*_self.cloneData.push({
@@ -92,23 +111,36 @@ export default {
                 })*/
               }
             }
-            debugger;
+
             if (flag) {
               _self.cloneData.push(
                 _self.mapData.datas_mapping[temp]
               )
             } else {
               _self.cloneData.push(
-               _self.mapData.datas_mapping[0]
+                _self.mapData.datas_mapping[0]
               )
             }
             console.log(_self.cloneData);
           }
+          for (let n = 0; n < _self.cloneData.length; n++) {
+            _self.schemaMappingDTOList[n].newColumnType = _self.cloneData[n];
+          }
+          console.log(_self.schemaMappingDTOList);
         })
         .catch(function(err) {
           console.log(err)
         });
 
+    },
+    //上一步
+    pre(){
+      this.$emit('pre');
+    },
+    //下一步
+    next(){
+      this.$emit('nre');
+      this.setSchemaList(this.schemaMappingDTOList);
     }
   },
   components: {
