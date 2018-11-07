@@ -137,7 +137,9 @@ export default {
   },
   watch: {
     tableParams(newVal,oldVal){
-      this.loadTable();
+			if(JSON.stringify(newVal) != JSON.stringify(oldVal)){
+				this.loadTable();
+			}
     },
   },
   mounted() {
@@ -204,6 +206,9 @@ export default {
 					accessSysId:this.mainTableData[0].accessSys.id
 				}
 			});
+			this.$store.commit('resetQueryParam', {
+				resetData:['accessObjInfo']
+			});
       this.$router.push({ name: "accessObjInfo",params:{
         sourceId:this.$route.params.sourceId,
         sourceName:this.$route.params.sourceName,
@@ -263,8 +268,6 @@ export default {
       this.seledRows = val;
     },
     changeFormFilter:function(fliterParams){
-      console.log('---------fliterParams-----------');
-      console.log(fliterParams);
       this.setStore(fliterParams);
     },
     storeReady(){
@@ -305,16 +308,6 @@ export default {
         seledData:this.tableParams.dataRange?this.tableParams.dataRange:[]
       }];
       this.queryParamReady = true;
-      // var fliterItemList = this.$store.state.fliterItemList
-      // if(fliterItemList.network.ready&&fliterItemList.dataSourceName.ready&&fliterItemList.platform.ready){
-      //   this.setFliter(fliterItemList);
-      //   this.loadTable();
-      // }else{
-      //   var _self = this;
-      //   setTimeout(function(){
-      //     _self.storeReady();
-      //   },200);
-      // }
     }
   }
 }

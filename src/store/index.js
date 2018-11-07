@@ -41,6 +41,8 @@ const queryParamsDefault = {
 const store = new Vuex.Store({
   state: {
     deptId:[],
+		changingRoute:false,
+		routeFlag:'',
     fliterItemList:{
       network:{
         ready:false,
@@ -66,42 +68,18 @@ const store = new Vuex.Store({
     selDept(state,id){
       state.deptId = id;
     },
-    // setNetwork(state,obj){
-    //   var list = [];
-    //   for(var value of obj.data){
-    //     list.push({
-    //       id:value.id,
-    //       name:value.name
-    //     });
-    //   }
-    //   state.network = list;
-    // },
-    // setDataSourceName(state,obj){
-    //   var list = [];
-    //   for(var value of obj.data){
-    //     list.push({
-    //       id:value.static_CODE,
-    //       name:value.static_NAME
-    //     });
-    //   }
-    //   state.dataSourceName = list;
-    // },
-    // setPlatform(state,obj){
-    //   var list = [];
-    //   for(var value of obj.data){
-    //     list.push({
-    //       id:value.static_CODE,
-    //       name:value.static_NAME
-    //     });
-    //   }
-    //   state.platform = list;
-    // },
+		setChangingRoute(state,flag){
+			state.changingRoute = flag;
+		},
+		setRouteFlag(state,obj){
+			state.routeFlag = flag;
+		},
     setQueryParams(state,obj){
       state.queryParams[obj.name] = obj.data;
     },
     resetQueryParam(state,obj){
       var newObj = JSON.parse(JSON.stringify(queryParamsDefault));
-      for(var value of obj.data){  //这里obj.data是一个数组，表示不需要重置的
+      for(var value of obj.resetData){  //这里obj.data是一个数组，表示不需要重置的
         if(state.queryParams[value]){
           newObj[value] = JSON.parse(JSON.stringify(state.queryParams[value]));
         }

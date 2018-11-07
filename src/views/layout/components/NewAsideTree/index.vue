@@ -5,22 +5,25 @@
       <a href="javascript:void(0)" v-on:click="editNode"><i class="el-icon-edit"></i></a>
       <a href="javascript:void(0)" v-on:click="delNode"><i class="el-icon-close"></i></a>
     </div>
-    <el-tree
-      v-if="dataReady"
-      :data="data"
-      node-key="id"
-      show-checkbox
-      default-expand-all
-      draggable
-      :props="defaultProps"
-      @node-click="handleNodeClick"
-      check-strictly
-      :default-checked-keys="checkedDepts"
-      @check="selDept"
-      @node-drop="dragDept"
-      ref="tree"
-      >
-    </el-tree>
+		<div class="treeContainer" v-bind:style="{'height':treeHeight}">
+			<el-tree
+				v-if="dataReady"
+				:data="data"
+				node-key="id"
+				show-checkbox
+				default-expand-all
+				highlight-current
+				draggable
+				:props="defaultProps"
+				@node-click="handleNodeClick"
+				check-strictly
+				:default-checked-keys="checkedDepts"
+				@check="selDept"
+				@node-drop="dragDept"
+				ref="tree"
+				>
+			</el-tree>
+		</div>
     <el-dialog
       title="请输入部门节点名称"
       :visible.sync="dialogVisible"
@@ -58,6 +61,14 @@
 				// checkedDepts:function(){
 					// return this.$store.state.queryParams[this.$route.name].deptId?this.$store.state.queryParamsDefault[this.$route.name].deptId:this.$store.state.deptId;
 				// }
+				treeHeight:function(){
+					return (window.innerHeight-107)+'px';
+				}
+			},
+			created(){
+				this.$root.eventHub.$on('selTreeNode', (ids)=>{
+					this.checkedDepts = ids;
+				});
 			},
       mounted(){
         this.loadData();
@@ -84,9 +95,6 @@
         handleNodeClick(node,data){
           this.editingNode = node;
           this.editingData = data;
-					var seledIds = this.$refs.tree.getCheckedKeys();
-          this.$store.commit('selDept',seledIds);
-					this.$root.eventHub.$emit('selDept',seledIds);
         },
         addNode(){
           if(this.editingNode){
@@ -191,6 +199,8 @@
             anotherFactorial(node,this.$refs.tree);
             this.$refs.tree.setCheckedNodes(list);
             this.$store.commit('selDept',deptIds);
+						this.$root.eventHub.$emit('selDept',deptIds);
+						this.$root.eventHub.$emit('getCurrentNode',node.id);
           }
         },
         dragDept(Node,toDragNode,position,e){
@@ -242,25 +252,31 @@
       }
     }
   }
-  #NewAisdeTree .el-tree{
-    margin-top:26px;
-    background-color: transparent;
-    color:#fff;
-    .el-tree-node__content:focus,
-    .el-tree-node__content:hover{
-      background-color: transparent;
-      color:#409EFF;
-    }
-    .el-tree-node:focus>.el-tree-node__content{
-      background-color:transparent;
-      color:#409EFF;
-    }
-    .is-current>.el-tree-node__content{
-      color:#409EFF;
-    }
-    .el-checkbox__input.is-checked .el-checkbox__inner, .el-checkbox__input.is-indeterminate .el-checkbox__inner{
-      background-color:#409EFF;
-      border-color:#409EFF;
-    }
-  }
+  #NewAisdeTree{
+		.treeContainer{
+			margin-top:40px;
+			overflow:auto;
+		}
+		.el-tree{
+			background-color: transparent;
+			color:#fff;
+			.el-tree-node__content:focus,
+			.el-tree-node__content:hover{
+				background-color: transparent;
+				color:#409EFF;
+			}
+			/* .el-tree-node:focus>.el-tree-node__content{ */
+				/* background-color:transparent; */
+				/* color:#409EFF; */
+			/* } */
+			.is-current>.el-tree-node__content{
+				background-color:transparent;
+				color:#409EFF;
+			}
+			.el-checkbox__input.is-checked .el-checkbox__inner, .el-checkbox__input.is-indeterminate .el-checkbox__inner{
+				background-color:#409EFF;
+				border-color:#409EFF;
+			}
+		}
+	}
 </style>
