@@ -1,5 +1,9 @@
 import request from "@/utils/request";
 
+const env = window.ENV || {
+  API: "/api"
+};
+
 export function fetchList(query) {
   return request({
     url: "/test/list",
