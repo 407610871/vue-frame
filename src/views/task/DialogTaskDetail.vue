@@ -111,7 +111,7 @@
             </el-col>
             <el-col :span="10" class="bank">bank</el-col>
           </div>
-        </div>
+        </div>  
         <!-- 接入数据更新 模块结束 -->
 
         <!-- 任务基本信息 模块开始 -->
