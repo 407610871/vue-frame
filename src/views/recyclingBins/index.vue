@@ -48,12 +48,10 @@
           </el-table-column>
           <el-table-column label="操作">
             <template slot-scope="scope">
-              <el-button
-                size="mini"
-                @click="handleEdit(scope.$index, scope.row)">恢复</el-button>
-              <el-button
-                size="mini"
-                @click="handleCopy(scope.$index, scope.row)">删除</el-button>
+							<div>
+								<i @click="recordRecover(scope.$index, scope.row)" class="el-icon-back table-action-btn"></i>
+								<i @click="recordDelete(scope.$index, scope.row)" class="el-icon-close table-action-btn"></i>
+							</div>
             </template>
           </el-table-column>
         </el-table>
@@ -122,7 +120,9 @@ export default {
   },
   watch: {
     tableParams(newVal,oldVal){
-      this.loadTable();
+			if(this.queryParamReady){
+				this.loadTable();
+			}
     }
   },
   created(){
@@ -176,7 +176,7 @@ export default {
       paramsObj.dataSourceName = this.tableParams.dataSourceName;
       paramsObj.platform = this.tableParams.platform;
 			paramsObj.deptIds = this.tableParams.deptId;
-      this.$ajax.post('http://10.19.160.175:8088/demo/caccess/query',paramsObj).then(function(res){
+      this.$ajax.post('http://10.19.160.175:8081/DEMO/caccess/query',paramsObj).then(function(res){
         console.log('tableLoaded:dashboard');
         if(res.data.success){
           _self.mainTableData = res.data.data.list;
@@ -193,15 +193,47 @@ export default {
         console.log(err)
       });
     },
-    showAdd:function(){
-      this.myDialogRouter = 'adminAdd';
-      this.dialogTitle = '新增';
-      this.dialogVisible = true;
+    recordRecover:function(index,row){
+			var _self = this;
+			_self.loading = true;
+			this.$ajax.get('http://10.19.160.175:8081/DEMO/caccess/restore',{
+				params:{
+					id:row.id
+				}
+			}).then(function(res){
+        if(res.data.success){
+					_self.loadTable();
+        }else{
+          console.log(res.data.code)
+        }
+        _self.loading = false;
+      })
+      .catch(function(err){
+        _self.currentPage = _self.tableParams.pageNum;
+        _self.loading = false;
+        console.log(err)
+      });
     },
-    showEdit:function(){
-      this.myDialogRouter = 'adminEdit';
-      this.dialogTitle = '修改';
-      this.dialogVisible = true;
+    recordDelete:function(index,row){
+			var _self = this;
+			_self.loading = true;
+      this.$ajax.get('http://10.19.160.175:8081/DEMO/caccess/remove',{
+				params:{
+					id:row.id
+				}
+			}).then(function(res){
+        if(res.data.success){
+					_self.loadTable();
+        }else{
+          console.log(res.data.code)
+        }
+        _self.loading = false;
+      })
+      .catch(function(err){
+        _self.currentPage = _self.tableParams.pageNum;
+        _self.loading = false;
+        console.log(err)
+      });
     },
     setStore:function(obj){
       let storeData = JSON.parse(JSON.stringify(this.$store.state.queryParams[this.$route.name]));

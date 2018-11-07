@@ -2,7 +2,7 @@
   <section class="app-main">
     <transition name="fade-transform" mode="out-in">
       <keep-alive>
-        <router-view :key="key"/>
+        <router-view />
       </keep-alive>
     </transition>
   </section>
@@ -14,6 +14,7 @@ export default {
   computed: {
     key() {
       return this.$route.fullPath
+      // return this.$store.state.routeFlag[this.$route.name]
     }
   }
 }
@@ -28,12 +29,7 @@ export default {
   overflow: hidden;
   background: #eff3f6;
 }
-<<<<<<< HEAD
 .app-main>div{
   height:calc(100vh - 113px);
 }
 </style>
-=======
-</style>
-
->>>>>>> 13cee708e0d47163f3aaee0fd02dce1d22e4fc64

@@ -65,7 +65,11 @@ window.vm = new Vue({
   },
   mounted(){
     var _self = this;
-    this.$ajax.get('http://10.19.160.176:8088/demo/caccess/sysdialect').then(function(res){
+    this.$ajax.get('http://10.19.160.176:8088/demo/caccess/sysdialect',{
+			params:{
+				type:0
+			}
+		}).then(function(res){
       if(res.data.success){
         _self.$store.commit('setFilterItmeList', {
           name:'dataSourceName',

@@ -41,9 +41,9 @@
        <!-- 操作按钮 -->
        <div class="count-operate">
          <div>
-            <el-button type="primary" @click="doMore('http://10.19.160.67:8081/DEMO/manager/taskOperate/batchConverge',1)">重新汇聚</el-button>
-            <el-button type="primary" @click="doMore('http://10.19.160.67:8081/DEMO/manager/taskOperate/batchStart',2)">批量启动</el-button>
-            <el-button type="primary" @click="doMore('http://10.19.160.67:8081/DEMO/manager/taskOperate/batchPause',3)">批量停止</el-button>
+            <el-button type="primary" @click="doMore('http://10.19.160.67:8081/DOMN/manager/taskOperate/batchConverge',1)">重新汇聚</el-button>
+            <el-button type="primary" @click="doMore('http://10.19.160.67:8081/DOMN/manager/taskOperate/batchStart',2)">批量启动</el-button>
+            <el-button type="primary" @click="doMore('http://10.19.160.67:8081/DOMN/manager/taskOperate/batchPause',3)">批量停止</el-button>
          </div>
        </div>
 
@@ -226,7 +226,7 @@ export default {
 
           this.$ajax
             .put(
-              "http://10.19.160.67:8081/DEMO/manager/taskOperate/converge/" +
+              "http://10.19.160.67:8081/DOMN/manager/taskOperate/converge/" +
                 row.taskInfoId
             )
             .then(function(res) {
@@ -250,7 +250,7 @@ export default {
       _self.loading = true;
       this.$ajax
         .put(
-          "http://10.19.160.67:8081/DEMO/manager/taskOperate/delete/" +
+          "http://10.19.160.67:8081/DOMN/manager/taskOperate/delete/" +
             row.taskInfoId
         )
         .then(function(res) {
@@ -275,7 +275,7 @@ export default {
       if (row.status == 0 || row.status == 2 || row.status == 3) {
         //执行运行
         url =
-          "http://10.19.160.67:8081/DEMO/manager/taskOperate/start/" +
+          "http://10.19.160.67:8081/DOMN/manager/taskOperate/start/" +
           row.taskInfoId;
         this.$ajax
           .put(url)
@@ -295,7 +295,7 @@ export default {
       } else if (row.status == 1) {
         //执行暂停
         url =
-          "http://10.19.160.67:8081/DEMO/manager/taskOperate/pause/" +
+          "http://10.19.160.67:8081/DOMN/manager/taskOperate/pause/" +
           row.taskInfoId;
         this.$ajax
           .put(url)
@@ -334,7 +334,7 @@ export default {
       };
 
       this.$ajax
-        .get("http://10.19.160.67:8081/DEMO/manager/task/show/0", {
+        .get("http://10.19.160.67:8081/DOMN/manager/task/show/0", {
           params: tableParams
         })
         .then(function(res) {

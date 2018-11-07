@@ -135,7 +135,7 @@
 </template>
 
 <script>
-const baseUrl = 'http://10.19.160.59:8088/demo';
+const baseUrl = 'http://10.19.160.59:8081/DEMO';
 export default {
   name: "check",
   beforeCreate() {
@@ -183,11 +183,11 @@ export default {
     },
     setTimer: function() {
       this.timer = setTimeout(() => {
-        // this.init();
+         this.init();
       }, 1000);
     },
     beforeDestroy() {
-      clearInterval(this.timer);
+      clearTimeout(this.timer);
       this.timer = null;
     },
     openDialog() {
@@ -197,17 +197,20 @@ export default {
     },
     init() {
       let that = this;
+      this.loading = true;
       this.$ajax.get(baseUrl+'/ccheckData/tableNum',{
         params:{
           taskId:that.msgCheck.taskInfoId
-          //taskId:92066
+         // taskId:92066
         }
       }).then(res => {
-        // if (res.result == "false" || res.message == "还未核验暂无数据,请核验") {
-        //   this.$alert(res.message, "核验结果", {
-        //     confirmButtonText: "确定"
-        //   });
-        // }
+        this.loading = false;
+        res = res.data;
+        if (res.data.result == "false" || res.data.message == "还未核验暂无数据,请核验") {
+          this.$alert(res.data.message, "核验结果", {
+            confirmButtonText: "确定"
+          });
+        }
         if (!this.dialogVisible) {
           //return;
         }
@@ -216,7 +219,7 @@ export default {
         if (res.data.status == "1") {
           this.textShow = false;
 
-          window.clearInterval(this.timer);
+          window.clearTimeout(this.timer);
           this.timer = null;
           this.loading = false;
           this.status = "开始核验";
@@ -244,12 +247,12 @@ export default {
       //核验历史记录
       this.$ajax.get(baseUrl+'/ccheckData/tableNumAllByTaskId',{
         params:{
-          taskId:that.msgCheck.taskInfoId
+         taskId:that.msgCheck.taskInfoId
          // taskId:92066
         }
       }).then(res => {
         if(res.data.success){
-          this.resDataHistory = res.data.data;
+          this.resDataHistory = res.data.data.data;
         }
       });
     },
@@ -262,7 +265,7 @@ export default {
       this.timeCheck = false;
       this.loginfo = "";
       this.range = 0;
-      window.clearInterval(this.timer);
+      window.clearTimeout(this.timer);
       this.resData = {};
       this.textShow = false;
     },
@@ -292,12 +295,13 @@ export default {
           endTime: this.startTime[1]
         }
       }).then(res => {
+        res.data = res.data.data;
         if (res.data.result) {
           this.$alert(res.data.message, "核验结果", {
             confirmButtonText: "确定",
-           // callback: action => {
-              // this.init();
-            //}
+            callback: action => {
+               this.init();
+            }
           });
         } else {
           this.$alert("核验请求失败！", "核验结果", {
@@ -316,7 +320,7 @@ export default {
         }
       }).then(res => {
         this.loading2 = false;
-
+        res = res.data;
         if (res.result == "false") {
           this.textShow = false;
 
@@ -448,25 +452,14 @@ export default {
   cursor: pointer;
 }
 .resultIcon .yes {
-
-
-
-
-
   background: url("../../assets/images/data_ri.png") no-repeat;
-
   width: 16px;
   height: 16px;
   display: inline-block;
   background-size: 100% 100%;
 }
 .resultIcon .wrong {
-
-
   background: url("../../assets/images/data_err.png") no-repeat;
-
-
-
   width: 16px;
   height: 16px;
   display: inline-block;
@@ -502,6 +495,7 @@ h5{
   }
   td > .cell{
     line-height:normal;
+    font-size:12px;
   }
   thead{
     color:#333;

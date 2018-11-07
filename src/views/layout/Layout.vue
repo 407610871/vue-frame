@@ -90,14 +90,12 @@ export default {
   },
   methods: {
     goRoute:function(name){
-      var obj = {
-        data:[],
-        resetData:[]
-      }
-      for(var i = 0;i<this.breadcrumb.length;i++){
-        obj.resetData.push(this.breadcrumb[i].name)
-      }
-      this.$store.commit('resetQueryParam', obj);
+			if(this.$store.state.queryParams[name]){
+				var obj = {
+					resetData:name
+				}
+				this.$store.commit('resetQueryParam', obj);
+			}
       this.$router.push({ name: name});
     },
     search:function(){
@@ -105,17 +103,13 @@ export default {
     },
     breadcrumbChange:function(index,item){
       if(index != this.breadcrumb.length-1){
-        var obj = {
-          data:[],
-          resetData:[]
-        };
-        for(var i = 0;i<index+1;i++){
-          obj.data.push(this.breadcrumb[i].name)
-        }
-        for(var i = index+1;i<this.breadcrumb.length;i++){
-          obj.resetData.push(this.breadcrumb[i].name)
-        }
-        this.$store.commit('resetQueryParam', obj);
+        // var obj = {
+          // resetData:[]
+        // };
+        // for(var i = index+1;i<this.breadcrumb.length;i++){
+          // obj.resetData.push(this.breadcrumb[i].name)
+        // }
+        // this.$store.commit('resetQueryParam', obj);
         this.$router.push({ name: item.name, params:item.params,query:item.query});
       }
     },

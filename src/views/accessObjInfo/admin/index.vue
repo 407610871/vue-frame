@@ -3,10 +3,15 @@
     <el-container style="height:100%;" class="dashboard-container" v-loading="loading">
       <el-header class="filter-container" height="86px">
         <div class="right-tools" v-if="tabPosition == 'metadataManage'">
-          <a href="javascript:void(0)"><i class="enc-icon-daochu"></i></a>
-          <a href="javascript:void(0)"><i class="enc-icon-daoru"></i></a>
-          <a href="javascript:void(0)"><i class="enc-icon-shuaxin"></i></a>
+          <a href="javascript:void(0)" v-on:click="importData"><i class="enc-icon-daochu"></i></a>
+          <a href="javascript:void(0)" v-on:click="exportData"><i class="enc-icon-daoru"></i></a>
+          <a href="javascript:void(0)" v-on:click="refresh"><i class="enc-icon-shuaxin"></i></a>
         </div>
+				<form action="http://10.19.160.171:8081/DEMO/objDetail/readExcelFile1" id="importForm" style="display:none;">
+					<input type="file" id="file" name="inputFile" v-on:change="importAjax" />
+					<input type="text" id="tableName" name="tableName" v-model="tableName" />
+					<input type="text" id="accessSysDialectId" name="accessSysDialectId" v-model="accessSysDialectId" />
+				</form>
         <el-radio-group v-model="tabPosition" style="margin-bottom: 30px;">
           <el-radio-button label="metadataManage">元数据管理</el-radio-button>
           <el-radio-button label="dataPreview">数据预览</el-radio-button>
@@ -27,36 +32,50 @@
                 label="字段中文名"
                 width="180" show-overflow-tooltip>
                 <template slot-scope="scope">
-                  <a href="javascript:void(0)">{{ scope.row.name }}</a>
+									<div>
+										<a v-show="!scope.row.showEdit" href="javascript:void(0)">{{ scope.row.diyComments }}</a>
+										<input type="text" v-model="editingRow.diyComments" v-show="scope.row.showEdit" @blur="changeName(scope.$index, scope.row)" />
+										<i @click="editingRow.index = scope.$index; editingRow.diyComments = scope.row.diyComments;scope.row.showEdit = !scope.row.showEdit" class="el-icon-edit-outline table-action-btn" v-show="!scope.row.showEdit" />
+									</div>
                 </template>
               </el-table-column>
               <el-table-column
-                prop="verfication_code"
+                prop="name"
                 label="字段名"
                 width="180">
               </el-table-column>
               <el-table-column
-                prop="accessSysDialect.name"
+                prop="datatype"
                 label="字段类型">
               </el-table-column>
               <el-table-column
-                prop="accessSysType.name"
+                prop="length"
                 label="字段长度">
               </el-table-column>
               <el-table-column
-                prop="accessSysType.name"
+                prop="isNull"
                 label="是否为空">
+								<template slot-scope="scope">
+									<span v-if="scope.row.isNull!='NO'">是</span>
+									<span v-if="scope.row.isNull=='NO'">否</span>
+								</template>
               </el-table-column>
               <el-table-column
-                prop="accessSysType.name"
                 label="是否为主键">
+								<template slot-scope="scope">
+									<span v-if="scope.row.primaryKey">是</span>
+									<span v-if="!scope.row.primaryKey">否</span>
+								</template>
               </el-table-column>
               <el-table-column
-                prop="createTime"
                 label="是否为索引">
+								<template slot-scope="scope">
+									<span v-if="scope.row.index">是</span>
+									<span v-if="!scope.row.index">否</span>
+								</template>
               </el-table-column>
               <el-table-column
-                prop="accessSysType.name"
+                prop="comments"
                 label="描述">
               </el-table-column>
             </el-table>
@@ -86,34 +105,10 @@
               tooltip-effect="light"
               >
               <el-table-column
-                prop="name"
-                label="字段中文名"
+								v-for="(val, key, index) in data2Columns"
+                :prop="key"
+                :label="key"
                 width="180">
-              </el-table-column>
-              <el-table-column
-                prop="verfication_code"
-                label="字段名"
-                width="180">
-              </el-table-column>
-              <el-table-column
-                prop="accessSysDialect.name"
-                label="字段类型">
-              </el-table-column>
-              <el-table-column
-                prop="accessSysType.name"
-                label="字段长度">
-              </el-table-column>
-              <el-table-column
-                prop="accessSysType.name"
-                label="是否为空">
-              </el-table-column>
-              <el-table-column
-                prop="accessSysType.name"
-                label="是否为主键">
-              </el-table-column>
-              <el-table-column
-                prop="createTime"
-                label="是否为索引">
               </el-table-column>
               <el-table-column
                 label="描述">
@@ -135,18 +130,6 @@
               </el-table-column>
             </el-table>
           </el-main>
-          <el-footer>
-            <div class="enc-pagination">
-              <el-pagination v-if="mainTableReady" style="float:right; margin:10px;"
-                @current-change="goPage"
-                background
-                :page-size="20"
-                :total="mainTableDataTotal2"
-                layout="prev, pager, next, jumper"
-                :current-page.sync="currentPage2">
-              </el-pagination>
-            </div>
-          </el-footer>
         </el-container>
       </el-main>
     </el-container>
@@ -165,23 +148,25 @@
 
 <script>
 import { mapState} from 'vuex'
-import add1 from './../dialog/'
 
 
 export default {
   name: 'DashboardAdmin',
   data() {
     return {
-	  loading:false,
+			loading:false,
       queryParamReady:true,
       currentPage1:1,
-      currentPage2:1,
       tableHeight: window.innerHeight - 280,
       mainTableReady:true,
       mainTableData1: [],
       mainTableData2: [],
+			data2Columns:{},
+			editingRow:{
+				index:0,
+				diyComments:''
+			},
       mainTableDataTotal1: 1,
-      mainTableDataTotal2: 1,
       dialogVisible:false,
       myDialogRouter:'adminAdd',
       dialogTitle:'新增',
@@ -192,13 +177,21 @@ export default {
     tableParams:function(){
       return this.$store.state.queryParams.accessObjInfo;
     },
+		exportUrl:function(){
+			return 'http://10.19.160.171:8081/DEMO/objDetail/exportTemplateFile?objInfoId='+this.$route.params.objId+'&tableName='+this.$route.params.objName+'&diyComments='+this.tableParams.diyComments+'&accessSysDialectId='+this.tableParams.ACCESS_SYS_DIALECT_ID+'&browser='+'chrome';
+		},
+		tableName:function(){
+			return this.$route.params.objName;
+		},
+		accessSysDialectId:function(){
+			return this.tableParams.ACCESS_SYS_DIALECT_ID;
+		}
   },
   components: {
-    add1
   },
   watch: {
     tableParams(newVal,oldVal){
-      if(newVal.pageNum1 != oldVal.pageNum1 || newVal.pageNum2 != oldVal.pageNum2){
+      if((newVal.pageNum1 != oldVal.pageNum1 || newVal.pageNum2 != oldVal.pageNum2)){
         this.loadTable();
       }
       this.tabPosition = newVal.tabPosition;
@@ -219,11 +212,40 @@ export default {
     })
   },
   methods:{
+		refresh(){
+			var _self = this;
+			this.loading = true;
+			this.$ajax.get('http://10.19.160.171:8081/DEMO/objDetail/synchronize',{
+				params:{
+					id:this.$route.params.objId
+				}
+			}).then(function(res){
+				console.log(res);
+				if(res.data.success){
+					_seft.loadtable();
+				}else{
+					console.log(res.data.code);
+				}
+				_self.loading = false;
+			})
+			.catch(function(err){
+				console.log(err)
+				_self.loading = false;
+			});
+		},
+		importData(){
+			document.getElementById('file').click();
+		},
+		importAjax(){
+			alert('ajax');
+		},
+		exportData(){
+			window.open(this.exportUrl);
+		},
     loadTable:function(flag){
-      console.log(flag)
       var _self = this;
+			this.loading = true;
       if(this.tabPosition == 'metadataManage' || flag){
-				console.log(this.tableParams);
 				var paramsObj = {
 					pagNum:this.tableParams.pageNum1,
 					count:this.$store.state.pageSize,
@@ -233,29 +255,46 @@ export default {
 				}
         this.$ajax.post('http://10.19.160.171:8081/DEMO/objDetail/dataList',paramsObj).then(function(res){
           console.log('tableLoaded:metadataManage');
-          _self.mainTableData1 = res.data.page.list;
-          _self.mainTableDataTotal1 = res.data.page.total;
-          //这里是异步的，存在延迟，所以没问题,如果是同步的话可能存在问题
-          _self.currentPage1 = _self.tableParams.pageNum1;
+					if(res.data.success){
+						var data = res.data.data.list;
+						for(var value of data){
+							value.showEdit = false;
+						}
+						_self.mainTableData1 = data;
+						_self.mainTableDataTotal1 = res.data.data.total;
+						//这里是异步的，存在延迟，所以没问题,如果是同步的话可能存在问题
+						_self.currentPage1 = _self.tableParams.pageNum1;
+					}else{
+						console.log(res.data.code);
+					}
+					_self.loading = false;
         })
         .catch(function(err){
           _self.currentPage1 = _self.tableParams.pageNum1;
           console.log(err)
+					_self.loading = false;
         });
       }
-      if(this.tabPosition != 'metadataManage' || flag){
-				return;
-        this.$ajax.get('http://localhost:8080/list',{
-          params:this.tableParams
-        }).then(function(res){
+      if(flag){
+				var paramsObj = {
+					count:this.$store.state.pageSize,
+					objInfoId:this.$route.params.objId,
+					ACCESS_SYS_DIALECT_ID:this.tableParams.ACCESS_SYS_DIALECT_ID,
+					accessSysId:this.tableParams.accessSysId,
+					filter:null
+				}
+        this.$ajax.post('http://10.19.160.171:8081/DEMO/objDetail/previewData',paramsObj).then(function(res){
           console.log('tableLoaded:dataPreview');
-          _self.mainTableData2 = res.data.page.list;
-          _self.mainTableDataTotal2 = res.data.page.total;
-          //这里是异步的，存在延迟，所以没问题,如果是同步的话可能存在问题
-          _self.currentPage2 = _self.tableParams.pageNum2;
+					if(res.data.success){
+						if(res.data.datas.length>0){
+							_self.data2Columns = res.data.datas[0];
+						}
+						_self.mainTableData2 = res.data.datas;
+					}else{
+						console.log(res.data.code);
+					}
         })
         .catch(function(err){
-          _self.currentPage2 = _self.tableParams.pageNum2;
           console.log(err)
         });
       }
@@ -272,15 +311,27 @@ export default {
         keyword:keyword
       });
     },
-    showAdd:function(){
-      this.myDialogRouter = 'adminAdd';
-      this.dialogTitle = '新增';
-      this.dialogVisible = true;
-    },
-    showEdit:function(){
-      this.myDialogRouter = 'adminEdit';
-      this.dialogTitle = '修改';
-      this.dialogVisible = true;
+    changeName:function(index,row){
+			var _self = this;
+			this.loading = true;
+			this.$ajax.get('http://10.19.160.171:8081/DEMO/objDetail/diyComment',{
+				params:{
+					id:row.id,
+					value:this.editingRow.diyComments
+				}
+			}).then(function(res){
+				if(res.data.success){
+					row.diyComments = _self.editingRow.diyComments;
+					row.showEdit = false;
+				}else{
+					console.log(res.data.code);
+				}
+				_self.loading = false;
+			})
+			.catch(function(err){
+				console.log(err)
+				_self.loading = false;
+			});
     },
     setStore:function(obj){
       let storeData = JSON.parse(JSON.stringify(this.$store.state.queryParams[this.$route.name]));
@@ -291,7 +342,7 @@ export default {
         name:this.$route.name,
         data:storeData
       });
-    },
+    }
   }
 }
 </script>
