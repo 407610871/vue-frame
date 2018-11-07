@@ -179,7 +179,7 @@ export default {
       loading: true,
       sIndustry: [],
       id: "",
-      tableid: '91936601',
+      tableid: '',
       sZnb: [],
       sFcc: [],
       sTlc: [],
@@ -254,7 +254,7 @@ export default {
             areaData = [{ "pro": this.ruleForm.pro }, { "city": this.ruleForm.city }, { "urban": this.ruleForm.urban }]
           }
           var saveInfo = {
-            iD: "45443", //非必填
+            iD: "", //非必填
             tABLE_ID: this.tableid, //表id
             rESOURCE_DIRECTORY_NUMBER: "D-010000300000ZNB-01-111127262", // '资源目录编号',
             iNDUSTRY_CATEGORY: this.ruleForm.industry, // '行业类别',
@@ -309,7 +309,7 @@ export default {
 
         }
       }).then(res => {
-         
+         this.loading = false;
         //得到Industry
         this.sIndustry = res.data.data.staticDatas.INDUSTRY;
         this.ruleForm.industry = this.sIndustry[0].sTATIC_CODE;
@@ -475,7 +475,7 @@ export default {
         console.log(this.pdata);
         this._getStaticDatas();
         this._queryCity('0', 'pro');
-
+        this.tableid = this.pdata.id;
         //资源名称
         if (this.pdata.comments == '' || this.pdata.comments == null) {
           this.ruleForm.rename = this.pdata.diyComments

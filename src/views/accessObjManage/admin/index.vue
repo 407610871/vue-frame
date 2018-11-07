@@ -9,10 +9,10 @@
         <div class="table-tools">
           <el-button v-on:click="updataSource" class="right-btn" style="margin-left:10px;">接入源更新</el-button>
           <table-inver class="right-btn"></table-inver>
-          <set-task class="right-btn"></set-task>
+          <set-task class="right-btn" :rowList="rowList"></set-task>
         </div>
-        <el-table :data="mainTableData" stripe :height="tableHeight" border style="width: 100%" tooltip-effect="light">
-          <el-table-column type="selection" @selection-change="handleSelectionChange">
+        <el-table :data="mainTableData" stripe :height="tableHeight" border style="width: 100%" tooltip-effect="light"  @selection-change="handleSelectionChange">
+          <el-table-column type="selection">
           </el-table-column>
           <el-table-column prop="diyComments" label="资源名称" width="180" show-overflow-tooltip>
           </el-table-column>
@@ -41,20 +41,20 @@
             <template slot-scope="scope">
               <el-button size="mini" v-on:click="updataSourceSingle(scope.$index, scope.row)">数据量更新</el-button>
               <div class="survey">
-                <userSurvey :pdata="scope"></userSurvey>
+                <userSurvey :pdata="scope.row"></userSurvey>
               </div>
               <div class="survey">
-                <single-task :pdata="scope"></single-task>
+                <single-task :pdata="scope.row"></single-task>
               </div>
               <div class="survey">
-                <data-inver :pdata="scope"></data-inver>
+                <data-inver :pdata="scope.row"></data-inver>
               </div>
-              <div class="survey">
-                <norela-coll :pdata="scope"></norela-coll>
+              <!-- <div class="survey">
+                <norela-coll :pdata="scope.row"></norela-coll>
               </div>
               <div class="survey">
                 <path-ftp></path-ftp>
-              </div>
+              </div> -->
             </template>
           </el-table-column>
         </el-table>
@@ -93,7 +93,7 @@ export default {
       queryParamReady: false,
       collapse: true,
       mainTableReady: true,
-      mainTableData: [{ "id": 10650589, "name": "nam4", "owner": "jkl1", "accessSys": { "id": 92955, "name": "10.37.149.191-100_Copy_92955", "accessSysType": { "id": 10003, "name": null }, "accessSysWay": { "id": 1001, "name": null }, "accessSysDialect": { "id": 10001, "name": "mysql", "accSysWay": null, "accessSyses": [] }, "contactsPhone": "", "contactsEmail": "", "comments": "", "verfication_code": "", "accessSysAttributes": [], "accessSysObjInfos": [], "accessSysStatistics": [], "extendParams": {}, "accessSysDeptInfo": null, "status": "0", "lastOperatingTime": "2018-11-05 10:39:07", "createTime": null }, "comments": "", "diyComments": "", "accessSysId": null, "totalRows": "0", "collectName": null, "diyCommentsFrom": "0", "isHistory": "1", "isDeleted": "2", "exitTask": false, "exitDataSurvey": false, "extendParams": { "isRefresh": "0", "separator": "\t", "objectType": "1" }, "accessSysObjInfoStatistics": [], "accessConnectorSource": {}, "createImpalaTable": false, "lastChangeTime": "2018-09-08 19:14:48" }],
+      mainTableData: [],
       currentPage: 1,
       mainTableDataTotal: 1,
       dialogVisible: false,
@@ -103,7 +103,9 @@ export default {
       alertContent: '',
       seledRows: [],
       collapse: true,
-      formFilterData: []
+      formFilterData: [],
+      rowList:[],
+
     }
   },
   computed: {
@@ -156,7 +158,7 @@ export default {
       paramsObj.objectType = this.tableParams.objectType.length > 0 ? this.tableParams.objectType.join(',') : "";
       paramsObj.dataRange = this.tableParams.dataRange.length > 0 ? this.tableParams.dataRange.join(',') : "";
       paramsObj.accessSysId = this.$route.params.sourceId;
-      this.$ajax.post('http://10.19.160.25:8088/demo/ctables/datas', paramsObj).then(function(res) {
+      this.$ajax.post('http://10.19.160.168:8080/DACM/ctables/datas', paramsObj).then(function(res) {
           console.log(res)
           if (res.data.success) {
             _self.mainTableData = res.data.data.list;
@@ -257,6 +259,8 @@ export default {
     },
     handleSelectionChange: function(val) {
       this.seledRows = val;
+      this.rowList = val;
+      console.log(this.rowList);
     },
     changeFormFilter: function(fliterParams) {
       console.log('---------fliterParams-----------');

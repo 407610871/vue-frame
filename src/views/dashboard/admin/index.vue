@@ -203,7 +203,7 @@ export default {
       paramsObj.dataSourceName = this.tableParams.dataSourceName;
       paramsObj.platform = this.tableParams.platform;
 			paramsObj.deptIds = this.tableParams.deptId;
-      this.$ajax.post('http://10.19.160.175:8088/demo/caccess/query',paramsObj).then(function(res){
+      this.$ajax.post('http://10.19.160.168:8080/DACM/caccess/query',paramsObj).then(function(res){
         console.log('tableLoaded:dashboard');
         if(res.data.success){
           _self.mainTableData = res.data.data.list;

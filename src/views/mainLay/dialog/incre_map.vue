@@ -10,12 +10,12 @@
         <div class="daiInfo-title proInfo-title clearfix">
           <el-col :span="24">
             <el-col :span="6">
-              <h2>增量字段选择{{msg}}</h2>
+              <h2>增量字段选择</h2>
             </el-col>
             <el-col :span="13" class="bank">bank</el-col>
             <el-col :span="4">
               <el-form-item class="clearfix">
-                <el-input placeholder="请输入内容"></el-input>
+               <!--  <el-input placeholder="请输入内容"></el-input> -->
               </el-form-item>
               <!--  <el-input v-model=""></el-input> -->
             </el-col>
@@ -56,7 +56,7 @@ export default {
     return {
       radio: '',
       innerVisible: this.msg,
-      appId: '10650590',
+      appId: '',
       cincreArr: [],
       tableData: [],
 
@@ -89,20 +89,20 @@ export default {
       this.innerVisible = false;
     },
     _getIncreType() {
-      this.$ajax({
-        methods: "get",
-        url: '/api/ctablesDetail/datas',
-        params: {
-          id: this.appId,
-          pagnum: 1,
-          count: 500
-        }
-      }).then(res => {
+      var map = {
+        objectInfoId: this.incid,
+        pagNum: 1,
+        count: 20,
+        term: ""
+      }
+      this.$ajax.post('http://10.19.160.171:8081/DEMO/objDetail/dataList', map).
+      then(res => {
         this.tableData = [];
-        if (res.data.result == "succeed") {
+        if (res.data.success) {
           var first = [];
           var second = [];
-          var data = res.data.page.list;
+          var data = res.data.data.list;
+          debugger;
           if (data.length > 0) {
             for (let i = 0; i < data.length; i++) {
               if (data[i].isNull == "N" || data[i].isNull == "NO") {
@@ -141,7 +141,7 @@ export default {
             }
             console.log(first);
             console.log(second);
-        
+
             for (let m = 0; m < second.length; m++) {
               this.tableData.push({
                 datatype: second[m].datatype,
@@ -166,11 +166,12 @@ export default {
   created() {
 
   },
-  props: ['msg', 'increArr'],
+  props: ['msg', 'increArr', 'incid'],
   watch: {
     msg() {
       this.innerVisible = this.msg;
       this._getIncreType();
+      console.log(this.incid + '*******')
     },
     increArr() {
       this.cincreArr = this.increArr;

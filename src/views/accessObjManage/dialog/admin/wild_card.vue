@@ -16,7 +16,7 @@
               <el-radio-group v-model="ruleForm.typeKind" class="wid100">
                 <el-col :span="24">
                   <el-col :span="2">
-                    <el-radio label="基础匹配">
+                    <el-radio label="0">基础匹配
                     </el-radio>
                   </el-col>
                   <el-col :span="22">
@@ -27,18 +27,14 @@
                           <el-input class="fl" v-model="ruleForm.baseStart"></el-input>
                           <span class="fl ml10 mr10">开头,以</span>
                           <el-select class="fl" v-model="ruleForm.baseEnd" placeholder="请选择">
-                            <el-option label="全国" value="0"></el-option>
-                            <el-option label="全省" value="1"></el-option>
-                            <el-option label="全市" value="2"></el-option>
-                            <el-option label="行政区" value="3"></el-option>
+                            <el-option v-for="item in regxData" :label="item.dateFormat" :value="item.dateRegex"></el-option>
                           </el-select>
                           <span class="fl ml10">结尾</span>
                         </el-form-item>
                       </el-col>
-                      
                       <el-col :span="4" class="ml0  mt10">
                         <el-form-item>
-                         <span>匹配示例:xxxxxxxxxxx</span>
+                          <span>匹配示例:xxxxxxxxxxx</span>
                         </el-form-item>
                       </el-col>
                     </el-col>
@@ -46,15 +42,14 @@
                 </el-col>
                 <el-col :span="24" class="mt25 wildbg">
                   <el-col :span="2">
-                  <el-radio label="高级匹配">
-                    
-                  </el-radio>
+                    <el-radio label="1">高级匹配
+                    </el-radio>
                   </el-col>
-                    <el-col :span="22">
-                       <el-form-item>
-                        <el-input v-model="ruleForm.highMatch"></el-input>
-                       </el-form-item>
-                    </el-col>
+                  <el-col :span="22">
+                    <el-form-item>
+                      <el-input v-model="ruleForm.highMatch"></el-input>
+                    </el-form-item>
+                  </el-col>
                 </el-col>
               </el-radio-group>
             </el-form-item>
@@ -62,53 +57,99 @@
         </div>
       </div>
     </el-form>
+    <div class="btn tcenter">
+      <el-button type="primary" style="margin-top: 12px;" @click="pres()">上一步</el-button>
+      <el-button type="primary" style="margin-top: 12px;" @click="nre()">下一步</el-button>
+    </div>
   </div>
 </template>
 <script>
+import { mapState, mapMutations, mapActions } from 'vuex'
 export default {
   name: "userSurvey",
   data: function() {
     return {
       dialogVisible: false,
+      regxData: [],
       ruleForm: {
         matchType: '表', //匹配类型
-        typeKind: '基础匹配',
+        typeKind: '0',
         baseStart: '', //表开头
         baseEnd: '', //表结尾
-        highMatch: '',//高级匹配
+        highMatch: '', //高级匹配
       },
       formRules: {},
     };
   },
   methods: {
+    ...mapMutations([
+      'setRegInfo'
+    ]),
     //关闭对话框
     closeDialog() {
       this.dialogVisible = false;
       this.$refs['ruleForm'].resetFields();
     },
-    //实现树的单选
-    handleClick(data, checked, node) {
-      this.i++;
-
-      if (this.i % 2 == 0) {
-        if (checked) {
-          this.$refs.treeForm.setCheckedNodes([]);
-          this.$refs.treeForm.setCheckedKeys([]);
-          this.$refs.treeForm.setCheckedNodes([data]);
-          console.log(this.$refs.treeForm.getCheckedNodes());
-          this.ruleForm.dockdata = data.label;
-          //交叉点击节点
-        } else {
-          this.$refs.treeForm.setCheckedNodes([]);
-          //点击已经选中的节点，置空
-          this.ruleForm.dockdata = '';
-        }
-      }
-    },
     //关闭
     closeForm() {
       this.dialogVisible = false;
       this.$refs['ruleForm'].resetFields();
+    },
+    pres() {
+      this.$emit('pre');
+    },
+    nre() {
+      let reflag = true;
+      let varegex;
+      if (this.ruleForm.typeKind == '0') {
+        let start = this.ruleForm.baseStart;
+        let end = this.ruleForm.baseEnd;
+        varegex = new RegExp('^' + start + '.*' + end + '$');
+
+      } else {
+        varegex = new RegExp(this.ruleForm.highMatch);
+      }
+      for (let i = 0; i < this.rowList.length; i++) {
+        if (varegex.test(this.rowList[i].name)) {
+
+        } else {
+          reflag = false;
+        }
+      }
+      if (reflag == false) {
+        this.$message.warning('表中有不匹配的表名');
+        return false;
+      } else {
+        if (this.ruleForm.typeKind == '0') {
+          var RegInfo={
+            baseStart: this.ruleForm.baseStart,
+            baseEnd: this.ruleForm.baseEnd,
+            baseflag: this.ruleForm.typeKind
+          }
+          this.setRegInfo(RegInfo);
+        } else {
+          var RegInfo={
+            baseStart: "",
+            baseEnd: this.ruleForm.highMatch,
+            baseflag: this.ruleForm.typeKind
+          }
+          this.setRegInfo(RegInfo);
+        }
+        this.$emit('nre');
+      }
+    },
+    _getRegexList() {
+      this.$ajax({
+        method: "get",
+        url: 'http://10.19.160.168:8080/DACM/task/getRegexList',
+        params: {
+
+        }
+      }).then(res => {
+        if (res.data.success) {
+          this.regxData = res.data.data;
+        }
+      })
     }
   },
   components: {
@@ -118,11 +159,12 @@ export default {
 
   },
   created() {
-
+    this._getRegexList();
   },
   computed: {
 
-  }
+  },
+  props: ['rowList']
 
 };
 
@@ -188,27 +230,34 @@ export default {
     margin-left: 10px !important;
   }
 }
-.mtsItem .wildbg{
+
+.mtsItem .wildbg {
   .el-form-item--medium .el-form-item__content {
     margin-left: 0px !important;
   }
 }
-.wildbg .el-input,.wildbg .el-select {
+
+.wildbg .el-input,
+.wildbg .el-select {
   width: 30%;
 }
-.wildbg .el-select .el-input{
-  width:100%;
+
+.wildbg .el-select .el-input {
+  width: 100%;
 }
+
 .el-radio-group.wid100 {
   width: 100%;
 }
-.wildbg{
+
+.wildbg {
   margin-left: 10px;
-     
-    padding-top: 10px;
-    padding-bottom: 15px;
-    .el-radio__label{
-      line-height: 30px;
-    }
+
+  padding-top: 10px;
+  padding-bottom: 15px;
+  .el-radio__label {
+    line-height: 30px;
+  }
 }
+
 </style>

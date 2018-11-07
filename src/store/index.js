@@ -59,6 +59,7 @@ const store = new Vuex.Store({
     queryParams:JSON.parse(JSON.stringify(queryParamsDefault)),
     schemaList:[],//增量字段列表
     userList:{},//数据调研列表
+    regInfo:{},//正则
   },
   mutations: {
     setFilterItmeList(state,obj){
@@ -125,6 +126,11 @@ const store = new Vuex.Store({
     setUserList(state,obj){
       state.userList = {};
       state.userList= obj;
+    },
+    //正则表达式
+    setRegInfo(state,obj){
+      state.regInfo = {};
+      state.regInfo = obj;
     }
   },
   modules: {
