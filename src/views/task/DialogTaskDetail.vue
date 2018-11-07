@@ -165,8 +165,11 @@
           </div>
           <!-- 四个日志tab 开始 -->
           <div class="daiInfo-tabs">
-            <el-tabs type="border-card">
-              <el-tab-pane label="汇聚任务日志信息">{{taskLog}}</el-tab-pane>
+            <el-tabs type="border-card" style="height:265px;">
+              <el-tab-pane label="汇聚任务日志信息">
+                <textarea name="" id="" cols="30" rows="12" disabled="disabled" style="resize:none;width: 100%; height: 200px;border:none;background:inherit" >{{taskLog}}</textarea>
+                <div class="tips-none" v-show="taskLog==''">暂无数据</div>
+              </el-tab-pane>
               <el-tab-pane label="数据核验日志信息">
                 <div class="dataCheck-tab">
                   <div class="logItem" v-for="item in dataCheckList" :key="item.source_library">
@@ -250,7 +253,7 @@
 }
 .dataViews-table{
   height: 200px;
-    overflow: auto;
+  overflow: auto;
 }
 .dataViews-table span{
   display:inline-block;
@@ -266,6 +269,8 @@
 .dataCheck-tab{
   padding-left: 12px;
   padding-top: 12px;
+  height: 200px;
+  overflow: auto;
 }
 .dataCheck-tab .logItem span{
   display: inline-block;
@@ -599,7 +604,10 @@ export default {
             that.doMsg("/manager/taskOperate/taskLogInfo/"+res.data.data.message,'error');
             that.serveFinishCount++;
           }else{
-            that.taskLog = res.data.data.logInfo==""?"暂无日志信息！":res.data.data.logInfo;
+            that.taskLog = `\t${res.data.data.logInfo}`;
+            console.log(res.data.data.logInf)
+
+            // that.taskLog = `java.lang.IndexOutOfBoundsException: Index: 0, Size: 0 \n\t at java.util.ArrayList.rangeCheck(ArrayList.java:653)\n\tat java.util.ArrayList.get(ArrayList.java:429)\n\tat cn.enn.com.jdbc.source.JdbcSourceTask.poll(JdbcSourceTask.java:284)\n\tat org.apache.kafka.connect.runtime.WorkerSourceTask.execute(WorkerSourceTask.java:204)\n\tat org.apache.kafka.connect.runtime.WorkerTask.doRun(WorkerTask.java:170)\n\tat org.apache.kafka.connect.runtime.WorkerTask.run(WorkerTask.java:214)\n\tat java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)\n\tat java.util.concurrent.FutureTask.run(FutureTask.java:266)\n\tat java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)\n\tat java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)\n\tat java.lang.Thread.run(Thread.java:745)\n`;
             that.serveFinishCount++;
           }
         }
