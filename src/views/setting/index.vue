@@ -109,7 +109,7 @@ export default {
   mounted(){
     var _self = this;
 
-    this.$ajax.get('http://10.19.160.176:8088/demo/caccesssysRelationWorkInfo/showInfo',{
+    this.$ajax.get('http://10.19.248.200:32661/DACM/caccesssysRelationWorkInfo/showInfo',{
 			params:{
 				nodeId:this.$store.state.deptId[0]
 			}
@@ -150,7 +150,7 @@ export default {
 
 
     const promist0 = new Promise((resolve, reject) => {
-      this.$ajax.get('http://10.19.160.175:8088/demo/commonInterUtils/getAreas', {
+      this.$ajax.get('http://10.19.248.200:32661/DACM/commonInter/getAreas', {
         params:{
           parentid:0
         }
@@ -187,7 +187,7 @@ export default {
           case '行政区域':
             _self.sysParam.province = value.name[0].pro;
             var city = value.name[0].city
-            _self.$ajax.get('http://10.19.160.175:8088/demo/commonInterUtils/getAreas',{
+            _self.$ajax.get('http://10.19.248.200:32661/DACM/commonInter/getAreas',{
               params:{
                 parentid:_self.sysParam.province
               }

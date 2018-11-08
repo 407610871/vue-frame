@@ -1,5 +1,5 @@
 import Keycloak from "keycloak-js";
-
+import store from "@/store";
 let installed = false;
 let Authen = {
   install(Vue, options) {
@@ -28,14 +28,17 @@ let Authen = {
         if (isAuthenticated) {
           watch.token = keycloak.token;
           watch.tokenType = keycloak.tokenParsed.typ;
+          store.commit("SET_TOKEN",keycloak.tokenParsed.typ + ' ' + keycloak.token );
 
           setTimeout(() => {
             keycloak.updateToken(5).then(refreshed => {
               if (refreshed) {
                 watch.token = keycloak.token;
                 watch.tokenType = keycloak.tokenParsed.typ;
+                store.commit("SET_TOKEN",keycloak.tokenParsed.typ+ ' ' + keycloak.token );
+
               }
-            })
+            });
           }, 5000);
         }
       });

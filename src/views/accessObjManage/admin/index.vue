@@ -164,24 +164,48 @@ export default {
       paramsObj.condition = this.tableParams.condition ? this.tableParams.condition : "";
       paramsObj.objectType = this.tableParams.objectType.length > 0 ? this.tableParams.objectType.join(',') : "";
       paramsObj.dataRange = this.tableParams.dataRange.length > 0 ? this.tableParams.dataRange.join(',') : "";
-      paramsObj.accessSysId = this.$route.params.sourceId;
-      this.$ajax.post('http://10.19.160.168:8080/DACM/ctables/datas', paramsObj).then(function(res) {
-          console.log(res)
-          if (res.data.success) {
-            _self.mainTableData = res.data.data.list;
-            _self.mainTableDataTotal = res.data.data.total;
-            //这里是异步的，存在延迟，所以没问题,如果是同步的话可能存在问题
-            _self.currentPage = _self.tableParams.pageNum;
-          } else {
-            console.log(res.code);
-          }
-          _self.loading = false;
-        })
-        .catch(function(err) {
-          _self.currentPage = _self.tableParams.pageNum;
-          console.log(err);
-          _self.loading = false;
-        });
+      paramsObj.accessSysId = parseInt(this.$route.params.sourceId);
+			/*this.$ajax({
+				url:'http://10.19.248.200:32661/DACM/ctables/datas',
+				// url:'http://10.19.160.25:8080/DACM/ctables/datas',
+				method: 'post',
+				data: JSON.stringify(paramsObj),
+				headers:{
+					'Content-Type':'application/json'
+				}
+			})
+			.then(respanse=>{
+				if (res.data.success) {
+					_self.mainTableData = res.data.data.list;
+					_self.mainTableDataTotal = res.data.data.total;
+					//这里是异步的，存在延迟，所以没问题,如果是同步的话可能存在问题
+					_self.currentPage = _self.tableParams.pageNum;
+				} else {
+					console.log(res.code);
+				}
+				_self.loading = false;
+			})
+			.catch(function(err) {
+				_self.currentPage = _self.tableParams.pageNum;
+				console.log(err);
+				_self.loading = false;
+			});*/
+      this.$ajax.post('http://10.19.160.25:8080/DACM/ctables/datas', paramsObj).then(function(res) {
+				console.log(res)
+				if (res.data.success) {
+					_self.mainTableData = res.data.data.list;
+					_self.mainTableDataTotal = res.data.data.total;
+					_self.currentPage = _self.tableParams.pageNum;
+				} else {
+					console.log(res.code);
+				}
+				_self.loading = false;
+			})
+			.catch(function(err) {
+				_self.currentPage = _self.tableParams.pageNum;
+				console.log(err);
+				_self.loading = false;
+			});
     },
     setStore: function(obj) {
       let storeData = JSON.parse(JSON.stringify(this.$store.state.queryParams[this.$route.name]));
@@ -199,6 +223,9 @@ export default {
       });
     },
     goAccessObjInfo: function(row) {
+			this.$store.commit('resetQueryParam', {
+				resetData:'accessObjInfo'
+			});
 			this.$store.commit('setParamItem',{
 				name:'accessObjInfo',
 				data:{
@@ -206,9 +233,6 @@ export default {
 					accessSysId:this.mainTableData[0].accessSys.id,
 					diyComments:row.diyComments
 				}
-			});
-			this.$store.commit('resetQueryParam', {
-				resetData:'accessObjInfo'
 			});
       this.$router.push({ name: "accessObjInfo",params:{
         sourceId:this.$route.params.sourceId,
@@ -244,7 +268,7 @@ export default {
         }
         id = ids.join(',');
       }
-      this.$ajax.get('http://10.19.160.25:8088/demo/ctables/refreshAmount', {
+      this.$ajax.get('http://10.19.248.200:32661/DACM/ctables/refreshAmount', {
         objectInfoId: id
       }).then(function(res) {
         this.alertContent = '更新成功';
@@ -254,7 +278,7 @@ export default {
       });
     },
     updataSourceSingle: function(index, row) {
-      this.$ajax.get('http://10.19.160.25:8088/demo/ctables/refreshAmount', {
+      this.$ajax.get('http://10.19.248.200:32661/DACM/ctables/refreshAmount', {
         params: {
           objectInfoId: row.id
         }

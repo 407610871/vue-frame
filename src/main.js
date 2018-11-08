@@ -48,6 +48,7 @@ function loadScript(url, callback) {
 }
 
 function bootstrap(env) {
+  console.log(env);
   Vue.use(Authen, {
     url: env.VUE_APP_AUTH_SERVER_URL,
     realm: env.VUE_APP_REALM,
@@ -56,9 +57,9 @@ function bootstrap(env) {
       secret: env.VUE_APP_CREDENTIALS_SECRET
     }
   });
-
   Vue.use(Viser);
   Vue.use(VJstree);
+
   Vue.use(Element, {
     size: Cookies.get("size") || "medium", // set element-ui default size
     i18n: (key, value) => i18n.t(key, value)
@@ -70,20 +71,27 @@ function bootstrap(env) {
   });
 
   Vue.config.productionTip = false;
-
-  window.vm = new Vue({
+  const vm = new Vue({
     // el: "#app",
     router,
     store,
     i18n,
     render: h => h(App),
-    data: {
+		data: {
       eventHub: new Vue()
     },
-    mounted() {
+		mounted() {
       var _self = this;
+			this.$ajax.put("http://10.19.248.200:32662/DOMN/manager/taskOperate/taskLogInfo/1")
+			.then(function(res) {
+				
+			})
+			.catch(function(err) {
+				
+			});
+			
       this.$ajax
-        .get("http://10.19.160.176:8088/demo/caccess/sysdialect", {
+        .get("http://10.19.248.200:32661/DACM/caccess/sysdialect", {
           params: {
             type: 0
           }
@@ -137,12 +145,16 @@ function bootstrap(env) {
         });
     }
   });
+  vm.$keycloak.onAuthSuccess = () => {
+    //初始化 将token放入store
+    store.commit(
+      "SET_TOKEN",
+      vm.$keycloak.tokenParsed.typ + " " + vm.$keycloak.token
+    );
 
-  window.vm.$keycloak.onAuthSuccess = () => {
-    window.vm.$mount("#app");
+    vm.$mount("#app");
   };
 }
-
 if (process.env.NODE_ENV === "production") {
   loadScript("/env.js", () => {
     bootstrap(ENV || process.env);

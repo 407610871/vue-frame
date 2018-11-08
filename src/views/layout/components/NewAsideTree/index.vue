@@ -76,7 +76,7 @@
       methods: {
         loadData(){
           var _self = this;
-          this.$ajax.post('http://10.19.160.29:8088/demo/deptInfo/getDeptInfo?t=' + new Date().getTime()).then(function(res){
+          this.$ajax.post('http://10.19.248.200:32661/DACM/deptInfo/getDeptInfo?t=' + new Date().getTime()).then(function(res){
             if(res.data.success){
               _self.data = res.data.datas;
               _self.dataReady = true;
@@ -117,7 +117,7 @@
         nodeAJax(){
           var _self = this;
           if(this.actionFlag == 'add'){
-            this.$ajax.post('http://10.19.160.29:8088/demo/deptInfo/insertDeptInfo?pid='+this.editingNode.id+'&deptName='+this.itemTxt+'&level='+(this.editingNode.children?this.editingNode.children.length:0)).then(function(res){
+            this.$ajax.post('http://10.19.248.200:32661/DACM/deptInfo/insertDeptInfo?pid='+this.editingNode.id+'&deptName='+this.itemTxt+'&level='+(this.editingNode.children?this.editingNode.children.length:0)).then(function(res){
             // this.$ajax.post('./addDept').then(function(res){
               console.log('addsuccess');
               console.log(res);
@@ -136,7 +136,7 @@
               console.log(err)
             });
           }else{
-            this.$ajax.post('http://10.19.160.29:8088/demo/deptInfo/updateDeptInfo?id='+this.editingNode.id+'&deptName='+this.itemTxt).then(function(res){
+            this.$ajax.post('http://10.19.248.200:32661/DACM/deptInfo/updateDeptInfo?id='+this.editingNode.id+'&deptName='+this.itemTxt).then(function(res){
             // this.$ajax.post('./success').then(function(res){
               console.log('editsuccess');
               if(res.data.success){
@@ -154,7 +154,7 @@
         delNode(){
           if(this.$refs.tree.getCurrentKey()){
             var _self = this;
-            this.$ajax.post('http://10.19.160.29:8088/demo/deptInfo/delDeptInfo?id='+this.editingNode.id).then(function(res){
+            this.$ajax.post('http://10.19.248.200:32661/DACM/deptInfo/delDeptInfo?id='+this.editingNode.id).then(function(res){
             // this.$ajax.post('./success').then(function(res){
               console.log('delsuccess');
               if(res.data.success){
@@ -215,7 +215,7 @@
               level:i
             })
           }
-          this.$ajax.post('http://10.19.160.29:8088/demo/deptInfo/updateDeptLevel',list).then(function(res){
+          this.$ajax.post('http://10.19.248.200:32661/DACM/deptInfo/updateDeptLevel',list).then(function(res){
             if(res.data.success){
               console.log('move success!')
             }else{
