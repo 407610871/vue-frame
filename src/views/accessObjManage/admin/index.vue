@@ -8,8 +8,11 @@
       <el-main class="main-container">
         <div class="table-tools">
           <el-button v-on:click="updataSource" class="right-btn" style="margin-left:10px;" title="接入源更新">接入源更新</el-button>
-          <table-inver class="right-btn" :pdata="tablePa"></table-inver>
-          <set-task class="right-btn" :rowList="rowList"></set-task>
+          <table-inver v-show="jrtype=='mysql'|| jrtype=='oracle'|| jrtype=='postgresql' || jrtype=='sqlserver'" class="right-btn" :pdata="tablePa"></table-inver>
+          
+            <path-ftp class="right-btn" :rowList="accId" v-if="jrtype=='ftp'"></path-ftp>
+         
+          <set-task class="right-btn" :rowList="rowList" :jrtype="jrtype"></set-task>
         </div>
         <el-table :data="mainTableData" stripe :height="tableHeight" border style="width: 100%" tooltip-effect="light" @selection-change="handleSelectionChange">
           <el-table-column type="selection">
@@ -41,20 +44,20 @@
             <template slot-scope="scope">
               <el-button size="mini" v-on:click="updataSourceSingle(scope.$index, scope.row)" title="数据量更新">数据量更新</el-button>
               <div class="survey">
-                <userSurvey :pdata="scope.row" @fre="loadTable()"></userSurvey>
+                <userSurvey v-if="jrtype=='mysql'|| jrtype=='oracle'|| jrtype=='postgresql' || jrtype=='sqlserver'" :pdata="scope.row" @fre="loadTable()"></userSurvey>
               </div>
               <div class="survey">
-                <single-task :pdata="scope.row" @fre="loadTable()"></single-task>
+                <single-task v-if="jrtype=='mysql'|| jrtype=='oracle'|| jrtype=='postgresql' || jrtype=='sqlserver'" :pdata="scope.row" @fre="loadTable()"></single-task>
               </div>
               <div class="survey">
-                <data-inver :pdata="scope.row" @fre="loadTable()"></data-inver>
+                <data-inver v-if="jrtype=='mysql'|| jrtype=='oracle'|| jrtype=='postgresql' || jrtype=='sqlserver'" :pdata="scope.row" @fre="loadTable()"></data-inver>
               </div>
-              <div class="survey" v-show="jrtype!='mysql' && jrtype!='oracle' && jrtype!='sqlserver' && jrtype!='postgresql'">
+              <div class="survey" v-if="jrtype!='mysql' && jrtype!='oracle' && jrtype!='sqlserver' && jrtype!='postgresql'">
                 <norela-coll :pdata="scope.row"></norela-coll>
               </div>
-              <div class="survey" v-show="jrtype=='ftp'">
-                <path-ftp></path-ftp>
-              </div>
+             <!--  <div class="survey" v-if="jrtype=='ftp'">
+               <path-ftp></path-ftp>
+             </div> -->
             </template>
           </el-table-column>
         </el-table>
@@ -129,7 +132,9 @@ export default {
 			}, {
 				id: 'other',
 				name: '其他'
-			}]
+			}],
+      jrtype: '',
+      accId:''
     }
   },
   computed: {
@@ -204,7 +209,11 @@ export default {
 				if (res.data.success) {
 					_self.mainTableData = res.data.data.list;
 					_self.mainTableDataTotal = res.data.data.total;
-					//这里是异步的，存在延迟，所以没问题,如果是同步的话可能存在问题
+					if (res.data.data.list.length > 0) {
+						_self.tablePa = res.data.data.list[0];
+						_self.jrtype = res.data.data.list[0].accessSys.accessSysDialect.name;
+						console.log(_self.jrtype);
+					}
 					_self.currentPage = _self.tableParams.pageNum;
 				} else {
 					console.log(res.code);

@@ -44,13 +44,13 @@
                 <el-checkbox v-model="ruleForm.isha"></el-checkbox>
               </el-form-item>
             </el-col>
-            <el-col :span="10" v-show="ruleForm.isha==true">
+            <el-col :span="10" v-if="ruleForm.isha==true">
               <el-form-item label="备用节点IP:" prop="bakip">
                 <el-input v-model="ruleForm.bakip"></el-input>
               </el-form-item>
             </el-col>
-            <el-col :span="4" class="bank" v-show="ruleForm.isha==true">bank</el-col>
-            <el-col :span="10" v-show="ruleForm.isha==true">
+            <el-col :span="4" class="bank" v-if="ruleForm.isha==true">bank</el-col>
+            <el-col :span="10" v-if="ruleForm.isha==true">
               <el-form-item label="备用节点端口:" prop="bakport">
                 <el-input v-model="ruleForm.bakport"></el-input>
               </el-form-item>

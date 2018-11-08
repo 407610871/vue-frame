@@ -31,13 +31,13 @@
               <el-form-item label="行政区划">
                 <el-col :span="11" class="col-inside">
                   <el-select v-model="sysParam.province" placeholder="请选择省">
-                    <el-option :label="item.name" :value="item.code" v-for="item in provinceList"></el-option>
+                    <el-option :label="item.name" :value="item.code" v-for="(index,item) in provinceList" :key="index"></el-option>
                   </el-select>
                 </el-col>
                 <el-col :span="2" style="text-align:center;" class="col-inside">-</el-col>
                 <el-col :span="11" class="col-inside">
                   <el-select v-model="sysParam.city" placeholder="请先选择省">
-                    <el-option :label="item.name" :value="item.code" v-for="item in cityList"></el-option>
+                    <el-option :label="item.name" :value="item.code" v-for="(index,item) in cityList" :key="index"></el-option>
                   </el-select>
                 </el-col>
               </el-form-item>

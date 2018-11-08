@@ -42,8 +42,8 @@
        <div class="count-operate">
          <div>
             <el-button type="primary" @click="doMore('manager/taskOperate/batchConverge',1)">重新汇聚</el-button>
-            <el-button type="primary" @click="doMore('DOMN/manager/taskOperate/batchStart',2)">批量启动</el-button>
-            <el-button type="primary" @click="doMore('DOMN/manager/taskOperate/batchPause',3)">批量停止</el-button>
+            <el-button type="primary" @click="doMore('manager/taskOperate/batchStart',2)">批量启动</el-button>
+            <el-button type="primary" @click="doMore('manager/taskOperate/batchPause',3)">批量停止</el-button>
          </div>
        </div>
 
@@ -323,6 +323,15 @@ export default {
     //分页切换
     handleCurrentChange() {
       this.init();
+    },
+     //信息提示
+    doMsg(msg, type) {
+      this.$message({
+        showClose: true,
+        message: msg,
+        type: type,
+        duration: 3500
+      });
     },
     //表格数据获取
     init(keyword) {

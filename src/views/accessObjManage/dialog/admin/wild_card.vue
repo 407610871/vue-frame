@@ -6,8 +6,8 @@
           <el-col :span="24">
             <el-form-item label="选择匹配类型:" prop="matchType">
               <el-radio-group v-model="ruleForm.matchType">
-                <el-radio label="0">表</el-radio>
-                <el-radio label="1">文件</el-radio>
+                <el-radio label="0" v-if="jrtype=='mysql'|| jrtype=='oracle'|| jrtype=='postgresql' || jrtype=='sqlserver'">表</el-radio>
+                <el-radio label="1" v-if="jrtype!='mysql' && jrtype!='oracle'&& jrtype!='postgresql' && jrtype!='sqlserver'">文件</el-radio>
               </el-radio-group>
             </el-form-item>
           </el-col>
@@ -251,10 +251,16 @@ export default {
   computed: {
 
   },
-  props: ['rowList', 'msg'],
+  props: ['rowList', 'msg','jrtype'],
   watch: {
     msg() {
       if (this.msg=="second") {
+        if(this.jrtype=='mysql' || this.jrtype=='oracle'|| this.jrtype=='postgresql' || this.jrtype=='sqlserver'){
+          this.ruleForm.matchType = '0'
+        }
+        else{
+          this.ruleForm.matchType = '1';
+        }
         this._getRegexList();
         this._getType();
       }

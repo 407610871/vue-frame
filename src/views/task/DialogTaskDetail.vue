@@ -236,7 +236,7 @@
         
       </el-form>
     </el-dialog>
-    <dialogIsCheck :MsgCheck="reqObj" v-if="isShowCheck"></dialogIsCheck>
+    <dialogIsCheck :msgCheck="reqObj" v-if="isShowCheck"></dialogIsCheck>
   </div>
 </template>
 <style lang="scss" scoped>
@@ -566,7 +566,7 @@ export default {
           }else if(res.data.code!="200"&&res.data.code!="0000"){
             that.doMsg("/manager/task/testTaskNetworkStatus:"+res.data.message,'error');
           }else{
-            that.newWorkTrans(res.data.data.networkStatus,res.data.data.speed);
+            that.newWorkTrans(res.data.data,res.data.data.speed);
           }
           that.innerLoading=false;
         }
