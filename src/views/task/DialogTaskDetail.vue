@@ -236,7 +236,7 @@
         
       </el-form>
     </el-dialog>
-    <dialogIsCheck :MsgCheck="reqObj" v-if="isShowCheck"></dialogIsCheck>
+    <dialogIsCheck :msgCheck="reqObj" v-if="isShowCheck"></dialogIsCheck>
   </div>
 </template>
 <style lang="scss" scoped>
