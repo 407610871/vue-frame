@@ -127,7 +127,7 @@
             </el-col>
             <el-col :span="4" class="bank">bank</el-col>
             <el-col :span="10" class="bank">bank</el-col>
-            <el-col :span="16">
+            <el-col :span="17">
               <el-form-item label="任务指示灯:">
                 <div class="item-label">
                   <span class="label-color" v-bind:style="lightBackground"></span>{{taskBaseInfo.newWorkDesc}}
@@ -313,6 +313,7 @@ export default {
       flagDesc:'',
       showInnerDialog: true,
       isShowCheck:false,
+      httpUrlOld:'http://10.19.160.67:8081/DOMN/',
       httpUrl:'http://10.19.248.200:32662/DOMN/',
       httpUrl2:'http://10.19.248.200:32661/DACM/',
       operateList:[
@@ -530,7 +531,7 @@ export default {
             }
             that.taskBaseInfo.statusDesc = statusMap[that.taskBaseInfo.status];
             //网络指示灯判断
-            that.newWorkTrans(that.taskBaseInfo.networkStatus);
+            that.newWorkTrans(that.taskBaseInfo.networkStatus,response.data.data.speed);
             //可操作类型
             let t=that.taskBaseInfo.status;
             that.flagDesc=(t==0||t==1)?'run':'stop';
@@ -565,7 +566,7 @@ export default {
           }else if(res.data.code!="200"&&res.data.code!="0000"){
             that.doMsg("/manager/task/testTaskNetworkStatus:"+res.data.message,'error');
           }else{
-            that.newWorkTrans(res.data.data);
+            that.newWorkTrans(res.data.data.networkStatus,res.data.data.speed);
           }
           that.innerLoading=false;
         }
@@ -676,7 +677,7 @@ export default {
       )
     },
     //网络测试指示灯及内容翻译
-    newWorkTrans(value){
+    newWorkTrans(value,speed){
       let newWorkMap = {
         0:'rgb(27, 255, 0)',
         1:'rgb(255, 153, 0)',
@@ -688,7 +689,8 @@ export default {
         1:'数据源连接不稳定（数据源能访问，ping的响应时间在10秒-30秒内）',
         2:'数据源不通',
       }
-      this.taskBaseInfo.newWorkDesc = newWorkDescMap[value];
+      speed = speed||0;
+      this.taskBaseInfo.newWorkDesc = newWorkDescMap[value]+' '+speed+"kb/s";
     },
     //信息提示
     doMsg(msg, type) {
