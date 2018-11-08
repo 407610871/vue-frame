@@ -41,9 +41,9 @@
        <!-- 操作按钮 -->
        <div class="count-operate">
          <div>
-            <el-button type="primary" @click="doMore('http://10.19.160.67:8081/DOMN/manager/taskOperate/batchConverge',1)">重新汇聚</el-button>
-            <el-button type="primary" @click="doMore('http://10.19.160.67:8081/DOMN/manager/taskOperate/batchStart',2)">批量启动</el-button>
-            <el-button type="primary" @click="doMore('http://10.19.160.67:8081/DOMN/manager/taskOperate/batchPause',3)">批量停止</el-button>
+            <el-button type="primary" @click="doMore('manager/taskOperate/batchConverge',1)">重新汇聚</el-button>
+            <el-button type="primary" @click="doMore('DOMN/manager/taskOperate/batchStart',2)">批量启动</el-button>
+            <el-button type="primary" @click="doMore('DOMN/manager/taskOperate/batchPause',3)">批量停止</el-button>
          </div>
        </div>
 
@@ -132,6 +132,11 @@
 <script>
 import DialogIsCheck from "./DialogIsCheck";
 import DialogTaskDetail from "./DialogTaskDetail";
+//盐城环境地址
+// const httpUrl="http://10.19.248.200:32662/DOMN/";
+//本地调试地址
+const httpUrl="http://10.19.160.67:8081/DOMN/";
+
 export default {
   name: "task",
   data() {
@@ -176,7 +181,7 @@ export default {
   },
   computed: {
     departmentId: function() {
-      return this.$store.state.deptId;
+      return this.$store.state.deptId||[1];
 
       // return 1;
     },
@@ -226,7 +231,7 @@ export default {
 
           this.$ajax
             .put(
-              "http://10.19.160.67:8081/DOMN/manager/taskOperate/converge/" +
+              httpUrl+"manager/taskOperate/converge/" +
                 row.taskInfoId
             )
             .then(function(res) {
@@ -250,7 +255,7 @@ export default {
       _self.loading = true;
       this.$ajax
         .put(
-          "http://10.19.160.67:8081/DOMN/manager/taskOperate/delete/" +
+          httpUrl+"manager/taskOperate/delete/" +
             row.taskInfoId
         )
         .then(function(res) {
@@ -275,7 +280,7 @@ export default {
       if (row.status == 0 || row.status == 2 || row.status == 3) {
         //执行运行
         url =
-          "http://10.19.160.67:8081/DOMN/manager/taskOperate/start/" +
+          httpUrl+"manager/taskOperate/start/" +
           row.taskInfoId;
         this.$ajax
           .put(url)
@@ -295,7 +300,7 @@ export default {
       } else if (row.status == 1) {
         //执行暂停
         url =
-          "http://10.19.160.67:8081/DOMN/manager/taskOperate/pause/" +
+          httpUrl+"manager/taskOperate/pause/" +
           row.taskInfoId;
         this.$ajax
           .put(url)
@@ -334,7 +339,7 @@ export default {
       };
 
       this.$ajax
-        .get("http://10.19.160.67:8081/DOMN/manager/task/show/0", {
+        .get(httpUrl+"manager/task/show/0", {
           params: tableParams
         })
         .then(function(res) {
@@ -419,7 +424,7 @@ export default {
               _self.loading = true;
               _self
                 .$ajax({
-                  url: url,
+                  url: httpUrl+url,
                   method: "POST",
                   data: {},
                   params: params
@@ -490,7 +495,7 @@ export default {
           _self.loading = true;
           _self
             .$ajax({
-              url: url,
+              url: httpUrl+url,
               method: "POST",
               data: {},
               params: params
@@ -560,7 +565,7 @@ export default {
           _self.loading = true;
           _self
             .$ajax({
-              url: url,
+              url: httpUrl+url,
               method: "POST",
               data: {},
               params: params
