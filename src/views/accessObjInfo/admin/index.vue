@@ -7,11 +7,7 @@
           <a href="javascript:void(0)" v-on:click="exportData"><i class="enc-icon-daoru"></i></a>
           <a href="javascript:void(0)" v-on:click="refresh"><i class="enc-icon-shuaxin"></i></a>
         </div>
-				<form action="http://10.19.160.171:8081/DEMO/objDetail/readExcelFile1" id="importForm" style="display:none;">
-					<input type="file" id="file" name="inputFile" v-on:change="importAjax" />
-					<input type="text" id="tableName" name="tableName" v-model="tableName" />
-					<input type="text" id="accessSysDialectId" name="accessSysDialectId" v-model="accessSysDialectId" />
-				</form>
+				<input type="file" id="file" name="inputFile" ref="inputer" v-on:change="importAjax" style="display:none" />
         <el-radio-group v-model="tabPosition" style="margin-bottom: 30px;">
           <el-radio-button label="metadataManage">元数据管理</el-radio-button>
           <el-radio-button label="dataPreview">数据预览</el-radio-button>
@@ -133,21 +129,13 @@
         </el-container>
       </el-main>
     </el-container>
-    <el-dialog
-      :title="dialogTitle"
-      :visible.sync="dialogVisible"
-      width="30%">
-      <add1 :dialogRouter="myDialogRouter" />
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="dialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
-      </span>
-    </el-dialog>
+		<data-import v-if="importList.length>0" :importList="importList"></data-import>
   </div>
 </template>
 
 <script>
 import { mapState} from 'vuex'
+import dataImport from './../dialog/admin/data_import'
 
 
 export default {
@@ -170,7 +158,8 @@ export default {
       dialogVisible:false,
       myDialogRouter:'adminAdd',
       dialogTitle:'新增',
-      tabPosition:'metadataManage'
+      tabPosition:'metadataManage',
+			importList:[]
     }
   },
   computed:{
@@ -178,7 +167,7 @@ export default {
       return this.$store.state.queryParams.accessObjInfo;
     },
 		exportUrl:function(){
-			return 'http://10.19.160.171:8081/DEMO/objDetail/exportTemplateFile?objInfoId='+this.$route.params.objId+'&tableName='+this.$route.params.objName+'&diyComments='+this.tableParams.diyComments+'&accessSysDialectId='+this.tableParams.ACCESS_SYS_DIALECT_ID+'&browser='+'chrome';
+			return 'http://10.19.248.200:32661/DACM/objDetail/exportTemplateFile?objInfoId='+this.$route.params.objId+'&tableName='+this.$route.params.objName+'&diyComments='+this.tableParams.diyComments+'&accessSysDialectId='+this.tableParams.ACCESS_SYS_DIALECT_ID+'&browser='+'chrome';
 		},
 		tableName:function(){
 			return this.$route.params.objName;
@@ -188,12 +177,11 @@ export default {
 		}
   },
   components: {
+		dataImport
   },
   watch: {
     tableParams(newVal,oldVal){
-      if((newVal.pageNum1 != oldVal.pageNum1 || newVal.pageNum2 != oldVal.pageNum2)){
-        this.loadTable();
-      }
+			this.loadTable();
       this.tabPosition = newVal.tabPosition;
     },
     tabPosition(newVal,oldVal){
@@ -210,17 +198,42 @@ export default {
     this.$root.eventHub.$on('search', (keyword)=>{
       this.search(keyword);
     })
+		this.eventHub.$on('importDataCommit', (keyword)=>{
+      let inputDOM = this.$refs.inputer;
+			// 通过DOM取文件数据
+			this.file    = inputDOM.files[0];
+			var formdata = new FormData();
+			formdata.append('filePath',inputDOM.files[0]);
+			formdata.append('objInfoId',this.$route.params.objId);
+			formdata.append('tableName',this.$route.params.objName);
+			formdata.append('accessSysDialectId',this.tableParams.ACCESS_SYS_DIALECT_ID);
+			var _self = this;
+			this.$ajax({
+				url: 'http://10.19.160.171:8081/DEMO/objDetail/upLoadDetailExcelFile',
+				method: 'post',
+				data: formdata,
+				headers: {'Content-Type': false}
+			}).then(function (res) {
+				console.log(res);
+				
+			})
+			.catch(function (err) {
+				_self.$alert('未知错误', {
+					confirmButtonText: '确定'
+				});
+				console.log(err);
+			})
+    })
   },
   methods:{
 		refresh(){
 			var _self = this;
 			this.loading = true;
-			this.$ajax.get('http://10.19.160.171:8081/DEMO/objDetail/synchronize',{
+			this.$ajax.get('http://10.19.248.200:32661/DACM/objDetail/synchronize',{
 				params:{
 					id:this.$route.params.objId
 				}
 			}).then(function(res){
-				console.log(res);
 				if(res.data.success){
 					_seft.loadtable();
 				}else{
@@ -237,7 +250,48 @@ export default {
 			document.getElementById('file').click();
 		},
 		importAjax(){
-			alert('ajax');
+			let inputDOM = this.$refs.inputer;
+			// 通过DOM取文件数据
+			this.file    = inputDOM.files[0];
+			var formdata = new FormData();
+			formdata.append('inputFile',inputDOM.files[0]);
+			formdata.append('tableName',this.$route.params.objName);
+			formdata.append('accessSysDialectId',this.tableParams.ACCESS_SYS_DIALECT_ID);
+			var _self = this;
+			this.$ajax({
+				url: 'http://10.19.248.200:32661/DACM/objDetail/readExcelFile',
+				method: 'post',
+				data: formdata,
+				headers: {'Content-Type': false}
+			}).then(function (res) {
+				console.log(res);
+				if(res.data.success){
+					if(res.data.data.success){
+						if(res.data.data.data.length>0){
+							_self.importList = res.data.data.data;
+						}else{
+							_self.$alert('导入列表为空','提示', {
+								confirmButtonText: '确定'
+							});
+						}
+					}else{
+						_self.$alert('上传错误', {
+							confirmButtonText: '确定'
+						});
+					}
+				}else{
+					_self.$alert('上传错误', {
+						confirmButtonText: '确定'
+					});
+					console.log(res);
+				}
+			})
+			.catch(function (err) {
+				_self.$alert('未知错误', {
+					confirmButtonText: '确定'
+				});
+				console.log(err);
+			})
 		},
 		exportData(){
 			window.open(this.exportUrl);
@@ -253,7 +307,7 @@ export default {
 					ACCESS_SYS_DIALECT_ID:this.tableParams.ACCESS_SYS_DIALECT_ID,
 					accessSysId:this.tableParams.accessSysId
 				}
-        this.$ajax.post('http://10.19.160.171:8081/DEMO/objDetail/dataList',paramsObj).then(function(res){
+        this.$ajax.post('http://10.19.248.200:32661/DACM/objDetail/dataList',paramsObj).then(function(res){
           console.log('tableLoaded:metadataManage');
 					if(res.data.success){
 						var data = res.data.data.list;
@@ -283,7 +337,7 @@ export default {
 					accessSysId:this.tableParams.accessSysId,
 					filter:null
 				}
-        this.$ajax.post('http://10.19.160.171:8081/DEMO/objDetail/previewData',paramsObj).then(function(res){
+        this.$ajax.post('http://10.19.248.200:32661/DACM/objDetail/previewData',paramsObj).then(function(res){
           console.log('tableLoaded:dataPreview');
 					if(res.data.success){
 						if(res.data.datas.length>0){
@@ -314,7 +368,7 @@ export default {
     changeName:function(index,row){
 			var _self = this;
 			this.loading = true;
-			this.$ajax.get('http://10.19.160.171:8081/DEMO/objDetail/diyComment',{
+			this.$ajax.get('http://10.19.248.200:32661/DACM/objDetail/diyComment',{
 				params:{
 					id:row.id,
 					value:this.editingRow.diyComments

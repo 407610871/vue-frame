@@ -3,7 +3,6 @@
 
 /* eslint-disable */
 var ENV = {
-  "API": "http://10.37.146.46/circles",
   "VUE_APP_AUTH_SERVER_URL": "http://10.37.146.48:8080/auth",
   "VUE_APP_REALM": "bocom_nanjing",
   "VUE_APP_RESOURCE": "js-console",

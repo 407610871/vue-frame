@@ -17,7 +17,7 @@
 export default {
   data() {
     return {
-      activeIndex: '1'
+      activeIndex: '3'
     };
   },
   methods: {
