@@ -306,7 +306,7 @@ export default {
   data: function() {
     return {
       //外层loading
-      loading:false,
+      loading:true,
       //任务基本信息loading
       innerLoading:false,
       serveFinishCount:0,
@@ -314,6 +314,7 @@ export default {
       showInnerDialog: true,
       isShowCheck:false,
       httpUrl:'http://10.19.248.200:32662/DOMN/',
+      httpUrl2:'http://10.19.248.200:32661/DACM/',
       operateList:[
         {'value':'stop','type':'暂停','disabled':false},
         {'value':'run','type':'运行','disabled':false},
@@ -519,7 +520,7 @@ export default {
           }else{
             that.taskBaseInfo = response.data.data;
             //创建人
-            that.taskBaseInfo.creater = that.taskBaseInfo.creater.split('/')[1];
+            that.taskBaseInfo.creater = that.taskBaseInfo.creater?that.taskBaseInfo.creater.split('/')[1]:'';
             let statusMap = {
               0:'创建',
               1:'运行',
@@ -627,11 +628,11 @@ export default {
       let that = this;
       let reqData = {
         params:{
-          // 'taskId':that.reqObj.taskInfoId
-          'taskId':92066
+          'taskId':that.reqObj.taskInfoId
+          // 'taskId':92066
         }
       }//http://10.19.160.59:8081/DEMO/ccheckData/checkLogByTaskId
-      axios.get('http://10.19.160.59:8081/DEMO/ccheckData/checkLogByTaskId',reqData).then(
+      axios.get(that.httpUrl2+'ccheckData/checkLogByTaskId',reqData).then(
         function(res){
           console.log('数据核验日志信息',res)
           if(res.data.code!="200"&&res.data.code!="0000"){
