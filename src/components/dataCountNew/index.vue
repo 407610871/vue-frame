@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="main-label">{{mydata.name}}</div>
+    <div class="main-label">{{mydata.name}} {{mydata.total}}</div>
     <div class="line" v-bind:style="{backgroundColor:bgColor}">
       <div v-for="item in mydata.list" v-bind:style="{backgroundColor:item.color,width:item.number+'%'}"></div>
     </div>
@@ -37,6 +37,7 @@ export default {
       for(var i=0;i<obj.list.length;i++){
         obj.list[i].number = Math.floor(100*(parseFloat(obj.list[i].data)/max));
         obj.list[i].label = value.data;
+				obj.list[i].total = value.total?value.total:'';
         delete obj.list[i].data;
         obj.list[i].color = color[i];
       }

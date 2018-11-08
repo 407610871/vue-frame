@@ -15,7 +15,9 @@
         <div class="regbtn fr">
           <reg-dialog @refreshTable="loadTable"></reg-dialog>
         </div>
-        <a v-on:click="collapseExpand" class="right-btn collapse-btn"><i :class="{'el-icon-circle-plus':collapse,'el-icon-remove':!collapse}"></i></a>
+        <a v-on:click="collapseExpand" class="right-btn collapse-btn" :title="收起/展开">
+					<i :class="{'el-icon-circle-plus':collapse,'el-icon-remove':!collapse}"></i>
+				</a>
         <formFliter v-if="queryParamReady" v-bind:formCollapse="collapse" v-bind:dataObj="formFilterData" @formFilter="changeFormFilter" />
       </el-header>
       <el-main style="padding-bottom:0;">
@@ -46,8 +48,8 @@
             <template slot-scope="scope">
              
               <edit-dialog :acId="scope.row.id"></edit-dialog>
-              <i @click="handleCopy(scope.$index, scope.row)" class="enc-icon-documents table-action-btn"></i>
-              <i @click="handleDelete(scope.$index, scope.row)" class="el-icon-delete table-action-btn"></i>
+              <i title="复制" @click="handleCopy(scope.$index, scope.row)" class="enc-icon-documents table-action-btn"></i>
+              <i title="废止" @click="handleDelete(scope.$index, scope.row)" class="el-icon-delete table-action-btn"></i>
             </template>
           </el-table-column>
         </el-table>
@@ -94,12 +96,12 @@ export default {
       collapse:true,
       count1Data: {
         name: '批式接入统计',
-        total:0,
+        total:'',
         list:[]
       },
       count2Data: {
         name: '实时统计',
-        total:0,
+        total:'',
         list: []
       },
       formFilterData:[]
@@ -136,7 +138,6 @@ export default {
       this.search(keyword);
     });
 		this.$root.eventHub.$on('selDept', (ids)=>{
-      alert(ids);
       this.setStore({
 				deptId:ids
 			});
@@ -144,13 +145,17 @@ export default {
   },
   mounted(){
 		this.$root.eventHub.$emit('selTreeNode',this.$store.state.queryParams[this.$route.name].deptId);
-		this.$root.eventHub.$emit('selDeptTree',this.tableParams.deptId);
+		this.$root.eventHub.$emit('setActiveNav',1);
     this.storeReady();
     var _self = this;
-    this.$ajax.get('http://10.19.248.200:32661/DACM/caccess/dataAccessStatistics').then(function(res){
+    this.$ajax.post('http://10.19.160.29:8080/DACM/caccess/dataAccessStatistics',this.tableParams.deptId
+    // this.$ajax.post('http://10.19.248.200:32661/DACM/caccess/dataAccessStatistics',{
+		).then(function(res){
       if(res.data.success){
         _self.countTotal=res.data.data.total;
+				_self.count1Data.total = res.data.data.dPercentage;
         _self.count1Data.list=res.data.data.discontinuousPercentage;
+				_self.count2Data.total = res.data.data.cPercentage;
         _self.count2Data.list=res.data.data.constantlyPercentage;
         _self.countReady = true;
       }else{
@@ -245,33 +250,41 @@ export default {
 			});
       this.$router.push({name:'accessObjManage',params:{sourceId:this.mainTableData[index].id,sourceName:encodeURI(this.mainTableData[index].name)}});
     },
-    handleAdd: function() {
-      //新增
-    },
-    handleEdit: function(index, row) {
-      //修改
-    },
     handleCopy: function(index, row) {
-			var _self = this;
-      this.$ajax.get('http://10.19.248.200:32661/DACM/update/dataSourceCopy', {
-				params:{
-					id: row.id
-				}
-      }).then(function(res) {
-        _self.$store.state[this.$route.name].pageNum = 1;
-      })
-      .catch(function(err) {
-        console.log(err)
-      });
-    },
+			this.$confirm('确认要复制'+row.name+'吗?', '提示', {
+				confirmButtonText: '复制',
+				cancelButtonText: '取消',
+				type: 'warning'
+			}).then(() => {
+				var _self = this;
+				this.$ajax.get('http://10.19.248.200:32661/DACM/update/dataSourceCopy', {
+					params:{
+						id: row.id
+					}
+				}).then(function(res) {
+					_self.setStore({
+						pageNum:1
+					});
+				})
+				.catch(function(err) {
+					console.log(err)
+				});
+			})
+		},
     handleDelete: function(index, row) {
-      var _self = this;
-      this.$ajax.post('http://10.19.248.200:32661/DACM/caccess/delete?ids='+row.id).then(function(res) {
-        _self.loadTable();
-      })
-      .catch(function(err) {
-        console.log(err)
-      });
+			this.$confirm('确认要废止'+row.name+'吗?', '提示', {
+				confirmButtonText: '废止',
+				cancelButtonText: '取消',
+				type: 'warning'
+			}).then(() => {
+				var _self = this;
+				this.$ajax.post('http://10.19.248.200:32661/DACM/caccess/delete?ids='+row.id).then(function(res) {
+					_self.loadTable();
+				})
+				.catch(function(err) {
+					console.log(err)
+				});
+			});
     },
     search:function(keyword){
       this.setStore({

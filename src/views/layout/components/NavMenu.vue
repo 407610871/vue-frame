@@ -20,6 +20,11 @@ export default {
       activeIndex: '3'
     };
   },
+	created(){
+		this.$root.eventHub.$on('setActiveNav', (index)=>{
+      this.activeIndex = index+'';
+    });
+	},
   methods: {
     handleSelect(key, keyPath) {
       // this.$router.push({path:'/dashboard'});

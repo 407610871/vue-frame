@@ -202,6 +202,9 @@
 						this.$root.eventHub.$emit('selDept',deptIds);
 						this.$root.eventHub.$emit('getCurrentNode',node.id);
           }
+					if(this.$route.name=="accessObjManage" || this.$route.name=="accessObjInfo"){
+						this.$router.push({name:'dashboard'});
+					}
         },
         dragDept(Node,toDragNode,position,e){
           const parent = position=='inner'?toDragNode:toDragNode.parent;

@@ -97,13 +97,6 @@ function bootstrap(env) {
     },
 		mounted() {
       var _self = this;
-			this.$ajax.put("http://10.19.248.200:32662/DOMN/manager/taskOperate/taskLogInfo/1")
-			.then(function(res) {
-				
-			})
-			.catch(function(err) {
-				
-			});
 			
       this.$ajax
         .get("http://10.19.248.200:32661/DACM/caccess/sysdialect", {

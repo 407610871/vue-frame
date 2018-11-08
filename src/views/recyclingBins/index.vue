@@ -49,8 +49,8 @@
           <el-table-column label="操作">
             <template slot-scope="scope">
 							<div>
-								<i @click="recordRecover(scope.$index, scope.row)" class="el-icon-back table-action-btn"></i>
-								<i @click="recordDelete(scope.$index, scope.row)" class="el-icon-close table-action-btn"></i>
+								<i @click="recordRecover(scope.$index, scope.row)" class="el-icon-back table-action-btn" title="恢复"></i>
+								<i @click="recordDelete(scope.$index, scope.row)" class="el-icon-close table-action-btn" title="删除"></i>
 							</div>
             </template>
           </el-table-column>
@@ -194,46 +194,58 @@ export default {
       });
     },
     recordRecover:function(index,row){
-			var _self = this;
-			_self.loading = true;
-			this.$ajax.get('http://10.19.248.200:32661/DACM/caccess/restore',{
-				params:{
-					id:row.id
-				}
-			}).then(function(res){
-        if(res.data.success){
-					_self.loadTable();
-        }else{
-          console.log(res.data.code)
-        }
-        _self.loading = false;
-      })
-      .catch(function(err){
-        _self.currentPage = _self.tableParams.pageNum;
-        _self.loading = false;
-        console.log(err)
-      });
+			this.$confirm('确认要恢复'+row.name+'吗?', '提示', {
+				confirmButtonText: '恢复',
+				cancelButtonText: '取消',
+				type: 'warning'
+			}).then(() => {
+				var _self = this;
+				_self.loading = true;
+				this.$ajax.get('http://10.19.248.200:32661/DACM/caccess/restore',{
+					params:{
+						id:row.id
+					}
+				}).then(function(res){
+					if(res.data.success){
+						_self.loadTable();
+					}else{
+						console.log(res.data.code)
+					}
+					_self.loading = false;
+				})
+				.catch(function(err){
+					_self.currentPage = _self.tableParams.pageNum;
+					_self.loading = false;
+					console.log(err)
+				});
+			});
     },
     recordDelete:function(index,row){
-			var _self = this;
-			_self.loading = true;
-      this.$ajax.get('http://10.19.248.200:32661/DACM/caccess/remove',{
-				params:{
-					id:row.id
-				}
-			}).then(function(res){
-        if(res.data.success){
-					_self.loadTable();
-        }else{
-          console.log(res.data.code)
-        }
-        _self.loading = false;
-      })
-      .catch(function(err){
-        _self.currentPage = _self.tableParams.pageNum;
-        _self.loading = false;
-        console.log(err)
-      });
+			this.$confirm('确认要删除'+row.name+'吗?', '提示', {
+				confirmButtonText: '删除',
+				cancelButtonText: '取消',
+				type: 'warning'
+			}).then(() => {
+				var _self = this;
+				_self.loading = true;
+				this.$ajax.get('http://10.19.248.200:32661/DACM/caccess/remove',{
+					params:{
+						id:row.id
+					}
+				}).then(function(res){
+					if(res.data.success){
+						_self.loadTable();
+					}else{
+						console.log(res.data.code)
+					}
+					_self.loading = false;
+				})
+				.catch(function(err){
+					_self.currentPage = _self.tableParams.pageNum;
+					_self.loading = false;
+					console.log(err)
+				});
+			});
     },
     setStore:function(obj){
       let storeData = JSON.parse(JSON.stringify(this.$store.state.queryParams[this.$route.name]));

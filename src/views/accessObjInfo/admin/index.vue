@@ -3,9 +3,9 @@
     <el-container style="height:100%;" class="dashboard-container" v-loading="loading">
       <el-header class="filter-container" height="86px">
         <div class="right-tools" v-if="tabPosition == 'metadataManage'">
-          <a href="javascript:void(0)" v-on:click="importData"><i class="enc-icon-daochu"></i></a>
-          <a href="javascript:void(0)" v-on:click="exportData"><i class="enc-icon-daoru"></i></a>
-          <a href="javascript:void(0)" v-on:click="refresh"><i class="enc-icon-shuaxin"></i></a>
+          <a href="javascript:void(0)" v-on:click="importData" title="导入"><i class="enc-icon-daochu"></i></a>
+          <a href="javascript:void(0)" v-on:click="exportData" title="导出"><i class="enc-icon-daoru"></i></a>
+          <a href="javascript:void(0)" v-on:click="refresh" title="刷新"><i class="enc-icon-shuaxin"></i></a>
         </div>
 				<input type="file" id="file" name="inputFile" ref="inputer" v-on:change="importAjax" style="display:none" />
         <el-radio-group v-model="tabPosition" style="margin-bottom: 30px;">
@@ -129,7 +129,7 @@
         </el-container>
       </el-main>
     </el-container>
-		<data-import v-if="importList.length>0" :importList="importList"></data-import>
+		<data-import v-if="importList.ready" :importList="importList" @closeImport="closeImport"></data-import>
   </div>
 </template>
 
@@ -159,7 +159,14 @@ export default {
       myDialogRouter:'adminAdd',
       dialogTitle:'新增',
       tabPosition:'metadataManage',
-			importList:[]
+			importList:{
+				ready:false,
+				data:[],
+				tableName:'',
+				objInfoId:'',
+				accessSysDialectId:'',
+				filePath:''
+			}
     }
   },
   computed:{
@@ -193,36 +200,11 @@ export default {
   mounted(){
     var tableParams = this.$store.state.queryParams.accessObjInfo;
     this.loadTable(true);
+		this.$root.eventHub.$emit('setActiveNav',1);
   },
   created(){
     this.$root.eventHub.$on('search', (keyword)=>{
       this.search(keyword);
-    })
-		this.eventHub.$on('importDataCommit', (keyword)=>{
-      let inputDOM = this.$refs.inputer;
-			// 通过DOM取文件数据
-			this.file    = inputDOM.files[0];
-			var formdata = new FormData();
-			formdata.append('filePath',inputDOM.files[0]);
-			formdata.append('objInfoId',this.$route.params.objId);
-			formdata.append('tableName',this.$route.params.objName);
-			formdata.append('accessSysDialectId',this.tableParams.ACCESS_SYS_DIALECT_ID);
-			var _self = this;
-			this.$ajax({
-				url: 'http://10.19.160.171:8081/DEMO/objDetail/upLoadDetailExcelFile',
-				method: 'post',
-				data: formdata,
-				headers: {'Content-Type': false}
-			}).then(function (res) {
-				console.log(res);
-				
-			})
-			.catch(function (err) {
-				_self.$alert('未知错误', {
-					confirmButtonText: '确定'
-				});
-				console.log(err);
-			})
     })
   },
   methods:{
@@ -252,7 +234,10 @@ export default {
 		importAjax(){
 			let inputDOM = this.$refs.inputer;
 			// 通过DOM取文件数据
-			this.file    = inputDOM.files[0];
+			this.file = inputDOM.files[0];
+			if(!this.file){
+				return;
+			}
 			var formdata = new FormData();
 			formdata.append('inputFile',inputDOM.files[0]);
 			formdata.append('tableName',this.$route.params.objName);
@@ -264,11 +249,15 @@ export default {
 				data: formdata,
 				headers: {'Content-Type': false}
 			}).then(function (res) {
-				console.log(res);
 				if(res.data.success){
 					if(res.data.data.success){
 						if(res.data.data.data.length>0){
-							_self.importList = res.data.data.data;
+							_self.importList.data = res.data.data.data[0];
+							_self.importList.tableName = _self.$route.params.objName;
+							_self.importList.objInfoId = _self.$route.params.objId;
+							_self.importList.accessSysDialectId = _self.tableParams.ACCESS_SYS_DIALECT_ID;
+							_self.importList.filePath = document.getElementById('file').value;
+							_self.importList.ready = true;
 						}else{
 							_self.$alert('导入列表为空','提示', {
 								confirmButtonText: '确定'
@@ -292,6 +281,12 @@ export default {
 				});
 				console.log(err);
 			})
+		},
+		closeImport(){
+			this.importList = [];
+			document.getElementById('file').outerHtml = document.getElementById('file').outerHtml
+			this.$refs.inputer.value =''
+			this.$refs.inputer.files = [];
 		},
 		exportData(){
 			window.open(this.exportUrl);

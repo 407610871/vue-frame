@@ -7,7 +7,7 @@
       </el-header>
       <el-main class="main-container">
         <div class="table-tools">
-          <el-button v-on:click="updataSource" class="right-btn" style="margin-left:10px;">接入源更新</el-button>
+          <el-button v-on:click="updataSource" class="right-btn" style="margin-left:10px;" title="接入源更新">接入源更新</el-button>
           <table-inver class="right-btn" :pdata="tablePa"></table-inver>
           <set-task class="right-btn" :rowList="rowList"></set-task>
         </div>
@@ -39,7 +39,7 @@
           </el-table-column>
           <el-table-column label="操作">
             <template slot-scope="scope">
-              <el-button size="mini" v-on:click="updataSourceSingle(scope.$index, scope.row)">数据量更新</el-button>
+              <el-button size="mini" v-on:click="updataSourceSingle(scope.$index, scope.row)" title="数据量更新">数据量更新</el-button>
               <div class="survey">
                 <userSurvey :pdata="scope.row" @fre="loadTable()"></userSurvey>
               </div>
@@ -107,7 +107,29 @@ export default {
       rowList: [],
       tablePa: [],
       jrtype:'',
-
+			objectType:[{
+				id: 1,
+				name: '表'
+			}, {
+				id: 2,
+				name: '视图'
+			}, {
+				id: 3,
+				name: '其他'
+			}],
+			dataRange:[{
+				id: 'city',
+				name: '全市'
+			}, {
+				id: 'province',
+				name: '全省'
+			}, {
+				id: 'country',
+				name: '全国'
+			}, {
+				id: 'other',
+				name: '其他'
+			}]
     }
   },
   computed: {
@@ -144,6 +166,7 @@ export default {
   },
   mounted() {
     console.log('mounted');
+		this.$root.eventHub.$emit('setActiveNav',1);
     this.storeReady();
   },
   created() {
@@ -164,36 +187,11 @@ export default {
         count: this.$store.state.pageSize
       };
       paramsObj.condition = this.tableParams.condition ? this.tableParams.condition : "";
-      paramsObj.objectType = this.tableParams.objectType.length > 0 ? this.tableParams.objectType.join(',') : "";
-      paramsObj.dataRange = this.tableParams.dataRange.length > 0 ? this.tableParams.dataRange.join(',') : "";
-/*<<<<<<< HEAD
-      paramsObj.accessSysId = this.$route.params.sourceId;
-      this.$ajax.post('http://10.19.160.168:8080/DACM/ctables/datas', paramsObj).then(function(res) {
-          console.log(res)
-          if (res.data.success) {
-            _self.mainTableData = res.data.data.list;
-            _self.mainTableDataTotal = res.data.data.total;
-           
-            if(res.data.data.list.length>0){
-               _self.tablePa = res.data.data.list[0];
-               _self.jrtype =  res.data.data.list[0].accessSys.accessSysDialect.name;
-               console.log(_self.jrtype);
-            }
-            //这里是异步的，存在延迟，所以没问题,如果是同步的话可能存在问题
-            _self.currentPage = _self.tableParams.pageNum;
-          } else {
-            console.log(res.code);
-          }
-          _self.loading = false;
-        })
-        .catch(function(err) {
-          _self.currentPage = _self.tableParams.pageNum;
-          console.log(err);
-          _self.loading = false;
-        });*/
+      paramsObj.objectType = this.tableParams.objectType.join(',');
+      paramsObj.dataRange = this.tableParams.dataRange;
 
       paramsObj.accessSysId = parseInt(this.$route.params.sourceId);
-			/*this.$ajax({
+			this.$ajax({
 				url:'http://10.19.248.200:32661/DACM/ctables/datas',
 				// url:'http://10.19.160.25:8080/DACM/ctables/datas',
 				method: 'post',
@@ -202,7 +200,7 @@ export default {
 					'Content-Type':'application/json'
 				}
 			})
-			.then(respanse=>{
+			.then(res=>{
 				if (res.data.success) {
 					_self.mainTableData = res.data.data.list;
 					_self.mainTableDataTotal = res.data.data.total;
@@ -217,24 +215,7 @@ export default {
 				_self.currentPage = _self.tableParams.pageNum;
 				console.log(err);
 				_self.loading = false;
-			});*/
-      this.$ajax.post('http://10.19.160.25:8080/DACM/ctables/datas', paramsObj).then(function(res) {
-				console.log(res)
-				if (res.data.success) {
-					_self.mainTableData = res.data.data.list;
-					_self.mainTableDataTotal = res.data.data.total;
-					_self.currentPage = _self.tableParams.pageNum;
-				} else {
-					console.log(res.code);
-				}
-				_self.loading = false;
-			})
-			.catch(function(err) {
-				_self.currentPage = _self.tableParams.pageNum;
-				console.log(err);
-				_self.loading = false;
 			});
-
     },
     setStore: function(obj) {
       let storeData = JSON.parse(JSON.stringify(this.$store.state.queryParams[this.$route.name]));
@@ -252,28 +233,6 @@ export default {
       });
     },
     goAccessObjInfo: function(row) {
-/*<<<<<<< HEAD
-      this.$store.commit('setParamItem', {
-        name: 'accessObjInfo',
-        data: {
-          ACCESS_SYS_DIALECT_ID: this.mainTableData[0].accessSys.accessSysDialectId,
-          accessSysId: this.mainTableData[0].accessSys.id,
-          diyComments: row.diyComments
-        }
-      });
-      this.$store.commit('resetQueryParam', {
-        resetData: 'accessObjInfo'
-      });
-      this.$router.push({
-        name: "accessObjInfo",
-        params: {
-          sourceId: this.$route.params.sourceId,
-          sourceName: this.$route.params.sourceName,
-          objId: row.id,
-          objName: encodeURI(row.name)
-        }
-      });
-=======*/
 			this.$store.commit('resetQueryParam', {
 				resetData:'accessObjInfo'
 			});
@@ -291,7 +250,6 @@ export default {
         objId:row.id,
         objName:encodeURI(row.name)
       }});
-/*>>>>>>> 12cd4fd445ab075859e422720f16612c060483de*/
     },
     search: function(keyword) {
       this.setStore({
@@ -356,35 +314,14 @@ export default {
         name: "接入对象类型：",
         id: 'objectType',
         type: 'checkbox',
-        checkData: [{
-          id: 'TABLE',
-          name: '表'
-        }, {
-          id: 'VIEW',
-          name: '视图'
-        }, {
-          id: 'OTHER',
-          name: '其他'
-        }],
-        seledData: this.tableParams.objectType ? this.tableParams.objectType : []
+        checkData: this.objectType,
+        seledData: this.tableParams.objectType
       }, {
         name: "数据范围：",
         id: 'dataRange',
         type: 'radio',
-        checkData: [{
-          id: 'city',
-          name: '全市'
-        }, {
-          id: 'province',
-          name: '全省'
-        }, {
-          id: 'country',
-          name: '全国'
-        }, {
-          id: 'other',
-          name: '其他'
-        }],
-        seledData: this.tableParams.dataRange ? this.tableParams.dataRange : []
+        checkData: this.dataRange,
+        seledData: this.tableParams.dataRange
       }];
       this.queryParamReady = true;
     }

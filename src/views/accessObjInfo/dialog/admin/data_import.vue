@@ -3,22 +3,22 @@
     <el-container style="height:100%;" class="dashboard-container">
 			<el-main style="padding-bottom:0;">
 				<el-table
-					:data="importList"
+					:data="importList.data"
 					stripe
 					height="300"
 					border
-					style="width: 100%"
+					style="width:100%"
 					tooltip-effect="light"
 					>
 					<el-table-column
 						label="字段中文名"
-						width="180" 
-						prop="scope.row.diyComments" 
+						width="180"
+						prop="diyComments"
 						show-overflow-tooltip>
 					</el-table-column>
 					<el-table-column
-						prop="name"
 						label="字段名"
+						prop="name"
 						width="180">
 					</el-table-column>
 					<el-table-column
@@ -56,11 +56,11 @@
 						label="描述">
 					</el-table-column>
 				</el-table>
+				<div style="margin:20px; text-align:right;">
+					<el-button @click="cancel">取消</el-button>
+					<el-button @click="importCommit">确认导入</el-button>
+				</div>
 			</el-main>
-			</el-footer>
-				<el-button @click="cancel">取消</el-button>
-				<el-button @click="importCommit">确认导入</el-button>
-			</el-footer>
 		</el-container>
   </el-dialog>
 </template>
@@ -74,19 +74,41 @@ export default {
   },
 	props: {
     importList: {
-      type: Array,
+      type: Object,
       required: true
     },
   },
+	computed:{
+	},
 	components: {
 
   },
   methods: {
     cancel(){
-			this.dialogVisible = false;
+			this.$emit('closeImport');
 		},
 		importCommit(){
-			this.$emit('importDataCommit');
+			var formdata = new FormData();
+			formdata.append('filePath',this.importList.filePath);
+			formdata.append('objInfoId',this.importList.objInfoId);
+			formdata.append('tableName',this.importList.tableName);
+			formdata.append('accessSysDialectId',this.importList.accessSysDialectId);
+			var _self = this;
+			this.$ajax({
+				url: ' http://10.19.248.200:32661/DACM/objDetail/upLoadDetailExcelFile',
+				method: 'post',
+				data: formdata,
+				headers: {'Content-Type': 'application:json'}
+			}).then(function (res) {
+				console.log(res);
+				_self.$emit('closeImport');
+			})
+			.catch(function (err) {
+				_self.$alert('未知错误', {
+					confirmButtonText: '确定'
+				});
+				console.log(err);
+			});
 		}
   },
   mounted() {
@@ -136,9 +158,6 @@ export default {
   }
   .table-container {
     padding: 32px;
-  }
-  .enc-pagination {
-    float: right;
   }
 }
 </style>
