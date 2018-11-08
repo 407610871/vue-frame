@@ -51,3 +51,8 @@ export function myBrowser() {
   }
 
 }
+
+
+export function myUrl(){
+  return 'http://10.19.160.168:8080/DACM'
+}

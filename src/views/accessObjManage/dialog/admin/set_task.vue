@@ -1,7 +1,7 @@
 <template>
   <div class="taskMDialog userSurveyDialog setTaskDia">
-  <el-button @click="dialogVisible = true" class="add-btn fr">批量采集</el-button>
-   <!--  <i class="el-icon-info" @click="dialogVisible = true">设置通配符</i> -->
+    <el-button @click="setTask()" class="add-btn fr">批量采集</el-button>
+    <!--  <i class="el-icon-info" @click="dialogVisible = true">设置通配符</i> -->
     <el-dialog title="批量接入任务向导" :visible.sync="dialogVisible" width="60%" :before-close="closeDialog">
       <div class="title-gra plr30">
         <span class="grab gra-l"></span>
@@ -16,11 +16,11 @@
                 <h2>提供方信息</h2>
               </div>
             </div>
-            <user-surveybak></user-surveybak>
-            <div class="btn tcenter">
-              <el-button type="primary" style="margin-top: 12px;" @click="next('second')">下一步</el-button>
-              <el-button style="margin-top: 12px;" @click="closeDialog">取消</el-button>
-            </div>
+            <user-surveybak :info="rowList" @pre="next('second')" @closeuser="closeDialog()" ref="survey"></user-surveybak>
+            <!--  <div class="btn tcenter">
+             <el-button type="primary" style="margin-top: 12px;" @click="next('second')">下一步</el-button>
+             <el-button style="margin-top: 12px;" @click="closeDialog">取消</el-button>
+           </div> -->
           </el-tab-pane>
           <el-tab-pane name="second" disabled> <span slot="label"><i class="el-icon-circle">2</i> 批量匹配设置</span>
             <div class="daiInfo proInfo">
@@ -28,12 +28,7 @@
                 <h2>批量匹配设置</h2>
               </div>
             </div>
-            <wild-card></wild-card>
-            <div class="btn tcenter">
-             <el-button type="primary" style="margin-top: 12px;" @click="next('first')">上一步</el-button>
-              <el-button type="primary" style="margin-top: 12px;" @click="next('third')">下一步</el-button>
-             
-            </div>
+            <wild-card :rowList="rowList" @pre="next('first')" @nre="next('third')"></wild-card>
           </el-tab-pane>
           <el-tab-pane name="third" disabled><span slot="label"><i class="el-icon-circle">3</i> 建立数据映射关系</span>
             <div class="daiInfo proInfo">
@@ -41,23 +36,20 @@
                 <h2>字段类型映射</h2>
               </div>
             </div>
-            <type-map></type-map>
-            <div class="btn tcenter mt30">
-            <el-button type="primary" style="margin-top: 12px;" @click="next('second')">上一步</el-button>
-              <el-button type="primary" style="margin-top: 12px;" @click="next('fourth')">下一步</el-button>
-              
-            </div>
+            <type-map :rowList="rowList" @pre="next('second')" @next="next('fourth')"></type-map>
           </el-tab-pane>
-          <el-tab-pane name="fourth" disabled><span slot="label"><i class="el-icon-circle">4</i>设置接入信息</span><div class="daiInfo proInfo">
+          <el-tab-pane name="fourth" disabled><span slot="label"><i class="el-icon-circle">4</i>设置接入信息</span>
+            <div class="daiInfo proInfo">
               <div class="daiInfo-title proInfo-title">
                 <h2>设置采集任务</h2>
               </div>
             </div>
-            <coll-task></coll-task>
-            <div class="btn tcenter mt30">
+            <coll-task :rowList="rowList" @pre="next('third')" @fresh="fresh()"> </coll-task>
+            <!-- <div class="btn tcenter mt30">
               <el-button type="primary" style="margin-top: 12px;" @click="next('third')">上一步</el-button>
               <el-button type="primary" style="margin-top: 12px;">完成</el-button>
-            </div></el-tab-pane>
+            </div> -->
+          </el-tab-pane>
         </el-tabs>
       </div>
     </el-dialog>
@@ -66,8 +58,8 @@
 <script>
 import userSurveybak from '@/views/accessObjManage/dialog/admin/user_surveybak' //用户调研
 import wildCard from '@/views/accessObjManage/dialog/admin/wild_card' //设置通配符
-import typeMap from '@/views/accessObjManage/dialog/admin//type_map' //建立数据映射关系
-import collTask from '@/views/accessObjManage/dialog/admin/coll_task'//设置采集任务
+import typeMap from '@/views/mainLay/dialog/type_map' //建立数据映射关系
+import collTask from '@/views/mainLay/dialog/coll_tasks' //设置采集任务
 export default {
   name: "userSurvey",
   data: function() {
@@ -76,6 +68,7 @@ export default {
       dialogVisible: false,
       tabs: '',
       event: '',
+      idList: []
     };
   },
   methods: {
@@ -90,8 +83,36 @@ export default {
       console.log(this.activeName);
 
     },
+    fresh() {
+      this.$emit('fre');
+      this.dialogVisible = false;
+    },
     next(steps) {
       this.activeName = steps;
+    },
+    setTask() {
+      let flag = true;
+      if (this.rowList.length == 0) {
+        this.$message.warning('请选择批式采集的表');
+        return false;
+      } else {
+        if (this.rowList.length == 1) {
+          this.dialogVisible = true;
+        } else {
+          for (let i = 1; i < this.rowList.length; i++) {
+            if (this.rowList[0].diyComments != this.rowList[i].diyComments) {
+              flag = false;
+            }
+          }
+          if (flag) {
+            this.dialogVisible = true;
+          } else {
+            this.$message.warning('请选择资源名称相同的表');
+            return false;
+          }
+        }
+
+      }
     }
   },
   components: {
@@ -108,7 +129,8 @@ export default {
   },
   computed: {
 
-  }
+  },
+  props: ['rowList']
 
 };
 
@@ -197,10 +219,13 @@ export default {
 .taskSteps .proInfo {
   margin-bottom: 30px;
 }
-.setTaskDia .el-tabs__item.is-disabled{
-  color:#303133;
+
+.setTaskDia .el-tabs__item.is-disabled {
+  color: #303133;
 }
-.setTaskDia .el-tabs__item.is-active{
-  color:$color-background-tabs;
+
+.setTaskDia .el-tabs__item.is-active {
+  color: $color-background-tabs;
 }
+
 </style>

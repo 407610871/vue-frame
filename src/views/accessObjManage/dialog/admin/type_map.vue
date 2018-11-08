@@ -49,14 +49,37 @@ export default {
     }
   },
   methods: {
-     //测试使用mapMutations的用法
+    //测试使用mapMutations的用法
     ...mapMutations([
-        'setSchemaList'
-      ]),
+      'setSchemaList'
+    ]),
     //得到map的值
     _getMap() {
       var _self = this;
-      this.$ajax.get('./getTypeMap').then(function(res) {
+      var map = {
+        objectInfoId: this.tableId,
+        pagNum: 1,
+        count: 20,
+        term: ""
+      }
+      this.$ajax.post('http://10.19.160.171:8081/DEMO/objDetail/dataList', map).then(function(res) {
+        if (res.data.success) {
+          _self.tableData = res.data.data.list;
+          for (let j = 0; j < _self.tableData.length; j++) {
+            _self.schemaMappingDTOList.push({
+              "newColumnName": _self.tableData[j].name,
+              "newColumnType": '',
+              "orgColumnName": _self.tableData[j].name,
+              "orgColumnType": _self.tableData[j].datatype,
+              "orgColumnComment": _self.tableData[j].comments
+            })
+          }
+          _self._getAllType();
+        }
+      }).catch(function(err) {
+
+      })
+      /*this.$ajax.get('./getTypeMap').then(function(res) {
           _self.tableData = res.data.page.list;
           for (let j = 0; j < _self.tableData.length; j++) {
             _self.schemaMappingDTOList.push({
@@ -72,7 +95,7 @@ export default {
         })
         .catch(function(err) {
           console.log(err)
-        });
+        });*/
       /*this.$ajax({
         methods: 'get',
         url: '/api/ctablesDetail/datas',
@@ -97,7 +120,12 @@ export default {
     _getAllType() {
       var _self = this;
       this.$ajax.get('./getColumnType').then(function(res) {
-          _self.mapData = res.data[1];
+        for(let m =0; m<res.data.length;m++){
+          if(_self.maptype == res.data[m].type){
+            _self.mapData = res.data[m];
+          }
+        }
+          /**/
           for (let i = 0; i < _self.tableData.length; i++) {
             let flag = false;
             let temp;
@@ -134,11 +162,11 @@ export default {
 
     },
     //上一步
-    pre(){
+    pre() {
       this.$emit('pre');
     },
     //下一步
-    next(){
+    next() {
       this.$emit('nre');
       this.setSchemaList(this.schemaMappingDTOList);
     }
@@ -165,7 +193,7 @@ export default {
 
     }
   },
-  props: ['tableId']
+  props: ['tableId','maptype']
 
 };
 

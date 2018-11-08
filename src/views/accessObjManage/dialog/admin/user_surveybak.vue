@@ -171,7 +171,8 @@ export default {
       loading: true,
       sIndustry: [],
       id: "",
-      tableid: '91936601',
+      tableid: '',
+      tableids: '',
       sZnb: [],
       sFcc: [],
       sTlc: [],
@@ -209,10 +210,10 @@ export default {
     };
   },
   methods: {
-      //测试使用mapMutations的用法
+    //测试使用mapMutations的用法
     ...mapMutations([
-        'setUserList'
-      ]),
+      'setUserList'
+    ]),
     //关闭对话框
     closeDialog() {
       this.dialogVisible = false;
@@ -244,7 +245,7 @@ export default {
             areaData = [{ "pro": this.ruleForm.pro }, { "city": this.ruleForm.city }, { "urban": this.ruleForm.urban }]
           }
           var saveInfo = {
-            iD: "45443", //非必填
+            iD: "", //非必填
             tABLE_ID: this.tableid, //表id
             rESOURCE_DIRECTORY_NUMBER: "D-010000300000ZNB-01-111127262", // '资源目录编号',
             iNDUSTRY_CATEGORY: this.ruleForm.industry, // '行业类别',
@@ -299,7 +300,7 @@ export default {
 
         }
       }).then(res => {
-
+        this.loading = false;
         //得到Industry
         this.sIndustry = res.data.data.staticDatas.INDUSTRY;
         this.ruleForm.industry = this.sIndustry[0].sTATIC_CODE;
@@ -453,7 +454,7 @@ export default {
     pre(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          
+
           var areaData = [];
           if (this.ruleForm.datarange == "3") //全国
           {
@@ -468,9 +469,25 @@ export default {
           if (this.ruleForm.datarange == "0") { //行政区
             areaData = [{ "pro": this.ruleForm.pro }, { "city": this.ruleForm.city }, { "urban": this.ruleForm.urban }]
           }
+          if (this.info.length == 1) {
+            this.tableid = this.info.id;
+            this.tableids = this.info.id;
+          } else {
+            for (let i = 0; i < this.info.length; i++) {
+              if (i != info.length - 1) {
+                this.tableids += this.info[i].id + ','
+              } else {
+                this.tableids += this.info[i].id
+              }
+
+            }
+            this.tableids = this.info[0].id
+          }
+          console.log(this.tableids);
+          console.log(this.tableid);
           var saveInfo = {
-            iD: "45443", //非必填
-            tABLE_ID: this.tableid, //表id
+            iD: "", //非必填
+            tABLE_ID: this.tableids, //表id
             rESOURCE_DIRECTORY_NUMBER: "D-010000300000ZNB-01-111127262", // '资源目录编号',
             iNDUSTRY_CATEGORY: this.ruleForm.industry, // '行业类别',
             pOLICE_BUSINESS: this.ruleForm.znb, // '公安业务',
@@ -489,8 +506,10 @@ export default {
           console.log(this.$store.state.userList);
           this.$emit('pre');
         } else {
-          console.log('error submit!!');
-          return false;
+          var saveInfo = {};
+          this.setUserList(saveInfo);
+          console.log(this.$store.state.userList);
+          this.$emit('pre');
         }
       });
 
@@ -527,7 +546,27 @@ export default {
   computed: {
 
   },
-  props: ['info']
+  props: ['info'],
+  watch: {
+    info() {
+      this.tableids = '';
+      if (info.length == 1) {
+        this.tableid = info.id;
+        this.tableids = info.id;
+      } else {
+        for (let i = 0; i < this.info.length; i++) {
+          if (i != info.length - 1) {
+            this.tableids += this.info[i].id + ','
+          } else {
+            this.tableids += this.info[i].id
+          }
+
+        }
+        this.tableid = this.info[0].id
+      }
+      console.log(this.tableids);
+    }
+  }
 
 };
 

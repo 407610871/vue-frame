@@ -90,13 +90,12 @@ export default {
   },
   methods: {
     goRoute:function(name){
-      var obj = {
-        resetData:[]
-      }
-      for(var i = 0;i<this.breadcrumb.length;i++){
-        obj.resetData.push(this.breadcrumb[i].name)
-      }
-      this.$store.commit('resetQueryParam', obj);
+			if(this.$store.state.queryParams[name]){
+				var obj = {
+					resetData:name
+				}
+				this.$store.commit('resetQueryParam', obj);
+			}
       this.$router.push({ name: name});
     },
     search:function(){

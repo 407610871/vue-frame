@@ -13,28 +13,33 @@ const queryParamsDefault = {
     platform:[],
     condition:'',
 		deptId:[],
-    pageNum:1
+    pageNum:1,
+		timeFlag:0
   },
   accessObjManage:{
     objectType:[],
     dataRange:[],
     condition:'',
-    pageNum:1
+    pageNum:1,
+		timeFlag:0
   },
   accessObjInfo:{
 		ACCESS_SYS_DIALECT_ID:'',
 		accessSysId:'',
+		diyComments:'',
     pageNum1:1,
     pageNum2:1,
     keyword:'',
-    tabPosition:'metadataManage'
+    tabPosition:'metadataManage',
+		timeFlag:0
   },
   recyclingBins:{
     dataSourceName:[],
     network:'',
     platform:[],
     condition:'',
-    pageNum:1
+    pageNum:1,
+		timeFlag:0
   }
 }
 
@@ -61,6 +66,7 @@ const store = new Vuex.Store({
     queryParams:JSON.parse(JSON.stringify(queryParamsDefault)),
     schemaList:[],//增量字段列表
     userList:{},//数据调研列表
+    regInfo:{},//正则
   },
   mutations: {
     setFilterItmeList(state,obj){
@@ -81,15 +87,11 @@ const store = new Vuex.Store({
     },
     resetQueryParam(state,obj){
       var newObj = JSON.parse(JSON.stringify(queryParamsDefault));
-      for(var value of obj.resetData){  //这里obj.data是一个数组，表示不需要重置的
-        if(state.queryParams[value]){
-          newObj[value] = JSON.parse(JSON.stringify(state.queryParams[value]));
-        }
-      }
-      state.queryParams = newObj;
+			var changeObj = newObj[obj.resetData];
+			changeObj.timeFlag = new Date().getTime();
+      state.queryParams[obj.resetData] = changeObj;
     },
 		setParamItem(state,obj){
-			console.log('-----------------');
 			for(var i in obj.data){  //这里obj.data是一个数组，表示不需要重置的
 				state.queryParams[obj.name][i] = obj.data[i];
       }
@@ -103,6 +105,11 @@ const store = new Vuex.Store({
     setUserList(state,obj){
       state.userList = {};
       state.userList= obj;
+    },
+    //正则表达式
+    setRegInfo(state,obj){
+      state.regInfo = {};
+      state.regInfo = obj;
     }
   },
   modules: {

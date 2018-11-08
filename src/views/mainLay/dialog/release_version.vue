@@ -48,23 +48,7 @@ export default {
     return {
       versionDes: '数据引擎产品版本发布说明书(V1.2.2)',
       versionDate: '2018/09/28',
-      tableData: [{
-        date: '2016-05-02',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1518 弄'
-      }, {
-        date: '2016-05-04',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1517 弄'
-      }, {
-        date: '2016-05-01',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1519 弄'
-      }, {
-        date: '2016-05-03',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1516 弄'
-      }]
+      tableData: []
       // msgId:this.dialogMsg?this.dialogMsg[1]:''
     };
   },

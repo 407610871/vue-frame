@@ -96,7 +96,7 @@
             <el-col :span="10">
               <el-form-item label="对接平台:" prop="dockPlat">
                 <el-select v-model="ruleForm.dockPlat" placeholder="请选择">
-                  <el-option :label="item.static_NAME" :value="item.static_CODE" :key="item.static_CODE" v-for="item in DJPT"></el-option>
+                  <el-option :label="item.sTATIC_NAME" :value="item.sTATIC_CODE" :key="item.sTATIC_CODE" v-for="item in DJPT"></el-option>
                 </el-select>
               </el-form-item>
             </el-col>
@@ -105,7 +105,7 @@
                 <el-col :span="24">
                   <el-form-item prop="authorf">
                     <el-select v-model="ruleForm.authorf" placeholder="请选择">
-                      <el-option :label="item.static_NAME" :value="item.static_CODE" :key="item.static_CODE" v-for="item in SSJZ"></el-option>
+                      <el-option :label="item.sTATIC_NAME" :value="item.sTATIC_CODE" :key="item.sTATIC_CODE" v-for="item in SSJZ"></el-option>
                     </el-select>
                   </el-form-item>
                 </el-col>
@@ -432,7 +432,7 @@ export default {
       let _self = this;
       _self.$ajax({
         methods: "get",
-        url: '/api/register/getDictDataCategory',
+        url: 'http://10.19.160.176:8088/demo/commonInterUtils/getDictDataCategory',
         params: {
 
         }
@@ -440,16 +440,16 @@ export default {
         _self.SJLY = res.data.staticDatas.SJLY;
         _self.SSJZ = res.data.staticDatas.SSJZ;
         console.log(_self.SSJZ);
-        _self.ruleForm.resource = _self.SJLY[0].static_CODE;
-        _self.ruleForm.authorf = _self.SSJZ[0].static_CODE;
+        _self.ruleForm.resource = _self.SJLY[0].sTATIC_CODE;
+        _self.ruleForm.authorf = _self.SSJZ[0].sTATIC_CODE;
       })
     },
     _getAccessDialect() {
       this.$ajax({
         methods: "get",
-        url: '/api/caccess/sysdialect',
+        url: 'http://10.19.160.176:8088/demo/commonInterUtils/sysdialect',
         params: {
-          id: ""
+          type:'2'
         }
       }).then(res => {
 
@@ -461,7 +461,7 @@ export default {
     _getDJBM() {
       this.$ajax({
         methods: "get",
-        url: '/api/caccess/sysdepartment',
+        url: 'http://10.19.160.176:8088/demo/commonInterUtils/sysDepartment',
         params: {
 
         }
@@ -475,14 +475,14 @@ export default {
     _getDJPT() {
       this.$ajax({
         methods: "get",
-        url: '/api/dataTable/getListStaticData.do',
+        url: 'http://10.19.160.176:8088/demo/commonInterUtils/getListStaticData.do',
         params: {
           dictCode: 'ButtPlatForm'
         }
       }).then(res => {
 
         this.DJPT = res.data;
-        this.ruleForm.dockPlat = res.data[0].static_CODE;
+        this.ruleForm.dockPlat = res.data[0].sTATIC_CODE;
       })
     },
     //数据所属部门
@@ -584,11 +584,11 @@ export default {
                   "value": _self.ruleForm.timeout
                 },
                 {
-                  "key": "instanceName",
+                  "key": "databasename",
                   "value": _self.ruleForm.instanceName
                 },
                 {
-                  "key": "userName",
+                  "key": "username",
                   "value": _self.ruleForm.username
                 },
                 {
@@ -739,16 +739,16 @@ export default {
           testData = {
             "ip": this.ruleForm.ipname,
             "port": this.ruleForm.iport,
-            "instanceName": this.ruleForm.instanceName,
+            "databasename": this.ruleForm.instanceName,
             "model": this.ruleForm.model,
-            "userName": this.ruleForm.username,
+            "username": this.ruleForm.username,
             "password": this.ruleForm.password,
             "url": this.ruleForm.url,
             "accessDialectId": this.ruleForm.syskind
           }
           this.$ajax({
             method: "POST",
-            url: 'http://10.19.160.211:8088/demo/register/datasourceconnect',
+            url: 'http://10.19.160.211:8088/demo/register/dataSourceConnect',
             // headers:{
             //   'Content-Type':'application/json;charset=utf-8',
             // },
@@ -825,7 +825,7 @@ export default {
             if (data.attr[i].key == 'url') {
               this.ruleForm.url = data.attr[i].value;
             }
-            if (data.attr[i].key == 'instanceName') {
+            if (data.attr[i].key == 'databasename') {
               this.ruleForm.instanceName = data.attr[i].value;
             }
             if (data.attr[i].key == 'username') {

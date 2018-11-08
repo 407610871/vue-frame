@@ -51,7 +51,7 @@
               <el-form-item label="增量字段:" prop="increment">
                 <el-input v-model="ruleForm.increment" class="fl"></el-input>
                 <el-button type="primary" class="fl increbtn" @click="innerVisible = true">选择</el-button>
-                <incre-map :msg='innerVisible' :incid="pdata.id" :alincre="this.increArr" @showIncre="showIncrement()" @saveIncre="saveIncrement($event)"></incre-map>
+                <incre-map :msg='innerVisible' :incid="this.rowList[0].id" :alincre="this.increArr" @showIncre="showIncrement()" @saveIncre="saveIncrement($event)"></incre-map>
               </el-form-item>
             </el-col>
             <el-col :span="6">
@@ -397,6 +397,7 @@ export default {
       this.$emit('pre');
     },
     finish() {
+      debugger;
       //间隔执行
       var pollIntervalMs;
       if (this.ruleForm.cycleSet == '0') {
@@ -476,17 +477,32 @@ export default {
         ctt = '3'
       }
       if (this.ruleForm.accessMode == "1" && this.ruleForm.cycleSet == "0") { //间隔
-        ctt = '1'
+        ctt = '1';
+        if (this.increArr.length == 0) {
+          this.$message.warning('请选择增量字段');
+          return false;
+        }
       }
       if (this.ruleForm.accessMode == "1" && this.ruleForm.cycleSet == "1") { //实时
-        ctt = '2'
+        ctt = '2';
+        if (this.increArr.length == 0) {
+          this.$message.warning('请选择增量字段');
+          return false;
+        }
       }
       if (this.ruleForm.accessMode == "3" && this.ruleForm.cycleSet == "0") { //间隔
-        ctt = '4'
+        ctt = '4';
+        if (this.increArr.length == 0) {
+          this.$message.warning('请选择增量字段');
+          return false;
+        }
       }
       if (this.ruleForm.accessMode == "3" && this.ruleForm.cycleSet == "1") { //实时
-
-        ctt = '5'
+        ctt = '5';
+        if (this.increArr.length == 0) {
+          this.$message.warning('请选择增量字段');
+          return false;
+        }
       }
       var save = {
         "accessSysObjDetails": this.increArr,
@@ -499,13 +515,17 @@ export default {
         "accessRelationWorkInfoId": this.ruleForm.dLibrary,
         "collectionTaskType": ctt,
         "isStartOverTask": this.ruleForm.taskSubMode,
-        "timeType": this.radio
+        "timeType": this.radio,
+        "regexInfo": this.$store.state.regInfo.baseEnd,
+        "isCustom": this.$store.state.regInfo.baseflag,
+        "tableCommonName": this.$store.state.regInfo.baseEnd,
+        "accessSysId": this.rowList[0].accessSys.id
       }
       this.loading = true;
       if (JSON.stringify(this.$store.state.userList) == "{}") {
         this.$ajax({
           method: "post",
-          url: 'http://10.19.160.168:8080/DACM/task/saveHeliumTask',
+          url: 'http://10.19.160.168:8080/DACM/task/saveRegexHeliumTask',
           // headers:{
           //   'Content-Type':'application/json;charset=utf-8',
           // },
@@ -517,7 +537,7 @@ export default {
             this.$alert('采集任务启动成功！', '信息', {
               confirmButtonText: '确定',
               callback: action => {
-                this.$emit('close');
+                this.$emit('fresh');
               }
             });
           } else {
@@ -539,7 +559,7 @@ export default {
           if (res.data.success) {
             this.$ajax({
               method: "post",
-              url: 'http://10.19.160.168:8080/DACM/task/saveHeliumTask',
+              url: 'http://10.19.160.168:8080/DACM/task/saveRegexHeliumTask',
               // headers:{
               //   'Content-Type':'application/json;charset=utf-8',
               // },
@@ -551,7 +571,7 @@ export default {
                 this.$alert('采集任务启动成功！', '信息', {
                   confirmButtonText: '确定',
                   callback: action => {
-                    this.$emit('fresh');
+                    this.$emit('close');
                   }
                 });
               } else {
@@ -576,25 +596,25 @@ export default {
           });
         })
       }
+
+
     },
+    formateTime(day, hour, min) {
+      return parseInt(day * 86400000 + hour * 3600000 + min * 60000);
+    },
+    //获取源树
+    _getTree() {
+      this.$ajax({
+        method: 'get',
+        url: 'http://10.19.160.168:8080/DACM/caccesssysRelationWorkInfo/getDataAreaNode',
 
-
-  formateTime(day, hour, min) {
-    return parseInt(day * 86400000 + hour * 3600000 + min * 60000);
+      }).then(res => {
+        this.treeData = res.data;
+        this.ruleForm.dLibrary = res.data[0].id
+      })
+    }
   },
-  //获取源树
-  _getTree() {
-    this.$ajax({
-      method: 'get',
-      url: 'http://10.19.160.168:8080/DACM/caccesssysRelationWorkInfo/getDataAreaNode',
-
-    }).then(res => {
-      this.treeData = res.data;
-      this.ruleForm.dLibrary = res.data[0].id
-    })
-  }
-},
-components: {
+  components: {
     increMap
   },
   mounted() {
@@ -610,7 +630,13 @@ components: {
   computed: {
 
   },
-  props: ['pdata']
+  props: ['rowList'],
+  watch: {
+    rowList() {
+      console.log("4545645");
+    }
+
+  }
 
 };
 
