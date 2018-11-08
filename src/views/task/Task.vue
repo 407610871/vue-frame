@@ -42,8 +42,8 @@
        <div class="count-operate">
          <div>
             <el-button type="primary" @click="doMore('manager/taskOperate/batchConverge',1)">重新汇聚</el-button>
-            <el-button type="primary" @click="doMore('DOMN/manager/taskOperate/batchStart',2)">批量启动</el-button>
-            <el-button type="primary" @click="doMore('DOMN/manager/taskOperate/batchPause',3)">批量停止</el-button>
+            <el-button type="primary" @click="doMore('manager/taskOperate/batchStart',2)">批量启动</el-button>
+            <el-button type="primary" @click="doMore('manager/taskOperate/batchPause',3)">批量停止</el-button>
          </div>
        </div>
 
