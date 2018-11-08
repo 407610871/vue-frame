@@ -147,7 +147,7 @@ export default {
 		this.$root.eventHub.$emit('selDeptTree',this.tableParams.deptId);
     this.storeReady();
     var _self = this;
-    this.$ajax.get('http://10.19.160.176:8088/demo/caccess/dataAccessStatistics').then(function(res){
+    this.$ajax.get('http://10.19.248.200:32661/DACM/caccess/dataAccessStatistics').then(function(res){
       if(res.data.success){
         _self.countTotal=res.data.data.total;
         _self.count1Data.list=res.data.data.discontinuousPercentage;
@@ -207,8 +207,7 @@ export default {
       paramsObj.platform = this.tableParams.platform;
 			paramsObj.deptIds = this.tableParams.deptId;
 
-      this.$ajax.post('http://10.19.160.168:8080/DACM/caccess/query',paramsObj).then(function(res){
-
+      this.$ajax.post('http://10.19.248.200:32661/DACM/caccess/query',paramsObj).then(function(res){
         console.log('tableLoaded:dashboard');
         if(res.data.success){
           _self.mainTableData = res.data.data.list;
@@ -254,7 +253,7 @@ export default {
     },
     handleCopy: function(index, row) {
 			var _self = this;
-      this.$ajax.get('http://10.19.160.211:8088/demo/update/dataSourceCopy', {
+      this.$ajax.get('http://10.19.248.200:32661/DACM/update/dataSourceCopy', {
 				params:{
 					id: row.id
 				}
@@ -267,7 +266,7 @@ export default {
     },
     handleDelete: function(index, row) {
       var _self = this;
-      this.$ajax.post('http://10.19.160.175:8088/demo/caccess/delete?ids='+row.id).then(function(res) {
+      this.$ajax.post('http://10.19.248.200:32661/DACM/caccess/delete?ids='+row.id).then(function(res) {
         _self.loadTable();
       })
       .catch(function(err) {

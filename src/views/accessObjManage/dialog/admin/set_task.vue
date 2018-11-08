@@ -16,7 +16,7 @@
                 <h2>提供方信息</h2>
               </div>
             </div>
-            <user-surveybak :info="rowList" @pre="next('second')" @closeuser="closeDialog()" ref="survey"></user-surveybak>
+            <user-surveybak  :info="rowList" @pre="next('second')" @closeuser="closeDialog()" ref="survey"></user-surveybak>
             <!--  <div class="btn tcenter">
              <el-button type="primary" style="margin-top: 12px;" @click="next('second')">下一步</el-button>
              <el-button style="margin-top: 12px;" @click="closeDialog">取消</el-button>
@@ -28,7 +28,7 @@
                 <h2>批量匹配设置</h2>
               </div>
             </div>
-            <wild-card :rowList="rowList" @pre="next('first')" @nre="next('third')"></wild-card>
+            <wild-card :msg="activeName" :rowList="rowList" @pre="next('first')" @nre="next('third')"></wild-card>
           </el-tab-pane>
           <el-tab-pane name="third" disabled><span slot="label"><i class="el-icon-circle">3</i> 建立数据映射关系</span>
             <div class="daiInfo proInfo">
@@ -36,7 +36,7 @@
                 <h2>字段类型映射</h2>
               </div>
             </div>
-            <type-map :rowList="rowList" @pre="next('second')" @next="next('fourth')"></type-map>
+            <type-map :msg="activeName" :flag="'0'" :rowList="rowList" @pre="next('second')" @next="next('fourth')"></type-map>
           </el-tab-pane>
           <el-tab-pane name="fourth" disabled><span slot="label"><i class="el-icon-circle">4</i>设置接入信息</span>
             <div class="daiInfo proInfo">
@@ -44,7 +44,7 @@
                 <h2>设置采集任务</h2>
               </div>
             </div>
-            <coll-task :rowList="rowList" @pre="next('third')" @fresh="fresh()"> </coll-task>
+            <coll-task :msg="activeName" :rowList="rowList" @pre="next('third')" @fresh="fresh()"> </coll-task>
             <!-- <div class="btn tcenter mt30">
               <el-button type="primary" style="margin-top: 12px;" @click="next('third')">上一步</el-button>
               <el-button type="primary" style="margin-top: 12px;">完成</el-button>
@@ -58,8 +58,9 @@
 <script>
 import userSurveybak from '@/views/accessObjManage/dialog/admin/user_surveybak' //用户调研
 import wildCard from '@/views/accessObjManage/dialog/admin/wild_card' //设置通配符
-import typeMap from '@/views/mainLay/dialog/type_map' //建立数据映射关系
+import typeMap from '@/views/mainLay/dialog/type_maps' //建立数据映射关系
 import collTask from '@/views/mainLay/dialog/coll_tasks' //设置采集任务
+import { mapState, mapMutations, mapActions } from 'vuex'
 export default {
   name: "userSurvey",
   data: function() {
@@ -67,14 +68,26 @@ export default {
       activeName: 'first',
       dialogVisible: false,
       tabs: '',
+      msg:false,
       event: '',
-      idList: []
+      idList: [],
+      clear:[],
+      regClear:{},
     };
   },
   methods: {
+     ...mapMutations([
+      'setRegInfo', 'setMatchType','setSchemaList'
+    ]),
     //关闭对话框
     closeDialog() {
       this.dialogVisible = false;
+      this.msg = false;
+      this.activeName ="first"
+       this.setMatchType(this.clear);
+       this.setRegInfo(this.regClear);
+       this.setSchemaList(this.clear);
+
       //this.$refs['ruleForm'].resetFields();
     },
     //步骤条
@@ -129,6 +142,13 @@ export default {
   },
   computed: {
 
+  },
+  watch:{
+    dialogVisible(){
+      if(this.dialogVisible){
+        this.msg = true;
+      }
+    }
   },
   props: ['rowList']
 

@@ -35,7 +35,7 @@
             </el-table-column>
             <el-table-column label="操作" width="180" class="clearfix">
               <template slot-scope="scope">
-                <el-button size="mini" type="info" v-if="scope.row.status=='0'"  class="fl mr10">核验中</el-button>
+                <el-button size="mini" type="info" v-if="scope.row.status=='0'" class="fl mr10">核验中</el-button>
                 <el-button v-if="scope.row.status=='1'" size="mini" type="primary" @click="startDaver(scope.row.taskId)" class="fl mr10">核验</el-button>
                 <data-top :msg='innerVisible' :taskId='taskId' @showIncre="showInver()" @saveIncre="saveInver($event)"></data-top>
                 <el-button size="mini" type="primary" class="fl" @click="checkLog(scope.row.id,scope.$index)">查看日志</el-button>
@@ -52,18 +52,18 @@
 </template>
 <script>
 import dataTop from '@/views/accessObjManage/dialog/admin/data_top_inver'
-import {myBrowser} from '@/utils/mix.js'
+import { myBrowser } from '@/utils/mix.js'
 export default {
   name: "dataInver",
   data: function() {
     return {
-      cindex:'',
+      cindex: '',
       dialogVisible: false,
       innerVisible: false,
-      accessSysId: '5811',
-      loading2:false,
+      accessSysId: '',
+      loading2: false,
       taskId: '',
-      loginfo: '123123',
+      loginfo: '',
       textShow: false,
       result: '0',
       tableData: []
@@ -91,7 +91,7 @@ export default {
       console.log(this.cindex);
       this.$ajax({
         method: "GET",
-        url: 'http://10.19.160.59:8080/DACM/ccheckData/tableSourceNum',
+        url: 'http://10.19.248.200:32661/DACM/ccheckData/tableSourceNum',
         // headers:{
         //   'Content-Type':'application/json;charset=utf-8',
         // },
@@ -104,18 +104,18 @@ export default {
       })
     },
     //开始核验
-    startDaver(value){
-            console.log(value);
+    startDaver(value) {
+      console.log(value);
       this.taskId = value;
       this.innerVisible = true;
     },
     //查询日志
-    checkLog(value,tindex) {
+    checkLog(value, tindex) {
       this.cindex = tindex;
       this.loading2 = true;
       this.$ajax({
         method: "GET",
-        url: 'http://10.19.160.59:8080/DACM/ccheckData/checkLog',
+        url: 'http://10.19.248.200:32661/DACM/ccheckData/checkLog',
         // headers:{
         //   'Content-Type':'application/json;charset=utf-8',
         // },
@@ -125,25 +125,33 @@ export default {
 
       }).then(res => {
         this.loading2 = false;
-        if (res.data.result == "true" || res.data.result == true) {
-          this.textShow = true;
-          let logData = res.data.testresults_result == 0 ? "一致" : "不一致";
-          this.loginfo = `源库：${res.data.source_library}\n
-源表：${res.data.source_tableName}\n
-数据核验查询语句：${res.data.source_sql}\n
-执行结果：${res.data.source_tableNum}\n
+        if (res.data.success == "true" || res.data.success == true) {
+         
+          if (res.data.data.result == false) {
+            this.textShow = false;
+            this.$alert("查看日志失败", "查看日志", {
+              confirmButtonText: "确定"
+            });
+            return false;
+          }
+           this.textShow = true;
+          let logData = res.data.data.testresults_result == 0 ? "一致" : "不一致";
+          this.loginfo = `源库：${res.data.data.source_library}\n
+源表：${res.data.data.source_tableName}\n
+数据核验查询语句：${res.data.data.source_sql}\n
+执行结果：${res.data.data.source_tableNum}\n
 \n
-目标库：${res.data.target_library}\n
-目标表：${res.data.target_tableName}\n
-数据核验查询语句：${res.data.target_sql}\n
-执行结果：${res.data.target_tableNum}\n
+目标库：${res.data.data.target_library}\n
+目标表：${res.data.data.target_tableName}\n
+数据核验查询语句：${res.data.data.target_sql}\n
+执行结果：${res.data.data.target_tableNum}\n
 \n
 核验结果:${logData}\n
-核验差值:${res.data.testresults_dvalue}\n
+核验差值:${res.data.data.testresults_dvalue}\n
 `;
         } else {
           this.loading2 = false;
-          if (res.result == "false") {
+          if (res.data.data.result == false) {
             this.textShow = false;
             this.$alert("查看日志失败", "查看日志", {
               confirmButtonText: "确定"
@@ -153,12 +161,12 @@ export default {
       })
     },
     //导出数据源报告
-    downTable(){
-       var browser = myBrowser();
+    downTable() {
+      var browser = myBrowser();
       if (!browser) {
         browser = 'IE'
       }
-      window.location.href = `http://10.19.160.59:8081/DEMO/ccheckData/downloadCheckDataById?id=${this.pdata.id}&browser=${browser}&accessName=ww`
+      window.location.href = `http://10.19.248.200:32661/DACM/ccheckData/downloadCheckDataById?id=${this.pdata.id}&browser=${browser}&accessName=ww`
     }
   },
   components: {
@@ -176,6 +184,7 @@ export default {
   watch: {
     dialogVisible() {
       if (this.dialogVisible) {
+        this.accessSysId = this.pdata.accessSys.accessSysDialectId;
         this._getTableNum();
       }
     }
@@ -193,10 +202,12 @@ export default {
   padding-left: 0px;
   padding-right: 0px;
 }
-.dowBtn{
+
+.dowBtn {
   float: right;
   margin-right: 33px;
 }
+
 .el-select {
   width: 100%;
 }

@@ -432,7 +432,7 @@ export default {
       let _self = this;
       _self.$ajax({
         methods: "get",
-        url: 'http://10.19.160.176:8088/demo/commonInterUtils/getDictDataCategory',
+        url: 'http://10.19.248.200:32661/DACM/commonInter/getDictDataCategory',
         params: {
 
         }
@@ -447,7 +447,7 @@ export default {
     _getAccessDialect() {
       this.$ajax({
         methods: "get",
-        url: 'http://10.19.160.176:8088/demo/commonInterUtils/sysdialect',
+        url: 'http://10.19.248.200:32661/DACM/commonInter/sysdialect',
         params: {
           type:'2'
         }
@@ -461,7 +461,7 @@ export default {
     _getDJBM() {
       this.$ajax({
         methods: "get",
-        url: 'http://10.19.160.176:8088/demo/commonInterUtils/sysDepartment',
+        url: 'http://10.19.248.200:32661/DACM/commonInter/sysDepartment',
         params: {
 
         }
@@ -475,7 +475,7 @@ export default {
     _getDJPT() {
       this.$ajax({
         methods: "get",
-        url: 'http://10.19.160.176:8088/demo/commonInterUtils/getListStaticData.do',
+        url: 'http://10.19.248.200:32661/DACM/commonInter/getListStaticData.do',
         params: {
           dictCode: 'ButtPlatForm'
         }
@@ -492,7 +492,7 @@ export default {
         })*/
       this.$ajax({
         method: "post",
-        url: 'http://10.19.160.29:8088/demo/deptInfo/getDeptInfo',
+        url: 'http://10.19.248.200:32661/DACM/deptInfo/getDeptInfo',
       }).then(res => {
         console.log(res);
         this.treedata = res.data.datas;
@@ -633,7 +633,7 @@ export default {
             console.log(typeof(save));
             this.$ajax({
               method: "get",
-              url: 'http://10.19.160.211:8088/demo/register/dataSourceCheck',
+              url: 'http://10.19.248.200:32661/DACM/register/dataSourceCheck',
               // headers:{
               //   'Content-Type':'application/json;charset=utf-8',
               // },
@@ -657,7 +657,7 @@ export default {
                   this.loading = true;
                   this.$ajax({
                     method: "POST",
-                    url: 'http://10.19.160.211:8088/demo/register/dataSourceInsert',
+                    url: 'http://10.19.248.200:32661/DACM/register/dataSourceInsert',
                     // headers:{
                     //   'Content-Type':'application/json;charset=utf-8',
                     // },
@@ -691,7 +691,7 @@ export default {
                 this.loading = true;
                 this.$ajax({
                   method: "POST",
-                  url: 'http://10.19.160.211:8088/demo/register/dataSourceInsert',
+                  url: 'http://10.19.248.200:32661/DACM/register/dataSourceInsert',
                   // headers:{
                   //   'Content-Type':'application/json;charset=utf-8',
                   // },
@@ -748,7 +748,7 @@ export default {
           }
           this.$ajax({
             method: "POST",
-            url: 'http://10.19.160.211:8088/demo/register/dataSourceConnect',
+            url: 'http://10.19.248.200:32661/DACM/register/dataSourceConnect',
             // headers:{
             //   'Content-Type':'application/json;charset=utf-8',
             // },
@@ -778,7 +778,7 @@ export default {
       this.loading = true;
       this.$ajax({
         method: "post",
-        url: 'http://10.19.160.211:8088/demo/update/dataSourceSelect',
+        url: 'http://10.19.248.200:32661/DACM/update/dataSourceSelect',
         params: {
           id: this.appId
         }

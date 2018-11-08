@@ -324,6 +324,15 @@ export default {
     handleCurrentChange() {
       this.init();
     },
+     //信息提示
+    doMsg(msg, type) {
+      this.$message({
+        showClose: true,
+        message: msg,
+        type: type,
+        duration: 3500
+      });
+    },
     //表格数据获取
     init(keyword) {
       var _self = this;

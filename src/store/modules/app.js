@@ -6,7 +6,6 @@ const app = {
     language: Cookies.get("language") || "en",
     size: Cookies.get("size") || "medium",
     token:"",
-    
   },
   mutations: {
     TOGGLE_DEVICE: (state, device) => {
@@ -22,8 +21,7 @@ const app = {
     },
     SET_TOKEN: (state, payload) => {
       state.token = payload;
-    },
-
+    }
   },
   actions: {
     toggleDevice({ commit }, device) {

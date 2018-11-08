@@ -272,7 +272,7 @@ export default {
           }
           this.$ajax({
             method: 'post',
-            url: 'http://10.19.160.171:8081/DEMO/dataTable/inputSurvey',
+            url: 'http://10.19.248.200:32661/DACM/dataTable/inputSurvey',
             data: saveInfo
           }).then(res => {
             this.loading = false;
@@ -305,7 +305,7 @@ export default {
     _getStaticDatas() {
       this.$ajax({
         methods: 'post',
-        url: 'http://10.19.160.171:8081/DEMO/dataTable/queryDictionary',
+        url: 'http://10.19.248.200:32661/DACM/dataTable/queryDictionary',
         params: {
 
         }
@@ -345,7 +345,7 @@ export default {
       console.log(this.tableid);
       this.$ajax({
         method: "get",
-        url: 'http://10.19.160.171:8081/DEMO/dataTable/getSurvey',
+        url: 'http://10.19.248.200:32661/DACM/dataTable/getSurvey',
         // headers:{
         //   'Content-Type':'application/json;charset=utf-8',
         // },
@@ -390,7 +390,7 @@ export default {
     _queryCity(value, flag) {
       this.$ajax({
         method: "get",
-        url: 'http://10.19.160.171:8081/DEMO/commonInterUtils/getAreas?parentid=' + value,
+        url: 'http://10.19.248.200:32661/DACM/commonInterUtils/getAreas?parentid=' + value,
         // headers:{
         //   'Content-Type':'application/json;charset=utf-8',
         // },
@@ -413,7 +413,7 @@ export default {
     },
     //资源目录下载
     downTxt() {
-      window.location.href = "http://10.19.160.171:8081/DEMO/dataTable/downloadSpecification";
+      window.location.href = "http://10.19.248.200:32661/DACM/dataTable/downloadSpecification";
     },
     //通过省查询市
     proChange() {
@@ -429,7 +429,7 @@ export default {
     _querySys() {
       this.$ajax({
         method: "get",
-        url: 'http://10.19.160.176:8088/demo/caccesssysRelationWorkInfo/getSystemSet.do',
+        url: 'http://10.19.248.200:32661/DACM/caccesssysRelationWorkInfo/getSystemSet.do',
         // headers:{
         //   'Content-Type':'application/json;charset=utf-8',
         // },

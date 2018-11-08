@@ -95,7 +95,7 @@ export default {
         count: 20,
         term: ""
       }
-      this.$ajax.post('http://10.19.160.171:8081/DEMO/objDetail/dataList', map).
+      this.$ajax.post('http://10.19.160.168:8080/DACM/objDetail/dataList', map).
       then(res => {
         this.tableData = [];
         if (res.data.success) {

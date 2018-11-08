@@ -217,6 +217,7 @@ export default {
     //关闭对话框
     closeDialog() {
       this.dialogVisible = false;
+    
       this.$refs['ruleForm'].resetFields();
     },
     //关闭
@@ -263,7 +264,7 @@ export default {
           }
           this.$ajax({
             method: 'post',
-            url: 'http://10.19.160.171:8081/DEMO/dataTable/inputSurvey',
+            url: 'http://10.19.248.200:32661/DACM/dataTable/inputSurvey',
             data: saveInfo
           }).then(res => {
             this.loading = false;
@@ -295,7 +296,7 @@ export default {
     _getStaticDatas() {
       this.$ajax({
         methods: 'post',
-        url: 'http://10.19.160.171:8081/DEMO/dataTable/queryDictionary',
+        url: 'http://10.19.248.200:32661/DACM/dataTable/queryDictionary',
         params: {
 
         }
@@ -335,7 +336,7 @@ export default {
       console.log(this.tableid);
       this.$ajax({
         method: "get",
-        url: 'http://10.19.160.171:8081/DEMO/dataTable/getSurvey',
+        url: 'http://10.19.248.200:32661/DACM/dataTable/getSurvey',
         // headers:{
         //   'Content-Type':'application/json;charset=utf-8',
         // },
@@ -380,7 +381,7 @@ export default {
     _queryCity(value, flag) {
       this.$ajax({
         method: "get",
-        url: 'http://10.19.160.171:8088/demo/commonInterUtils/getAreas?parentid=' + value,
+        url: 'http://10.19.248.200:32661/DACM/commonInterUtils/getAreas?parentid=' + value,
         // headers:{
         //   'Content-Type':'application/json;charset=utf-8',
         // },
@@ -404,7 +405,7 @@ export default {
     //资源目录下载
     //资源目录下载
     downTxt() {
-      window.location.href = "http://10.19.160.171:8081/DEMO/dataTable/downloadSpecification";
+      window.location.href = "http://10.19.248.200:32661/DACM/dataTable/downloadSpecification";
     },
     //通过省查询市
     proChange() {
@@ -420,7 +421,7 @@ export default {
     _querySys() {
       this.$ajax({
         method: "get",
-        url: 'http://10.19.160.176:8088/demo/caccesssysRelationWorkInfo/getSystemSet.do',
+        url: 'http://10.19.248.200:32661/DACM/caccesssysRelationWorkInfo/getSystemSet.do',
         // headers:{
         //   'Content-Type':'application/json;charset=utf-8',
         // },
@@ -525,14 +526,24 @@ export default {
   mounted() {
     //清空form的值
     this._clearForm();
-  },
-  watch: {
 
-  },
-  created() {
+    if (this.info.id != undefined) {
+      this.tableid = this.info.id;
+      this.tableids = this.info.id;
+    } else {
+      for (let i = 0; i < this.info.length; i++) {
+        if (i != this.info.length - 1) {
+          this.tableids += this.info[i].id + ','
+        } else {
+          this.tableids += this.info[i].id
+        }
 
-    console.log("----");
-    console.log(this.pdata);
+      }
+      this.tableid = this.info[0].id
+    }
+    debugger;
+    console.log(this.tableid);
+    debugger;
     this._getStaticDatas();
     this._queryCity('0', 'pro');
     if (this.info.comments == '' || this.info.comments == null) {
@@ -541,32 +552,19 @@ export default {
       this.ruleForm.rename = this.info.comments;
     }
     this.ruleForm.tablename = this.info.name;
+  },
+  watch: {
+
+  },
+  created() {
+    console.log("----");
+
 
   },
   computed: {
 
   },
-  props: ['info'],
-  watch: {
-    info() {
-      this.tableids = '';
-      if (info.length == 1) {
-        this.tableid = info.id;
-        this.tableids = info.id;
-      } else {
-        for (let i = 0; i < this.info.length; i++) {
-          if (i != info.length - 1) {
-            this.tableids += this.info[i].id + ','
-          } else {
-            this.tableids += this.info[i].id
-          }
-
-        }
-        this.tableid = this.info[0].id
-      }
-      console.log(this.tableids);
-    }
-  }
+  props: ['info','msg'],
 
 };
 

@@ -84,7 +84,7 @@ export default {
       }
       this.$ajax({
         method: "get",
-        url: `http://10.19.160.59:8080/DACM/ccheckData/tableCheck`,
+        url: `http://10.19.248.200:32661/DACM/ccheckData/tableCheck`,
         params: {
           taskId: this.taskId,
           key: this.ruleForm.setVer,
@@ -112,7 +112,7 @@ export default {
     _checkData() {
       this.$ajax({
         method: "GET",
-        url: 'http://10.19.160.59:8080/DACM/ccheckData/tableNum',
+        url: 'http://10.19.248.200:32661/DACM/ccheckData/tableNum',
         // headers:{
         //   'Content-Type':'application/json;charset=utf-8',
         // },

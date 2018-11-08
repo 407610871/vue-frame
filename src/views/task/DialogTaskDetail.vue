@@ -127,7 +127,7 @@
             </el-col>
             <el-col :span="4" class="bank">bank</el-col>
             <el-col :span="10" class="bank">bank</el-col>
-            <el-col :span="16">
+            <el-col :span="17">
               <el-form-item label="任务指示灯:">
                 <div class="item-label">
                   <span class="label-color" v-bind:style="lightBackground"></span>{{taskBaseInfo.newWorkDesc}}
@@ -158,7 +158,7 @@
             <el-col :span="4" class="bank">bank</el-col>
             <el-col :span="10">
               <el-form-item label="任务创建人:">
-                <span>暂时未有数据</span>
+                <span>{{taskBaseInfo.creater}}</span>
               </el-form-item>
             </el-col>
             <el-col :span="10" class="bank">bank</el-col>
@@ -167,8 +167,10 @@
           <div class="daiInfo-tabs">
             <el-tabs type="border-card" style="height:265px;">
               <el-tab-pane label="汇聚任务日志信息">
-                <textarea name="" id="" cols="30" rows="12" disabled="disabled" style="resize:none;width: 100%; height: 200px;border:none;background:inherit" >{{taskLog}}</textarea>
-                <div class="tips-none" v-show="taskLog==''">暂无数据</div>
+                <div class="dataCheck-tab">
+                  <textarea v-show="taskLog!=''" name="" id="" cols="30" rows="12" disabled="disabled" style="resize:none;width: 100%; height: 180px;border:none;background:inherit" >{{taskLog}}</textarea>
+                  <div class="tips-none" v-show="taskLog==''">暂无数据</div>
+                </div>
               </el-tab-pane>
               <el-tab-pane label="数据核验日志信息">
                 <div class="dataCheck-tab">
@@ -234,7 +236,7 @@
         
       </el-form>
     </el-dialog>
-    <dialogIsCheck :MsgCheck="reqObj" v-if="isShowCheck"></dialogIsCheck>
+    <dialogIsCheck :msgCheck="reqObj" v-if="isShowCheck"></dialogIsCheck>
   </div>
 </template>
 <style lang="scss" scoped>
@@ -311,6 +313,9 @@ export default {
       flagDesc:'',
       showInnerDialog: true,
       isShowCheck:false,
+      httpUrlOld:'http://10.19.160.67:8081/DOMN/',
+      httpUrl:'http://10.19.248.200:32662/DOMN/',
+      httpUrl2:'http://10.19.248.200:32661/DACM/',
       operateList:[
         {'value':'stop','type':'暂停','disabled':false},
         {'value':'run','type':'运行','disabled':false},
@@ -321,7 +326,8 @@ export default {
         endTime: "",  
         networkStatus: "",
         startTime: "",
-        status: "1" ,  
+        status: "1" ,
+        creater:''
       },
       //接入基本信息
       sourceBaseInfo:{
@@ -394,7 +400,7 @@ export default {
       that.innerLoading=true;
       if(that.flagDesc=='stop'){
         //调用暂停接口
-        axios.put('http://10.19.160.67:8081/DOMN/manager/taskOperate/pause/'+that.reqObj.taskInfoId).then(
+        axios.put(that.httpUrl+'manager/taskOperate/pause/'+that.reqObj.taskInfoId).then(
           function(res){
             if(res.data.code!='200'&&res.data.code!='0000'){
               that.doMsg(res.data.message,'error');
@@ -415,7 +421,7 @@ export default {
         })
       }else if(that.flagDesc=='run'){
         //调用运行接口
-        axios.put('http://10.19.160.67:8081/DOMN/manager/taskOperate/start/'+that.reqObj.taskInfoId).then(
+        axios.put(that.httpUrl+'manager/taskOperate/start/'+that.reqObj.taskInfoId).then(
           function(res){
             if(res.data.code!='200'&&res.data.code!='0000'){
               that.doMsg(res.data.message,'error');
@@ -445,7 +451,7 @@ export default {
           sourceObjType:that.reqObj.sourceObjType
         }
       };
-      axios.get("http://10.19.160.67:8081/DOMN/manager/task/detail/source",reqData).then(function(res){
+      axios.get(that.httpUrl+"manager/task/detail/source",reqData).then(function(res){
         if(res.data.code==undefined||res.data.code==null||res.data.code==""){
           that.doMsg("“/manager/task/detail/source”服务响应为空！","error");
           that.serveFinishCount++;
@@ -463,7 +469,7 @@ export default {
             sourceTableName:res.data.data.sourceTableName[0]
           }
         }
-        axios.get('http://10.19.160.67:8081/DOMN/manager/task/detail/target',innerReqData).then(function(innerRes){
+        axios.get(that.httpUrl+'manager/task/detail/target',innerReqData).then(function(innerRes){
           if(innerRes.data.code==undefined||innerRes.data.code==null||innerRes.data.code==""){
             that.doMsg("“/manager/task/detail/target”服务响应为空！","error");
             that.serveFinishCount++;
@@ -507,13 +513,15 @@ export default {
         }
       };
       axios
-        .get("http://10.19.160.67:8081/DOMN/manager/task/taskinfo", searchData)
+        .get(that.httpUrl+"manager/task/taskinfo", searchData)
         .then(function(response) {
           if(response.data.code!='200'&&response.data.code!='0000'){
             that.doMsg("/manager/task/taskinfo"+response.data.message,error);
             that.serveFinishCount++;
           }else{
             that.taskBaseInfo = response.data.data;
+            //创建人
+            that.taskBaseInfo.creater = that.taskBaseInfo.creater?that.taskBaseInfo.creater.split('/')[1]:'';
             let statusMap = {
               0:'创建',
               1:'运行',
@@ -523,7 +531,7 @@ export default {
             }
             that.taskBaseInfo.statusDesc = statusMap[that.taskBaseInfo.status];
             //网络指示灯判断
-            that.newWorkTrans(that.taskBaseInfo.networkStatus);
+            that.newWorkTrans(that.taskBaseInfo.networkStatus,response.data.data.speed);
             //可操作类型
             let t=that.taskBaseInfo.status;
             that.flagDesc=(t==0||t==1)?'run':'stop';
@@ -551,14 +559,14 @@ export default {
           taskInfoId:that.reqObj.taskInfoId
         }
       }
-      axios.get('http://10.19.160.67:8081/DOMN/manager/task/testTaskNetworkStatus',reqData).then(
+      axios.get(that.httpUrl+'manager/task/testTaskNetworkStatus',reqData).then(
         function(res){
           if(res.data==undefined||res.data==null||res.data===''){
             that.doMsg('服务无数据返回','error');
           }else if(res.data.code!="200"&&res.data.code!="0000"){
             that.doMsg("/manager/task/testTaskNetworkStatus:"+res.data.message,'error');
           }else{
-            that.newWorkTrans(res.data.data);
+            that.newWorkTrans(res.data.data,res.data.data.speed);
           }
           that.innerLoading=false;
         }
@@ -572,7 +580,7 @@ export default {
     //查询接入数据更新
     getSourceDataInfo(){
       let that = this;
-      axios.put('http://10.19.160.67:8081/DOMN/manager/taskOperate/dataInfo/'+that.reqObj.taskInfoId).then(
+      axios.put(that.httpUrl+'manager/taskOperate/dataInfo/'+that.reqObj.taskInfoId).then(
         function(res){
           if(res.data==undefined||res.data==null||res.data===''){
             that.doMsg('服务无数据返回','error');
@@ -597,16 +605,14 @@ export default {
     //查询接入任务日志信息
     getSourceTaskLog(){
       let that = this;
-      axios.put('http://10.19.160.67:8081/DOMN/manager/taskOperate/taskLogInfo/'+that.reqObj.taskInfoId).then(
+      axios.put(that.httpUrl+'manager/taskOperate/taskLogInfo/'+that.reqObj.taskInfoId).then(
         function(res){
           //判断响应是否异常
           if(res.data.code!="200"&&res.data.code!="0000"){
             that.doMsg("/manager/taskOperate/taskLogInfo/"+res.data.data.message,'error');
             that.serveFinishCount++;
           }else{
-            that.taskLog = `\t${res.data.data.logInfo}`;
-            console.log(res.data.data.logInf)
-
+            that.taskLog = res.data.data.logInfo==""?"":`\t${res.data.data.logInfo}`;
             // that.taskLog = `java.lang.IndexOutOfBoundsException: Index: 0, Size: 0 \n\t at java.util.ArrayList.rangeCheck(ArrayList.java:653)\n\tat java.util.ArrayList.get(ArrayList.java:429)\n\tat cn.enn.com.jdbc.source.JdbcSourceTask.poll(JdbcSourceTask.java:284)\n\tat org.apache.kafka.connect.runtime.WorkerSourceTask.execute(WorkerSourceTask.java:204)\n\tat org.apache.kafka.connect.runtime.WorkerTask.doRun(WorkerTask.java:170)\n\tat org.apache.kafka.connect.runtime.WorkerTask.run(WorkerTask.java:214)\n\tat java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)\n\tat java.util.concurrent.FutureTask.run(FutureTask.java:266)\n\tat java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)\n\tat java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)\n\tat java.lang.Thread.run(Thread.java:745)\n`;
             that.serveFinishCount++;
           }
@@ -623,11 +629,11 @@ export default {
       let that = this;
       let reqData = {
         params:{
-          // 'taskId':that.reqObj.taskInfoId
-          'taskId':92066
+          'taskId':that.reqObj.taskInfoId
+          // 'taskId':92066
         }
-      }
-      axios.get('http://10.19.160.59:8081/DEMO/ccheckData/checkLogByTaskId',reqData).then(
+      }//http://10.19.160.59:8081/DEMO/ccheckData/checkLogByTaskId
+      axios.get(that.httpUrl2+'ccheckData/checkLogByTaskId',reqData).then(
         function(res){
           console.log('数据核验日志信息',res)
           if(res.data.code!="200"&&res.data.code!="0000"){
@@ -648,7 +654,7 @@ export default {
     //查询数据预览
     getDataViews(){
       let that = this;
-      axios.put('http://10.19.160.67:8081/DOMN/manager/taskOperate/dataPreview/'+that.reqObj.taskInfoId).then(
+      axios.put(that.httpUrl+'manager/taskOperate/dataPreview/'+that.reqObj.taskInfoId).then(
         function(res){
           if(res.data.code!="200"&&res.data.code!="0000"){
             that.serveFinishCount++;
@@ -671,7 +677,7 @@ export default {
       )
     },
     //网络测试指示灯及内容翻译
-    newWorkTrans(value){
+    newWorkTrans(value,speed){
       let newWorkMap = {
         0:'rgb(27, 255, 0)',
         1:'rgb(255, 153, 0)',
@@ -683,7 +689,8 @@ export default {
         1:'数据源连接不稳定（数据源能访问，ping的响应时间在10秒-30秒内）',
         2:'数据源不通',
       }
-      this.taskBaseInfo.newWorkDesc = newWorkDescMap[value];
+      speed = speed||0;
+      this.taskBaseInfo.newWorkDesc = newWorkDescMap[value]+' '+speed+"kb/s";
     },
     //信息提示
     doMsg(msg, type) {
