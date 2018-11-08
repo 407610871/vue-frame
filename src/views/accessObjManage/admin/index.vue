@@ -252,7 +252,7 @@ export default {
       });
     },
     goAccessObjInfo: function(row) {
-<<<<<<< HEAD
+/*<<<<<<< HEAD
       this.$store.commit('setParamItem', {
         name: 'accessObjInfo',
         data: {
@@ -273,7 +273,7 @@ export default {
           objName: encodeURI(row.name)
         }
       });
-=======
+=======*/
 			this.$store.commit('resetQueryParam', {
 				resetData:'accessObjInfo'
 			});
@@ -291,7 +291,7 @@ export default {
         objId:row.id,
         objName:encodeURI(row.name)
       }});
->>>>>>> 12cd4fd445ab075859e422720f16612c060483de
+/*>>>>>>> 12cd4fd445ab075859e422720f16612c060483de*/
     },
     search: function(keyword) {
       this.setStore({

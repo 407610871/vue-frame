@@ -160,16 +160,16 @@ function bootstrap(env) {
         });
     }
   });
-  window.vm.$keycloak.onAuthSuccess = () => {
+  vm.$keycloak.onAuthSuccess = () => {
     store.commit(
       "SET_TOKEN",
-      window.vm.$keycloak.tokenParsed.typ + " " + window.vm.$keycloak.token
+      vm.$keycloak.tokenParsed.typ + " " + vm.$keycloak.token
     );
 
-    window.vm.$mount("#app");
+    vm.$mount("#app");
   };
 }
-if (process.env.NODE_ENV === "production") {
+if (process.env.NODE_ENV === "production") {  
   loadScript("/env.js", () => {
     bootstrap(ENV || process.env);
   });
