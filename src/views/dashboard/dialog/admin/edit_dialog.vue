@@ -777,7 +777,7 @@ export default {
     _getInit() {
       this.loading = true;
       this.$ajax({
-        method: "post",
+        method: "get",
         url: 'http://10.19.248.200:32661/DACM/update/dataSourceSelect',
         params: {
           id: this.appId
@@ -787,7 +787,7 @@ export default {
         if (res.data.success) {
           var data = res.data.data;
           this.ruleForm.jrname = data.name;
-          this.ruleForm.syskind = data.accessSysDialectId;
+          this.ruleForm.syskind = parseInt(data.accessSysDialectId);
           this.ruleForm.dockname = data.registerName;
           this.ruleForm.dockphone = data.registerPhone;
           this.ruleForm.prophone = data.contactsPhone;

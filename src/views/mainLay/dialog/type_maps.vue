@@ -62,7 +62,7 @@ export default {
         count: 20,
         term: ""
       }
-      this.$ajax.post('http://10.19.160.168:8080/DACM/objDetail/dataList', map).then(function(res) {
+      this.$ajax.post('http://10.19.248.200:32661/DACM/objDetail/dataList', map).then(function(res) {
         if (res.data.success) {
           _self.tableData = [];
           _self.schemaMappingDTOList = [];

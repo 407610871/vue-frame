@@ -1,6 +1,6 @@
 <template>
   <div class="taskMDialog">
-    <el-button size="mini" class="diabtn incbtn" type="danger" @click="dialogVisible = true">文件上传</el-button>
+    <el-button  class="add-btn fr ml10" @click="dialogVisible = true">文件上传</el-button>
     <el-dialog title="上传文件" :visible.sync="dialogVisible" width="60%" :before-close="closeDialog">
       <div class="title-gra">
         <span class="grab gra-l"></span>
@@ -127,7 +127,7 @@ export default {
         }
         this.$ajax({
           method: "POST",
-          url: 'http://10.19.160.25:8088/demo/ctables/addRecord',
+          url: 'http://10.19.248.200:32661/DACM/ctables/addRecord',
           // headers:{
           //   'Content-Type':'application/json;charset=utf-8',
           // },
@@ -161,12 +161,12 @@ export default {
       console.log(node);
       if (node.level == 0) {
         var params = {
-          accessSysId: '89311',
+          accessSysId: this.rowList,
           linkPath: '/'
         }
         this.$ajax({
           method: "POST",
-          url: 'http://10.19.160.25:8088/demo/ctables/getStructure',
+          url: 'http://10.19.248.200:32661/DACM/ctables/getStructure',
           // headers:{
           //   'Content-Type':'application/json;charset=utf-8',
           // },
@@ -194,7 +194,7 @@ export default {
         }
         this.$ajax({
           method: "POST",
-          url: 'http://10.19.160.25:8088/demo/ctables/getStructure',
+          url: 'http://10.19.248.200:32661/DACM/ctables/getStructure',
           // headers:{
           //   'Content-Type':'application/json;charset=utf-8',
           // },
@@ -220,10 +220,11 @@ export default {
   created() {
 
   },
+  props:['rowList'],
   watch: {
     dialogVisible() {
       if (this.dialogVisible) {
-
+      
       }
     }
   }

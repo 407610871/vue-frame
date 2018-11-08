@@ -28,7 +28,7 @@
                 <h2>批量匹配设置</h2>
               </div>
             </div>
-            <wild-card :msg="activeName" :rowList="rowList" @pre="next('first')" @nre="next('third')"></wild-card>
+            <wild-card :msg="activeName" :rowList="rowList" :jrtype="jrtype" @pre="next('first')" @nre="next('third')"></wild-card>
           </el-tab-pane>
           <el-tab-pane name="third" disabled><span slot="label"><i class="el-icon-circle">3</i> 建立数据映射关系</span>
             <div class="daiInfo proInfo">
@@ -147,10 +147,11 @@ export default {
     dialogVisible(){
       if(this.dialogVisible){
         this.msg = true;
+        console.log(this.jrtype + "54546465454");
       }
     }
   },
-  props: ['rowList']
+  props: ['rowList','jrtype']
 
 };
 
