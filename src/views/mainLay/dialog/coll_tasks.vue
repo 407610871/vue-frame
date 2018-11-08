@@ -537,7 +537,7 @@ export default {
             this.$alert('采集任务启动成功！', '信息', {
               confirmButtonText: '确定',
               callback: action => {
-                this.$emit('close');
+                this.$emit('fresh');
               }
             });
           } else {

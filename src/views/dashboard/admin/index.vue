@@ -208,7 +208,6 @@ export default {
 			paramsObj.deptIds = this.tableParams.deptId;
 
       this.$ajax.post('http://10.19.248.200:32661/DACM/caccess/query',paramsObj).then(function(res){
-
         console.log('tableLoaded:dashboard');
         if(res.data.success){
           _self.mainTableData = res.data.data.list;

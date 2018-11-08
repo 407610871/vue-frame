@@ -27,7 +27,7 @@ import "./registerServiceWorker";
 import axios from "axios";
 
 Vue.prototype.$ajax = axios;
-Vue.prototype.$ajax .interceptors.request.use(
+Vue.prototype.$ajax.interceptors.request.use(
   config => {
     // Do something before request is sent
     if (store.getters.token) {
@@ -42,7 +42,6 @@ Vue.prototype.$ajax .interceptors.request.use(
     Promise.reject(error);
   }
 );
-
 
 import Authen from "./Authen.js";
 import VJstree from "vue-jstree";
@@ -161,14 +160,13 @@ function bootstrap(env) {
         });
     }
   });
-  vm.$keycloak.onAuthSuccess = () => {
-    //初始化 将token放入store
+  window.vm.$keycloak.onAuthSuccess = () => {
     store.commit(
       "SET_TOKEN",
-      vm.$keycloak.tokenParsed.typ + " " + vm.$keycloak.token
+      window.vm.$keycloak.tokenParsed.typ + " " + window.vm.$keycloak.token
     );
 
-    vm.$mount("#app");
+    window.vm.$mount("#app");
   };
 }
 if (process.env.NODE_ENV === "production") {

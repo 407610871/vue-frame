@@ -28,7 +28,7 @@
                 <h2>批量匹配设置</h2>
               </div>
             </div>
-            <wild-card :rowList = "rowList" @pre="next('first')" @nre="next('third')"></wild-card>
+            <wild-card :rowList="rowList" @pre="next('first')" @nre="next('third')"></wild-card>
           </el-tab-pane>
           <el-tab-pane name="third" disabled><span slot="label"><i class="el-icon-circle">3</i> 建立数据映射关系</span>
             <div class="daiInfo proInfo">
@@ -44,7 +44,7 @@
                 <h2>设置采集任务</h2>
               </div>
             </div>
-            <coll-task :rowList="rowList" @pre="next('third')"></coll-task>
+            <coll-task :rowList="rowList" @pre="next('third')" @fresh="fresh()"> </coll-task>
             <!-- <div class="btn tcenter mt30">
               <el-button type="primary" style="margin-top: 12px;" @click="next('third')">上一步</el-button>
               <el-button type="primary" style="margin-top: 12px;">完成</el-button>
@@ -68,7 +68,7 @@ export default {
       dialogVisible: false,
       tabs: '',
       event: '',
-      idList:[]
+      idList: []
     };
   },
   methods: {
@@ -82,6 +82,10 @@ export default {
       console.log(tab, event);
       console.log(this.activeName);
 
+    },
+    fresh() {
+      this.$emit('fre');
+      this.dialogVisible = false;
     },
     next(steps) {
       this.activeName = steps;

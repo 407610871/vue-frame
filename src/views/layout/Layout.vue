@@ -34,7 +34,7 @@
         </div>
         <div class="enc-sub-header">
           <el-breadcrumb separator="/">
-            <el-breadcrumb-item v-for="(item,index) in breadcrumb"><a href="javascript:void(0)" v-on:click="breadcrumbChange(index,item)">{{item.breadcrumbName}}</a></el-breadcrumb-item>
+            <el-breadcrumb-item v-for="(item,index) in breadcrumb" :key="index"><a href="javascript:void(0)" v-on:click="breadcrumbChange(index,item)">{{item.breadcrumbName}}</a></el-breadcrumb-item>
           </el-breadcrumb>
           <!-- <span v-for="item in breadcrumb"> / <a href="javascript:void(0)" v-on:click="goToPage(item.path)">{{item.name}}</a></span> -->
         </div>

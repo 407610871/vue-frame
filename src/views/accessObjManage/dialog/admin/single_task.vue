@@ -36,7 +36,7 @@
                 <h2>设置采集任务</h2>
               </div>
             </div>
-            <coll-task :pdata="pdata" @pre="next('second')" @close="closeDialog()"></coll-task>
+            <coll-task :pdata="pdata" @pre="next('second')" @close="closeDialog()" @fresh="fresh()"></coll-task>
             <!-- <div class="btn tcenter mt30">
               <el-button type="primary" style="margin-top: 12px;" @click="next('second')">上一步</el-button>
               <el-button type="primary" style="margin-top: 12px;">完成</el-button>
@@ -76,6 +76,10 @@ export default {
     },
     next(steps) {
       this.activeName = steps;
+    },
+    fresh(){
+      this.$emit('fre');
+      this.dialogVisible = false;
     }
   },
   components: {
