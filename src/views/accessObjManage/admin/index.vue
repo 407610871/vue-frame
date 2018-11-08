@@ -8,10 +8,10 @@
       <el-main class="main-container">
         <div class="table-tools">
           <el-button v-on:click="updataSource" class="right-btn" style="margin-left:10px;">接入源更新</el-button>
-          <table-inver class="right-btn"></table-inver>
+          <table-inver class="right-btn" :pdata="tablePa"></table-inver>
           <set-task class="right-btn" :rowList="rowList"></set-task>
         </div>
-        <el-table :data="mainTableData" stripe :height="tableHeight" border style="width: 100%" tooltip-effect="light"  @selection-change="handleSelectionChange">
+        <el-table :data="mainTableData" stripe :height="tableHeight" border style="width: 100%" tooltip-effect="light" @selection-change="handleSelectionChange">
           <el-table-column type="selection">
           </el-table-column>
           <el-table-column prop="diyComments" label="资源名称" width="180" show-overflow-tooltip>
@@ -41,20 +41,20 @@
             <template slot-scope="scope">
               <el-button size="mini" v-on:click="updataSourceSingle(scope.$index, scope.row)">数据量更新</el-button>
               <div class="survey">
-                <userSurvey :pdata="scope.row" @fre = "loadTable()"></userSurvey>
+                <userSurvey :pdata="scope.row" @fre="loadTable()"></userSurvey>
               </div>
               <div class="survey">
-                <single-task :pdata="scope.row" @fre = "loadTable()"></single-task>
+                <single-task :pdata="scope.row" @fre="loadTable()"></single-task>
               </div>
               <div class="survey">
-                <data-inver :pdata="scope.row" @fre = "loadTable()"></data-inver>
+                <data-inver :pdata="scope.row" @fre="loadTable()"></data-inver>
               </div>
-              <!-- <div class="survey">
+              <div class="survey" v-show="jrtype!='mysql' && jrtype!='oracle' && jrtype!='sqlserver' && jrtype!='postgresql'">
                 <norela-coll :pdata="scope.row"></norela-coll>
               </div>
-              <div class="survey">
+              <div class="survey" v-show="jrtype=='ftp'">
                 <path-ftp></path-ftp>
-              </div> -->
+              </div>
             </template>
           </el-table-column>
         </el-table>
@@ -104,7 +104,9 @@ export default {
       seledRows: [],
       collapse: true,
       formFilterData: [],
-      rowList:[],
+      rowList: [],
+      tablePa: [],
+      jrtype:'',
 
     }
   },
@@ -131,21 +133,21 @@ export default {
     norelaColl
   },
   watch: {
-    tableParams(newVal,oldVal){
-			console.log(newVal);
-			console.log(oldVal);
-			if(JSON.stringify(newVal) != JSON.stringify(oldVal)){
-			console.log('change');
-				this.loadTable();
-			}
+    tableParams(newVal, oldVal) {
+      console.log(newVal);
+      console.log(oldVal);
+      if (JSON.stringify(newVal) != JSON.stringify(oldVal)) {
+        console.log('change');
+        this.loadTable();
+      }
     },
   },
   mounted() {
-		console.log('mounted');
+    console.log('mounted');
     this.storeReady();
   },
   created() {
-		console.log('created');
+    console.log('created');
     this.$root.eventHub.$on('search', (keyword) => {
       this.search(keyword);
     })
@@ -170,6 +172,12 @@ export default {
           if (res.data.success) {
             _self.mainTableData = res.data.data.list;
             _self.mainTableDataTotal = res.data.data.total;
+           
+            if(res.data.data.list.length>0){
+               _self.tablePa = res.data.data.list[0];
+               _self.jrtype =  res.data.data.list[0].accessSys.accessSysDialect.name;
+               console.log(_self.jrtype);
+            }
             //这里是异步的，存在延迟，所以没问题,如果是同步的话可能存在问题
             _self.currentPage = _self.tableParams.pageNum;
           } else {
@@ -199,23 +207,26 @@ export default {
       });
     },
     goAccessObjInfo: function(row) {
-			this.$store.commit('setParamItem',{
-				name:'accessObjInfo',
-				data:{
-					ACCESS_SYS_DIALECT_ID:this.mainTableData[0].accessSys.accessSysDialectId,
-					accessSysId:this.mainTableData[0].accessSys.id,
-					diyComments:row.diyComments
-				}
-			});
-			this.$store.commit('resetQueryParam', {
-				resetData:'accessObjInfo'
-			});
-      this.$router.push({ name: "accessObjInfo",params:{
-        sourceId:this.$route.params.sourceId,
-        sourceName:this.$route.params.sourceName,
-        objId:row.id,
-        objName:encodeURI(row.name)
-      }});
+      this.$store.commit('setParamItem', {
+        name: 'accessObjInfo',
+        data: {
+          ACCESS_SYS_DIALECT_ID: this.mainTableData[0].accessSys.accessSysDialectId,
+          accessSysId: this.mainTableData[0].accessSys.id,
+          diyComments: row.diyComments
+        }
+      });
+      this.$store.commit('resetQueryParam', {
+        resetData: 'accessObjInfo'
+      });
+      this.$router.push({
+        name: "accessObjInfo",
+        params: {
+          sourceId: this.$route.params.sourceId,
+          sourceName: this.$route.params.sourceName,
+          objId: row.id,
+          objName: encodeURI(row.name)
+        }
+      });
     },
     search: function(keyword) {
       this.setStore({
@@ -270,7 +281,7 @@ export default {
       this.rowList = val;
       console.log(this.rowList);
     },
-    changeFormFilter:function(fliterParams){
+    changeFormFilter: function(fliterParams) {
       this.setStore(fliterParams);
     },
     storeReady() {

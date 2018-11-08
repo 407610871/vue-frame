@@ -67,6 +67,8 @@ const store = new Vuex.Store({
     schemaList:[],//增量字段列表
     userList:{},//数据调研列表
     regInfo:{},//正则
+    matchType:[],//自定义表
+    matchflag:'0',//表
   },
   mutations: {
     setFilterItmeList(state,obj){
@@ -110,6 +112,14 @@ const store = new Vuex.Store({
     setRegInfo(state,obj){
       state.regInfo = {};
       state.regInfo = obj;
+      state.matchflag = '0';
+    },
+    //自定义表
+    setMatchType(state,obj){
+      state.matchType = [];
+      state.matchflag = '0';
+      state.matchType = obj;
+      state.matchflag = '1';
     }
   },
   modules: {

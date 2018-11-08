@@ -133,7 +133,7 @@ export default {
   data: function() {
     return {
       taskInfoId: '1',
-      taskId: '92066',
+      taskId: '',
       dialogVisible: false,
       loginfo: '',
       loading2: false,
@@ -171,7 +171,7 @@ export default {
     _queryInver() {
       this.$ajax({
         method: "GET",
-        url: 'http://10.19.160.59:8080/DACM/ccheckData/tableNum',
+        url: 'http://10.19.248.200:32661/DACM/ccheckData/tableNum',
         // headers:{
         //   'Content-Type':'application/json;charset=utf-8',
         // },
@@ -236,7 +236,7 @@ export default {
       this.loading2 = true;
       this.$ajax({
         method: "GET",
-        url: 'http://10.19.160.59:8080/DACM/ccheckData/checkLog',
+        url: 'http://10.19.248.200:32661/DACM/ccheckData/checkLog',
         // headers:{
         //   'Content-Type':'application/json;charset=utf-8',
         // },
@@ -246,25 +246,33 @@ export default {
 
       }).then(res => {
         this.loading2 = false;
-        if (res.data.result == "true" || res.data.result == true) {
-          this.textShow = true;
-          let logData = res.data.testresults_result == 0 ? "一致" : "不一致";
-          this.loginfo = `源库：${res.data.source_library}\n
-源表：${res.data.source_tableName}\n
-数据核验查询语句：${res.data.source_sql}\n
-执行结果：${res.data.source_tableNum}\n
+        if (res.data.success == "true" || res.data.success == true) {
+         
+          if (res.data.data.result == false) {
+            this.textShow = false;
+            this.$alert("查看日志失败", "查看日志", {
+              confirmButtonText: "确定"
+            });
+            return false;
+          }
+           this.textShow = true;
+          let logData = res.data.data.testresults_result == 0 ? "一致" : "不一致";
+          this.loginfo = `源库：${res.data.data.source_library}\n
+源表：${res.data.data.source_tableName}\n
+数据核验查询语句：${res.data.data.source_sql}\n
+执行结果：${res.data.data.source_tableNum}\n
 \n
-目标库：${res.data.target_library}\n
-目标表：${res.data.target_tableName}\n
-数据核验查询语句：${res.data.target_sql}\n
-执行结果：${res.data.target_tableNum}\n
+目标库：${res.data.data.target_library}\n
+目标表：${res.data.data.target_tableName}\n
+数据核验查询语句：${res.data.data.target_sql}\n
+执行结果：${res.data.data.target_tableNum}\n
 \n
 核验结果:${logData}\n
-核验差值:${res.data.testresults_dvalue}\n
+核验差值:${res.data.data.testresults_dvalue}\n
 `;
         } else {
           this.loading2 = false;
-          if (res.result == "false") {
+          if (res.data.data.result == false) {
             this.textShow = false;
             this.$alert("查看日志失败", "查看日志", {
               confirmButtonText: "确定"
@@ -291,7 +299,7 @@ export default {
       }
       this.$ajax({
         method: "get",
-        url: `http://10.19.160.59:8080/DACM/ccheckData/tableCheck`,
+        url: `http://10.19.248.200:32661/DACM/ccheckData/tableCheck`,
         params: {
           taskId: this.taskId,
           key: this.ruleForm.setVer,
@@ -318,14 +326,14 @@ export default {
     _queryHis() {
       this.$ajax({
         method: "get",
-        url: `http://10.19.160.59:8080/DACM/ccheckData/tableNumAllByTaskId`,
+        url: `http://10.19.248.200:32661/DACM/ccheckData/tableNumAllByTaskId`,
         params: {
           taskId: this.taskId
         }
       }).then(res => {
         debugger;
         if (res.data.success) {
-          this.tableData = res.data.data;
+          this.tableData = res.data.data.data;
           console.log(this.tableData);
         } else {
           this.$alert('获取核验历史记录失败', '信息', {
@@ -340,7 +348,7 @@ export default {
       if (!browser) {
         browser = 'IE'
       }
-      window.location.href = `http://10.19.160.59:8080/DACM/ccheckData/downloadCheckDataById?id=${item.id}&browser=${browser}&accessName=ww`
+      window.location.href = `http://10.19.248.200:32661/DACM/ccheckData/downloadCheckDataById?id=${item.id}&browser=${browser}&accessName=ww`
     }
   },
   components: {
@@ -358,6 +366,7 @@ export default {
   watch: {
     dialogVisible() {
       if (this.dialogVisible) {
+        this.taskId = this.pdata.id;
         this._queryInver();
         this._queryHis();
       }

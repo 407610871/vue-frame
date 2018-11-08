@@ -51,19 +51,21 @@ export default {
   methods: {
     //测试使用mapMutations的用法
     ...mapMutations([
-      'setSchemaList'
+      'setSchemaList',
     ]),
     //得到map的值
     _getMap() {
       var _self = this;
       var map = {
-        objectInfoId: this.tableId,
+        objectInfoId: this.rowList[0].id,
         pagNum: 1,
         count: 20,
         term: ""
       }
-      this.$ajax.post('http://10.19.248.200:32661/DACM/objDetail/dataList', map).then(function(res) {
+      this.$ajax.post('http://10.19.160.168:8080/DACM/objDetail/dataList', map).then(function(res) {
         if (res.data.success) {
+          _self.tableData = [];
+          _self.schemaMappingDTOList = [];
           _self.tableData = res.data.data.list;
           for (let j = 0; j < _self.tableData.length; j++) {
             _self.schemaMappingDTOList.push({
@@ -79,32 +81,21 @@ export default {
       }).catch(function(err) {
 
       })
-      /*this.$ajax.get('./getTypeMap').then(function(res) {
-          _self.tableData = res.data.page.list;
-          for (let j = 0; j < _self.tableData.length; j++) {
-            _self.schemaMappingDTOList.push({
-              "newColumnName": _self.tableData[j].name,
-              "newColumnType": '',
-              "orgColumnName": _self.tableData[j].name,
-              "orgColumnType": _self.tableData[j].datatype,
-              "orgColumnComment": _self.tableData[j].comments
-            })
-          }
-          _self._getAllType();
-
+    },
+    _getMatch() {
+      var _self = this;
+      _self.tableData = [];
+      _self.schemaMappingDTOList = [];
+      _self.tableData = _self.$store.state.matchType;
+      for (let j = 0; j < _self.tableData.length; j++) {
+        _self.schemaMappingDTOList.push({
+          "newColumnName": _self.tableData[j].name,
+          "newColumnType": '',
+          "orgColumnName": _self.tableData[j].name,
+          "orgColumnType": _self.tableData[j].datatype,
+          "orgColumnComment": _self.tableData[j].comments
         })
-        .catch(function(err) {
-          console.log(err)
-        });*/
-      /*this.$ajax({
-        methods: 'get',
-        url: '/api/ctablesDetail/datas',
-        params: {
-          id:'10203122'
-        }
-      }).then(res => {
-          console.log(res);
-      })*/
+      }
     },
     _getType() {
       var _self = this;
@@ -118,13 +109,14 @@ export default {
 
     },
     _getAllType() {
+      debugger;
       var _self = this;
       this.$ajax.get('./getColumnType').then(function(res) {
-        for(let m =0; m<res.data.length;m++){
-          if(_self.maptype == res.data[m].type){
-            _self.mapData = res.data[m];
+          for (let m = 0; m < res.data.length; m++) {
+            if (_self.rowList[0].accessSys.accessSysDialect.name == res.data[m].type) {
+              _self.mapData = res.data[m];
+            }
           }
-        }
           /**/
           for (let i = 0; i < _self.tableData.length; i++) {
             let flag = false;
@@ -167,7 +159,7 @@ export default {
     },
     //下一步
     next() {
-      this.$emit('nre');
+      this.$emit('next');
       this.setSchemaList(this.schemaMappingDTOList);
     }
   },
@@ -176,8 +168,6 @@ export default {
   },
   mounted() {
 
-    this._getMap()
-    this._getType()
   },
   created() {
 
@@ -193,7 +183,34 @@ export default {
 
     }
   },
-  props: ['tableId','maptype']
+  props: ['rowList', 'msg', 'flag'],
+  watch: {
+    rowList() {
+      this.tableId = this.rowList[0].id;
+    },
+    msg() {
+      debugger;
+      if (this.msg == 'third') {
+        if (this.flag == '0') {
+          if (this.$store.state.matchflag == '0') {
+            this._getMap()
+          } else {
+            this._getMatch();
+          }
+          this._getType()
+        }
+
+      }
+      if (this.msg == "second") {
+        if (this.flag == '1') {
+
+          this._getMatch();
+
+          this._getType()
+        }
+      }
+    }
+  }
 
 };
 

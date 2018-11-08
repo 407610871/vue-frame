@@ -173,7 +173,7 @@ export default {
           }
           this.$ajax({
             method: "POST",
-            url: 'http://10.19.160.176:8088/demo/caccesssysRelationWorkInfo/update',
+            url: 'http://10.19.248.200:32661/DACM/caccesssysRelationWorkInfo/update',
             data: params
 
           }).then(res => {
@@ -199,7 +199,7 @@ export default {
     _getData() {
       this.$ajax({
         method: "get",
-        url: 'http://10.19.160.176:8088/demo/caccesssysRelationWorkInfo/getStorages',
+        url: 'http://10.19.248.200:32661/DACM/caccesssysRelationWorkInfo/getStorages',
         // headers:{
         //   'Content-Type':'application/json;charset=utf-8',
         // },

@@ -476,16 +476,31 @@ export default {
         ctt = '3'
       }
       if (this.ruleForm.accessMode == "1" && this.ruleForm.cycleSet == "0") { //间隔
+        if (this.increArr.id==undefined) {
+          this.$message.warning('请选择增量字段');
+          return false;
+        }
         ctt = '1'
       }
       if (this.ruleForm.accessMode == "1" && this.ruleForm.cycleSet == "1") { //实时
+      if (this.increArr.id==undefined) {
+          this.$message.warning('请选择增量字段');
+          return false;
+        }
         ctt = '2'
       }
       if (this.ruleForm.accessMode == "3" && this.ruleForm.cycleSet == "0") { //间隔
+       if (this.increArr.id==undefined) {
+          this.$message.warning('请选择增量字段');
+          return false;
+        }
         ctt = '4'
       }
       if (this.ruleForm.accessMode == "3" && this.ruleForm.cycleSet == "1") { //实时
-
+if (this.increArr.id==undefined) {
+          this.$message.warning('请选择增量字段');
+          return false;
+        }
         ctt = '5'
       }
       var save = {

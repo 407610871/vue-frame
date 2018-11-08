@@ -518,7 +518,7 @@ export default {
         "timeType": this.radio,
         "regexInfo": this.$store.state.regInfo.baseEnd,
         "isCustom": this.$store.state.regInfo.baseflag,
-        "tableCommonName": this.$store.state.regInfo.baseStart,
+        "tableCommonName": this.$store.state.regInfo.baseEnd,
         "accessSysId": this.rowList[0].accessSys.id
       }
       this.loading = true;
@@ -632,7 +632,7 @@ export default {
       console.log("4545645");
     },
     msg() {
-      if (this.msg=="fourth") {
+      if (this.msg=="third") {
         this._monthData();
         this._minData();
         this._hourData();
@@ -640,7 +640,6 @@ export default {
         this._getTree();
       }
     }
-
   }
 
 };

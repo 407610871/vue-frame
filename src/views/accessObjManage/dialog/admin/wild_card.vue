@@ -6,12 +6,12 @@
           <el-col :span="24">
             <el-form-item label="选择匹配类型:" prop="matchType">
               <el-radio-group v-model="ruleForm.matchType">
-                <el-radio label="表"></el-radio>
-                <el-radio label="文件"></el-radio>
+                <el-radio label="0">表</el-radio>
+                <el-radio label="1">文件</el-radio>
               </el-radio-group>
             </el-form-item>
           </el-col>
-          <el-col :span="24" class="mtsItem">
+          <el-col :span="24" class="mtsItem" v-show="ruleForm.matchType=='0'">
             <el-form-item class="mtsItem">
               <el-radio-group v-model="ruleForm.typeKind" class="wid100">
                 <el-col :span="24">
@@ -54,6 +54,33 @@
               </el-radio-group>
             </el-form-item>
           </el-col>
+          <el-col :span="24" class="mtsItem" v-show="ruleForm.matchType == '1'">
+            <div class="delimiter-box"><span>分隔符:</span>
+              <el-input v-model="delimiter"></el-input>
+            </div>
+            <div class="comTable">
+              <el-table stripe :data="tableData" height="250" style="width: 100%">
+                <el-table-column width="180" label="" :render-header="renderHeader">
+                  <template slot-scope="scope">
+                    <i class="el-icon-remove" @click="handleDelete(scope.$index, scope.row)"></i>
+                  </template>
+                </el-table-column>
+                <el-table-column label="字段名称">
+                  <template slot-scope="scope">
+                    <el-input v-model="scope.row.name"></el-input>
+                  </template>
+                </el-table-column>
+                <el-table-column prop="datatype" label="字段类型">
+                  <template slot-scope="scope">
+                    <el-select v-model="scope.row.datatype" placeholder="请选择">
+                      <el-option v-for="item in TypeData" :key="item" :label="item" :value="item">
+                      </el-option>
+                    </el-select>
+                  </template>
+                </el-table-column>
+              </el-table>
+            </div>
+          </el-col>
         </div>
       </div>
     </el-form>
@@ -65,14 +92,19 @@
 </template>
 <script>
 import { mapState, mapMutations, mapActions } from 'vuex'
+import norelaWild from '@/views/mainLay/dialog/norela_wild'
 export default {
   name: "userSurvey",
   data: function() {
     return {
       dialogVisible: false,
       regxData: [],
+      wildData: [],
+      tableData: [],
+      delimiter: '',
+      TypeData: [],
       ruleForm: {
-        matchType: '表', //匹配类型
+        matchType: '0', //匹配类型
         typeKind: '0',
         baseStart: '', //表开头
         baseEnd: '', //表结尾
@@ -83,7 +115,7 @@ export default {
   },
   methods: {
     ...mapMutations([
-      'setRegInfo'
+      'setRegInfo', 'setMatchType'
     ]),
     //关闭对话框
     closeDialog() {
@@ -99,44 +131,59 @@ export default {
       this.$emit('pre');
     },
     nre() {
-      let reflag = true;
-      let varegex;
-      if (this.ruleForm.typeKind == '0') {
-        let start = this.ruleForm.baseStart;
-        let end = this.ruleForm.baseEnd;
-        varegex = new RegExp('^' + start + '.*' + end + '$');
-
-      } else {
-        varegex = new RegExp(this.ruleForm.highMatch);
-      }
-      for (let i = 0; i < this.rowList.length; i++) {
-        if (varegex.test(this.rowList[i].name)) {
-
-        } else {
-          reflag = false;
-        }
-      }
-      if (reflag == false) {
-        this.$message.warning('表中有不匹配的表名');
-        return false;
-      } else {
+      if (this.ruleForm.matchType == '0') {
+        let reflag = true;
+        let varegex;
         if (this.ruleForm.typeKind == '0') {
-          var RegInfo={
-            baseStart: this.ruleForm.baseStart,
-            baseEnd: this.ruleForm.baseEnd,
-            baseflag: this.ruleForm.typeKind
-          }
-          this.setRegInfo(RegInfo);
+          let start = this.ruleForm.baseStart;
+          let end = this.ruleForm.baseEnd;
+          varegex = new RegExp('^' + start + '.*' + end + '$');
+
         } else {
-          var RegInfo={
-            baseStart: "",
-            baseEnd: this.ruleForm.highMatch,
-            baseflag: this.ruleForm.typeKind
-          }
-          this.setRegInfo(RegInfo);
+          varegex = new RegExp(this.ruleForm.highMatch);
         }
+        for (let i = 0; i < this.rowList.length; i++) {
+          if (varegex.test(this.rowList[i].name)) {
+
+          } else {
+            reflag = false;
+          }
+        }
+        if (reflag == false) {
+          this.$message.warning('表中有不匹配的表名');
+          return false;
+        } else {
+          if (this.ruleForm.typeKind == '0') {
+            var RegInfo = {
+              baseStart: this.ruleForm.baseStart,
+              baseEnd: this.ruleForm.baseEnd,
+              baseflag: false
+            }
+            this.setRegInfo(RegInfo);
+          } else {
+            var RegInfo = {
+              baseStart: "",
+              baseEnd: this.ruleForm.highMatch,
+              baseflag: true
+            }
+            this.setRegInfo(RegInfo);
+          }
+          this.$emit('nre');
+        }
+      }
+      if (this.ruleForm.matchType == '1') {
+
+        for (let i = 0; i < this.tableData.length; i++) {
+          if (this.tableData[i].name == '' || this.tableData[i].datatype == '') {
+            this.$message.warning('不能为空');
+            return false;
+          }
+        }
+        this.setMatchType(this.tableData);
+        console.log(this.tableData);
         this.$emit('nre');
       }
+
     },
     _getRegexList() {
       this.$ajax({
@@ -150,21 +197,69 @@ export default {
           this.regxData = res.data.data;
         }
       })
-    }
+    },
+    // 在渲染表头的时候,会调用此方法, h为createElement的缩写版, 也可以添加事件click、change等
+    renderHeader(h, { column, $index }) {
+      return h('span', [
+        h('span', column.label),
+        h('span', {
+          class: 'el-icon-circle-plus',
+          on: {
+            click: () => {
+              /*console.log(`${column.label}   ${$index}`)*/
+              this.tableData.push({
+                name: '',
+                datatype: '',
+                mapdata: '',
+                comments: ''
+              })
+            }
+          }
+        })
+      ])
+    },
+    handleDelete(index, row) {
+      this.tableData.splice(index, 1);
+    },
+    //得到字段类型
+    _getType() {
+      var _self = this;
+      this.$ajax.get('./getColumnType').then(function(res) {
+          debugger;
+          for (let m = 0; m < res.data.length; m++) {
+            if (_self.rowList[0].accessSys.accessSysDialect.name == res.data[m].type) {
+              _self.TypeData = res.data[m].datas;
+            }
+          }
+          //console.log(_self.TypeData);
+        })
+        .catch(function(err) {
+          console.log(err)
+        });
+
+    },
   },
   components: {
-
+    norelaWild
   },
   mounted() {
 
   },
   created() {
-    this._getRegexList();
+
   },
   computed: {
 
   },
-  props: ['rowList']
+  props: ['rowList', 'msg'],
+  watch: {
+    msg() {
+      if (this.msg=="second") {
+        this._getRegexList();
+        this._getType();
+      }
+    }
+  }
 
 };
 

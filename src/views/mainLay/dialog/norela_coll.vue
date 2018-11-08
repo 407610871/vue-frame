@@ -10,17 +10,9 @@
       <div class="taskSteps plr30">
         <el-tabs v-model="activeName">
           <el-tab-pane name="first" disabled>
-            <span slot="label"><i class="el-icon-circle">1</i> 数据调研</span>
-            <div class="daiInfo proInfo">
-              <div class="daiInfo-title proInfo-title">
-                <h2>提供方信息</h2>
-              </div>
-            </div>
-            <norela-wild></norela-wild>
-            <div class="btn tcenter">
-              <el-button type="primary" style="margin-top: 12px;" @click="next('second')">下一步</el-button>
-              <el-button style="margin-top: 12px;" @click="closeDialog">取消</el-button>
-            </div>
+            <span slot="label"><i class="el-icon-circle">1</i>设置通配符</span>
+            <norela-wild :msg="msg" @pre="next('second')" @clo="closeDialog"></norela-wild>
+            
           </el-tab-pane>
          
           <el-tab-pane name="second" disabled><span slot="label"><i class="el-icon-circle">2</i> 建立数据映射关系</span>
@@ -29,11 +21,8 @@
                 <h2>字段类型映射</h2>
               </div>
             </div>
-            <type-map :tableId="this.pdata.id"></type-map>
+            <type-map :flag="'1'" :rowList="pdata" @pre="next('first')" @next="next('third')" :msg="activeName"></type-map>
             <div class="btn tcenter mt30">
-            <el-button type="primary" style="margin-top: 12px;" @click="next('first')">上一步</el-button>
-              <el-button type="primary" style="margin-top: 12px;" @click="next('third')">下一步</el-button>
-              
             </div>
           </el-tab-pane>
           <el-tab-pane name="third" disabled><span slot="label"><i class="el-icon-circle">3</i>设置接入信息</span><div class="daiInfo proInfo">
@@ -41,11 +30,11 @@
                 <h2>设置采集任务</h2>
               </div>
             </div>
-            <coll-task></coll-task>
-            <div class="btn tcenter mt30">
-              <el-button type="primary" style="margin-top: 12px;" @click="next('second')">上一步</el-button>
-              <el-button type="primary" style="margin-top: 12px;">完成</el-button>
-            </div></el-tab-pane>
+             <coll-task :rowList="pdata" :msg="activeName" @pre="next('third')" @fresh="fresh()"> </coll-task>
+           <!--  <div class="btn tcenter mt30">
+             <el-button type="primary" style="margin-top: 12px;" @click="next('second')">上一步</el-button>
+             <el-button type="primary" style="margin-top: 12px;">完成</el-button>
+            </div> --></el-tab-pane>
         </el-tabs>
       </div>
     </el-dialog>
@@ -53,8 +42,9 @@
 </template>
 <script>
 import norelaWild from '@/views/mainLay/dialog/norela_wild' //设置通配符
-import typeMap from '@/views/accessObjManage/dialog/admin//type_map' //建立数据映射关系
-import collTask from '@/views/accessObjManage/dialog/admin/coll_task'//设置采集任务
+import typeMap from '@/views/mainLay/dialog/type_maps'//建立数据映射关系
+import collTask from '@/views/mainLay/dialog/coll_com'//设置采集任务
+import { mapState, mapMutations, mapActions } from 'vuex'
 export default {
   name: "userSurvey",
   data: function() {
@@ -63,12 +53,17 @@ export default {
       dialogVisible: false,
       tabs: '',
       event: '',
+      clear: [],
+      msg: false,
     };
   },
   methods: {
     //关闭对话框
     closeDialog() {
       this.dialogVisible = false;
+      this.msg = false;
+      this.setMatchType(clear);
+      this.activeName = 'first';
       //this.$refs.survey._clearForm();
     },
     //步骤条
@@ -79,6 +74,7 @@ export default {
     },
     next(steps) {
       this.activeName = steps;
+      console.log(this.pdata);
     }
   },
   components: {
@@ -92,8 +88,16 @@ export default {
   created() {
 
   },
+  watch:{
+    dialogVisible(){
+      if(this.dialogVisible){
+         this.msg = true;
+      }
+     
+    }
+  },
   computed: {
-
+ 
   },
   props:['pdata'],
 
