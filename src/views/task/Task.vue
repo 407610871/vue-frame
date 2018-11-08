@@ -133,9 +133,10 @@
 import DialogIsCheck from "./DialogIsCheck";
 import DialogTaskDetail from "./DialogTaskDetail";
 //盐城环境地址
-// const httpUrl="http://10.19.248.200:32662/DOMN/";
+const httpUrl="http://10.19.248.200:32662/DOMN/";
 //本地调试地址
-const httpUrl="http://10.19.160.67:8081/DOMN/";
+// const httpUrl="http://10.19.160.67:8081/DOMN/";
+// export const httpUrl="http://10.19.160.67:8081/DOMN/";
 
 export default {
   name: "task",
@@ -181,7 +182,7 @@ export default {
   },
   computed: {
     departmentId: function() {
-      return this.$store.state.deptId||[1];
+      return this.$store.state.deptId.length ==0?  [1]:this.$store.state.deptId;
 
       // return 1;
     },
@@ -657,6 +658,10 @@ export default {
     }
   }
 };
+
+
+
+
 </script>
 <style scoped lang="scss">
 .count-container {
