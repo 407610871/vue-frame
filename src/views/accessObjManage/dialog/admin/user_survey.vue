@@ -281,6 +281,7 @@ export default {
                 confirmButtonText: '确定',
                 callback: action => {
                   this.dialogVisible = false;
+                   this.$emit('fre');
                 }
               });
             } else {

@@ -207,7 +207,7 @@ export default {
       paramsObj.platform = this.tableParams.platform;
 			paramsObj.deptIds = this.tableParams.deptId;
 
-      this.$ajax.post('http://10.19.160.175:8081/DEMO/caccess/query',paramsObj).then(function(res){
+      this.$ajax.post('http://10.19.160.168:8080/DACM/caccess/query',paramsObj).then(function(res){
 
         console.log('tableLoaded:dashboard');
         if(res.data.success){

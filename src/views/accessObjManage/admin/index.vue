@@ -41,13 +41,13 @@
             <template slot-scope="scope">
               <el-button size="mini" v-on:click="updataSourceSingle(scope.$index, scope.row)">数据量更新</el-button>
               <div class="survey">
-                <userSurvey :pdata="scope.row"></userSurvey>
+                <userSurvey :pdata="scope.row" @fre = "loadTable()"></userSurvey>
               </div>
               <div class="survey">
-                <single-task :pdata="scope.row"></single-task>
+                <single-task :pdata="scope.row" @fre = "loadTable()"></single-task>
               </div>
               <div class="survey">
-                <data-inver :pdata="scope.row"></data-inver>
+                <data-inver :pdata="scope.row" @fre = "loadTable()"></data-inver>
               </div>
               <!-- <div class="survey">
                 <norela-coll :pdata="scope.row"></norela-coll>

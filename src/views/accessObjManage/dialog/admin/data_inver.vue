@@ -171,7 +171,7 @@ export default {
     _queryInver() {
       this.$ajax({
         method: "GET",
-        url: 'http://10.19.160.59:8088/demo/ccheckData/tableNum',
+        url: 'http://10.19.160.59:8080/DACM/ccheckData/tableNum',
         // headers:{
         //   'Content-Type':'application/json;charset=utf-8',
         // },
@@ -180,32 +180,32 @@ export default {
         }
 
       }).then(res => {
-        if (res.data.result == "true" || res.data.result == true) {
-          this.resData = res.data;
+        if (res.data.success == "true" || res.data.success == true) {
+          this.resData = res.data.data;
           this.logId = res.data.id;
-          if (res.data.status == "1") {
+          if (res.data.data.status == "1") {
             this.textShow = false;
             window.clearInterval(this.timer);
             this.timer = null;
             this.loading = false;
             this.status = '开始核验';
-            if (res.data.config_key != undefined && res.data.config_key != null) {
+            if (res.data.data.config_key != undefined && res.data.data.config_key != null) {
               //全量
-              if (res.data.config_key == "0") {
+              if (res.data.data.config_key == "0") {
                 this.ruleForm.setVer = 0;
                 this.ruleForm.startTime = [];
               } else {
                 //时间范围
                 this.ruleForm.setVer = 1;
                 this.ruleForm.startTime = [
-                  res.data.config_startTime,
-                  res.data.config_endTime
+                  res.data.data.config_startTime,
+                  res.data.data.config_endTime
                 ]
               }
-              this.ruleForm.range = res.data.config_range;
+              this.ruleForm.range = res.data.data.config_range;
 
             }
-          } else if (res.data.status == "0") {
+          } else if (res.data.data.status == "0") {
             this.loading = true;
             this.setTimer();
             this.status = '核验中'
@@ -236,7 +236,7 @@ export default {
       this.loading2 = true;
       this.$ajax({
         method: "GET",
-        url: 'http://10.19.160.59:8088/demo/ccheckData/checkLog',
+        url: 'http://10.19.160.59:8080/DACM/ccheckData/checkLog',
         // headers:{
         //   'Content-Type':'application/json;charset=utf-8',
         // },
@@ -291,7 +291,7 @@ export default {
       }
       this.$ajax({
         method: "get",
-        url: `http://10.19.160.59:8088/demo/ccheckData/tableCheck`,
+        url: `http://10.19.160.59:8080/DACM/ccheckData/tableCheck`,
         params: {
           taskId: this.taskId,
           key: this.ruleForm.setVer,
@@ -318,11 +318,12 @@ export default {
     _queryHis() {
       this.$ajax({
         method: "get",
-        url: `http://10.19.160.59:8088/demo/ccheckData/tableNumAllByTaskId`,
+        url: `http://10.19.160.59:8080/DACM/ccheckData/tableNumAllByTaskId`,
         params: {
           taskId: this.taskId
         }
       }).then(res => {
+        debugger;
         if (res.data.success) {
           this.tableData = res.data.data;
           console.log(this.tableData);
@@ -339,7 +340,7 @@ export default {
       if (!browser) {
         browser = 'IE'
       }
-      window.location.href = `http://10.19.160.59:8088/demo/ccheckData/downloadCheckDataById?id=${item.id}&browser=${browser}&accessName=ww`
+      window.location.href = `http://10.19.160.59:8080/DACM/ccheckData/downloadCheckDataById?id=${item.id}&browser=${browser}&accessName=ww`
     }
   },
   components: {

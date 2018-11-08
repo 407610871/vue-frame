@@ -476,130 +476,125 @@ export default {
         ctt = '3'
       }
       if (this.ruleForm.accessMode == "1" && this.ruleForm.cycleSet == "0") { //间隔
-
         ctt = '1'
-
       }
       if (this.ruleForm.accessMode == "1" && this.ruleForm.cycleSet == "1") { //实时
-
         ctt = '2'
       }
       if (this.ruleForm.accessMode == "3" && this.ruleForm.cycleSet == "0") { //间隔
-        if (JSON.stringify(this.increArr) == "{}") {
+        ctt = '4'
+      }
+      if (this.ruleForm.accessMode == "3" && this.ruleForm.cycleSet == "1") { //实时
 
-          ctt = '4'
-        }
-        if (this.ruleForm.accessMode == "3" && this.ruleForm.cycleSet == "1") { //实时
+        ctt = '5'
+      }
+      var save = {
+        "accessSysObjDetails": this.increArr,
+        "priority": this.ruleForm.accessPri,
+        "jobType": this.ruleForm.actech,
+        "accessSysObjInfoId": this.accId,
+        "pollIntervalMs": pollIntervalMs,
+        "schemaMappingDTOList": this.$store.state.schemaList,
+        "separator": '',
+        "accessRelationWorkInfoId": this.ruleForm.dLibrary,
+        "collectionTaskType": ctt,
+        "isStartOverTask": this.ruleForm.taskSubMode,
+        "timeType": this.radio
+      }
+      this.loading = true;
+      if (JSON.stringify(this.$store.state.userList) == "{}") {
+        this.$ajax({
+          method: "post",
+          url: 'http://10.19.160.168:8080/DACM/task/saveHeliumTask',
+          // headers:{
+          //   'Content-Type':'application/json;charset=utf-8',
+          // },
+          data: save
 
-          ctt = '5'
-        }
-        var save = {
-          "accessSysObjDetails": this.increArr,
-          "priority": this.ruleForm.accessPri,
-          "jobType": this.ruleForm.actech,
-          "accessSysObjInfoId": this.accId,
-          "pollIntervalMs": pollIntervalMs,
-          "schemaMappingDTOList": this.$store.state.schemaList,
-          "separator": '',
-          "accessRelationWorkInfoId": this.ruleForm.dLibrary,
-          "collectionTaskType": ctt,
-          "isStartOverTask": this.ruleForm.taskSubMode,
-          "timeType": this.radio
-        }
-        this.loading = true;
-        if (JSON.stringify(this.$store.state.userList) == "{}") {
-          this.$ajax({
-            method: "post",
-            url: 'http://10.19.160.168:8080/DACM/task/saveHeliumTask',
-            // headers:{
-            //   'Content-Type':'application/json;charset=utf-8',
-            // },
-            data: save
+        }).then(res => {
+          this.loading = false;
+          if (res.data.success) {
+            this.$alert('采集任务启动成功！', '信息', {
+              confirmButtonText: '确定',
+              callback: action => {
+                this.$emit('close');
+              }
+            });
+          } else {
+            this.$alert('采集任务启动失败！', '信息', {
+              confirmButtonText: '确定',
+              callback: action => {
 
-          }).then(res => {
-            this.loading = false;
-            if (res.data.success) {
-              this.$alert('采集任务启动成功！', '信息', {
-                confirmButtonText: '确定',
-                callback: action => {
-                  this.$emit('close');
-                }
-              });
-            } else {
-              this.$alert('采集任务启动失败！', '信息', {
-                confirmButtonText: '确定',
-                callback: action => {
+              }
+            });
+          }
+        })
+      } else {
+        this.$ajax({
+          method: 'post',
+          url: 'http://10.19.160.171:8081/DEMO/dataTable/inputSurvey',
+          data: this.$store.state.userList
+        }).then(res => {
+          this.loading = false;
+          if (res.data.success) {
+            this.$ajax({
+              method: "post",
+              url: 'http://10.19.160.168:8080/DACM/task/saveHeliumTask',
+              // headers:{
+              //   'Content-Type':'application/json;charset=utf-8',
+              // },
+              data: save
 
-                }
-              });
-            }
-          })
-        } else {
-          this.$ajax({
-            method: 'post',
-            url: 'http://10.19.160.171:8081/DEMO/dataTable/inputSurvey',
-            data: this.$store.state.userList
-          }).then(res => {
-            this.loading = false;
-            if (res.data.success) {
-              this.$ajax({
-                method: "post",
-                url: 'http://10.19.160.168:8080/DACM/task/saveHeliumTask',
-                // headers:{
-                //   'Content-Type':'application/json;charset=utf-8',
-                // },
-                data: save
-
-              }).then(res => {
-                this.loading = false;
-                if (res.data.success) {
-                  this.$alert('采集任务启动成功！', '信息', {
-                    confirmButtonText: '确定',
-                    callback: action => {
-                      this.$emit('close');
-                    }
-                  });
-                } else {
-                  this.$alert('采集任务启动失败！', '信息', {
-                    confirmButtonText: '确定',
-                    callback: action => {
-
-                    }
-                  });
-                }
-              })
-            } else {
+            }).then(res => {
               this.loading = false;
-              this.$alert('数据标记失败', '信息', {
-                confirmButtonText: '确定'
-              });
-            }
-          }, (res) => {
+              if (res.data.success) {
+                this.$alert('采集任务启动成功！', '信息', {
+                  confirmButtonText: '确定',
+                  callback: action => {
+                    this.$emit('fresh');
+                  }
+                });
+              } else {
+                this.$alert('采集任务启动失败！', '信息', {
+                  confirmButtonText: '确定',
+                  callback: action => {
+
+                  }
+                });
+              }
+            })
+          } else {
             this.loading = false;
             this.$alert('数据标记失败', '信息', {
               confirmButtonText: '确定'
             });
-          })
-        }
+          }
+        }, (res) => {
+          this.loading = false;
+          this.$alert('数据标记失败', '信息', {
+            confirmButtonText: '确定'
+          });
+        })
       }
-
     },
-    formateTime(day, hour, min) {
-      return parseInt(day * 86400000 + hour * 3600000 + min * 60000);
-    },
-    //获取源树
-    _getTree() {
-      this.$ajax({
-        method: 'get',
-        url: 'http://10.19.160.168:8080/DACM/caccesssysRelationWorkInfo/getDataAreaNode',
 
-      }).then(res => {
-        this.treeData = res.data;
-        this.ruleForm.dLibrary = res.data[0].id
-      })
-    }
+
+  formateTime(day, hour, min) {
+    return parseInt(day * 86400000 + hour * 3600000 + min * 60000);
   },
-  components: {
+  //获取源树
+  _getTree() {
+    this.$ajax({
+      method: 'get',
+      url: 'http://10.19.160.168:8080/DACM/caccesssysRelationWorkInfo/getDataAreaNode',
+
+    }).then(res => {
+      this.treeData = res.data;
+      this.ruleForm.dLibrary = res.data[0].id
+    })
+  }
+},
+components: {
     increMap
   },
   mounted() {

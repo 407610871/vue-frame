@@ -91,7 +91,7 @@ export default {
       console.log(this.cindex);
       this.$ajax({
         method: "GET",
-        url: 'http://10.19.160.59:8088/demo/ccheckData/tableSourceNum',
+        url: 'http://10.19.160.59:8080/DACM/ccheckData/tableSourceNum',
         // headers:{
         //   'Content-Type':'application/json;charset=utf-8',
         // },
@@ -115,7 +115,7 @@ export default {
       this.loading2 = true;
       this.$ajax({
         method: "GET",
-        url: 'http://10.19.160.59:8088/demo/ccheckData/checkLog',
+        url: 'http://10.19.160.59:8080/DACM/ccheckData/checkLog',
         // headers:{
         //   'Content-Type':'application/json;charset=utf-8',
         // },
@@ -158,7 +158,7 @@ export default {
       if (!browser) {
         browser = 'IE'
       }
-      window.location.href = `http://10.19.160.59:8088/demo/ccheckData/downloadCheckDataById?id=${this.pdata.id}&browser=${browser}&accessName=ww`
+      window.location.href = `http://10.19.160.59:8081/DEMO/ccheckData/downloadCheckDataById?id=${this.pdata.id}&browser=${browser}&accessName=ww`
     }
   },
   components: {
