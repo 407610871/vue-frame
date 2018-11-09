@@ -14,7 +14,7 @@
          
           <set-task class="right-btn" :rowList="rowList" :jrtype="jrtype"></set-task>
         </div>
-        <el-table :data="mainTableData" stripe :height="tableHeight" border style="width: 100%" tooltip-effect="light" @selection-change="handleSelectionChange">
+        <el-table ref="multipleTable" :data="mainTableData" stripe :height="tableHeight" border style="width: 100%" tooltip-effect="light" @selection-change="handleSelectionChange">
           <el-table-column type="selection">
           </el-table-column>
           <el-table-column prop="diyComments" label="资源名称" width="180" show-overflow-tooltip>
@@ -69,12 +69,6 @@
         </div>
       </el-footer>
     </el-container>
-    <el-dialog title="提示" :visible.sync="alertVisible" width="30%">
-      <span>{{alertContent}}</span>
-      <span slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="alertVisible = false">确 定</el-button>
-      </span>
-    </el-dialog>
   </div>
 </template>
 <script>
@@ -276,36 +270,52 @@ export default {
       this.dialogTitle = '修改';
       this.dialogVisible = true;
     },
-    updataSource: function(index, row) {
-      var id;
-      if (row) {
-        id = row.id;
-      } else {
-        var ids = [];
-        for (var value of this.seledRows) {
-          ids.push(value.id);
-        }
-        id = ids.join(',');
-      }
-      this.$ajax.get('http://10.19.248.200:32661/DACM/ctables/refreshAmount', {
-        objectInfoId: id
+    updataSource: function() {
+			var _self = this;
+      this.$ajax.get('http://10.19.248.200:32661/DACM/ctables/synchronize', {
+				params:{
+					accessSysId : this.$route.params.sourceId
+				}
       }).then(function(res) {
-        this.alertContent = '更新成功';
-        this.alertVisible = true;
+				if(res.data.success){
+					_self.$alert('更新成功','提示', {
+						confirmButtonText: '确定'
+					});
+				}else{
+					_self.$alert('更新失败','提示', {
+						confirmButtonText: '确定'
+					});
+					console.log(res.code)
+				}
       }).catch(function(err) {
         console.log(err)
+				_self.$alert('更新失败','提示', {
+					confirmButtonText: '确定'
+				});
       });
     },
     updataSourceSingle: function(index, row) {
+			var _self = this;
       this.$ajax.get('http://10.19.248.200:32661/DACM/ctables/refreshAmount', {
         params: {
           objectInfoId: row.id
         }
       }).then(function(res) {
-        this.alertContent = '更新成功';
-        this.alertVisible = true;
+				if(res.data.success){
+					_self.$alert('更新成功','提示', {
+						confirmButtonText: '确定'
+					});
+				}else{
+					_self.$alert('更新失败','提示', {
+						confirmButtonText: '确定'
+					});
+					console.log(res.code)
+				}
       }).catch(function(err) {
         console.log(err)
+				_self.$alert('更新失败','提示', {
+					confirmButtonText: '确定'
+				});
       });
     },
     handleSelectionChange: function(val) {
