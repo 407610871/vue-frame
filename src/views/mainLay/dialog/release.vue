@@ -84,7 +84,7 @@
 </template>
 <script type="text/javascript" src="../release/js/xml2json.min.js"></script>
 <script>
-import version from '@/views/mainLay/dialog/release_version'
+/*import version from '@/views/mainLay/dialog/release_version'*/
 // import versionBank from '@/views/mainLay/release/data/version1.2.2.xml'
 /*console.log(versionBank);*/
 export default {
@@ -150,7 +150,7 @@ export default {
     }
   },
   components: {
-    version
+   
   },
   watch: {
     dialogVisible() {
