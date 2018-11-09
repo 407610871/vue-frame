@@ -89,6 +89,7 @@ export default {
       dialogVisible: false,
       innerVisible: false,
       increArr: [],
+      sys_impala_id:'',
       ruleForm: {
         hdfsname: '',
         hdfsport: '',
@@ -136,6 +137,7 @@ export default {
     saveIncrement(value) {
       this.increArr = value;
       this.ruleForm.iminfo = this.increArr[0].impalaName;
+      this.sys_impala_id = this.increArr[0].impalaId;
       this.innerVisible = false;
     },
     submitForm(formName) {
@@ -165,7 +167,7 @@ export default {
           var params = {
             mode: "helium",
             pid: "2",
-            sys_impala_id: "1",
+            sys_impala_id: this.sys_impala_id.toString(),
             type: "hdfs",
             config: config
           }
@@ -175,7 +177,7 @@ export default {
             data: params
 
           }).then(res => {
-            if (res.data.result == "succeed") {
+            if (res.data.success) {
               this.$alert('新增hdfs成功', '信息', {
                 confirmButtonText: '确定',
                 callback: action => {
@@ -183,7 +185,7 @@ export default {
                 }
               });
             } else {
-              this.$alert('新增hdfs成功', '信息', {
+              this.$alert('新增hdfs失败', '信息', {
                 confirmButtonText: '确定'
               });
             }

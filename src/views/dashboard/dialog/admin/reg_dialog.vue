@@ -457,7 +457,7 @@ export default {
         methods: "get",
         url: 'http://10.19.248.200:32661/DACM/commonInter/sysdialect',
         params: {
-          type:'2'
+          type: '2'
         }
       }).then(res => {
 
@@ -563,8 +563,13 @@ export default {
                   "value": ""
                 },
                 {
-                  //业务类别
+                  //对接平台
                   "key": "platform",
+                  "value": _self.ruleForm.dockPlat
+                },
+                {
+                  //业务类别
+                  "key": "rcategory",
                   "value": _self.ruleForm.authorf
                 },
                 //属性值
@@ -686,7 +691,7 @@ export default {
                     }
 
                   })
-                }).catch(()=>{
+                }).catch(() => {
 
                 })
 
@@ -777,8 +782,13 @@ export default {
                     "value": ""
                   },
                   {
-                    //业务类别
+                    //对接平台
                     "key": "platform",
+                    "value": _self.ruleForm.dockPlat
+                  },
+                  {
+                    //业务类别
+                    "key": "rcategory",
                     "value": _self.ruleForm.authorf
                   },
                   //属性值
@@ -931,8 +941,13 @@ export default {
                   "value": ""
                 },
                 {
-                  //业务类别
+                  //对接平台
                   "key": "platform",
+                  "value": _self.ruleForm.dockPlat
+                },
+                {
+                  //业务类别
+                  "key": "rcategory",
                   "value": _self.ruleForm.authorf
                 },
                 //属性值
@@ -1045,28 +1060,28 @@ export default {
 
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          this.fullscreenLoading = true;
+          this.loading = true
           let testData = {};
           testData = {
             "ip": this.ruleForm.ipname,
             "port": this.ruleForm.iport,
-            "databasename": this.ruleForm.instanceName,
+            "instanceName": this.ruleForm.instanceName,
             "model": this.ruleForm.model,
             "username": this.ruleForm.username,
             "password": this.ruleForm.password,
             "url": this.ruleForm.url,
-            "accessDialectId": this.ruleForm.syskind
+            "accessDialectId": this.ruleForm.syskind.toString()
           }
           this.$ajax({
             method: "POST",
-            url: 'http://10.19.248.200:32661/DACM/register/dataSourceConnect',
+            url: 'http://10.19.160.211:8080/DACM/register/dataSourceConnect',
             // headers:{
             //   'Content-Type':'application/json;charset=utf-8',
             // },
             data: testData
 
           }).then(res => {
-            this.fullscreenLoading = false;
+            this.loading = false;
             if (res.data.success) {
               this.$alert('连接成功', '信息', {
                 confirmButtonText: '确定'

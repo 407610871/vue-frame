@@ -47,7 +47,7 @@
           <el-table-column label="操作">
             <template slot-scope="scope">
              
-              <edit-dialog :acId="scope.row.id"></edit-dialog>
+              <edit-dialog :acId="scope.row.id" @refreshTable="loadTable"></edit-dialog>
               <i title="复制" @click="handleCopy(scope.$index, scope.row)" class="enc-icon-documents table-action-btn"></i>
               <i title="废止" @click="handleDelete(scope.$index, scope.row)" class="el-icon-delete table-action-btn"></i>
             </template>

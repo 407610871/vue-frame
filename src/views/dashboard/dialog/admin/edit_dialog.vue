@@ -31,7 +31,7 @@
                 <el-radio label="委办网"></el-radio>
                </el-radio-group> -->
                 <el-select v-model="ruleForm.resource" placeholder="请选择">
-                  <el-option :label="item.static_NAME" :value="item.static_CODE" :key="item.static_CODE" v-for="item in SJLY"></el-option>
+                  <el-option :label="item.sTATIC_NAME" :value="item.sTATIC_CODE" :key="item.sTATIC_CODE" v-for="item in SJLY"></el-option>
                 </el-select>
               </el-form-item>
             </el-col>
@@ -440,8 +440,12 @@ export default {
         _self.SJLY = res.data.staticDatas.SJLY;
         _self.SSJZ = res.data.staticDatas.SSJZ;
         console.log(_self.SSJZ);
-        _self.ruleForm.resource = _self.SJLY[0].sTATIC_CODE;
-        _self.ruleForm.authorf = _self.SSJZ[0].sTATIC_CODE;
+        if (_self.ruleForm.resource == '') {
+          _self.ruleForm.resource = _self.SJLY[0].sTATIC_CODE;
+        }
+        if (_self.ruleForm.authorf == '') {
+          _self.ruleForm.authorf = _self.SSJZ[0].sTATIC_CODE;
+        }
       })
     },
     _getAccessDialect() {
@@ -449,7 +453,7 @@ export default {
         methods: "get",
         url: 'http://10.19.248.200:32661/DACM/commonInter/sysdialect',
         params: {
-          type:'2'
+          type: '2'
         }
       }).then(res => {
 
@@ -482,7 +486,10 @@ export default {
       }).then(res => {
 
         this.DJPT = res.data;
-        this.ruleForm.dockPlat = res.data[0].sTATIC_CODE;
+        if (this.ruleForm.dockPlat == '') {
+          this.ruleForm.dockPlat = res.data[0].sTATIC_CODE;
+        }
+
       })
     },
     //数据所属部门
@@ -510,7 +517,7 @@ export default {
 
             let save = {};
             save = {
-              "id": this.appId,
+              "id": _self.appId,
               "name": _self.ruleForm.jrname, // 接入源名称
               "accessSysDialectId": _self.ruleForm.syskind, //mysql,oracle接入源类型
               "registerName": _self.ruleForm.dockname, // 注册人姓名 
@@ -562,8 +569,13 @@ export default {
                   "value": ""
                 },
                 {
-                  //业务类别
+                  //对接平台
                   "key": "platform",
+                  "value": _self.ruleForm.dockPlat
+                },
+                {
+                  //业务类别
+                  "key": "rcategory",
                   "value": _self.ruleForm.authorf
                 },
                 //属性值
@@ -641,7 +653,7 @@ export default {
                 ip: this.ruleForm.ipname,
                 username: this.ruleForm.username,
                 name: this.ruleForm.jrname,
-                id: appId
+                id: this.appId
               }
 
             }).then(res => {
@@ -657,7 +669,7 @@ export default {
                   this.loading = true;
                   this.$ajax({
                     method: "POST",
-                    url: 'http://10.19.248.200:32661/DACM/register/dataSourceInsert',
+                    url: 'http://10.19.248.200:32661/DACM/update/dataSourceUpdate',
                     // headers:{
                     //   'Content-Type':'application/json;charset=utf-8',
                     // },
@@ -684,14 +696,14 @@ export default {
 
                   })
 
-                }).catch(()=>{
-                  
+                }).catch(() => {
+
                 })
               } else {
                 this.loading = true;
                 this.$ajax({
                   method: "POST",
-                  url: 'http://10.19.248.200:32661/DACM/register/dataSourceInsert',
+                  url: 'http://10.19.248.200:32661/DACM/update/dataSourceUpdate',
                   // headers:{
                   //   'Content-Type':'application/json;charset=utf-8',
                   // },
@@ -739,7 +751,7 @@ export default {
           testData = {
             "ip": this.ruleForm.ipname,
             "port": this.ruleForm.iport,
-            "databasename": this.ruleForm.instanceName,
+            "instanceName": this.ruleForm.instanceName,
             "model": this.ruleForm.model,
             "username": this.ruleForm.username,
             "password": this.ruleForm.password,
@@ -805,7 +817,7 @@ export default {
               this.ruleForm.author = data.attr[i].value;
             }
             if (data.attr[i].key == 'abutment') {
-              this.ruleForm.dockpart = data.attr[i].value;
+              this.ruleForm.dockpart = parseInt(data.attr[i].value);
             }
             if (data.attr[i].key == 'department') {
               this.ruleForm.dockdata = data.attr[i].value;
@@ -813,8 +825,11 @@ export default {
             if (data.attr[i].key == 'depId') {
               this.ruleForm.dockid = data.attr[i].value;
             }
-            if (data.attr[i].key == 'platform') {
+            if (data.attr[i].key == 'rcategory') {
               this.ruleForm.authorf = data.attr[i].value;
+            }
+            if (data.attr[i].key == 'platform') {
+              this.ruleForm.dockPlat = data.attr[i].value;
             }
             if (data.attr[i].key == 'ip') {
               this.ruleForm.ipname = data.attr[i].value;
@@ -874,7 +889,7 @@ export default {
   components: {
 
   },
-  props:['acId'],
+  props: ['acId'],
   watch: {
     dialogVisible() {
       if (this.dialogVisible) {

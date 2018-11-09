@@ -24,7 +24,7 @@
     "vue-jstree": "^2.1.6",
     "vue-router": "^3.0.1",
     "vuex": "^3.0.1",
-    "x2js": "^3.2.1",
+    "x2js": "^3.2.3",
     "xml-loader": "^1.2.1"
   },
   "devDependencies": {
@@ -40,6 +40,7 @@
     "babel-core": "7.0.0-bridge.0",
     "babel-jest": "^23.0.1",
     "element-theme-chalk": "^2.4.8",
+    "jQuery": "^1.7.4",
     "mockjs": "^1.0.1-beta3",
     "node-sass": "^4.9.0",
     "sass-loader": "^7.0.1",

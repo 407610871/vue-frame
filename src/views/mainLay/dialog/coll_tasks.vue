@@ -17,7 +17,7 @@
             </el-col>
             <el-col :span="1" class="bank">bank</el-col>
             <el-col :span="6">
-              <el-input v-model="ruleForm.tablename"></el-input>
+             <!--  <el-input v-model="ruleForm.tablename"></el-input> -->
             </el-col>
           </el-col>
           <el-col :span="24">

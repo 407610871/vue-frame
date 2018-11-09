@@ -193,7 +193,10 @@ export default {
       if (this.msg == 'third') {
         if (this.flag == '0') {
           if (this.$store.state.matchflag == '0') {
-            this._getMap()
+            if(this.schemaMappingDTOList.length==0){
+             this._getMap() 
+            }
+            
           } else {
             this._getMatch();
           }

@@ -7,7 +7,7 @@
         <span class="grab gra-r"></span>
       </div>
       <el-col :span="4">
-        <el-tabs tab-position="left" style="height: 200px;">
+        <el-tabs tab-position="left" style="height: 200px;" @tab-click="handleClick">
           <el-tab-pane label="当前"></el-tab-pane>
           <el-tab-pane v-for="item in versionData" :label="item"></el-tab-pane>
           <!-- <el-tab-pane label="用户管理"></el-tab-pane>
@@ -16,47 +16,68 @@
           <el-tab-pane label="定时任务补偿"></el-tab-pane> -->
         </el-tabs>
       </el-col>
-      <el-col :span="18" class="release-box">
-        <version></version>
-        <!--  <div class="proInfo-box clearfix">
-         <ul class="directory">
-           <li><a href="#txqd">特性清单</a></li>
-           <li><a href="#zdbglb">重大变更列表</a></li>
-           <li><a href="#wtjjqd">解决问题清单</a></li>
-           <li><a href="#yzwthxz">已知问题和限制</a></li>
-         </ul>
-         <div class="daiInfo-title proInfo-title" id="txqd">
-           <h2>特性清单</h2>
-         </div>
-         <div class="proInfo-box clearfix">
-           <el-table :data="tableData" stripe style="width: 100%">
-             <el-table-column prop="date" label="日期" width="180">
-             </el-table-column>
-             <el-table-column prop="name" label="姓名" width="180">
-             </el-table-column>
-             <el-table-column prop="address" label="地址">
-             </el-table-column>
-           </el-table>
-         </div>
-         <div class="proInfo-box clearfix" id="zdbglb">
-           <h2>重大更新列表</h2>
-           <ul class="imlist">
-             <li>N/A</li>
-           </ul>
-         </div>
-         <div class="proInfo-box clearfix" id="wtjjqd">
-           <h2>解决问题清单</h2>
-           <ul class="imlist">
-             <li>N/A</li>
-           </ul>
-         </div>
-         <div class="proInfo-box clearfix" id="yzwthxz">
-           <h2>已知问题和限制</h2>
-           <ul class="imlist">
-             <li>N/A</li>
-           </ul>
-         </div>
-       </div> -->
+      <el-col :span="20" class="release-box">
+        <div class="proInfo-box clearfix">
+          <ul class="directory">
+            <li><a href="#txqd">特性清单</a></li>
+            <li><a href="#zdbglb">重大变更列表</a></li>
+            <li><a href="#wtjjqd">解决问题清单</a></li>
+            <li><a href="#yzwthxz">已知问题和限制</a></li>
+          </ul>
+          <div class="daiInfo-title proInfo-title" id="txqd">
+            <h2>特性清单</h2>
+          </div>
+          <div class="proInfo-box comTable clearfix">
+            <el-table :data="tableData" stripe style="width: 100%">
+              <el-table-column label="编号" width="50">
+                <template slot-scope="scope">
+                  <span>{{scope.$index}}</span>
+                </template>
+              </el-table-column>
+              <el-table-column prop="Introduction" label="特性名称">
+              </el-table-column>
+              <el-table-column prop="content" label="具体描述" width="350">
+              </el-table-column>
+              <el-table-column prop="sysName" label="子系统/产品">
+              </el-table-column>
+              <el-table-column prop="remark" label="备注">
+              </el-table-column>
+            </el-table>
+          </div>
+          <div class="proInfo-box clearfix" id="zdbglb">
+            <h2>重大更新列表</h2>
+            <ul class="imlist">
+              <li v-if="changeData.length==0">N/A</li>
+              <li v-for="item in changeData">{{item.content}}</li>
+            </ul>
+          </div>
+          <div class="proInfo-box clearfix" id="wtjjqd">
+            <h2>解决问题清单</h2>
+            <ul class="imlist">
+            <li v-if="finishData.length==0">N/A</li>
+              <li v-for="item in finishData">{{item.content}}</li>
+            </ul>
+          </div>
+          <div class="proInfo-box clearfix" id="yzwthxz">
+            <h2>已知问题和限制</h2>
+            <div class="proInfo-box comTable clearfix">
+              <el-table :data="knownData" stripe style="width: 100%">
+                <el-table-column label="编号" width="50">
+                  <template slot-scope="scope">
+                    <span>{{scope.$index}}</span>
+                  </template>
+                </el-table-column>
+                <el-table-column prop="content" label="问题描述" width="350">
+                </el-table-column>
+                <el-table-column prop="Influence" label="影响" width="150">
+                </el-table-column>
+                <el-table-column prop="Solve" label="权变解决方法">
+                </el-table-column>
+               
+              </el-table>
+            </div>
+          </div>
+        </div>
       </el-col>
     </el-dialog>
   </div>
@@ -71,31 +92,51 @@ export default {
   data: function() {
     return {
       dialogVisible: false,
-      versionDes: '数据引擎产品版本发布说明书(V1.2.2)',
-      versionDate: '2018/09/28',
+      versionDes: '',
+      versionDate: '',
+      loading:false,
       versionData: [
         '1.1.2', '1.2.1', '1.2.2'
-      ]
+      ],
+      tableData: [],
+      changeData: [],
+      finishData: [],
+      knownData: []
     };
   },
   methods: {
     //关闭对话框
     closeDialog() {
       this.dialogVisible = false;
-      this.$refs['ruleForm'].resetFields();
+
+    },
+    handleClick(tab, event){
+ console.log(tab, event);
     },
     //滚动
     godToId(ID) {
       $('html,body').animate({ scrollTop: $("#" + ID).offset().top }, 500);
     },
-    _getVersion() {
+    _getVersion(url) {
+      this.loading = true;
       let _self = this;
-      this.$ajax.get('/data/version1.1.2.xml').then(function(res) {
-          console.log(res);
+      this.$ajax.get(`/data/version${url}.xml`).then(function(res) {
+        _self.loading = false;
+          console.log(res.data);
+          /* var x2js = new X2JS();*/
+          /* var obj = x2js.xml_str2json(res.data).note;*/
+          var jsonObj = _self.$x2js.xml2js(res.data);
+          console.log("-----");
+          console.log(jsonObj.note);
+          _self.tableData = jsonObj.note.specialityList.item;
+          _self.changeData = jsonObj.note.changeList.item;
+          _self.finishData = jsonObj.note.finishedPunchList.item;
+          _self.knownData = jsonObj.note.questionList.item;
 
         })
         .catch(function(err) {
           console.log(err)
+          _self.loading = false;
         });
     }
   },
@@ -105,7 +146,7 @@ export default {
   watch: {
     dialogVisible() {
       if (this.dialogVisible) {
-        this._getVersion();
+        this._getVersion('1.2.2');
 
       }
     }
@@ -122,6 +163,12 @@ export default {
   width: 100%;
 }
 
+.el-table thead {
+  line-height: 1;
+}
+li{
+  display: block;
+}
 .release {
   max-height: 600px;
   height: 600px;
