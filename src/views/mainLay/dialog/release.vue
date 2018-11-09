@@ -8,7 +8,7 @@
       </div>
       <el-col :span="4">
         <el-tabs tab-position="left" style="height: 200px;" @tab-click="handleClick">
-          <el-tab-pane label="当前"></el-tab-pane>
+       
           <el-tab-pane v-for="item in versionData" :label="item"></el-tab-pane>
           <!-- <el-tab-pane label="用户管理"></el-tab-pane>
           <el-tab-pane label="配置管理"></el-tab-pane>
@@ -96,7 +96,7 @@ export default {
       versionDate: '',
       loading:false,
       versionData: [
-        '1.1.2', '1.2.1', '1.2.2'
+        '当前','1.1.2', '1.2.1', '1.2.2'
       ],
       tableData: [],
       changeData: [],
@@ -111,7 +111,14 @@ export default {
 
     },
     handleClick(tab, event){
- console.log(tab, event);
+      /* console.log(tab, event);*/
+      if(tab.label=='当前'){
+        this._getVersion('1.2.2');
+      }
+      else{
+        this._getVersion(tab.label);
+      }
+      
     },
     //滚动
     godToId(ID) {
@@ -132,6 +139,8 @@ export default {
           _self.changeData = jsonObj.note.changeList.item;
           _self.finishData = jsonObj.note.finishedPunchList.item;
           _self.knownData = jsonObj.note.questionList.item;
+          _self.versionDes =  jsonObj.note.name;
+          _self.versionDate = jsonObj.note.date;
 
         })
         .catch(function(err) {
@@ -167,7 +176,7 @@ export default {
   line-height: 1;
 }
 li{
-  display: block;
+  display: block !important;
 }
 .release {
   max-height: 600px;
