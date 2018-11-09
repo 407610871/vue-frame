@@ -36,8 +36,8 @@ export default {
       var color = obj.color?obj.color:this.defaultColor;
       for(var i=0;i<obj.list.length;i++){
         obj.list[i].number = Math.floor(100*(parseFloat(obj.list[i].data)/max));
-        obj.list[i].label = value.data;
-				obj.list[i].total = value.total?value.total:'';
+        obj.list[i].label = obj.list[i].data;
+				obj.list[i].total = obj.list[i].total?obj.list[i].total:'';
         delete obj.list[i].data;
         obj.list[i].color = color[i];
       }

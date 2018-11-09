@@ -179,12 +179,11 @@
           });
         },
         selDept(node,nodeStatus){
+					var list = this.$refs.tree.getCheckedNodes();
+					var deptIds = this.$refs.tree.getCheckedKeys();
           if(nodeStatus.checkedKeys.indexOf(node.id) == -1){
             this.$refs.tree.setChecked(node.id,false)
           }else{
-            var list = this.$refs.tree.getCheckedNodes();
-            var deptIds = this.$refs.tree.getCheckedKeys();
-
             var factorial=(function f(obj,tree){
                 list.push(obj);
                 deptIds.push(obj.id);
@@ -198,10 +197,10 @@
             factorial=null;
             anotherFactorial(node,this.$refs.tree);
             this.$refs.tree.setCheckedNodes(list);
-            this.$store.commit('selDept',deptIds);
-						this.$root.eventHub.$emit('selDept',deptIds);
-						this.$root.eventHub.$emit('getCurrentNode',node.id);
           }
+					
+					this.$store.commit('selDept',deptIds);
+					this.$root.eventHub.$emit('selDept',deptIds);
 					if(this.$route.name=="accessObjManage" || this.$route.name=="accessObjInfo"){
 						this.$router.push({name:'dashboard'});
 					}

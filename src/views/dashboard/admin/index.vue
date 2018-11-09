@@ -15,7 +15,7 @@
         <div class="regbtn fr">
           <reg-dialog @refreshTable="loadTable"></reg-dialog>
         </div>
-        <a v-on:click="collapseExpand" class="right-btn collapse-btn" :title="收起/展开">
+        <a v-on:click="collapseExpand" class="right-btn collapse-btn" title="收起/展开">
 					<i :class="{'el-icon-circle-plus':collapse,'el-icon-remove':!collapse}"></i>
 				</a>
         <formFliter v-if="queryParamReady" v-bind:formCollapse="collapse" v-bind:dataObj="formFilterData" @formFilter="changeFormFilter" />
@@ -49,7 +49,7 @@
              
               <edit-dialog :acId="scope.row.id"></edit-dialog>
               <i title="复制" @click="handleCopy(scope.$index, scope.row)" class="enc-icon-documents table-action-btn"></i>
-              <i title="废止" @click="handleDelete(scope.$index, scope.row)" class="el-icon-delete table-action-btn"></i>
+              <i title="废止" @click="handleDelete(scope.$index, scope.row)" class="enc-icon-feizhi table-action-btn"></i>
             </template>
           </el-table-column>
         </el-table>
@@ -141,33 +141,46 @@ export default {
       this.setStore({
 				deptId:ids
 			});
+			this.setCount();
     });
   },
   mounted(){
 		this.$root.eventHub.$emit('selTreeNode',this.$store.state.queryParams[this.$route.name].deptId);
 		this.$root.eventHub.$emit('setActiveNav',1);
     this.storeReady();
-    var _self = this;
-    this.$ajax.post('http://10.19.160.29:8080/DACM/caccess/dataAccessStatistics',this.tableParams.deptId
-    // this.$ajax.post('http://10.19.248.200:32661/DACM/caccess/dataAccessStatistics',{
-		).then(function(res){
-      if(res.data.success){
-        _self.countTotal=res.data.data.total;
-				_self.count1Data.total = res.data.data.dPercentage;
-        _self.count1Data.list=res.data.data.discontinuousPercentage;
-				_self.count2Data.total = res.data.data.cPercentage;
-        _self.count2Data.list=res.data.data.constantlyPercentage;
-        _self.countReady = true;
-      }else{
-        console.log(res.data.code)
-      }
-    })
-    .catch(function(err){
-      _self.loading = false;
-      console.log(err)
-    });
+		this.setCount();
   },
   methods:{
+		setCount(){
+			var _self = this;
+			console.log(this.tableParams)
+			this.$ajax.post('http://10.19.160.29:8080/DACM/caccess/dataAccessStatistics',this.tableParams.deptId
+			// this.$ajax.post('http://10.19.248.200:32661/DACM/caccess/dataAccessStatistics',{
+			).then(function(res){
+				if(res.data.success){
+					if(!res.data.data.data){
+						_self.countTotal=res.data.data.total;
+						_self.count1Data.total = res.data.data.dPercentage;
+						_self.count1Data.list=res.data.data.discontinuousPercentage;
+						_self.count2Data.total = res.data.data.cPercentage;
+						_self.count2Data.list=res.data.data.constantlyPercentage;
+					}else{
+						_self.countTotal=0;
+						_self.count1Data.total = '未查询到数据';
+						_self.count1Data.list=[];
+						_self.count2Data.total = '未查询到数据';
+						_self.count2Data.list=[];
+					}
+					_self.countReady = true;
+				}else{
+					console.log(res.data.code)
+				}
+			})
+			.catch(function(err){
+				_self.loading = false;
+				console.log(err)
+			});
+		},
     setFliter(data){
       var queryParams = this.$store.state.queryParams[this.$route.name];
       var dataSourceName = queryParams.dataSourceName?queryParams.dataSourceName:[];

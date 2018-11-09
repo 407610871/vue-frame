@@ -84,7 +84,7 @@ export default {
       activeName: '1',
       mainHeight:window.innerHeight - 118+'px',
       dataReady:true,
-      settingList:[],
+      settingList:{},
       provinceList:[],
       cityList:[],
       sysParam: {
@@ -100,113 +100,129 @@ export default {
     collapsePanel
   },
   computed: {
+		param:function(){
+      return this.$store.state.queryParams.setting
+    },
   },
   watch: {
-
+		param(newVal,oldVal){
+      if(newVal.timeFlag != oldVal.timeFlag){
+        this.initPage();
+      }
+    }
   },
   created(){
   },
   mounted(){
-    var _self = this;
-
-    this.$ajax.get('http://10.19.248.200:32661/DACM/caccesssysRelationWorkInfo/showInfo',{
-			params:{
-				nodeId:this.$store.state.deptId[0]
-			}
-		}).then(function(res){
-			if(res.data.result){
-				var list = [];
-				for(var value of res.data.data){
-					var IPindex = value.config['hdfs.url'].split('//')[1].indexOf(':');
-					console.log('IPindex:'+IPindex);
-					var bakList = value.config['hdfs.url'].split(",");
-					bakList = bakList.splice(1,bakList.length-1);
-					var serv = value.dataCenter;
-					var seda = serv.serviceDatabase;
-					var seurl = serv.serviceUrl;
-					var sindex = seurl.indexOf(seda);
-					seurl = seurl.substring(0,sindex);
-					var obj = {
-						name:value.config['hdfs.url'].split('//')[1].substring(7, IPindex),
-						type:value.config['hdfs.url'].split(':')[1].substring(IPindex, value.config['hdfs.url'].length),
-						port:value.config['hdfs.url'].split(",")[0].split(":")[2],
-						url:value.config['hdfs.url'],
-						bak:bakList.join(','),
-						root:value.config['topics.dir'],
-						impalaPath:seurl + seda
-					}
-					list.push(obj);
-				}
-				console.log(list);
-				_self.settingList = list;
-				_self.dataReady = true;
-			}else{
-				console.log(res.code);
-			}
-    })
-    .catch(function(err){
-      console.log(err);
-    });
-
-
-    const promist0 = new Promise((resolve, reject) => {
-      this.$ajax.get('http://10.19.248.200:32661/DACM/commonInter/getAreas', {
-        params:{
-          parentid:0
-        }
-      }).then((res) => {
-        console.log(1);
-        resolve(res);
-      }, (err) => {
-        console.log(err)
-        reject(err);
-      })
-    });
-    const promist1 = new Promise((resolve, reject) => {
-      this.$ajax.get('./sysParamConfig').then((res) => {
-        resolve(res);
-      }, (err) => {
-        console.log(err)
-        reject(err);
-      })
-    });
-    Promise.all([promist0, promist1]).then((resultList) => {
-      console.log(resultList);
-      _self.provinceList = resultList[0].data.data;
-      for(var value of resultList[1].data){
-        switch (value.key.trim()) {
-          case '数据资源事权单位机构代码':
-            _self.sysParam.mecodeOrg = value.name;
-            break;
-          case '本地文件采集Hdfs路径':
-            _self.sysParam.hdfsPaOrg = value.name;
-            break;
-          case '每页展示条数':
-            _self.sysParam.pageLimit = value.name;
-            break;
-          case '行政区域':
-            _self.sysParam.province = value.name[0].pro;
-            var city = value.name[0].city
-            _self.$ajax.get('http://10.19.248.200:32661/DACM/commonInter/getAreas',{
-              params:{
-                parentid:_self.sysParam.province
-              }
-            }).then(function(res){
-              _self.cityList = res.data.data;
-              _self.sysParam.city = city;
-            })
-            .catch(function(err){
-              console.log(err);
-            });
-
-            break;
-          default:
-            break;
-        }
-      }
-    });
+    this.initPage()
   },
   methods:{
+		initPage(){
+			var _self = this;
+		
+			const promistB= new Promise((resolve, reject) => {
+				this.$ajax.get('http://10.19.248.200:32661/DACM/caccesssysRelationWorkInfo/getStorages',{
+					params:{
+						nodeId:145,
+						pid:2
+					}
+				}).then(function(res){
+					if(res.data.result == 'succeed'){
+						var list = [];			
+						for(var value of res.data.storages){
+							var config = JSON.parse(value.config);
+							var IPindex = config['hdfs.url'].split('//')[1].indexOf(':');
+							var bakList = config['hdfs.url'].split(",");
+							bakList = bakList.splice(1,bakList.length-1);
+							var serv = value.dataCenterInfos;
+							var seda = serv.serviceDatabase;
+							var seurl = serv.serviceUrl;
+							var sindex = seurl.indexOf(seda);
+							seurl = seurl.substring(0,sindex);
+							var obj = {
+								storageName:value.infoName,
+								storageId:value.id,
+								name:config['hdfs.url'].split('//')[1].substring(7, IPindex),
+								type:config['hdfs.url'].split(':')[1].substring(IPindex, config['hdfs.url'].length),
+								port:config['hdfs.url'].split(",")[0].split(":")[2],
+								url:config['hdfs.url'],
+								bak:bakList.join(','),
+								root:config['topics.dir'],
+								impalaPath:seurl + seda
+							}
+							list.push(obj);
+						}
+						_self.settingList = {
+							seledId:res.data.select,
+							list:list
+						}
+						_self.dataReady = true;
+					}else{
+						console.log(res.code);
+					}
+				}).catch(function(err){
+					console.log(err);
+				});
+			});
+
+
+			const promist0 = new Promise((resolve, reject) => {
+				this.$ajax.get('http://10.19.248.200:32661/DACM/commonInter/getAreas', {
+					params:{
+						parentid:0
+					}
+				}).then((res) => {
+					console.log(1);
+					resolve(res);
+				}, (err) => {
+					console.log(err)
+					reject(err);
+				})
+			});
+			const promist1 = new Promise((resolve, reject) => {
+				this.$ajax.get('./sysParamConfig').then((res) => {
+					resolve(res);
+				}, (err) => {
+					console.log(err)
+					reject(err);
+				})
+			});
+			Promise.all([promist0, promist1]).then((resultList) => {
+				console.log(resultList);
+				_self.provinceList = resultList[0].data.data;
+				for(var value of resultList[1].data){
+					switch (value.key.trim()) {
+						case '数据资源事权单位机构代码':
+							_self.sysParam.mecodeOrg = value.name;
+							break;
+						case '本地文件采集Hdfs路径':
+							_self.sysParam.hdfsPaOrg = value.name;
+							break;
+						case '每页展示条数':
+							_self.sysParam.pageLimit = value.name;
+							break;
+						case '行政区域':
+							_self.sysParam.province = value.name[0].pro;
+							var city = value.name[0].city
+							_self.$ajax.get('http://10.19.248.200:32661/DACM/commonInter/getAreas',{
+								params:{
+									parentid:_self.sysParam.province
+								}
+							}).then(function(res){
+								_self.cityList = res.data.data;
+								_self.sysParam.city = city;
+							})
+							.catch(function(err){
+								console.log(err);
+							});
+
+							break;
+						default:
+							break;
+					}
+				}
+			});
+		},
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
