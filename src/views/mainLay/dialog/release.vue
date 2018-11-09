@@ -47,14 +47,14 @@
           <div class="proInfo-box clearfix" id="zdbglb">
             <h2>重大更新列表</h2>
             <ul class="imlist">
-              <li v-if="changeData.length==0">N/A</li>
+             <!--  <li v-if="changeData.length==0">N/A</li> -->
               <li v-for="item in changeData">{{item.content}}</li>
             </ul>
           </div>
           <div class="proInfo-box clearfix" id="wtjjqd">
             <h2>解决问题清单</h2>
             <ul class="imlist">
-            <li v-if="finishData.length==0">N/A</li>
+           <!--  <li v-if="finishData.length==0">N/A</li> -->
               <li v-for="item in finishData">{{item.content}}</li>
             </ul>
           </div>
