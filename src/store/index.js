@@ -40,7 +40,10 @@ const queryParamsDefault = {
     condition:'',
     pageNum:1,
 		timeFlag:0
-  }
+  },
+	setting:{
+		timeFlag:0
+	}
 }
 
 const store = new Vuex.Store({
