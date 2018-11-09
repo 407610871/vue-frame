@@ -95,7 +95,7 @@ export const constantRouterMap = [
         component: () => import("@/views/task/Task"),
         name: "task",
         meta: {
-          title: "task",
+          title: "任务中心",
           icon: "task",
           noCache: true
         }
