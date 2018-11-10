@@ -69,7 +69,7 @@
         </div>
       </el-footer>
     </el-container>
-    <el-dialog
+    <!--el-dialog
       :title="dialogTitle"
       :visible.sync="dialogVisible"
       width="30%">
@@ -78,7 +78,7 @@
         <el-button @click="dialogVisible = false">取 消</el-button>
         <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
       </span>
-    </el-dialog>
+    </el-dialog-->
   </div>
 </template>
 
@@ -97,9 +97,9 @@ export default {
       mainTableData: [],
       currentPage: 1,
       mainTableDataTotal: 1,
-      dialogVisible:false,
-      myDialogRouter:'adminAdd',
-      dialogTitle:'新增',
+      //dialogVisible:false,
+      //myDialogRouter:'adminAdd',
+      //dialogTitle:'新增',
       formFilterData:[]
     }
   },

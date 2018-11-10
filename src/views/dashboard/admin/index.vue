@@ -8,9 +8,9 @@
             <div class="all-number">{{countTotal}}</div>
           </div>
           <div class="line"></div>
-         <dataCount v-if="countReady" v-bind:dataObj="count1Data" class="countData" />
+         <dataCount v-bind:dataObj="count1Data" class="countData" />
          <div class="line"></div>
-         <dataCount v-if="countReady" v-bind:dataObj="count2Data" class="countData" />
+         <dataCount v-bind:dataObj="count2Data" class="countData" />
         </div>
         <div class="regbtn fr">
           <reg-dialog @refreshTable="loadTable"></reg-dialog>
@@ -72,7 +72,6 @@
 </template>
 <script>
 import { mapState } from 'vuex'
-import add1 from './../dialog/'
 import dataCount from './../../../components/dataCountNew'
 import formFliter from './../../../components/formFliter'
 
@@ -89,8 +88,6 @@ export default {
       mainTableData: [],
       mainTableDataTotal: 1,
       countTotal:'',
-      dialogVisible:false,
-      countReady:false,
       myDialogRouter:'adminAdd',
       dialogTitle:'新增',
       collapse:true,
@@ -119,7 +116,6 @@ export default {
     }
   },
   components: {
-    add1,
     dataCount,
     formFliter,
     regDialog,
@@ -132,8 +128,7 @@ export default {
       }
     }
   },
-  created(){		
-		console.log('created');
+  created(){
     this.$root.eventHub.$on('search', (keyword)=>{
       this.search(keyword);
     });
@@ -153,7 +148,6 @@ export default {
   methods:{
 		setCount(){
 			var _self = this;
-			console.log(this.tableParams)
 			this.$ajax.post('http://10.19.160.29:8080/DACM/caccess/dataAccessStatistics',this.tableParams.deptId
 			// this.$ajax.post('http://10.19.248.200:32661/DACM/caccess/dataAccessStatistics',{
 			).then(function(res){

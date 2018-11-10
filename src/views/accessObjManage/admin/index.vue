@@ -73,7 +73,6 @@
 </template>
 <script>
 import { mapState } from 'vuex'
-import add1 from './../dialog/'
 import formFliter from './../../../components/formFliter'
 import userSurvey from '@/views/accessObjManage/dialog/admin/user_survey'
 import setTask from '@/views/accessObjManage/dialog/admin/set_task'
@@ -143,7 +142,6 @@ export default {
     }
   },
   components: {
-    add1,
     formFliter,
     userSurvey,
     setTask,
@@ -265,16 +263,6 @@ export default {
         pageNum: 1,
         condition: keyword
       });
-    },
-    showAdd: function() {
-      this.myDialogRouter = 'adminAdd';
-      this.dialogTitle = '新增';
-      this.dialogVisible = true;
-    },
-    showEdit: function() {
-      this.myDialogRouter = 'adminEdit';
-      this.dialogTitle = '修改';
-      this.dialogVisible = true;
     },
     updataSource: function() {
 			var _self = this;
