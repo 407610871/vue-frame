@@ -86,10 +86,16 @@
 							// });
             }else{
               console.log(res.code);
+							_self.$alert('加载部门节点失败','提示', {
+								confirmButtonText: '确定'
+							});
             }
           })
           .catch(function(err){
             console.log(err)
+						_self.$alert('加载部门节点失败','提示', {
+							confirmButtonText: '确定'
+						});
           });
         },
         handleNodeClick(node,data){
@@ -130,10 +136,16 @@
                 _self.editingNode.children.push(newChild);
               }else{
                 console.log(res.data.code)
+								_self.$alert('添加部门节点失败','提示', {
+									confirmButtonText: '确定'
+								});
               }
             })
             .catch(function(err){
               console.log(err)
+							_self.$alert('添加部门节点失败','提示', {
+								confirmButtonText: '确定'
+							});
             });
           }else{
             this.$ajax.post('http://10.19.248.200:32661/DACM/deptInfo/updateDeptInfo?id='+this.editingNode.id+'&deptName='+this.itemTxt).then(function(res){
@@ -144,10 +156,16 @@
                 _self.editingNode.deptName = _self.itemTxt;
               }else{
                 console.log(res.data.code)
+								_self.$alert('修改部门节点失败','提示', {
+									confirmButtonText: '确定'
+								});
               }
             })
             .catch(function(err){
               console.log(err)
+							_self.$alert('修改部门节点失败','提示', {
+								confirmButtonText: '确定'
+							});
             });
           }
         },
@@ -164,10 +182,16 @@
                 children.splice(index, 1);
               }else{
                 console.log(res.data.code)
+								_self.$alert('删除部门节点失败','提示', {
+									confirmButtonText: '确定'
+								});
               }
             })
             .catch(function(err){
               console.log(err)
+							_self.$alert('删除部门节点失败','提示', {
+								confirmButtonText: '确定'
+							});
             });
           }else{
             this.selDeptFirst();
@@ -217,15 +241,26 @@
               level:i
             })
           }
+					var _self = this;
           this.$ajax.post('http://10.19.248.200:32661/DACM/deptInfo/updateDeptLevel',list).then(function(res){
             if(res.data.success){
               console.log('move success!')
             }else{
               console.log(res.data.code)
+							_self.$alert('移动部门节点失败','提示', {
+								confirmButtonText: '确定'
+							}).then(()=>{
+								_self.loadTree();
+							});
             }
           })
           .catch(function(err){
             console.log(err)
+						_self.$alert('移动部门节点失败','提示', {
+							confirmButtonText: '确定'
+						}).then(()=>{
+							_self.loadTree();
+						});
           });
         }
       }

@@ -211,6 +211,9 @@ export default {
 					_self.currentPage = _self.tableParams.pageNum;
 				} else {
 					console.log(res.code);
+					_self.$alert('加载接入对象列表失败','提示', {
+						confirmButtonText: '确定'
+					});
 				}
 				_self.loading = false;
 			})
@@ -218,6 +221,9 @@ export default {
 				_self.currentPage = _self.tableParams.pageNum;
 				console.log(err);
 				_self.loading = false;
+				_self.$alert('加载接入对象列表失败','提示', {
+					confirmButtonText: '确定'
+				});
 			});
     },
     setStore: function(obj) {

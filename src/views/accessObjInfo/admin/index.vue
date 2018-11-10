@@ -220,12 +220,18 @@ export default {
 					_seft.loadtable();
 				}else{
 					console.log(res.data.code);
+					_self.$alert('刷新失败','提示', {
+						confirmButtonText: '确定'
+					});
 				}
 				_self.loading = false;
 			})
 			.catch(function(err){
 				console.log(err)
 				_self.loading = false;
+				_self.$alert('刷新失败','提示', {
+					confirmButtonText: '确定'
+				});
 			});
 		},
 		importData(){
@@ -315,6 +321,9 @@ export default {
 						_self.currentPage1 = _self.tableParams.pageNum1;
 					}else{
 						console.log(res.data.code);
+						_self.$alert('获取表信息失败','提示', {
+							confirmButtonText: '确定'
+						});
 					}
 					_self.loading = false;
         })
@@ -322,6 +331,9 @@ export default {
           _self.currentPage1 = _self.tableParams.pageNum1;
           console.log(err)
 					_self.loading = false;
+					_self.$alert('获取表信息失败','提示', {
+						confirmButtonText: '确定'
+					});
         });
       }
       if(flag){
@@ -341,10 +353,16 @@ export default {
 						_self.mainTableData2 = res.data.datas;
 					}else{
 						console.log(res.data.code);
+						_self.$alert('获取预览信息失败','提示', {
+							confirmButtonText: '确定'
+						});
 					}
         })
         .catch(function(err){
           console.log(err)
+					_self.$alert('获取预览信息失败','提示', {
+						confirmButtonText: '确定'
+					});
         });
       }
     },
@@ -374,12 +392,18 @@ export default {
 					row.showEdit = false;
 				}else{
 					console.log(res.data.code);
+					_self.$alert('字段中文名称修改失败','提示', {
+						confirmButtonText: '确定'
+					});
 				}
 				_self.loading = false;
 			})
 			.catch(function(err){
 				console.log(err)
 				_self.loading = false;
+				_self.$alert('字段中文名称修改失败','提示', {
+					confirmButtonText: '确定'
+				});
 			});
     },
     setStore:function(obj){

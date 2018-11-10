@@ -120,48 +120,52 @@ export default {
 		initPage(){
 			var _self = this;
 		
-			const promistB= new Promise((resolve, reject) => {
-				this.$ajax.get('http://10.19.248.200:32661/DACM/caccesssysRelationWorkInfo/getStorages',{
-					params:{
-						nodeId:145,
-						pid:2
-					}
-				}).then(function(res){
-					if(res.data.result == 'succeed'){
-						var list = [];			
-						for(var value of res.data.storages){
-							var config = JSON.parse(value.config);
-							var IPindex = config['hdfs.url'].split('//')[1].indexOf(':');
-							var bakList = config['hdfs.url'].split(",");
-							bakList = bakList.splice(1,bakList.length-1);
-							var serv = value.dataCenterInfos;
-							var seda = serv.serviceDatabase;
-							var seurl = serv.serviceUrl;
-							var sindex = seurl.indexOf(seda);
-							seurl = seurl.substring(0,sindex);
-							var obj = {
-								storageName:value.infoName,
-								storageId:value.id,
-								name:config['hdfs.url'].split('//')[1].substring(7, IPindex),
-								type:config['hdfs.url'].split(':')[1].substring(IPindex, config['hdfs.url'].length),
-								port:config['hdfs.url'].split(",")[0].split(":")[2],
-								url:config['hdfs.url'],
-								bak:bakList.join(','),
-								root:config['topics.dir'],
-								impalaPath:seurl + seda
-							}
-							list.push(obj);
+			this.$ajax.get('http://10.19.248.200:32661/DACM/caccesssysRelationWorkInfo/getStorages',{
+				params:{
+					nodeId:145,
+					pid:2
+				}
+			}).then(function(res){
+				if(res.data.result == 'succeed'){
+					var list = [];			
+					for(var value of res.data.storages){
+						var config = JSON.parse(value.config);
+						var IPindex = config['hdfs.url'].split('//')[1].indexOf(':');
+						var bakList = config['hdfs.url'].split(",");
+						bakList = bakList.splice(1,bakList.length-1);
+						var serv = value.dataCenterInfos;
+						var seda = serv.serviceDatabase;
+						var seurl = serv.serviceUrl;
+						var sindex = seurl.indexOf(seda);
+						seurl = seurl.substring(0,sindex);
+						var obj = {
+							storageName:value.infoName,
+							storageId:value.id,
+							name:config['hdfs.url'].split('//')[1].substring(7, IPindex),
+							type:config['hdfs.url'].split(':')[1].substring(IPindex, config['hdfs.url'].length),
+							port:config['hdfs.url'].split(",")[0].split(":")[2],
+							url:config['hdfs.url'],
+							bak:bakList.join(','),
+							root:config['topics.dir'],
+							impalaPath:seurl + seda
 						}
-						_self.settingList = {
-							seledId:res.data.select,
-							list:list
-						}
-						_self.dataReady = true;
-					}else{
-						console.log(res.code);
+						list.push(obj);
 					}
-				}).catch(function(err){
-					console.log(err);
+					_self.settingList = {
+						seledId:res.data.select,
+						list:list
+					}
+					_self.dataReady = true;
+				}else{
+					console.log(res.code);
+					_self.$alert('获取系统库区设置失败','提示', {
+						confirmButtonText: '确定'
+					});
+				}
+			}).catch(function(err){
+				console.log(err);
+				_self.$alert('获取系统库区设置失败','提示', {
+					confirmButtonText: '确定'
 				});
 			});
 
@@ -176,7 +180,10 @@ export default {
 					resolve(res);
 				}, (err) => {
 					console.log(err)
-					reject(err);
+					reject(err);					
+					_self.$alert('获取行政区划失败','提示', {
+						confirmButtonText: '确定'
+					});
 				})
 			});
 			const promist1 = new Promise((resolve, reject) => {
@@ -185,6 +192,9 @@ export default {
 				}, (err) => {
 					console.log(err)
 					reject(err);
+					_self.$alert('获取系统参数失败','提示', {
+						confirmButtonText: '确定'
+					});
 				})
 			});
 			Promise.all([promist0, promist1]).then((resultList) => {

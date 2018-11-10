@@ -174,11 +174,16 @@ export default {
 					_self.countReady = true;
 				}else{
 					console.log(res.data.code)
+					_self.$alert('加载统计数据失败','提示', {
+						confirmButtonText: '确定'
+					});
 				}
 			})
 			.catch(function(err){
-				_self.loading = false;
 				console.log(err)
+				_self.$alert('加载统计数据失败','提示', {
+					confirmButtonText: '确定'
+				});
 			});
 		},
     setFliter(data){
@@ -233,6 +238,9 @@ export default {
           _self.currentPage = _self.tableParams.pageNum;
         }else{
           console.log(res.data.code)
+					_self.$alert('加载数据源数据失败','提示', {
+						confirmButtonText: '确定'
+					});
         }
         _self.loading = false;
       })
@@ -240,6 +248,9 @@ export default {
         _self.currentPage = _self.tableParams.pageNum;
         _self.loading = false;
         console.log(err)
+				_self.$alert('加载数据源数据失败','提示', {
+					confirmButtonText: '确定'
+				});
       });
     },
     setStore:function(obj){
@@ -281,6 +292,9 @@ export default {
 				})
 				.catch(function(err) {
 					console.log(err)
+					_self.$alert('复制失败','提示', {
+						confirmButtonText: '确定'
+					});
 				});
 			})
 		},
@@ -296,6 +310,9 @@ export default {
 				})
 				.catch(function(err) {
 					console.log(err)
+					_self.$alert('废止失败','提示', {
+						confirmButtonText: '确定'
+					});
 				});
 			});
     },

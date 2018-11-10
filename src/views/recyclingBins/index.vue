@@ -184,6 +184,9 @@ export default {
           _self.currentPage = _self.tableParams.pageNum;
         }else{
           console.log(res.data.code)
+					_self.$alert('字段废止数据源列表失败','提示', {
+						confirmButtonText: '确定'
+					});
         }
         _self.loading = false;
       })
@@ -191,6 +194,9 @@ export default {
         _self.currentPage = _self.tableParams.pageNum;
         _self.loading = false;
         console.log(err)
+				_self.$alert('字段废止数据源列表失败','提示', {
+					confirmButtonText: '确定'
+				});
       });
     },
     recordRecover:function(index,row){
@@ -210,6 +216,9 @@ export default {
 						_self.loadTable();
 					}else{
 						console.log(res.data.code)
+						_self.$alert('恢复失败','提示', {
+							confirmButtonText: '确定'
+						});
 					}
 					_self.loading = false;
 				})
@@ -217,6 +226,9 @@ export default {
 					_self.currentPage = _self.tableParams.pageNum;
 					_self.loading = false;
 					console.log(err)
+					_self.$alert('恢复失败','提示', {
+						confirmButtonText: '确定'
+					});
 				});
 			});
     },
@@ -237,6 +249,9 @@ export default {
 						_self.loadTable();
 					}else{
 						console.log(res.data.code)
+						_self.$alert('删除失败','提示', {
+							confirmButtonText: '确定'
+						});
 					}
 					_self.loading = false;
 				})
@@ -244,6 +259,9 @@ export default {
 					_self.currentPage = _self.tableParams.pageNum;
 					_self.loading = false;
 					console.log(err)
+					_self.$alert('删除失败','提示', {
+						confirmButtonText: '确定'
+					});
 				});
 			});
     },
