@@ -1,6 +1,6 @@
 <template>
   <div class="taskMDialog">
-    <el-button @click="dialogVisible = true" class="add-btn">add</el-button>
+    <el-button @click="dialogVisible = true" class="add-btn">新增</el-button>
     <el-dialog title="新增" :visible.sync="dialogVisible" width="50%" :before-close="closeDialog">
       <div class="title-gra">
         <span class="grab gra-l"></span>
@@ -173,15 +173,19 @@ export default {
           }
           this.$ajax({
             method: "POST",
-            url: 'http://10.19.248.200:32661/DACM/caccesssysRelationWorkInfo/add',
+            url: this.GLOBAL.api+'caccesssysRelationWorkInfo/add',
             data: params
 
           }).then(res => {
-            if (res.data.success) {
+            if (res.data.result=="succeed") {
               this.$alert('新增hdfs成功', '信息', {
                 confirmButtonText: '确定',
                 callback: action => {
+                  this.$refs['ruleForm'].resetFields();
+                  this.$emit('refresh');
                   this.dialogVisible = false;
+                 
+
                 }
               });
             } else {
@@ -197,9 +201,11 @@ export default {
     },
     //获取预设接口
     _getProData() {
+      debugger;
+      console.log(this.GLOBAL);
       this.$ajax({
         method: "get",
-        url: 'http://10.19.248.200:32661/DACM/caccesssysRelationWorkInfo/presetData',
+        url: `${this.GLOBAL.api}caccesssysRelationWorkInfo/presetData`,
         // headers:{
         //   'Content-Type':'application/json;charset=utf-8',
         // },

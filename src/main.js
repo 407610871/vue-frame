@@ -18,7 +18,7 @@ import i18n from "./lang"; // Internationalization
 import "./icons"; // icon
 import "./errorLog"; // error log
 import "./mock"; // simulation data
-
+import global_ from './views/mainLay/dialog/common.vue'  //接口地址
 import * as filters from "./filters"; // global filters
 
 import "./registerServiceWorker";
@@ -28,7 +28,7 @@ import axios from "axios";
 //x2js
 import x2js from 'x2js'; //xml数据处理插件
 Vue.prototype.$x2js = new x2js(); //创建x2js对象，挂到vue原型上
-
+Vue.prototype.GLOBAL = global_//挂载到Vue实例上面
 Vue.prototype.$ajax = axios;
 Vue.prototype.$ajax.interceptors.request.use(
   config => {

@@ -173,7 +173,7 @@ export default {
           }
           this.$ajax({
             method: "POST",
-            url: 'http://10.19.248.200:32661/DACM/caccesssysRelationWorkInfo/update',
+            url: this.GLOBAL.api +'caccesssysRelationWorkInfo/update',
             data: params
 
           }).then(res => {
@@ -182,6 +182,7 @@ export default {
                 confirmButtonText: '确定',
                 callback: action => {
                   this.dialogVisible = false;
+                  this.$emit('refresh');
                 }
               });
             } else {
@@ -199,7 +200,7 @@ export default {
     _getData() {
       this.$ajax({
         method: "get",
-        url: 'http://10.19.248.200:32661/DACM/caccesssysRelationWorkInfo/getStorages',
+        url: this.GLOBAL.api + 'caccesssysRelationWorkInfo/getStorages',
         // headers:{
         //   'Content-Type':'application/json;charset=utf-8',
         // },

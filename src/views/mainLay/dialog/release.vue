@@ -17,7 +17,7 @@
         </el-tabs>
       </el-col>
       <el-col :span="20" class="release-box">
-        <div class="proInfo-box clearfix">
+        <div class="proInfo-box release-Info clearfix">
           <ul class="directory">
             <li><a href="#txqd">特性清单</a></li>
             <li><a href="#zdbglb">重大变更列表</a></li>
@@ -175,7 +175,7 @@ export default {
 .el-table thead {
   line-height: 1;
 }
-li{
+.release-Info li{
   display: block !important;
 }
 .release {
@@ -284,5 +284,7 @@ li{
 
   padding-left: 70px;
 }
-
+.release .directory  ul li{
+  display: inline-block !important;
+}
 </style>

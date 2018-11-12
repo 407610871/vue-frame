@@ -175,9 +175,10 @@ export default {
     }
     return {
       dialogVisible: false,
-      rnum: '234234',
+      rnum: '',
       loading: true,
       sIndustry: [],
+      areaFlag: false,
       id: "",
       tableid: '',
       sZnb: [],
@@ -256,7 +257,7 @@ export default {
           var saveInfo = {
             iD: "", //非必填
             tABLE_ID: this.tableid, //表id
-            rESOURCE_DIRECTORY_NUMBER: "D-010000300000ZNB-01-111127262", // '资源目录编号',
+            rESOURCE_DIRECTORY_NUMBER: this.rnum + this.ruleForm.industry + '-' + this.ruleForm.znb + '-' + this.ruleForm.fcc + this.ruleForm.tlc + this.ruleForm.bdc + this.ruleForm.abc+this.ruleForm.randomId, // '资源目录编号',
             iNDUSTRY_CATEGORY: this.ruleForm.industry, // '行业类别',
             pOLICE_BUSINESS: this.ruleForm.znb, // '公安业务',
             fIRST_CLASS_CLASSIFICATION: this.ruleForm.fcc, //'一级分类',
@@ -272,7 +273,7 @@ export default {
           }
           this.$ajax({
             method: 'post',
-            url: 'http://10.19.248.200:32661/DACM/dataTable/inputSurvey',
+            url: this.GLOBAL.api + 'dataTable/inputSurvey',
             data: saveInfo
           }).then(res => {
             this.loading = false;
@@ -281,7 +282,7 @@ export default {
                 confirmButtonText: '确定',
                 callback: action => {
                   this.dialogVisible = false;
-                   this.$emit('fre');
+                  this.$emit('fre');
                 }
               });
             } else {
@@ -305,12 +306,12 @@ export default {
     _getStaticDatas() {
       this.$ajax({
         methods: 'post',
-        url: 'http://10.19.248.200:32661/DACM/dataTable/queryDictionary',
+        url: this.GLOBAL.api + 'dataTable/queryDictionary',
         params: {
 
         }
       }).then(res => {
-         this.loading = false;
+        this.loading = false;
         //得到Industry
         this.sIndustry = res.data.data.staticDatas.INDUSTRY;
         this.ruleForm.industry = this.sIndustry[0].sTATIC_CODE;
@@ -336,7 +337,7 @@ export default {
         this.ruleForm.datamode = this.sDum[0].sTATIC_CODE;
         //DRG
         this.sDrg = res.data.data.staticDatas.DRG;
-        this.ruleForm.datarange = this.sDrg[2].sTATIC_CODE;
+        this.ruleForm.datarange = this.sDrg[0].sTATIC_CODE;
         this._queryStaticDatas();
       })
     },
@@ -345,7 +346,7 @@ export default {
       console.log(this.tableid);
       this.$ajax({
         method: "get",
-        url: 'http://10.19.248.200:32661/DACM/dataTable/getSurvey',
+        url: this.GLOBAL.api + 'dataTable/getSurvey',
         // headers:{
         //   'Content-Type':'application/json;charset=utf-8',
         // },
@@ -355,31 +356,36 @@ export default {
 
       }).then(res => {
         this.loading = false;
-        this.ruleForm.industry = res.data.data.iNDUSTRY_CATEGORY;
-        this.ruleForm.znb = res.data.data.pOLICE_BUSINESS;
-        this.ruleForm.fcc = res.data.data.fIRST_CLASS_CLASSIFICATION;
-        this.ruleForm.tlc = res.data.data.tWO_LEVEL_CLASSIFICATION;
-        this.ruleForm.bdc = res.data.data.tAXONOMY;
-        this.ruleForm.abc = res.data.data.aTTRIBUTE_CLASSIFICATION;
-        this.ruleForm.datamode = res.data.data.dATA_UPDATE_MODE;
-        this.ruleForm.datanum = res.data.data.iNITIAL_DATA_VOLUME;
-        this.ruleForm.datarange = res.data.data.dATA_RANGE;
-        let xzqyData = JSON.parse(res.data.data.xzqy);
-        if (xzqyData == "") {
-          //查询系统配置
-          this._querySys();
-        } else {
-          xzqyData = JSON.parse(res.data.data.xzqy);
-          this.ruleForm.pro = xzqyData[0].pro;
-          this._queryCity(this.ruleForm.pro, 'city');
-          if (this.ruleForm.city != '') {
-            this.ruleForm.city = xzqyData[1].city;
-            this._queryCity(this.ruleForm.city, 'urban');
-          }
-          if (this.ruleForm.urban != '') {
-            this.ruleForm.urban = xzqyData[2].urban;
+        if (res.data.success) {
+
+          this.ruleForm.industry = res.data.data.iNDUSTRY_CATEGORY;
+          this.ruleForm.znb = res.data.data.pOLICE_BUSINESS;
+          this.ruleForm.fcc = res.data.data.fIRST_CLASS_CLASSIFICATION;
+          this.ruleForm.tlc = res.data.data.tWO_LEVEL_CLASSIFICATION;
+          this.ruleForm.bdc = res.data.data.tAXONOMY;
+          this.ruleForm.abc = res.data.data.aTTRIBUTE_CLASSIFICATION;
+          this.ruleForm.datamode = res.data.data.dATA_UPDATE_MODE;
+          this.ruleForm.datanum = res.data.data.iNITIAL_DATA_VOLUME;
+          this.ruleForm.datarange = res.data.data.dATA_RANGE;
+          let xzqyData = JSON.parse(res.data.data.xzqy);
+          if (xzqyData == "") {
+            //查询系统配置
+            this.areaFlag = true;
+            this._querySys();
+          } else {
+            xzqyData = JSON.parse(res.data.data.xzqy);
+            this.ruleForm.pro = xzqyData[0].pro;
+            this._queryCity(this.ruleForm.pro, 'city');
+            if (this.ruleForm.city != '') {
+              this.ruleForm.city = xzqyData[1].city;
+              this._queryCity(this.ruleForm.city, 'urban');
+            }
+            if (this.ruleForm.urban != '') {
+              this.ruleForm.urban = xzqyData[2].urban;
+            }
           }
         }
+
 
       }, res => {
         this.loading = false;
@@ -390,7 +396,7 @@ export default {
     _queryCity(value, flag) {
       this.$ajax({
         method: "get",
-        url: 'http://10.19.248.200:32661/DACM/commonInterUtils/getAreas?parentid=' + value,
+        url: this.GLOBAL.api + 'commonInter/getAreas?parentid=' + value,
         // headers:{
         //   'Content-Type':'application/json;charset=utf-8',
         // },
@@ -413,7 +419,7 @@ export default {
     },
     //资源目录下载
     downTxt() {
-      window.location.href = "http://10.19.248.200:32661/DACM/dataTable/downloadSpecification";
+      window.location.href = this.GLOBAL.api + "dataTable/downloadSpecification";
     },
     //通过省查询市
     proChange() {
@@ -429,7 +435,7 @@ export default {
     _querySys() {
       this.$ajax({
         method: "get",
-        url: 'http://10.19.248.200:32661/DACM/caccesssysRelationWorkInfo/getSystemSet.do',
+        url: this.GLOBAL.api + 'caccesssysRelationWorkInfo/getSystemSet.do',
         // headers:{
         //   'Content-Type':'application/json;charset=utf-8',
         // },
@@ -439,20 +445,25 @@ export default {
 
       }).then(res => {
         if (res.data.result == "success") {
-          var mes = JSON.parse(res.data.message);
-          if (mes[0].name == '') {
-            mes[0].name = '[]';
-          }
-          var sysmes = JSON.parse(mes[0].name);
-          console.log(sysmes);
-          if (sysmes.length != 0) {
-            this.ruleForm.pro = sysmes[0].pro;
-            this._queryCity(this.ruleForm.pro, 'city');
-            if (sysmes[0].city != '') {
-              this.ruleForm.city = sysmes[0].city;
-              this._queryCity(this.ruleForm.city, 'urban');
+           var mes = JSON.parse(res.data.message);
+           this.rnum = mes[5].name;
+          if (this.areaFlag) {
+           
+            if (mes[0].name == '') {
+              mes[0].name = '[]';
+            }
+            var sysmes = JSON.parse(mes[0].name);
+            console.log(sysmes);
+            if (sysmes.length != 0) {
+              this.ruleForm.pro = sysmes[0].pro;
+              this._queryCity(this.ruleForm.pro, 'city');
+              if (sysmes[0].city != '') {
+                this.ruleForm.city = sysmes[0].city;
+                this._queryCity(this.ruleForm.city, 'urban');
+              }
             }
           }
+
         }
       })
     }
@@ -474,6 +485,7 @@ export default {
       if (this.dialogVisible) {
         console.log("----");
         console.log(this.pdata);
+          this._querySys(); 
         this._getStaticDatas();
         this._queryCity('0', 'pro');
         this.tableid = this.pdata.id;
