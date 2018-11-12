@@ -23,7 +23,7 @@
         <el-col :span="9" class="collapsepanel-tools">
           <div class="grid-content">
             <div class="edithdd" style="display: inline-block; margin-left:10px; margin-right: 10px;">
-             <hdfs-edit :indexEq="1" :ownId="97796"></hdfs-edit>
+             <hdfs-edit :indexEq="index" :ownId="item.storageId" @refresh="refresh()"></hdfs-edit>
             </div>
             <el-button type="primary" @click="setConnect" :id="item.storageId" :disabled="item.storageId == seledId">关联</el-button>
             <el-button type="primary" @click="setDelete" :id="item.storageId" :disabled="item.storageId != seledId">删除</el-button>
@@ -32,7 +32,7 @@
       </el-row>
     </div>
     <div class="regbtn">
-      <hdfs-add :msg="1"></hdfs-add>
+      <hdfs-add :msg="1" @refresh="refresh()"></hdfs-add>
     </div>
   </div>
 </template>
@@ -127,7 +127,11 @@ export default {
 					confirmButtonText: '确定'
 				});
 			});
-		}
+		},
+    //新增成功刷新
+    refresh(){
+      this.$emit('refresh');
+    }
   },
   components:{
      hdfsAdd,

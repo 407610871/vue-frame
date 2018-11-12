@@ -2,7 +2,7 @@
   <div style="padding:20px; background: #fff; overflow-y:auto;" v-bind:style="{height:mainHeight}">
     <div class="panel">
       <div class="panel-title" style="margin-bottom:10px;">库区设置</div>
-      <collapsePanel v-if="dataReady" v-bind:settingList="settingList" />
+      <collapsePanel @refresh="initPage()" v-if="dataReady" v-bind:settingList="settingList" />
     </div>
 
     <div class="panel">
