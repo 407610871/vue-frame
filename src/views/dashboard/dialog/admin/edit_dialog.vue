@@ -961,5 +961,7 @@ export default {
 .el-dialog .otherInfo .fileItem .el-form-item__label {
   width: 235px !important;
 }
-
+i{
+  cursor: pointer;
+}
 </style>
