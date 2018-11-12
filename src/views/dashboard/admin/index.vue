@@ -15,7 +15,7 @@
         <div class="regbtn fr">
           <reg-dialog @refreshTable="loadTable"></reg-dialog>
         </div>
-        <a v-on:click="collapseExpand" class="right-btn collapse-btn" title="收起/展开">
+        <a v-on:click="collapseExpand" style="margin-right: 10px;" class="right-btn collapse-btn" title="收起/展开">
 					<i :class="{'el-icon-circle-plus':collapse,'el-icon-remove':!collapse}"></i>
 				</a>
         <formFliter v-if="queryParamReady" v-bind:formCollapse="collapse" v-bind:dataObj="formFilterData" @formFilter="changeFormFilter" />

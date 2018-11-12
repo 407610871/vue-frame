@@ -5,9 +5,10 @@
         <a v-on:click="collapseExpand" class="right-btn collapse-btn"><i :class="{'el-icon-circle-plus':collapse,'el-icon-remove':!collapse}"></i></a>
         <formFliter v-if="queryParamReady" v-bind:formCollapse="collapse" v-bind:dataObj="formFilterData" @formFilter="changeFormFilter" />
       </el-header>
-      <el-main class="main-container">
+      <el-main class="main-container icon-dai">
         <div class="table-tools">
-          <el-button v-on:click="updataSource" class="right-btn" style="margin-left:10px;" title="接入源更新">接入源更新</el-button>
+          <!-- <i title="数据更新" class="enc-icon-shujugengxin"  v-on:click="updataSource"><i> -->
+        <el-button v-on:click="updataSource" class="right-btn" style="margin-left:10px;" title="接入源更新">接入源更新</el-button>
           <table-inver v-show="jrtype=='mysql'|| jrtype=='oracle'|| jrtype=='postgresql' || jrtype=='sqlserver'" class="right-btn" :pdata="tablePa"></table-inver>
           <path-ftp class="right-btn" @refresh="loadTable" v-if="jrtype=='ftp'"></path-ftp>
           <set-task class="right-btn" :rowList="rowList" :jrtype="jrtype"></set-task>
@@ -40,7 +41,8 @@
           </el-table-column>
           <el-table-column label="操作">
             <template slot-scope="scope">
-              <el-button size="mini" v-on:click="updataSourceSingle(scope.$index, scope.row)" title="数据量更新">数据量更新</el-button>
+              <!-- <el-button size="mini" v-on:click="updataSourceSingle(scope.$index, scope.row)" title="数据量更新">数据量更新</el-button> -->
+             <i class="enc-icon-shujugengxin" v-on:click="updataSourceSingle(scope.$index, scope.row)" title="数据量更新"></i>
               <div class="survey">
                 <singleTask v-if="jrtype=='mysql'|| jrtype=='oracle'|| jrtype=='postgresql' || jrtype=='sqlserver'" :pdata="scope.row" @fre="loadTable()"></singleTask>
               </div>
@@ -191,8 +193,8 @@ export default {
       paramsObj.dataRange = this.tableParams.dataRange;
       paramsObj.accessSysId = parseInt(this.$route.params.sourceId);
       this.$ajax({
-          /*url: 'http://10.19.248.200:32661/DACM/ctables/datas',*/
-           url:'http://10.19.160.25:8080/DACM/ctables/datas',
+          url: 'http://10.19.248.200:32661/DACM/ctables/datas',
+          /* url:'http://10.19.160.25:8080/DACM/ctables/datas',*/
           method: 'post',
           data: JSON.stringify(paramsObj),
           headers: {
@@ -386,5 +388,16 @@ export default {
     float: right;
   }
 }
-
+.icon-dai i{
+  display: inline-block;
+  font-size:20px;
+  margin:0 5px;
+}
+.survey{
+  display: inline-block;
+  margin:0 5px;
+}
+.survey i{
+  font-size:20px;
+}
 </style>

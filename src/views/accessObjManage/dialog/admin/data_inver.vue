@@ -1,7 +1,7 @@
 <template>
-  <div class="taskMDialog userSurveyDialog">
-    <el-button size="mini" class="diabtn incbtn" type="danger" @click="dialogVisible = true">数据核验</el-button>
-    <!--  <i class="el-icon-info" @click="dialogVisible = true">用户调研</i> -->
+  <div class="taskMDialog userSurveyDialog diaicon">
+    <!-- <el-button size="mini" class="diabtn incbtn" type="danger" @click="dialogVisible = true">数据核验</el-button> -->
+    <i title="数据核验" class="enc-icon-shujuheyan" @click="dialogVisible = true"></i>
     <el-dialog title="数据核验" :visible.sync="dialogVisible" width="60%" :before-close="closeDialog">
       <div class="title-gra">
         <span class="grab gra-l"></span>
@@ -504,5 +504,9 @@ li {
 }
 .hisInver .el-table th > .cell{
   line-height: 32px !important;
+}
+.diaicon i{
+  cursor: pointer;
+  font-size:20px;
 }
 </style>
