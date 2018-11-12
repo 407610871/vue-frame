@@ -1,13 +1,13 @@
 <template>
   <div class="taskMDialog" style="padding-bottom:15px;" >
-    <el-dialog width="60%" :title="reqObj.taskName" :visible.sync="showInnerDialog" @closed="closeDia" v-loading="loading">
+    <el-dialog width="60%" :title="reqObj.taskName" :visible.sync="showInnerDialog" @closed="closeDia">
       <div class="title-gra">
         <span class="grab gra-l"></span>
         <span class="grab gra-r"></span>
       </div>
       <el-form label-width="150px" class="demo-ruleForm">
         <span style="float:right">当前状态:
-          <el-select v-model="flagDesc" placeholder="请选择" @change="changeStatus" class="select">
+          <el-select v-model="flagDesc" :disabled="loading3" placeholder="请选择" @change="changeStatus" class="select">
             <el-option
               v-for="item in operateList"
               :key="item.value"
@@ -19,7 +19,7 @@
           <!-- <el-button style="margin-left:10px" type="primary" size="small" @click="changeStatus">{{flagDesc=='stop'?'暂停':'运行'}}</el-button> -->
           </span>
         <!-- 接入基本信息 模块开始-->
-        <div class="daiInfo proInfo">
+        <div class="daiInfo proInfo" v-loading="loading1">
           <div class="daiInfo-title proInfo-title">
             <h2>接入基本信息</h2>
           </div>
@@ -80,7 +80,7 @@
         <!-- 接入基本信息 模块结束 -->
 
         <!-- 接入数据更新 模块开始 -->
-        <div class="daiInfo dockInfo">
+        <div class="daiInfo dockInfo" v-loading="loading2">
           <div class="daiInfo-title">
             <h2>接入数据更新</h2>
           </div>
@@ -119,7 +119,7 @@
           <div class="daiInfo-title">
             <h2>任务基本信息</h2>
           </div>
-          <div class="daiInfo-box clearfix" v-loading="innerLoading">
+          <div class="daiInfo-box clearfix" v-loading="loading3">
             <el-col :span="10">
               <el-form-item label="当前任务状态:">
                 <span>{{taskBaseInfo.statusDesc}}</span>
@@ -167,13 +167,13 @@
           <div class="daiInfo-tabs">
             <el-tabs type="border-card" style="height:265px;">
               <el-tab-pane label="汇聚任务日志信息">
-                <div class="dataCheck-tab">
+                <div class="dataCheck-tab" v-loading="loading4">
                   <textarea v-show="taskLog!=''" name="" id="" cols="30" rows="12" disabled="disabled" style="resize:none;width: 100%; height: 180px;border:none;background:inherit" >{{taskLog}}</textarea>
                   <div class="tips-none" v-show="taskLog==''">暂无数据</div>
                 </div>
               </el-tab-pane>
               <el-tab-pane label="数据核验日志信息">
-                <div class="dataCheck-tab">
+                <div class="dataCheck-tab" v-loading="loading5">
                   <div class="logItem" v-for="item in dataCheckList" :key="item.source_library">
                     <span class="lab">源库：</span><span>{{item.source_library}}</span>
                     <br>
@@ -205,11 +205,15 @@
                   <div class="tips-none" v-show="dataCheckList.length==0">暂无数据核验日志信息</div>
                 </div>
               </el-tab-pane>
-              <el-tab-pane label="网络连接信息">{{taskBaseInfo.newWorkDesc}}</el-tab-pane>
+              <el-tab-pane label="网络连接信息">
+                <div class="dataCheck-tab" v-loading="loading3">
+                  {{taskBaseInfo.newWorkDesc}}
+                </div>
+              </el-tab-pane>
               <el-tab-pane class="test" label="数据预览">
                 <!-- 数据预览 表格开始 -->
                 <!-- 数据预览表头不确定，根据接口返回的list集合对象里的key值来确定，所以采用如下写法实现 -->
-                <div class="dataViews-table">
+                <div class="dataViews-table" v-loading="loading6">
                   <div class="table-header">
                     <div class="table-th">
                       <span v-for="keyitem in keyList" :key="keyitem">{{keyitem}}</span>
@@ -306,10 +310,12 @@ export default {
   data: function() {
     return {
       //外层loading
-      loading:true,
-      //任务基本信息loading
-      innerLoading:false,
-      serveFinishCount:0,
+      loading1:true,//接入基本信息的loading
+      loading2:true,//接入数据更新的loading
+      loading3:true,//任务基本信息的loading
+      loading4:true,//汇聚任务日志信息的loading
+      loading5:true,//数据核验日志信息的loading
+      loading6:true,//数据预览的loading
       flagDesc:'',
       showInnerDialog: true,
       isShowCheck:false,
@@ -397,16 +403,16 @@ export default {
     //切换当前任务状态
     changeStatus(){
       let that = this;
-      that.innerLoading=true;
+      that.loading3 = true;
       if(that.flagDesc=='stop'){
         //调用暂停接口
         axios.put(that.httpUrl+'manager/taskOperate/pause/'+that.reqObj.taskInfoId).then(
           function(res){
             if(res.data.code!='200'&&res.data.code!='0000'){
               that.doMsg(res.data.message,'error');
-              that.innerLoading=false;
               //如果任务状态未切换成功，任务状态下拉框仍显示原来的值“run--运行”
-              that.flagDesc=='run';
+              that.flagDesc ='run';
+              that.loading3 = false;
             }else{
               that.doMsg(res.data.message,'success');
               //重新查询任务基本信息
@@ -415,9 +421,9 @@ export default {
           }  
         ).catch(function(err){
           console.log(err);
-          that.innerLoading=false;
           //如果任务状态未切换成功，任务状态下拉框仍显示原来的值“run--运行”
           that.flagDesc=='run';
+          that.loading3 = false;
         })
       }else if(that.flagDesc=='run'){
         //调用运行接口
@@ -425,9 +431,9 @@ export default {
           function(res){
             if(res.data.code!='200'&&res.data.code!='0000'){
               that.doMsg(res.data.message,'error');
-              that.innerLoading=false;
               //如果任务状态未切换成功，任务状态下拉框仍显示原来的值“stop--暂停”
-              that.flagDesc=='stop';
+              that.flagDesc ='stop';
+              that.loading3 = false;
             }else{
               that.doMsg(res.data.message,'success');
               //重新查询任务基本信息
@@ -436,15 +442,16 @@ export default {
           }
         ).catch(function(err){
           console.log(err);
-          that.innerLoading=false;
           //如果任务状态未切换成功，任务状态下拉框仍显示原来的值“stop--暂停”
           that.flagDesc=='stop';
+          that.loading3 = false;
         })
       }
     },
     //查询接入基本信息
     getSourceInfo(){
       let that = this;
+      that.loading1 = true;
       let reqData = {
         params:{
           taskInfoDetailId:that.reqObj.taskInfoDetailId,
@@ -454,15 +461,14 @@ export default {
       axios.get(that.httpUrl+"manager/task/detail/source",reqData).then(function(res){
         if(res.data.code==undefined||res.data.code==null||res.data.code==""){
           that.doMsg("“/manager/task/detail/source”服务响应为空！","error");
-          that.serveFinishCount++;
+          that.loading1 = false;
           return;
         }
         if(res.data.code != "200"&&res.data.code != "0000"){
           that.doMsg('“/manager/task/detail/source”'+res.data.message,"error");
-          that.serveFinishCount++;
+          that.loading1 = false;
           return;
         }
-        that.serveFinishCount++;
         let innerReqData = {
           params:{
             taskInfoDetailId:that.reqObj.taskInfoDetailId,
@@ -472,12 +478,12 @@ export default {
         axios.get(that.httpUrl+'manager/task/detail/target',innerReqData).then(function(innerRes){
           if(innerRes.data.code==undefined||innerRes.data.code==null||innerRes.data.code==""){
             that.doMsg("“/manager/task/detail/target”服务响应为空！","error");
-            that.serveFinishCount++;
+            that.loading1 = false;
             return;
           }
           if(innerRes.data.code != "200"&&innerRes.data.code != "0000"){
             that.doMsg('“/manager/task/detail/target”'+innerRes.data.message,"error");
-            that.serveFinishCount++;
+            that.loading1 = false;
             return;
           }
 
@@ -491,21 +497,20 @@ export default {
           }
           //接入类型翻译
           that.sourceBaseInfo.periodDesc = periodMap[innerRes.data.data.period];
-          that.serveFinishCount++;
+          that.loading1 = false;
         }).catch(function(err) {
           console.log(err);
-          that.serveFinishCount++;
+          that.loading1 = false;
         });
       }).catch(function(err) {
         console.log(err);
-        that.serveFinishCount++;
+        that.loading1 = false;
       });
     },
     //查询任务基本信息
     getTaskInfo(){
-
       let that = this;
-      that.innerLoading=true;
+      that.loading3 = true;
       //数据获取
       let searchData = {
         params: {
@@ -517,7 +522,7 @@ export default {
         .then(function(response) {
           if(response.data.code!='200'&&response.data.code!='0000'){
             that.doMsg("/manager/task/taskinfo"+response.data.message,error);
-            that.serveFinishCount++;
+            that.loading3 = false;
           }else{
             that.taskBaseInfo = response.data.data;
             //创建人
@@ -542,18 +547,18 @@ export default {
               that.operateList[1].disabled=true;
               that.operateList[0].disabled=false;
             }
-            that.serveFinishCount++;
+            that.loading3 = false;
           }
         })
         .catch(function(err) {
           console.log(err);
-          that.serveFinishCount++;
+          that.loading3 = false;
         });
     },
     //点击测试连接按钮，进行接口条用
     testConnect(){
       let that = this;
-      that.innerLoading=true;
+      that.loading3 = true;
       let reqData = {
         params:{
           taskInfoId:that.reqObj.taskInfoId
@@ -566,67 +571,66 @@ export default {
           }else if(res.data.code!="200"&&res.data.code!="0000"){
             that.doMsg("/manager/task/testTaskNetworkStatus:"+res.data.message,'error');
           }else{
-            that.newWorkTrans(res.data.data,res.data.data.speed);
+            that.taskBaseInfo.networkStatus = res.data.data.networkStatus;
+            that.newWorkTrans(that.taskBaseInfo.networkStatus,res.data.data.speed);
           }
-          that.innerLoading=false;
+          that.loading3 = false;
         }
       ).catch(
         function(err){
           console.log(err);
-          that.innerLoading=false;
+          that.loading3 = false;
         }
       )
     },
     //查询接入数据更新
     getSourceDataInfo(){
       let that = this;
+      that.loading2 = true;
       axios.put(that.httpUrl+'manager/taskOperate/dataInfo/'+that.reqObj.taskInfoId).then(
         function(res){
           if(res.data==undefined||res.data==null||res.data===''){
             that.doMsg('服务无数据返回','error');
-            that.serveFinishCount++;
           }else if(res.data.code!="0000"&&res.data.code!="200"){
             that.doMsg("/manager/taskOperate/dataInfo/"+res.data.data.message,'error');
-            that.serveFinishCount++;
           }else{
             that.sourceDataInfo = res.data.data; 
-            that.serveFinishCount++;
           }
-          
-          //that.serveFinishCount++;
+          that.loading2 = false;
         }
       ).catch(
         function(err){
           console.log(err);
-          that.serveFinishCount++;
+          that.loading2 = false;
         }
       )
     },
     //查询接入任务日志信息
     getSourceTaskLog(){
       let that = this;
+      that.loading4 = true;
       axios.put(that.httpUrl+'manager/taskOperate/taskLogInfo/'+that.reqObj.taskInfoId).then(
         function(res){
           //判断响应是否异常
           if(res.data.code!="200"&&res.data.code!="0000"){
             that.doMsg("/manager/taskOperate/taskLogInfo/"+res.data.data.message,'error');
-            that.serveFinishCount++;
           }else{
             that.taskLog = res.data.data.logInfo==""?"":`\t${res.data.data.logInfo}`;
             // that.taskLog = `java.lang.IndexOutOfBoundsException: Index: 0, Size: 0 \n\t at java.util.ArrayList.rangeCheck(ArrayList.java:653)\n\tat java.util.ArrayList.get(ArrayList.java:429)\n\tat cn.enn.com.jdbc.source.JdbcSourceTask.poll(JdbcSourceTask.java:284)\n\tat org.apache.kafka.connect.runtime.WorkerSourceTask.execute(WorkerSourceTask.java:204)\n\tat org.apache.kafka.connect.runtime.WorkerTask.doRun(WorkerTask.java:170)\n\tat org.apache.kafka.connect.runtime.WorkerTask.run(WorkerTask.java:214)\n\tat java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)\n\tat java.util.concurrent.FutureTask.run(FutureTask.java:266)\n\tat java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)\n\tat java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)\n\tat java.lang.Thread.run(Thread.java:745)\n`;
-            that.serveFinishCount++;
           }
+          that.loading4 = false;
         }
       ).catch(
         function(err){
           console.log(err);
-          that.serveFinishCount++;
+          that.loading4 = false;
         }
       )
     },
     //查询数据核验日志信息
     getDataCheckLog(){
       let that = this;
+      that.loading5 = true;
       let reqData = {
         params:{
           'taskId':that.reqObj.taskInfoId
@@ -638,26 +642,25 @@ export default {
           console.log('数据核验日志信息',res)
           if(res.data.code!="200"&&res.data.code!="0000"){
             that.doMsg("/ccheckData/checkLogByTaskId"+res.data.message,'error');
-            that.serveFinishCount++;
           }else{
             that.dataCheckList = res.data.data;
-            that.serveFinishCount++;
           }
+          that.loading5 = false;
         }
       ).catch(
         function(err){
           console.log(err);
-          that.serveFinishCount++;
+          that.loading5 = false;
         }
       )
     },
     //查询数据预览
     getDataViews(){
       let that = this;
+      that.loading6 = true;
       axios.put(that.httpUrl+'manager/taskOperate/dataPreview/'+that.reqObj.taskInfoId).then(
         function(res){
           if(res.data.code!="200"&&res.data.code!="0000"){
-            that.serveFinishCount++;
             that.doMsg("/manager/taskOperate/dataPreview："+res.data.message,'error');
           }else{
             that.dataViewsList = res.data.data;
@@ -666,13 +669,13 @@ export default {
               that.keyList.push(p);
             }  
             that.keyList.reverse();  
-            that.serveFinishCount++;
           }
+          that.loading6 = false;
         }
       ).catch(
         function(err){
           console.log(err);
-          that.serveFinishCount++;
+          that.loading6 = false;
         }
       )
     },
@@ -701,31 +704,7 @@ export default {
         duration: 3500
       });
     },
-  },
-  watch:{
-    serveFinishCount:{
-      handler: function (val, oldVal) {
-        //alert(val);
-        if(val==7){//说明页面结构已经调用完毕
-          this.loading=false;
-          this.innerLoading=false;
-        }
-        if(val>7){
-          this.innerLoading=false;
-        }
-       },
-      deep: true
-    },
-    // serveFinishCount:function(val,oldVal){
-    //   let that = this;
-    //   if(val==7){
-    //     //当val=7时，表示初始化时，所有接口调用完成，此时需要将loading加载遮罩去掉
-    //     //that.loading = true;
-    //     alert("监控成功")
-    //   }
-    // }
   }
-
 };
 
 </script>
