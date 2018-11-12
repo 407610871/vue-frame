@@ -104,7 +104,7 @@ export default {
 				_self.$emit('closeImport');
 			})
 			.catch(function (err) {
-				_self.$alert('未知错误', {
+				_self.$alert('导入失败', {
 					confirmButtonText: '确定'
 				});
 				console.log(err);

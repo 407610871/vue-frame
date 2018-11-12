@@ -17,7 +17,15 @@
         <el-table ref="multipleTable" :data="mainTableData" stripe :height="tableHeight" border style="width: 100%" tooltip-effect="light" @selection-change="handleSelectionChange">
           <el-table-column type="selection">
           </el-table-column>
-          <el-table-column prop="diyComments" label="资源名称" width="180" show-overflow-tooltip>
+          <el-table-column label="资源名称" width="180" show-overflow-tooltip>
+						<template slot-scope="scope">
+								<div>
+									<a v-show="!scope.row.showEdit" href="javascript:void(0)">{{ scope.row.diyComments }}</a>
+									<input type="text" v-model="editingRow.diyComments" v-show="scope.row.showEdit" @blur="changeName(scope.$index, scope.row)" />
+									<i @click="editingRow.index = scope.$index; editingRow.diyComments = scope.row.diyComments;scope.row.showEdit = !scope.row.showEdit" class="el-icon-edit-outline table-action-btn" v-show="!scope.row.showEdit" />
+								</div>
+							</template>
+						</el-table-column>
           </el-table-column>
           <el-table-column label="接入对象" width="180" show-overflow-tooltip>
             <template slot-scope="scope">
@@ -102,6 +110,10 @@ export default {
       formFilterData: [],
       rowList: [],
       tablePa: [],
+			editingRow:{
+				index:0,
+				diyComments:''
+			},
       jrtype:'',
 			objectType:[{
 				id: 1,
@@ -199,7 +211,11 @@ export default {
 			})
 			.then(res=>{
 				if (res.data.success) {
-					_self.mainTableData = res.data.data.list;
+					var data = res.data.data.list;
+					for(var value of data){
+						value.showEdit = false;
+					}
+					_self.mainTableData = data;
 					_self.mainTableDataTotal = res.data.data.total;
 					if (res.data.data.list.length > 0) {
 						_self.tablePa = res.data.data.list[0];
@@ -220,6 +236,33 @@ export default {
 				console.log(err);
 				_self.loading = false;
 				_self.$alert('加载接入对象列表失败','提示', {
+					confirmButtonText: '确定'
+				});
+			});
+    },
+		changeName:function(index,row){
+			var _self = this;
+			this.loading = true;
+			// this.$ajax.post('http://10.19.160.25:8080/DACM/ctables/diyComments',{
+			this.$ajax.post('http://10.19.248.200:32661/DACM/ctables/diyComments',{
+				objInfoId:row.id,
+				value:this.editingRow.diyComments
+			}).then(function(res){
+				if(res.data.success){
+					row.diyComments = _self.editingRow.diyComments;
+					row.showEdit = false;
+				}else{
+					console.log(res.data.code);
+					_self.$alert('字段中文名称修改失败','提示', {
+						confirmButtonText: '确定'
+					});
+				}
+				_self.loading = false;
+			})
+			.catch(function(err){
+				console.log(err)
+				_self.loading = false;
+				_self.$alert('字段中文名称修改失败','提示', {
 					confirmButtonText: '确定'
 				});
 			});

@@ -15,9 +15,11 @@
         <div class="regbtn fr">
           <reg-dialog @refreshTable="loadTable"></reg-dialog>
         </div>
-        <a v-on:click="collapseExpand" class="right-btn collapse-btn" title="收起/展开">
-					<i :class="{'el-icon-circle-plus':collapse,'el-icon-remove':!collapse}"></i>
-				</a>
+				<el-tooltip class="item" effect="light" content="收起/展开" placement="top">
+					<a v-on:click="collapseExpand" class="right-btn collapse-btn">
+						<i :class="{'el-icon-circle-plus':collapse,'el-icon-remove':!collapse}"></i>
+					</a>
+				</el-tooltip>
         <formFliter v-if="queryParamReady" v-bind:formCollapse="collapse" v-bind:dataObj="formFilterData" @formFilter="changeFormFilter" />
       </el-header>
       <el-main style="padding-bottom:0;">
@@ -48,8 +50,12 @@
             <template slot-scope="scope">
              
               <edit-dialog :acId="scope.row.id" @refreshTable="loadTable"></edit-dialog>
-              <i title="复制" @click="handleCopy(scope.$index, scope.row)" class="enc-icon-documents table-action-btn"></i>
-              <i title="废止" @click="handleDelete(scope.$index, scope.row)" class="enc-icon-feizhi table-action-btn"></i>
+							<el-tooltip class="item" effect="light" content="复制" placement="top">
+								<i @click="handleCopy(scope.$index, scope.row)" class="enc-icon-fuzhi table-action-btn"></i>
+							</el-tooltip>
+							<el-tooltip class="item" effect="light" content="废止" placement="top">
+								<i @click="handleDelete(scope.$index, scope.row)" class="enc-icon-feizhi table-action-btn"></i>
+							</el-tooltip>	
             </template>
           </el-table-column>
         </el-table>
@@ -148,8 +154,8 @@ export default {
   methods:{
 		setCount(){
 			var _self = this;
-			this.$ajax.post('http://10.19.160.29:8080/DACM/caccess/dataAccessStatistics',this.tableParams.deptId
-			// this.$ajax.post('http://10.19.248.200:32661/DACM/caccess/dataAccessStatistics',{
+			// this.$ajax.post('http://10.19.160.29:8080/DACM/caccess/dataAccessStatistics',this.tableParams.deptId
+			this.$ajax.post('http://10.19.248.200:32661/DACM/caccess/dataAccessStatistics',this.tableParams.deptId
 			).then(function(res){
 				if(res.data.success){
 					if(!res.data.data.data){

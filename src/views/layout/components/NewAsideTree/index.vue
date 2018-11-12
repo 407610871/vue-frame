@@ -71,7 +71,10 @@
 				});
 			},
       mounted(){
-        this.loadData();
+				var _self = this;
+				setTimeout(function(){
+					_self.loadData();
+				},1000);
       },
       methods: {
         loadData(){
@@ -205,24 +208,39 @@
         selDept(node,nodeStatus){
 					var list = this.$refs.tree.getCheckedNodes();
 					var deptIds = this.$refs.tree.getCheckedKeys();
+					var factorial;
           if(nodeStatus.checkedKeys.indexOf(node.id) == -1){
-            this.$refs.tree.setChecked(node.id,false)
-          }else{
-            var factorial=(function f(obj,tree){
-                list.push(obj);
-                deptIds.push(obj.id);
-                if(obj.children){
-                  for(var value of obj.children){
-                    f(value,tree)
-                  }
-                }
+						factorial=(function f(obj,tree){
+							var index1 = deptIds.indexOf(obj.id);
+							if(index1 != -1){
+								deptIds.splice(index1,1);
+							}
+							if(obj.children){
+								for(var value of obj.children){
+									f(value,tree)
+								}
+							}
             });
-            var anotherFactorial=factorial;
-            factorial=null;
-            anotherFactorial(node,this.$refs.tree);
-            this.$refs.tree.setCheckedNodes(list);
+          }else{
+            factorial=(function f(obj,tree){
+							list.push(obj);
+							deptIds.push(obj.id);
+							if(obj.children){
+								for(var value of obj.children){
+									f(value,tree)
+								}
+							}
+            });
           }
-					
+					var anotherFactorial=factorial;
+					factorial=null;
+					anotherFactorial(node,this.$refs.tree);
+					if(nodeStatus.checkedKeys.indexOf(node.id) != -1){
+						this.$refs.tree.setCheckedNodes(list);
+					}else{
+						console.log(deptIds);
+						this.$refs.tree.setCheckedKeys(deptIds)
+					}
 					this.$store.commit('selDept',deptIds);
 					this.$root.eventHub.$emit('selDept',deptIds);
 					if(this.$route.name=="accessObjManage" || this.$route.name=="accessObjInfo"){
