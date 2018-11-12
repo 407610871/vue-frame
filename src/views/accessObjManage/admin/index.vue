@@ -5,13 +5,12 @@
         <a v-on:click="collapseExpand" class="right-btn collapse-btn"><i :class="{'el-icon-circle-plus':collapse,'el-icon-remove':!collapse}"></i></a>
         <formFliter v-if="queryParamReady" v-bind:formCollapse="collapse" v-bind:dataObj="formFilterData" @formFilter="changeFormFilter" />
       </el-header>
-      <el-main class="main-container">
+      <el-main class="main-container icon-dai">
         <div class="table-tools">
-          <el-button v-on:click="updataSource" class="right-btn" style="margin-left:10px;" title="接入源更新">接入源更新</el-button>
+          <!-- <i title="数据更新" class="enc-icon-shujugengxin"  v-on:click="updataSource"><i> -->
+        <el-button v-on:click="updataSource" class="right-btn" style="margin-left:10px;" title="接入源更新">接入源更新</el-button>
           <table-inver v-show="jrtype=='mysql'|| jrtype=='oracle'|| jrtype=='postgresql' || jrtype=='sqlserver'" class="right-btn" :pdata="tablePa"></table-inver>
-          
-            <path-ftp class="right-btn" :rowList="accId" v-if="jrtype=='ftp'"></path-ftp>
-         
+          <path-ftp class="right-btn" @refresh="loadTable" v-if="jrtype=='ftp'"></path-ftp>
           <set-task class="right-btn" :rowList="rowList" :jrtype="jrtype"></set-task>
         </div>
         <el-table ref="multipleTable" :data="mainTableData" stripe :height="tableHeight" border style="width: 100%" tooltip-effect="light" @selection-change="handleSelectionChange">
@@ -50,20 +49,22 @@
           </el-table-column>
           <el-table-column label="操作">
             <template slot-scope="scope">
-              <el-button size="mini" v-on:click="updataSourceSingle(scope.$index, scope.row)" title="数据量更新">数据量更新</el-button>
+              <!-- <el-button size="mini" v-on:click="updataSourceSingle(scope.$index, scope.row)" title="数据量更新">数据量更新</el-button> -->
+             <i class="enc-icon-shujugengxin" v-on:click="updataSourceSingle(scope.$index, scope.row)" title="数据量更新"></i>
+              <div class="survey">
+                <singleTask v-if="jrtype=='mysql'|| jrtype=='oracle'|| jrtype=='postgresql' || jrtype=='sqlserver'" :pdata="scope.row" @fre="loadTable()"></singleTask>
+              </div>
               <div class="survey">
                 <userSurvey v-if="jrtype=='mysql'|| jrtype=='oracle'|| jrtype=='postgresql' || jrtype=='sqlserver'" :pdata="scope.row" @fre="loadTable()"></userSurvey>
               </div>
-              <div class="survey">
-                <single-task v-if="jrtype=='mysql'|| jrtype=='oracle'|| jrtype=='postgresql' || jrtype=='sqlserver'" :pdata="scope.row" @fre="loadTable()"></single-task>
-              </div>
-              <div class="survey">
-                <data-inver v-if="jrtype=='mysql'|| jrtype=='oracle'|| jrtype=='postgresql' || jrtype=='sqlserver'" :pdata="scope.row" @fre="loadTable()"></data-inver>
+              
+              <div class="survey" v-if="jrtype=='mysql'|| jrtype=='oracle'|| jrtype=='postgresql' || jrtype=='sqlserver'">
+                <data-inver :pdata="scope.row" @fre="loadTable()"></data-inver>
               </div>
               <div class="survey" v-if="jrtype!='mysql' && jrtype!='oracle' && jrtype!='sqlserver' && jrtype!='postgresql'">
                 <norela-coll :pdata="scope.row"></norela-coll>
               </div>
-             <!--  <div class="survey" v-if="jrtype=='ftp'">
+              <!--  <div class="survey" v-if="jrtype=='ftp'">
                <path-ftp></path-ftp>
              </div> -->
             </template>
@@ -114,32 +115,32 @@ export default {
 				index:0,
 				diyComments:''
 			},
-      jrtype:'',
-			objectType:[{
-				id: 1,
-				name: '表'
-			}, {
-				id: 2,
-				name: '视图'
-			}, {
-				id: 3,
-				name: '其他'
-			}],
-			dataRange:[{
-				id: 'city',
-				name: '全市'
-			}, {
-				id: 'province',
-				name: '全省'
-			}, {
-				id: 'country',
-				name: '全国'
-			}, {
-				id: 'other',
-				name: '其他'
-			}],
       jrtype: '',
-      accId:''
+      objectType: [{
+        id: 1,
+        name: '表'
+      }, {
+        id: 2,
+        name: '视图'
+      }, {
+        id: 3,
+        name: '其他'
+      }],
+      dataRange: [{
+        id: 'city',
+        name: '全市'
+      }, {
+        id: 'province',
+        name: '全省'
+      }, {
+        id: 'country',
+        name: '全国'
+      }, {
+        id: 'other',
+        name: '其他'
+      }],
+      jrtype: '',
+      accId: ''
     }
   },
   computed: {
@@ -175,7 +176,7 @@ export default {
   },
   mounted() {
     console.log('mounted');
-		this.$root.eventHub.$emit('setActiveNav',1);
+    this.$root.eventHub.$emit('setActiveNav', 1);
     this.storeReady();
   },
   created() {
@@ -189,7 +190,11 @@ export default {
       this.collapse = !this.collapse;
     },
     loadTable: function() {
+      debugger;
       var _self = this;
+
+      _self.jrtype = this.$store.state.jrtype;
+
       _self.loading = true;
       var paramsObj = { //不要问我为什么，后台接口就是这2个参数名
         pagNum: this.tableParams.pageNum,
@@ -198,18 +203,17 @@ export default {
       paramsObj.condition = this.tableParams.condition ? this.tableParams.condition : "";
       paramsObj.objectType = this.tableParams.objectType.join(',');
       paramsObj.dataRange = this.tableParams.dataRange;
-
       paramsObj.accessSysId = parseInt(this.$route.params.sourceId);
-			this.$ajax({
-				url:'http://10.19.248.200:32661/DACM/ctables/datas',
-				// url:'http://10.19.160.25:8080/DACM/ctables/datas',
+      this.$ajax({
+				url: 'http://10.19.248.200:32661/DACM/ctables/datas',
+				/* url:'http://10.19.160.25:8080/DACM/ctables/datas',*/
 				method: 'post',
 				data: JSON.stringify(paramsObj),
-				headers:{
-					'Content-Type':'application/json'
+				headers: {
+					'Content-Type': 'application/json'
 				}
 			})
-			.then(res=>{
+			.then(res => {
 				if (res.data.success) {
 					var data = res.data.data.list;
 					for(var value of data){
@@ -219,13 +223,12 @@ export default {
 					_self.mainTableDataTotal = res.data.data.total;
 					if (res.data.data.list.length > 0) {
 						_self.tablePa = res.data.data.list[0];
-						_self.jrtype = res.data.data.list[0].accessSys.accessSysDialect.name;
-						console.log(_self.jrtype);
+
 					}
 					_self.currentPage = _self.tableParams.pageNum;
 				} else {
 					console.log(res.code);
-					_self.$alert('加载接入对象列表失败','提示', {
+					_self.$alert('加载接入对象列表失败', '提示', {
 						confirmButtonText: '确定'
 					});
 				}
@@ -235,7 +238,7 @@ export default {
 				_self.currentPage = _self.tableParams.pageNum;
 				console.log(err);
 				_self.loading = false;
-				_self.$alert('加载接入对象列表失败','提示', {
+				_self.$alert('加载接入对象列表失败', '提示', {
 					confirmButtonText: '确定'
 				});
 			});
@@ -283,23 +286,26 @@ export default {
       });
     },
     goAccessObjInfo: function(row) {
-			this.$store.commit('resetQueryParam', {
-				resetData:'accessObjInfo'
-			});
-			this.$store.commit('setParamItem',{
-				name:'accessObjInfo',
-				data:{
-					ACCESS_SYS_DIALECT_ID:this.mainTableData[0].accessSys.accessSysDialectId,
-					accessSysId:this.mainTableData[0].accessSys.id,
-					diyComments:row.diyComments
-				}
-			});
-      this.$router.push({ name: "accessObjInfo",params:{
-        sourceId:this.$route.params.sourceId,
-        sourceName:this.$route.params.sourceName,
-        objId:row.id,
-        objName:encodeURI(row.name)
-      }});
+      this.$store.commit('resetQueryParam', {
+        resetData: 'accessObjInfo'
+      });
+      this.$store.commit('setParamItem', {
+        name: 'accessObjInfo',
+        data: {
+          ACCESS_SYS_DIALECT_ID: this.mainTableData[0].accessSys.accessSysDialectId,
+          accessSysId: this.mainTableData[0].accessSys.id,
+          diyComments: row.diyComments
+        }
+      });
+      this.$router.push({
+        name: "accessObjInfo",
+        params: {
+          sourceId: this.$route.params.sourceId,
+          sourceName: this.$route.params.sourceName,
+          objId: row.id,
+          objName: encodeURI(row.name)
+        }
+      });
     },
     search: function(keyword) {
       this.setStore({
@@ -308,51 +314,51 @@ export default {
       });
     },
     updataSource: function() {
-			var _self = this;
+      var _self = this;
       this.$ajax.get('http://10.19.248.200:32661/DACM/ctables/synchronize', {
-				params:{
-					accessSysId : this.$route.params.sourceId
-				}
+        params: {
+          accessSysId: this.$route.params.sourceId
+        }
       }).then(function(res) {
-				if(res.data.success){
-					_self.$alert('更新成功','提示', {
-						confirmButtonText: '确定'
-					});
-				}else{
-					_self.$alert('更新失败','提示', {
-						confirmButtonText: '确定'
-					});
-					console.log(res.code)
-				}
+        if (res.data.success) {
+          _self.$alert('更新成功', '提示', {
+            confirmButtonText: '确定'
+          });
+        } else {
+          _self.$alert('更新失败', '提示', {
+            confirmButtonText: '确定'
+          });
+          console.log(res.code)
+        }
       }).catch(function(err) {
         console.log(err)
-				_self.$alert('更新失败','提示', {
-					confirmButtonText: '确定'
-				});
+        _self.$alert('更新失败', '提示', {
+          confirmButtonText: '确定'
+        });
       });
     },
     updataSourceSingle: function(index, row) {
-			var _self = this;
+      var _self = this;
       this.$ajax.get('http://10.19.248.200:32661/DACM/ctables/refreshAmount', {
         params: {
           objectInfoId: row.id
         }
       }).then(function(res) {
-				if(res.data.success){
-					_self.$alert('更新成功','提示', {
-						confirmButtonText: '确定'
-					});
-				}else{
-					_self.$alert('更新失败','提示', {
-						confirmButtonText: '确定'
-					});
-					console.log(res.code)
-				}
+        if (res.data.success) {
+          _self.$alert('更新成功', '提示', {
+            confirmButtonText: '确定'
+          });
+        } else {
+          _self.$alert('更新失败', '提示', {
+            confirmButtonText: '确定'
+          });
+          console.log(res.code)
+        }
       }).catch(function(err) {
         console.log(err)
-				_self.$alert('更新失败','提示', {
-					confirmButtonText: '确定'
-				});
+        _self.$alert('更新失败', '提示', {
+          confirmButtonText: '确定'
+        });
       });
     },
     handleSelectionChange: function(val) {
@@ -425,5 +431,16 @@ export default {
     float: right;
   }
 }
-
+.icon-dai i{
+  display: inline-block;
+  font-size:20px;
+  margin:0 5px;
+}
+.survey{
+  display: inline-block;
+  margin:0 5px;
+}
+.survey i{
+  font-size:20px;
+}
 </style>

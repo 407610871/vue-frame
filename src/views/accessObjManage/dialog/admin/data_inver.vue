@@ -1,7 +1,7 @@
 <template>
-  <div class="taskMDialog userSurveyDialog">
-    <el-button size="mini" class="diabtn incbtn" type="danger" @click="dialogVisible = true">数据核验</el-button>
-    <!--  <i class="el-icon-info" @click="dialogVisible = true">用户调研</i> -->
+  <div class="taskMDialog userSurveyDialog diaicon">
+    <!-- <el-button size="mini" class="diabtn incbtn" type="danger" @click="dialogVisible = true">数据核验</el-button> -->
+    <i title="数据核验" class="enc-icon-shujuheyan" @click="dialogVisible = true"></i>
     <el-dialog title="数据核验" :visible.sync="dialogVisible" width="60%" :before-close="closeDialog">
       <div class="title-gra">
         <span class="grab gra-l"></span>
@@ -171,7 +171,8 @@ export default {
     _queryInver() {
       this.$ajax({
         method: "GET",
-        url: 'http://10.19.248.200:32661/DACM/ccheckData/tableNum',
+        url: this.GLOBAL.api +'ccheckData/tableNum',
+       /* url:'http://10.19.160.59:8080/DACM/ccheckData/tableNum',*/
         // headers:{
         //   'Content-Type':'application/json;charset=utf-8',
         // },
@@ -236,7 +237,7 @@ export default {
       this.loading2 = true;
       this.$ajax({
         method: "GET",
-        url: 'http://10.19.248.200:32661/DACM/ccheckData/checkLog',
+        url: this.GLOBAL.api +'ccheckData/checkLog',
         // headers:{
         //   'Content-Type':'application/json;charset=utf-8',
         // },
@@ -299,7 +300,8 @@ export default {
       }
       this.$ajax({
         method: "get",
-        url: `http://10.19.248.200:32661/DACM/ccheckData/tableCheck`,
+        url: `${this.GLOBAL.api}ccheckData/tableCheck`,
+        /*url:'http://10.19.160.59:8080/DACM/ccheckData/tableCheck',*/
         params: {
           taskId: this.taskId,
           key: this.ruleForm.setVer,
@@ -308,7 +310,7 @@ export default {
           endTime: this.ruleForm.startTime[1]
         }
       }).then(res => {
-        if (res.data.result == true || res.data.result == "true") {
+        if (res.data.data.result == true || res.data.data.result == "true") {
           this.$alert(res.data.message, "核验结果", {
             confirmButtonText: "确定",
             callback: action => {
@@ -326,7 +328,7 @@ export default {
     _queryHis() {
       this.$ajax({
         method: "get",
-        url: `http://10.19.248.200:32661/DACM/ccheckData/tableNumAllByTaskId`,
+        url: `${this.GLOBAL.api}ccheckData/tableNumAllByTaskId`,
         params: {
           taskId: this.taskId
         }
@@ -348,7 +350,7 @@ export default {
       if (!browser) {
         browser = 'IE'
       }
-      window.location.href = `http://10.19.248.200:32661/DACM/ccheckData/downloadCheckDataById?id=${item.id}&browser=${browser}&accessName=ww`
+      window.location.href = `${this.GLOBAL.api}ccheckData/downloadCheckDataById?id=${item.id}&browser=${browser}&accessName=${this.$route.params.sourceName}`
     }
   },
   components: {
@@ -502,5 +504,9 @@ li {
 }
 .hisInver .el-table th > .cell{
   line-height: 32px !important;
+}
+.diaicon i{
+  cursor: pointer;
+  font-size:20px;
 }
 </style>

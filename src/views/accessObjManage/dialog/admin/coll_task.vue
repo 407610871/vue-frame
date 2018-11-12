@@ -17,7 +17,7 @@
             </el-col>
             <el-col :span="1" class="bank">bank</el-col>
             <el-col :span="6">
-             <!--  <el-input v-model="ruleForm.tablename"></el-input> -->
+              <!--  <el-input v-model="ruleForm.tablename"></el-input> -->
             </el-col>
           </el-col>
           <el-col :span="24">
@@ -476,28 +476,28 @@ export default {
         ctt = '3'
       }
       if (this.ruleForm.accessMode == "1" && this.ruleForm.cycleSet == "0") { //间隔
-        if (this.increArr.id==undefined) {
+        if (this.increArr.id == undefined) {
           this.$message.warning('请选择增量字段');
           return false;
         }
         ctt = '1'
       }
       if (this.ruleForm.accessMode == "1" && this.ruleForm.cycleSet == "1") { //实时
-      if (this.increArr.id==undefined) {
+        if (this.increArr.id == undefined) {
           this.$message.warning('请选择增量字段');
           return false;
         }
         ctt = '2'
       }
       if (this.ruleForm.accessMode == "3" && this.ruleForm.cycleSet == "0") { //间隔
-       if (this.increArr.id==undefined) {
+        if (this.increArr.id == undefined) {
           this.$message.warning('请选择增量字段');
           return false;
         }
         ctt = '4'
       }
       if (this.ruleForm.accessMode == "3" && this.ruleForm.cycleSet == "1") { //实时
-if (this.increArr.id==undefined) {
+        if (this.increArr.id == undefined) {
           this.$message.warning('请选择增量字段');
           return false;
         }
@@ -520,7 +520,7 @@ if (this.increArr.id==undefined) {
       if (JSON.stringify(this.$store.state.userList) == "{}") {
         this.$ajax({
           method: "post",
-          url: 'http://10.19.160.168:8080/DACM/task/saveHeliumTask',
+          url: this.GLOBAL.api + 'task/saveHeliumTask',
           // headers:{
           //   'Content-Type':'application/json;charset=utf-8',
           // },
@@ -547,14 +547,14 @@ if (this.increArr.id==undefined) {
       } else {
         this.$ajax({
           method: 'post',
-          url: 'http://10.19.160.171:8081/DEMO/dataTable/inputSurvey',
+          url: this.GLOBAL.api + 'dataTable/inputSurvey',
           data: this.$store.state.userList
         }).then(res => {
           this.loading = false;
           if (res.data.success) {
             this.$ajax({
               method: "post",
-              url: 'http://10.19.160.168:8080/DACM/task/saveHeliumTask',
+              url: this.GLOBAL.api + 'task/saveHeliumTask',
               // headers:{
               //   'Content-Type':'application/json;charset=utf-8',
               // },
@@ -594,22 +594,36 @@ if (this.increArr.id==undefined) {
     },
 
 
-  formateTime(day, hour, min) {
-    return parseInt(day * 86400000 + hour * 3600000 + min * 60000);
-  },
-  //获取源树
-  _getTree() {
-    this.$ajax({
-      method: 'get',
-      url: 'http://10.19.160.168:8080/DACM/caccesssysRelationWorkInfo/getDataAreaNode',
+    formateTime(day, hour, min) {
+      return parseInt(day * 86400000 + hour * 3600000 + min * 60000);
+    },
+    //获取源树
+    _getTree() {
+      this.$ajax({
+        method: 'get',
+        url: this.GLOBAL.api + 'caccesssysRelationWorkInfo/getDataAreaNode',
 
-    }).then(res => {
-      this.treeData = res.data;
-      this.ruleForm.dLibrary = res.data[0].id
-    })
-  }
-},
-components: {
+      }).then(res => {
+        this.treeData = res.data;
+        this.ruleForm.dLibrary = res.data[0].id
+      })
+    },
+    //获取修改内容
+    _getInit() {
+      this.$ajax({
+        method: 'POST',
+        url: this.GLOBAL.api + 'task/getSourceConfig',
+        params:{
+          accessSysObjInfoId:this.accId,
+         
+        }
+
+      }).then(res => {
+      
+      })
+    }
+  },
+  components: {
     increMap
   },
   mounted() {
@@ -618,6 +632,7 @@ components: {
     this._hourData();
     this._weekData();
     this._getTree();
+    
   },
   created() {
 

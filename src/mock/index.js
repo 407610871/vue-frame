@@ -89,7 +89,10 @@ Mock.mock(/\/getDbConfig/,/get|post/i,configData);
 Mock.mock(/\/sysParamConfig/,/get|post/i,sysParamConfig);
 
 Mock.mock(/\/getProvinceList/,/get|post/i,provinceList);
-Mock.mock(/\/getCityList/,/get|post/i,cityList);
+Mock.mock(/\/getCityList/,/get|post/i,{
+	success:true,
+	data:cityList
+});
 
 // Mock.mock(/\/getDept/,/get|post/i,deptJson);
 

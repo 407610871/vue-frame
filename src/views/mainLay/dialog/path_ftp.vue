@@ -127,7 +127,8 @@ export default {
         }
         this.$ajax({
           method: "POST",
-          url: 'http://10.19.248.200:32661/DACM/ctables/addRecord',
+          url: this.GLOBAL.api +'ctables/addRecord',
+        /* url:'http://10.19.160.25:8080/DACM/ctables/addRecord',*/
           // headers:{
           //   'Content-Type':'application/json;charset=utf-8',
           // },
@@ -139,7 +140,9 @@ export default {
             this.$alert('保存路径成功', '信息', {
               confirmButtonText: '确定',
               callback: action => {
+                this.$emit('refresh');
                 this.dialogVisible = false;
+
               }
             });
           } else {
@@ -149,6 +152,7 @@ export default {
           }
           console.log(res);
         },(res) =>{
+           this.loading = false;
            this.$alert('保存路径失败', '信息', {
               confirmButtonText: '确定'
             });
@@ -161,12 +165,12 @@ export default {
       console.log(node);
       if (node.level == 0) {
         var params = {
-          accessSysId: this.rowList,
+          accessSysId: this.$route.params.sourceId,
           linkPath: '/'
         }
         this.$ajax({
           method: "POST",
-          url: 'http://10.19.248.200:32661/DACM/ctables/getStructure',
+          url: this.GLOBAL.api +'ctables/getStructure',
           // headers:{
           //   'Content-Type':'application/json;charset=utf-8',
           // },
@@ -194,7 +198,7 @@ export default {
         }
         this.$ajax({
           method: "POST",
-          url: 'http://10.19.248.200:32661/DACM/ctables/getStructure',
+          url: this.GLOBAL.api +'ctables/getStructure',
           // headers:{
           //   'Content-Type':'application/json;charset=utf-8',
           // },
@@ -220,7 +224,6 @@ export default {
   created() {
 
   },
-  props:['rowList'],
   watch: {
     dialogVisible() {
       if (this.dialogVisible) {

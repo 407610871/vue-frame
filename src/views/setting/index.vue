@@ -30,28 +30,28 @@
             <el-col :span="12">
               <el-form-item label="行政区划">
                 <el-col :span="11" class="col-inside">
-                  <el-select v-model="sysParam.province" placeholder="请选择省">
-                    <el-option :label="item.name" :value="item.code" v-for="(index,item) in provinceList" :key="index"></el-option>
+                  <el-select v-model="sysParam.province" placeholder="请选择省" @change="loadCity">
+                    <el-option :label="item.name" :value="item.code" v-for="(item,index) in provinceList" :key="index"></el-option>
                   </el-select>
                 </el-col>
                 <el-col :span="2" style="text-align:center;" class="col-inside">-</el-col>
                 <el-col :span="11" class="col-inside">
-                  <el-select v-model="sysParam.city" placeholder="请先选择省">
-                    <el-option :label="item.name" :value="item.code" v-for="(index,item) in cityList" :key="index"></el-option>
+                  <el-select v-model="sysParam.city" placeholder="请先选择省" @change="changeSet">
+                    <el-option :label="item.name" :value="item.code" v-for="(item,index) in cityList" :key="index"></el-option>
                   </el-select>
                 </el-col>
               </el-form-item>
             </el-col>
             <el-col :span="12">
               <el-form-item label="数据资源事权单位机构代码" label-width="180px">
-                <el-input v-model="sysParam.mecodeOrg"></el-input>
+                <el-input v-model="sysParam.mecodeOrg" @change="changeSet"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
           <el-row :gutter="20">
             <el-col :span="12">
               <el-form-item label="每页展示条数">
-                <el-select v-model="sysParam.pageLimit" value-key="pageLimit" placeholder="请选择条数">
+                <el-select v-model="sysParam.pageLimit" value-key="pageLimit" placeholder="请选择条数" @change="changeSet">
                   <el-option label="10条" value="10">10条</el-option>
                   <el-option label="20条" value="20">20条</el-option>
                   <el-option label="30条" value="30">30条</el-option>
@@ -62,7 +62,7 @@
             </el-col>
             <el-col :span="12">
               <el-form-item label="本地文件采集hdfs路径" label-width="180px">
-                <el-input v-model="sysParam.hdfsPaOrg"></el-input>
+                <el-input v-model="sysParam.hdfsPaOrg" @change="changeSet"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
@@ -93,7 +93,8 @@ export default {
         pageLimit: '20',
         province: '',
         city: ''
-      }
+      },
+			configs:[]
     }
   },
   components: {
@@ -171,13 +172,20 @@ export default {
 
 
 			const promist0 = new Promise((resolve, reject) => {
-				this.$ajax.get('http://10.19.248.200:32661/DACM/commonInter/getAreas', {
+				// this.$ajax.get('http://10.19.248.200:32661/DACM/commonInter/getAreas', {
+				this.$ajax.get('./getProvinceList', {
 					params:{
 						parentid:0
 					}
 				}).then((res) => {
-					console.log(1);
-					resolve(res);
+					if(res.data.success){
+						resolve(res);
+					}else{
+						reject(res);
+						_self.$alert('获取行政区划失败','提示', {
+							confirmButtonText: '确定'
+						});
+					}
 				}, (err) => {
 					console.log(err)
 					reject(err);					
@@ -187,8 +195,15 @@ export default {
 				})
 			});
 			const promist1 = new Promise((resolve, reject) => {
-				this.$ajax.get('./sysParamConfig').then((res) => {
-					resolve(res);
+				this.$ajax.get('http://10.19.160.176:8080/DACM/caccesssysRelationWorkInfo/getSystemSet.do').then((res) => {
+					if(res.data.result == 'success'){
+						resolve(res);
+					}else{
+						_self.$alert('获取系统参数失败','提示', {
+							confirmButtonText: '确定'
+						});
+						reject(res);
+					}
 				}, (err) => {
 					console.log(err)
 					reject(err);
@@ -198,9 +213,9 @@ export default {
 				})
 			});
 			Promise.all([promist0, promist1]).then((resultList) => {
-				console.log(resultList);
 				_self.provinceList = resultList[0].data.data;
-				for(var value of resultList[1].data){
+				_self.configs=JSON.parse(resultList[1].data.message);
+				for(var value of _self.configs){
 					switch (value.key.trim()) {
 						case '数据资源事权单位机构代码':
 							_self.sysParam.mecodeOrg = value.name;
@@ -212,9 +227,11 @@ export default {
 							_self.sysParam.pageLimit = value.name;
 							break;
 						case '行政区域':
-							_self.sysParam.province = value.name[0].pro;
-							var city = value.name[0].city
-							_self.$ajax.get('http://10.19.248.200:32661/DACM/commonInter/getAreas',{
+							var position = JSON.parse(value.name)[0];
+							_self.sysParam.province = position.pro;
+							var city = position.city
+							_self.$ajax.get('./getCityList',{
+							// _self.$ajax.get('http://10.19.248.200:32661/DACM/commonInter/getAreas',{
 								params:{
 									parentid:_self.sysParam.province
 								}
@@ -233,18 +250,128 @@ export default {
 				}
 			});
 		},
-    submitForm(formName) {
-      this.$refs[formName].validate((valid) => {
-        if (valid) {
-          alert('submit!');
-        } else {
-          console.log('error submit!!');
-          return false;
-        }
-      });
+    loadCity() {
+			var _self = this;
+      _self.$ajax.get('http://10.19.248.200:32661/DACM/commonInter/getAreas',{
+				params:{
+					parentid:_self.sysParam.province
+				}
+			}).then(function(res){
+				_self.cityList = res.data.data;
+				_self.sysParam.city = "";
+			})
+			.catch(function(err){
+				console.log(err);
+			});
     },
-    resetForm(formName) {
-      this.$refs[formName].resetFields();
+    changeSet() {
+			if(this.sysParam.province == ''){
+				return; //这个是通过选择省份重置的
+			}
+			var paramsList = JSON.parse(JSON.stringify(this.configs));
+			console.log(paramsList);
+			for(var value of paramsList){
+				switch (value.key.trim()) {
+					case '数据资源事权单位机构代码':
+						value.name = this.sysParam.mecodeOrg;
+						break;
+					case '本地文件采集Hdfs路径':
+						value.name = this.sysParam.hdfsPaOrg;
+						break;
+					case '每页展示条数':
+						value.name = this.sysParam.pageLimit+'';
+						break;
+					case '行政区域':
+						var position = [];
+						for(var value of this.provinceList){
+							if(value.code == this.sysParam.province){
+								position.push(value)
+								break;
+							}
+						}
+						for(var value of this.cityList){
+							if(value.code == this.sysParam.city){
+								position.push(value)
+								break;
+							}
+						}
+						value.name = JSON.stringify(position);
+						break;
+					default:
+						break;
+				}
+			}
+			console.log('==================');
+			var _self = this;
+      /*_self.$ajax.post('http://10.19.160.176:8080/DACM/caccesssysRelationWorkInfo/saveSystemSet',JSON.stringify({
+      // _self.$ajax.post('http://10.19.160.175:8080/DACM/caccesssysRelationWorkInfo/saveSystemSet',
+				// JSON.stringify(paramsList)
+				paramsList
+			).then(function(res){*/
+			_self.$ajax({
+				url: 'http://10.19.160.175:8080/DACM/caccesssysRelationWorkInfo/saveSystemSet',
+				method: 'post',
+				data: paramsList,
+				// headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+			}).then(function (res) {
+				if(parseInt(res.data) == 1){
+					_self.$alert('设置成功','提示', {
+						confirmButtonText: '确定'
+					}).then(()=>{
+						_self.configs = paramsList;
+					});
+				}else{
+					_self.$alert('修改系统设置失败','提示', {
+						confirmButtonText: '确定'
+					}).then(()=>{
+						for(var value of _self.configs){
+							switch (value.key.trim()) {
+								case '数据资源事权单位机构代码':
+									_self.sysParam.mecodeOrg = value.name;
+									break;
+								case '本地文件采集Hdfs路径':
+									_self.sysParam.hdfsPaOrg = value.name;
+									break;
+								case '每页展示条数':
+									_self.sysParam.pageLimit = value.name;
+									break;
+								case '行政区域':
+									var position = JSON.parse(value.name)[0];
+									_self.sysParam.province = position.pro;
+									_self.sysParam.city = position.city;
+									break;
+								default:
+									break;
+							}
+						}
+					});
+				}
+			})
+			.catch(function(err){
+				console.log(err);
+				_self.$alert('修改系统设置失败','提示', {
+					confirmButtonText: '确定'
+				}).then(()=>{
+					switch (value.key.trim()) {
+						case '数据资源事权单位机构代码':
+							_self.sysParam.mecodeOrg = value.name;
+							break;
+						case '本地文件采集Hdfs路径':
+							_self.sysParam.hdfsPaOrg = value.name;
+							break;
+						case '每页展示条数':
+							_self.sysParam.pageLimit = value.name;
+							break;
+						case '行政区域':
+							var position = JSON.parse(value.name)[0];
+							_self.sysParam.province = position.pro;
+							_self.sysParam.city = position.city;
+							break;
+						default:
+							break;
+					}
+				});
+			});
     }
   }
 }

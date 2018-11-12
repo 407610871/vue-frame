@@ -479,7 +479,7 @@ export default {
           if (this.ruleForm.datarange == "0") { //行政区
             areaData = [{ "pro": this.ruleForm.pro }, { "city": this.ruleForm.city }, { "urban": this.ruleForm.urban }]
           }
-          if (this.info.length == 1) {
+          if (this.info.length == undefined) {
             this.tableid = this.info.id;
             this.tableids = this.info.id;
           } else {

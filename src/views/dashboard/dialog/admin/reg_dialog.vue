@@ -1,6 +1,7 @@
 <template>
-  <div class="taskMDialog">
-    <el-button @click="dialogVisible = true" class="add-btn">注册</el-button>
+  <div class="taskMDialog icon-dai">
+    <!-- <el-button @click="dialogVisible = true" class="add-btn">注册</el-button> -->
+     <i title="注册" @click="dialogVisible = true" class="enc-icon-zhuce table-action-btn" style="margin-right:15px; font-size:30px;"></i>
     <el-dialog title="接入数据源" :visible.sync="dialogVisible" width="60%" :before-close="closeDialog">
       <div class="title-gra">
         <span class="grab gra-l"></span>
@@ -156,43 +157,43 @@
             </el-form-item>
             <el-col :span="18">
               <el-col :span="10">
-                <el-form-item label="IP地址/主机名:" prop="ipname" required v-show="ruleForm.syskind!=''&&ruleForm.syskind!='10023'">
+                <el-form-item label="IP地址/主机名:" prop="ipname" required v-if="ruleForm.syskind!=''&&ruleForm.syskind!='10023'">
                   <el-input v-model="ruleForm.ipname"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="2" class="bank">bank</el-col>
               <el-col :span="10">
-                <el-form-item label="登录名:" prop="username" required v-show="ruleForm.syskind!=''&&ruleForm.syskind!='10023'">
+                <el-form-item label="登录名:" prop="username" required v-if="ruleForm.syskind!=''&&ruleForm.syskind!='10023'">
                   <el-input v-model="ruleForm.username"></el-input>
                 </el-form-item>
               </el-col>
               <!--               <el-col :span="2" class="bank">bank</el-col>
 <el-col :span="10">
-  <el-form-item label="路径" required prop="url" v-show="ruleForm.syskind=='9'">
+  <el-form-item label="路径" required prop="url" v-if="ruleForm.syskind=='9'">
     <el-input v-model="ruleForm.url"></el-input>
   </el-form-item>
 </el-col> -->
               <el-col :span="2" class="bank">bank</el-col>
               <el-col :span="10">
-                <el-form-item label="密码:" prop="password" required v-show="ruleForm.syskind!=''&&ruleForm.syskind!='10023'">
+                <el-form-item label="密码:" prop="password" required v-if="ruleForm.syskind!=''&&ruleForm.syskind!='10023'">
                   <el-input v-model="ruleForm.password"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="2" class="bank">bank</el-col>
               <el-col :span="10">
-                <el-form-item label="端口号:" prop="iport" required v-show="ruleForm.syskind!=''&&ruleForm.syskind!='10023'">
+                <el-form-item label="端口号:" prop="iport" required v-if="ruleForm.syskind!=''&&ruleForm.syskind!='10023'">
                   <el-input v-model="ruleForm.iport"></el-input>
                 </el-form-item>
               </el-col>
-              <el-col :span="2" class="bank" v-show="ruleForm.syskind=='10001'||ruleForm.syskind=='10003'||ruleForm.syskind=='10002'||ruleForm.syskind=='10004'||ruleForm.syskind=='10020'">bank</el-col>
+              <el-col :span="2" class="bank" v-if="ruleForm.syskind=='10001'||ruleForm.syskind=='10003'||ruleForm.syskind=='10002'||ruleForm.syskind=='10004'||ruleForm.syskind=='10020'">bank</el-col>
               <el-col :span="10">
-                <el-form-item label="实例/数据库名:" prop="instanceName" required v-show="ruleForm.syskind=='10001'||ruleForm.syskind=='10003'||ruleForm.syskind=='10002'||ruleForm.syskind=='10004'||ruleForm.syskind=='10020'">
+                <el-form-item label="实例/数据库名:" prop="instanceName" required v-if="ruleForm.syskind=='10001'||ruleForm.syskind=='10003'||ruleForm.syskind=='10002'||ruleForm.syskind=='10004'||ruleForm.syskind=='10020'">
                   <el-input v-model="ruleForm.instanceName"></el-input>
                 </el-form-item>
               </el-col>
-              <el-col :span="2" class="bank" v-show="ruleForm.syskind=='10002'||ruleForm.syskind=='10020'">bank</el-col>
+              <el-col :span="2" class="bank" v-if="ruleForm.syskind=='10002'||ruleForm.syskind=='10020'">bank</el-col>
               <el-col :span="10">
-                <el-form-item label="模式名/架构:" prop="model" v-show="ruleForm.syskind=='10002'||ruleForm.syskind=='10020'">
+                <el-form-item label="模式名/架构:" prop="model" v-if="ruleForm.syskind=='10002'||ruleForm.syskind=='10020'">
                   <el-input v-model="ruleForm.model"></el-input>
                 </el-form-item>
               </el-col>
@@ -238,7 +239,7 @@
                   <el-input v-model="ruleForm.hadoopDir"></el-input>
                 </el-form-item>
               </el-col>
-              <el-col :span="2" class="bank" v-show="ruleForm.syskind!=''&& ruleForm.syskind=='vhost'">bank</el-col>
+              <el-col :span="2" class="bank" v-if="ruleForm.syskind!=''&& ruleForm.syskind=='vhost'">bank</el-col>
               <el-col :span="10">
                 <el-form-item label="集群目录" required prop="hadoopHomes" v-if="ruleForm.syskind!=''&& ruleForm.syskind=='vhost'">
                   <el-input v-model="ruleForm.hadoopHomes"></el-input>
@@ -250,8 +251,8 @@
                   <el-input v-model="ruleForm.vhost"></el-input>
                 </el-form-item>
               </el-col>
-              <el-col :span="2" class="bank" v-show="ruleForm.syskind!=''&& ruleForm.syskind=='vhost'">bank</el-col>
-              <el-col :span="10" v-show="ruleForm.syskind=='10010'||ruleForm.syskind=='10011'">
+              <el-col :span="2" class="bank" v-if="ruleForm.syskind!=''&& ruleForm.syskind=='vhost'">bank</el-col>
+              <el-col :span="10" v-if="ruleForm.syskind=='10010'||ruleForm.syskind=='10011'">
                 <el-form-item label="传输模式:" prop="transmode">
                   <el-select v-model="ruleForm.transmode" placeholder="请选择">
                     <el-option label="主动" value="true"></el-option>
@@ -259,7 +260,7 @@
                   </el-select>
                 </el-form-item>
               </el-col>
-              <el-col :span="24" v-show="ruleForm.syskind=='10023'" class="fileItem">
+              <el-col :span="24" v-if="ruleForm.syskind=='10023'" class="fileItem">
                 <el-form-item label="选择本地文件(仅支持txt,excel,csv文件):" prop="upfile">
                   <el-upload class="upload-demo" name="files" ref="upload" action="" :on-preview="handlePreview" :on-remove="handleRemove" :file-list="fileList" :auto-upload="false">
                     <el-button slot="trigger" size="small" type="primary">选择文件</el-button>
@@ -270,7 +271,7 @@
               </el-col>
             </el-col>
             <el-col :span="6">
-              <el-button type="primary" v-show="ruleForm.syskind!=''&&ruleForm.syskind!='10023'" @click="testForm('ruleForm')" v-loading.fullscreen.lock="fullscreenLoading">测试连接</el-button>
+              <el-button type="primary" v-if="ruleForm.syskind!=''&&ruleForm.syskind!='10023'" @click="testForm('ruleForm')" v-loading.fullscreen.lock="fullscreenLoading">测试连接</el-button>
             </el-col>
           </div>
         </div>
@@ -1164,5 +1165,9 @@ export default {
 .el-dialog .otherInfo .fileItem .el-form-item__label {
   width: 235px !important;
 }
+.icon-dai i{
+  cursor: pointer;
 
+ 
+}
 </style>

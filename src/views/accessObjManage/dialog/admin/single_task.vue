@@ -1,8 +1,8 @@
 <template>
-  <div class="taskMDialog userSurveyDialog setTaskDia">
-    <el-button size="mini" class="diabtn incbtn" type="danger" @click="dialogVisible = true">设置通配符</el-button>
-    <!-- <i class="el-icon-info" @click="dialogVisible = true">设置通配符</i> -->
-    <el-dialog title="批量接入任务向导" :visible.sync="dialogVisible" width="60%" :before-close="closeDialog">
+  <div class="taskMDialog userSurveyDialog setTaskDia diaicon">
+   <!--  <el-button size="mini" class="diabtn incbtn" type="danger" @click="dialogVisible = true">设置通配符</el-button> -->
+   <i title="单表采集" class="enc-icon-danbiaocaiji" @click="dialogVisible = true"></i>
+    <el-dialog title="单表采集任务向导" :visible.sync="dialogVisible" width="60%" :before-close="closeDialog">
       <div class="title-gra plr30">
         <span class="grab gra-l"></span>
         <span class="grab gra-r"></span>
@@ -194,5 +194,8 @@ export default {
 .setTaskDia .el-tabs__item.is-active {
   color: $color-background-tabs;
 }
-
+.diaicon i{
+  cursor:pointer;
+  font-size:20px;
+}
 </style>

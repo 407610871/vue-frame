@@ -1,6 +1,7 @@
 <template>
   <div class="taskMDialog">
-    <el-button class="diabtn incbtn" size="mini" @click="dialogVisible = true">编辑</el-button>
+    <!-- <el-button class="diabtn incbtn" size="mini" @click="dialogVisible = true">编辑</el-button> -->
+     <i title="编辑" @click="dialogVisible = true" class="enc-icon-bianji table-action-btn"></i>
     <el-dialog title="接入数据源" :visible.sync="dialogVisible" width="60%" :before-close="closeDialog">
       <div class="title-gra">
         <span class="grab gra-l"></span>
@@ -960,5 +961,7 @@ export default {
 .el-dialog .otherInfo .fileItem .el-form-item__label {
   width: 235px !important;
 }
-
+i{
+  cursor: pointer;
+}
 </style>

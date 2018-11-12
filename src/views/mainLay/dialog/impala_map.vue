@@ -84,7 +84,7 @@ export default {
       var _self = this;
       this.$ajax({
         method: "post",
-        url: 'http://10.19.248.200:32661/DACM/caccesssysRelationWorkInfo/getDataCenterInfo?id=2',
+        url: this.GLOBAL.api +'caccesssysRelationWorkInfo/getDataCenterInfo?id=2',
         // headers:{
         //   'Content-Type':'application/json;charset=utf-8',
         // },
