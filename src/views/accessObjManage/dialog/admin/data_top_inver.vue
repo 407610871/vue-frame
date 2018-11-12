@@ -84,7 +84,7 @@ export default {
       }
       this.$ajax({
         method: "get",
-        url: `http://10.19.248.200:32661/DACM/ccheckData/tableCheck`,
+        url: `${this.GLOBAL.api}ccheckData/tableCheck`,
         params: {
           taskId: this.taskId,
           key: this.ruleForm.setVer,
@@ -93,7 +93,7 @@ export default {
           endTime: this.ruleForm.startTime[1]
         }
       }).then(res => {
-        if (res.data.result == true || res.data.result == "true") {
+        if (res.data.data.result == true || res.data.data.result == "true") {
           this.$alert(res.data.message, "核验结果", {
             confirmButtonText: "确定",
             callback: action => {
@@ -112,7 +112,7 @@ export default {
     _checkData() {
       this.$ajax({
         method: "GET",
-        url: 'http://10.19.248.200:32661/DACM/ccheckData/tableNum',
+        url: this.GLOBAL.api +'ccheckData/tableNum',
         // headers:{
         //   'Content-Type':'application/json;charset=utf-8',
         // },

@@ -175,8 +175,8 @@ export default {
 .el-table thead {
   line-height: 1;
 }
-.release-Info li{
-  display: block !important;
+.release-Info .imlist li{
+  display: block;
 }
 .release {
   max-height: 600px;

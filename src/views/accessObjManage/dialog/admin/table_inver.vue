@@ -8,6 +8,7 @@
         <span class="grab gra-r"></span>
       </div>
       <div class="proInfo-box bornone clearfix">
+      <p style="text-align: center">{{name}}</p>
         <el-button size="mini" type="info" @click="downTable()" class="dowBtn">导出报告</el-button>
       </div>
       <div class="proInfo-box">
@@ -64,6 +65,7 @@ export default {
       loading2: false,
       taskId: '',
       loginfo: '',
+      name:'',
       textShow: false,
       result: '0',
       tableData: []
@@ -91,7 +93,7 @@ export default {
       console.log(this.cindex);
       this.$ajax({
         method: "GET",
-        url: 'http://10.19.248.200:32661/DACM/ccheckData/tableSourceNum',
+        url: this.GLOBAL.api +'ccheckData/tableSourceNum',
         // headers:{
         //   'Content-Type':'application/json;charset=utf-8',
         // },
@@ -115,7 +117,7 @@ export default {
       this.loading2 = true;
       this.$ajax({
         method: "GET",
-        url: 'http://10.19.248.200:32661/DACM/ccheckData/checkLog',
+        url: this.GLOBAL.api +'ccheckData/checkLog',
         // headers:{
         //   'Content-Type':'application/json;charset=utf-8',
         // },
@@ -166,7 +168,7 @@ export default {
       if (!browser) {
         browser = 'IE'
       }
-      window.location.href = `http://10.19.248.200:32661/DACM/ccheckData/downloadCheckDataById?id=${this.pdata.id}&browser=${browser}&accessName=ww`
+      window.location.href = `${this.GLOBAL.api}ccheckData/downloadCheckDataById?id=${this.pdata.id}&browser=${browser}&accessName=${this.$route.params.sourceName}`
     }
   },
   components: {
@@ -186,6 +188,7 @@ export default {
       if (this.dialogVisible) {
         this.accessSysId = this.pdata.accessSys.accessSysDialectId;
         this._getTableNum();
+        this.name = this.$route.params.sourceName;
       }
     }
 

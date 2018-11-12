@@ -525,7 +525,7 @@ export default {
       if (JSON.stringify(this.$store.state.userList) == "{}") {
         this.$ajax({
           method: "post",
-          url: 'http://10.19.160.168:8080/DACM/task/saveRegexHeliumTask',
+          url: this.GLOBAL.api +'task/saveRegexHeliumTask',
           // headers:{
           //   'Content-Type':'application/json;charset=utf-8',
           // },
@@ -552,14 +552,14 @@ export default {
       } else {
         this.$ajax({
           method: 'post',
-          url: 'http://10.19.160.171:8081/DEMO/dataTable/inputSurvey',
+          url: this.GLOBAL.api +'dataTable/inputSurvey',
           data: this.$store.state.userList
         }).then(res => {
           this.loading = false;
           if (res.data.success) {
             this.$ajax({
               method: "post",
-              url: 'http://10.19.160.168:8080/DACM/task/saveRegexHeliumTask',
+              url: this.GLOBAL.api +'saveRegexHeliumTask',
               // headers:{
               //   'Content-Type':'application/json;charset=utf-8',
               // },
@@ -606,7 +606,7 @@ export default {
     _getTree() {
       this.$ajax({
         method: 'get',
-        url: 'http://10.19.160.168:8080/DACM/caccesssysRelationWorkInfo/getDataAreaNode',
+        url: this.GLOBAL.api +'caccesssysRelationWorkInfo/getDataAreaNode',
 
       }).then(res => {
         this.treeData = res.data;

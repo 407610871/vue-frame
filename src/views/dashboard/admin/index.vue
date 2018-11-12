@@ -25,7 +25,7 @@
         <el-table :data="mainTableData" stripe :height="tableHeight" border style="width: 100%" tooltip-effect="light">
           <el-table-column label="接入源名称" width="250" show-overflow-tooltip>
             <template slot-scope="scope">
-              <a href="javascript:void(0)" v-on:click="goSubPage(scope.$index)">{{ scope.row.name }}</a>
+              <a href="javascript:void(0)" v-on:click="goSubPage(scope.$index,scope.row.dataSourceName)">{{ scope.row.name }}</a>
             </template>
           </el-table-column>
           <el-table-column prop="id" label="接入源ID" width="180">
@@ -262,7 +262,9 @@ export default {
         pageNum:val
       });
     },
-    goSubPage:function(index){
+    goSubPage:function(index,type){
+      this.$store.commit('setJrtype',type);
+      console.log(this.$store.state.jrtype);
 			this.$store.commit('resetQueryParam', {
 				resetData:'accessObjManage'
 			});

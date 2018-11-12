@@ -72,6 +72,7 @@ const store = new Vuex.Store({
     regInfo:{},//正则
     matchType:[],//自定义表
     matchflag:'0',//表
+    jrtype: ''//接入源的类型
   },
   mutations: {
     setFilterItmeList(state,obj){
@@ -123,6 +124,10 @@ const store = new Vuex.Store({
       state.matchflag = '0';
       state.matchType = obj;
       state.matchflag = '1';
+    },
+    setJrtype(state,obj){
+      state.jrtype = '';
+      state.jrtype = obj;
     }
   },
   modules: {

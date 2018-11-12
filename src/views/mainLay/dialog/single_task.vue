@@ -1,6 +1,6 @@
 <template>
   <div class="taskMDialog userSurveyDialog setTaskDia">
-    <i class="el-icon-info" @click="dialogVisible = true">设置通配符</i>
+    <i class="el-icon-info" @click="dialogVisible = true">采集任务</i>
     <el-dialog title="批量接入任务向导" :visible.sync="dialogVisible" width="60%" :before-close="closeDialog">
       <div class="title-gra plr30">
         <span class="grab gra-l"></span>
@@ -56,7 +56,7 @@ import wildCard from '@/views/mainLay/dialog/wild_card' //设置通配符
 import typeMap from '@/views/mainLay/dialog/type_map' //建立数据映射关系
 import collTask from '@/views/mainLay/dialog/coll_task'//设置采集任务
 export default {
-  name: "userSurvey",
+  name: "",
   data: function() {
     return {
       activeName: 'first',
