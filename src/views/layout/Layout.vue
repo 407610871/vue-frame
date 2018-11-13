@@ -72,7 +72,7 @@ export default {
 		var _self = this;
 		
 		this.$ajax
-			.get("http://10.19.248.200:32661/caccesssysRelationWorkInfo/getSystemSet.do")
+			.get("http://10.19.248.200:32442/DACM/caccesssysRelationWorkInfo/getSystemSet.do")
 			.then(function(res) {
 				if (res.data.result == 'success') {
 					var configs = JSON.parse(res.data.message);
