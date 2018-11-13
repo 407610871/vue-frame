@@ -5,10 +5,11 @@
       <a href="javascript:void(0)" v-on:click="editNode"><i class="el-icon-edit"></i></a>
       <a href="javascript:void(0)" v-on:click="delNode"><i class="el-icon-close"></i></a>
     </div>
-		<div class="treeContainer" v-bind:style="{'height':treeHeight}">
+		<div class="treeContainer"">
 			<el-tree
 				v-if="dataReady"
 				:data="data"
+				v-bind:style="{'height':treeHeight+'px'}"
 				node-key="id"
 				show-checkbox
 				default-expand-all
@@ -62,7 +63,7 @@
 					// return this.$store.state.queryParams[this.$route.name].deptId?this.$store.state.queryParamsDefault[this.$route.name].deptId:this.$store.state.deptId;
 				// }
 				treeHeight:function(){
-					return (window.innerHeight-107)+'px';
+					return (window.innerHeight-107);
 				}
 			},
 			created(){
@@ -303,7 +304,6 @@
   }
   #NewAisdeTree{
 		.treeContainer{
-			overflow:auto;
 		}
 		.el-tree{
 			background-color: transparent;
@@ -326,5 +326,12 @@
 				border-color:#409EFF;
 			}
 		}
+	}
+	.el-tree{
+		width: 100%;
+		overflow-x: scroll;
+	}
+	.el-tree>.el-tree-node{
+		display: inline-block !important;
 	}
 </style>
