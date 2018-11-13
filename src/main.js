@@ -97,63 +97,6 @@ function bootstrap(env) {
     render: h => h(App),
 		data: {
       eventHub: new Vue()
-    },
-		mounted() {
-      var _self = this;
-			
-      this.$ajax
-        .get("http://10.19.248.200:32661/DACM/caccess/sysdialect", {
-          params: {
-            type: 0
-          }
-        })
-        .then(function(res) {
-          if (res.data.success) {
-            _self.$store.commit("setFilterItmeList", {
-              name: "dataSourceName",
-              data: res.data.data
-            });
-          }
-        })
-        .catch(function(err) {
-          console.log(err);
-        });
-      this.$ajax
-        .get("./getAccessDataSource")
-        .then(function(res) {
-          var list = [];
-          for (var value of res.data.staticDatas.SJLY) {
-            list.push({
-              id: value.static_CODE,
-              name: value.static_NAME
-            });
-          }
-          _self.$store.commit("setFilterItmeList", {
-            name: "network",
-            data: list
-          });
-        })
-        .catch(function(err) {
-          console.log(err);
-        });
-      this.$ajax
-        .get("./getExchangePlatform")
-        .then(function(res) {
-          var list = [];
-          for (var value of res.data.staticDatas.SSJZ) {
-            list.push({
-              id: value.static_CODE,
-              name: value.static_NAME
-            });
-          }
-          _self.$store.commit("setFilterItmeList", {
-            name: "platform",
-            data: list
-          });
-        })
-        .catch(function(err) {
-          console.log(err);
-        });
     }
   });
   vm.$keycloak.onAuthSuccess = () => {

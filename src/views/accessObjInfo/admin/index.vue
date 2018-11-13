@@ -7,10 +7,10 @@
 						<a href="javascript:void(0)" v-on:click="importData"><i class="enc-icon-daochu"></i></a>
 					</el-tooltip>
 					<el-tooltip class="item" effect="light" content="导出" placement="top">
-						<a href="javascript:void(0)" v-on:click="exportData" title="导出"><i class="enc-icon-daoru"></i></a>
+						<a href="javascript:void(0)" v-on:click="exportData"><i class="enc-icon-daoru"></i></a>
 					</el-tooltip>
 					<el-tooltip class="item" effect="light" content="刷新" placement="top">
-						<a href="javascript:void(0)" v-on:click="refresh" title="刷新"><i class="enc-icon-shuaxin"></i></a>
+						<a href="javascript:void(0)" v-on:click="refresh"><i class="enc-icon-shuaxin"></i></a>
 					</el-tooltip>
         </div>
 				<input type="file" id="file" name="inputFile" ref="inputer" v-on:change="importAjax" style="display:none" />
@@ -174,7 +174,8 @@ export default {
 				objInfoId:'',
 				accessSysDialectId:'',
 				filePath:''
-			}
+			},
+			flagInterval:null
     }
   },
   computed:{
@@ -207,8 +208,14 @@ export default {
   },
   mounted(){
     var tableParams = this.$store.state.queryParams.accessObjInfo;
-    this.loadTable(true);
 		this.$root.eventHub.$emit('setActiveNav',1);
+		var _self = this;
+		this.flagInterval = setInterval(function(){
+			if(_self.$store.state.pageReady){
+				_self.loadTable(true);
+				clearInterval(_self.flagInterval);
+			}
+		},200);
   },
   created(){
     this.$root.eventHub.$on('search', (keyword)=>{
@@ -224,8 +231,9 @@ export default {
 					id:this.$route.params.objId
 				}
 			}).then(function(res){
+				console.log(res.data.success);
 				if(res.data.success){
-					_seft.loadtable();
+					_self.loadTable();
 				}else{
 					console.log(res.data.code);
 					_self.$alert('刷新失败','提示', {
@@ -309,71 +317,77 @@ export default {
     loadTable:function(flag){
       var _self = this;
 			this.loading = true;
-      if(this.tabPosition == 'metadataManage' || flag){
-				var paramsObj = {
-					pagNum:this.tableParams.pageNum1,
-					count:this.$store.state.pageSize,
-					objectInfoId:this.$route.params.objId,
-					ACCESS_SYS_DIALECT_ID:this.tableParams.ACCESS_SYS_DIALECT_ID,
-					accessSysId:this.tableParams.accessSysId
-				}
-        this.$ajax.post('http://10.19.248.200:32661/DACM/objDetail/dataList',paramsObj).then(function(res){
-          console.log('tableLoaded:metadataManage');
-					if(res.data.success){
-						var data = res.data.data.list;
-						for(var value of data){
-							value.showEdit = false;
-						}
-						_self.mainTableData1 = data;
-						_self.mainTableDataTotal1 = res.data.data.total;
-						//这里是异步的，存在延迟，所以没问题,如果是同步的话可能存在问题
-						_self.currentPage1 = _self.tableParams.pageNum1;
-					}else{
-						console.log(res.data.code);
-						_self.$alert('获取表信息失败','提示', {
-							confirmButtonText: '确定'
-						});
+			var paramsObj = {
+				pagNum:this.tableParams.pageNum1,
+				count:this.$store.state.pageSize,
+				objectInfoId:this.$route.params.objId,
+				ACCESS_SYS_DIALECT_ID:this.tableParams.ACCESS_SYS_DIALECT_ID,
+				accessSysId:this.tableParams.accessSysId
+			}
+			this.$ajax.post('http://10.19.248.200:32661/DACM/objDetail/dataList',paramsObj).then(function(res){
+				console.log('tableLoaded:metadataManage');
+				if(res.data.success){
+					var data = res.data.data.list;
+					for(var value of data){
+						value.showEdit = false;
 					}
-					_self.loading = false;
-        })
-        .catch(function(err){
-          _self.currentPage1 = _self.tableParams.pageNum1;
-          console.log(err)
-					_self.loading = false;
+					_self.mainTableData1 = data;
+					_self.mainTableDataTotal1 = res.data.data.total;
+					//这里是异步的，存在延迟，所以没问题,如果是同步的话可能存在问题
+					_self.currentPage1 = _self.tableParams.pageNum1;
+				}else{
+					console.log(res.data.code);
 					_self.$alert('获取表信息失败','提示', {
 						confirmButtonText: '确定'
 					});
-        });
-      }
-      if(flag){
-				var paramsObj = {
-					count:this.$store.state.pageSize,
-					objInfoId:this.$route.params.objId,
-					ACCESS_SYS_DIALECT_ID:this.tableParams.ACCESS_SYS_DIALECT_ID,
-					accessSysId:this.tableParams.accessSysId,
-					filter:null
 				}
-        this.$ajax.post('http://10.19.248.200:32661/DACM/objDetail/previewData',paramsObj).then(function(res){
-          console.log('tableLoaded:dataPreview');
-					if(res.data.success){
-						if(res.data.datas.length>0){
-							_self.data2Columns = res.data.datas[0];
-						}
-						_self.mainTableData2 = res.data.datas;
-					}else{
-						console.log(res.data.code);
-						_self.$alert('获取预览信息失败','提示', {
-							confirmButtonText: '确定'
-						});
+				if(_self.tabPosition == 'metadataManage'){
+					_self.loading = false;
+				}
+			})
+			.catch(function(err){
+				_self.currentPage1 = _self.tableParams.pageNum1;
+				console.log(err)
+				if(_self.tabPosition == 'metadataManage'){
+					_self.loading = false;
+				}
+				_self.$alert('获取表信息失败','提示', {
+					confirmButtonText: '确定'
+				});
+			});
+			var paramsObj = {
+				count:this.$store.state.pageSize,
+				objInfoId:this.$route.params.objId,
+				ACCESS_SYS_DIALECT_ID:this.tableParams.ACCESS_SYS_DIALECT_ID,
+				accessSysId:this.tableParams.accessSysId,
+				filter:null
+			}
+			this.$ajax.post('http://10.19.248.200:32661/DACM/objDetail/previewData',paramsObj).then(function(res){
+				console.log('tableLoaded:dataPreview');
+				if(res.data.success){
+					if(res.data.datas.length>0){
+						_self.data2Columns = res.data.datas[0];
 					}
-        })
-        .catch(function(err){
-          console.log(err)
+					_self.mainTableData2 = res.data.datas;
+				}else{
+					console.log(res.data.code);
 					_self.$alert('获取预览信息失败','提示', {
 						confirmButtonText: '确定'
 					});
-        });
-      }
+				}
+				if(_self.tabPosition != 'metadataManage'){
+					_self.loading = false;
+				}
+			})
+			.catch(function(err){
+				console.log(err)
+				_self.$alert('获取预览信息失败','提示', {
+					confirmButtonText: '确定'
+				});
+				if(_self.tabPosition != 'metadataManage'){
+					_self.loading = false;
+				}
+			});
     },
     goPage:function(val){
       var obj = {};

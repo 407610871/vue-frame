@@ -33,7 +33,10 @@
               <a href="javascript:void(0)" v-on:click="goAccessObjInfo(scope.row)">{{ scope.row.name }}</a>
             </template>
           </el-table-column>
-          <el-table-column prop="extendParams.objectType" label="接入对象类型">
+          <el-table-column label="接入对象类型">
+						<template slot-scope="scope">
+							{{getObjType(scope.row.extendParams.objectType)}}
+						</template>
           </el-table-column>
           <el-table-column prop="owner" label="持有者">
           </el-table-column>
@@ -179,12 +182,11 @@ export default {
     },
   },
   mounted() {
-    console.log('mounted');
     this.$root.eventHub.$emit('setActiveNav', 1);
     this.storeReady();
+		this.setFliter();
   },
   created() {
-    console.log('created');
     this.$root.eventHub.$on('search', (keyword) => {
       this.search(keyword);
     })
@@ -194,7 +196,6 @@ export default {
       this.collapse = !this.collapse;
     },
     loadTable: function() {
-      debugger;
       var _self = this;
 
       _self.jrtype = this.$store.state.jrtype;
@@ -374,9 +375,18 @@ export default {
       this.setStore(fliterParams);
     },
     storeReady() {
-      var queryParams = this.$store.state.queryParams.accessObjManage;
-      this.loadTable();
-      this.formFilterData = [{
+      // var queryParams = this.$store.state.queryParams.accessObjManage;
+			if(this.$store.state.pageReady){
+				this.loadTable();
+      }else{
+        var _self = this;
+        setTimeout(function(){
+          _self.storeReady();
+        },200);
+      }
+    },
+		setFliter(){
+			this.formFilterData = [{
         name: "接入对象类型：",
         id: 'objectType',
         type: 'checkbox',
@@ -390,7 +400,15 @@ export default {
         seledData: this.tableParams.dataRange
       }];
       this.queryParamReady = true;
-    }
+		},
+		getObjType(id){
+			for(var value of this.formFilterData[0].checkData){
+				if(value.id == id){
+					return value.name
+				}
+			}
+			return '未知类型'
+		}
   }
 }
 
