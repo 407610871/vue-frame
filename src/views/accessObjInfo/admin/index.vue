@@ -197,7 +197,9 @@ export default {
   },
   watch: {
     tableParams(newVal,oldVal){
-			this.loadTable();
+			if(newVal.ACCESS_SYS_DIALECT_ID != oldVal.ACCESS_SYS_DIALECT_ID || newVal.accessSysId != oldVal.accessSysId || newVal.diyComments != oldVal.diyComments || newVal.pageNum1 != oldVal.pageNum1 || newVal.keyword != oldVal.keyword || newVal.timeFlag != oldVal.timeFlag){
+				this.loadTable();
+			}
       this.tabPosition = newVal.tabPosition;
     },
     tabPosition(newVal,oldVal){
