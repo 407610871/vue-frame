@@ -28,8 +28,8 @@ spec:
           value: 352fb505-c5ea-4f0a-9b59-3643f06e144e		  
         resources:
           limits:
+            cpu: 300m
+            memory: 800Mi
+          requests:
             cpu: 200m
             memory: 500Mi
-          requests:
-            cpu: 100m
-            memory: 200Mi
