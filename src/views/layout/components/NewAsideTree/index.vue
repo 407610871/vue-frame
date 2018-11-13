@@ -284,9 +284,6 @@
 
 <style rel="stylesheet/scss" lang="scss">
   .tree-tools{
-    position: fixed;
-    top:66px;
-    left:0;
     width:210px;
     height:40px;
     line-height:40px;
@@ -306,7 +303,6 @@
   }
   #NewAisdeTree{
 		.treeContainer{
-			margin-top:40px;
 			overflow:auto;
 		}
 		.el-tree{
