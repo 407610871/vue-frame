@@ -104,7 +104,7 @@ export default {
 			console.log(storageId);
 			this.$ajax.get('http://10.19.248.200:32661/DACM/caccesssysRelationWorkInfo/operate',{
 				params:{
-					nodeId:145,
+					nodeId:2,
 					storageId:storageId
 				}
 			}).then(function(res){
