@@ -231,8 +231,9 @@ export default {
 					id:this.$route.params.objId
 				}
 			}).then(function(res){
+				console.log(res.data.success);
 				if(res.data.success){
-					_seft.loadtable();
+					_self.loadTable();
 				}else{
 					console.log(res.data.code);
 					_self.$alert('刷新失败','提示', {
