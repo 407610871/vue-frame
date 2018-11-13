@@ -144,7 +144,7 @@
           <div class="daiInfo-box clearfix">
             <el-form-item label="接入源类型:" prop="syskind">
               <el-radio-group v-model="ruleForm.syskind">
-                <el-radio v-for="item in syskindList" :label="item.id" :key="item.id">{{item.name}}</el-radio>
+                <el-radio v-for="(item,index) in syskindList" :label="item.id" :key="item.id" v-if="index<5||accdiaFlag">{{item.name}}</el-radio>
                 <!--  <el-radio label="mysql"></el-radio>
                <el-radio label="oracle"></el-radio>
                <el-radio label="activemq"></el-radio>
@@ -156,6 +156,7 @@
                <el-radio label="本地文件"></el-radio>
                <el-radio label="其他"></el-radio> -->
               </el-radio-group>
+              <span class="curspan" @click="more(accdiaFlag)">{{accdiaName}}</span>
             </el-form-item>
             <el-col :span="18">
               <el-col :span="10">
@@ -282,7 +283,7 @@
             <el-form-item>
               <el-col :span="24">
                 <el-button type="primary" size="small" @click="submitForm('ruleForm')">保存</el-button>
-                <el-button @click="closeForm()" size="small">关闭</el-button>
+                <el-button @click="closeDialog()" size="small">关闭</el-button>
               </el-col>
             </el-form-item>
           </div>
@@ -327,6 +328,8 @@ export default {
       fileList: [], //上传的文件列表
       tableMsg: [],
       deptData: [],
+      accdiaName:'更多',
+      accdiaFlag:false,
       deIndex: 0,
       loading: false,
       ruleForm: {
@@ -424,6 +427,8 @@ export default {
     closeDialog() {
       this.dialogVisible = false;
       this.$refs['ruleForm'].resetFields();
+      this.accdiaFlag = false;
+      this.accdiaName = '更多';
     },
     //实现树的单选
     handleClick(data, checked, node) {
@@ -482,6 +487,16 @@ export default {
         this.syskindList = res.data;
         this.ruleForm.syskind = res.data[0].id;
       })
+    },
+    more(flag){
+     if(flag){
+       this.accdiaFlag = false;
+       this.accdiaName = '更多';
+     }
+     else{
+      this.accdiaFlag = true;
+      this.accdiaName = '收起';
+     }
     },
     //对接部门
     _getDJBM() {
