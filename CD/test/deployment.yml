@@ -25,7 +25,7 @@ spec:
         - name: VUE_APP_RESOURCE
           value: DACM
         - name: VUE_APP_CREDENTIALS_SECRET
-          value: 352fb505-c5ea-4f0a-9b59-3643f06e144e		  
+          value: 352fb505-c5ea-4f0a-9b59-3643f06e144e
         resources:
           limits:
             cpu: 300m
