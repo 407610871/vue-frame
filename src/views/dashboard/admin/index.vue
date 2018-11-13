@@ -288,7 +288,8 @@ export default {
 					}
 				}).then(function(res) {
 					_self.setStore({
-						pageNum:1
+						pageNum:1,
+						timeFlag:new Date().getTime()
 					});
 				})
 				.catch(function(err) {
