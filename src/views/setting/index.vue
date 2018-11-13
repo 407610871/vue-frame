@@ -123,8 +123,8 @@ export default {
 		
 			this.$ajax.get('http://10.19.248.200:32661/DACM/caccesssysRelationWorkInfo/getStorages',{
 				params:{
-					nodeId:145,
-					pid:2
+					nodeId:2,
+					pid:1
 				}
 			}).then(function(res){
 				if(res.data.result == 'succeed'){
