@@ -48,10 +48,10 @@
        </div>
 
        <!-- 表格数据 -->
-<div class="mainTable tableWhite">
+<div class="mainTable">
 <el-table ref="multipleTable" :data="tableData" tooltip-effect="light"  :height="tableHeight" style="width: 100%"   @select-all="selectAll"  @select="select"  @selection-change="handleSelectionChange" >
-            <el-table-column type="selection"   fixed width="55"></el-table-column>
-             <el-table-column label="接入指示"  fixed width="100"> 
+            <el-table-column type="selection" width="55"></el-table-column>
+             <el-table-column label="接入指示" width="100"> 
                 <template slot-scope="scope">
                   <i v-if="scope.row.networkStatus==0" class="indicate" style="backgroundColor:green" title="数据源连接正常"></i>
                    <i v-else-if="scope.row.networkStatus==1" class="indicate" style="backgroundColor:yellow" title="数据源链接不稳定"></i>
@@ -60,9 +60,9 @@
                 </template>
 
              </el-table-column>
-                         <el-table-column prop="taskInfoId" label="ID"  width="100"  fixed :show-overflow-tooltip='true'></el-table-column>
+                         <el-table-column prop="taskInfoId" label="ID"  width="100" :show-overflow-tooltip='true'></el-table-column>
 
-            <el-table-column   fixed label="任务名称" width="200" :show-overflow-tooltip='true' @click="showTaskDetail=true">
+            <el-table-column  label="任务名称" width="200" :show-overflow-tooltip='true' @click="showTaskDetail=true">
 <template slot-scope="scope">
                  <el-button @click="doDetail(scope.$index, scope.row)">{{scope.row.taskName}}</el-button>
                 </template>
@@ -192,9 +192,7 @@ export default {
   },
   created() {
     this.init(" ");
-    this.$root.eventHub.$on("search", keyword => {
-      this.init(keyword);
-    });
+   
   },
 
   components: {
@@ -724,15 +722,6 @@ export default {
 <style>
 .el-picker-panel__icon-btn {
   color: #303133 !important;
-}
-.tableWhite .el-table__fixed{
-background-color: #fff;
-
-}
-.tableWhite .el-table__body-wrapper{
-background-color: #fff;
-
-
 }
 </style>
 

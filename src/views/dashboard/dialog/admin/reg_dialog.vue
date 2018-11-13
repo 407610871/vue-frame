@@ -292,6 +292,7 @@
   </div>
 </template>
 <script>
+import {validateEmail} from '@/utils/validate.js'
 export default {
   name: "taskMDialog",
   data: function() {
@@ -313,7 +314,7 @@ export default {
         callback()
       }
     }
-
+    //校验email
     return {
       i: 0, //树节点只允许单选
       dialogVisible: false,
@@ -393,6 +394,18 @@ export default {
         ],
         dockdata: [
           { required: true, validator: validateNull, trigger: "blur" }
+        ],
+        proemail:[
+         {validator:this.GLOBAL.validateEmail,trigger:'blur'}
+        ],
+        proqq:[
+         {validator:this.GLOBAL.validateNumber,trigger:'blur'}
+        ],
+        prophone:[
+         {validator:this.GLOBAL.validatePhone,trigger:'blur'}
+        ],
+        dockphone:[
+         {validator:this.GLOBAL.validatePhone,trigger:'blur'}
         ]
       },
       treedata: [],

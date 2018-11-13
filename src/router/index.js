@@ -10,7 +10,7 @@ export const constantRouterMap = [
   {
     path: "",
     component: Layout,
-    redirect: "task",
+    redirect: "dashboard",
     children: [
       {
         path: "dashboard",
@@ -95,8 +95,18 @@ export const constantRouterMap = [
         component: () => import("@/views/task/Task"),
         name: "task",
         meta: {
-          title: "任务中心",
+          title: "汇聚任务",
           icon: "task",
+          noCache: true
+        }
+      },
+      {
+        path: "kettleTask",
+        component: () => import("@/views/kettleTask/kettleTask"),
+        name: "task",
+        meta: {
+          title: "kettle任务",
+          icon: "kettleTask",
           noCache: true
         }
       }
