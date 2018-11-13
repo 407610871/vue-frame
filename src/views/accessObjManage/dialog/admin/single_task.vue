@@ -1,7 +1,9 @@
 <template>
   <div class="taskMDialog userSurveyDialog setTaskDia diaicon">
-   <!--  <el-button size="mini" class="diabtn incbtn" type="danger" @click="dialogVisible = true">设置通配符</el-button> -->
-   <i title="单表采集" class="enc-icon-danbiaocaiji" @click="dialogVisible = true"></i>
+    <!--  <el-button size="mini" class="diabtn incbtn" type="danger" @click="dialogVisible = true">设置通配符</el-button> -->
+		<el-tooltip class="item" effect="light" content="单表采集" placement="top">
+			<i class="enc-icon-danbiaocaiji" @click="dialogVisible = true"></i>
+		</el-tooltip>
     <el-dialog title="单表采集任务向导" :visible.sync="dialogVisible" width="60%" :before-close="closeDialog">
       <div class="title-gra plr30">
         <span class="grab gra-l"></span>

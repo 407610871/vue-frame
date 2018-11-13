@@ -49,8 +49,12 @@
           <el-table-column label="操作">
             <template slot-scope="scope">
 							<div>
-								<i @click="recordRecover(scope.$index, scope.row)" class="el-icon-back table-action-btn" title="恢复"></i>
-								<i @click="recordDelete(scope.$index, scope.row)" class="el-icon-close table-action-btn" title="删除"></i>
+								<el-tooltip class="item" effect="light" content="恢复" placement="top">
+									<i @click="recordRecover(scope.$index, scope.row)" class="el-icon-back table-action-btn"></i>
+								</el-tooltip>
+								<el-tooltip class="item" effect="light" content="删除" placement="top">
+									<i @click="recordDelete(scope.$index, scope.row)" class="el-icon-close table-action-btn"></i>
+								</el-tooltip>
 							</div>
             </template>
           </el-table-column>
@@ -357,5 +361,8 @@ export default {
   .enc-pagination {
     float: right;
   }
+	.cell i{
+		cursor:pointer;
+	}
 }
 </style>

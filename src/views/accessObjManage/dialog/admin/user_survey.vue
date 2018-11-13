@@ -1,7 +1,9 @@
 <template>
   <div class="taskMDialog userSurveyDialog diaicon">
    <!--  <el-button size="mini" class="diabtn incbtn" type="danger" @click="dialogVisible = true">用户调研</el-button> -->
-    <i class="enc-icon-yonghutiaoyan" @click="dialogVisible = true" title="用户调研"></i>
+		<el-tooltip class="item" effect="light" content="用户调研" placement="top">
+			<i class="enc-icon-yonghutiaoyan" @click="dialogVisible = true"></i>
+		</el-tooltip>
     <el-dialog title="用户调研" :visible.sync="dialogVisible" width="60%" :before-close="closeDialog">
       <div class="title-gra">
         <span class="grab gra-l"></span>

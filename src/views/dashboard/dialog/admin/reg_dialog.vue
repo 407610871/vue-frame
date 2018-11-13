@@ -1,7 +1,9 @@
 <template>
   <div class="taskMDialog icon-dai">
     <!-- <el-button @click="dialogVisible = true" class="add-btn">注册</el-button> -->
-     <i title="注册" @click="dialogVisible = true" class="enc-icon-zhuce table-action-btn" style="margin-right:15px; font-size:30px;"></i>
+		<el-tooltip class="item" effect="light" content="注册" placement="top">
+			<i @click="dialogVisible = true" class="enc-icon-zhuce table-action-btn" style="margin-right:15px; font-size:30px;"></i>
+		</el-tooltip>
     <el-dialog title="接入数据源" :visible.sync="dialogVisible" width="60%" :before-close="closeDialog">
       <div class="title-gra">
         <span class="grab gra-l"></span>

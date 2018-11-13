@@ -8,7 +8,7 @@
       <el-main class="main-container icon-dai">
         <div class="table-tools">
           <!-- <i title="数据更新" class="enc-icon-shujugengxin"  v-on:click="updataSource"><i> -->
-        <el-button v-on:click="updataSource" class="right-btn" style="margin-left:10px;" title="接入源更新">接入源更新</el-button>
+					<el-button v-on:click="updataSource" class="right-btn" style="margin-left:10px;">接入源更新</el-button>
           <table-inver v-show="jrtype=='mysql'|| jrtype=='oracle'|| jrtype=='postgresql' || jrtype=='sqlserver'" class="right-btn" :pdata="tablePa"></table-inver>
           <path-ftp class="right-btn" @refresh="loadTable" v-if="jrtype=='ftp'"></path-ftp>
           <set-task class="right-btn" :rowList="rowList" :jrtype="jrtype"></set-task>
@@ -19,9 +19,11 @@
           <el-table-column label="资源名称" width="180" show-overflow-tooltip>
 						<template slot-scope="scope">
 								<div>
-									<a v-show="!scope.row.showEdit" href="javascript:void(0)">{{ scope.row.diyComments }}</a>
+									<el-tooltip class="item" effect="light" content="修改" placement="top">
+										<i @click="editingRow.index = scope.$index; editingRow.diyComments = scope.row.diyComments;scope.row.showEdit = !scope.row.showEdit" class="el-icon-edit-outline table-action-btn" v-show="!scope.row.showEdit" />
+									</el-tooltip>
+									<span v-show="!scope.row.showEdit">{{ scope.row.diyComments }}</span>
 									<input type="text" v-model="editingRow.diyComments" v-show="scope.row.showEdit" @blur="changeName(scope.$index, scope.row)" />
-									<i @click="editingRow.index = scope.$index; editingRow.diyComments = scope.row.diyComments;scope.row.showEdit = !scope.row.showEdit" class="el-icon-edit-outline table-action-btn" v-show="!scope.row.showEdit" />
 								</div>
 							</template>
 						</el-table-column>
@@ -50,7 +52,9 @@
           <el-table-column label="操作">
             <template slot-scope="scope">
               <!-- <el-button size="mini" v-on:click="updataSourceSingle(scope.$index, scope.row)" title="数据量更新">数据量更新</el-button> -->
-             <i class="enc-icon-shujugengxin" v-on:click="updataSourceSingle(scope.$index, scope.row)" title="数据量更新"></i>
+							<el-tooltip class="item" effect="light" content="数据量更新" placement="top">
+								<i class="enc-icon-shujugengxin" v-on:click="updataSourceSingle(scope.$index, scope.row)" title="数据量更新"></i>
+							</el-tooltip>
               <div class="survey">
                 <singleTask v-if="jrtype=='mysql'|| jrtype=='oracle'|| jrtype=='postgresql' || jrtype=='sqlserver'" :pdata="scope.row" @fre="loadTable()"></singleTask>
               </div>
@@ -442,5 +446,8 @@ export default {
 }
 .survey i{
   font-size:20px;
+}
+.cell i{
+	cursor:pointer;
 }
 </style>

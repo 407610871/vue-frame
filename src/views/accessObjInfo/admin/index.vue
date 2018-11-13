@@ -3,9 +3,15 @@
     <el-container style="height:100%;" class="dashboard-container" v-loading="loading">
       <el-header class="filter-container" height="86px">
         <div class="right-tools" v-if="tabPosition == 'metadataManage'">
-          <a href="javascript:void(0)" v-on:click="importData" title="导入"><i class="enc-icon-daochu"></i></a>
-          <a href="javascript:void(0)" v-on:click="exportData" title="导出"><i class="enc-icon-daoru"></i></a>
-          <a href="javascript:void(0)" v-on:click="refresh" title="刷新"><i class="enc-icon-shuaxin"></i></a>
+					<el-tooltip class="item" effect="light" content="导入" placement="top">
+						<a href="javascript:void(0)" v-on:click="importData"><i class="enc-icon-daochu"></i></a>
+					</el-tooltip>
+					<el-tooltip class="item" effect="light" content="导出" placement="top">
+						<a href="javascript:void(0)" v-on:click="exportData" title="导出"><i class="enc-icon-daoru"></i></a>
+					</el-tooltip>
+					<el-tooltip class="item" effect="light" content="刷新" placement="top">
+						<a href="javascript:void(0)" v-on:click="refresh" title="刷新"><i class="enc-icon-shuaxin"></i></a>
+					</el-tooltip>
         </div>
 				<input type="file" id="file" name="inputFile" ref="inputer" v-on:change="importAjax" style="display:none" />
         <el-radio-group v-model="tabPosition" style="margin-bottom: 30px;">
@@ -29,9 +35,11 @@
                 width="180" show-overflow-tooltip>
                 <template slot-scope="scope">
 									<div>
-										<a v-show="!scope.row.showEdit" href="javascript:void(0)">{{ scope.row.diyComments }}</a>
+										<el-tooltip class="item" effect="light" content="修改" placement="top">
+											<i @click="editingRow.index = scope.$index; editingRow.diyComments = scope.row.diyComments;scope.row.showEdit = !scope.row.showEdit" class="el-icon-edit-outline table-action-btn" v-show="!scope.row.showEdit" />
+										</el-tooltip>
+										<span v-show="!scope.row.showEdit">{{ scope.row.diyComments }}</span>
 										<input type="text" v-model="editingRow.diyComments" v-show="scope.row.showEdit" @blur="changeName(scope.$index, scope.row)" />
-										<i @click="editingRow.index = scope.$index; editingRow.diyComments = scope.row.diyComments;scope.row.showEdit = !scope.row.showEdit" class="el-icon-edit-outline table-action-btn" v-show="!scope.row.showEdit" />
 									</div>
                 </template>
               </el-table-column>
@@ -457,5 +465,8 @@ export default {
   .enc-pagination {
     float: right;
   }
+	.cell i{
+		cursor:pointer;
+	}
 }
 </style>
