@@ -1,9 +1,9 @@
 <template>
   <div class="taskMDialog">
     <!-- <el-button class="diabtn incbtn" size="mini" @click="dialogVisible = true">编辑</el-button> -->
-		<el-tooltip class="item" effect="light" content="编辑" placement="top">
-			<i @click="dialogVisible = true" class="enc-icon-bianji table-action-btn"></i>
-		</el-tooltip>
+    <el-tooltip class="item" effect="light" content="编辑" placement="top">
+      <i @click="dialogVisible = true" class="enc-icon-bianji table-action-btn"></i>
+    </el-tooltip>
     <el-dialog title="接入数据源" :visible.sync="dialogVisible" width="60%" :before-close="closeDialog">
       <div class="title-gra">
         <span class="grab gra-l"></span>
@@ -385,6 +385,18 @@ export default {
         ],
         dockdata: [
           { required: true, validator: validateNull, trigger: "blur" }
+        ],
+        proemail: [
+          { validator: this.GLOBAL.validateEmail, trigger: 'blur' }
+        ],
+        proqq: [
+          { validator: this.GLOBAL.validateNumber, trigger: 'blur' }
+        ],
+        prophone: [
+          { validator: this.GLOBAL.validatePhone, trigger: 'blur' }
+        ],
+        dockphone: [
+          { validator: this.GLOBAL.validatePhone, trigger: 'blur' }
         ]
       },
       treedata: [],
@@ -435,7 +447,7 @@ export default {
       let _self = this;
       _self.$ajax({
         methods: "get",
-        url: this.GLOBAL.api +'commonInter/getDictDataCategory',
+        url: this.GLOBAL.api + 'commonInter/getDictDataCategory',
         params: {
 
         }
@@ -454,7 +466,7 @@ export default {
     _getAccessDialect() {
       this.$ajax({
         methods: "get",
-        url: this.GLOBAL.api +'commonInter/sysdialect',
+        url: this.GLOBAL.api + 'commonInter/sysdialect',
         params: {
           type: '2'
         }
@@ -468,7 +480,7 @@ export default {
     _getDJBM() {
       this.$ajax({
         methods: "get",
-        url: this.GLOBAL.api +'commonInter/sysDepartment',
+        url: this.GLOBAL.api + 'commonInter/sysDepartment',
         params: {
 
         }
@@ -482,7 +494,7 @@ export default {
     _getDJPT() {
       this.$ajax({
         methods: "get",
-        url: this.GLOBAL.api +'commonInter/getListStaticData.do',
+        url: this.GLOBAL.api + 'commonInter/getListStaticData.do',
         params: {
           dictCode: 'ButtPlatForm'
         }
@@ -502,7 +514,7 @@ export default {
         })*/
       this.$ajax({
         method: "post",
-        url: this.GLOBAL.api +'deptInfo/getDeptInfo',
+        url: this.GLOBAL.api + 'deptInfo/getDeptInfo',
       }).then(res => {
         console.log(res);
         this.treedata = res.data.datas;
@@ -648,7 +660,7 @@ export default {
             console.log(typeof(save));
             this.$ajax({
               method: "get",
-              url: this.GLOBAL.api +'register/dataSourceCheck',
+              url: this.GLOBAL.api + 'register/dataSourceCheck',
               // headers:{
               //   'Content-Type':'application/json;charset=utf-8',
               // },
@@ -672,7 +684,7 @@ export default {
                   this.loading = true;
                   this.$ajax({
                     method: "POST",
-                    url: this.GLOBAL.api +'update/dataSourceUpdate',
+                    url: this.GLOBAL.api + 'update/dataSourceUpdate',
                     // headers:{
                     //   'Content-Type':'application/json;charset=utf-8',
                     // },
@@ -706,8 +718,8 @@ export default {
                 this.loading = true;
                 this.$ajax({
                   method: "POST",
-                  url: this.GLOBAL.api +'update/dataSourceUpdate',
-               /*  url:'http://10.19.160.211:8080/DACM/update/dataSourceUpdate',*/
+                  url: this.GLOBAL.api + 'update/dataSourceUpdate',
+                  /*  url:'http://10.19.160.211:8080/DACM/update/dataSourceUpdate',*/
                   // headers:{
                   //   'Content-Type':'application/json;charset=utf-8',
                   // },
@@ -764,7 +776,7 @@ export default {
           }
           this.$ajax({
             method: "POST",
-            url: this.GLOBAL.api +'register/dataSourceConnect',
+            url: this.GLOBAL.api + 'register/dataSourceConnect',
             // headers:{
             //   'Content-Type':'application/json;charset=utf-8',
             // },
@@ -794,7 +806,7 @@ export default {
       this.loading = true;
       this.$ajax({
         method: "get",
-        url: this.GLOBAL.api +'update/dataSourceSelect',
+        url: this.GLOBAL.api + 'update/dataSourceSelect',
         /*url:'http://10.19.160.211:8080/DACM/update/dataSourceSelect',*/
         params: {
           id: this.appId
@@ -963,7 +975,9 @@ export default {
 .el-dialog .otherInfo .fileItem .el-form-item__label {
   width: 235px !important;
 }
-i{
+
+i {
   cursor: pointer;
 }
+
 </style>
