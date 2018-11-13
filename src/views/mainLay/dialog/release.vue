@@ -1,6 +1,8 @@
 <template>
   <div class="taskMDialog release">
-    <el-button @click="dialogVisible = true" class="document" icon="enc-icon-documents"></el-button>
+		<el-tooltip class="item" effect="light" content="版本信息" placement="bottom">
+			<el-button @click="dialogVisible = true" class="document" icon="enc-icon-documents"></el-button>
+		</el-tooltip>
     <el-dialog :title="versionDes + '  '+ versionDate" :visible.sync="dialogVisible" width="60%" :before-close="closeDialog">
       <div class="title-gra">
         <span class="grab gra-l"></span>

@@ -17,8 +17,10 @@
             <el-button slot="reference" class="user" type="primary" icon="enc-icon-user"></el-button>
         </el-popover>
        <!--  <el-button class="document" type="primary" icon="enc-icon-documents"></el-button> -->
-        <el-button class="setting" type="primary" icon="enc-icon-setting" v-on:click="goRoute('setting')"></el-button>
- <release></release>
+				<el-tooltip class="item" effect="light" content="系统设置" placement="bottom">
+					<el-button class="setting" type="primary" icon="enc-icon-setting" v-on:click="goRoute('setting')"></el-button>
+				</el-tooltip>
+				<release></release>
 
       </div>
     </el-header>
@@ -67,6 +69,83 @@ export default {
   computed: {
 
   },
+	mounted(){
+		console.log('layout')
+		var _self = this;
+		
+		this.$ajax
+			.get("http://10.19.248.200:32442/DACM/caccesssysRelationWorkInfo/getSystemSet.do")
+			.then(function(res) {
+				if (res.data.result == 'success') {
+					var configs = JSON.parse(res.data.message);
+					for(var value of configs){
+						if(value.key.trim() == '每页展示条数'){
+							_self.$store.commit("setPageSize",parseInt(value.name));
+							break;
+						}
+					}
+				}
+				_self.$store.commit("setPageReady");
+			})
+			.catch(function(err) {
+				console.log(err);
+				_self.$store.commit("setPageReady");
+			});
+			
+		this.$ajax
+			.get("http://10.19.248.200:32661/DACM/caccess/sysdialect", {
+				params: {
+					type: 0
+				}
+			})
+			.then(function(res) {
+				if (res.data.success) {
+					_self.$store.commit("setFilterItmeList", {
+						name: "dataSourceName",
+						data: res.data.data
+					});
+				}
+			})
+			.catch(function(err) {
+				console.log(err);
+			});
+		this.$ajax
+			.get("./getAccessDataSource")
+			.then(function(res) {
+				var list = [];
+				for (var value of res.data.staticDatas.SJLY) {
+					list.push({
+						id: value.static_CODE,
+						name: value.static_NAME
+					});
+				}
+				_self.$store.commit("setFilterItmeList", {
+					name: "network",
+					data: list
+				});
+			})
+			.catch(function(err) {
+				console.log(err);
+			});
+		this.$ajax
+			.get("./getExchangePlatform")
+			.then(function(res) {
+				var list = [];
+				for (var value of res.data.staticDatas.SSJZ) {
+					list.push({
+						id: value.static_CODE,
+						name: value.static_NAME
+					});
+				}
+				_self.$store.commit("setFilterItmeList", {
+					name: "platform",
+					data: list
+				});
+			})
+			.catch(function(err) {
+				console.log(err);
+			});
+	},
   created(){
     if (sessionStorage.getItem("store")) {
       this.$store.replaceState(Object.assign({}, this.$store.state,JSON.parse(sessionStorage.getItem("store"))))
@@ -127,10 +206,10 @@ export default {
         if(this.$route.params.sourceId && this.$route.params.sourceName){
           this.breadcrumb.push({
             name:'accessObjManage',
-            breadcrumbName:this.$route.params.sourceName,
+            breadcrumbName:decodeURI(this.$route.params.sourceName),
             params:{
               sourceId:this.$route.params.sourceId,
-              sourceName:this.$route.params.sourceName
+              sourceName:decodeURI(this.$route.params.sourceName)
             },
             query:this.$store.state.queryParams['accessObjManage']
           });
@@ -138,12 +217,12 @@ export default {
         if(this.$route.params.objId && this.$route.params.objName){
           this.breadcrumb.push({
             name:'accessObjInfo',
-            breadcrumbName:this.$route.params.objName,
+            breadcrumbName:decodeURI(this.$route.params.objName),
             params:{
               sourceId:this.$route.params.sourceId,
-              sourceName:this.$route.params.sourceName,
+              sourceName:decodeURI(this.$route.params.sourceName),
               objId:this.$route.params.objId,
-              objName:this.$route.params.objName
+              objName:decodeURI(this.$route.params.objName)
             }
           });
         }

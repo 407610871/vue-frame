@@ -2,7 +2,23 @@
     <div v-loading="loading">
       <!-- 搜索栏 -->
        <div class="count-container"  >
-        <el-form ref="form"  label-width="80px" class="formGroup">
+
+
+      <!-- 查询按钮 -->
+      <div class="searchDiv">
+        <div class="dataSearch">
+           <i class="el-icon-search"></i>
+            <input type="text" v-model="keyword" placeholder="请输入任务名称" />
+          </div>
+          <span  @click="doMoreSearch" >高级搜索 <i :class="!moreSearch?'el-icon-caret-bottom':'el-icon-caret-top'"></i>  </span>
+                <el-button type="primary" class="doCearch" @click="search">查询</el-button> 
+
+      </div>
+         
+
+
+
+        <el-form ref="form"  label-width="110px" class="formGroup" v-if="moreSearch">
           <el-form-item label="任务类型:" >
               <el-checkbox-group v-model="taskPeriodType">
                   <el-checkbox label="0"   name="taskPeriodType">实时任务</el-checkbox>
@@ -20,21 +36,20 @@
                   <el-checkbox label="4" name="status">完成</el-checkbox>
                </el-checkbox-group>
              </el-form-item>
-          </el-form>
-          <div class="timeSearch">
-            <span class="el-form-item__label">任务时间:</span>
+        
+          <el-form-item label="任务开始时间:">  
                 <el-date-picker
                   v-model="time"
                    :picker-options="pickerOptions"
                   type="datetimerange"
-                  start-placeholder="创建时间"
+                  start-placeholder="开始时间"
                   end-placeholder="结束时间"
-                  value-format="yyyy-MM-dd hh:mm:ss"
+                  value-format="yyyy-MM-dd HH:MM:ss"
                   :default-time="['12:00:00']">
                </el-date-picker>
-          </div>
-  
          
+   </el-form-item>
+           </el-form>
          
        
       </div>
@@ -133,7 +148,7 @@
 import DialogIsCheck from "./DialogIsCheck";
 import DialogTaskDetail from "./DialogTaskDetail";
 //盐城环境地址
-const httpUrl="http://10.19.248.200:32662/DOMN/";
+const httpUrl = "http://10.19.248.200:32662/DOMN/";
 //本地调试地址
 // const httpUrl="http://10.19.160.67:8081/DOMN/";
 // export const httpUrl="http://10.19.160.67:8081/DOMN/";
@@ -151,9 +166,9 @@ export default {
       pageSize: 10,
       showTaskDetail: false,
       showTaskCheck: false,
-
+      moreSearch:false,
       allSecectData: {},
-
+      keyword: "",
       isDeleted: 0,
       tableData: [],
       selectionChangeData: [],
@@ -182,17 +197,18 @@ export default {
   },
   computed: {
     departmentId: function() {
-      return this.$store.state.deptId.length ==0?  [1]:this.$store.state.deptId;
+      return this.$store.state.deptId.length == 0
+        ? [1]
+        : this.$store.state.deptId;
 
       // return 1;
     },
     tableHeight: function() {
-      return window.innerHeight - 390;
+      return  !this.moreSearch?   window.innerHeight - 300:window.innerHeight - 436;
     }
   },
   created() {
     this.init(" ");
-   
   },
 
   components: {
@@ -201,6 +217,18 @@ export default {
   },
 
   methods: {
+    //查询按钮
+    search() {
+      let keyword = this.keyword;
+      this.init(keyword);
+    },
+    //高级搜索
+    doMoreSearch(){
+      this.moreSearch=!this.moreSearch;
+      this.taskPeriodType=[];
+      this.status=[];
+
+    },
     //详情
     doDetail(index, row) {
       this.reqObj = row;
@@ -229,10 +257,7 @@ export default {
           _self.loading = true;
 
           this.$ajax
-            .put(
-              httpUrl+"manager/taskOperate/converge/" +
-                row.taskInfoId
-            )
+            .put(httpUrl + "manager/taskOperate/converge/" + row.taskInfoId)
             .then(function(res) {
               console.log(res);
               _self.loading = false;
@@ -253,10 +278,7 @@ export default {
       let _self = this;
       _self.loading = true;
       this.$ajax
-        .put(
-          httpUrl+"manager/taskOperate/delete/" +
-            row.taskInfoId
-        )
+        .put(httpUrl + "manager/taskOperate/delete/" + row.taskInfoId)
         .then(function(res) {
           console.log(res);
           _self.loading = false;
@@ -278,9 +300,7 @@ export default {
       _self.loading = true;
       if (row.status == 0 || row.status == 2 || row.status == 3) {
         //执行运行
-        url =
-          httpUrl+"manager/taskOperate/start/" +
-          row.taskInfoId;
+        url = httpUrl + "manager/taskOperate/start/" + row.taskInfoId;
         this.$ajax
           .put(url)
           .then(function(res) {
@@ -298,9 +318,7 @@ export default {
           });
       } else if (row.status == 1) {
         //执行暂停
-        url =
-          httpUrl+"manager/taskOperate/pause/" +
-          row.taskInfoId;
+        url = httpUrl + "manager/taskOperate/pause/" + row.taskInfoId;
         this.$ajax
           .put(url)
           .then(function(res) {
@@ -322,7 +340,7 @@ export default {
     handleCurrentChange() {
       this.init();
     },
-     //信息提示
+    //信息提示
     doMsg(msg, type) {
       this.$message({
         showClose: true,
@@ -347,7 +365,7 @@ export default {
       };
 
       this.$ajax
-        .get(httpUrl+"manager/task/show/0", {
+        .get(httpUrl + "manager/task/show/0", {
           params: tableParams
         })
         .then(function(res) {
@@ -397,6 +415,12 @@ export default {
       let row = [];
 
       let row1 = Object.keys(this.allSecectData);
+      if (row1.length == 0) {
+        this.$alert("请选择相应的任务！", "提示", {
+          dangerouslyUseHTMLString: true
+        });
+        return;
+      }
       for (let i = 0; i < row1.length; i++) {
         for (let j = 0; j < this.allSecectData[row1[i]].length; j++) {
           row.push(this.allSecectData[row1[i]][j]);
@@ -432,7 +456,7 @@ export default {
               _self.loading = true;
               _self
                 .$ajax({
-                  url: httpUrl+url,
+                  url: httpUrl + url,
                   method: "POST",
                   data: {},
                   params: params
@@ -503,7 +527,7 @@ export default {
           _self.loading = true;
           _self
             .$ajax({
-              url: httpUrl+url,
+              url: httpUrl + url,
               method: "POST",
               data: {},
               params: params
@@ -573,7 +597,7 @@ export default {
           _self.loading = true;
           _self
             .$ajax({
-              url: httpUrl+url,
+              url: httpUrl + url,
               method: "POST",
               data: {},
               params: params
@@ -665,15 +689,11 @@ export default {
     }
   }
 };
-
-
-
-
 </script>
-<style scoped lang="scss">
+<style  rel="stylesheet/scss" lang="scss" scoped>
 .count-container {
   width: 95%;
-  height: 150px;
+  // height: 150px;
   background-color: #fff;
   border-bottom: 1px solid #d9d9d9;
   margin: 0 auto;
@@ -681,14 +701,14 @@ export default {
 }
 
 .formGroup {
-  width: 60%;
-  max-width: 680px;
-  float: left;
+  // width: 60%;
+  // max-width: 680px;
+  // float: left;
 }
 .timeSearch {
-  width: 40%;
+  // width: 40%;
   float: left;
-  margin-top: -5px;
+  // margin-top: -5px;
 }
 .el-checkbox {
   width: 95px;
@@ -717,6 +737,65 @@ export default {
 .mainTable {
   width: 95%;
   margin: 0 auto;
+}
+.dataSearch {
+  display: inline-block;
+  width: 210px;
+  height: 30px;
+  border: 1px solid #c9cdd0;
+  input {
+    margin-left: 5px;
+    width: 180px;
+    background-color: transparent;
+    border: 0 none;
+    outline: 0 none;
+    height: 28px;
+    font-size: 14px;
+  }
+  i{
+    text-indent: 5px;
+  }
+  ::-webkit-input-placeholder {
+    color: #999;
+  } ///* 使用webkit内核的浏览器 */
+  :-moz-placeholder {
+    color: #999;
+  } ///* Firefox版本4-18 */
+  ::-moz-placeholder {
+    color: #999;
+  } ///* Firefox版本19+ */
+  :-ms-input-placeholder {
+    color: #999;
+  } ///* IE浏览器 */
+}
+.searchDiv {
+  margin-left: 10px;
+      margin-bottom: 20px;
+  span {
+    display: inline-block;
+    font-size: 14px;
+    cursor: pointer;
+    width: 100px;
+    height: 30px;
+    border: 1px solid #c9cdd0;
+    border-left: none;
+    line-height: 30px;
+    text-align: center;
+    position: relative;
+    top: 1px;
+  }
+}
+.doCearch{
+  display: inline-block;
+  height: 28px;
+  margin-left: 15px;
+  margin-top: 0;
+   position: relative;
+    top: 2px;
+line-height: 10px;
+}
+.el-form-item {
+    margin-bottom: 10px;
 }
 </style>
 <style>

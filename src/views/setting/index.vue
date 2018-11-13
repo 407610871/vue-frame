@@ -123,8 +123,8 @@ export default {
 		
 			this.$ajax.get('http://10.19.248.200:32661/DACM/caccesssysRelationWorkInfo/getStorages',{
 				params:{
-					nodeId:145,
-					pid:2
+					nodeId:2,
+					pid:1
 				}
 			}).then(function(res){
 				if(res.data.result == 'succeed'){
@@ -195,9 +195,10 @@ export default {
 				})
 			});
 			const promist1 = new Promise((resolve, reject) => {
-				this.$ajax.get('http://10.19.248.200:32661/caccesssysRelationWorkInfo/getSystemSet.do').then((res) => {
+				this.$ajax.get('http://10.19.248.200:32442/DACM/caccesssysRelationWorkInfo/getSystemSet.do').then((res) => {
 					if(res.data.result == 'success'){
 						resolve(res);
+						
 					}else{
 						_self.$alert('获取系统参数失败','提示', {
 							confirmButtonText: '确定'

@@ -295,7 +295,7 @@ export default {
     },
     storeReady:function(){
       var fliterItemList = this.$store.state.fliterItemList
-      if(fliterItemList.network.ready&&fliterItemList.dataSourceName.ready&&fliterItemList.platform.ready){
+      if(fliterItemList.network.ready&&fliterItemList.dataSourceName.ready&&fliterItemList.platform.ready && this.$store.state.pageReady){
         this.setFliter(fliterItemList);
         this.loadTable();
       }else{

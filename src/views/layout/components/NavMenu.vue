@@ -63,12 +63,21 @@ export default {
     .el-menu-item {
       height: $enc-nav-header-height;
       line-height: $enc-nav-header-height;
-      i {
+      i{
         margin-right: 10px;
         font-size: 36px;
         color: #4f4f4f;
       }
     }
+		.el-submenu{
+			.el-submenu__title{
+				i{
+					margin-right: 10px;
+					font-size: 36px;
+					color: #4f4f4f;
+				}
+			}
+		}
     .is-active {
       i {
         color: #409efe;
