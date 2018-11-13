@@ -204,7 +204,7 @@ export default {
       // return 1;
     },
     tableHeight: function() {
-      return  !this.moreSearch?   window.innerHeight - 300:window.innerHeight - 490;
+      return  !this.moreSearch?   window.innerHeight - 300:window.innerHeight - 436;
     }
   },
   created() {
