@@ -83,7 +83,6 @@ export default {
       dataReady:false,
       activeName: '1',
       mainHeight:window.innerHeight - 118+'px',
-      dataReady:true,
       settingList:{},
       provinceList:[],
       cityList:[],
@@ -156,6 +155,8 @@ export default {
 						seledId:res.data.select,
 						list:list
 					}
+					console.log('settingList');
+					console.log(_self.settingList);
 					_self.dataReady = true;
 				}else{
 					console.log(res.code);

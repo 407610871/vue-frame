@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="collapsepanel" v-for="(item,index) in storageList">
+    <div class="collapsepanel" v-if="pageReady" v-for="(item,index) in storageList" v-show="index>=pageSize*(pageNum-1) && index<pageSize*pageNum">
       <div class="collapsepanel-title" v-show="index != activeIndex" v-on:click="activeIndex = index">{{item.storageName}}<i class="el-icon-arrow-right"></i></div>
       <el-row :gutter="20" v-show="index == activeIndex">
         <el-col :span="4">
@@ -13,7 +13,8 @@
             <p>
               <span class="title1">{{item.name}}</span>
               <br /> hdfs主机名:{{item.name}}
-              <br /> 端口号：{{item.port}} hdfs.url：{{item.url}}
+              <br /> 端口号：{{item.port}} 
+							<br /> hdfs.url：{{item.url}}
               <br /> 备用节点字符串：{{item.bak}}
               <br /> 根目录：{{item.root}}
               <br /> impala服务器地址：{{item.impalaPath}}
@@ -31,6 +32,16 @@
         </el-col>
       </el-row>
     </div>
+		<div class="enc-pagination" v-if="pageSize<total && pageReady">
+			<el-pagination style="float:right; margin:10px;"
+				@current-change="goPage"
+				background
+				:page-size="1"
+				:total="total"
+				layout="prev, pager, next, jumper"
+				:current-page.sync="currentPage">
+			</el-pagination>
+		</div>
     <div class="regbtn">
       <hdfs-add :msg="1" @refresh="refresh()"></hdfs-add>
     </div>
@@ -42,10 +53,16 @@ import hdfsEdit from '@/views/mainLay/dialog/hdfs_edit'
 export default {
   data() {
     return {
+			storageList:[],
       activeIndex: 0,
 			seledId:-1,
 			editingId:-1,
-			editTxt:''
+			editTxt:'',
+			currentPage:1,
+			total:1,
+			pageReady:false,
+			pageNum:1,
+			pageSize:5
     }
   },
   props: {
@@ -54,17 +71,19 @@ export default {
       required: true
     },
   },
-  computed: {
-		storageList:function(){
-			this.seledId = this.settingList.seledId;
-			console.log('this.settingList');
-			console.log(this.settingList);
-			console.log('this.settingList');
-			return this.settingList.list
-		}
-  },
   mounted() {
-		
+		this.seledId = this.settingList.seledId;
+		for(var i=0;i<this.settingList.list.length;i++){
+			if(this.settingList.list[i].storageId == this.settingList.seledId){
+				this.activeIndex = i;
+				this.total = this.settingList.list.length;
+				this.pageNum = Math.ceil((i+1)/this.pageSize);
+				this.currentPage = Math.ceil((i+1)/this.pageSize);
+				this.storageList = this.settingList.list;
+				this.pageReady = true;
+				break;
+			}
+		}
   },
   methods: {
 		setConnect(event){
@@ -131,6 +150,9 @@ export default {
     //新增成功刷新
     refresh(){
       this.$emit('refresh');
+    },
+    goPage:function(val){
+      this.pageNum = val;
     }
   },
   components:{
