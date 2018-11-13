@@ -195,7 +195,7 @@ export default {
 				})
 			});
 			const promist1 = new Promise((resolve, reject) => {
-				this.$ajax.get('http://10.19.248.200:32661/caccesssysRelationWorkInfo/getSystemSet.do').then((res) => {
+				this.$ajax.get('http://10.19.248.200:32442/caccesssysRelationWorkInfo/getSystemSet.do').then((res) => {
 					if(res.data.result == 'success'){
 						resolve(res);
 					}else{

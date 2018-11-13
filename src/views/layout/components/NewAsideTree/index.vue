@@ -71,10 +71,7 @@
 				});
 			},
       mounted(){
-				var _self = this;
-				setTimeout(function(){
-					_self.loadData();
-				},1000);
+				this.loadData();
       },
       methods: {
         loadData(){

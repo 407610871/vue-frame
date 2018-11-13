@@ -49,7 +49,6 @@ const queryParamsDefault = {
 const store = new Vuex.Store({
   state: {
     deptId:[],
-		changingRoute:false,
 		routeFlag:'',
     fliterItemList:{
       network:{
@@ -66,6 +65,7 @@ const store = new Vuex.Store({
       }
     },
     pageSize:20,
+		pageReady:false,
     queryParams:JSON.parse(JSON.stringify(queryParamsDefault)),
     schemaList:[],//增量字段列表
     userList:{},//数据调研列表
@@ -75,6 +75,12 @@ const store = new Vuex.Store({
     jrtype: ''//接入源的类型
   },
   mutations: {
+		setPageSize(state,pageSize){
+			state.pageSize = pageSize;
+		},
+		setPageReady(state){
+			state.pageReady = true;
+		},
     setFilterItmeList(state,obj){
       state.fliterItemList[obj.name].ready = true;
       state.fliterItemList[obj.name].data = obj.data;
@@ -82,9 +88,6 @@ const store = new Vuex.Store({
     selDept(state,id){
       state.deptId = id;
     },
-		setChangingRoute(state,flag){
-			state.changingRoute = flag;
-		},
 		setRouteFlag(state,obj){
 			state.routeFlag = flag;
 		},

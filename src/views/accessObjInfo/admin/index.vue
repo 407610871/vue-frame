@@ -174,7 +174,8 @@ export default {
 				objInfoId:'',
 				accessSysDialectId:'',
 				filePath:''
-			}
+			},
+			flagInterval:null
     }
   },
   computed:{
@@ -207,8 +208,14 @@ export default {
   },
   mounted(){
     var tableParams = this.$store.state.queryParams.accessObjInfo;
-    this.loadTable(true);
 		this.$root.eventHub.$emit('setActiveNav',1);
+		var _self = this;
+		this.flagInterval = setInterval(function(){
+			if(_self.$store.state.pageReady){
+				_self.loadTable(true);
+				clearInterval(_self.flagInterval);
+			}
+		},200);
   },
   created(){
     this.$root.eventHub.$on('search', (keyword)=>{

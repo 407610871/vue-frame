@@ -48,7 +48,6 @@
           </el-table-column>
           <el-table-column label="操作">
             <template slot-scope="scope">
-             
               <edit-dialog :acId="scope.row.id" @refreshTable="loadTable"></edit-dialog>
 							<el-tooltip class="item" effect="light" content="复制" placement="top">
 								<i @click="handleCopy(scope.$index, scope.row)" class="enc-icon-fuzhi table-action-btn"></i>
@@ -329,11 +328,10 @@ export default {
     },
     storeReady:function(){
       var fliterItemList = this.$store.state.fliterItemList
-      if(fliterItemList.network.ready&&fliterItemList.dataSourceName.ready&&fliterItemList.platform.ready){
+      if(fliterItemList.network.ready&&fliterItemList.dataSourceName.ready&&fliterItemList.platform.ready && this.$store.state.pageReady){
 				console.log(fliterItemList);
         this.setFliter(fliterItemList);
         this.loadTable();
-				this.$store.commit('setChangingRoute',true);
       }else{
         var _self = this;
         setTimeout(function(){
