@@ -92,10 +92,12 @@
             </el-pagination>
         </div>
     </el-footer>
+    <dialogTaskView :reqObj="reqObj" v-if="showTaskView" v-on:closeDia="showTaskView=false"></dialogTaskView>
 </div>
 </template>
 <script>
 const baseUrl = 'http://10.19.160.67:8081/DOMN';
+import dialogTaskView from './dialogTaskView';
 export default {
     data(){
         return {
@@ -113,11 +115,15 @@ export default {
                    
                 }
             },
-            
+            reqObj:{},
+            showTaskView:false
         }
     },
     created(){
         this.init();
+    },
+    components:{
+        dialogTaskView:dialogTaskView
     },
     computed:{
         tableHeight() {
@@ -175,8 +181,9 @@ export default {
             });
         },
         //查看
-        doView(){
-
+        doView(row){
+            this.reqObj = row;
+            this.showTaskView = true;
         },
         //删除
         doDelete(row){
