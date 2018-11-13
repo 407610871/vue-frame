@@ -46,6 +46,11 @@
               </el-radio-group>
             </el-form-item>
           </el-col>
+          <!-- <el-col :span="24">
+            <el-form-item label="接入起始点:">
+              
+            </el-form-item>
+          </el-col> -->
           <el-col :span="24" v-show="ruleForm.accessMode=='1'||ruleForm.accessMode=='3'">
             <el-col :span="8" class="collbg">
               <el-form-item label="增量字段:" prop="increment">
@@ -613,13 +618,13 @@ export default {
       this.$ajax({
         method: 'POST',
         url: this.GLOBAL.api + 'task/getSourceConfig',
-        params:{
-          accessSysObjInfoId:this.accId,
-         
+        params: {
+          accessSysObjInfoId: this.accId,
+
         }
 
       }).then(res => {
-      
+
       })
     }
   },
@@ -632,7 +637,7 @@ export default {
     this._hourData();
     this._weekData();
     this._getTree();
-    
+
   },
   created() {
 

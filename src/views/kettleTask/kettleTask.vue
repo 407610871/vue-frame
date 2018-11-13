@@ -1,5 +1,5 @@
 <template>
-<div>
+<div v-loading="loading">
     <el-form ref="form"  label-width="80px" class="formGroup">
         <el-form-item label="任务状态" >
             <el-checkbox-group v-model="status">
@@ -65,7 +65,7 @@
                 <span v-if="scope.row.status == 'create'">新建</span>
                 <span v-if="scope.row.status == 'Running'">运行</span>
                 <span v-if="scope.row.status == 'Paused'">暂停</span>
-                <span v-if="scope.row.status == 'Finished (with errors)'">失败</span>
+                <span v-if="scope.row.status == 'Finished (with errors)'" class="finished-fail">失败</span>
                 <span v-if="scope.row.status == 'Finished'">完成</span>
             </template>
         </el-table-column>
@@ -92,13 +92,16 @@
             </el-pagination>
         </div>
     </el-footer>
+    <dialogTaskView :reqObj="reqObj" v-if="showTaskView" v-on:closeDia="showTaskView=false"></dialogTaskView>
 </div>
 </template>
 <script>
 const baseUrl = 'http://10.19.160.67:8081/DOMN';
+import dialogTaskView from './dialogTaskView';
 export default {
     data(){
         return {
+            loading:false,
             pageNum: 1,
             pageSize: 10,
             totalPage: 0,
@@ -112,11 +115,15 @@ export default {
                    
                 }
             },
-            
+            reqObj:{},
+            showTaskView:false
         }
     },
     created(){
         this.init();
+    },
+    components:{
+        dialogTaskView:dialogTaskView
     },
     computed:{
         tableHeight() {
@@ -129,22 +136,23 @@ export default {
         },
         init(){
             let that = this;
+            this.loading = true;
             this.$ajax.get(baseUrl+'/manager/govern/queryGovern',{
-            params:{
-                pageNum:this.pageNum,
-                pageSize:this.pageSize,
-                status:this.status.join(),
-                startTime:this.startTime,
-                endTime:this.endTime,
-                taskName:this.taskName
+                params:{
+                    pageNum:this.pageNum,
+                    pageSize:this.pageSize,
+                    status:this.status.join(),
+                    startTime:this.startTime,
+                    endTime:this.endTime,
+                    taskName:this.taskName
                 }
             }).then(res => {
                 res = res.data;
+                this.loading = false;
                 if(res.success){
                     that.pageNum = res.data.pageNum;
                     that.totalPage = res.data.total;
                     that.tableData = res.data.result;
-                    console.log(that.tableData)  
                 }else{
                      that.$message({
                         showClose: true,
@@ -155,16 +163,47 @@ export default {
             });
         },
         //启动
-        doStart(){
-
+        doStart(row){
+            this.loading = true;
+            this.$ajax.post(baseUrl+'/manager/govern/startGovern',{
+                params:{
+                    "jobPath": row.jobPath,
+                    "jobName": row.taskName
+                }
+            }).then(res => {
+               res = res.data;
+               this.loading = false;
+               if(res.success){
+                   row.status = 'Running';
+               }else{
+                   row.status = 'Finished (with errors)';
+               }
+            });
         },
         //查看
-        doView(){
-
+        doView(row){
+            this.reqObj = row;
+            this.showTaskView = true;
         },
         //删除
-        doDelete(){
-            
+        doDelete(row){
+            let that = this;
+            this.loading = true;
+            this.$ajax.post(baseUrl+'/manager/govern/deleteGovern',{
+                params:{
+                    carteObjectId: row.carteObjectId,
+                    jobName: row.taskName,
+                    jobPath: row.jobPath
+                }
+            }).then(res => {
+                res = res.data;
+                this.loading = false;
+               if(res.success){
+                   that.init();
+               }else{
+                    that.$alert(res.message,'删除');
+               }
+            });
         },
     },
     filters:{
@@ -198,6 +237,9 @@ export default {
     color:#ccc;
     cursor: not-allowed;
     margin-right:5px;
+}
+.finished-fail{
+    color:red;
 }
 </style>
 <style>

@@ -8,7 +8,7 @@
       <div class="searchDiv">
         <div class="dataSearch">
            <i class="el-icon-search"></i>
-            <input type="text" v-model="keyword" placeholder="请输入任务名称" />
+            <input type="text" v-model="keyword" placeholder="请输入查询条件" />
           </div>
           <span  @click="doMoreSearch" >高级搜索 <i :class="!moreSearch?'el-icon-caret-bottom':'el-icon-caret-top'"></i>  </span>
                 <el-button type="primary" class="doCearch" @click="search">查询</el-button> 
@@ -63,10 +63,10 @@
        </div>
 
        <!-- 表格数据 -->
-<div class="mainTable">
-<el-table ref="multipleTable" :data="tableData" tooltip-effect="light"  :height="tableHeight" style="width: 100%"   @select-all="selectAll"  @select="select"  @selection-change="handleSelectionChange" >
-            <el-table-column type="selection" width="55"></el-table-column>
-             <el-table-column label="接入指示" width="100"> 
+<div class="mainTable zcTable">
+<el-table ref="multipleTable" :data="tableData" tooltip-effect="dark"  :height="tableHeight" style="width: 100%"   @select-all="selectAll"  @select="select"  @selection-change="handleSelectionChange" >
+            <el-table-column  fixed type="selection" width="55"></el-table-column>
+             <el-table-column  fixed label="接入指示" width="100"> 
                 <template slot-scope="scope">
                   <i v-if="scope.row.networkStatus==0" class="indicate" style="backgroundColor:green" title="数据源连接正常"></i>
                    <i v-else-if="scope.row.networkStatus==1" class="indicate" style="backgroundColor:yellow" title="数据源链接不稳定"></i>
@@ -75,9 +75,9 @@
                 </template>
 
              </el-table-column>
-                         <el-table-column prop="taskInfoId" label="ID"  width="100" :show-overflow-tooltip='true'></el-table-column>
+                         <el-table-column prop="taskInfoId" fixed label="ID"  width="100" :show-overflow-tooltip='true'></el-table-column>
 
-            <el-table-column  label="任务名称" width="200" :show-overflow-tooltip='true' @click="showTaskDetail=true">
+            <el-table-column fixed label="任务名称" width="200" :show-overflow-tooltip='true' @click="showTaskDetail=true">
 <template slot-scope="scope">
                  <el-button @click="doDetail(scope.$index, scope.row)">{{scope.row.taskName}}</el-button>
                 </template>
@@ -204,7 +204,7 @@ export default {
       // return 1;
     },
     tableHeight: function() {
-      return  !this.moreSearch?   window.innerHeight - 300:window.innerHeight - 490;
+      return  !this.moreSearch?   window.innerHeight - 300:window.innerHeight - 436;
     }
   },
   created() {
@@ -259,7 +259,6 @@ export default {
           this.$ajax
             .put(httpUrl + "manager/taskOperate/converge/" + row.taskInfoId)
             .then(function(res) {
-              console.log(res);
               _self.loading = false;
               if (res.data.success) {
                 _self.doMsg("重新汇聚成功", "success");
@@ -280,7 +279,6 @@ export default {
       this.$ajax
         .put(httpUrl + "manager/taskOperate/delete/" + row.taskInfoId)
         .then(function(res) {
-          console.log(res);
           _self.loading = false;
           if (res.data.success) {
             _self.doMsg("处理成功", "success");
@@ -304,7 +302,6 @@ export default {
         this.$ajax
           .put(url)
           .then(function(res) {
-            console.log(res);
             _self.loading = false;
             if (res.data.success) {
               _self.doMsg("运行成功", "success");
@@ -322,7 +319,6 @@ export default {
         this.$ajax
           .put(url)
           .then(function(res) {
-            console.log(res);
             _self.loading = false;
             if (res.data.code == "0000") {
               _self.doMsg("暂停成功", "success");
@@ -797,10 +793,17 @@ line-height: 10px;
 .el-form-item {
     margin-bottom: 10px;
 }
+
 </style>
 <style>
 .el-picker-panel__icon-btn {
   color: #303133 !important;
+}
+ .zcTable .el-table__fixed {
+  background-color: #fff;
+}
+.zcTable .el-table__body-wrapper {
+   background-color: #fff;
 }
 </style>
 

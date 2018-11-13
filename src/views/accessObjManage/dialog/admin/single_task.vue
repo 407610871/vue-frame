@@ -68,6 +68,7 @@ export default {
     //关闭对话框
     closeDialog() {
       this.dialogVisible = false;
+      this.activeName = 'first';
       //this.$refs.survey._clearForm();
     },
     //步骤条
