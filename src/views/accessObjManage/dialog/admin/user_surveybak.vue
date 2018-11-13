@@ -328,7 +328,7 @@ export default {
         this.ruleForm.datamode = this.sDum[0].sTATIC_CODE;
         //DRG
         this.sDrg = res.data.data.staticDatas.DRG;
-        this.ruleForm.datarange = this.sDrg[2].sTATIC_CODE;
+        this.ruleForm.datarange = this.sDrg[0].sTATIC_CODE;
         this._queryStaticDatas();
       })
     },
@@ -563,9 +563,9 @@ export default {
       }
       this.ruleForm.tablename = this.info[0].name;
     }
-    debugger;
+   // debugger;
     console.log(this.tableid);
-    debugger;
+    //debugger;
      this._querySys(); 
     this._getStaticDatas();
     this._queryCity('0', 'pro');

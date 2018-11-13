@@ -194,7 +194,7 @@ export default {
       this.collapse = !this.collapse;
     },
     loadTable: function() {
-      debugger;
+     // debugger;
       var _self = this;
 
       _self.jrtype = this.$store.state.jrtype;

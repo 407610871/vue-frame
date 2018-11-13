@@ -75,9 +75,9 @@
             <el-col :span="10">
               <el-form-item label="数据所属部门:">
                 <el-popover placement="right" width="400" trigger="click">
-                  <el-tree :data="treedata" show-checkbox node-key="id" :check-strictly="true" :props="defaultProps" accordion @check-change="handleClick" @check="nodeClick" :default-checked-keys="[ruleForm.dockid]" ref="treeForm">
+                  <el-tree :data="treedata" show-checkbox node-key="id" :check-strictly="true" :props="defaultProps" accordion @check-change="handleClick" @check="nodeClick" :default-checked-keys="[ruleForm.dockid]" ref="treeForm" :default-expanded-keys="[deIndex]" class="treeAuto">
                   </el-tree>
-                  <el-select v-model="ruleForm.dockdata" disabled placeholder="" prop="dockdata" slot="reference" required>
+                  <el-select v-model="ruleForm.dockdata" disabled placeholder="" prop="dockdata" slot="reference" required class="disele">
                   </el-select>
                 </el-popover>
               </el-form-item>
@@ -315,6 +315,8 @@ export default {
       DJBM: [], //对接部门
       DJPT: [], //对接平台
       fileList: [], //上传的文件列表
+       deptData: [],
+       deIndex: 0,
       tableMsg: [],
       loading: false,
       appId: '',
@@ -357,34 +359,34 @@ export default {
       },
       formRules: {
         jrname: [
-          { required: true, validator: validateNull, trigger: "blur" }
+          { validator: validateNull, trigger: "blur" }
         ],
         ipname: [
-          { required: true, validator: validateIp, trigger: "blur" }
+          { validator: validateIp, trigger: "blur" }
         ],
         username: [
-          { required: true, validator: validateNull, trigger: "blur" }
+          { validator: validateNull, trigger: "blur" }
         ],
         password: [
-          { required: true, validator: validateNull, trigger: "blur" }
+          { validator: validateNull, trigger: "blur" }
         ],
         iport: [
-          { required: true, validator: validateNull, trigger: "blur" }
+          { validator: validateNull, trigger: "blur" }
         ],
         instanceName: [
-          { required: true, validator: validateNull, trigger: "blur" }
+          { validator: validateNull, trigger: "blur" }
         ],
         hadoopDir: [
-          { required: true, validator: validateNull, trigger: "blur" }
+          { validator: validateNull, trigger: "blur" }
         ],
         hadoopHomes: [
-          { required: true, validator: validateNull, trigger: "blur" }
+          { validator: validateNull, trigger: "blur" }
         ],
         vhost: [
-          { required: true, validator: validateNull, trigger: "blur" }
+          { validator: validateNull, trigger: "blur" }
         ],
         dockdata: [
-          { required: true, validator: validateNull, trigger: "blur" }
+          { validator: validateNull, trigger: "blur" }
         ],
         proemail: [
           { validator: this.GLOBAL.validateEmail, trigger: 'blur' }
@@ -509,6 +511,7 @@ export default {
     },
     //数据所属部门
     _getSYBM() {
+      var _self = this;
       /*  this.$ajax.post('http://10.19.160.29:8088/demo/deptInfo/getDeptInfo',{}).then(res=>{
            console.log(res);
         })*/
@@ -517,10 +520,46 @@ export default {
         url: this.GLOBAL.api + 'deptInfo/getDeptInfo',
       }).then(res => {
         console.log(res);
-        this.treedata = res.data.datas;
-        this.ruleForm.dockid = this.treedata[0].id;
-        this.ruleForm.dockdata = this.treedata[0].deptName
+        _self.treedata = res.data.datas;
+        if (_self.$store.state.deptId.length == 0) {
+          _self.ruleForm.dockid = _self.treedata[0].id;
+          _self.ruleForm.dockdata = _self.treedata[0].deptName
+
+        } else {
+          let depIds = _self.$store.state.deptId;
+          console.log(depIds);
+          for (let i = 0; i < _self.treedata.length; i++) {
+            _self.deptData.push({
+              id: _self.treedata[i].id,
+              name: _self.treedata[i].deptName,
+              pid: _self.treedata[i].pid
+            })
+            if (_self.treedata[i].children.length != 0 && _self.treedata[i].children.length != undefined) {
+              this._getDepId(_self.treedata[i].children);
+            }
+          }
+          for (let m = 0; m < _self.deptData.length; m++) {
+            if (_self.deptData[m].id == depIds[0]) {
+              _self.ruleForm.dockid = _self.deptData[m].id;
+              _self.ruleForm.dockdata = _self.deptData[m].name;
+              _self.deIndex = _self.deptData[m].pid
+            }
+          }
+        }
       })
+    },
+    //找到id的index值
+    _getDepId(value) {
+      for (let n = 0; n < value.length; n++) {
+        this.deptData.push({
+          id: value[n].id,
+          name: value[n].deptName,
+          pid: value[n].pid
+        })
+        if (value[n].children.length != 0 && value[n].children.length != undefined) {
+          this._getDepId(value[n].children);
+        }
+      }
     },
     //保存信息
     submitForm(formName) {

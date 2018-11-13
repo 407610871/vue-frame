@@ -14,9 +14,11 @@
   color: #0095e7;
   cursor: pointer;
 }
-.bornone{
-  border:none !important;
+
+.bornone {
+  border: none !important;
 }
+
 .bank {
   opacity: 0;
 }
@@ -187,6 +189,22 @@
 .dataInfo-box {
   border: none !important;
 }
+
+
+/* treeStyle */
+
+.treeAuto {
+  height: 300px;
+  overflow: auto;
+}
+
+.disele .el-input.is-disabled .el-input__inner {
+  background-color: #f0f3f6;
+  color: #4f609d;
+  border-radius: 0;
+  border: 1px solid #c9cdd0;
+}
+
 
 /* .el-dialog::-webkit-scrollbar-thumb {
   background: #50609c;

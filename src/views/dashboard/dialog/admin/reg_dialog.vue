@@ -1,9 +1,9 @@
 <template>
   <div class="taskMDialog icon-dai">
     <!-- <el-button @click="dialogVisible = true" class="add-btn">注册</el-button> -->
-		<el-tooltip class="item" effect="light" content="注册" placement="top">
-			<i @click="dialogVisible = true" class="enc-icon-zhuce table-action-btn" style="margin-right:15px; font-size:30px;"></i>
-		</el-tooltip>
+    <el-tooltip class="item" effect="light" content="注册" placement="top">
+      <i @click="dialogVisible = true" class="enc-icon-zhuce table-action-btn" style="margin-right:15px; font-size:30px;"></i>
+    </el-tooltip>
     <el-dialog title="接入数据源" :visible.sync="dialogVisible" width="60%" :before-close="closeDialog">
       <div class="title-gra">
         <span class="grab gra-l"></span>
@@ -75,9 +75,9 @@
             <el-col :span="10">
               <el-form-item label="数据所属部门:">
                 <el-popover placement="right" width="400" trigger="click">
-                  <el-tree :data="treedata" show-checkbox node-key="id" :check-strictly="true" :props="defaultProps" accordion @check-change="handleClick" @check="nodeClick" :default-checked-keys="[ruleForm.dockid]" ref="treeForm">
+                  <el-tree :data="treedata" show-checkbox node-key="id" :check-strictly="true" :props="defaultProps" accordion @check-change="handleClick" @check="nodeClick" :default-checked-keys="[ruleForm.dockid]"  :default-expanded-keys="[deIndex]" ref="treeForm" class="treeAuto">
                   </el-tree>
-                  <el-select v-model="ruleForm.dockdata" disabled placeholder="" prop="dockdata" slot="reference" required>
+                  <el-select v-model="ruleForm.dockdata" disabled placeholder="" prop="dockdata" slot="reference" required class="disele">
                   </el-select>
                 </el-popover>
               </el-form-item>
@@ -292,7 +292,7 @@
   </div>
 </template>
 <script>
-import {validateEmail} from '@/utils/validate.js'
+import { validateEmail } from '@/utils/validate.js'
 export default {
   name: "taskMDialog",
   data: function() {
@@ -326,6 +326,8 @@ export default {
       DJPT: [], //对接平台
       fileList: [], //上传的文件列表
       tableMsg: [],
+      deptData: [],
+      deIndex: 0,
       loading: false,
       ruleForm: {
         jrname: '',
@@ -366,46 +368,46 @@ export default {
       },
       formRules: {
         jrname: [
-          { required: true, validator: validateNull, trigger: "blur" }
+          { validator: validateNull, trigger: "blur" }
         ],
         ipname: [
-          { required: true, validator: validateIp, trigger: "blur" }
+          { validator: validateIp, trigger: "blur" }
         ],
         username: [
-          { required: true, validator: validateNull, trigger: "blur" }
+          { validator: validateNull, trigger: "blur" }
         ],
         password: [
-          { required: true, validator: validateNull, trigger: "blur" }
+          { validator: validateNull, trigger: "blur" }
         ],
         iport: [
-          { required: true, validator: validateNull, trigger: "blur" }
+          { validator: validateNull, trigger: "blur" }
         ],
         instanceName: [
-          { required: true, validator: validateNull, trigger: "blur" }
+          { validator: validateNull, trigger: "blur" }
         ],
         hadoopDir: [
-          { required: true, validator: validateNull, trigger: "blur" }
+          { validator: validateNull, trigger: "blur" }
         ],
         hadoopHomes: [
-          { required: true, validator: validateNull, trigger: "blur" }
+          { validator: validateNull, trigger: "blur" }
         ],
         vhost: [
-          { required: true, validator: validateNull, trigger: "blur" }
+          { validator: validateNull, trigger: "blur" }
         ],
         dockdata: [
-          { required: true, validator: validateNull, trigger: "blur" }
+          { validator: validateNull, trigger: "blur" }
         ],
-        proemail:[
-         {validator:this.GLOBAL.validateEmail,trigger:'blur'}
+        proemail: [
+          { validator: this.GLOBAL.validateEmail, trigger: 'blur' }
         ],
-        proqq:[
-         {validator:this.GLOBAL.validateNumber,trigger:'blur'}
+        proqq: [
+          { validator: this.GLOBAL.validateNumber, trigger: 'blur' }
         ],
-        prophone:[
-         {validator:this.GLOBAL.validatePhone,trigger:'blur'}
+        prophone: [
+          { validator: this.GLOBAL.validatePhone, trigger: 'blur' }
         ],
-        dockphone:[
-         {validator:this.GLOBAL.validatePhone,trigger:'blur'}
+        dockphone: [
+          { validator: this.GLOBAL.validatePhone, trigger: 'blur' }
         ]
       },
       treedata: [],
@@ -456,7 +458,7 @@ export default {
       let _self = this;
       _self.$ajax({
         methods: "get",
-        url: this.GLOBAL.api +'commonInter/getDictDataCategory',
+        url: this.GLOBAL.api + 'commonInter/getDictDataCategory',
         params: {
 
         }
@@ -471,7 +473,7 @@ export default {
     _getAccessDialect() {
       this.$ajax({
         methods: "get",
-        url: this.GLOBAL.api +'commonInter/sysdialect',
+        url: this.GLOBAL.api + 'commonInter/sysdialect',
         params: {
           type: '2'
         }
@@ -485,7 +487,7 @@ export default {
     _getDJBM() {
       this.$ajax({
         methods: "get",
-        url: this.GLOBAL.api +'commonInter/sysDepartment',
+        url: this.GLOBAL.api + 'commonInter/sysDepartment',
         params: {
 
         }
@@ -500,7 +502,7 @@ export default {
       var _self = this;
       this.$ajax({
         methods: "get",
-        url: this.GLOBAL.api +'commonInter/getListStaticData.do',
+        url: this.GLOBAL.api + 'commonInter/getListStaticData.do',
         params: {
           dictCode: 'ButtPlatForm'
         }
@@ -511,18 +513,56 @@ export default {
     },
     //数据所属部门
     _getSYBM() {
+      var _self = this;
       /*  this.$ajax.post('http://10.19.160.29:8088/demo/deptInfo/getDeptInfo',{}).then(res=>{
            console.log(res);
         })*/
       this.$ajax({
         method: "post",
-        url: this.GLOBAL.api +'deptInfo/getDeptInfo',
+        url: this.GLOBAL.api + 'deptInfo/getDeptInfo',
       }).then(res => {
         console.log(res);
-        this.treedata = res.data.datas;
-        this.ruleForm.dockid = this.treedata[0].id;
-        this.ruleForm.dockdata = this.treedata[0].deptName
+        _self.treedata = res.data.datas;
+        if (_self.$store.state.deptId.length == 0) {
+          _self.ruleForm.dockid = _self.treedata[0].id;
+          _self.ruleForm.dockdata = _self.treedata[0].deptName
+
+        } else {
+          let depIds = _self.$store.state.deptId;
+          console.log(depIds);
+          for (let i = 0; i < _self.treedata.length; i++) {
+            _self.deptData.push({
+              id: _self.treedata[i].id,
+              name: _self.treedata[i].deptName,
+               pid: _self.treedata[i].pid
+            })
+            if (_self.treedata[i].children.length != 0 && _self.treedata[i].children.length != undefined) {
+              this._getDepId(_self.treedata[i].children);
+            }
+          }
+          for (let m = 0; m < _self.deptData.length; m++) {
+            if (_self.deptData[m].id == depIds[0]) {
+              _self.ruleForm.dockid = _self.deptData[m].id;
+              _self.ruleForm.dockdata = _self.deptData[m].name;
+              _self.deIndex = _self.deptData[m].pid
+            }
+          }
+        }
+
       })
+    },
+    //找到id的index值
+    _getDepId(value) {
+      for (let n = 0; n < value.length; n++) {
+        this.deptData.push({
+          id: value[n].id,
+          name: value[n].deptName,
+          pid: value[n].pid
+        })
+        if (value[n].children.length != 0 && value[n].children.length != undefined) {
+          this._getDepId(value[n].children);
+        }
+      }
     },
     //保存信息
     submitForm(formName) {
@@ -655,7 +695,7 @@ export default {
             console.log(typeof(save));
             this.$ajax({
               method: "get",
-              url: this.GLOBAL.api +'register/dataSourceCheck',
+              url: this.GLOBAL.api + 'register/dataSourceCheck',
               // headers:{
               //   'Content-Type':'application/json;charset=utf-8',
               // },
@@ -679,7 +719,7 @@ export default {
                   this.loading = true;
                   this.$ajax({
                     method: "POST",
-                    url: this.GLOBAL.api +'register/dataSourceInsert',
+                    url: this.GLOBAL.api + 'register/dataSourceInsert',
                     // headers:{
                     //   'Content-Type':'application/json;charset=utf-8',
                     // },
@@ -715,7 +755,7 @@ export default {
                 this.loading = true;
                 this.$ajax({
                   method: "POST",
-                  url: this.GLOBAL.api +'register/dataSourceInsert',
+                  url: this.GLOBAL.api + 'register/dataSourceInsert',
                   // headers:{
                   //   'Content-Type':'application/json;charset=utf-8',
                   // },
@@ -886,7 +926,7 @@ export default {
                 //this.dialogVisible = false;
                 this.$ajax({
                   method: "POST",
-                  url: this.GLOBAL.api +'register/fileSourceInsert',
+                  url: this.GLOBAL.api + 'register/fileSourceInsert',
                   processData: false,
                   contentType: false,
                   data: formData
@@ -1044,7 +1084,7 @@ export default {
               this.dialogVisible = false;
               this.$ajax({
                 method: "POST",
-                url: this.GLOBAL.api +'register/fileSourceInsert',
+                url: this.GLOBAL.api + 'register/fileSourceInsert',
                 processData: false,
                 contentType: false,
                 data: formData
@@ -1090,7 +1130,7 @@ export default {
           }
           this.$ajax({
             method: "POST",
-            url: this.GLOBAL.api +'register/dataSourceConnect',
+            url: this.GLOBAL.api + 'register/dataSourceConnect',
             // headers:{
             //   'Content-Type':'application/json;charset=utf-8',
             // },
@@ -1180,9 +1220,9 @@ export default {
 .el-dialog .otherInfo .fileItem .el-form-item__label {
   width: 235px !important;
 }
-.icon-dai i{
-  cursor: pointer;
 
- 
+.icon-dai i {
+  cursor: pointer;
 }
+
 </style>
