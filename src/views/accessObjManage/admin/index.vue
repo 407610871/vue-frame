@@ -134,16 +134,16 @@ export default {
         name: '其他'
       }],
       dataRange: [{
-        id: 'city',
+        id: 1,
         name: '全市'
       }, {
-        id: 'province',
+        id: 2,
         name: '全省'
       }, {
-        id: 'country',
+        id: 3,
         name: '全国'
       }, {
-        id: 'other',
+        id: 4,
         name: '其他'
       }],
       jrtype: '',
@@ -207,11 +207,11 @@ export default {
       };
       paramsObj.condition = this.tableParams.condition ? this.tableParams.condition : "";
       paramsObj.objectType = this.tableParams.objectType.join(',');
-      paramsObj.dataRange = this.tableParams.dataRange;
+      paramsObj.dataRange = this.tableParams.dataRange+'';
       paramsObj.accessSysId = parseInt(this.$route.params.sourceId);
       this.$ajax({
-				url: 'http://10.19.248.200:32661/DACM/ctables/datas',
-				/* url:'http://10.19.160.25:8080/DACM/ctables/datas',*/
+				// url: window.ENV.API_DACM+'ctables/datas',
+				url:window.ENV.API_DACM+'/ctables/datas',
 				method: 'post',
 				data: JSON.stringify(paramsObj),
 				headers: {
@@ -252,7 +252,7 @@ export default {
 			var _self = this;
 			this.loading = true;
 			// this.$ajax.post('http://10.19.160.25:8080/DACM/ctables/diyComments',{
-			this.$ajax.post('http://10.19.248.200:32661/DACM/ctables/diyComments',{
+			this.$ajax.post(window.ENV.API_DACM+'/ctables/diyComments',{
 				objInfoId:row.id,
 				value:this.editingRow.diyComments
 			}).then(function(res){
@@ -320,7 +320,7 @@ export default {
     },
     updataSource: function() {
       var _self = this;
-      this.$ajax.get('http://10.19.248.200:32661/DACM/ctables/synchronize', {
+      this.$ajax.get(window.ENV.API_DACM+'/ctables/synchronize', {
         params: {
           accessSysId: this.$route.params.sourceId
         }
@@ -344,7 +344,7 @@ export default {
     },
     updataSourceSingle: function(index, row) {
       var _self = this;
-      this.$ajax.get('http://10.19.248.200:32661/DACM/ctables/refreshAmount', {
+      this.$ajax.get(window.ENV.API_DACM+'/ctables/refreshAmount', {
         params: {
           objectInfoId: row.id
         }
@@ -352,7 +352,9 @@ export default {
         if (res.data.success) {
           _self.$alert('更新成功', '提示', {
             confirmButtonText: '确定'
-          });
+          }).then(() => {
+						row.totalRows = res.data.data.totalRows;
+					});
         } else {
           _self.$alert('更新失败', '提示', {
             confirmButtonText: '确定'

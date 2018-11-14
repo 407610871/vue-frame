@@ -3,7 +3,9 @@
 const api = window.ENV || {
   API_DACM: "http://10.19.248.200:31701/DACM"
 };
-console.log(window.ENV+"******")
+/*
+const api = window.ENV.API_DACM+'';
+*/
 //校验邮箱
 const validateEmail = (rule, value, callback) => {
   const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;

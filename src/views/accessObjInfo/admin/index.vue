@@ -183,7 +183,7 @@ export default {
       return this.$store.state.queryParams.accessObjInfo;
     },
 		exportUrl:function(){
-			return 'http://10.19.248.200:32661/DACM/objDetail/exportTemplateFile?objInfoId='+this.$route.params.objId+'&tableName='+this.$route.params.objName+'&diyComments='+this.tableParams.diyComments+'&accessSysDialectId='+this.tableParams.ACCESS_SYS_DIALECT_ID+'&browser='+'chrome';
+			return window.ENV.API_DACM+'/objDetail/exportTemplateFile?objInfoId='+this.$route.params.objId+'&tableName='+this.$route.params.objName+'&diyComments='+this.tableParams.diyComments+'&accessSysDialectId='+this.tableParams.ACCESS_SYS_DIALECT_ID+'&browser='+'chrome';
 		},
 		tableName:function(){
 			return this.$route.params.objName;
@@ -228,7 +228,7 @@ export default {
 		refresh(){
 			var _self = this;
 			this.loading = true;
-			this.$ajax.get('http://10.19.248.200:32661/DACM/objDetail/synchronize',{
+			this.$ajax.get(window.ENV.API_DACM+'objDetail/synchronize',{
 				params:{
 					id:this.$route.params.objId
 				}
@@ -268,7 +268,7 @@ export default {
 			formdata.append('accessSysDialectId',this.tableParams.ACCESS_SYS_DIALECT_ID);
 			var _self = this;
 			this.$ajax({
-				url: 'http://10.19.248.200:32661/DACM/objDetail/readExcelFile',
+				url: window.ENV.API_DACM+'objDetail/readExcelFile',
 				method: 'post',
 				data: formdata,
 				headers: {'Content-Type': false}
@@ -326,7 +326,7 @@ export default {
 				ACCESS_SYS_DIALECT_ID:this.tableParams.ACCESS_SYS_DIALECT_ID,
 				accessSysId:this.tableParams.accessSysId
 			}
-			this.$ajax.post('http://10.19.248.200:32661/DACM/objDetail/dataList',paramsObj).then(function(res){
+			this.$ajax.post(window.ENV.API_DACM+'objDetail/dataList',paramsObj).then(function(res){
 				console.log('tableLoaded:metadataManage');
 				if(res.data.success){
 					var data = res.data.data.list;
@@ -364,7 +364,7 @@ export default {
 				accessSysId:this.tableParams.accessSysId,
 				filter:null
 			}
-			this.$ajax.post('http://10.19.248.200:32661/DACM/objDetail/previewData',paramsObj).then(function(res){
+			this.$ajax.post(window.ENV.API_DACM+'objDetail/previewData',paramsObj).then(function(res){
 				console.log('tableLoaded:dataPreview');
 				if(res.data.success){
 					if(res.data.datas.length>0){
@@ -406,7 +406,7 @@ export default {
     changeName:function(index,row){
 			var _self = this;
 			this.loading = true;
-			this.$ajax.get('http://10.19.248.200:32661/DACM/objDetail/diyComment',{
+			this.$ajax.get(window.ENV.API_DACM+'objDetail/diyComment',{
 				params:{
 					id:row.id,
 					value:this.editingRow.diyComments

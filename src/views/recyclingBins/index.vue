@@ -180,7 +180,7 @@ export default {
       paramsObj.dataSourceName = this.tableParams.dataSourceName;
       paramsObj.platform = this.tableParams.platform;
 			paramsObj.deptIds = this.tableParams.deptId;
-      this.$ajax.post('http://10.19.248.200:32661/DACM/caccess/query',paramsObj).then(function(res){
+      this.$ajax.post(window.ENV.API_DACM+'caccess/query',paramsObj).then(function(res){
         console.log('tableLoaded:dashboard');
         if(res.data.success){
           _self.mainTableData = res.data.data.list;
@@ -211,7 +211,7 @@ export default {
 			}).then(() => {
 				var _self = this;
 				_self.loading = true;
-				this.$ajax.get('http://10.19.248.200:32661/DACM/caccess/restore',{
+				this.$ajax.get(window.ENV.API_DACM+'caccess/restore',{
 					params:{
 						id:row.id
 					}
@@ -244,7 +244,7 @@ export default {
 			}).then(() => {
 				var _self = this;
 				_self.loading = true;
-				this.$ajax.get('http://10.19.248.200:32661/DACM/caccess/remove',{
+				this.$ajax.get(window.ENV.API_DACM+'caccess/remove',{
 					params:{
 						id:row.id
 					}
