@@ -164,11 +164,9 @@ export default {
         doStart(row){
             this.loading = true;
             this.$ajax.post(baseUrl+'/manager/govern/startGovern',{
-                params:{
                     "jobPath": row.jobPath,
                     "jobName": row.taskName
-                }
-            }).then(res => {
+                }).then(res => {
                res = res.data;
                this.loading = false;
                if(res.success){
@@ -190,11 +188,10 @@ export default {
             let that = this;
             this.loading = true;
             this.$ajax.post(baseUrl+'/manager/govern/deleteGovern',{
-                params:{
+                    id:row.id,
                     carteObjectId: row.carteObjectId,
                     jobName: row.taskName,
                     jobPath: row.jobPath
-                }
             }).then(res => {
                 res = res.data;
                 this.loading = false;
