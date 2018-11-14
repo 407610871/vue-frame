@@ -8,16 +8,16 @@
       <el-form label-width="100px" class="demo-ruleForm">
         
         <!-- 任务基本信息 模块开始 -->
-        <div class="daiInfo dockInfo"  v-loading="loading1">
+        <div class="daiInfo dockInfo">
           <div class="daiInfo-box clearfix">
-            <el-col :span="12">
-              <div style="height:323px;width:434px;border:1px solid blue">
+            <el-col :span="12" v-loading="loading1">
+              <div style="height:323px;width:434px;border:1px solid blue" >
                   <a :href="taskBaseInfo.flowChartPath" target="_blank">
                     <img :src="taskBaseInfo.flowChartPath">
                   </a>
               </div>
             </el-col>
-            <el-col :span="12" class="info-right">
+            <el-col :span="12" class="info-right" v-loading="loading2">
               <div class="taskStatus">
                 <span>处理任务:</span><span>{{reqObj.taskName}}</span>
                 <span v-if="reqObj.status=='create'" style="float:right;color:red;font-weight:700;width:50px">新建</span>
@@ -49,11 +49,11 @@
               </div>
             </el-col>
           </div>
-          <el-button class="button-log" type="primary" size="small" @click="loading2=true;queryLogs()">日志</el-button>
+          <el-button class="button-log" type="primary" size="small" @click="queryLogs()">日志</el-button>
           <!-- 四个日志tab 开始 -->
           <div class="daiInfo-tabs">
             <div type="border-card" style="height:265px;">
-                <div class="dataCheck-tab" v-loading="loading2">
+                <div class="dataCheck-tab" v-loading="loading3">
                     <textarea v-show="taskBaseInfo.log!=''" name="" id="" cols="30" rows="12" disabled="disabled" style="resize:none;width: 100%; height: 180px;border:none;background:inherit" >{{taskBaseInfo.log}}</textarea>
                     <div class="tips-none" v-show="taskBaseInfo.log==''">暂无数据</div>
                 </div>
@@ -128,7 +128,8 @@ export default {
     return {
       //外层loading
       loading1:true,//接入基本信息的loading
-      loading2:false,//日志查询的loading
+      loading2:true,//日志查询的loading
+      loading3:true,
       showInnerDialog:true,
       httpUrlOld:window.ENV.API_DOWN+'/',
       httpUrl2:window.ENV.API_DACM+'/',
@@ -194,6 +195,7 @@ export default {
     //获取流程图
     getFlowChartPath(){
         let that  = this;
+        that.loading1 = true;
         let reqData = {
             params:{
                 "jobPath": that.reqObj.jobPath,
@@ -209,10 +211,10 @@ export default {
             }else{
                 that.taskBaseInfo.flowChartPath = res.data.data.path;
             }
-            that.serveFinishCount++;
+            that.loading1 = false;
         }).catch(function(err){
             console.log(err);
-            that.serveFinishCount++;            
+            that.loading1 = false; 
         })
     },
     //获取输入输出
@@ -267,6 +269,7 @@ export default {
     //查询日志
     queryLogs(){
         let that  = this;
+        that.loading3 = true;
         let reqData = {
             params:{
                 "jobPath": that.reqObj.jobPath,
@@ -282,20 +285,18 @@ export default {
             }else{
                 that.taskBaseInfo.log = res.data.data.log;
             }
-            that.serveFinishCount++;
-            that.loading2 = false;
+            that.loading3 = false;
         }).catch(function(err){
             console.log(err);
-            that.serveFinishCount++;
-            that.loading2 = false;
+            that.loading3 = false;
         })
     },
   },
   watch:{
       serveFinishCount:{
         handler:function(val,old){
-            if(val==4){
-                this.loading1 = false;
+            if(val==2){
+                this.loading2 = false;
                 console.log(val);
             }
         },
