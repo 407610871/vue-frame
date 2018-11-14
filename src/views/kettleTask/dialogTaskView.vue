@@ -130,9 +130,8 @@ export default {
       loading1:true,//接入基本信息的loading
       loading2:false,//日志查询的loading
       showInnerDialog:true,
-      httpUrlOld:'http://10.19.160.67:8081/DOMN/',
-      httpUrl:'http://10.19.248.200:32662/DOMN/',
-      httpUrl2:window.ENV.API_DACM+'',
+      httpUrlOld:window.ENV.API_DOWN+'/',
+      httpUrl2:window.ENV.API_DACM+'/',
       taskBaseInfo:{
           output:'',//输出
           input:'',//输入

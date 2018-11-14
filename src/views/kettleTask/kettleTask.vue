@@ -77,7 +77,7 @@
 </div>
 </template>
 <script>
-const baseUrl = 'http://10.19.160.67:8081/DOMN';
+const baseUrl = ENV.API_DOWN;
 import dialogTaskView from './dialogTaskView';
 export default {
     data(){
@@ -156,6 +156,8 @@ export default {
                         duration: 3500
                     });
                 }
+            }).catch(err => {
+                this.loading = false;
             });
         },
         //启动
@@ -174,6 +176,8 @@ export default {
                }else{
                    row.status = 'Finished (with errors)';
                }
+            }).catch(err => {
+                this.loading = false;
             });
         },
         //查看
@@ -199,6 +203,8 @@ export default {
                }else{
                     that.$alert(res.message,'删除');
                }
+            }).catch(err => {
+                this.loading = false;
             });
         },
         //查询按钮
