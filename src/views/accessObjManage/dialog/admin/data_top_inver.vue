@@ -84,7 +84,7 @@ export default {
       }
       this.$ajax({
         method: "get",
-        url: `${this.GLOBAL.api}ccheckData/tableCheck`,
+        url: `${this.GLOBAL.api.API_DACM}/ccheckData/tableCheck`,
         params: {
           taskId: this.taskId,
           key: this.ruleForm.setVer,
@@ -112,7 +112,7 @@ export default {
     _checkData() {
       this.$ajax({
         method: "GET",
-        url: this.GLOBAL.api +'ccheckData/tableNum',
+        url: this.GLOBAL.api.API_DACM +'/ccheckData/tableNum',
         // headers:{
         //   'Content-Type':'application/json;charset=utf-8',
         // },

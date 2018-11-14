@@ -525,7 +525,7 @@ export default {
       if (JSON.stringify(this.$store.state.userList) == "{}") {
         this.$ajax({
           method: "post",
-          url: this.GLOBAL.api + 'task/saveHeliumTask',
+          url: this.GLOBAL.api.API_DACM + '/task/saveHeliumTask',
           // headers:{
           //   'Content-Type':'application/json;charset=utf-8',
           // },
@@ -552,14 +552,14 @@ export default {
       } else {
         this.$ajax({
           method: 'post',
-          url: this.GLOBAL.api + 'dataTable/inputSurvey',
+          url: this.GLOBAL.api.API_DACM + '/dataTable/inputSurvey',
           data: this.$store.state.userList
         }).then(res => {
           this.loading = false;
           if (res.data.success) {
             this.$ajax({
               method: "post",
-              url: this.GLOBAL.api + 'task/saveHeliumTask',
+              url: this.GLOBAL.api.API_DACM + '/task/saveHeliumTask',
               // headers:{
               //   'Content-Type':'application/json;charset=utf-8',
               // },
@@ -606,7 +606,7 @@ export default {
     _getTree() {
       this.$ajax({
         method: 'get',
-        url: this.GLOBAL.api + 'caccesssysRelationWorkInfo/getDataAreaNode',
+        url: this.GLOBAL.api.API_DACM + '/caccesssysRelationWorkInfo/getDataAreaNode',
 
       }).then(res => {
         this.treeData = res.data;
@@ -617,7 +617,7 @@ export default {
     _getInit() {
       this.$ajax({
         method: 'POST',
-        url: this.GLOBAL.api + 'task/getSourceConfig',
+        url: this.GLOBAL.api.API_DACM + '/task/getSourceConfig',
         params: {
           accessSysObjInfoId: this.accId,
 

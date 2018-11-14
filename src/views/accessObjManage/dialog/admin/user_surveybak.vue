@@ -265,7 +265,7 @@ export default {
           }
           this.$ajax({
             method: 'post',
-            url: this.GLOBAL.api +'dataTable/inputSurvey',
+            url: this.GLOBAL.api.API_DACM +'/dataTable/inputSurvey',
             data: saveInfo
           }).then(res => {
             this.loading = false;
@@ -297,7 +297,7 @@ export default {
     _getStaticDatas() {
       this.$ajax({
         methods: 'post',
-        url: this.GLOBAL.api +'dataTable/queryDictionary',
+        url: this.GLOBAL.api.API_DACM +'/dataTable/queryDictionary',
         params: {
 
         }
@@ -337,7 +337,7 @@ export default {
       console.log(this.tableid);
       this.$ajax({
         method: "get",
-        url: this.GLOBAL.api + 'dataTable/getSurvey',
+        url: this.GLOBAL.api.API_DACM + '/dataTable/getSurvey',
         // headers:{
         //   'Content-Type':'application/json;charset=utf-8',
         // },
@@ -386,7 +386,7 @@ export default {
     _queryCity(value, flag) {
       this.$ajax({
         method: "get",
-        url: this.GLOBAL.api + 'commonInter/getAreas?parentid=' + value,
+        url: this.GLOBAL.api.API_DACM + '/commonInter/getAreas?parentid=' + value,
         // headers:{
         //   'Content-Type':'application/json;charset=utf-8',
         // },
@@ -410,7 +410,7 @@ export default {
     //资源目录下载
     //资源目录下载
     downTxt() {
-      window.location.href = this.GLOBAL.api +"dataTable/downloadSpecification";
+      window.location.href = this.GLOBAL.api.API_DACM +"/dataTable/downloadSpecification";
     },
     //通过省查询市
     proChange() {
@@ -426,7 +426,7 @@ export default {
     _querySys() {
       this.$ajax({
         method: "get",
-        url: this.GLOBAL.api +'caccesssysRelationWorkInfo/getSystemSet.do',
+        url: this.GLOBAL.api.API_DACM +'/caccesssysRelationWorkInfo/getSystemSet.do',
         // headers:{
         //   'Content-Type':'application/json;charset=utf-8',
         // },

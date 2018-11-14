@@ -294,10 +294,6 @@
 </template>
 <script>
 import { validateEmail } from '@/utils/validate.js'
-const env = window.ENV || {
-  API: "/api"
-};
-
 export default {
   name: "taskMDialog",
   data: function() {
@@ -467,7 +463,7 @@ export default {
       let _self = this;
       _self.$ajax({
         methods: "get",
-        url: this.GLOBAL.api + 'commonInter/getDictDataCategory',
+        url: this.GLOBAL.api.API_DACM + '/commonInter/getDictDataCategory',
         params: {
 
         }
@@ -482,7 +478,7 @@ export default {
     _getAccessDialect() {
       this.$ajax({
         methods: "get",
-        url: + 'commonInter/sysdialect',
+        url: this.GLOBAL.api.API_DACM+ '/commonInter/sysdialect',
         params: {
           type: '2'
         }
@@ -506,7 +502,7 @@ export default {
     _getDJBM() {
       this.$ajax({
         methods: "get",
-        url: this.GLOBAL.api + 'commonInter/sysDepartment',
+        url: this.GLOBAL.api.API_DACM + '/commonInter/sysDepartment',
         params: {
 
         }
@@ -521,7 +517,7 @@ export default {
       var _self = this;
       this.$ajax({
         methods: "get",
-        url: this.GLOBAL.api + 'commonInter/getListStaticData.do',
+        url: this.GLOBAL.api.API_DACM + '/commonInter/getListStaticData.do',
         params: {
           dictCode: 'ButtPlatForm'
         }
@@ -538,7 +534,7 @@ export default {
         })*/
       this.$ajax({
         method: "post",
-        url: this.GLOBAL.api + 'deptInfo/getDeptInfo',
+        url: this.GLOBAL.api.API_DACM + '/deptInfo/getDeptInfo',
       }).then(res => {
         console.log(res);
         _self.treedata = res.data.datas;
@@ -714,7 +710,7 @@ export default {
             console.log(typeof(save));
             this.$ajax({
               method: "get",
-              url: this.GLOBAL.api + 'register/dataSourceCheck',
+              url: this.GLOBAL.api.API_DACM + '/register/dataSourceCheck',
               // headers:{
               //   'Content-Type':'application/json;charset=utf-8',
               // },
@@ -738,7 +734,7 @@ export default {
                   this.loading = true;
                   this.$ajax({
                     method: "POST",
-                    url: this.GLOBAL.api + 'register/dataSourceInsert',
+                    url: this.GLOBAL.api.API_DACM + '/register/dataSourceInsert',
                     // headers:{
                     //   'Content-Type':'application/json;charset=utf-8',
                     // },
@@ -774,7 +770,7 @@ export default {
                 this.loading = true;
                 this.$ajax({
                   method: "POST",
-                  url: this.GLOBAL.api + 'register/dataSourceInsert',
+                  url: this.GLOBAL.api.API_DACM + '/register/dataSourceInsert',
                   // headers:{
                   //   'Content-Type':'application/json;charset=utf-8',
                   // },
@@ -945,7 +941,7 @@ export default {
                 //this.dialogVisible = false;
                 this.$ajax({
                   method: "POST",
-                  url: this.GLOBAL.api + 'register/fileSourceInsert',
+                  url: this.GLOBAL.api.API_DACM + '/register/fileSourceInsert',
                   processData: false,
                   contentType: false,
                   data: formData
@@ -1103,7 +1099,7 @@ export default {
               this.dialogVisible = false;
               this.$ajax({
                 method: "POST",
-                url: this.GLOBAL.api + 'register/fileSourceInsert',
+                url: this.GLOBAL.api.API_DACM + '/register/fileSourceInsert',
                 processData: false,
                 contentType: false,
                 data: formData
@@ -1149,7 +1145,7 @@ export default {
           }
           this.$ajax({
             method: "POST",
-            url: this.GLOBAL.api + 'register/dataSourceConnect',
+            url: this.GLOBAL.api.API_DACM + '/register/dataSourceConnect',
             // headers:{
             //   'Content-Type':'application/json;charset=utf-8',
             // },
@@ -1182,6 +1178,7 @@ export default {
     dialogVisible() {
       if (this.dialogVisible) {
         //得到数据库方言
+
         this._getAccessDialect();
         //数据来源
         this._getSJLYandSSJZ();
