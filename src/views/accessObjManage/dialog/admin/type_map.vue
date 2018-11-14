@@ -62,7 +62,7 @@ export default {
         count: 20,
         term: ""
       }
-      this.$ajax.post(this.GLOBAL.api + 'objDetail/dataList', map).then(function(res) {
+      this.$ajax.post(this.GLOBAL.api.API_DACM + '/objDetail/dataList', map).then(function(res) {
         if (res.data.success) {
           _self.tableData = res.data.data.list;
           for (let j = 0; j < _self.tableData.length; j++) {

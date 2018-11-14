@@ -173,7 +173,7 @@ export default {
           }
           this.$ajax({
             method: "POST",
-            url: this.GLOBAL.api +'caccesssysRelationWorkInfo/update',
+            url: this.GLOBAL.api.API_DACM +'/caccesssysRelationWorkInfo/update',
             data: params
 
           }).then(res => {
@@ -200,7 +200,7 @@ export default {
     _getData() {
       this.$ajax({
         method: "get",
-        url: this.GLOBAL.api + 'caccesssysRelationWorkInfo/getStorages',
+        url: this.GLOBAL.api.API_DACM + '/caccesssysRelationWorkInfo/getStorages',
         // headers:{
         //   'Content-Type':'application/json;charset=utf-8',
         // },

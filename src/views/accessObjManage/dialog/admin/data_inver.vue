@@ -173,7 +173,7 @@ export default {
     _queryInver() {
       this.$ajax({
         method: "GET",
-        url: this.GLOBAL.api +'ccheckData/tableNum',
+        url: this.GLOBAL.api.API_DACM +'/ccheckData/tableNum',
        /* url:'http://10.19.160.59:8080/DACM/ccheckData/tableNum',*/
         // headers:{
         //   'Content-Type':'application/json;charset=utf-8',
@@ -239,7 +239,7 @@ export default {
       this.loading2 = true;
       this.$ajax({
         method: "GET",
-        url: this.GLOBAL.api +'ccheckData/checkLog',
+        url: this.GLOBAL.api.API_DACM +'/ccheckData/checkLog',
         // headers:{
         //   'Content-Type':'application/json;charset=utf-8',
         // },
@@ -302,7 +302,7 @@ export default {
       }
       this.$ajax({
         method: "get",
-        url: `${this.GLOBAL.api}ccheckData/tableCheck`,
+        url: `${this.GLOBAL.api.API_DACM}/ccheckData/tableCheck`,
         /*url:'http://10.19.160.59:8080/DACM/ccheckData/tableCheck',*/
         params: {
           taskId: this.taskId,
@@ -330,7 +330,7 @@ export default {
     _queryHis() {
       this.$ajax({
         method: "get",
-        url: `${this.GLOBAL.api}ccheckData/tableNumAllByTaskId`,
+        url: `${this.GLOBAL.api.API_DACM}/ccheckData/tableNumAllByTaskId`,
         params: {
           taskId: this.taskId
         }
@@ -352,7 +352,7 @@ export default {
       if (!browser) {
         browser = 'IE'
       }
-      window.location.href = `${this.GLOBAL.api}ccheckData/downloadCheckDataById?id=${item.id}&browser=${browser}&accessName=${this.$route.params.sourceName}`
+      window.location.href = `${this.GLOBAL.api.API_DACM}/ccheckData/downloadCheckDataById?id=${item.id}&browser=${browser}&accessName=${this.$route.params.sourceName}`
     }
   },
   components: {

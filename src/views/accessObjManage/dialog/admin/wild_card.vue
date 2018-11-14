@@ -188,7 +188,7 @@ export default {
     _getRegexList() {
       this.$ajax({
         method: "get",
-        url: this.GLOBAL.api + 'task/getRegexList',
+        url: this.GLOBAL.api.API_DACM + '/task/getRegexList',
         params: {
 
         }

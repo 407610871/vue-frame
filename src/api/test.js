@@ -1,7 +1,7 @@
 import request from "@/utils/request";
 
 const env = window.ENV || {
-  API: "/api"
+  API_DACM: "/api"
 };
 
 export function fetchList(query) {

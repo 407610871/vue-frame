@@ -100,7 +100,7 @@ export default {
         count: 20,
         term: ""
       }
-      this.$ajax.post(this.GLOBAL.api +'objDetail/dataList', map).
+      this.$ajax.post(this.GLOBAL.api.API_DACM +'/objDetail/dataList', map).
       then(res => {
         this.tableData = [];
         if (res.data.success) {

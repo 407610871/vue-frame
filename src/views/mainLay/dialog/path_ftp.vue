@@ -127,7 +127,7 @@ export default {
         }
         this.$ajax({
           method: "POST",
-          url: this.GLOBAL.api +'ctables/addRecord',
+          url: this.GLOBAL.api.API_DACM +'/ctables/addRecord',
         /* url:'http://10.19.160.25:8080/DACM/ctables/addRecord',*/
           // headers:{
           //   'Content-Type':'application/json;charset=utf-8',
@@ -170,7 +170,7 @@ export default {
         }
         this.$ajax({
           method: "POST",
-          url: this.GLOBAL.api +'ctables/getStructure',
+          url: this.GLOBAL.api.API_DACM +'/ctables/getStructure',
           // headers:{
           //   'Content-Type':'application/json;charset=utf-8',
           // },
@@ -198,7 +198,7 @@ export default {
         }
         this.$ajax({
           method: "POST",
-          url: this.GLOBAL.api +'ctables/getStructure',
+          url: this.GLOBAL.api.API_DACM +'/ctables/getStructure',
           // headers:{
           //   'Content-Type':'application/json;charset=utf-8',
           // },
