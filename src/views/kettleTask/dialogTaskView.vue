@@ -178,14 +178,18 @@ export default {
     },
     //时间格式转换，将毫秒转换成2018-11-13 14:46:23
     transData(times){
-        let date = new Date(times);
-        let years = date.getFullYear();
-        let month = date.getMonth()+1;
-        let day = date.getDate();
-        let hours = date.getHours();
-        let minutes = date.getMinutes();
-        let seconds = date.getSeconds();
-        return years+'-'+month+'-'+day+' '+hours+':'+minutes+':'+seconds;
+        if(typeof(times)=="undefined"||times==""||times==null){
+            return "";
+        }else{
+            let date = new Date(times);
+            let years = date.getFullYear();
+            let month = date.getMonth()+1;
+            let day = date.getDate();
+            let hours = date.getHours();
+            let minutes = date.getMinutes();
+            let seconds = date.getSeconds();
+            return years+'-'+month+'-'+day+' '+hours+':'+minutes+':'+seconds;
+        }
     },
     //获取流程图
     getFlowChartPath(){
