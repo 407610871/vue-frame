@@ -125,7 +125,7 @@
             </el-col>
             <el-col :span="4" class="bank">bank</el-col>
             <el-col :span="10">
-              <el-form-item label="注册人联系电话:" prop="dockphone">
+              <el-form-item label="注册人电话:" prop="dockphone">
                 <el-input v-model="ruleForm.dockphone"></el-input>
               </el-form-item>
             </el-col>
@@ -379,6 +379,9 @@ export default {
         username: [
           { required: true, message: '不能为空', validator: validateNull, trigger: "blur" }
         ],
+        dockname: [
+          { required: true, message: '不能为空',validator: validateNull, trigger: "blur" }
+        ],
         password: [
           { required: true, message: '不能为空', validator: validateNull, trigger: "blur" }
         ],
@@ -410,7 +413,7 @@ export default {
           { validator: this.GLOBAL.validatePhone, trigger: 'blur' }
         ],
         dockphone: [
-          { validator: this.GLOBAL.validatePhone, trigger: 'blur' }
+          {required: true, message: '输入正确的号码', validator: this.GLOBAL.validatePhone, trigger: 'blur' }
         ]
       },
       treedata: [],
