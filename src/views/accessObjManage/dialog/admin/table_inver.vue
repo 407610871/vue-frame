@@ -93,7 +93,7 @@ export default {
       console.log(this.cindex);
       this.$ajax({
         method: "GET",
-        url: this.GLOBAL.api +'ccheckData/tableSourceNum',
+        url: this.GLOBAL.api.API_DACM +'/ccheckData/tableSourceNum',
         // headers:{
         //   'Content-Type':'application/json;charset=utf-8',
         // },
@@ -117,7 +117,7 @@ export default {
       this.loading2 = true;
       this.$ajax({
         method: "GET",
-        url: this.GLOBAL.api +'ccheckData/checkLog',
+        url: this.GLOBAL.api.API_DACM +'/ccheckData/checkLog',
         // headers:{
         //   'Content-Type':'application/json;charset=utf-8',
         // },
@@ -168,7 +168,7 @@ export default {
       if (!browser) {
         browser = 'IE'
       }
-      window.location.href = `${this.GLOBAL.api}ccheckData/downloadCheckDataById?id=${this.pdata.id}&browser=${browser}&accessName=${this.$route.params.sourceName}`
+      window.location.href = `${this.GLOBAL.api.API_DACM}/ccheckData/downloadCheckDataById?id=${this.pdata.id}&browser=${browser}&accessName=${this.$route.params.sourceName}`
     }
   },
   components: {
