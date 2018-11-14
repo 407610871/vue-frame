@@ -294,6 +294,10 @@
 </template>
 <script>
 import { validateEmail } from '@/utils/validate.js'
+const env = window.ENV || {
+  API: "/api"
+};
+
 export default {
   name: "taskMDialog",
   data: function() {
@@ -478,7 +482,7 @@ export default {
     _getAccessDialect() {
       this.$ajax({
         methods: "get",
-        url: this.GLOBAL.api + 'commonInter/sysdialect',
+        url: + 'commonInter/sysdialect',
         params: {
           type: '2'
         }

@@ -1,5 +1,8 @@
 <script>
-const api = 'http://10.19.248.200:32661/DACM/';
+/*const api = 'http://10.19.248.200:32661/DACM/';*/
+const api = window.ENV || {
+  API: "/api"
+};
 //校验邮箱
 const validateEmail = (rule, value, callback) => {
   const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
