@@ -135,10 +135,8 @@
 </template>
 
 <script>
-//本地
-//const baseUrl = 'http://10.19.160.59:8081/DEMO';
 //盐城
-const baseUrl = 'http://10.19.248.200:32661/DACM';
+const baseUrl = ENV.API_DACM;
 export default {
   name: "check",
   beforeCreate() {

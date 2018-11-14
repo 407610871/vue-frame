@@ -77,7 +77,7 @@
 </div>
 </template>
 <script>
-const baseUrl = 'http://10.19.160.67:8081/DOMN';
+const baseUrl = ENV.API_DOWN;
 import dialogTaskView from './dialogTaskView';
 export default {
     data(){
