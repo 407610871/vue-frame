@@ -1,50 +1,31 @@
 <template>
 <div v-loading="loading">
-    <el-form ref="form"  label-width="80px" class="formGroup">
-        <el-form-item label="任务状态" >
-            <el-checkbox-group v-model="status">
-                <el-checkbox label="0" name="status">全选</el-checkbox>
-                <el-checkbox label="1" name="status">暂停</el-checkbox>
-                <el-checkbox label="2" name="status">新建</el-checkbox>
-                <el-checkbox label="3" name="status">失败</el-checkbox>
-                <el-checkbox label="4" name="status">运行</el-checkbox>
-                <el-checkbox label="5" name="status">完成</el-checkbox>
+    <div class="searchDiv">
+        <div class="dataSearch">
+            <i class="el-icon-search"></i>
+            <input type="text" v-model="taskName" placeholder="请输入任务名称" />
+        </div>
+        <span  @click="doMoreSearch" >高级搜索 <i :class="!moreSearch?'el-icon-caret-bottom':'el-icon-caret-top'"></i>  </span>
+        <el-button type="primary" class="doCearch" @click="search">查询</el-button> 
+    </div>
+    <el-form ref="form"  label-width="110px" class="formGroup" v-if="moreSearch">
+        <el-form-item label="任务状态:">
+            <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>
+            <el-checkbox-group v-model="status" @change="handleCheckedCitiesChange">
+                <el-checkbox name="status" v-for="(index,item) in checkStatus" :label="item.label" :key="index">{{item.name}}</el-checkbox>
             </el-checkbox-group>
         </el-form-item>
-        <el-row>
-            <el-col :span="6">
-                <el-form-item label="开始时间"> 
-                    <el-date-picker
-                        v-model="startTime"
-                        :picker-options="pickerOptions"
-                        type="datetime"
-                        placeholder="开始时间"
-                        value-format="yyyy-MM-dd hh:mm:ss"
-                        :default-time="['12:00:00']">
-                    </el-date-picker>
-                </el-form-item>
-            </el-col>
-            <el-col :span="6">
-                <el-form-item label="结束时间"> 
-                    <el-date-picker
-                        v-model="endTime"
-                        :picker-options="pickerOptions"
-                        type="datetime"
-                        placeholder="结束时间"
-                        value-format="yyyy-MM-dd hh:mm:ss"
-                        :default-time="['12:00:00']">
-                    </el-date-picker>
-                </el-form-item>
-            </el-col>
-            <el-col :span="9">
-                <el-form-item label="任务名称">
-                    <el-input v-model="taskName" placeholder="请输入任务名称"></el-input>
-                </el-form-item>
-            </el-col>
-            <el-col :span="3">
-                <el-button type="success" size="small" class="search-btn">查询</el-button>
-            </el-col>
-        </el-row>
+        <el-form-item label="任务开始时间:">  
+            <el-date-picker
+            v-model="time"
+            :picker-options="pickerOptions"
+            type="datetimerange"
+            start-placeholder="开始时间"
+            end-placeholder="结束时间"
+            value-format="yyyy-MM-dd HH:MM:ss"
+            :default-time="['12:00:00']">
+            </el-date-picker>
+        </el-form-item>
     </el-form>
     <el-table :data="tableData" :height="tableHeight">
         <el-table-column label="序号" type="index" width="100"></el-table-column>
@@ -104,15 +85,20 @@ export default {
             pageSize: 10,
             totalPage: 0,
             status:[],
+            checkStatus:[{name:'暂停',label:'Paused'},{name:'新建',label:'create'},{name:'失败',label:'Finished (with errors)'},{name:'运行',label:'Running'},{name:'完成',label:'Finished'}],
+            isIndeterminate:true,
+            checkAll:false,
             startTime: '',
             endTime: '',
             taskName:'',
             tableData:[],
+            moreSearch:false,
+            time: [],
             pickerOptions: {
-                disabledDate() {
-                   
+                disabledDate(time) {
+                return time.getTime() > Date.now();
                 }
-            },
+            }
             
         }
     },
@@ -121,10 +107,24 @@ export default {
     },
     computed:{
         tableHeight() {
-            return window.innerHeight - 300;
+            return  !this.moreSearch?   window.innerHeight - 220:window.innerHeight - 335;
+        },
+        _checkStatus(){
+            return this.checkStatus.map(item => item.label);
         },
     },
     methods: {
+        handleCheckAllChange(val){
+            this.status = val ? this._checkStatus : [];
+            this.isIndeterminate = false;
+        },
+        handleCheckedCitiesChange(value){
+            let checkedCount = value.length;
+            this.checkAll = checkedCount === this.checkStatus.length;
+
+            this.isIndeterminate = checkedCount > 0 && checkedCount < this.checkStatus.length;
+            console.log(this.status)
+        },
         handleCurrentChange() {
             this.init();
         },
@@ -198,6 +198,15 @@ export default {
                }
             });
         },
+        //查询按钮
+        search(){
+            this.init();
+        },
+        //高级搜索
+        doMoreSearch(){
+            this.moreSearch=!this.moreSearch;
+            this.status=[];
+        },
     },
     filters:{
         formatDateTime(val){
@@ -219,6 +228,66 @@ export default {
 };
 </script>
 <style  lang="scss" scoped>
+.dataSearch {
+  display: inline-block;
+  width: 210px;
+  height: 30px;
+  border: 1px solid #c9cdd0;
+  input {
+    margin-left: 5px;
+    width: 180px;
+    background-color: transparent;
+    border: 0 none;
+    outline: 0 none;
+    height: 28px;
+    font-size: 14px;
+  }
+  i{
+    text-indent: 5px;
+  }
+  ::-webkit-input-placeholder {
+    color: #999;
+  } ///* 使用webkit内核的浏览器 */
+  :-moz-placeholder {
+    color: #999;
+  } ///* Firefox版本4-18 */
+  ::-moz-placeholder {
+    color: #999;
+  } ///* Firefox版本19+ */
+  :-ms-input-placeholder {
+    color: #999;
+  } ///* IE浏览器 */
+}
+.searchDiv {
+    margin-left: 10px;
+    margin-bottom: 20px;
+    span {
+        display: inline-block;
+        font-size: 14px;
+        cursor: pointer;
+        width: 100px;
+        height: 30px;
+        border: 1px solid #c9cdd0;
+        border-left: none;
+        line-height: 30px;
+        text-align: center;
+        position: relative;
+        top: 1px;
+    }
+}
+.doCearch{
+    display: inline-block;
+    height: 28px;
+    margin-left: 15px;
+    margin-top: 0;
+    position: relative;
+    top: 2px;
+    line-height: 10px;
+}
+.el-checkbox-group{
+    display:inline-block;
+    margin-left:30px;
+}
 .icon-span{
     font-size:18px;
     color:#0095e7;
