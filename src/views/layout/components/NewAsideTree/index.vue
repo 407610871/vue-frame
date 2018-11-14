@@ -243,9 +243,9 @@
 					var listCount = this.$refs.tree.getCheckedNodes();
 					var deptIdsCoundt = this.$refs.tree.getCheckedKeys();
 					
-					var targetList;
+					var targetList = [];
 					if(deptIdsCoundt.length==0){
-						targetList = [1];
+						targetList.push(1);
 					}else{
 						for(var value of listCount){
 							if(value.children.length==0){
