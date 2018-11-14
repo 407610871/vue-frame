@@ -1,155 +1,133 @@
 <template>
-    <div v-loading="loading">
-      <!-- 搜索栏 -->
-       <div class="count-container"  >
-
+  <div v-loading="loading">
+    <!-- 搜索栏 -->
+    <div class="count-container">
 
       <!-- 查询按钮 -->
       <div class="searchDiv">
         <div class="dataSearch">
-           <i class="el-icon-search"></i>
-            <input type="text" v-model="keyword" placeholder="请输入查询条件" />
-          </div>
-          <span  @click="doMoreSearch" >高级搜索 <i :class="!moreSearch?'el-icon-caret-bottom':'el-icon-caret-top'"></i>  </span>
-                <el-button type="primary" class="doCearch" @click="search">查询</el-button> 
-
-      </div>
-         
-
-
-
-        <el-form ref="form"  label-width="110px" class="formGroup" v-if="moreSearch">
-          <el-form-item label="任务类型:" >
-              <el-checkbox-group v-model="taskPeriodType">
-                  <el-checkbox label="0"   name="taskPeriodType">实时任务</el-checkbox>
-                  <el-checkbox label="1" name="taskPeriodType">一次性任务</el-checkbox>
-                  <el-checkbox label="2" name="taskPeriodType">周期任务</el-checkbox>
-                  <el-checkbox label="3" name="taskPeriodType">全量任务</el-checkbox>
-               </el-checkbox-group>
-           </el-form-item>
-            <el-form-item label="任务状态:">
-              <el-checkbox-group v-model="status">
-                  <el-checkbox label="0" name="status">新建</el-checkbox>
-                  <el-checkbox label="1" name="status">运行</el-checkbox>
-                  <el-checkbox label="2" name="status">暂停</el-checkbox>
-                  <el-checkbox label="3" name="status">失败</el-checkbox>
-                  <el-checkbox label="4" name="status">完成</el-checkbox>
-               </el-checkbox-group>
-             </el-form-item>
-        
-          <el-form-item label="任务开始时间:">  
-                <el-date-picker
-                  v-model="time"
-                   :picker-options="pickerOptions"
-                  type="datetimerange"
-                  start-placeholder="开始时间"
-                  end-placeholder="结束时间"
-                  value-format="yyyy-MM-dd HH:MM:ss"
-                  :default-time="['12:00:00']">
-               </el-date-picker>
-         
-   </el-form-item>
-           </el-form>
-         
-       
-      </div>
-       <!-- 操作按钮 -->
-       <div class="count-operate">
-         <div>
-            <el-button type="primary" @click="doMore('manager/taskOperate/batchConverge',1)">重新汇聚</el-button>
-            <el-button type="primary" @click="doMore('manager/taskOperate/batchStart',2)">批量启动</el-button>
-            <el-button type="primary" @click="doMore('manager/taskOperate/batchPause',3)">批量停止</el-button>
-         </div>
-       </div>
-
-       <!-- 表格数据 -->
-<div class="mainTable zcTable">
-<el-table ref="multipleTable" :data="tableData" tooltip-effect="dark"  :height="tableHeight" style="width: 100%"   @select-all="selectAll"  @select="select"  @selection-change="handleSelectionChange" >
-            <el-table-column  fixed type="selection" width="55"></el-table-column>
-             <el-table-column  fixed label="接入指示" width="100"> 
-                <template slot-scope="scope">
-                  <i v-if="scope.row.networkStatus==0" class="indicate" style="backgroundColor:green" title="数据源连接正常"></i>
-                   <i v-else-if="scope.row.networkStatus==1" class="indicate" style="backgroundColor:yellow" title="数据源链接不稳定"></i>
-                    <i v-else-if="scope.row.networkStatus==2" class="indicate" style="backgroundColor:red" title="数据源不通"></i>
-                  
-                </template>
-
-             </el-table-column>
-                         <el-table-column prop="taskInfoId" fixed label="ID"  width="100" :show-overflow-tooltip='true'></el-table-column>
-
-            <el-table-column fixed label="任务名称" width="200" :show-overflow-tooltip='true' @click="showTaskDetail=true">
-<template slot-scope="scope">
-                 <el-button @click="doDetail(scope.$index, scope.row)">{{scope.row.taskName}}</el-button>
-                </template>
-
-            </el-table-column>
-            <el-table-column prop="sourceDBName" label="接入源名称"  width="200" :show-overflow-tooltip='true'></el-table-column>
-            <el-table-column prop="dataTableName" label="接入对象" width="200"  :show-overflow-tooltip='true'></el-table-column>
-            <el-table-column prop="targetDBName" label="目标库" width="200"  :show-overflow-tooltip='true'> </el-table-column>
-            <el-table-column prop="targetTableName" label="目标表" width="200"  :show-overflow-tooltip='true'></el-table-column>
-            <el-table-column prop="startTime" label="任务开始时间" width="140" :show-overflow-tooltip='true'> </el-table-column>
-            <el-table-column prop="endTime" label="任务结束时间" width="140" :show-overflow-tooltip='true'></el-table-column>
-            <el-table-column  label="任务类型" width="100">
-                <template slot-scope="scope">
-                  <span v-if="scope.row.isPeriod==0">实时性任务</span>
-                  <span v-if="scope.row.isPeriod==1">一次性任务</span>
-                  <span v-else-if="scope.row.isPeriod==2">周期任务</span>
-                  <span v-else-if="scope.row.isPeriod==3">全量任务</span>
-                </template>
-            </el-table-column>
-            <el-table-column  label="当前状态" width="100">
-                <template slot-scope="scope" >
-                  <span v-if="scope.row.status==0">新建</span>
-                  <span v-if="scope.row.status==1">运行</span>
-                  <span v-else-if="scope.row.status==2">暂停</span>
-                  <span v-else-if="scope.row.status==3" style="color:red">失败</span>
-                  <span v-else-if="scope.row.status==4">完成</span>
-                </template>
-            </el-table-column>
-            <el-table-column  prop="joinDataNum" label="已接入数据量" :show-overflow-tooltip='true' width="150"></el-table-column>
-             <el-table-column  label="操作"  width="200">
-                <template slot-scope="scope">
-                  <el-button  v-if="scope.row.status==0||scope.row.status==2"  type="text" size="small" @click="doRun(scope.$index, scope.row)">运行</el-button>
-                                    <el-button  v-else-if="scope.row.status==3"  type="text" size="small" @click="doRun(scope.$index, scope.row)">重启</el-button>
-
-                  <el-button  v-else-if="scope.row.status==1"  type="text" size="small" @click="doRun(scope.$index, scope.row)">暂停</el-button>
-                  <el-button  v-else-if="scope.row.status==4"  type="text" size="small" @click="doDel(scope.$index, scope.row)">处理完毕</el-button>
-                 <el-button type="text" size="small" @click="doCheck(scope.$index, scope.row)">数据核验</el-button>
-                 <el-button type="text" size="small"  @click="doConverge(scope.$index, scope.row)">重新汇聚</el-button>
-                </template>
-             </el-table-column>
-  </el-table>
-</div>
-      
-
-
-<!-- 分页 -->
- <el-footer>
-        <div class="enc-pagination">
-          <el-pagination  style="float:right; margin:10px;"
-           @current-change="handleCurrentChange"
-            background
-            :current-page.sync="pageNum"
-            :page-size="pageSize"
-            :total="mainTableDataTotal"
-            layout="prev, pager, next, jumper"
-            >
-          </el-pagination>
+          <i class="el-icon-search"></i>
+          <input type="text" v-model="keyword" placeholder="请输入查询条件" />
         </div>
-      </el-footer>
-      
-<!-- 任务详情 -->
-      <dialogTaskDetail  :reqObj="reqObj" v-if="showTaskDetail" v-on:closeDia="showTaskDetail=false"></dialogTaskDetail>
+        <span @click="doMoreSearch">高级搜索 <i :class="!moreSearch?'el-icon-caret-bottom':'el-icon-caret-top'"></i> </span>
+        <el-button type="primary" class="doCearch" @click="search">查询</el-button>
 
-      <DialogIsCheck v-if="showTaskCheck" v-on:closeDiaChk="showTaskCheck=false" :msgCheck="check" ></DialogIsCheck>
+      </div>
+
+      <el-form ref="form" label-width="110px" class="formGroup" v-if="moreSearch">
+        <el-form-item label="任务类型:">
+          <el-checkbox-group v-model="taskPeriodType">
+            <el-checkbox label="0" name="taskPeriodType">实时任务</el-checkbox>
+            <el-checkbox label="1" name="taskPeriodType">一次性任务</el-checkbox>
+            <el-checkbox label="2" name="taskPeriodType">周期任务</el-checkbox>
+            <el-checkbox label="3" name="taskPeriodType">全量任务</el-checkbox>
+          </el-checkbox-group>
+        </el-form-item>
+        <el-form-item label="任务状态:">
+          <el-checkbox-group v-model="status">
+            <el-checkbox label="0" name="status">新建</el-checkbox>
+            <el-checkbox label="1" name="status">运行</el-checkbox>
+            <el-checkbox label="2" name="status">暂停</el-checkbox>
+            <el-checkbox label="3" name="status">失败</el-checkbox>
+            <el-checkbox label="4" name="status">完成</el-checkbox>
+          </el-checkbox-group>
+        </el-form-item>
+
+        <el-form-item label="任务开始时间:">
+          <el-date-picker v-model="time" :picker-options="pickerOptions" type="datetimerange" start-placeholder="开始时间" end-placeholder="结束时间" value-format="yyyy-MM-dd HH:mm:ss" :default-time="['12:00:00']">
+          </el-date-picker>
+
+        </el-form-item>
+      </el-form>
+
     </div>
+    <!-- 操作按钮 -->
+    <div class="count-operate">
+      <div>
+        <el-button type="primary" @click="doMore('manager/taskOperate/batchConverge',1)">重新汇聚</el-button>
+        <el-button type="primary" @click="doMore('manager/taskOperate/batchStart',2)">批量启动</el-button>
+        <el-button type="primary" @click="doMore('manager/taskOperate/batchPause',3)">批量停止</el-button>
+      </div>
+    </div>
+
+    <!-- 表格数据 -->
+    <div class="mainTable zcTable">
+      <el-table ref="multipleTable" :data="tableData" tooltip-effect="dark" :height="tableHeight" style="width: 100%" @select-all="selectAll" @select="select" @selection-change="handleSelectionChange">
+        <el-table-column fixed type="selection" width="55"></el-table-column>
+        <el-table-column fixed label="接入指示" width="100">
+          <template slot-scope="scope">
+            <i v-if="scope.row.networkStatus==0" class="indicate" style="backgroundColor:green" title="数据源连接正常"></i>
+            <i v-else-if="scope.row.networkStatus==1" class="indicate" style="backgroundColor:yellow" title="数据源链接不稳定"></i>
+            <i v-else-if="scope.row.networkStatus==2" class="indicate" style="backgroundColor:red" title="数据源不通"></i>
+
+          </template>
+
+        </el-table-column>
+        <el-table-column prop="taskInfoId" fixed label="ID" width="100" :show-overflow-tooltip='true'></el-table-column>
+
+        <el-table-column fixed label="任务名称" width="200" :show-overflow-tooltip='true' @click="showTaskDetail=true">
+          <template slot-scope="scope">
+            <el-button @click="doDetail(scope.$index, scope.row)">{{scope.row.taskName}}</el-button>
+          </template>
+
+        </el-table-column>
+        <el-table-column prop="sourceDBName" label="接入源名称" width="200" :show-overflow-tooltip='true'></el-table-column>
+        <el-table-column prop="dataTableName" label="接入对象" width="200" :show-overflow-tooltip='true'></el-table-column>
+        <el-table-column prop="targetDBName" label="目标库" width="200" :show-overflow-tooltip='true'> </el-table-column>
+        <el-table-column prop="targetTableName" label="目标表" width="200" :show-overflow-tooltip='true'></el-table-column>
+        <el-table-column prop="startTime" label="任务开始时间" width="140" :show-overflow-tooltip='true'> </el-table-column>
+        <el-table-column prop="endTime" label="任务结束时间" width="140" :show-overflow-tooltip='true'></el-table-column>
+        <el-table-column label="任务类型" width="100">
+          <template slot-scope="scope">
+            <span v-if="scope.row.isPeriod==0">实时性任务</span>
+            <span v-if="scope.row.isPeriod==1">一次性任务</span>
+            <span v-else-if="scope.row.isPeriod==2">周期任务</span>
+            <span v-else-if="scope.row.isPeriod==3">全量任务</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="当前状态" width="100">
+          <template slot-scope="scope">
+            <span v-if="scope.row.status==0">新建</span>
+            <span v-if="scope.row.status==1">运行</span>
+            <span v-else-if="scope.row.status==2">暂停</span>
+            <span v-else-if="scope.row.status==3" style="color:red">失败</span>
+            <span v-else-if="scope.row.status==4">完成</span>
+          </template>
+        </el-table-column>
+        <el-table-column prop="joinDataNum" label="已接入数据量" :show-overflow-tooltip='true' width="150"></el-table-column>
+        <el-table-column label="操作" width="200">
+          <template slot-scope="scope">
+            <el-button v-if="scope.row.status==0||scope.row.status==2" type="text" size="small" @click="doRun(scope.$index, scope.row)">运行</el-button>
+            <el-button v-else-if="scope.row.status==3" type="text" size="small" @click="doRun(scope.$index, scope.row)">重启</el-button>
+
+            <el-button v-else-if="scope.row.status==1" type="text" size="small" @click="doRun(scope.$index, scope.row)">暂停</el-button>
+            <el-button v-else-if="scope.row.status==4" type="text" size="small" @click="doDel(scope.$index, scope.row)">处理完毕</el-button>
+            <el-button type="text" size="small" @click="doCheck(scope.$index, scope.row)">数据核验</el-button>
+            <el-button type="text" size="small" @click="doConverge(scope.$index, scope.row)">重新汇聚</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+    </div>
+
+    <!-- 分页 -->
+    <el-footer>
+      <div class="enc-pagination">
+        <el-pagination style="float:right; margin:10px;" @current-change="handleCurrentChange" background :current-page.sync="pageNum" :page-size="pageSize" :total="mainTableDataTotal" layout="prev, pager, next, jumper">
+        </el-pagination>
+      </div>
+    </el-footer>
+
+    <!-- 任务详情 -->
+    <dialogTaskDetail :reqObj="reqObj" v-if="showTaskDetail" v-on:closeDia="showTaskDetail=false"></dialogTaskDetail>
+
+    <DialogIsCheck v-if="showTaskCheck" v-on:closeDiaChk="showTaskCheck=false" :msgCheck="check"></DialogIsCheck>
+  </div>
 </template>
 <script>
 import DialogIsCheck from "./DialogIsCheck";
 import DialogTaskDetail from "./DialogTaskDetail";
 //盐城环境地址
-const httpUrl = window.ENV.API_DOWN+"/";
-console.log(httpUrl.API_DOWN)
+const httpUrl = window.ENV.API_DOWN + "/";
 //本地调试地址
 // const httpUrl="http://10.19.160.67:8081/DOMN/";
 // export const httpUrl="http://10.19.160.67:8081/DOMN/";
@@ -167,7 +145,7 @@ export default {
       pageSize: 10,
       showTaskDetail: false,
       showTaskCheck: false,
-      moreSearch:false,
+      moreSearch: false,
       allSecectData: {},
       keyword: "",
       isDeleted: 0,
@@ -203,7 +181,9 @@ export default {
       // return 1;
     },
     tableHeight: function() {
-      return  !this.moreSearch?   window.innerHeight - 300:window.innerHeight - 436;
+      return !this.moreSearch
+        ? window.innerHeight - 300
+        : window.innerHeight - 436;
     }
   },
   created() {
@@ -222,11 +202,10 @@ export default {
       this.init(keyword);
     },
     //高级搜索
-    doMoreSearch(){
-      this.moreSearch=!this.moreSearch;
-      this.taskPeriodType=[];
-      this.status=[];
-
+    doMoreSearch() {
+      this.moreSearch = !this.moreSearch;
+      this.taskPeriodType = [];
+      this.status = [];
     },
     //详情
     doDetail(index, row) {
@@ -687,7 +666,7 @@ export default {
 </script>
 <style  rel="stylesheet/scss" lang="scss" scoped>
 .count-container {
-  width: 95%;
+  // width: 95%;
   // height: 150px;
   background-color: #fff;
   border-bottom: 1px solid #d9d9d9;
@@ -747,7 +726,7 @@ export default {
     height: 28px;
     font-size: 14px;
   }
-  i{
+  i {
     text-indent: 5px;
   }
   ::-webkit-input-placeholder {
@@ -764,8 +743,8 @@ export default {
   } ///* IE浏览器 */
 }
 .searchDiv {
-  margin-left: 10px;
-      margin-bottom: 20px;
+  margin-left: 2.5%;
+  margin-bottom: 20px;
   span {
     display: inline-block;
     font-size: 14px;
@@ -780,29 +759,28 @@ export default {
     top: 1px;
   }
 }
-.doCearch{
+.doCearch {
   display: inline-block;
   height: 28px;
   margin-left: 15px;
   margin-top: 0;
-   position: relative;
-    top: 2px;
-line-height: 10px;
+  position: relative;
+  top: 2px;
+  line-height: 10px;
 }
 .el-form-item {
-    margin-bottom: 10px;
+  margin-bottom: 10px;
 }
-
 </style>
 <style>
 .el-picker-panel__icon-btn {
   color: #303133 !important;
 }
- .zcTable .el-table__fixed {
+.zcTable .el-table__fixed {
   background-color: #fff;
 }
 .zcTable .el-table__body-wrapper {
-   background-color: #fff;
+  background-color: #fff;
 }
 </style>
 
