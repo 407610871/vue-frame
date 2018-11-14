@@ -65,7 +65,7 @@
                 <userSurvey v-if="jrtype=='mysql'|| jrtype=='oracle'|| jrtype=='postgresql' || jrtype=='sqlserver'" :pdata="scope.row" @fre="loadTable()"></userSurvey>
               </div>
               
-              <div class="survey" v-if="jrtype=='mysql'|| jrtype=='oracle'|| jrtype=='postgresql' || jrtype=='sqlserver'">
+              <div class="survey" v-if="(jrtype=='mysql'&&scope.row.exitTask)|| (jrtype=='oracle'&&scope.row.exitTask)|| (jrtype=='postgresql'&&scope.row.exitTask) || (jrtype=='sqlserver'&&scope.row.exitTask)">
                 <data-inver :pdata="scope.row" @fre="loadTable()"></data-inver>
               </div>
               <div class="survey" v-if="jrtype!='mysql' && jrtype!='oracle' && jrtype!='sqlserver' && jrtype!='postgresql'">
@@ -175,7 +175,7 @@ export default {
     tableParams(newVal, oldVal) {
       console.log(newVal);
       console.log(oldVal);
-      if (JSON.stringify(newVal) != JSON.stringify(oldVal)) {
+      if (JSON.stringify(newVal) != JSON.stringify(oldVal) && newVal.timeFlag != 0) {
         console.log('change');
         this.loadTable();
       }

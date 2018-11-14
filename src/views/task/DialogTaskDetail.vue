@@ -319,7 +319,6 @@ export default {
       flagDesc:'',
       showInnerDialog: true,
       isShowCheck:false,
-      httpUrlOld:'http://10.19.160.67:8081/DOMN/',
       httpUrl:window.ENV.API_DOWN+'/',
       httpUrl2:window.ENV.API_DACM+'/',
       operateList:[

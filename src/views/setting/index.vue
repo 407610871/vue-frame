@@ -120,7 +120,7 @@ export default {
 		initPage(){
 			var _self = this;
 		
-			this.$ajax.get(window.ENV.API_DACM+'caccesssysRelationWorkInfo/getStorages',{
+			this.$ajax.get(window.ENV.API_DACM+'/caccesssysRelationWorkInfo/getStorages',{
 				params:{
 					nodeId:2,
 					pid:1
@@ -173,13 +173,13 @@ export default {
 
 
 			const promist0 = new Promise((resolve, reject) => {
-				this.$ajax.get(window.ENV.API_DACM+'commonInter/getAreas', {
+				this.$ajax.get(window.ENV.API_DACM+'/commonInter/getAreas', {
 				// this.$ajax.get('./getProvinceList', {
 					params:{
 						parentid:0
 					}
 				}).then((res) => {
-					if(res.data.success){
+					if(res.data.result){
 						resolve(res);
 					}else{
 						reject(res);
@@ -196,7 +196,7 @@ export default {
 				})
 			});
 			const promist1 = new Promise((resolve, reject) => {
-				this.$ajax.get('http://10.19.248.200:32442/DACM/caccesssysRelationWorkInfo/getSystemSet.do').then((res) => {
+				this.$ajax.get(window.ENV.API_DACM+'/caccesssysRelationWorkInfo/getSystemSet.do').then((res) => {
 					if(res.data.result == 'success'){
 						resolve(res);
 						
@@ -233,7 +233,7 @@ export default {
 							_self.sysParam.province = position.pro;
 							var city = position.city
 							// _self.$ajax.get('./getCityList',{
-							_self.$ajax.get(window.ENV.API_DACM+'commonInter/getAreas',{
+							_self.$ajax.get(window.ENV.API_DACM+'/commonInter/getAreas',{
 								params:{
 									parentid:_self.sysParam.province
 								}
@@ -254,7 +254,7 @@ export default {
 		},
     loadCity() {
 			var _self = this;
-      _self.$ajax.get(window.ENV.API_DACM+'commonInter/getAreas',{
+      _self.$ajax.get(window.ENV.API_DACM+'/commonInter/getAreas',{
 				params:{
 					parentid:_self.sysParam.province
 				}
@@ -312,7 +312,7 @@ export default {
 			).then(function(res){*/
 			_self.$ajax({
 				// url: 'http://10.19.160.175:8080/DACM/caccesssysRelationWorkInfo/saveSystemSet',
-				url: window.ENV.API_DACM+'caccesssysRelationWorkInfo/saveSystemSet',
+				url: window.ENV.API_DACM+'/caccesssysRelationWorkInfo/saveSystemSet',
 				method: 'post',
 				data: paramsList,
 				// headers: {'Content-Type': 'application/x-www-form-urlencoded'}

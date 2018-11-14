@@ -121,7 +121,7 @@ export default {
 			var _self = this;
 			var storageId = _self.editTxt == '关联'?this.editingId:0;
 			console.log(storageId);
-			this.$ajax.get(window.ENV.API_DACM+'caccesssysRelationWorkInfo/operate',{
+			this.$ajax.get(window.ENV.API_DACM+'/caccesssysRelationWorkInfo/operate',{
 				params:{
 					nodeId:2,
 					storageId:storageId
