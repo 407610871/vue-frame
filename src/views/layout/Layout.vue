@@ -70,11 +70,12 @@ export default {
 
   },
 	mounted(){
-		console.log('layout')
 		var _self = this;
+		console.log('window.ENV.API_DACM')
+		console.log(ENV)
 		
 		this.$ajax
-			.get("http://10.19.248.200:32442/DACM/caccesssysRelationWorkInfo/getSystemSet.do")
+			.get(window.ENV.API_DACM+"/caccesssysRelationWorkInfo/getSystemSet.do")
 			.then(function(res) {
 				if (res.data.result == 'success') {
 					var configs = JSON.parse(res.data.message);
@@ -93,7 +94,7 @@ export default {
 			});
 			
 		this.$ajax
-			.get("http://10.19.248.200:32661/DACM/caccess/sysdialect", {
+			.get(window.ENV.API_DACM+"/caccess/sysdialect", {
 				params: {
 					type: 0
 				}

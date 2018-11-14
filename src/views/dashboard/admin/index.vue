@@ -154,7 +154,7 @@ export default {
 		setCount(){
 			var _self = this;
 			// this.$ajax.post('http://10.19.160.29:8080/DACM/caccess/dataAccessStatistics',this.tableParams.deptId
-			this.$ajax.post('http://10.19.248.200:32661/DACM/caccess/dataAccessStatistics',this.tableParams.deptId
+			this.$ajax.post(window.ENV.API_DACM+'/caccess/dataAccessStatistics',this.tableParams.deptId
 			).then(function(res){
 				if(res.data.success){
 					if(!res.data.data.data){
@@ -229,13 +229,17 @@ export default {
       paramsObj.platform = this.tableParams.platform;
 			paramsObj.deptIds = this.tableParams.deptId;
 
-      this.$ajax.post('http://10.19.248.200:32661/DACM/caccess/query',paramsObj).then(function(res){
+      this.$ajax.post(window.ENV.API_DACM+'/caccess/query',paramsObj).then(function(res){
         console.log('tableLoaded:dashboard');
-        if(res.data.success){
+        if(res.data.code=='0000'){
           _self.mainTableData = res.data.data.list;
           _self.mainTableDataTotal = res.data.data.total;
           _self.currentPage = _self.tableParams.pageNum;
-        }else{
+        }else if(res.data.code=='5000'){
+					_self.mainTableData = [];
+					_self.mainTableDataTotal = 1;
+          _self.currentPage = 1;
+				}else{
           console.log(res.data.code)
 					_self.$alert('加载数据源数据失败','提示', {
 						confirmButtonText: '确定'
@@ -282,7 +286,7 @@ export default {
 				type: 'warning'
 			}).then(() => {
 				var _self = this;
-				this.$ajax.get('http://10.19.248.200:32661/DACM/update/dataSourceCopy', {
+				this.$ajax.get(window.ENV.API_DACM+'/update/dataSourceCopy', {
 					params:{
 						id: row.id
 					}
@@ -307,7 +311,7 @@ export default {
 				type: 'warning'
 			}).then(() => {
 				var _self = this;
-				this.$ajax.post('http://10.19.248.200:32661/DACM/caccess/delete?ids='+row.id).then(function(res) {
+				this.$ajax.post(window.ENV.API_DACM+'/caccess/delete?ids='+row.id).then(function(res) {
 					_self.loadTable();
 				})
 				.catch(function(err) {

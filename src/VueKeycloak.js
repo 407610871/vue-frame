@@ -5,7 +5,7 @@ import Keycloak from "keycloak-js";
 function install(Vue, options) {
   console.log(this)
   const keycloak = Keycloak({
-    url: "http://10.37.146.48:8080/auth",
+    url: window.ENV.VUE_APP_AUTH_SERVER_URL,
     realm: "bocom_nanjing",
     clientId: "js-console",
     credentials: {

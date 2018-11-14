@@ -132,7 +132,7 @@ export default {
       showInnerDialog:true,
       httpUrlOld:'http://10.19.160.67:8081/DOMN/',
       httpUrl:'http://10.19.248.200:32662/DOMN/',
-      httpUrl2:'http://10.19.248.200:32661/DACM/',
+      httpUrl2:window.ENV.API_DACM+'',
       taskBaseInfo:{
           output:'',//输出
           input:'',//输入
