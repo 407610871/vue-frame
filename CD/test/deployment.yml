@@ -27,9 +27,9 @@ spec:
         - name: VUE_APP_CREDENTIALS_SECRET
           value: 352fb505-c5ea-4f0a-9b59-3643f06e144e
         - name: API_DACM
-          value: http://web-dacn:8080/DACM
+          value: http://10.19.248.200:31701/DACM
         - name: API_DOWN
-          value: http://web-domn:8080/DOMN
+          value: http://10.19.248.200:32555/DOMN
         resources:
           limits:
             cpu: 300m
