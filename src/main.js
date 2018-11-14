@@ -18,7 +18,7 @@ import i18n from "./lang"; // Internationalization
 import "./icons"; // icon
 import "./errorLog"; // error log
 import "./mock"; // simulation data
-import global_ from './views/mainLay/dialog/common.vue'  //接口地址
+import global_ from "./views/mainLay/dialog/common.vue"; //接口地址
 import * as filters from "./filters"; // global filters
 
 import "./registerServiceWorker";
@@ -26,9 +26,9 @@ import "./registerServiceWorker";
 //展宏加入
 import axios from "axios";
 //x2js
-import x2js from 'x2js'; //xml数据处理插件
+import x2js from "x2js"; //xml数据处理插件
 Vue.prototype.$x2js = new x2js(); //创建x2js对象，挂到vue原型上
-Vue.prototype.GLOBAL = global_//挂载到Vue实例上面
+Vue.prototype.GLOBAL = global_; //挂载到Vue实例上面
 Vue.prototype.$ajax = axios;
 Vue.prototype.$ajax.interceptors.request.use(
   config => {
@@ -50,20 +50,20 @@ import Authen from "./Authen.js";
 import VJstree from "vue-jstree";
 import Viser from "viser-vue";
 
-function loadScript(url, callback) {
-  // adding the script tag to the head as suggested before
-  var head = document.getElementsByTagName("head")[0];
-  var script = document.createElement("script");
-  script.type = "text/javascript";
-  script.src = url;
+// function loadScript(url, callback) {
+//   // adding the script tag to the head as suggested before
+//   var head = document.getElementsByTagName("head")[0];
+//   var script = document.createElement("script");
+//   script.type = "text/javascript";
+//   script.src = url;
 
-  // then bind the event to the callback function
-  // there are several events for cross browser compatibility
-  script.onload = callback;
+//   // then bind the event to the callback function
+//   // there are several events for cross browser compatibility
+//   script.onload = callback;
 
-  // fire the loading
-  head.appendChild(script);
-}
+//   // fire the loading
+//   head.appendChild(script);
+// }
 
 function bootstrap(env) {
   console.log(env);
@@ -95,7 +95,7 @@ function bootstrap(env) {
     store,
     i18n,
     render: h => h(App),
-		data: {
+    data: {
       eventHub: new Vue()
     }
   });
@@ -108,10 +108,5 @@ function bootstrap(env) {
     vm.$mount("#app");
   };
 }
-if (process.env.NODE_ENV === "production") {  
-  loadScript("/env.js", () => {
-    bootstrap(ENV || process.env);
-  });
-} else {
-  bootstrap(process.env);
-}
+
+bootstrap(ENV || process.env);
