@@ -106,7 +106,7 @@
                   <span v-else-if="scope.row.status==4">完成</span>
                 </template>
             </el-table-column>
-            <el-table-column  label="已接入数据量" :show-overflow-tooltip='true' width="150"></el-table-column>
+            <el-table-column  prop="joinDataNum" label="已接入数据量" :show-overflow-tooltip='true' width="150"></el-table-column>
              <el-table-column  label="操作"  width="200">
                 <template slot-scope="scope">
                   <el-button  v-if="scope.row.status==0||scope.row.status==2"  type="text" size="small" @click="doRun(scope.$index, scope.row)">运行</el-button>
@@ -198,9 +198,7 @@ export default {
   },
   computed: {
     departmentId: function() {
-      return this.$store.state.deptId.length == 0
-        ? [1]
-        : this.$store.state.deptId;
+      return this.$store.state.deptId;
 
       // return 1;
     },

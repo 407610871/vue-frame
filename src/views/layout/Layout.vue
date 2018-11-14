@@ -30,10 +30,10 @@
         <new-aside-tree></new-aside-tree>
       </el-aside>
       <el-main class="enc-main">
-        <div class="enc-search">
+        <!-- <div class="enc-search">
           <input type="text" v-model="keyword" placeholder="输入查询..." />
           <a href="javascript:void(0)" v-on:click="search"><i class="el-icon-search"></i></a>
-        </div>
+        </div> -->
         <div class="enc-sub-header">
           <el-breadcrumb separator="/">
             <el-breadcrumb-item v-for="(item,index) in breadcrumb" :key="index"><a href="javascript:void(0)" v-on:click="breadcrumbChange(index,item)">{{item.breadcrumbName}}</a></el-breadcrumb-item>
@@ -317,7 +317,7 @@ export default {
   .enc-sub-header {
     text-indent: 30px;
     margin-top: 3px;
-    margin-right:300px;
+    // margin-right:300px;
     padding-left:20px;
     height: $enc-nav-sub-header-height;
     line-height: $enc-nav-sub-header-height;
