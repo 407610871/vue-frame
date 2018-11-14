@@ -291,8 +291,8 @@ export default {
       hourData: [],
       weekData: [],
       treeData: [],
-      appId: '97304',
-      accId: '10528771',
+      appId: '',
+      accId: '',
       loading: false,
       radio: '',
       ruleForm: {
@@ -633,6 +633,12 @@ export default {
     },
     msg() {
       if (this.msg=="fourth") {
+        if(this.rowList.length!=undefined){
+          this.accId = this.rowList[0].id;
+        }
+        else{
+          this.accId = this.rowList.id;
+        }
         this._monthData();
         this._minData();
         this._hourData();

@@ -313,7 +313,7 @@ export default {
         }
       }).then(res => {
         if (res.data.data.result == true || res.data.data.result == "true") {
-          this.$alert(res.data.message, "核验结果", {
+          this.$alert(res.data.data.message, "核验结果", {
             confirmButtonText: "确定",
             callback: action => {
               this._queryInver();
@@ -370,7 +370,7 @@ export default {
   watch: {
     dialogVisible() {
       if (this.dialogVisible) {
-        this.taskId = this.pdata.id;
+        this.taskId = this.pdata.accessConnectorSource.task_info_id;
         this._queryInver();
         this._queryHis();
       }

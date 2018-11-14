@@ -178,14 +178,18 @@ export default {
     },
     //时间格式转换，将毫秒转换成2018-11-13 14:46:23
     transData(times){
-        let date = new Date(times);
-        let years = date.getFullYear();
-        let month = date.getMonth()+1;
-        let day = date.getDate();
-        let hours = date.getHours();
-        let minutes = date.getMinutes();
-        let seconds = date.getSeconds();
-        return years+'-'+month+'-'+day+' '+hours+':'+minutes+':'+seconds;
+        if(typeof(times)=="undefined"||times==""||times==null){
+            return "";
+        }else{
+            let date = new Date(times);
+            let years = date.getFullYear();
+            let month = date.getMonth()+1;
+            let day = date.getDate();
+            let hours = date.getHours();
+            let minutes = date.getMinutes();
+            let seconds = date.getSeconds();
+            return years+'-'+month+'-'+day+' '+hours+':'+minutes+':'+seconds;
+        }
     },
     //获取流程图
     getFlowChartPath(){
@@ -246,7 +250,7 @@ export default {
                 "carteObjectId": that.reqObj.carteObjectId
             }
         }
-        axios.post(that.httpUrlOld+'/manager/govern/getTransInfo',reqData.params).then(function(res){
+        axios.post(that.httpUrlOld+'manager/govern/getTransInfo',reqData.params).then(function(res){
             if(res.data.code==undefined||res.data.code==null||res.data.code==""){
                 that.doMsg("“/manager/govern/getTransInfo”服务响应为空！","error");
             }else if(res.data.code != "200"&&res.data.code != "0000"){
@@ -270,7 +274,7 @@ export default {
                 "carteObjectId": that.reqObj.carteObjectId
             }
         }
-        axios.post(that.httpUrlOld+'/manager/govern/queryLogs',reqData.params).then(function(res){
+        axios.post(that.httpUrlOld+'manager/govern/queryLogs',reqData.params).then(function(res){
             if(res.data.code==undefined||res.data.code==null||res.data.code==""){
                 that.doMsg("“/manager/govern/queryLogs”服务响应为空！","error");
             }else if(res.data.code != "200"&&res.data.code != "0000"){

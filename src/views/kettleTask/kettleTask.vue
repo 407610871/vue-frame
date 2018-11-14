@@ -164,11 +164,9 @@ export default {
         doStart(row){
             this.loading = true;
             this.$ajax.post(baseUrl+'/manager/govern/startGovern',{
-                params:{
                     "jobPath": row.jobPath,
                     "jobName": row.taskName
-                }
-            }).then(res => {
+                }).then(res => {
                res = res.data;
                this.loading = false;
                if(res.success){
@@ -190,11 +188,10 @@ export default {
             let that = this;
             this.loading = true;
             this.$ajax.post(baseUrl+'/manager/govern/deleteGovern',{
-                params:{
+                    id:row.id,
                     carteObjectId: row.carteObjectId,
                     jobName: row.taskName,
                     jobPath: row.jobPath
-                }
             }).then(res => {
                 res = res.data;
                 this.loading = false;
@@ -219,19 +216,22 @@ export default {
     },
     filters:{
         formatDateTime(val){
-            if(!val) return "";
-            var value=new Date(val);
-            var year=value.getFullYear();
-            var padDate=function(va){
-                va=va<10?'0'+va:va;
-                return va
+            if(typeof(val)=="undefined"||val==""||val==null){
+                return "";
+            } else {
+                var value=new Date(val);
+                var year=value.getFullYear();
+                var padDate=function(va){
+                    va=va<10?'0'+va:va;
+                    return va
+                }
+                var month=padDate(value.getMonth()+1);
+                var day=padDate(value.getDate());
+                var hour=padDate(value.getHours());
+                var minutes=padDate(value.getMinutes());
+                var seconds=padDate(value.getSeconds());
+                return year+'-'+month+'-'+day+' '+hour+':'+minutes+':'+seconds;
             }
-            var month=padDate(value.getMonth()+1);
-            var day=padDate(value.getDate());
-            var hour=padDate(value.getHours());
-            var minutes=padDate(value.getMinutes());
-            var seconds=padDate(value.getSeconds());
-            return year+'-'+month+'-'+day+' '+hour+':'+minutes+':'+seconds;
         },
     },
 };
