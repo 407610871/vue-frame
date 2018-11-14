@@ -128,7 +128,7 @@ export default {
   },
   watch: {
     tableParams(newVal,oldVal){
-      if(this.queryParamReady && JSON.stringify(newVal) != JSON.stringify(oldVal)){
+      if(this.queryParamReady && JSON.stringify(newVal) != JSON.stringify(oldVal) && newVal.timeFlag != 0){
         this.loadTable();
       }
     }

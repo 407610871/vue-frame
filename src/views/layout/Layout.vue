@@ -71,8 +71,6 @@ export default {
   },
 	mounted(){
 		var _self = this;
-		console.log('window.ENV.API_DACM')
-		console.log(ENV)
 		
 		this.$ajax
 			.get(window.ENV.API_DACM+"/caccesssysRelationWorkInfo/getSystemSet.do")
