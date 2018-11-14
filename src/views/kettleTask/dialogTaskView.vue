@@ -246,7 +246,7 @@ export default {
                 "carteObjectId": that.reqObj.carteObjectId
             }
         }
-        axios.post(that.httpUrlOld+'/manager/govern/getTransInfo',reqData.params).then(function(res){
+        axios.post(that.httpUrlOld+'manager/govern/getTransInfo',reqData.params).then(function(res){
             if(res.data.code==undefined||res.data.code==null||res.data.code==""){
                 that.doMsg("“/manager/govern/getTransInfo”服务响应为空！","error");
             }else if(res.data.code != "200"&&res.data.code != "0000"){
@@ -270,7 +270,7 @@ export default {
                 "carteObjectId": that.reqObj.carteObjectId
             }
         }
-        axios.post(that.httpUrlOld+'/manager/govern/queryLogs',reqData.params).then(function(res){
+        axios.post(that.httpUrlOld+'manager/govern/queryLogs',reqData.params).then(function(res){
             if(res.data.code==undefined||res.data.code==null||res.data.code==""){
                 that.doMsg("“/manager/govern/queryLogs”服务响应为空！","error");
             }else if(res.data.code != "200"&&res.data.code != "0000"){
