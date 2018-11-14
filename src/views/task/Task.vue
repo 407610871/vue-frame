@@ -148,7 +148,8 @@
 import DialogIsCheck from "./DialogIsCheck";
 import DialogTaskDetail from "./DialogTaskDetail";
 //盐城环境地址
-const httpUrl = "http://10.19.248.200:32662/DOMN/";
+const httpUrl = window.ENV.API_DOWN+"/";
+console.log(httpUrl.API_DOWN)
 //本地调试地址
 // const httpUrl="http://10.19.160.67:8081/DOMN/";
 // export const httpUrl="http://10.19.160.67:8081/DOMN/";

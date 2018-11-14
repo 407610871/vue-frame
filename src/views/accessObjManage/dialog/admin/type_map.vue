@@ -2,16 +2,16 @@
   <div class="taskMDialog typeMapDia">
     <div class="comTable">
       <el-table :data="schemaMappingDTOList" stripe height="250">
-        <el-table-column prop="orgColumnName" label="数据源字段名称" width="180">
+        <el-table-column prop="orgColumnName" label="数据源字段名称" >
         </el-table-column>
-        <el-table-column prop="orgColumnType" label="数据源字段类型" width="180">
+        <el-table-column prop="orgColumnType" label="数据源字段类型" >
         </el-table-column>
-        <el-table-column prop="" label="目标字段名称">
+        <el-table-column prop="" label="目标字段名称" >
           <template slot-scope="scope">
             <el-input v-model="scope.row.newColumnName"></el-input>
           </template>
         </el-table-column>
-        <el-table-column prop="toType" label="目标字段类型" width="180">
+        <el-table-column prop="toType" label="目标字段类型" >
           <template slot-scope="scope">
             <el-select v-model="scope.row.newColumnType" placeholder="请选择">
               <el-option v-for="item in TypeData" :key="item" :label="item" :value="item">
