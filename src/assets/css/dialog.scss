@@ -138,7 +138,9 @@
 .ml10 {
   margin-left: 10px;
 }
-
+.ml25{
+  margin-left: 25px;
+}
 .ptb20 {
   padding: 20px 0px;
 }
@@ -233,3 +235,11 @@
   background: transparent;
 }
  */
+.tasktips{
+  font-size:$font-size-small;
+  color:red;
+}
+.respan{
+  color:red;
+  display: inline-block;
+}

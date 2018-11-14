@@ -46,12 +46,17 @@
               </el-radio-group>
             </el-form-item>
           </el-col>
-          <!-- <el-col :span="24">
-            <el-form-item label="接入起始点:">
-              
-            </el-form-item>
-          </el-col> -->
-          <el-col :span="24" v-show="ruleForm.accessMode=='1'||ruleForm.accessMode=='3'">
+          <el-col :span="24" v-show="ruleForm.accessMode=='1'">
+            <el-col :span="6">
+              <el-form-item label="接入起始点:">
+                <el-input v-model="ruleForm.startLocation" class="fl"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="18">
+              <span class="ml25 tasktips">tips:仅支持以下三种类型:(自增变量(整型),自增时间戳(long型),自增时间戳(字符型,varchar))</span>
+            </el-col>
+          </el-col>
+          <el-col :span="24" v-show="ruleForm.accessMode=='1'">
             <el-col :span="8" class="collbg">
               <el-form-item label="增量字段:" prop="increment">
                 <el-input v-model="ruleForm.increment" class="fl"></el-input>
@@ -301,6 +306,7 @@ export default {
       loading: false,
       radio: '',
       ruleForm: {
+        startLocation: '', //接入起始点
         dLibrary: '', //接入目的库
         tablename: '', //建立的表名
         accessMode: '0', //接入方式
@@ -519,7 +525,8 @@ export default {
         "accessRelationWorkInfoId": this.ruleForm.dLibrary,
         "collectionTaskType": ctt,
         "isStartOverTask": this.ruleForm.taskSubMode,
-        "timeType": this.radio
+        "timeType": this.radio,
+        "startLocation": this.ruleForm.startLocation
       }
       this.loading = true;
       if (JSON.stringify(this.$store.state.userList) == "{}") {

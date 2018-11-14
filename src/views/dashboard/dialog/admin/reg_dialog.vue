@@ -16,7 +16,8 @@
           </div>
           <div class="proInfo-box clearfix">
             <el-col :span="10">
-              <el-form-item label="接入源名称:" prop="jrname" required>
+
+              <el-form-item label="接入源名称:" prop="jrname" >
                 <el-input v-model="ruleForm.jrname"></el-input>
               </el-form-item>
             </el-col>
@@ -77,7 +78,7 @@
                 <el-popover placement="right" width="400" trigger="click">
                   <el-tree :data="treedata" show-checkbox node-key="id" :check-strictly="true" :props="defaultProps" accordion @check-change="handleClick" @check="nodeClick" :default-checked-keys="[ruleForm.dockid]"  :default-expanded-keys="[deIndex]" ref="treeForm" class="treeAuto">
                   </el-tree>
-                  <el-select v-model="ruleForm.dockdata" disabled placeholder="" prop="dockdata" slot="reference" required class="disele">
+                  <el-select v-model="ruleForm.dockdata" disabled placeholder="" prop="dockdata" slot="reference"  class="disele">
                   </el-select>
                 </el-popover>
               </el-form-item>
@@ -160,13 +161,13 @@
             </el-form-item>
             <el-col :span="18">
               <el-col :span="10">
-                <el-form-item label="IP地址/主机名:" prop="ipname" required v-if="ruleForm.syskind!=''&&ruleForm.syskind!='10023'">
+                <el-form-item label="IP地址/主机名:" prop="ipname"  v-if="ruleForm.syskind!=''&&ruleForm.syskind!='10023'">
                   <el-input v-model="ruleForm.ipname"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="2" class="bank">bank</el-col>
               <el-col :span="10">
-                <el-form-item label="登录名:" prop="username" required v-if="ruleForm.syskind!=''&&ruleForm.syskind!='10023'">
+                <el-form-item label="登录名:" prop="username"  v-if="ruleForm.syskind!=''&&ruleForm.syskind!='10023'">
                   <el-input v-model="ruleForm.username"></el-input>
                 </el-form-item>
               </el-col>
@@ -178,19 +179,19 @@
 </el-col> -->
               <el-col :span="2" class="bank">bank</el-col>
               <el-col :span="10">
-                <el-form-item label="密码:" prop="password" required v-if="ruleForm.syskind!=''&&ruleForm.syskind!='10023'">
+                <el-form-item label="密码:" prop="password"  v-if="ruleForm.syskind!=''&&ruleForm.syskind!='10023'">
                   <el-input v-model="ruleForm.password"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="2" class="bank">bank</el-col>
               <el-col :span="10">
-                <el-form-item label="端口号:" prop="iport" required v-if="ruleForm.syskind!=''&&ruleForm.syskind!='10023'">
+                <el-form-item label="端口号:" prop="iport"  v-if="ruleForm.syskind!=''&&ruleForm.syskind!='10023'">
                   <el-input v-model="ruleForm.iport"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="2" class="bank" v-if="ruleForm.syskind=='10001'||ruleForm.syskind=='10003'||ruleForm.syskind=='10002'||ruleForm.syskind=='10004'||ruleForm.syskind=='10020'">bank</el-col>
               <el-col :span="10">
-                <el-form-item label="实例/数据库名:" prop="instanceName" required v-if="ruleForm.syskind=='10001'||ruleForm.syskind=='10003'||ruleForm.syskind=='10002'||ruleForm.syskind=='10004'||ruleForm.syskind=='10020'">
+                <el-form-item label="实例/数据库名:" prop="instanceName"  v-if="ruleForm.syskind=='10001'||ruleForm.syskind=='10003'||ruleForm.syskind=='10002'||ruleForm.syskind=='10004'||ruleForm.syskind=='10020'">
                   <el-input v-model="ruleForm.instanceName"></el-input>
                 </el-form-item>
               </el-col>
@@ -238,19 +239,19 @@
               <el-col :span="2" class="bank">bank</el-col>-->
               <!-- hive专有 -->
               <el-col :span="10">
-                <el-form-item label="集群根目录" required prop="hadoopDir" v-if="ruleForm.syskind!=''&& ruleForm.syskind=='vhost'">
+                <el-form-item label="集群根目录"  prop="hadoopDir" v-if="ruleForm.syskind!=''&& ruleForm.syskind=='vhost'">
                   <el-input v-model="ruleForm.hadoopDir"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="2" class="bank" v-if="ruleForm.syskind!=''&& ruleForm.syskind=='vhost'">bank</el-col>
               <el-col :span="10">
-                <el-form-item label="集群目录" required prop="hadoopHomes" v-if="ruleForm.syskind!=''&& ruleForm.syskind=='vhost'">
+                <el-form-item label="集群目录"  prop="hadoopHomes" v-if="ruleForm.syskind!=''&& ruleForm.syskind=='vhost'">
                   <el-input v-model="ruleForm.hadoopHomes"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="2" class="bank" v-if="ruleForm.syskind!=''&& ruleForm.syskind=='vhost'">bank</el-col>
               <el-col :span="10">
-                <el-form-item label="vhost" required prop="vhost" v-if="ruleForm.syskind!=''&& ruleForm.syskind=='vhost'">
+                <el-form-item label="vhost"  prop="vhost" v-if="ruleForm.syskind!=''&& ruleForm.syskind=='vhost'">
                   <el-input v-model="ruleForm.vhost"></el-input>
                 </el-form-item>
               </el-col>
@@ -371,34 +372,34 @@ export default {
       },
       formRules: {
         jrname: [
-          { validator: validateNull, trigger: "blur" }
+          {required: true, message: '不能为空', validator: validateNull, trigger: "blur" }
         ],
         ipname: [
-          { validator: validateIp, trigger: "blur" }
+          { required: true, message: '不能为空',validator: validateIp, trigger: "blur" }
         ],
         username: [
-          { validator: validateNull, trigger: "blur" }
+          {required: true, message: '不能为空', validator: validateNull, trigger: "blur" }
         ],
         password: [
-          { validator: validateNull, trigger: "blur" }
+          {required: true, message: '不能为空', validator: validateNull, trigger: "blur" }
         ],
         iport: [
-          { validator: validateNull, trigger: "blur" }
+          {required: true, message: '不能为空', validator: validateNull, trigger: "blur" }
         ],
         instanceName: [
-          { validator: validateNull, trigger: "blur" }
+          { required: true, message: '不能为空',validator: validateNull, trigger: "blur" }
         ],
         hadoopDir: [
-          { validator: validateNull, trigger: "blur" }
+          { required: true, message: '不能为空',validator: validateNull, trigger: "blur" }
         ],
         hadoopHomes: [
-          { validator: validateNull, trigger: "blur" }
+          { required: true, message: '不能为空',validator: validateNull, trigger: "blur" }
         ],
         vhost: [
-          { validator: validateNull, trigger: "blur" }
+          {required: true, message: '不能为空', validator: validateNull, trigger: "blur" }
         ],
         dockdata: [
-          { validator: validateNull, trigger: "blur" }
+          { required: true, message: '不能为空',validator: validateNull, trigger: "blur" }
         ],
         proemail: [
           { validator: this.GLOBAL.validateEmail, trigger: 'blur' }
