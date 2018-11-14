@@ -49,6 +49,7 @@ const queryParamsDefault = {
 const store = new Vuex.Store({
   state: {
     deptId:[],
+		deptIdLess:[],
 		routeFlag:'',
     fliterItemList:{
       network:{
@@ -85,9 +86,12 @@ const store = new Vuex.Store({
       state.fliterItemList[obj.name].ready = true;
       state.fliterItemList[obj.name].data = obj.data;
     },
-    selDept(state,id){
-      state.deptId = id;
+    selDept(state,ids){
+      state.deptId = ids;
     },
+		setDeptIdLess(state,ids){
+			state.deptIdLess = ids;
+		},
 		setRouteFlag(state,obj){
 			state.routeFlag = flag;
 		},

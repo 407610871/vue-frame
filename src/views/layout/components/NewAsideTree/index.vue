@@ -233,12 +233,54 @@
 					var anotherFactorial=factorial;
 					factorial=null;
 					anotherFactorial(node,this.$refs.tree);
+					
 					if(nodeStatus.checkedKeys.indexOf(node.id) != -1){
 						this.$refs.tree.setCheckedNodes(list);
 					}else{
-						console.log(deptIds);
 						this.$refs.tree.setCheckedKeys(deptIds)
 					}
+					
+					var listCount = this.$refs.tree.getCheckedNodes();
+					var deptIdsCoundt = this.$refs.tree.getCheckedKeys();
+					
+					var targetList;
+					if(deptIdsCoundt.length==0){
+						targetList = [1];
+					}else{
+						for(var value of listCount){
+							if(value.children.length==0){
+								targetList.push(value.id)
+							}else{
+								var factorialCount = (function f(nodeList,level){
+									var flag = true;
+									for(var value of nodeList){
+										if(deptIdsCoundt.indexOf(value.id) == -1){
+											return false;
+										}else{
+											if(value.children.length>0){
+												flag = f(value.children,level+1);
+												if(!flag){
+													return false;
+												}
+											}
+										}
+									}
+									if(flag){
+										return true;
+									}
+								});
+								var anotherFactorial=factorialCount;  
+								factorialCount=null;  
+								if(anotherFactorial(value.children)){
+									targetList.push(value.id)
+								}
+							}
+						}
+					}
+					
+					//console.log(targetList);
+					this.$store.commit('setDeptIdLess',targetList);
+					
 					this.$store.commit('selDept',deptIds);
 					this.$root.eventHub.$emit('selDept',deptIds);
 					if(this.$route.name=="accessObjManage" || this.$route.name=="accessObjInfo"){

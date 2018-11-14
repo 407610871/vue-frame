@@ -175,7 +175,7 @@ export default {
     tableParams(newVal, oldVal) {
       console.log(newVal);
       console.log(oldVal);
-      if (JSON.stringify(newVal) != JSON.stringify(oldVal) && newVal.timeFlag != 0) {
+      if (JSON.stringify(newVal) != JSON.stringify(oldVal)) {
         console.log('change');
         this.loadTable();
       }
