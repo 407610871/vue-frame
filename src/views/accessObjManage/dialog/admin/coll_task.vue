@@ -301,8 +301,8 @@ export default {
       hourData: [],
       weekData: [],
       treeData: [],
-      appId: '97304',
-      accId: '10528771',
+      appId: '',
+      accId: '',
       loading: false,
       radio: '',
       ruleForm: {
@@ -518,7 +518,7 @@ export default {
         "accessSysObjDetails": this.increArr,
         "priority": this.ruleForm.accessPri,
         "jobType": this.ruleForm.actech,
-        "accessSysObjInfoId": this.accId,
+        "accessSysObjInfoId": this.pdata.id,
         "pollIntervalMs": pollIntervalMs,
         "schemaMappingDTOList": this.$store.state.schemaList,
         "separator": '',
@@ -626,7 +626,7 @@ export default {
         method: 'POST',
         url: this.GLOBAL.api.API_DACM + '/task/getSourceConfig',
         params: {
-          accessSysObjInfoId: this.accId,
+          accessSysObjInfoId: this.pdata.id,
 
         }
 
