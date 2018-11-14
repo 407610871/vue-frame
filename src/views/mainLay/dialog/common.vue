@@ -3,31 +3,46 @@ const api = 'http://10.19.248.200:32661/DACM/';
 //校验邮箱
 const validateEmail = (rule, value, callback) => {
   const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-  if (re.test(value)) {
-    callback();
+  if (value !== '') {
+    if (re.test(value)) {
+      callback();
+    } else {
+      callback(new Error("请输入正确的邮箱"));
+    }
   } else {
-    callback(new Error("请输入正确的邮箱"));
+    callback();
   }
+
 }
 //校验是否纯数字
 const validateNumber = (rule, value, callback) => {
   const re = /^\+?[1-9][0-9]*$/;
-  if (re.test(value)) {
-    callback()
+  if (value != '') {
+    if (re.test(value)) {
+      callback()
+    } else {
+      callback(new Error("请输入正确的QQ"));
+    }
   } else {
-    callback(new Error("请输入正确的QQ"));
+    callback();
   }
+
 }
 //校验电话号码和座机
 const validatePhone = (rule, value, callback) => {
   const isPhone = /^([0-9]{3,4}-)?[0-9]{7,8}$/;
   const isMob = /^((\+?86)|(\(\+86\)))?(13[012356789][0-9]{8}|15[012356789][0-9]{8}|18[02356789][0-9]{8}|147[0-9]{8}|1349[0-9]{7})$/;
-  if(isPhone.test(value) || isMob.test(value)){
-    callback()
+  if (value != '') {
+    if (isPhone.test(value) || isMob.test(value)) {
+      callback()
+    } else {
+      callback(new Error("请输入正确的号码"));
+    }
   }
   else{
-    callback(new Error("请输入正确的号码"));
+    callback();
   }
+
 }
 export default {
   api, //接口地址

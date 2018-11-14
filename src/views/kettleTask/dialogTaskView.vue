@@ -204,7 +204,7 @@ export default {
             }else if(res.data.code != "200"&&res.data.code != "0000"){
                 that.doMsg('“manager/govern/getFlowChartPath”'+res.data.message,"error");
             }else{
-                that.taskBaseInfo.flowChartPath = res.data.path;
+                that.taskBaseInfo.flowChartPath = res.data.data.path;
             }
             that.serveFinishCount++;
         }).catch(function(err){

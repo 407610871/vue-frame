@@ -27,12 +27,16 @@
               <el-table-column label="增量字段选择" width="180">
                 <template slot-scope="scope">
                   <!-- class="textRadio" -->
-                  <el-radio @change.native="getCurrentRow(scope.row)" :label="scope.$index" v-model="radio" class="textRadio">&nbsp;</el-radio>
+
+                <el-radio @change.native="getCurrentRow(scope.row)" :label="scope.$index" v-model="radio" class="textRadio" v-if="scope.$index!=flag">&nbsp;</el-radio>
                 </template>
               </el-table-column>
               <el-table-column prop="name" label="字段名" width="180">
               </el-table-column>
-              <el-table-column prop="datatype" label="字段类型">
+              <el-table-column  label="字段类型">
+                <template slot-scope="scope">
+                   <span :class="scope.$index!=flag? '':'red'">{{scope.row.datatype}}</span>
+                </template>
               </el-table-column>
               <el-table-column prop="diyComments" label="字段描述" width="180">
               </el-table-column>
@@ -59,6 +63,7 @@ export default {
       appId: '',
       cincreArr: [],
       tableData: [],
+      flag: '',
 
     }
   },
@@ -101,8 +106,9 @@ export default {
         if (res.data.success) {
           var first = [];
           var second = [];
+          //测试数据
+          /*var data = res.data.page.list;*/
           var data = res.data.data.list;
-          debugger;
           if (data.length > 0) {
             for (let i = 0; i < data.length; i++) {
               if (data[i].isNull == "N" || data[i].isNull == "NO") {
@@ -139,6 +145,13 @@ export default {
                 id: first[m].id
               })
             }
+            this.flag = first.length;
+            this.tableData.push({
+              datatype:'以下增量字段类型默认不支持,请谨慎选择',
+              name:'',
+              comments:'',
+              id:''
+            })
             console.log(first);
             console.log(second);
 
@@ -204,7 +217,13 @@ export default {
   font-size: $font-size-medium;
   color: $color-text-title;
 }
+.el-dialog__body table .cell .red{
 
+  color: red;
+    text-align: left;
+    position: relative;
+    left: -86px;
+}
 .title-gra {
   margin-bottom: 20px;
   .grab {
