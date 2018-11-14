@@ -1,10 +1,10 @@
 <template>
   <div class="taskMDialog userSurveyDialog diaicon">
    <!--  <el-button size="mini" class="diabtn incbtn" type="danger" @click="dialogVisible = true">用户调研</el-button> -->
-		<el-tooltip class="item" effect="light" content="用户调研" placement="top">
+		<el-tooltip class="item" effect="light" content="用户标记" placement="top">
 			<i class="enc-icon-yonghutiaoyan" @click="dialogVisible = true"></i>
 		</el-tooltip>
-    <el-dialog title="用户调研" :visible.sync="dialogVisible" width="60%" :before-close="closeDialog">
+    <el-dialog title="用户标记" :visible.sync="dialogVisible" width="60%" :before-close="closeDialog">
       <div class="title-gra">
         <span class="grab gra-l"></span>
         <span class="grab gra-r"></span>
@@ -115,15 +115,15 @@
                 </el-form-item>
               </el-col>
               <el-col :span="1" class="bank" v-if="ruleForm.datarange!='3'">bank</el-col>
-              <el-col :span="3" class="ml0" v-if="ruleForm.datarange=='0'||ruleForm.datarange=='1'">
+              <el-col :span="3" class="ml0" v-if="ruleForm.datarange=='4'||ruleForm.datarange=='1'">
                 <el-form-item prop="city">
                   <el-select v-model="ruleForm.city" placeholder="请选择" @change="cityChange()">
                     <el-option v-for="item in cityArr" :label="item.name" :value="item.code" :id="item.code"></el-option>
                   </el-select>
                 </el-form-item>
               </el-col>
-              <el-col :span="1" class="bank" v-if="ruleForm.datarange=='0'||ruleForm.datarange=='1'">bank</el-col>
-              <el-col :span="3" class="ml0" v-if="ruleForm.datarange=='0'">
+              <el-col :span="1" class="bank" v-if="ruleForm.datarange=='4'||ruleForm.datarange=='1'">bank</el-col>
+              <el-col :span="3" class="ml0" v-if="ruleForm.datarange=='4'">
                 <el-form-item prop="urban">
                   <el-select v-model="ruleForm.urban" placeholder="请选择">
                     <el-option v-for="item in urbanArr" :label="item.name" :value="item.code" :id="item.code"></el-option>
@@ -253,7 +253,7 @@ export default {
           if (this.ruleForm.datarange == "1") { //全市
             areaData = [{ "pro": this.ruleForm.pro }, { "city": this.ruleForm.city }]
           }
-          if (this.ruleForm.datarange == "0") { //行政区
+          if (this.ruleForm.datarange == "4") { //行政区
             areaData = [{ "pro": this.ruleForm.pro }, { "city": this.ruleForm.city }, { "urban": this.ruleForm.urban }]
           }
           var saveInfo = {
@@ -386,6 +386,10 @@ export default {
               this.ruleForm.urban = xzqyData[2].urban;
             }
           }
+        }
+        else{
+           this.areaFlag = true;
+            this._querySys();
         }
 
 
