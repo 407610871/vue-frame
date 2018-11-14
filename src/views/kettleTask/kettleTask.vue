@@ -12,7 +12,7 @@
         <el-form-item label="任务状态:">
             <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>
             <el-checkbox-group v-model="status" @change="handleCheckedCitiesChange">
-                <el-checkbox name="status" v-for="(index,item) in checkStatus" :label="item.label" :key="index">{{item.name}}</el-checkbox>
+                <el-checkbox name="status" v-for="item in checkStatus" :label="item.label" :key="item.label">{{item.name}}</el-checkbox>
             </el-checkbox-group>
         </el-form-item>
         <el-form-item label="任务开始时间:">  
@@ -90,8 +90,6 @@ export default {
             checkStatus:[{name:'暂停',label:'Paused'},{name:'新建',label:'create'},{name:'失败',label:'Finished (with errors)'},{name:'运行',label:'Running'},{name:'完成',label:'Finished'}],
             isIndeterminate:true,
             checkAll:false,
-            startTime: '',
-            endTime: '',
             taskName:'',
             tableData:[],
             moreSearch:false,
@@ -106,7 +104,7 @@ export default {
         }
     },
     created(){
-        this.init();
+       this.init();
     },
     components:{
         dialogTaskView:dialogTaskView
@@ -127,9 +125,7 @@ export default {
         handleCheckedCitiesChange(value){
             let checkedCount = value.length;
             this.checkAll = checkedCount === this.checkStatus.length;
-
             this.isIndeterminate = checkedCount > 0 && checkedCount < this.checkStatus.length;
-            console.log(this.status)
         },
         handleCurrentChange() {
             this.init();
@@ -139,12 +135,12 @@ export default {
             this.loading = true;
             this.$ajax.get(baseUrl+'/manager/govern/queryGovern',{
                 params:{
-                    pageNum:this.pageNum,
-                    pageSize:this.pageSize,
-                    status:this.status.join(),
-                    startTime:this.startTime,
-                    endTime:this.endTime,
-                    taskName:this.taskName
+                    pageNum:that.pageNum,
+                    pageSize:that.pageSize,
+                    status:that.status.join(),
+                    startTime:that.time[0],
+                    endTime:that.time[1],
+                    taskName:that.taskName
                 }
             }).then(res => {
                 res = res.data;
