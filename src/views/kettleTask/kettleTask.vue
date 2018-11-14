@@ -156,6 +156,8 @@ export default {
                         duration: 3500
                     });
                 }
+            }).catch(err => {
+                this.loading = false;
             });
         },
         //启动
@@ -174,6 +176,8 @@ export default {
                }else{
                    row.status = 'Finished (with errors)';
                }
+            }).catch(err => {
+                this.loading = false;
             });
         },
         //查看
@@ -199,6 +203,8 @@ export default {
                }else{
                     that.$alert(res.message,'删除');
                }
+            }).catch(err => {
+                this.loading = false;
             });
         },
         //查询按钮
