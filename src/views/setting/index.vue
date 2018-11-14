@@ -179,7 +179,7 @@ export default {
 						parentid:0
 					}
 				}).then((res) => {
-					if(res.data.success){
+					if(res.data.result){
 						resolve(res);
 					}else{
 						reject(res);
