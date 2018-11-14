@@ -77,7 +77,7 @@
       methods: {
         loadData(){
           var _self = this;
-          this.$ajax.post(window.ENV.API_DACM+'deptInfo/getDeptInfo?t=' + new Date().getTime()).then(function(res){
+          this.$ajax.post(window.ENV.API_DACM+'/deptInfo/getDeptInfo?t=' + new Date().getTime()).then(function(res){
             if(res.data.success){
               _self.data = res.data.datas;
               _self.dataReady = true;
@@ -124,7 +124,7 @@
         nodeAJax(){
           var _self = this;
           if(this.actionFlag == 'add'){
-            this.$ajax.post(window.ENV.API_DACM+'deptInfo/insertDeptInfo?pid='+this.editingNode.id+'&deptName='+this.itemTxt+'&level='+(this.editingNode.children?this.editingNode.children.length:0)).then(function(res){
+            this.$ajax.post(window.ENV.API_DACM+'/deptInfo/insertDeptInfo?pid='+this.editingNode.id+'&deptName='+this.itemTxt+'&level='+(this.editingNode.children?this.editingNode.children.length:0)).then(function(res){
             // this.$ajax.post('./addDept').then(function(res){
               console.log('addsuccess');
               console.log(res);
@@ -149,7 +149,7 @@
 							});
             });
           }else{
-            this.$ajax.post(window.ENV.API_DACM+'deptInfo/updateDeptInfo?id='+this.editingNode.id+'&deptName='+this.itemTxt).then(function(res){
+            this.$ajax.post(window.ENV.API_DACM+'/deptInfo/updateDeptInfo?id='+this.editingNode.id+'&deptName='+this.itemTxt).then(function(res){
             // this.$ajax.post('./success').then(function(res){
               console.log('editsuccess');
               if(res.data.success){
@@ -173,7 +173,7 @@
         delNode(){
           if(this.$refs.tree.getCurrentKey()){
             var _self = this;
-            this.$ajax.post(window.ENV.API_DACM+'deptInfo/delDeptInfo?id='+this.editingNode.id).then(function(res){
+            this.$ajax.post(window.ENV.API_DACM+'/deptInfo/delDeptInfo?id='+this.editingNode.id).then(function(res){
             // this.$ajax.post('./success').then(function(res){
               console.log('delsuccess');
               if(res.data.success){
@@ -258,7 +258,7 @@
             })
           }
 					var _self = this;
-          this.$ajax.post(window.ENV.API_DACM+'deptInfo/updateDeptLevel',list).then(function(res){
+          this.$ajax.post(window.ENV.API_DACM+'/deptInfo/updateDeptLevel',list).then(function(res){
             if(res.data.success){
               console.log('move success!')
             }else{
