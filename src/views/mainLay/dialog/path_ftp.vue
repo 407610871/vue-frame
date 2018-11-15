@@ -120,7 +120,7 @@ export default {
         console.log(this.ruleForm.ftpurl);
         var params = {
           filepath: this.ruleForm.ftpurl,
-          accessSysId: this.ruleForm.ftpId,
+          accessSysId: this.$route.params.sourceId,
           isdelete: this.ruleForm.delete.toString(),
           shecmas: "",
           subdirectory: "true",
