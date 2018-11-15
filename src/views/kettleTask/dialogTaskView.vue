@@ -71,7 +71,7 @@
 <style lang="scss">
 .task-view-dialog{
     .el-dialog{
-        min-width:810px;
+        min-width: 960px;
         max-height:calc(100% - 50px);
         overflow:auto;
         margin-bottom: 25px;
