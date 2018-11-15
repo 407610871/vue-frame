@@ -487,7 +487,7 @@ export default {
       }).then(res => {
 
         this.syskindList = res.data;
-        this.ruleForm.syskind = res.data[0].id;
+       /* this.ruleForm.syskind = res.data[0].id;*/
       })
     },
     //对接部门
