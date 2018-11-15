@@ -110,7 +110,7 @@ export default {
           for (let i = 0; i < reData.length; i++) {
             for (let j = i + 1; j < reData.length; j++) {
               if (reData[i] == reData[j]) {
-                ++i;
+                j = ++i;
               }
             }
             _self.TypeData.push(reData[i]);

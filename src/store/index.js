@@ -73,7 +73,8 @@ const store = new Vuex.Store({
     regInfo:{},//正则
     matchType:[],//自定义表
     matchflag:'0',//表
-    jrtype: ''//接入源的类型
+    jrtype: '',//接入源的类型
+    separator: '',//分隔符
   },
   mutations: {
 		setPageSize(state,pageSize){
@@ -135,6 +136,11 @@ const store = new Vuex.Store({
     setJrtype(state,obj){
       state.jrtype = '';
       state.jrtype = obj;
+    },
+    //设置分隔符
+    setSeparator(state,obj){
+      state.separator = '';
+      state.separator = obj;
     }
   },
   modules: {
