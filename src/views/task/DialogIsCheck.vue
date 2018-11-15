@@ -119,8 +119,11 @@
       label="核验误差">
     </el-table-column>
     <el-table-column
-      prop="testresults_manual_check_result"
       label="核验结果">
+      <template slot-scope="scope">
+        <span v-if="scope.row.testresults_manual_check_result == '1'">失败</span>
+        <span v-else>成功</span>
+      </template>
     </el-table-column>
     <el-table-column
       label="核验报告">
@@ -182,7 +185,10 @@ export default {
     checkNumber(val){
       let reg  = /^-?\d+$/;
       if(!reg.test(val)){
-        this.range = parseInt(val);
+        this.range = 0;
+        this.$nextTick(() => {
+          this.range = parseInt(val);
+        });
         this.$message.error('误差范围必须是整数');
       }
     },
@@ -280,7 +286,14 @@ export default {
     // 开始核验按钮
     doCheck() {
       if (this.radio == "0") {
-        this.startTime = ["",""];
+        if(this.range == null||typeof(this.range) == "undefined"||isNaN(this.range)){
+          this.$alert("请填写误差范围", "核验", {
+            confirmButtonText: "确定"
+          });
+          return;
+        }else{
+          this.startTime = ["",""];
+        }
       } else if (this.radio == "1" && this.startTime == null) {
         this.$alert("请填写开始与结束时间", "核验", {
           confirmButtonText: "确定"
@@ -312,7 +325,7 @@ export default {
             }
           });
         } else {
-          this.$alert("核验请求失败！", "核验结果", {
+          this.$alert(res.data.message, "核验结果", {
             confirmButtonText: "确定"
           });
         }
