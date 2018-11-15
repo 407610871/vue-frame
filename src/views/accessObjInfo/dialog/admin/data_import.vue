@@ -95,7 +95,7 @@ export default {
 			formdata.append('accessSysDialectId',this.importList.accessSysDialectId);
 			var _self = this;
 			this.$ajax({
-				url: ' http://10.19.248.200:32661/DACM/objDetail/upLoadDetailExcelFile',
+				url: window.ENV.API_DACM+'/objDetail/upLoadDetailExcelFile',
 				method: 'post',
 				data: formdata,
 				headers: {'Content-Type': 'application:json'}
