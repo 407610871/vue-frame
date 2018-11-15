@@ -117,7 +117,6 @@
                 width="width">
               </el-table-column>
               <el-table-column
-								v-if="showMore"
                 label="描述">
                 <template slot-scope="scope">
                   <el-popover
@@ -126,7 +125,7 @@
                     trigger="hover"
                     >
                       <ul class="popup-menu">
-                        <li v-for="(val, key, index) in data2Columns" v-if="index>=6">{{key}}：{{scope.row[key]}}</li>
+                        <li v-for="(val, key, index) in data2Columns">{{key}}：{{scope.row[key]}}</li>
                       </ul>
                       <a slot="reference" href="javascript:void(0)">更多详情<i class="el-icon-caret-bottom"></i></a>
                   </el-popover>
@@ -159,7 +158,6 @@ export default {
       mainTableData1: [],
       mainTableData2: [],
 			data2Columns:{},
-			showMore:false,
 			width:180,
 			editingRow:{
 				index:0,
@@ -415,11 +413,6 @@ export default {
 						if(len == 6){
 							break;
 						}
-					}
-					if(len==6){
-						_self.showMore = true;
-					}else{	//必须重置
-						_self.showMore = false;
 					}
 					var tableW = document.getElementById("mainTable2").offsetWidth;
 					_self.width = len==6?tableW/(len+1)+'%':tableW/len+'%'
