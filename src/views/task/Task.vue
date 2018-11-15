@@ -15,6 +15,27 @@
       </div>
 
       <el-form ref="form" label-width="110px" class="formGroup" v-if="moreSearch">
+        <el-form-item label="已选查询条件:">
+          <div v-show="taskPeriodType.length>0" class="selected-task-type" style="display: inline-block;">
+            <span>任务类型:</span>
+            <span v-show="taskPeriodType.indexOf('0')>-1">实时任务<span @click="pop('0',taskPeriodType);"><i class="el-icon-error"></i></span></span>
+            <span v-show="taskPeriodType.indexOf('1')>-1">一次性任务<span @click="pop('1',taskPeriodType);"><i class="el-icon-error"></i></span></span>
+            <span v-show="taskPeriodType.indexOf('2')>-1">周期任务<span @click="pop('2',taskPeriodType);"><i class="el-icon-error"></i></span></span>
+            <span v-show="taskPeriodType.indexOf('3')>-1">全量任务<span @click="pop('3',taskPeriodType);"><i class="el-icon-error"></i></span></span>
+          </div>
+          <div label="任务状态:" v-show="status.length>0" class="selected-task-type" style="display: inline-block;">
+            <span>任务状态:</span>
+            <span v-show="status.indexOf('0')>-1">新建<span @click="pop('0',status);"><i class="el-icon-error"></i></span></span>
+            <span v-show="status.indexOf('1')>-1">运行<span @click="pop('1',status);"><i class="el-icon-error"></i></span></span>
+            <span v-show="status.indexOf('2')>-1">暂停<span @click="pop('2',status);"><i class="el-icon-error"></i></span></span>
+            <span v-show="status.indexOf('3')>-1">失败<span @click="pop('3',status);"><i class="el-icon-error"></i></span></span>
+            <span v-show="status.indexOf('4')>-1">完成<span @click="pop('4',status);"><i class="el-icon-error"></i></span></span>
+          </div>
+          <div v-show="time.length>0" class="selected-task-type">
+            <span style="margin-right:10px;">任务开始时间:</span>
+            <span>{{time[0]}} - {{time[1]}}<span @click="time=[]"><i class="el-icon-error"></i></span></span>
+          </div>
+        </el-form-item>
         <el-form-item label="任务类型:">
           <el-checkbox-group v-model="taskPeriodType">
             <el-checkbox label="0" name="taskPeriodType">实时任务</el-checkbox>
@@ -196,6 +217,12 @@ export default {
   },
 
   methods: {
+    pop:function(val,arr){
+      if(arr.indexOf(val)>-1){
+        let ind = arr.indexOf(val);
+        arr.splice(ind,1);
+      }
+    },
     //查询按钮
     search() {
       let keyword = this.keyword;
@@ -661,10 +688,22 @@ export default {
         callback: action => {}
       });
     }
-  }
+  },
+
 };
 </script>
 <style  rel="stylesheet/scss" lang="scss" scoped>
+
+.selected-task-type span{
+  margin-right: 10px;
+  color: #425365;
+}
+.selected-task-type span:first-child{
+  font-weight: 600;
+}
+.selected-task-type span i{
+  margin-left: 3px;
+}
 .count-container {
   // width: 95%;
   // height: 150px;
