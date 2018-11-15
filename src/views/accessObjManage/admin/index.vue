@@ -199,7 +199,7 @@ export default {
         name: '表'
       }, {
         id: 2,
-				diyComments:'VIEW',
+				diyComments:'v',
         name: '视图'
       }, {
         id: 3,
