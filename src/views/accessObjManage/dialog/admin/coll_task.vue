@@ -522,7 +522,7 @@ export default {
         "accessSysObjInfoId": this.pdata.id,
         "pollIntervalMs": pollIntervalMs,
         "schemaMappingDTOList": this.$store.state.schemaList,
-        "separator": '',
+        "separator": this.$store.state.separator,
         "accessRelationWorkInfoId": this.ruleForm.dLibrary,
         "collectionTaskType": ctt,
         "isStartOverTask": this.ruleForm.taskSubMode,

@@ -68,9 +68,9 @@
               <div class="survey" v-if="(jrtype=='mysql'&&scope.row.exitTask)|| (jrtype=='oracle'&&scope.row.exitTask)|| (jrtype=='postgresql'&&scope.row.exitTask) || (jrtype=='sqlserver'&&scope.row.exitTask)">
                 <data-inver :pdata="scope.row" @fre="loadTable()"></data-inver>
               </div>
-              <div class="survey" v-if="jrtype!='mysql' && jrtype!='oracle' && jrtype!='sqlserver' && jrtype!='postgresql'">
-                <norela-coll :pdata="scope.row"></norela-coll>
-              </div>
+            <div class="survey" v-if="jrtype!='mysql' && jrtype!='oracle' && jrtype!='sqlserver' && jrtype!='postgresql'">
+              <norela-coll :pdata="scope.row"></norela-coll>
+            </div>
               <!--  <div class="survey" v-if="jrtype=='ftp'">
                <path-ftp></path-ftp>
              </div> -->
@@ -232,6 +232,7 @@ export default {
 					_self.mainTableDataTotal = res.data.data.total;
 					if (res.data.data.list.length > 0) {
 						_self.tablePa = res.data.data.list[0];
+              this.$store.commit('setSeparator',res.data.data.list[0].extendParams.separator);
 
 					}
 					_self.currentPage = _self.tableParams.pageNum;
