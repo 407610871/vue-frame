@@ -119,7 +119,6 @@ export default {
   methods:{
 		initPage(){
 			var _self = this;
-		
 			this.$ajax.get(window.ENV.API_DACM+'/caccesssysRelationWorkInfo/getStorages',{
 				params:{
 					nodeId:2,

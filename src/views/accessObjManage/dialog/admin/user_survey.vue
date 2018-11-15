@@ -1,9 +1,9 @@
 <template>
   <div class="taskMDialog userSurveyDialog diaicon">
-   <!--  <el-button size="mini" class="diabtn incbtn" type="danger" @click="dialogVisible = true">用户调研</el-button> -->
-		<el-tooltip class="item" effect="light" content="用户标记" placement="top">
-			<i class="enc-icon-yonghutiaoyan" @click="dialogVisible = true"></i>
-		</el-tooltip>
+    <!--  <el-button size="mini" class="diabtn incbtn" type="danger" @click="dialogVisible = true">用户调研</el-button> -->
+    <el-tooltip class="item" effect="light" content="用户标记" placement="top">
+      <i class="enc-icon-yonghutiaoyan" @click="dialogVisible = true"></i>
+    </el-tooltip>
     <el-dialog title="用户标记" :visible.sync="dialogVisible" width="60%" :before-close="closeDialog">
       <div class="title-gra">
         <span class="grab gra-l"></span>
@@ -149,6 +149,8 @@
   </div>
 </template>
 <script>
+import {downLoadFile} from '@/api/test'
+import {fileDownload} from '@/utils/index'
 export default {
   name: "userSurvey",
   data: function() {
@@ -259,7 +261,7 @@ export default {
           var saveInfo = {
             iD: "", //非必填
             tABLE_ID: this.tableid, //表id
-            rESOURCE_DIRECTORY_NUMBER: this.rnum + this.ruleForm.industry + '-' + this.ruleForm.znb + '-' + this.ruleForm.fcc + this.ruleForm.tlc + this.ruleForm.bdc + this.ruleForm.abc+this.ruleForm.randomId, // '资源目录编号',
+            rESOURCE_DIRECTORY_NUMBER: this.rnum + this.ruleForm.industry + '-' + this.ruleForm.znb + '-' + this.ruleForm.fcc + this.ruleForm.tlc + this.ruleForm.bdc + this.ruleForm.abc + this.ruleForm.randomId, // '资源目录编号',
             iNDUSTRY_CATEGORY: this.ruleForm.industry, // '行业类别',
             pOLICE_BUSINESS: this.ruleForm.znb, // '公安业务',
             fIRST_CLASS_CLASSIFICATION: this.ruleForm.fcc, //'一级分类',
@@ -387,10 +389,9 @@ export default {
               _self.ruleForm.urban = xzqyData[2].urban;
             }
           }
-        }
-        else{
-           _self.areaFlag = true;
-            _self._querySys();
+        } else {
+          _self.areaFlag = true;
+          _self._querySys();
         }
 
 
@@ -426,7 +427,16 @@ export default {
     },
     //资源目录下载
     downTxt() {
-      window.location.href = this.GLOBAL.api.API_DACM + "/dataTable/downloadSpecification";
+      downLoadFile().then(
+        function(response) {
+          let disposition = response.headers['content-disposition'];
+          let filename = disposition ? decodeURI(disposition.match(/filename=(\S*)/)[1]) : "资源目录下载规范.doc";
+          fileDownload(response.data, filename);
+        }.bind(this)
+      ).catch(
+        function(error) {
+          console.log(error);
+        }.bind(this))
     },
     //通过省查询市
     proChange() {
@@ -452,10 +462,10 @@ export default {
 
       }).then(res => {
         if (res.data.result == "success") {
-           var mes = JSON.parse(res.data.message);
-           this.rnum = mes[5].name;
+          var mes = JSON.parse(res.data.message);
+          this.rnum = mes[5].name;
           if (this.areaFlag) {
-           
+
             if (mes[0].name == '') {
               mes[0].name = '[]';
             }
@@ -492,7 +502,7 @@ export default {
       if (this.dialogVisible) {
         console.log("----");
         console.log(this.pdata);
-          this._querySys(); 
+        this._querySys();
         this._getStaticDatas();
         this._queryCity('0', 'pro');
         this.tableid = this.pdata.id;
@@ -572,8 +582,10 @@ export default {
 .sursavebtn .el-form-item--medium .el-form-item__content {
   margin-left: 0px;
 }
-.diaicon i{
+
+.diaicon i {
   cursor: pointer;
-  font-size:20px;
+  font-size: 20px;
 }
+
 </style>

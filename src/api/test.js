@@ -34,3 +34,12 @@ export function updateTest(data) {
     data
   });
 }
+//下载规范
+export function downLoadFile(params) {
+  return request({
+    url:window.ENV.API_DACM + "/dataTable/downloadSpecification",
+    method: "get",
+    params
+  });
+}
+
