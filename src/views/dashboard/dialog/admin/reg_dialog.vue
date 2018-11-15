@@ -953,6 +953,7 @@ export default {
                 this.$ajax({
                   method: "POST",
                   url: this.GLOBAL.api.API_DACM + '/register/fileSourceInsert',
+                 /* url:'http://10.19.160.211:8080/DACM/register/fileSourceInsert',*/
                   processData: false,
                   contentType: false,
                   data: formData
@@ -1111,6 +1112,7 @@ export default {
               this.$ajax({
                 method: "POST",
                 url: this.GLOBAL.api.API_DACM + '/register/fileSourceInsert',
+                /* url:'http://10.19.160.211:8080/DACM/register/fileSourceInsert',*/
                 processData: false,
                 contentType: false,
                 data: formData

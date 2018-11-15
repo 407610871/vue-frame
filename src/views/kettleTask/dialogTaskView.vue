@@ -54,7 +54,7 @@
           <div class="daiInfo-tabs">
             <div type="border-card" style="height:265px;">
                 <div class="dataCheck-tab" v-loading="loading3">
-                    <textarea v-show="taskBaseInfo.log!=''" name="" id="" cols="30" rows="12" disabled="disabled" style="resize:none;width: 100%; height: 180px;border:none;background:inherit" >{{taskBaseInfo.log}}</textarea>
+                    <textarea v-show="taskBaseInfo.log!=''" name="" id="" cols="30" rows="12" disabled="disabled" style="resize:none;width: 100%; height: 264px;border:none;background:inherit" >{{taskBaseInfo.log}}</textarea>
                     <div class="tips-none" v-show="taskBaseInfo.log==''">暂无数据</div>
                 </div>
             </div>
