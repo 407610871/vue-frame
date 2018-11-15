@@ -87,7 +87,7 @@
           </el-main>
           <el-footer>
             <div class="enc-pagination">
-              <el-pagination v-if="mainTableReady" style="float:right; margin:10px;"
+              <el-pagination v-if="mainTableReady" v-show="pageShow" style="float:right; margin:10px;"
                 @current-change="goPage"
                 background
                 :page-size="20"
@@ -153,6 +153,7 @@ export default {
 			loading:false,
       queryParamReady:true,
       currentPage1:1,
+			pageShow:true,
       tableHeight: window.innerHeight - 280,
       mainTableReady:true,
       mainTableData1: [],
@@ -340,9 +341,12 @@ export default {
 						_self.mainTableDataTotal1 = res.data.data.total;
 						//这里是异步的，存在延迟，所以没问题,如果是同步的话可能存在问题
 						_self.currentPage1 = _self.tableParams.pageNum1;
+						_self.pageShow = true;
 						resolve(res);
 					}else{
 						console.log(res.data.code);
+						_self.mainTableData1 = [];
+						_self.pageShow = false;
 						reject(res);
 						_self.$alert('获取表信息失败','提示', {
 							confirmButtonText: '确定'
@@ -353,7 +357,8 @@ export default {
 					}
 				})
 				.catch(function(err){
-					_self.currentPage1 = _self.tableParams.pageNum1;
+					_self.mainTableData1 = [];
+					_self.pageShow = false;
 					console.log(err)
 					if(_self.tabPosition == 'metadataManage'){
 						_self.loading = false;
@@ -377,6 +382,7 @@ export default {
 					if(res.data.success){
 						resolve(res);
 					}else{
+						_self.mainTableData2 = [];
 						console.log(res.data.code);
 						reject(res);
 						_self.$alert('获取预览信息失败','提示', {
@@ -389,6 +395,7 @@ export default {
 				})
 				.catch(function(err){
 					console.log(err)
+					_self.mainTableData2 = [];
 					reject(err);
 					_self.$alert('获取预览信息失败','提示', {
 						confirmButtonText: '确定'

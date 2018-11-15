@@ -61,7 +61,7 @@
       </el-main>
       <el-footer>
         <div class="enc-pagination">
-          <el-pagination v-if="queryParamReady" style="float:right; margin:10px;"
+          <el-pagination v-if="queryParamReady" v-show="pageShow" style="float:right; margin:10px;"
             @current-change="goPage"
             background
             :page-size="20"
@@ -89,6 +89,7 @@ export default {
     return {
       loading:false,
       queryParamReady:false,
+      pageShow:true,
       currentPage:1,
       mainTableData: [],
       mainTableDataTotal: 1,
@@ -241,12 +242,16 @@ export default {
           _self.mainTableData = res.data.data.list;
           _self.mainTableDataTotal = res.data.data.total;
           _self.currentPage = _self.tableParams.pageNum;
+					_self.pageShow = true;
         }else if(res.data.code=='5000'){
 					_self.mainTableData = [];
-					_self.mainTableDataTotal = 1;
-          _self.currentPage = 1;
+          _self.mainTableDataTotal = 1;
+					_self.currentPage = 1;
+					_self.pageShow = true;
 				}else{
           console.log(res.data.code)
+					_self.mainTableData = [];
+					_self.pageShow = false;
 					_self.$alert('加载数据源数据失败','提示', {
 						confirmButtonText: '确定'
 					});
@@ -254,7 +259,8 @@ export default {
         _self.loading = false;
       })
       .catch(function(err){
-        _self.currentPage = _self.tableParams.pageNum;
+				_self.mainTableData = [];
+				_self.pageShow = false;
         _self.loading = false;
         console.log(err)
 				_self.$alert('加载数据源数据失败','提示', {

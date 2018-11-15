@@ -62,7 +62,7 @@
       </el-main>
       <el-footer>
         <div class="enc-pagination">
-          <el-pagination v-if="queryParamReady" style="float:right; margin:10px;"
+          <el-pagination v-if="queryParamReady" v-show="pageShow" style="float:right; margin:10px;"
             @current-change="goPage"
             background
             :page-size="20"
@@ -101,6 +101,7 @@ export default {
       mainTableData: [],
       currentPage: 1,
       mainTableDataTotal: 1,
+			pageShow:true,
       //dialogVisible:false,
       //myDialogRouter:'adminAdd',
       //dialogTitle:'新增',
@@ -186,8 +187,11 @@ export default {
           _self.mainTableData = res.data.data.list;
           _self.mainTableDataTotal = res.data.data.total;
           _self.currentPage = _self.tableParams.pageNum;
+					_self.pageShow = true;
         }else{
           console.log(res.data.code)
+					_self.mainTableData = [];
+					_self.pageShow = false;
 					_self.$alert('字段废止数据源列表失败','提示', {
 						confirmButtonText: '确定'
 					});
@@ -195,7 +199,8 @@ export default {
         _self.loading = false;
       })
       .catch(function(err){
-        _self.currentPage = _self.tableParams.pageNum;
+				_self.mainTableData = [];
+				_self.pageShow = false;
         _self.loading = false;
         console.log(err)
 				_self.$alert('字段废止数据源列表失败','提示', {

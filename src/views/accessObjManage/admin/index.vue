@@ -80,7 +80,7 @@
       </el-main>
       <el-footer>
         <div class="enc-pagination">
-          <el-pagination v-if="queryParamReady" style="float:right; margin:10px;" @current-change="goPage" background :page-size="20" :total="mainTableDataTotal" layout="prev, pager, next, jumper" :current-page.sync="currentPage">
+          <el-pagination v-if="queryParamReady" v-show="pageShow" style="float:right; margin:10px;" @current-change="goPage" background :page-size="20" :total="mainTableDataTotal" layout="prev, pager, next, jumper" :current-page.sync="currentPage">
           </el-pagination>
         </div>
       </el-footer>
@@ -113,6 +113,7 @@ export default {
       dialogTitle: '新增',
       alertVisible: false,
       alertContent: '',
+      pageShow: true,
       seledRows: [],
       collapse: true,
       formFilterData: [],
@@ -234,16 +235,20 @@ export default {
 
 					}
 					_self.currentPage = _self.tableParams.pageNum;
+					_self.pageShow = true;
 				} else {
 					console.log(res.code);
 					_self.$alert('加载接入对象列表失败', '提示', {
 						confirmButtonText: '确定'
 					});
+					_self.pageShow = false;
+					_self.mainTableData = [];
 				}
 				_self.loading = false;
 			})
 			.catch(function(err) {
-				_self.currentPage = _self.tableParams.pageNum;
+				_self.pageShow = false;
+				_self.mainTableData = [];
 				console.log(err);
 				_self.loading = false;
 				_self.$alert('加载接入对象列表失败', '提示', {
