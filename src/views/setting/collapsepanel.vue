@@ -72,18 +72,21 @@ export default {
     },
   },
   mounted() {
+		
+		console.log('111');
+		console.log(this.settingList.list);
 		this.seledId = this.settingList.seledId;
 		for(var i=0;i<this.settingList.list.length;i++){
 			if(this.settingList.list[i].storageId == this.settingList.seledId){
 				this.activeIndex = i;
-				this.total = this.settingList.list.length;
 				this.pageNum = Math.ceil((i+1)/this.pageSize);
 				this.currentPage = Math.ceil((i+1)/this.pageSize);
-				this.storageList = this.settingList.list;
-				this.pageReady = true;
 				break;
 			}
 		}
+		this.storageList = this.settingList.list;
+		this.total = this.settingList.list.length;
+		this.pageReady = true;
   },
   methods: {
 		setConnect(event){
@@ -133,6 +136,8 @@ export default {
 					});
 					if(_self.editTxt == '关联'){
 						_self.seledId = _self.editingId;
+					}else{
+						_self.seledId = -1;
 					}
 				}else{
 					_self.$alert(_self.editTxt+'失败','提示', {

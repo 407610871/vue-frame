@@ -31,7 +31,7 @@
     </div>
     <el-table :data="tableData" :height="tableHeight" class="table-data-list">
         <el-table-column label="序号" type="index" width="100"></el-table-column>
-        <el-table-column label="任务名称" prop="taskName"></el-table-column>
+        <el-table-column label="任务名称" prop="taskName" :show-overflow-tooltip='true'></el-table-column>
         <el-table-column label="任务类型"  prop="taskType"></el-table-column>
         <el-table-column label="任务开始时间">
             <template slot-scope="scope">
@@ -153,12 +153,12 @@ export default {
                     that.tableData = res.data.result;
                 }else{
                      that.$message({
-                        showClose: true,
-                        message: res.message,
-                        duration: 3500
+                        showClose:true,
+                        message:res.message,
+                        duration:3500
                     });
                 }
-            }).catch(err => {
+            }).catch(()=> {
                 this.loading = false;
             });
         },
@@ -166,8 +166,8 @@ export default {
         doStart(row){
             this.loading = true;
             this.$ajax.post(baseUrl+'/manager/govern/startGovern',{
-                    "jobPath": row.jobPath,
-                    "jobName": row.taskName
+                    "jobPath":row.jobPath,
+                    "jobName":row.taskName
                 }).then(res => {
                res = res.data;
                this.loading = false;
@@ -176,7 +176,7 @@ export default {
                }else{
                    row.status = 'Finished (with errors)';
                }
-            }).catch(err => {
+            }).catch(() => {
                 this.loading = false;
             });
         },
@@ -188,23 +188,35 @@ export default {
         //删除
         doDelete(row){
             let that = this;
-            this.loading = true;
-            this.$ajax.post(baseUrl+'/manager/govern/deleteGovern',{
-                    id:row.id,
-                    carteObjectId: row.carteObjectId,
-                    jobName: row.taskName,
-                    jobPath: row.jobPath
-            }).then(res => {
-                res = res.data;
-                this.loading = false;
-               if(res.success){
-                   that.init();
-               }else{
-                    that.$alert(res.message,'删除');
-               }
-            }).catch(err => {
-                this.loading = false;
-            });
+            this.$confirm(
+                "是否确认要删除",
+                "提示",
+                {
+                confirmButtonText: "确定",
+                cancelButtonText: "取消",
+                type: "info"
+                }
+            ).then(() => {
+                this.loading = true;
+                this.$ajax.post(baseUrl+'/manager/govern/deleteGovern',{
+                        id:row.id,
+                        carteObjectId:row.carteObjectId,
+                        jobName:row.taskName,
+                        jobPath:row.jobPath
+                }).then(res => {
+                    res = res.data;
+                    this.loading = false;
+                    if(res.success){
+                        that.$alert('删除成功','提示');
+                        that.init();
+                    }else{
+                            that.$alert(res.message,'删除');
+                    }
+                }).catch(() => {
+                    this.loading = false;
+                });
+            }).catch(() => {});
+            
         },
         //查询按钮
         search(){
@@ -238,7 +250,7 @@ export default {
     },
 };
 </script>
-<style  lang="scss" scoped>
+<style lang="scss" scoped>
 .count-container {
   background-color: #fff;
   border-bottom: 1px solid #d9d9d9;
@@ -264,16 +276,16 @@ export default {
   }
   ::-webkit-input-placeholder {
     color: #999;
-  } ///* 使用webkit内核的浏览器 */
+  } /* 使用webkit内核的浏览器 */
   :-moz-placeholder {
     color: #999;
-  } ///* Firefox版本4-18 */
+  } //* Firefox版本4-18 */
   ::-moz-placeholder {
     color: #999;
-  } ///* Firefox版本19+ */
+  } //* Firefox版本19+ */
   :-ms-input-placeholder {
     color: #999;
-  } ///* IE浏览器 */
+  } //* IE浏览器 */
 }
 .searchDiv {
     margin-left: 2.5%;
@@ -293,13 +305,13 @@ export default {
     }
 }
 .doCearch{
-    display: inline-block;
-    height: 28px;
-    margin-left: 15px;
-    margin-top: 0;
-    position: relative;
-    top: 2px;
-    line-height: 10px;
+    display:inline-block;
+    height:28px;
+    margin-left:15px;
+    margin-top:0;
+    position:relative;
+    top:2px;
+    line-height:10px;
 }
 .el-checkbox-group{
     display:inline-block;
@@ -325,7 +337,7 @@ export default {
     width:95%;
 }
 </style>
-<style>
+<style lang="scss">
 .search-btn.el-button:focus, .search-btn.el-button:hover {
     color: #FFF;
     border-color: #85ce61;
