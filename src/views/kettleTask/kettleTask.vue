@@ -9,7 +9,29 @@
             <span  @click="doMoreSearch" >高级搜索 <i :class="!moreSearch?'el-icon-caret-bottom':'el-icon-caret-top'"></i>  </span>
             <el-button type="primary" class="doCearch" @click="search">查询</el-button> 
         </div>
+        <!-- <el-tag
+            v-for="(item,index) in status"
+            :key="index"
+            :disable-transitions="false"
+            closable
+            @close="handleClose(item)">
+            {{getStatusName(item)}}
+        </el-tag> -->
         <el-form ref="form"  label-width="110px" class="formGroup" v-if="moreSearch">
+            <el-form-item label="已选查询条件:">
+                <div v-show="status.length>0" class="selected-task-type" style="display: inline-block;">
+                    <span>任务状态:</span>
+                    <span v-show="status.indexOf('Paused')>-1">暂停<span @click="pop('Paused',status);"><i class="el-icon-error"></i></span></span>
+                    <span v-show="status.indexOf('create')>-1">新建<span @click="pop('create',status);"><i class="el-icon-error"></i></span></span>
+                    <span v-show="status.indexOf('Finished (with errors)')>-1">失败<span @click="pop('Finished (with errors)',status);"><i class="el-icon-error"></i></span></span>
+                    <span v-show="status.indexOf('Running')>-1">运行<span @click="pop('Running',status);"><i class="el-icon-error"></i></span></span>
+                    <span v-show="status.indexOf('Finished')>-1">完成<span @click="pop('Finished',status);"><i class="el-icon-error"></i></span></span>
+                </div>
+                <div v-show="time.length>0" class="selected-task-type">
+                    <span style="margin-right:10px;">任务开始时间:</span>
+                    <span>{{time[0]}} - {{time[1]}}<span @click="time=[]"><i class="el-icon-error"></i></span></span>
+                </div>
+            </el-form-item>
             <el-form-item label="任务状态:">
                 <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>
                 <el-checkbox-group v-model="status" @change="handleCheckedCitiesChange">
@@ -90,7 +112,7 @@ export default {
             totalPage: 0,
             status:[],
             checkStatus:[{name:'暂停',label:'Paused'},{name:'新建',label:'create'},{name:'失败',label:'Finished (with errors)'},{name:'运行',label:'Running'},{name:'完成',label:'Finished'}],
-            isIndeterminate:true,
+            isIndeterminate:false,
             checkAll:false,
             taskName:'',
             tableData:[],
@@ -120,8 +142,27 @@ export default {
         },
     },
     methods: {
+        pop:function(val,arr){
+            if(arr.indexOf(val)>-1){
+                let ind = arr.indexOf(val);
+                arr.splice(ind,1);
+            }
+            this.isIndeterminate = this.status.length > 0 && this.status.length < this.checkStatus.length;
+            this.checkAll = this.status.length == this.checkStatus.length;
+        },
+       /*  handleClose(item){
+
+        },
+        getStatusName(label){
+            let obj = this.checkStatus.find(item => item.label == label);
+            return obj.name;
+        }, */
         handleCheckAllChange(val){
-            this.status = val ? this._checkStatus : [];
+            if(val){
+                this.status = [].concat(this._checkStatus);
+            }else{
+                this.status = [];
+            }
             this.isIndeterminate = false;
         },
         handleCheckedCitiesChange(value){
@@ -251,6 +292,16 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+.selected-task-type span{
+  margin-right: 10px;
+  color: #425365;
+}
+.selected-task-type span:first-child{
+  font-weight: 600;
+}
+.selected-task-type span i{
+  margin-left: 3px;
+}
 .count-container {
   background-color: #fff;
   border-bottom: 1px solid #d9d9d9;
