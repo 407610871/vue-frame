@@ -13,8 +13,8 @@
             <p>
               <span class="title1">{{item.name}}</span>
               <br /> hdfs主机名:{{item.name}}
-              <br /> 端口号：{{item.port}} 
-							<br /> hdfs.url：{{item.url}}
+              <br /> 端口号：{{item.port}}
+              <br /> hdfs.url：{{item.url}}
               <br /> 备用节点字符串：{{item.bak}}
               <br /> 根目录：{{item.root}}
               <br /> impala服务器地址：{{item.impalaPath}}
@@ -24,7 +24,7 @@
         <el-col :span="9" class="collapsepanel-tools">
           <div class="grid-content">
             <div class="edithdd" style="display: inline-block; margin-left:10px; margin-right: 10px;">
-             <hdfs-edit :indexEq="index" :ownId="item.storageId" @refresh="refresh()"></hdfs-edit>
+              <hdfs-edit :indexEq="index" :ownId="item.storageId" @refresh="refresh()"></hdfs-edit>
             </div>
             <el-button type="primary" @click="setConnect" :id="item.storageId" :disabled="item.storageId == seledId">关联</el-button>
             <el-button type="primary" @click="setDelete" :id="item.storageId" :disabled="item.storageId != seledId">删除</el-button>
@@ -32,16 +32,10 @@
         </el-col>
       </el-row>
     </div>
-		<div class="enc-pagination" v-if="pageSize<total && pageReady">
-			<el-pagination style="float:right; margin:10px;"
-				@current-change="goPage"
-				background
-				:page-size="1"
-				:total="total"
-				layout="prev, pager, next, jumper"
-				:current-page.sync="currentPage">
-			</el-pagination>
-		</div>
+    <div class="enc-pagination" v-if="pageSize<total && pageReady">
+      <el-pagination style="float:right; margin:10px;" @current-change="goPage" background :page-size="1" :total="total" layout="prev, pager, next, jumper" :current-page.sync="currentPage">
+      </el-pagination>
+    </div>
     <div class="regbtn">
       <hdfs-add :msg="1" @refresh="refresh()"></hdfs-add>
     </div>
@@ -53,16 +47,16 @@ import hdfsEdit from '@/views/mainLay/dialog/hdfs_edit'
 export default {
   data() {
     return {
-			storageList:[],
+      storageList: [],
       activeIndex: 0,
-			seledId:-1,
-			editingId:-1,
-			editTxt:'',
-			currentPage:1,
-			total:1,
-			pageReady:false,
-			pageNum:1,
-			pageSize:5
+      seledId: -1,
+      editingId: -1,
+      editTxt: '',
+      currentPage: 1,
+      total: 1,
+      pageReady: false,
+      pageNum: 1,
+      pageSize: 5
     }
   },
   props: {
@@ -71,98 +65,120 @@ export default {
       required: true
     },
   },
+  watch: {
+    settingList: {
+      deep: true,
+      handler: function(newVal, oldVal) {
+        this.settingList = newVal;
+        console.log(this.settingList);
+        console.log(oldVal);
+        this.seledId = this.settingList.seledId;
+        for (var i = 0; i < this.settingList.list.length; i++) {
+          if (this.settingList.list[i].storageId == this.settingList.seledId) {
+            this.activeIndex = i;
+            this.pageNum = Math.ceil((i + 1) / this.pageSize);
+            this.currentPage = Math.ceil((i + 1) / this.pageSize);
+            break;
+          }
+        }
+        this.storageList = this.settingList.list;
+        this.total = this.settingList.list.length;
+        this.pageReady = true;
+      }
+    }
+  },
   mounted() {
-		
-		console.log('111');
-		console.log(this.settingList.list);
-		this.seledId = this.settingList.seledId;
-		for(var i=0;i<this.settingList.list.length;i++){
-			if(this.settingList.list[i].storageId == this.settingList.seledId){
-				this.activeIndex = i;
-				this.pageNum = Math.ceil((i+1)/this.pageSize);
-				this.currentPage = Math.ceil((i+1)/this.pageSize);
-				break;
-			}
-		}
-		this.storageList = this.settingList.list;
-		this.total = this.settingList.list.length;
-		this.pageReady = true;
+
+    console.log('111');
+    console.log(this.settingList.list);
+    this.seledId = this.settingList.seledId;
+    for (var i = 0; i < this.settingList.list.length; i++) {
+      if (this.settingList.list[i].storageId == this.settingList.seledId) {
+        this.activeIndex = i;
+        this.pageNum = Math.ceil((i + 1) / this.pageSize);
+        this.currentPage = Math.ceil((i + 1) / this.pageSize);
+        break;
+      }
+    }
+    this.storageList = this.settingList.list;
+    this.total = this.settingList.list.length;
+    this.pageReady = true;
   },
   methods: {
-		setConnect(event){
-			var id = event.target.id?parseInt(event.target.id):parseInt(event.target.parentNode.id);
-			if(this.seledId == id){
-				return;
-			}else{
-				this.editingId = id;
-			}
-			this.editTxt = '关联';
-			console.log(event.target);
-			console.log(this.editingId);
-			this.connectConfirm()
-		},
-		setDelete(event){
-			var id = event.target.id?parseInt(event.target.id):parseInt(event.target.parentNode.id);
-			if(this.seledId != id){
-				return;
-			}else{
-				this.editingId = id;
-			}
-			this.editTxt = '取消关联';
-			this.connectConfirm()
-		},
-		connectConfirm(){
-			this.$confirm('确认要'+this.editTxt+'吗?', '提示', {
-				confirmButtonText: this.editTxt,
-				cancelButtonText: '取消',
-				type: 'warning'
-			}).then(() => {
-				this.connectAjax();
-			});
-		},
-		connectAjax(){
-			var _self = this;
-			var storageId = _self.editTxt == '关联'?this.editingId:0;
-			console.log(storageId);
-			this.$ajax.get(window.ENV.API_DACM+'/caccesssysRelationWorkInfo/operate',{
-				params:{
-					nodeId:2,
-					storageId:storageId
-				}
-			}).then(function(res){
-				if(res.data.result == 'succeed'){
-					_self.$alert(_self.editTxt+'成功','提示', {
-						confirmButtonText: '确定'
-					});
-					if(_self.editTxt == '关联'){
-						_self.seledId = _self.editingId;
-					}else{
-						_self.seledId = -1;
-					}
-				}else{
-					_self.$alert(_self.editTxt+'失败','提示', {
-						confirmButtonText: '确定'
-					});
-				}
-			})
-			.catch(function(err){
-				console.log(err)
-				_self.$alert(_self.editTxt+'失败','提示', {
-					confirmButtonText: '确定'
-				});
-			});
-		},
+    setConnect(event) {
+      var id = event.target.id ? parseInt(event.target.id) : parseInt(event.target.parentNode.id);
+      if (this.seledId == id) {
+        return;
+      } else {
+        this.editingId = id;
+      }
+      this.editTxt = '关联';
+      console.log(event.target);
+      console.log(this.editingId);
+      this.connectConfirm()
+    },
+    setDelete(event) {
+      var id = event.target.id ? parseInt(event.target.id) : parseInt(event.target.parentNode.id);
+      if (this.seledId != id) {
+        return;
+      } else {
+        this.editingId = id;
+      }
+      this.editTxt = '取消关联';
+      this.connectConfirm()
+    },
+    connectConfirm() {
+      this.$confirm('确认要' + this.editTxt + '吗?', '提示', {
+        confirmButtonText: this.editTxt,
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.connectAjax();
+      });
+    },
+    connectAjax() {
+      var _self = this;
+      var storageId = _self.editTxt == '关联' ? this.editingId : 0;
+      console.log(storageId);
+      this.$ajax.get(window.ENV.API_DACM + '/caccesssysRelationWorkInfo/operate', {
+          params: {
+            nodeId: 2,
+            storageId: storageId
+          }
+        }).then(function(res) {
+          if (res.data.result == 'succeed') {
+            _self.$alert(_self.editTxt + '成功', '提示', {
+              confirmButtonText: '确定'
+            });
+            if (_self.editTxt == '关联') {
+              _self.seledId = _self.editingId;
+            } else {
+              _self.seledId = -1;
+            }
+          } else {
+            _self.$alert(_self.editTxt + '失败', '提示', {
+              confirmButtonText: '确定'
+            });
+          }
+        })
+        .catch(function(err) {
+          console.log(err)
+          _self.$alert(_self.editTxt + '失败', '提示', {
+            confirmButtonText: '确定'
+          });
+        });
+    },
     //新增成功刷新
-    refresh(){
+    refresh() {
       this.$emit('refresh');
     },
-    goPage:function(val){
+    goPage: function(val) {
       this.pageNum = val;
     }
   },
-  components:{
-     hdfsAdd,
-     hdfsEdit
+  components: {
+    hdfsAdd,
+    hdfsEdit
   }
 }
 
