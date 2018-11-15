@@ -60,7 +60,7 @@
 {
   "type": "oracle",
   "datas": [
-    "INT",
+     "INT",
     "NUMBER",
     "VARCHAR",
     "TIMESTAMP",

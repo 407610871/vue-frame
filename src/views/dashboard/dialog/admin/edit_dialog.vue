@@ -371,7 +371,7 @@ export default {
           { required: true, message: '不能为空', validator: validateNull, trigger: "blur" }
         ],
         dockname: [
-          { required: true,message: '不能为空', validator: validateNull, trigger: "blur" }
+          { required: true, message: '不能为空', validator: validateNull, trigger: "blur" }
         ],
         iport: [
           { required: true, message: '不能为空', validator: validateNull, trigger: "blur" }
@@ -400,8 +400,8 @@ export default {
         prophone: [
           { validator: this.GLOBAL.validatePhone, trigger: 'blur' }
         ],
-         dockphone: [
-          {required: true, message: '输入正确的号码', validator: this.GLOBAL.validatePhone, trigger: 'blur' }
+        dockphone: [
+          { required: true, message: '输入正确的号码', validator: this.GLOBAL.validatePhone, trigger: 'blur' }
         ]
       },
       treedata: [],
@@ -487,7 +487,7 @@ export default {
       }).then(res => {
 
         this.syskindList = res.data;
-        this.ruleForm.syskind = res.data[0].id;
+        /*this.ruleForm.syskind = res.data[0].id;*/
       })
     },
     //对接部门
@@ -579,191 +579,196 @@ export default {
       var _self = this;
       this.$refs[formName].validate((valid) => {
         if (valid) {
-            let save = {};
-            save = {
-              "id": _self.appId,
-              "name": _self.ruleForm.jrname, // 接入源名称
-              "accessSysDialectId": _self.ruleForm.syskind, //mysql,oracle接入源类型
-              "registerName": _self.ruleForm.dockname, // 注册人姓名 
-              "registerPhone": _self.ruleForm.dockphone, // 注册人电话 
-              "contactsPhone": _self.ruleForm.prophone, //数据提供人电话
-              "contactsEmail": _self.ruleForm.proemail, //数据提供人 邮箱
-              "accessSysDeptInfoId": _self.ruleForm.dockid, //所属部门
-              "attr": [{
-                  //数据提供人姓名
-                  "key": "sourceQQ",
-                  "value": _self.ruleForm.proqq
-                },
-                {
-                  //是否修改用户名和密码
-                  "key": "modifyFlag",
-                  "value": "1"
-                },
-                {
-                  //数据提供人电话
-                  "key": "sourceEmail",
-                  "value": _self.ruleForm.proemail
-                },
-                {
-                  "key": "network",
-                  "value": _self.ruleForm.resource //  接入数据来源
-                },
-                {
-                  //数据授权
-                  "key": "accredit",
-                  "value": _self.ruleForm.author
-                },
-                {
-                  //对接部门
-                  "key": "abutment",
-                  "value": _self.ruleForm.dockpart
-                },
-                {
-                  //数据所属部门
-                  "key": "department",
-                  "value": _self.ruleForm.dockdata
-                },
-                {
-                  "key": "depId",
-                  "value": _self.ruleForm.dockid
-                },
-                {
-                  //归属大类
-                  "key": "ascription",
-                  "value": ""
-                },
-                {
-                  //对接平台
-                  "key": "platform",
-                  "value": _self.ruleForm.dockPlat
-                },
-                {
-                  //业务类别
-                  "key": "rcategory",
-                  "value": _self.ruleForm.authorf
-                },
-                //属性值
-                {
-                  "key": "ip",
-                  "value": _self.ruleForm.ipname
-                },
-                {
-                  "key": "port",
-                  "value": _self.ruleForm.iport
-                },
-                {
-                  "key": "url",
-                  "value": _self.ruleForm.url
-                },
-                {
-                  "key": "timeOut",
-                  "value": _self.ruleForm.timeout
-                },
-                {
-                  "key": "databasename",
-                  "value": _self.ruleForm.instanceName
-                },
-                {
-                  "key": "username",
-                  "value": _self.ruleForm.username
-                },
-                {
-                  "key": "password",
-                  "value": _self.ruleForm.password
-                },
-                {
-                  "key": "model",
-                  "value": _self.ruleForm.model
-                },
-                {
-                  "key": "linkman",
-                  "value": _self.ruleForm.proname
-                },
-                {
-                  "key": "dept_name",
-                  "value": _self.ruleForm.dockdata
-                },
-                {
-                  "key": 'vhost',
-                  "value": _self.ruleForm.vhost
-                },
-                {
-                  "key": 'isActive',
-                  "value": _self.ruleForm.transmode
-                },
-                {
-                  "key": 'fromPath',
-                  "value": _self.ruleForm.fromPath
-                },
-                {
-                  "key": 'toPath',
-                  "value": _self.ruleForm.toPath
-                },
-                {
-                  "key": 'tableStructure',
-                  "value": _self.ruleForm.tableStructure
-                }
-
-              ]
-            }
-            console.log(typeof(save));
-            this.$ajax({
-              method: "get",
-              url: this.GLOBAL.api.API_DACM + '/register/dataSourceCheck',
-              // headers:{
-              //   'Content-Type':'application/json;charset=utf-8',
-              // },
-              params: {
-                ip: this.ruleForm.ipname,
-                username: this.ruleForm.username,
-                name: this.ruleForm.jrname,
-                id: this.appId
+          let save = {};
+          save = {
+            "id": _self.appId,
+            "name": _self.ruleForm.jrname, // 接入源名称
+            "accessSysDialectId": _self.ruleForm.syskind, //mysql,oracle接入源类型
+            "registerName": _self.ruleForm.dockname, // 注册人姓名 
+            "registerPhone": _self.ruleForm.dockphone, // 注册人电话 
+            "contactsPhone": _self.ruleForm.prophone, //数据提供人电话
+            "contactsEmail": _self.ruleForm.proemail, //数据提供人 邮箱
+            "accessSysDeptInfoId": _self.ruleForm.dockid, //所属部门
+            "attr": [{
+                //数据提供人姓名
+                "key": "sourceQQ",
+                "value": _self.ruleForm.proqq
+              },
+              {
+                //是否修改用户名和密码
+                "key": "modifyFlag",
+                "value": "1"
+              },
+              {
+                //数据提供人电话
+                "key": "sourceEmail",
+                "value": _self.ruleForm.proemail
+              },
+              {
+                "key": "network",
+                "value": _self.ruleForm.resource //  接入数据来源
+              },
+              {
+                //数据授权
+                "key": "accredit",
+                "value": _self.ruleForm.author
+              },
+              {
+                //对接部门
+                "key": "abutment",
+                "value": _self.ruleForm.dockpart
+              },
+              {
+                //数据所属部门
+                "key": "department",
+                "value": _self.ruleForm.dockdata
+              },
+              {
+                "key": "depId",
+                "value": _self.ruleForm.dockid
+              },
+              {
+                //归属大类
+                "key": "ascription",
+                "value": ""
+              },
+              {
+                //对接平台
+                "key": "platform",
+                "value": _self.ruleForm.dockPlat
+              },
+              {
+                //业务类别
+                "key": "rcategory",
+                "value": _self.ruleForm.authorf
+              },
+              //属性值
+              {
+                "key": "ip",
+                "value": _self.ruleForm.ipname
+              },
+              {
+                "key": "port",
+                "value": _self.ruleForm.iport
+              },
+              {
+                "key": "url",
+                "value": _self.ruleForm.url
+              },
+              {
+                "key": "timeOut",
+                "value": _self.ruleForm.timeout
+              },
+              {
+                "key": "databasename",
+                "value": _self.ruleForm.instanceName
+              },
+              {
+                "key": "username",
+                "value": _self.ruleForm.username
+              },
+              {
+                "key": "password",
+                "value": _self.ruleForm.password
+              },
+              {
+                "key": "model",
+                "value": _self.ruleForm.model
+              },
+              {
+                "key": "linkman",
+                "value": _self.ruleForm.proname
+              },
+              {
+                "key": "dept_name",
+                "value": _self.ruleForm.dockdata
+              },
+              {
+                "key": 'vhost',
+                "value": _self.ruleForm.vhost
+              },
+              {
+                "key": 'isActive',
+                "value": _self.ruleForm.transmode
+              },
+              {
+                "key": 'fromPath',
+                "value": _self.ruleForm.fromPath
+              },
+              {
+                "key": 'toPath',
+                "value": _self.ruleForm.toPath
+              },
+              {
+                "key": 'tableStructure',
+                "value": _self.ruleForm.tableStructure
               }
 
-            }).then(res => {
-              if (res.data.exist) {
-                if (res.data.existName) {
-                  this.$message.warning('接入源名称已存在');
-                  return false;
-                }
-                this.$confirm('已经存在同IP地址同用户的数据源，确定保存?', '信息', {
-                  confirmButtonText: '确定',
-                  cancelButtonText: '取消',
-                }).then(() => {
-                  this.loading = true;
-                  this.$ajax({
-                    method: "POST",
-                    url: this.GLOBAL.api.API_DACM + '/update/dataSourceUpdate',
-                    // headers:{
-                    //   'Content-Type':'application/json;charset=utf-8',
-                    // },
-                    data: save
+            ]
+          }
+          console.log(typeof(save));
+          this.$ajax({
+            method: "get",
+            url: this.GLOBAL.api.API_DACM + '/register/dataSourceCheck',
+            // headers:{
+            //   'Content-Type':'application/json;charset=utf-8',
+            // },
+            params: {
+              ip: this.ruleForm.ipname,
+              username: this.ruleForm.username,
+              name: this.ruleForm.jrname,
+              id: this.appId
+            }
 
-                  }).then(res => {
-                    this.loading = false;
-                    if (res.data.success) {
-                      this.$alert('更新成功', '信息', {
-                        confirmButtonText: '确定',
-                        callback: action => {
-                          this.$refs['ruleForm'].resetFields();
-                          this.dialogVisible = false;
-                          this.$emit('refreshTable');
-                        }
-                      });
+          }).then(res => {
+            if (res.data.data.exist) {
+              if (res.data.data.existName) {
+                this.$message.warning('接入源名称已存在');
+                return false;
+              }
+              this.$confirm('已经存在同IP地址同用户的数据源，确定保存?', '信息', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+              }).then(() => {
+                this.loading = true;
+                this.$ajax({
+                  method: "POST",
+                  url: this.GLOBAL.api.API_DACM + '/update/dataSourceUpdate',
+                  // headers:{
+                  //   'Content-Type':'application/json;charset=utf-8',
+                  // },
+                  data: save
 
-                    } else {
-                      this.$alert('更新失败', '信息', {
-                        confirmButtonText: '确定',
-                        callback: action => {}
-                      });
-                    }
+                }).then(res => {
+                  this.loading = false;
+                  if (res.data.success) {
+                    this.$alert('更新成功', '信息', {
+                      confirmButtonText: '确定',
+                      callback: action => {
+                        this.$refs['ruleForm'].resetFields();
+                        this.dialogVisible = false;
+                        this.$emit('refreshTable');
+                      }
+                    });
 
-                  })
-
-                }).catch(() => {
+                  } else {
+                    this.$alert('更新失败', '信息', {
+                      confirmButtonText: '确定',
+                      callback: action => {}
+                    });
+                  }
 
                 })
-              } else {
+
+              }).catch(() => {
+
+              })
+            } else {
+
+              this.$confirm('确认保存修改?', '信息', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+              }).then(() => {
                 this.loading = true;
                 this.$ajax({
                   method: "POST",
@@ -796,14 +801,18 @@ export default {
                   }
 
                 })
-              }
-            })
+              }).catch(() => {
 
-          
-        } 
+              })
+
+            }
+          })
 
 
-        
+        }
+
+
+
       });
     },
     //测试连接

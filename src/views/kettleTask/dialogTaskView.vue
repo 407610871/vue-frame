@@ -1,6 +1,6 @@
 <template>
-  <div class="taskMDialog" style="padding-bottom:15px;" >
-    <el-dialog width="60%" title="任务详情信息" :visible.sync="showInnerDialog" @closed="closeDia">
+  <div class="taskMDialog" style="padding-bottom:15px;max-height:calc(100% - 50px);margin-bottom:25px;" >
+    <el-dialog width="60%" title="任务详情信息" :visible.sync="showInnerDialog" @closed="closeDia" :close-on-click-modal="false" class="task-view-dialog"> 
       <div class="title-gra">
         <span class="grab gra-l"></span>
         <span class="grab gra-r"></span>
@@ -11,7 +11,7 @@
         <div class="daiInfo dockInfo">
           <div class="daiInfo-box clearfix">
             <el-col :span="12" v-loading="loading1">
-              <div style="height:323px;width:434px;border:1px solid blue" >
+              <div style="height:323px;width:95%;border:1px solid blue" >
                   <a :href="taskBaseInfo.flowChartPath" target="_blank">
                     <img :src="taskBaseInfo.flowChartPath">
                   </a>
@@ -68,56 +68,66 @@
     <!-- <dialogIsCheck :msgCheck="reqObj" v-if="isShowCheck"></dialogIsCheck> -->
   </div>
 </template>
-<style lang="scss" scoped>
-    
-.taskMDialog .el-dialog__body .daiInfo-box{
-    padding:0px 0px;
-}
-.tips-none{
-  text-align: center;
-  margin-top: 40px;
-  font-size: 16px;
-  color: #a7a2a2;
-}
-.button-log{
-    margin-top: 12px;
-    margin-bottom: 12px;
-}
-.taskStatus{
-    border-bottom: 1px solid #83b2fb;
-    height: 30px;
-    margin-bottom: 18px;
-}
-.taskStatus span{
-    display: inline-block;
-    width: 97px;
-}
-.info-right>div{
-    height: 38px;
-}
-.info-right>div span{
-    display: inline-block;
-    width: 107px;
-}
-.info-right>div span:last-child{
-    color: #2f6ac5;
-    cursor: pointer;
-    width: 300px;
-}
-.daiInfo-tabs{
-    border:1px solid blue;
-}
-img{
-    height:100%;
-    width:100%;
-}
-.steps{
-    display: inline-block;
-    height: 62px;
-    overflow: auto;
-    width: 300px;
-}
+<style lang="scss">
+.task-view-dialog{
+    .el-dialog{
+        min-width: 960px;
+        max-height:calc(100% - 50px);
+        overflow:auto;
+        margin-bottom: 25px;
+        margin-top: 25px!important;
+        height: 100%!important;
+    }
+} 
+</style>
 
+<style lang="scss" scoped>
+
+    
+    .tips-none{
+    text-align: center;
+    margin-top: 40px;
+    font-size: 16px;
+    color: #a7a2a2;
+    }
+    .button-log{
+        margin-top: 12px;
+        margin-bottom: 12px;
+    }
+    .taskStatus{
+        border-bottom: 1px solid #83b2fb;
+        height: 30px;
+        margin-bottom: 18px;
+    }
+    .taskStatus span{
+        display: inline-block;
+        width: 97px;
+    }
+    .info-right>div{
+        height: 38px;
+    }
+    .info-right>div span{
+        display: inline-block;
+        width: 107px;
+    }
+    .info-right>div span:last-child{
+        color: #2f6ac5;
+        cursor: pointer;
+        width: 300px;
+    }
+    .daiInfo-tabs{
+        border:1px solid blue;
+    }
+    img{
+        height:100%;
+        width:100%;
+    }
+    .steps{
+        display: inline-block;
+        height: 62px;
+        overflow: auto;
+        width: 300px;
+    }
 </style>
 <script>
 import axios from "axios";

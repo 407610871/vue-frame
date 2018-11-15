@@ -2,9 +2,9 @@
   <div class="taskMDialog typeMapDia">
     <div class="comTable">
       <el-table :data="schemaMappingDTOList" stripe height="250">
-        <el-table-column prop="orgColumnName" label="数据源字段名称" >
+        <el-table-column prop="orgColumnName" label="数据源字段名称">
         </el-table-column>
-        <el-table-column prop="orgColumnType" label="数据源字段类型" >
+        <el-table-column prop="orgColumnType" label="数据源字段类型">
         </el-table-column>
         <el-table-column prop="" label="目标字段名称" width="180">
           <template slot-scope="scope">
@@ -62,7 +62,7 @@ export default {
         count: 20,
         term: ""
       }
-      this.$ajax.post(this.GLOBAL.api.API_DACM +'/objDetail/dataList', map).then(function(res) {
+      this.$ajax.post(this.GLOBAL.api.API_DACM + '/objDetail/dataList', map).then(function(res) {
         if (res.data.success) {
           _self.tableData = [];
           _self.schemaMappingDTOList = [];
@@ -100,8 +100,22 @@ export default {
     _getType() {
       var _self = this;
       this.$ajax.get('./getColumnType').then(function(res) {
-          _self.TypeData = res.data[0].datas_mapping;
-          //console.log(_self.TypeData);
+          /*_self.TypeData = res.data[0].datas_mapping;*/
+          let reData = [];
+          for (let m = 0; m < res.data.length; m++) {
+            if (_self.$store.state.jrtype == res.data[m].type) {
+              reData = res.data[m].datas_mapping;
+            }
+          }
+          for (let i = 0; i < reData.length; i++) {
+            for (let j = i + 1; j < reData.length; j++) {
+              if (reData[i] == reData[j]) {
+                j = ++i;
+              }
+            }
+            _self.TypeData.push(reData[i]);
+          }
+          console.log(_self.TypeData);
         })
         .catch(function(err) {
           console.log(err)
@@ -109,11 +123,10 @@ export default {
 
     },
     _getAllType() {
-      debugger;
       var _self = this;
       this.$ajax.get('./getColumnType').then(function(res) {
           for (let m = 0; m < res.data.length; m++) {
-            if (_self.rowList[0].accessSys.accessSysDialect.name == res.data[m].type) {
+            if (_self.$store.state.jrtype == res.data[m].type) {
               _self.mapData = res.data[m];
             }
           }
@@ -126,9 +139,15 @@ export default {
 
                 flag = true;
                 temp = j;
+                break;
                 /*_self.cloneData.push({
                   'mapping': _self.mapData.datas_mapping[j]
                 })*/
+              } else {
+                if (_self.tableData[i].datatype.toUpperCase().indexOf(_self.mapData.datas[j]) > -1) {
+                  flag = true;
+                  temp = j;
+                }
               }
             }
 
@@ -193,10 +212,10 @@ export default {
       if (this.msg == 'third') {
         if (this.flag == '0') {
           if (this.$store.state.matchflag == '0') {
-            if(this.schemaMappingDTOList.length==0){
-             this._getMap() 
+            if (this.schemaMappingDTOList.length == 0) {
+              this._getMap()
             }
-            
+
           } else {
             this._getMatch();
           }
@@ -270,7 +289,9 @@ export default {
   padding-left: 30px;
   padding-right: 30px;
 }
-.typeMapDia{
+
+.typeMapDia {
   width: 100%;
 }
+
 </style>

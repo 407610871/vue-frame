@@ -2,16 +2,16 @@
   <div class="taskMDialog typeMapDia">
     <div class="comTable">
       <el-table :data="schemaMappingDTOList" stripe height="250">
-        <el-table-column prop="orgColumnName" label="数据源字段名称" >
+        <el-table-column prop="orgColumnName" label="数据源字段名称">
         </el-table-column>
-        <el-table-column prop="orgColumnType" label="数据源字段类型" >
+        <el-table-column prop="orgColumnType" label="数据源字段类型">
         </el-table-column>
-        <el-table-column prop="" label="目标字段名称" >
+        <el-table-column prop="" label="目标字段名称">
           <template slot-scope="scope">
             <el-input v-model="scope.row.newColumnName"></el-input>
           </template>
         </el-table-column>
-        <el-table-column prop="toType" label="目标字段类型" >
+        <el-table-column prop="toType" label="目标字段类型">
           <template slot-scope="scope">
             <el-select v-model="scope.row.newColumnType" placeholder="请选择">
               <el-option v-for="item in TypeData" :key="item" :label="item" :value="item">
@@ -109,8 +109,22 @@ export default {
     _getType() {
       var _self = this;
       this.$ajax.get('./getColumnType').then(function(res) {
-          _self.TypeData = res.data[0].datas_mapping;
-          //console.log(_self.TypeData);
+          /*_self.TypeData = res.data[0].datas_mapping;*/
+          let reData = [];
+          for (let m = 0; m < res.data.length; m++) {
+            if (_self.maptype == res.data[m].type) {
+              reData = res.data[m].datas_mapping;
+            }
+          }
+          for (let i = 0; i < reData.length; i++) {
+            for (let j = i + 1; j < reData.length; j++) {
+              if (reData[i] == reData[j]) {
+                j = ++i;
+              }
+            }
+            _self.TypeData.push(reData[i]);
+          }
+          console.log(_self.TypeData);
         })
         .catch(function(err) {
           console.log(err)
@@ -120,11 +134,11 @@ export default {
     _getAllType() {
       var _self = this;
       this.$ajax.get('./getColumnType').then(function(res) {
-        for(let m =0; m<res.data.length;m++){
-          if(_self.maptype == res.data[m].type){
-            _self.mapData = res.data[m];
+          for (let m = 0; m < res.data.length; m++) {
+            if (_self.maptype == res.data[m].type) {
+              _self.mapData = res.data[m];
+            }
           }
-        }
           /**/
           for (let i = 0; i < _self.tableData.length; i++) {
             let flag = false;
@@ -134,9 +148,15 @@ export default {
 
                 flag = true;
                 temp = j;
+                break;
                 /*_self.cloneData.push({
                   'mapping': _self.mapData.datas_mapping[j]
                 })*/
+              } else {
+                if (_self.tableData[i].datatype.toUpperCase().indexOf(_self.mapData.datas[j]) > -1) {
+                  flag = true;
+                  temp = j;
+                }
               }
             }
 
@@ -193,7 +213,7 @@ export default {
 
     }
   },
-  props: ['tableId','maptype']
+  props: ['tableId', 'maptype']
 
 };
 
@@ -250,7 +270,9 @@ export default {
   padding-left: 30px;
   padding-right: 30px;
 }
-.typeMapDia{
+
+.typeMapDia {
   width: 100%;
 }
+
 </style>

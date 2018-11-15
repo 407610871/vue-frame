@@ -1,35 +1,37 @@
 <template>
 <div v-loading="loading">
-    <div class="searchDiv">
-        <div class="dataSearch">
-            <i class="el-icon-search"></i>
-            <input type="text" v-model="taskName" placeholder="请输入任务名称" />
+    <div class="count-container">
+        <div class="searchDiv">
+            <div class="dataSearch">
+                <i class="el-icon-search"></i>
+                <input type="text" v-model="taskName" placeholder="请输入任务名称" />
+            </div>
+            <span  @click="doMoreSearch" >高级搜索 <i :class="!moreSearch?'el-icon-caret-bottom':'el-icon-caret-top'"></i>  </span>
+            <el-button type="primary" class="doCearch" @click="search">查询</el-button> 
         </div>
-        <span  @click="doMoreSearch" >高级搜索 <i :class="!moreSearch?'el-icon-caret-bottom':'el-icon-caret-top'"></i>  </span>
-        <el-button type="primary" class="doCearch" @click="search">查询</el-button> 
+        <el-form ref="form"  label-width="110px" class="formGroup" v-if="moreSearch">
+            <el-form-item label="任务状态:">
+                <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>
+                <el-checkbox-group v-model="status" @change="handleCheckedCitiesChange">
+                    <el-checkbox name="status" v-for="item in checkStatus" :label="item.label" :key="item.label">{{item.name}}</el-checkbox>
+                </el-checkbox-group>
+            </el-form-item>
+            <el-form-item label="任务开始时间:">  
+                <el-date-picker
+                v-model="time"
+                :picker-options="pickerOptions"
+                type="datetimerange"
+                start-placeholder="开始时间"
+                end-placeholder="结束时间"
+                value-format="yyyy-MM-dd HH:MM:ss"
+                :default-time="['12:00:00']">
+                </el-date-picker>
+            </el-form-item>
+        </el-form>
     </div>
-    <el-form ref="form"  label-width="110px" class="formGroup" v-if="moreSearch">
-        <el-form-item label="任务状态:">
-            <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>
-            <el-checkbox-group v-model="status" @change="handleCheckedCitiesChange">
-                <el-checkbox name="status" v-for="item in checkStatus" :label="item.label" :key="item.label">{{item.name}}</el-checkbox>
-            </el-checkbox-group>
-        </el-form-item>
-        <el-form-item label="任务开始时间:">  
-            <el-date-picker
-            v-model="time"
-            :picker-options="pickerOptions"
-            type="datetimerange"
-            start-placeholder="开始时间"
-            end-placeholder="结束时间"
-            value-format="yyyy-MM-dd HH:MM:ss"
-            :default-time="['12:00:00']">
-            </el-date-picker>
-        </el-form-item>
-    </el-form>
-    <el-table :data="tableData" :height="tableHeight">
+    <el-table :data="tableData" :height="tableHeight" class="table-data-list">
         <el-table-column label="序号" type="index" width="100"></el-table-column>
-        <el-table-column label="任务名称" prop="taskName"></el-table-column>
+        <el-table-column label="任务名称" prop="taskName" :show-overflow-tooltip='true'></el-table-column>
         <el-table-column label="任务类型"  prop="taskType"></el-table-column>
         <el-table-column label="任务开始时间">
             <template slot-scope="scope">
@@ -111,7 +113,7 @@ export default {
     },
     computed:{
         tableHeight() {
-            return  !this.moreSearch?   window.innerHeight - 220:window.innerHeight - 335;
+            return  !this.moreSearch?   window.innerHeight - 280:window.innerHeight - 395;
         },
         _checkStatus(){
             return this.checkStatus.map(item => item.label);
@@ -151,12 +153,12 @@ export default {
                     that.tableData = res.data.result;
                 }else{
                      that.$message({
-                        showClose: true,
-                        message: res.message,
-                        duration: 3500
+                        showClose:true,
+                        message:res.message,
+                        duration:3500
                     });
                 }
-            }).catch(err => {
+            }).catch(()=> {
                 this.loading = false;
             });
         },
@@ -164,8 +166,8 @@ export default {
         doStart(row){
             this.loading = true;
             this.$ajax.post(baseUrl+'/manager/govern/startGovern',{
-                    "jobPath": row.jobPath,
-                    "jobName": row.taskName
+                    "jobPath":row.jobPath,
+                    "jobName":row.taskName
                 }).then(res => {
                res = res.data;
                this.loading = false;
@@ -174,7 +176,7 @@ export default {
                }else{
                    row.status = 'Finished (with errors)';
                }
-            }).catch(err => {
+            }).catch(() => {
                 this.loading = false;
             });
         },
@@ -186,23 +188,35 @@ export default {
         //删除
         doDelete(row){
             let that = this;
-            this.loading = true;
-            this.$ajax.post(baseUrl+'/manager/govern/deleteGovern',{
-                    id:row.id,
-                    carteObjectId: row.carteObjectId,
-                    jobName: row.taskName,
-                    jobPath: row.jobPath
-            }).then(res => {
-                res = res.data;
-                this.loading = false;
-               if(res.success){
-                   that.init();
-               }else{
-                    that.$alert(res.message,'删除');
-               }
-            }).catch(err => {
-                this.loading = false;
-            });
+            this.$confirm(
+                "是否确认要删除",
+                "提示",
+                {
+                confirmButtonText: "确定",
+                cancelButtonText: "取消",
+                type: "info"
+                }
+            ).then(() => {
+                this.loading = true;
+                this.$ajax.post(baseUrl+'/manager/govern/deleteGovern',{
+                        id:row.id,
+                        carteObjectId:row.carteObjectId,
+                        jobName:row.taskName,
+                        jobPath:row.jobPath
+                }).then(res => {
+                    res = res.data;
+                    this.loading = false;
+                    if(res.success){
+                        that.$alert('删除成功','提示');
+                        that.init();
+                    }else{
+                            that.$alert(res.message,'删除');
+                    }
+                }).catch(() => {
+                    this.loading = false;
+                });
+            }).catch(() => {});
+            
         },
         //查询按钮
         search(){
@@ -236,7 +250,13 @@ export default {
     },
 };
 </script>
-<style  lang="scss" scoped>
+<style lang="scss" scoped>
+.count-container {
+  background-color: #fff;
+  border-bottom: 1px solid #d9d9d9;
+  margin: 0 auto;
+  padding-top: 20px;
+}
 .dataSearch {
   display: inline-block;
   width: 210px;
@@ -256,19 +276,19 @@ export default {
   }
   ::-webkit-input-placeholder {
     color: #999;
-  } ///* 使用webkit内核的浏览器 */
+  } /* 使用webkit内核的浏览器 */
   :-moz-placeholder {
     color: #999;
-  } ///* Firefox版本4-18 */
+  } //* Firefox版本4-18 */
   ::-moz-placeholder {
     color: #999;
-  } ///* Firefox版本19+ */
+  } //* Firefox版本19+ */
   :-ms-input-placeholder {
     color: #999;
-  } ///* IE浏览器 */
+  } //* IE浏览器 */
 }
 .searchDiv {
-    margin-left: 10px;
+    margin-left: 2.5%;
     margin-bottom: 20px;
     span {
         display: inline-block;
@@ -285,13 +305,13 @@ export default {
     }
 }
 .doCearch{
-    display: inline-block;
-    height: 28px;
-    margin-left: 15px;
-    margin-top: 0;
-    position: relative;
-    top: 2px;
-    line-height: 10px;
+    display:inline-block;
+    height:28px;
+    margin-left:15px;
+    margin-top:0;
+    position:relative;
+    top:2px;
+    line-height:10px;
 }
 .el-checkbox-group{
     display:inline-block;
@@ -312,8 +332,12 @@ export default {
 .finished-fail{
     color:red;
 }
+.table-data-list{
+    margin:20px auto 0;
+    width:95%;
+}
 </style>
-<style>
+<style lang="scss">
 .search-btn.el-button:focus, .search-btn.el-button:hover {
     color: #FFF;
     border-color: #85ce61;
