@@ -298,3 +298,26 @@ export function uniqueArr(arr) {
 export function isExternal(path) {
   return /^(https?:|mailto:|tel:)/.test(path);
 }
+
+//文件下载
+export function fileDownload(data, filename) {
+let blob = new Blob([data], {
+type: "application/octet-stream"
+});
+if (typeof window.navigator.msSaveBlob !== "undefined") {
+window.navigator.msSaveBlob(blob, filename);
+} else {
+var blobURL = window.URL.createObjectURL(blob);
+var tempLink = document.createElement("a");
+tempLink.style.display = "none";
+tempLink.href = blobURL;
+tempLink.setAttribute("download", filename);
+if (typeof tempLink.download === "undefined") {
+tempLink.setAttribute("target", "_blank");
+}
+document.body.appendChild(tempLink);
+tempLink.click();
+document.body.removeChild(tempLink);
+window.URL.revokeObjectURL(blobURL);
+}
+}

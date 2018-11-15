@@ -34,3 +34,12 @@ export function updateTest(data) {
     data
   });
 }
+//下载规范
+export function downLoadFile(params) {
+  return request({
+    url:"/public/data/test.docx",
+    method: "get",
+    params
+  });
+}
+

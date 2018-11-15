@@ -304,7 +304,13 @@ export default {
         callback()
       }
     }
-
+    const validatePort = (rule, value, callback) => {
+      if (value == "" || /[^0-9]+/.test(value)) {
+        callback(new Error("请输入正确的端口号"));
+      } else {
+        callback()
+      }
+    }
     return {
       i: 0, //树节点只允许单选
       dialogVisible: false,
@@ -374,7 +380,7 @@ export default {
           { required: true, message: '不能为空', validator: validateNull, trigger: "blur" }
         ],
         iport: [
-          { required: true, message: '不能为空', validator: validateNull, trigger: "blur" }
+          { required: true, message: '请输入正确的端口号', validator: validatePort, trigger: "blur" }
         ],
         instanceName: [
           { required: true, message: '不能为空', validator: validateNull, trigger: "blur" }
