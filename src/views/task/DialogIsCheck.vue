@@ -19,7 +19,7 @@
         <div class="" >
           <div class="range">
               <span style="color:rgb(96, 98, 102);">核验误差范围:&nbsp;&nbsp;</span>      
-              <el-input-number v-model="range"  controls-position="right"  size="small" :min="0" :max="100" :step="1"></el-input-number>%
+              <el-input-number v-model="range"  controls-position="right" size="small" :min="-100" :max="100" :step="1" @change=checkNumber></el-input-number>%
           </div>
           <div class="time"  v-show="timeCheck">
             <el-date-picker
@@ -179,6 +179,13 @@ export default {
     },
   },
   methods: {
+    checkNumber(val){
+      let reg  = /^-?\d+$/;
+      if(!reg.test(val)){
+        this.range = parseInt(val);
+        this.$message.error('误差范围必须是整数');
+      }
+    },
     closeDiaChk(){
       this.$emit('closeDiaChk',);
     },
@@ -300,7 +307,7 @@ export default {
         if (res.data.result) {
           this.$alert(res.data.message, "核验结果", {
             confirmButtonText: "确定",
-            callback: action => {
+            callback: () => {
                this.init();
             }
           });
