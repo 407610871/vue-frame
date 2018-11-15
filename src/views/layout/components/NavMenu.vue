@@ -41,6 +41,9 @@ export default {
           this.$router.push({ path: "/kettleTask" });
           break;
         case "1":
+					this.$store.commit('resetQueryParam', {
+						resetData:'dashboard'
+					});
           this.$router.push({ path: "/dashboard" });
           break;
       }

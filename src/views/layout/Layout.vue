@@ -222,7 +222,8 @@ export default {
             breadcrumbName:decodeURI(this.$route.params.sourceName),
             params:{
               sourceId:this.$route.params.sourceId,
-              sourceName:decodeURI(this.$route.params.sourceName)
+              sourceName:decodeURI(this.$route.params.sourceName),
+							type:this.$route.params.type
             },
             query:this.$store.state.queryParams['accessObjManage']
           });
@@ -235,7 +236,8 @@ export default {
               sourceId:this.$route.params.sourceId,
               sourceName:decodeURI(this.$route.params.sourceName),
               objId:this.$route.params.objId,
-              objName:decodeURI(this.$route.params.objName)
+              objName:decodeURI(this.$route.params.objName),
+							type:this.$route.params.type
             }
           });
         }

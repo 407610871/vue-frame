@@ -322,6 +322,7 @@ export default {
 						confirmButtonText: '确定'
 					}).then(()=>{
 						_self.configs = paramsList;
+						_self.$store.commit("setPageSize",parseInt(_self.sysParam.pageLimit));
 					});
 				}else{
 					_self.$alert('修改系统设置失败','提示', {
