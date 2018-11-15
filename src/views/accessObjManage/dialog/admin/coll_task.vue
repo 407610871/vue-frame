@@ -11,7 +11,7 @@
                   <el-option label="全省" value="1"></el-option>
                   <el-option label="全市" value="2"></el-option>
                   <el-option label="行政区" value="3"></el-option> -->
-                  <el-option v-for="item in treeData" :label="item.label" :value="item.id"></el-option>
+                  <el-option v-for="item in treeData" :label="item.label" :value="item.storageId"></el-option>
                 </el-select>
               </el-form-item>
             </el-col>
@@ -618,7 +618,7 @@ export default {
 
       }).then(res => {
         this.treeData = res.data;
-        this.ruleForm.dLibrary = res.data[0].id
+        this.ruleForm.dLibrary = res.data[0].storageId
       })
     },
     //获取修改内容
