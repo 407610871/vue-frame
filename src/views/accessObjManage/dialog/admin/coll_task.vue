@@ -34,6 +34,7 @@
             <el-form-item label="接入优先级:" prop="accessPri">
               <el-radio-group v-model="ruleForm.accessPri">
                 <el-radio label="1">高</el-radio>
+                <el-radio label="2">中</el-radio>
                 <el-radio label="3">低</el-radio>
               </el-radio-group>
             </el-form-item>
@@ -56,7 +57,7 @@
               <span class="ml25 tasktips">tips:仅支持以下三种类型:(自增变量(整型),自增时间戳(long型),自增时间戳(字符型,varchar))</span>
             </el-col>
           </el-col>
-          <el-col :span="24" v-show="ruleForm.accessMode=='1'">
+          <el-col :span="24">
             <el-col :span="8" class="collbg">
               <el-form-item label="增量字段:" prop="increment">
                 <el-input v-model="ruleForm.increment" class="fl"></el-input>
@@ -501,17 +502,17 @@ export default {
         ctt = '2'
       }
       if (this.ruleForm.accessMode == "3" && this.ruleForm.cycleSet == "0") { //间隔
-        if (this.increArr.id == undefined) {
+        /*if (this.increArr.id == undefined) {
           this.$message.warning('请选择增量字段');
           return false;
-        }
+        }*/
         ctt = '4'
       }
       if (this.ruleForm.accessMode == "3" && this.ruleForm.cycleSet == "1") { //实时
-        if (this.increArr.id == undefined) {
+        /*if (this.increArr.id == undefined) {
           this.$message.warning('请选择增量字段');
           return false;
-        }
+        }*/
         ctt = '5'
       }
       var save = {
