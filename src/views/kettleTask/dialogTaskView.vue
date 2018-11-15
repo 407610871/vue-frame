@@ -1,6 +1,6 @@
 <template>
   <div class="taskMDialog" style="padding-bottom:15px;max-height:calc(100% - 50px);margin-bottom:25px;" >
-    <el-dialog width="60%" title="任务详情信息" :visible.sync="showInnerDialog" @closed="closeDia" class="task-view-dialog"> 
+    <el-dialog width="60%" title="任务详情信息" :visible.sync="showInnerDialog" @closed="closeDia" :close-on-click-modal="false" class="task-view-dialog"> 
       <div class="title-gra">
         <span class="grab gra-l"></span>
         <span class="grab gra-r"></span>
