@@ -25,10 +25,14 @@
       </div>
     </el-header>
     <el-container>
-      <el-aside width="210px" class="enc-aside">
+      <el-aside :width="sideBarWidth+'px'" class="enc-aside">
         <!-- <aside-tree></aside-tree> -->
         <new-aside-tree></new-aside-tree>
       </el-aside>
+			<div class="sidebar-control-btn" v-bind:style="{'left':sideBarWidth+'px'}" v-on:click="changeSideBar">
+				<i class="el-icon-caret-left" v-if="sideBarWidth==210"></i>
+				<i class="el-icon-caret-right" v-if="sideBarWidth==0"></i>
+			</div>
       <el-main class="enc-main">
         <!-- <div class="enc-search">
           <input type="text" v-model="keyword" placeholder="输入查询..." />
@@ -56,7 +60,8 @@ export default {
     return {
       logo: logo + '?' + +new Date(),
       keyword:'',
-      breadcrumb:[]
+      breadcrumb:[],
+			sideBarWidth:210
     }
   },
   components: {
@@ -173,6 +178,9 @@ export default {
     }
   },
   methods: {
+		changeSideBar(){
+			this.sideBarWidth = this.sideBarWidth == 0?210:0;
+		},
     goRoute:function(name){
 			if(this.$store.state.queryParams[name]){
 				var obj = {
@@ -387,6 +395,24 @@ export default {
       }
     }
   }
+	.sidebar-control-btn{
+		display:block;
+		position:absolute;
+		z-index:1000;
+		top:50%;
+		margin-top:-15px;
+		width:8px;
+		height:30px;
+		border:1px solid #ccc;
+		background-color:#fff;
+		cursor:pointer;
+		color:#999;
+		font-size:12px;
+		line-height:26px;
+		i{
+			margin-left: -3px
+		}
+	}
 </style>
 <style rel="stylesheet/scss" lang="scss">
 .enc-header {
