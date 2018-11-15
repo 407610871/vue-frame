@@ -456,6 +456,7 @@ export default {
       console.log(this.rowList);
     },
     changeFormFilter: function(fliterParams) {
+			fliterParams.pageNum = 1;
       this.setStore(fliterParams);
     },
     storeReady() {
