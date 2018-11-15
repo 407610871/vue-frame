@@ -629,7 +629,7 @@ export default {
         url: this.GLOBAL.api.API_DACM + '/task/getSourceConfig',
        /* url: 'http://10.19.160.168:8080/DACM/task/getSourceConfig',*/
         params: {
-          accessSysObjInfoId:: this.pdata.id,
+          accessSysObjInfoId: this.pdata.id,
           /*accessSysObjInfoId: '91936619'*/
         }
 
