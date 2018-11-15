@@ -74,20 +74,14 @@
             <el-table :data="mainTableData2" stripe :height="tableHeight" border style="width: 100%" tooltip-effect="light">
               <el-table-column v-for="(val, key, index) in data2Columns" v-if="index<6" :prop="key" :label="key" width="width">
               </el-table-column>
-              <<<<<<< HEAD <el-table-column v-if="showMore" label="描述">
-                <template slot-scope="scope">
-                  <el-popover placement="left-start" width="400" trigger="hover">
-                    <ul class="popup-menu">
-                      <li v-for="(val, key, index) in data2Columns" v-if="index>=6">{{key}}：{{scope.row[key]}}</li>
-                    </ul>
-                    <a slot="reference" href="javascript:void(0)">更多详情<i class="el-icon-caret-bottom"></i></a> =======
+              
                     <el-table-column label="描述">
                       <template slot-scope="scope">
                         <el-popover placement="left-start" width="400" trigger="hover">
                           <ul class="popup-menu">
                             <li v-for="(val, key, index) in data2Columns">{{key}}：{{scope.row[key]}}</li>
                           </ul>
-                          <a slot="reference" href="javascript:void(0)">更多详情<i class="el-icon-caret-bottom"></i></a> >>>>>>> fc290824a2c5dad41b6afb73b9a65969ad994526
+                          <a slot="reference" href="javascript:void(0)">更多详情<i class="el-icon-caret-bottom"></i></a> 
                         </el-popover>
                       </template>
                     </el-table-column>
@@ -116,25 +110,14 @@
         mainTableReady: true,
         mainTableData1: [],
         mainTableData2: [],
-        <<
-        << << < HEAD
-        data2Columns: {},
-        showMore: false,
-        width: 180,
-        editingRow: {
-          index: 0,
-          diyComments: ''
-        },
-        ===
-        === =
+      
         data2Columns: {},
         width: 180,
         editingRow: {
           index: 0,
           diyComments: ''
         },
-        >>>
-        >>> > fc290824a2c5dad41b6afb73b9a65969ad994526
+      
         mainTableDataTotal1: 1,
         dialogVisible: false,
         myDialogRouter: 'adminAdd',
