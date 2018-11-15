@@ -976,7 +976,7 @@ export default {
         } else {
           const isPhone = /^([0-9]{3,4}-)?[0-9]{7,8}$/;
   const isMob = /^((\+?86)|(\(\+86\)))?(13[012356789][0-9]{8}|15[012356789][0-9]{8}|18[02356789][0-9]{8}|147[0-9]{8}|1349[0-9]{7})$/;
-          if (this.ruleForm.syskind == '10023' && this.ruleForm.jrname != ''&&this.ruleForm.dockname!=''&&(isPhone.test(dockphone) || isMob.test(dockphone))) {
+          if (this.ruleForm.syskind == '10023' && this.ruleForm.jrname != ''&&this.ruleForm.dockname!=''&&(isPhone.test(this.ruleForm.dockphone) || isMob.test(this.ruleForm.dockphone))) {
             var formData = new FormData();
             var save = {};
             save = {
