@@ -66,7 +66,7 @@
               <span>{{getPeriod(scope.row)}}</span>
             </template>
           </el-table-column>
-					<el-table-column prop="extendParams.objectType" label="文件名称" v-if="type=='file'">
+					<el-table-column prop="name" label="文件名称" v-if="type=='file'">
           </el-table-column>
 					<el-table-column prop="name" label="文件类型" v-if="type=='file'">
 						<template slot-scope="scope">
@@ -115,7 +115,7 @@
           </el-table-column>
           <el-table-column prop="lastChangeTime" label="同步跟新时间" v-if="type=='oracle' || type=='mysql' || type=='postgresql'">
           </el-table-column>
-          <el-table-column prop="dataRange" label="数量范围" v-if="type=='oracle' || type=='mysql' || type=='postgresql'">
+          <el-table-column prop="dataRange" label="数据范围" v-if="type=='oracle' || type=='mysql' || type=='postgresql'">
           </el-table-column>
           <el-table-column prop="objectStatus" label="状态信息" v-if="type=='oracle' || type=='mysql' || type=='postgresql'">
           </el-table-column>

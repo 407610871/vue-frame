@@ -123,11 +123,12 @@ export default {
 			this.$ajax.get(window.ENV.API_DACM+'/caccesssysRelationWorkInfo/getStorages',{
 				params:{
 					nodeId:2,
-					pid:1
+					pid:2
 				}
 			}).then(function(res){
 				if(res.data.result == 'succeed'){
-					var list = [];			
+					var list = [];
+					console.log(res.data.storages);
 					for(var value of res.data.storages){
 						var config = JSON.parse(value.config);
 						var IPindex = config['hdfs.url'].split('//')[1].indexOf(':');
