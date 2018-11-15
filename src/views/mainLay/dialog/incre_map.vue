@@ -15,7 +15,7 @@
             <el-col :span="13" class="bank">bank</el-col>
             <el-col :span="4">
               <el-form-item class="clearfix">
-               <!--  <el-input placeholder="请输入内容"></el-input> -->
+                <!--  <el-input placeholder="请输入内容"></el-input> -->
               </el-form-item>
               <!--  <el-input v-model=""></el-input> -->
             </el-col>
@@ -27,15 +27,14 @@
               <el-table-column label="增量字段选择" width="180">
                 <template slot-scope="scope">
                   <!-- class="textRadio" -->
-
-                <el-radio @change.native="getCurrentRow(scope.row)" :label="scope.$index" v-model="radio" class="textRadio" v-if="scope.$index!=flag">&nbsp;</el-radio>
+                  <el-radio @change.native="getCurrentRow(scope.row)" :label="scope.$index" v-model="radio" class="textRadio" v-if="scope.$index!=flag">&nbsp;</el-radio>
                 </template>
               </el-table-column>
               <el-table-column prop="name" label="字段名" width="180">
               </el-table-column>
-              <el-table-column  label="字段类型">
+              <el-table-column label="字段类型">
                 <template slot-scope="scope">
-                   <span :class="scope.$index!=flag? '':'red'">{{scope.row.datatype}}</span>
+                  <span :class="scope.$index!=flag? '':'red'">{{scope.row.datatype}}</span>
                 </template>
               </el-table-column>
               <el-table-column prop="diyComments" label="字段描述" width="180">
@@ -81,6 +80,7 @@ export default {
         name: value.name,
         datatype: value.datatype
       };
+      console.log(this.radio);
     },
     save() {
       if (this.cincreArr.length == 0) {
@@ -100,7 +100,7 @@ export default {
         count: 20,
         term: ""
       }
-      this.$ajax.post(this.GLOBAL.api.API_DACM +'/objDetail/dataList', map).
+      this.$ajax.post(this.GLOBAL.api.API_DACM + '/objDetail/dataList', map).
       then(res => {
         this.tableData = [];
         if (res.data.success) {
@@ -147,10 +147,10 @@ export default {
             }
             this.flag = first.length;
             this.tableData.push({
-              datatype:'以下增量字段类型默认不支持,请谨慎选择',
-              name:'',
-              comments:'',
-              id:''
+              datatype: '以下增量字段类型默认不支持,请谨慎选择',
+              name: '',
+              comments: '',
+              id: ''
             })
             console.log(first);
             console.log(second);
@@ -162,6 +162,20 @@ export default {
                 comments: second[m].comments,
                 id: second[m].id
               })
+            }
+            if (this.yid != '') {
+              for (let h = 0; h < this.tableData.length; h++) {
+                if (this.tableData[h].id == this.yid) {
+                 /* this.radio = yid;*/
+                 this.radio = h;
+                  this.cincreArr = [];
+                  this.cincreArr = {
+                    id: this.tableData[h].id,
+                    name: this.tableData[h].name,
+                    datatype: this.tableData[h].datatype
+                  };
+                }
+              }
             }
           }
 
@@ -179,12 +193,12 @@ export default {
   created() {
 
   },
-  props: ['msg', 'increArr', 'incid'],
+  props: ['msg', 'increArr', 'incid', 'yid'],
   watch: {
     msg() {
       this.innerVisible = this.msg;
       this._getIncreType();
-      console.log(this.incid + '*******')
+      console.log(this.yid + '*******')
     },
     increArr() {
       this.cincreArr = this.increArr;
@@ -217,13 +231,15 @@ export default {
   font-size: $font-size-medium;
   color: $color-text-title;
 }
-.el-dialog__body table .cell .red{
+
+.el-dialog__body table .cell .red {
 
   color: red;
-    text-align: left;
-    position: relative;
-    left: -86px;
+  text-align: left;
+  position: relative;
+  left: -86px;
 }
+
 .title-gra {
   margin-bottom: 20px;
   .grab {
