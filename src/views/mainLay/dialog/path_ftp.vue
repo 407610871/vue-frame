@@ -27,7 +27,7 @@
           <el-col :span="24" class="tip-box">
             <el-col :span="2" class="bank">bank</el-col>
             <el-col :span="5">
-              <el-radio v-model="ruleForm.delete" label="1">采集后源文件是否需要删除</el-radio>
+              <el-checkbox v-model="ruleForm.delete">备选项</el-checkbox>采集后源文件是否需要删除</el-radio>
             </el-col>
             <el-col :span="8">
               <span class="ftp-tip">*暂不支持中文路径采集</span>
@@ -62,7 +62,7 @@ export default {
       loading: true,
       ruleForm: {
         ftpurl: '',
-        delete: "1",
+        delete: true,
         ftpId: '',
       },
       formRules: {
@@ -121,7 +121,7 @@ export default {
         var params = {
           filepath: this.ruleForm.ftpurl,
           accessSysId: this.ruleForm.ftpId,
-          isdelete: "true",
+          isdelete: this.ruleForm.delete.toString(),
           shecmas: "",
           subdirectory: "true",
         }
@@ -279,6 +279,8 @@ export default {
 .path-box {
   border: 1px solid $border-color-dai;
   margin-left: 18px;
+  height: 280px;
+    overflow: auto;
 }
 
 .ftp-tip {
@@ -301,5 +303,9 @@ export default {
 .ftpInfo {
   margin-top: 35px;
 }
-
+.path-box{
+  .el-tree > .el-tree-node{
+    display: block !important;
+  }
+}
 </style>

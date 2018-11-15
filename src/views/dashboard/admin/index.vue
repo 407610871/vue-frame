@@ -113,6 +113,9 @@ export default {
     tableParams:function(){
       return this.$store.state.queryParams.dashboard
     },
+		countDeptIds:function(){
+			return this.$store.state.deptIdLess
+		},
     tableHeight: function(){
       return this.collapse?window.innerHeight - 360:window.innerHeight - 430;
     },
@@ -128,10 +131,13 @@ export default {
   },
   watch: {
     tableParams(newVal,oldVal){
-      if(this.queryParamReady && JSON.stringify(newVal) != JSON.stringify(oldVal) && newVal.timeFlag != 0){
+      if(this.queryParamReady && JSON.stringify(newVal) != JSON.stringify(oldVal)){
         this.loadTable();
       }
-    }
+    },
+		countDeptIds(newVal,oldVal){
+			this.setCount();
+		}
   },
   created(){
     this.$root.eventHub.$on('search', (keyword)=>{
@@ -141,20 +147,20 @@ export default {
       this.setStore({
 				deptId:ids
 			});
-			this.setCount();
     });
   },
   mounted(){
-		this.$root.eventHub.$emit('selTreeNode',this.$store.state.queryParams[this.$route.name].deptId);
+		this.$root.eventHub.$emit('selTreeNode',this.$store.state.queryParams['dashboard'].deptId);
 		this.$root.eventHub.$emit('setActiveNav',1);
     this.storeReady();
-		this.setCount();
+		this.setCount(true);
   },
   methods:{
-		setCount(){
+		setCount(flag){
 			var _self = this;
 			// this.$ajax.post('http://10.19.160.29:8080/DACM/caccess/dataAccessStatistics',this.tableParams.deptId
-			this.$ajax.post(window.ENV.API_DACM+'/caccess/dataAccessStatistics',this.tableParams.deptId
+			var deptIds = flag?[1]:this.countDeptIds;
+			this.$ajax.post(window.ENV.API_DACM+'/caccess/dataAccessStatistics',deptIds
 			).then(function(res){
 				if(res.data.success){
 					if(!res.data.data.data){
@@ -186,7 +192,7 @@ export default {
 			});
 		},
     setFliter(data){
-      var queryParams = this.$store.state.queryParams[this.$route.name];
+      var queryParams = this.$store.state.queryParams['dashboard'];
       var dataSourceName = queryParams.dataSourceName?queryParams.dataSourceName:[];
       var network = queryParams.network;
       var platform = queryParams.platform?queryParams.platform:[];
@@ -257,12 +263,12 @@ export default {
       });
     },
     setStore:function(obj){
-      let storeData = JSON.parse(JSON.stringify(this.$store.state.queryParams[this.$route.name]));
+      let storeData = JSON.parse(JSON.stringify(this.$store.state.queryParams['dashboard']));
       for(var i in obj){
         storeData[i] = obj[i];
       }
       this.$store.commit('setQueryParams', {
-        name:this.$route.name,
+        name:'dashboard',
         data:storeData
       });
     },
@@ -361,6 +367,7 @@ export default {
         return '无';
       }
       var list = this.$store.state.fliterItemList.network.data;
+			console.log(list);
       for(var value of list){
         if(parseInt(id) == parseInt(value.id)){
           return value.name

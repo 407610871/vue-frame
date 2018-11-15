@@ -109,13 +109,13 @@ export default {
 				console.log(err);
 			});
 		this.$ajax
-			.get("./getAccessDataSource")
+			.get(window.ENV.API_DACM+"/commonInter/getDictDataCategory")
 			.then(function(res) {
 				var list = [];
 				for (var value of res.data.staticDatas.SJLY) {
 					list.push({
-						id: value.static_CODE,
-						name: value.static_NAME
+						id: value.sTATIC_CODE,
+						name: value.sTATIC_NAME
 					});
 				}
 				_self.$store.commit("setFilterItmeList", {
@@ -127,13 +127,17 @@ export default {
 				console.log(err);
 			});
 		this.$ajax
-			.get("./getExchangePlatform")
+			.get(window.ENV.API_DACM+"/commonInter/getListStaticData.do",{
+				params:{
+					dictCode:'ButtPlatForm'
+				}
+			})
 			.then(function(res) {
 				var list = [];
-				for (var value of res.data.staticDatas.SSJZ) {
+				for (var value of res.data) {
 					list.push({
-						id: value.static_CODE,
-						name: value.static_NAME
+						id: value.sTATIC_CODE,
+						name: value.sTATIC_NAME
 					});
 				}
 				_self.$store.commit("setFilterItmeList", {
@@ -147,7 +151,9 @@ export default {
 	},
   created(){
     if (sessionStorage.getItem("store")) {
-      this.$store.replaceState(Object.assign({}, this.$store.state,JSON.parse(sessionStorage.getItem("store"))))
+			var oldStore = JSON.parse(sessionStorage.getItem("store"));
+			oldStore.app.token = this.$store.getters.token;
+      this.$store.replaceState(Object.assign({}, this.$store.state,oldStore))
     }
     window.addEventListener("beforeunload",()=>{
       sessionStorage.setItem("store",JSON.stringify(this.$store.state));

@@ -370,7 +370,7 @@ export default {
   watch: {
     dialogVisible() {
       if (this.dialogVisible) {
-        this.taskId = this.pdata.id;
+        this.taskId = this.pdata.accessConnectorSource.task_info_id;
         this._queryInver();
         this._queryHis();
       }

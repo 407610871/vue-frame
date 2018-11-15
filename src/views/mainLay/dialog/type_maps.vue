@@ -270,5 +270,7 @@ export default {
   padding-left: 30px;
   padding-right: 30px;
 }
-
+.typeMapDia{
+  width: 100%;
+}
 </style>

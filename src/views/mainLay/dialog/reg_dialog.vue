@@ -1,106 +1,106 @@
 <template>
   <div class="taskMDialog">
-      <el-form :model="ruleForm" ref="ruleForm" label-width="100px" class="demo-ruleForm" :rules="formRules">
-        <div class="daiInfo proInfo">
-          <div class="daiInfo-title proInfo-title">
-            <h2>提供方信息</h2>
-          </div>
-          <div class="proInfo-box clearfix">
-            <el-col :span="10">
-              <el-form-item label="接入源名称:" prop="jrname" required>
-                <el-input v-model="ruleForm.jrname"></el-input>
-              </el-form-item>
-            </el-col>
-            <el-col :span="4" class="bank">bank</el-col>
-            <el-col :span="10">
-              <el-form-item label="数据提供人姓名:" prop="proname">
-                <el-input v-model="ruleForm.proname"></el-input>
-              </el-form-item>
-            </el-col>
-            <el-col :span="10">
-              <el-form-item label="接入数据来源:" prop="resource">
-                <el-radio-group v-model="ruleForm.resource">
-                  <el-radio v-for="item in SJLY" :label="item.static_CODE" :key="item.static_CODE">{{item.static_NAME}}</el-radio>
-                  <!--  <el-radio label="私网"></el-radio>
-                 <el-radio label="委办网"></el-radio> -->
-                </el-radio-group>
-              </el-form-item>
-            </el-col>
-            <el-col :span="4" class="bank">bank</el-col>
-            <el-col :span="10">
-              <el-form-item label="数据提供人电话:" prop="prophone">
-                <el-input v-model="ruleForm.prophone"></el-input>
-              </el-form-item>
-            </el-col>
-            <el-col :span="10">
-              <el-form-item label="数据授权情况:" prop="author">
-                <el-radio-group v-model="ruleForm.author">
-                  <el-radio label="已授权"></el-radio>
-                  <el-radio label="未授权"></el-radio>
-                </el-radio-group>
-              </el-form-item>
-            </el-col>
-            <el-col :span="4" class="bank">bank</el-col>
-            <el-col :span="10">
-              <el-form-item label="数据提供人邮箱:" prop="proemail">
-                <el-input v-model="ruleForm.proemail"></el-input>
-              </el-form-item>
-            </el-col>
-            <el-col :span="10" class="bank">bank</el-col>
-            <el-col :span="4" class="bank">bank</el-col>
-            <el-col :span="10">
-              <el-form-item label="数据提供人QQ:" prop="proqq">
-                <el-input v-model="ruleForm.proqq"></el-input>
-              </el-form-item>
-            </el-col>
-          </div>
+    <el-form :model="ruleForm" ref="ruleForm" label-width="100px" class="demo-ruleForm" :rules="formRules">
+      <div class="daiInfo proInfo">
+        <div class="daiInfo-title proInfo-title">
+          <h2>提供方信息</h2>
         </div>
-        <div class="daiInfo dockInfo">
-          <div class="daiInfo-title">
-            <h2>对接方信息</h2>
-          </div>
-          <div class="daiInfo-box clearfix">
-            <el-col :span="10">
-              <el-form-item label="数据所属部门:">
-                <el-popover placement="right" width="400" trigger="click">
-                  <el-tree :data="treedata" show-checkbox node-key="id" :check-strictly="true" :props="defaultProps" accordion @check-change="handleClick" ref="treeForm">
-                  </el-tree>
-                  <el-select v-model="ruleForm.dockdata" disabled placeholder="" prop="dockdata" slot="reference">
+        <div class="proInfo-box clearfix">
+          <el-col :span="10">
+            <el-form-item label="接入源名称:" prop="jrname" required>
+              <el-input v-model="ruleForm.jrname"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="4" class="bank">bank</el-col>
+          <el-col :span="10">
+            <el-form-item label="数据提供人姓名:" prop="proname">
+              <el-input v-model="ruleForm.proname"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="10">
+            <el-form-item label="接入数据来源:" prop="resource">
+              <el-radio-group v-model="ruleForm.resource">
+                <el-radio v-for="item in SJLY" :label="item.static_CODE" :key="item.static_CODE">{{item.static_NAME}}</el-radio>
+                <!--  <el-radio label="私网"></el-radio>
+                 <el-radio label="委办网"></el-radio> -->
+              </el-radio-group>
+            </el-form-item>
+          </el-col>
+          <el-col :span="4" class="bank">bank</el-col>
+          <el-col :span="10">
+            <el-form-item label="数据提供人电话:" prop="prophone">
+              <el-input v-model="ruleForm.prophone"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="10">
+            <el-form-item label="数据授权情况:" prop="author">
+              <el-radio-group v-model="ruleForm.author">
+                <el-radio label="已授权"></el-radio>
+                <el-radio label="未授权"></el-radio>
+              </el-radio-group>
+            </el-form-item>
+          </el-col>
+          <el-col :span="4" class="bank">bank</el-col>
+          <el-col :span="10">
+            <el-form-item label="数据提供人邮箱:" prop="proemail">
+              <el-input v-model="ruleForm.proemail"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="10" class="bank">bank</el-col>
+          <el-col :span="4" class="bank">bank</el-col>
+          <el-col :span="10">
+            <el-form-item label="数据提供人QQ:" prop="proqq">
+              <el-input v-model="ruleForm.proqq"></el-input>
+            </el-form-item>
+          </el-col>
+        </div>
+      </div>
+      <div class="daiInfo dockInfo">
+        <div class="daiInfo-title">
+          <h2>对接方信息</h2>
+        </div>
+        <div class="daiInfo-box clearfix">
+          <el-col :span="10">
+            <el-form-item label="数据所属部门:">
+              <el-popover placement="right" width="400" trigger="click">
+                <el-tree :data="treedata" show-checkbox node-key="id" :check-strictly="true" :props="defaultProps" accordion @check-change="handleClick" ref="treeForm">
+                </el-tree>
+                <el-select v-model="ruleForm.dockdata" disabled placeholder="" prop="dockdata" slot="reference">
+                </el-select>
+              </el-popover>
+            </el-form-item>
+          </el-col>
+          <el-col :span="4" class="bank">bank</el-col>
+          <el-col :span="10">
+            <el-form-item label="注册人姓名:" prop="dockname">
+              <el-input v-model="ruleForm.dockname"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="10">
+            <el-form-item label="对接部门:" prop="dockpart">
+              <el-select v-model="ruleForm.dockpart" placeholder="请选择">
+                <el-option :label="item.name" :value="item.id" :key="item.id" v-for="item in DJBM"></el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="4" class="bank">bank</el-col>
+          <el-col :span="10">
+            <el-form-item label="对接平台:" prop="dockPlat">
+              <el-select v-model="ruleForm.dockPlat" placeholder="请选择">
+                <el-option :label="item.static_NAME" :value="item.static_CODE" :key="item.static_CODE" v-for="item in DJPT"></el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="10">
+            <el-form-item label="对接业务类别:">
+              <el-col :span="24">
+                <el-form-item prop="authorf">
+                  <el-select v-model="ruleForm.authorf" placeholder="请选择">
+                    <el-option :label="item.static_NAME" :value="item.static_CODE" :key="item.static_CODE" v-for="item in SSJZ"></el-option>
                   </el-select>
-                </el-popover>
-              </el-form-item>
-            </el-col>
-            <el-col :span="4" class="bank">bank</el-col>
-            <el-col :span="10">
-              <el-form-item label="注册人姓名:" prop="dockname">
-                <el-input v-model="ruleForm.dockname"></el-input>
-              </el-form-item>
-            </el-col>
-            <el-col :span="10">
-              <el-form-item label="对接部门:" prop="dockpart">
-                <el-select v-model="ruleForm.dockpart" placeholder="请选择">
-                  <el-option :label="item.name" :value="item.id" :key="item.id" v-for="item in DJBM"></el-option>
-                </el-select>
-              </el-form-item>
-            </el-col>
-            <el-col :span="4" class="bank">bank</el-col>
-            <el-col :span="10">
-              <el-form-item label="对接平台:" prop="dockPlat">
-                <el-select v-model="ruleForm.dockPlat" placeholder="请选择">
-                  <el-option :label="item.static_NAME" :value="item.static_CODE" :key="item.static_CODE" v-for="item in DJPT"></el-option>
-                </el-select>
-              </el-form-item>
-            </el-col>
-            <el-col :span="10">
-              <el-form-item label="对接业务类别:">
-                <el-col :span="24">
-                  <el-form-item prop="authorf">
-                    <el-select v-model="ruleForm.authorf" placeholder="请选择">
-                      <el-option :label="item.static_NAME" :value="item.static_CODE" :key="item.static_CODE" v-for="item in SSJZ"></el-option>
-                    </el-select>
-                  </el-form-item>
-                </el-col>
-                <!--                 <el-col :span="4" class="bank">bank</el-col>
+                </el-form-item>
+              </el-col>
+              <!--                 <el-col :span="4" class="bank">bank</el-col>
 <el-col :span="10">
   <el-form-item prop="authors">
     <el-select v-model="ruleForm.authors" placeholder="请选择">
@@ -109,31 +109,31 @@
     </el-select>
   </el-form-item>
 </el-col> -->
-              </el-form-item>
-            </el-col>
-            <el-col :span="4" class="bank">bank</el-col>
-            <el-col :span="10">
-              <el-form-item label="注册人联系电话:" prop="dockphone">
-                <el-input v-model="ruleForm.dockphone"></el-input>
-              </el-form-item>
-            </el-col>
-            <el-col :span="10">
-              <el-form-item label="数据提供人邮箱:" prop="proemail">
-                <el-input v-model="ruleForm.proemail"></el-input>
-              </el-form-item>
-            </el-col>
-            <el-col :span="10" class="bank">bank</el-col>
-          </div>
+            </el-form-item>
+          </el-col>
+          <el-col :span="4" class="bank">bank</el-col>
+          <el-col :span="10">
+            <el-form-item label="注册人联系电话:" prop="dockphone">
+              <el-input v-model="ruleForm.dockphone"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="10">
+            <el-form-item label="数据提供人邮箱:" prop="proemail">
+              <el-input v-model="ruleForm.proemail"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="10" class="bank">bank</el-col>
         </div>
-        <div class="daiInfo otherInfo">
-          <div class="daiInfo-title">
-            <h2>接入源设置</h2>
-          </div>
-          <div class="daiInfo-box clearfix">
-            <el-form-item label="接入源类型:" prop="syskind">
-              <el-radio-group v-model="ruleForm.syskind">
-                <el-radio v-for="item in syskindList" :label="item.name" :key="item.id">{{item.name}}</el-radio>
-                <!--  <el-radio label="mysql"></el-radio>
+      </div>
+      <div class="daiInfo otherInfo">
+        <div class="daiInfo-title">
+          <h2>接入源设置</h2>
+        </div>
+        <div class="daiInfo-box clearfix">
+          <el-form-item label="接入源类型:" prop="syskind">
+            <el-radio-group v-model="ruleForm.syskind">
+              <el-radio v-for="item in syskindList" :label="item.name" :key="item.id">{{item.name}}</el-radio>
+              <!--  <el-radio label="mysql"></el-radio>
                <el-radio label="oracle"></el-radio>
                <el-radio label="activemq"></el-radio>
                <el-radio label="sqlserver"></el-radio>
@@ -143,57 +143,57 @@
                <el-radio label="mongodb"></el-radio>
                <el-radio label="本地文件"></el-radio>
                <el-radio label="其他"></el-radio> -->
-              </el-radio-group>
-            </el-form-item>
-            <el-col :span="18">
-              <el-col :span="10">
-                <el-form-item label="IP地址/主机名:" prop="ipname" required v-show="ruleForm.syskind!=''&&ruleForm.syskind!='本地文件'">
-                  <el-input v-model="ruleForm.ipname"></el-input>
-                </el-form-item>
-              </el-col>
-              <el-col :span="2" class="bank">bank</el-col>
-              <el-col :span="10">
-                <el-form-item label="登录名:" prop="username" required v-show="ruleForm.syskind!=''&&ruleForm.syskind!='本地文件'">
-                  <el-input v-model="ruleForm.username"></el-input>
-                </el-form-item>
-              </el-col>
-              <!--               <el-col :span="2" class="bank">bank</el-col>
+            </el-radio-group>
+          </el-form-item>
+          <el-col :span="18">
+            <el-col :span="10">
+              <el-form-item label="IP地址/主机名:" prop="ipname" required v-show="ruleForm.syskind!=''&&ruleForm.syskind!='本地文件'">
+                <el-input v-model="ruleForm.ipname"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="2" class="bank">bank</el-col>
+            <el-col :span="10">
+              <el-form-item label="登录名:" prop="username" required v-show="ruleForm.syskind!=''&&ruleForm.syskind!='本地文件'">
+                <el-input v-model="ruleForm.username"></el-input>
+              </el-form-item>
+            </el-col>
+            <!--               <el-col :span="2" class="bank">bank</el-col>
 <el-col :span="10">
   <el-form-item label="路径" required prop="url" v-show="ruleForm.syskind=='9'">
     <el-input v-model="ruleForm.url"></el-input>
   </el-form-item>
 </el-col> -->
-              <el-col :span="2" class="bank">bank</el-col>
-              <el-col :span="10">
-                <el-form-item label="密码:" prop="password" required v-show="ruleForm.syskind!=''&&ruleForm.syskind!='本地文件'">
-                  <el-input v-model="ruleForm.password"></el-input>
-                </el-form-item>
-              </el-col>
-              <el-col :span="2" class="bank">bank</el-col>
-              <el-col :span="10">
-                <el-form-item label="端口号:" prop="iport" required v-show="ruleForm.syskind!=''&&ruleForm.syskind!='本地文件'">
-                  <el-input v-model="ruleForm.iport"></el-input>
-                </el-form-item>
-              </el-col>
-              <el-col :span="2" class="bank" v-show="ruleForm.syskind=='mysql'||ruleForm.syskind=='sqlserver'||ruleForm.syskind=='oracle'||ruleForm.syskind=='postgresql'||ruleForm.syskind=='mongodb'">bank</el-col>
-              <el-col :span="10">
-                <el-form-item label="实例/数据库名:" prop="instanceName" required v-show="ruleForm.syskind=='mysql'||ruleForm.syskind=='sqlserver'||ruleForm.syskind=='oracle'||ruleForm.syskind=='postgresql'||ruleForm.syskind=='mongodb'">
-                  <el-input v-model="ruleForm.instanceName"></el-input>
-                </el-form-item>
-              </el-col>
-              <el-col :span="2" class="bank" v-show="ruleForm.syskind=='oracle'||ruleForm.syskind=='mongodb'">bank</el-col>
-              <el-col :span="10">
-                <el-form-item label="模式名/架构:" prop="model" v-show="ruleForm.syskind=='oracle'||ruleForm.syskind=='mongodb'">
-                  <el-input v-model="ruleForm.model"></el-input>
-                </el-form-item>
-              </el-col>
-              <!--  <el-col :span="10">
+            <el-col :span="2" class="bank">bank</el-col>
+            <el-col :span="10">
+              <el-form-item label="密码:" prop="password" required v-show="ruleForm.syskind!=''&&ruleForm.syskind!='本地文件'">
+                <el-input v-model="ruleForm.password"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="2" class="bank">bank</el-col>
+            <el-col :span="10">
+              <el-form-item label="端口号:" prop="iport" required v-show="ruleForm.syskind!=''&&ruleForm.syskind!='本地文件'">
+                <el-input v-model="ruleForm.iport"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="2" class="bank" v-show="ruleForm.syskind=='mysql'||ruleForm.syskind=='sqlserver'||ruleForm.syskind=='oracle'||ruleForm.syskind=='postgresql'||ruleForm.syskind=='mongodb'">bank</el-col>
+            <el-col :span="10">
+              <el-form-item label="实例/数据库名:" prop="instanceName" required v-show="ruleForm.syskind=='mysql'||ruleForm.syskind=='sqlserver'||ruleForm.syskind=='oracle'||ruleForm.syskind=='postgresql'||ruleForm.syskind=='mongodb'">
+                <el-input v-model="ruleForm.instanceName"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="2" class="bank" v-show="ruleForm.syskind=='oracle'||ruleForm.syskind=='mongodb'">bank</el-col>
+            <el-col :span="10">
+              <el-form-item label="模式名/架构:" prop="model" v-show="ruleForm.syskind=='oracle'||ruleForm.syskind=='mongodb'">
+                <el-input v-model="ruleForm.model"></el-input>
+              </el-form-item>
+            </el-col>
+            <!--  <el-col :span="10">
                <el-form-item label="接口名称" required prop="operationName">
                  <el-input v-model="ruleForm.operationName"></el-input>
                </el-form-item>
              </el-col>
              <el-col :span="2" class="bank">bank</el-col> -->
-              <!--               <el-col :span="10">
+            <!--               <el-col :span="10">
   <el-form-item label="参数名" required prop="parameterName">
     <el-input v-model="ruleForm.parameterName"></el-input>
   </el-form-item>
@@ -223,34 +223,34 @@
   </el-form-item>
 </el-col> 
               <el-col :span="2" class="bank">bank</el-col>-->
-              <!-- hive专有 -->
-              <el-col :span="10">
-                <el-form-item label="集群根目录" required prop="hadoopDir" v-show="ruleForm.syskind!=''&& ruleForm.syskind=='vhost'">
-                  <el-input v-model="ruleForm.hadoopDir"></el-input>
-                </el-form-item>
-              </el-col>
-              <el-col :span="2" class="bank" v-show="ruleForm.syskind!=''&& ruleForm.syskind=='vhost'">bank</el-col>
-              <el-col :span="10">
-                <el-form-item label="集群目录" required prop="hadoopHomes" v-show="ruleForm.syskind!=''&& ruleForm.syskind=='vhost'">
-                  <el-input v-model="ruleForm.hadoopHomes"></el-input>
-                </el-form-item>
-              </el-col>
-              <el-col :span="2" class="bank" v-show="ruleForm.syskind!=''&& ruleForm.syskind=='vhost'">bank</el-col>
-              <el-col :span="10">
-                <el-form-item label="vhost" required prop="vhost" v-show="ruleForm.syskind!=''&& ruleForm.syskind=='vhost'">
-                  <el-input v-model="ruleForm.vhost"></el-input>
-                </el-form-item>
-              </el-col>
-              <el-col :span="2" class="bank" v-show="ruleForm.syskind!=''&& ruleForm.syskind=='vhost'">bank</el-col>
-              <el-col :span="10" v-show="ruleForm.syskind=='ftp'||ruleForm.syskind=='rabbitmq'">
-                <el-form-item label="传输模式:" prop="transmode">
-                  <el-select v-model="ruleForm.transmode" placeholder="请选择">
-                    <el-option label="主动" value="true"></el-option>
-                    <el-option label="被动" value="false"></el-option>
-                  </el-select>
-                </el-form-item>
-              </el-col>
-              <!--  <el-col :span="24" v-show="ruleForm.syskind=='本地文件'" class="fileItem">
+            <!-- hive专有 -->
+            <el-col :span="10">
+              <el-form-item label="集群根目录" required prop="hadoopDir" v-show="ruleForm.syskind!=''&& ruleForm.syskind=='vhost'">
+                <el-input v-model="ruleForm.hadoopDir"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="2" class="bank" v-show="ruleForm.syskind!=''&& ruleForm.syskind=='vhost'">bank</el-col>
+            <el-col :span="10">
+              <el-form-item label="集群目录" required prop="hadoopHomes" v-show="ruleForm.syskind!=''&& ruleForm.syskind=='vhost'">
+                <el-input v-model="ruleForm.hadoopHomes"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="2" class="bank" v-show="ruleForm.syskind!=''&& ruleForm.syskind=='vhost'">bank</el-col>
+            <el-col :span="10">
+              <el-form-item label="vhost" required prop="vhost" v-show="ruleForm.syskind!=''&& ruleForm.syskind=='vhost'">
+                <el-input v-model="ruleForm.vhost"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="2" class="bank" v-show="ruleForm.syskind!=''&& ruleForm.syskind=='vhost'">bank</el-col>
+            <el-col :span="10" v-show="ruleForm.syskind=='ftp'||ruleForm.syskind=='rabbitmq'">
+              <el-form-item label="传输模式:" prop="transmode">
+                <el-select v-model="ruleForm.transmode" placeholder="请选择">
+                  <el-option label="主动" value="true"></el-option>
+                  <el-option label="被动" value="false"></el-option>
+                </el-select>
+              </el-form-item>
+            </el-col>
+            <!--  <el-col :span="24" v-show="ruleForm.syskind=='本地文件'" class="fileItem">
                <el-form-item label="选择本地文件(仅支持txt,excel,csv文件):" prop="upfile">
                  <el-upload class="upload-demo" ref="upload" action="https://jsonplaceholder.typicode.com/posts/" :on-preview="handlePreview" :on-remove="handleRemove" :file-list="fileList" :auto-upload="false">
                    <el-button slot="trigger" size="small" type="primary">选择文件</el-button>
@@ -259,23 +259,23 @@
                  </el-upload>
                </el-form-item>
              </el-col> -->
-            </el-col>
-            <el-col :span="6">
-              <el-button type="primary" v-show="ruleForm.syskind!=''&&ruleForm.syskind!='本地文件'" @click="testForm('ruleForm')">测试连接</el-button>
-            </el-col>
-          </div>
+          </el-col>
+          <el-col :span="6">
+            <el-button type="primary" v-show="ruleForm.syskind!=''&&ruleForm.syskind!='本地文件'" @click="testForm('ruleForm')">测试连接</el-button>
+          </el-col>
         </div>
-        <div class="daiInfo reginfo">
-          <div class="daiInfo-box clearfix">
-            <el-form-item>
-              <el-col :span="24">
-                <el-button type="primary" size="small" @click="submitForm('ruleForm')">保存</el-button>
-                <el-button @click="closeForm()" size="small">关闭</el-button>
-              </el-col>
-            </el-form-item>
-          </div>
+      </div>
+      <div class="daiInfo reginfo">
+        <div class="daiInfo-box clearfix">
+          <el-form-item>
+            <el-col :span="24">
+              <el-button type="primary" size="small" @click="submitForm('ruleForm')">保存</el-button>
+              <el-button @click="closeForm()" size="small">关闭</el-button>
+            </el-col>
+          </el-form-item>
         </div>
-      </el-form>
+      </div>
+    </el-form>
   </div>
 </template>
 <script>
@@ -350,6 +350,10 @@ export default {
         iport: [
           { required: true, validator: validateNull, trigger: "blur" }
         ],
+        dockname: [
+          { required: true, validator: validateNull, trigger: "blur" }
+        ],
+
         instanceName: [
           { required: true, validator: validateNull, trigger: "blur" }
         ],
@@ -366,14 +370,14 @@ export default {
       treedata: [{
         id: 1,
         label: '一级 1',
-       /* children: [{
-          id: 11,
-          label: '二级 1-1',
-          children: [{
-            id: 111,
-            label: '三级 1-1-1'
-          }]
-        }]*/
+        /* children: [{
+           id: 11,
+           label: '二级 1-1',
+           children: [{
+             id: 111,
+             label: '三级 1-1-1'
+           }]
+         }]*/
       }, {
         id: 2,
         label: '一级 2',
@@ -490,7 +494,7 @@ export default {
           id: ""
         }
       }).then(res => {
-       
+
         _self.syskindList = res.data;
         _self.ruleForm.syskind = res.data[0].name;
       })

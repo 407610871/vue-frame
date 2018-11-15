@@ -65,7 +65,7 @@
                 <userSurvey v-if="jrtype=='mysql'|| jrtype=='oracle'|| jrtype=='postgresql' || jrtype=='sqlserver'" :pdata="scope.row" @fre="loadTable()"></userSurvey>
               </div>
               
-              <div class="survey" v-if="jrtype=='mysql'|| jrtype=='oracle'|| jrtype=='postgresql' || jrtype=='sqlserver'">
+              <div class="survey" v-if="(jrtype=='mysql'&&scope.row.exitTask)|| (jrtype=='oracle'&&scope.row.exitTask)|| (jrtype=='postgresql'&&scope.row.exitTask) || (jrtype=='sqlserver'&&scope.row.exitTask)">
                 <data-inver :pdata="scope.row" @fre="loadTable()"></data-inver>
               </div>
               <div class="survey" v-if="jrtype!='mysql' && jrtype!='oracle' && jrtype!='sqlserver' && jrtype!='postgresql'">
@@ -125,12 +125,15 @@ export default {
       jrtype: '',
       objectType: [{
         id: 1,
+				diyComments:'TABLE',
         name: '表'
       }, {
         id: 2,
+				diyComments:'VIEW',
         name: '视图'
       }, {
         id: 3,
+				diyComments:'OTHER',
         name: '其他'
       }],
       dataRange: [{
@@ -175,7 +178,7 @@ export default {
     tableParams(newVal, oldVal) {
       console.log(newVal);
       console.log(oldVal);
-      if (JSON.stringify(newVal) != JSON.stringify(oldVal) && newVal.timeFlag != 0) {
+      if (JSON.stringify(newVal) != JSON.stringify(oldVal)) {
         console.log('change');
         this.loadTable();
       }
@@ -405,7 +408,7 @@ export default {
 		},
 		getObjType(id){
 			for(var value of this.formFilterData[0].checkData){
-				if(value.id == id){
+				if(value.diyComments == id){
 					return value.name
 				}
 			}

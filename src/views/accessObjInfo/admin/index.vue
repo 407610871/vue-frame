@@ -28,6 +28,7 @@
               :height="tableHeight"
               border
               style="width: 100%"
+							id="mainTable2"
               tooltip-effect="light"
               >
               <el-table-column
@@ -110,25 +111,24 @@
               >
               <el-table-column
 								v-for="(val, key, index) in data2Columns"
+								v-if="index<6"
                 :prop="key"
                 :label="key"
-                width="180">
+                width="width">
               </el-table-column>
               <el-table-column
+								v-if="showMore"
                 label="描述">
                 <template slot-scope="scope">
                   <el-popover
-                    placement="bottom-start"
-                    width="200"
+                    placement="left-start"
+                    width="400"
                     trigger="hover"
                     >
                       <ul class="popup-menu">
-                        <li>姓名：XXX</li>
-                        <li>身份证号：XXX</li>
-                        <li>年龄：XXX</li>
-                        <li>地址：XXX</li>
+                        <li v-for="(val, key, index) in data2Columns" v-if="index>=6">{{key}}：{{scope.row[key]}}</li>
                       </ul>
-                      <a slot="reference" href="javascript:void(0)">{{ scope.row.name }}<i class="el-icon-caret-bottom"></i></a>
+                      <a slot="reference" href="javascript:void(0)">更多详情<i class="el-icon-caret-bottom"></i></a>
                   </el-popover>
                 </template>
               </el-table-column>
@@ -158,6 +158,8 @@ export default {
       mainTableData1: [],
       mainTableData2: [],
 			data2Columns:{},
+			showMore:false,
+			width:180,
 			editingRow:{
 				index:0,
 				diyComments:''
@@ -197,7 +199,7 @@ export default {
   },
   watch: {
     tableParams(newVal,oldVal){
-			if((newVal.ACCESS_SYS_DIALECT_ID != oldVal.ACCESS_SYS_DIALECT_ID || newVal.accessSysId != oldVal.accessSysId || newVal.diyComments != oldVal.diyComments || newVal.pageNum1 != oldVal.pageNum1 || newVal.keyword != oldVal.keyword || newVal.timeFlag != oldVal.timeFlag) && newVal.timeFlag != 0){
+			if((newVal.ACCESS_SYS_DIALECT_ID != oldVal.ACCESS_SYS_DIALECT_ID || newVal.accessSysId != oldVal.accessSysId || newVal.diyComments != oldVal.diyComments || newVal.pageNum1 != oldVal.pageNum1 || newVal.keyword != oldVal.keyword || newVal.timeFlag != oldVal.timeFlag)){
 				this.loadTable();
 			}
       this.tabPosition = newVal.tabPosition;
@@ -326,70 +328,98 @@ export default {
 				ACCESS_SYS_DIALECT_ID:this.tableParams.ACCESS_SYS_DIALECT_ID,
 				accessSysId:this.tableParams.accessSysId
 			}
-			this.$ajax.post(window.ENV.API_DACM+'/objDetail/dataList',paramsObj).then(function(res){
-				console.log('tableLoaded:metadataManage');
-				if(res.data.success){
-					var data = res.data.data.list;
-					for(var value of data){
-						value.showEdit = false;
+			const promist0 = new Promise((resolve, reject) => {
+				this.$ajax.post(window.ENV.API_DACM+'/objDetail/dataList',paramsObj).then(function(res){
+					console.log('tableLoaded:metadataManage');
+					if(res.data.success){
+						var data = res.data.data.list;
+						for(var value of data){
+							value.showEdit = false;
+						}
+						_self.mainTableData1 = data;
+						_self.mainTableDataTotal1 = res.data.data.total;
+						//这里是异步的，存在延迟，所以没问题,如果是同步的话可能存在问题
+						_self.currentPage1 = _self.tableParams.pageNum1;
+						resolve(res);
+					}else{
+						console.log(res.data.code);
+						reject(res);
+						_self.$alert('获取表信息失败','提示', {
+							confirmButtonText: '确定'
+						});
 					}
-					_self.mainTableData1 = data;
-					_self.mainTableDataTotal1 = res.data.data.total;
-					//这里是异步的，存在延迟，所以没问题,如果是同步的话可能存在问题
+					if(_self.tabPosition == 'metadataManage'){
+						_self.loading = false;
+					}
+				})
+				.catch(function(err){
 					_self.currentPage1 = _self.tableParams.pageNum1;
-				}else{
-					console.log(res.data.code);
+					console.log(err)
+					if(_self.tabPosition == 'metadataManage'){
+						_self.loading = false;
+					}
+					reject(err);
 					_self.$alert('获取表信息失败','提示', {
 						confirmButtonText: '确定'
 					});
-				}
-				if(_self.tabPosition == 'metadataManage'){
-					_self.loading = false;
-				}
-			})
-			.catch(function(err){
-				_self.currentPage1 = _self.tableParams.pageNum1;
-				console.log(err)
-				if(_self.tabPosition == 'metadataManage'){
-					_self.loading = false;
-				}
-				_self.$alert('获取表信息失败','提示', {
-					confirmButtonText: '确定'
 				});
 			});
-			var paramsObj = {
-				count:this.$store.state.pageSize,
-				objInfoId:this.$route.params.objId,
-				ACCESS_SYS_DIALECT_ID:this.tableParams.ACCESS_SYS_DIALECT_ID,
-				accessSysId:this.tableParams.accessSysId,
-				filter:null
-			}
-			this.$ajax.post(window.ENV.API_DACM+'/objDetail/previewData',paramsObj).then(function(res){
-				console.log('tableLoaded:dataPreview');
-				if(res.data.success){
-					if(res.data.datas.length>0){
-						_self.data2Columns = res.data.datas[0];
+			const promist1 = new Promise((resolve, reject) => {
+				var paramsObj = {
+					count:this.$store.state.pageSize,
+					objInfoId:this.$route.params.objId,
+					ACCESS_SYS_DIALECT_ID:this.tableParams.ACCESS_SYS_DIALECT_ID,
+					accessSysId:this.tableParams.accessSysId,
+					filter:null
+				}
+				this.$ajax.post(window.ENV.API_DACM+'/objDetail/previewData',paramsObj).then(function(res){
+					console.log('tableLoaded:dataPreview');
+					if(res.data.success){
+						resolve(res);
+					}else{
+						console.log(res.data.code);
+						reject(res);
+						_self.$alert('获取预览信息失败','提示', {
+							confirmButtonText: '确定'
+						});
 					}
-					_self.mainTableData2 = res.data.datas;
-				}else{
-					console.log(res.data.code);
+					if(_self.tabPosition != 'metadataManage'){
+						_self.loading = false;
+					}
+				})
+				.catch(function(err){
+					console.log(err)
+					reject(err);
 					_self.$alert('获取预览信息失败','提示', {
 						confirmButtonText: '确定'
 					});
-				}
-				if(_self.tabPosition != 'metadataManage'){
-					_self.loading = false;
-				}
-			})
-			.catch(function(err){
-				console.log(err)
-				_self.$alert('获取预览信息失败','提示', {
-					confirmButtonText: '确定'
+					if(_self.tabPosition != 'metadataManage'){
+						_self.loading = false;
+					}
 				});
-				if(_self.tabPosition != 'metadataManage'){
-					_self.loading = false;
-				}
 			});
+			
+			Promise.all([promist0, promist1]).then((resultList) => {
+				if(resultList[1].data.datas.length>0){
+					_self.data2Columns = resultList[1].data.datas[0];
+					var len = 0;
+					for(var i in _self.data2Columns){
+						len++;
+						if(len == 6){
+							break;
+						}
+					}
+					if(len==6){
+						_self.showMore = true;
+					}else{	//必须重置
+						_self.showMore = false;
+					}
+					var tableW = document.getElementById("mainTable2").offsetWidth;
+					_self.width = len==6?tableW/(len+1)+'%':tableW/len+'%'
+				}
+				_self.mainTableData2 = resultList[1].data.datas;
+			});
+			
     },
     goPage:function(val){
       var obj = {};
@@ -484,5 +514,16 @@ export default {
 	.cell i{
 		cursor:pointer;
 	}
+}
+.popup-menu{
+	margin:0;
+	padding:0;
+}
+.popup-menu li{
+	margin:0;
+	padding:0;
+	white-space:normal;
+	word-break:break-all;
+	word-wrap:break-word;
 }
 </style>
