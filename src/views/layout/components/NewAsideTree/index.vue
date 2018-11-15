@@ -172,32 +172,63 @@
         },
         delNode(){
           if(this.$refs.tree.getCurrentKey()){
-            var _self = this;
-            this.$ajax.post(window.ENV.API_DACM+'/deptInfo/delDeptInfo?id='+this.editingNode.id).then(function(res){
-            // this.$ajax.post('./success').then(function(res){
-              console.log('delsuccess');
-              if(res.data.success){
-                const parent = _self.editingData.parent;
-                const children = parent.data.children || parent.data;
-                const index = children.findIndex(d => d.id === _self.editingNode.id);
-                children.splice(index, 1);
-              }else{
-                console.log(res.data.code)
-								_self.$alert('删除部门节点失败','提示', {
-									confirmButtonText: '确定'
-								});
-              }
-            })
-            .catch(function(err){
-              console.log(err)
-							_self.$alert('删除部门节点失败','提示', {
-								confirmButtonText: '确定'
-							});
-            });
+						this.$confirm('确认要删除此部门节点吗?', '提示', {
+							confirmButtonText: '删除',
+							cancelButtonText: '取消',
+							type: 'warning'
+						}).then(() => {
+							this.delNodeAjax();
+						});
           }else{
             this.selDeptFirst();
           }
         },
+				delNodeAjax(){
+					var _self = this;
+					const promise0 = new Promise((resolve, reject) => {
+						// this.$ajax.post(window.ENV.API_DACM+'/deptInfo/delDeptInfo?id='+this.editingNode.id).then(function(res){
+						this.$ajax.post('http://10.19.160.175:8080/DACM/deptInfo/queryDeptInfo?id='+this.editingNode.id).then(function(res){
+							console.log(res);
+							if(res.data.success){
+								resolve();
+							}else{
+								reject();
+								_self.$alert('有运行的采集任务的部门，无法删除','提示', {
+									confirmButtonText: '确定'
+								});
+							}
+						}).catch(function(err){
+							reject();
+							_self.$alert('查询部门采集任务失败，无法删除','提示', {
+								confirmButtonText: '确定'
+							});
+						});
+					});
+					
+					Promise.all([promise0]).then(() => {
+						this.$ajax.post(window.ENV.API_DACM+'/deptInfo/delDeptInfo?id='+this.editingNode.id).then(function(res){
+						// this.$ajax.post('./success').then(function(res){
+							// console.log('delsuccess');
+							if(res.data.success != "false"){
+								const parent = _self.editingData.parent;
+								const children = parent.data.children || parent.data;
+								const index = children.findIndex(d => d.id === _self.editingNode.id);
+								children.splice(index, 1);
+							}else{
+								console.log(res.data.code)
+								_self.$alert('删除部门节点失败','提示', {
+									confirmButtonText: '确定'
+								});
+							}
+						})
+						.catch(function(err){
+							console.log(err)
+							_self.$alert('删除部门节点失败','提示', {
+								confirmButtonText: '确定'
+							});
+						});
+					});
+				},
         selDeptFirst(){
           this.$alert('请先选择一个部门节点','提示', {
             confirmButtonText: '确定'
@@ -240,46 +271,46 @@
 						this.$refs.tree.setCheckedKeys(deptIds)
 					}
 					
-					var listCount = this.$refs.tree.getCheckedNodes();
-					var deptIdsCoundt = this.$refs.tree.getCheckedKeys();
+					// var listCount = this.$refs.tree.getCheckedNodes();
+					// var deptIdsCount = this.$refs.tree.getCheckedKeys();
 					
-					var targetList = [];
-					if(deptIdsCoundt.length==0){
-						targetList.push(1);
-					}else{
-						for(var value of listCount){
-							if(value.children.length==0){
-								targetList.push(value.id)
-							}else{
-								var factorialCount = (function f(nodeList,level){
-									var flag = true;
-									for(var value of nodeList){
-										if(deptIdsCoundt.indexOf(value.id) == -1){
-											return false;
-										}else{
-											if(value.children.length>0){
-												flag = f(value.children,level+1);
-												if(!flag){
-													return false;
-												}
-											}
-										}
-									}
-									if(flag){
-										return true;
-									}
-								});
-								var anotherFactorial=factorialCount;  
-								factorialCount=null;  
-								if(anotherFactorial(value.children)){
-									targetList.push(value.id)
-								}
-							}
-						}
-					}
+					// var targetList = [];
+					// if(deptIdsCount.length==0){
+						// targetList.push(1);
+					// }else{
+						// for(var value of listCount){
+							// if(value.children.length==0){
+								// targetList.push(value.id)
+							// }else{
+								// var factorialCount = (function f(nodeList,level){
+									// var flag = true;
+									// for(var value of nodeList){
+										// if(deptIdsCount.indexOf(value.id) == -1){
+											// return false;
+										// }else{
+											// if(value.children.length>0){
+												// flag = f(value.children,level+1);
+												// if(!flag){
+													// return false;
+												// }
+											// }
+										// }
+									// }
+									// if(flag){
+										// return true;
+									// }
+								// });
+								// var anotherFactorial=factorialCount;  
+								// factorialCount=null;  
+								// if(anotherFactorial(value.children)){
+									// targetList.push(value.id)
+								// }
+							// }
+						// }
+					// }
 					
 					//console.log(targetList);
-					this.$store.commit('setDeptIdLess',targetList);
+					// this.$store.commit('setDeptIdLess',targetList);
 					
 					this.$store.commit('selDept',deptIds);
 					this.$root.eventHub.$emit('selDept',deptIds);

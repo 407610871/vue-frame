@@ -114,9 +114,9 @@ export default {
     tableParams:function(){
       return this.$store.state.queryParams.dashboard
     },
-		countDeptIds:function(){
-			return this.$store.state.deptIdLess
-		},
+		// countDeptIds:function(){
+			// return this.$store.state.deptIdLess
+		// },
     tableHeight: function(){
       return this.collapse?window.innerHeight - 360:window.innerHeight - 430;
     },
@@ -136,9 +136,9 @@ export default {
         this.loadTable();
       }
     },
-		countDeptIds(newVal,oldVal){
-			this.setCount();
-		}
+		// countDeptIds(newVal,oldVal){
+			// this.setCount();
+		// }
   },
   created(){
     this.$root.eventHub.$on('search', (keyword)=>{
@@ -148,6 +148,7 @@ export default {
       this.setStore({
 				deptId:ids
 			});
+			this.setCount();
     });
   },
   mounted(){
@@ -160,8 +161,7 @@ export default {
 		setCount(flag){
 			var _self = this;
 			// this.$ajax.post('http://10.19.160.29:8080/DACM/caccess/dataAccessStatistics',this.tableParams.deptId
-			var deptIds = flag?[1]:this.countDeptIds;
-			this.$ajax.post(window.ENV.API_DACM+'/caccess/dataAccessStatistics',deptIds
+			this.$ajax.post(window.ENV.API_DACM+'/caccess/dataAccessStatistics',this.tableParams.deptId
 			).then(function(res){
 				if(res.data.success){
 					if(!res.data.data.data){
@@ -289,7 +289,8 @@ export default {
 			this.$store.commit('resetQueryParam', {
 				resetData:'accessObjManage'
 			});
-      this.$router.push({name:'accessObjManage',params:{sourceId:this.mainTableData[index].id,sourceName:encodeURI(this.mainTableData[index].name)}});
+			var dataSourceName = this.mainTableData[index].dataSourceName == '本地文件'?'file':this.mainTableData[index].dataSourceName;
+      this.$router.push({name:'accessObjManage',params:{sourceId:this.mainTableData[index].id,sourceName:encodeURI(this.mainTableData[index].name),type:dataSourceName}});
     },
     handleCopy: function(index, row) {
 			this.$confirm('确认要复制'+row.name+'吗?', '提示', {
@@ -341,6 +342,7 @@ export default {
       });
     },
     changeFormFilter:function(fliterParams){
+			fliterParams.pageNum = 1;
       this.setStore(fliterParams);
     },
     storeReady:function(){
