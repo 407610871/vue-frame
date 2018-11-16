@@ -111,6 +111,13 @@
               </el-table-column>
               
 							<el-table-column label="描述">
+
+
+<!-- hjhhhkjhjkjkjlkjk -->
+
+
+
+
 								<template slot-scope="scope">
 									<el-popover placement="left-start" width="400" trigger="hover">
 										<ul class="popup-menu">
