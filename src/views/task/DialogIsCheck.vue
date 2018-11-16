@@ -185,7 +185,7 @@ export default {
     checkNumber(val){
       let reg  = /^-?\d+$/;
       if(!reg.test(val)){
-        this.range = 0;
+        this.range = Math.random();
         this.$nextTick(() => {
           this.range = parseInt(val);
         });

@@ -385,6 +385,7 @@ export default {
               for (let a = 0; a < row.length; a++) {
                 for (let z = 0; z < this.tableData.length; z++) {
                   if (row[a].taskInfoId == this.tableData[z].taskInfoId) {
+                    row[a].status = this.tableData[z].status;
                     this.$refs.multipleTable.toggleRowSelection(
                       this.tableData[z],
                       true
@@ -403,7 +404,7 @@ export default {
     },
     //手动选择事件
     select(selection, row) {
-      this.allSecectData[this.pageNum] = selection;
+     this.allSecectData[this.pageNum] = selection;
     },
     //手动全选事件
     selectAll(selection) {
