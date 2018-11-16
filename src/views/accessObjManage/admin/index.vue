@@ -113,7 +113,7 @@
           </el-table-column>
           <el-table-column prop="comments" label="描述" v-if="type=='oracle' || type=='mysql' || type=='postgresql'">
           </el-table-column>
-          <el-table-column prop="lastChangeTime" label="同步跟新时间" v-if="type=='oracle' || type=='mysql' || type=='postgresql'">
+          <el-table-column prop="lastChangeTime" label="同步更新时间" v-if="type=='oracle' || type=='mysql' || type=='postgresql'">
           </el-table-column>
           <el-table-column prop="dataRange" label="数据范围" v-if="type=='oracle' || type=='mysql' || type=='postgresql'">
           </el-table-column>
@@ -128,16 +128,16 @@
 								<i class="enc-icon-shujugengxin" v-on:click="updataSourceSingle(scope.$index, scope.row)" title="数据量更新"></i>
 							</el-tooltip>
               <div class="survey">
-                <singleTask v-if="jrtype=='mysql'|| jrtype=='oracle'|| jrtype=='postgresql' || jrtype=='sqlserver'" :pdata="scope.row" @fre="loadTable()"></singleTask>
+                <singleTask v-if="type=='mysql'|| type=='oracle'|| type=='postgresql' || type=='sqlserver'" :pdata="scope.row" @fre="loadTable()"></singleTask>
               </div>
               <div class="survey">
-                <userSurvey v-if="jrtype=='mysql'|| jrtype=='oracle'|| jrtype=='postgresql' || jrtype=='sqlserver'" :pdata="scope.row" @fre="loadTable()"></userSurvey>
+                <userSurvey v-if="type=='mysql'|| type=='oracle'|| type=='postgresql' || type=='sqlserver'" :pdata="scope.row" @fre="loadTable()"></userSurvey>
               </div>
               
-              <div class="survey" v-if="(jrtype=='mysql'&&scope.row.exitTask)|| (jrtype=='oracle'&&scope.row.exitTask)|| (jrtype=='postgresql'&&scope.row.exitTask) || (jrtype=='sqlserver'&&scope.row.exitTask)">
+              <div class="survey" v-if="(type=='mysql'&&scope.row.accessConnectorSource!=undefined&&scope.row.accessConnectorSource.isPeriod!='0'&&scope.row.accessConnectorSource.isPeriod!='3')|| (type=='oracle'&&scope.row.accessConnectorSource!=undefined&&scope.row.accessConnectorSource.isPeriod!='0'&&scope.row.accessConnectorSource.isPeriod!='3')|| (type=='postgresql'&&scope.row.accessConnectorSource!=undefined&&scope.row.accessConnectorSource.isPeriod!='0'&&scope.row.accessConnectorSource.isPeriod!='3') || (type=='sqlserver'&&scope.row.accessConnectorSource!=undefined&&scope.row.accessConnectorSource.isPeriod!='0'&&scope.row.accessConnectorSource.isPeriod!='3')">
                 <data-inver :pdata="scope.row" @fre="loadTable()"></data-inver>
               </div>
-            <div class="survey" v-if="jrtype!='mysql' && jrtype!='oracle' && jrtype!='sqlserver' && jrtype!='postgresql'">
+            <div class="survey" v-if="type!='mysql' && type!='oracle' && type!='sqlserver' && type!='postgresql'">
               <norela-coll :pdata="scope.row"></norela-coll>
             </div>
               <!--  <div class="survey" v-if="jrtype=='ftp'">

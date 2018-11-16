@@ -71,7 +71,7 @@
 <style lang="scss">
 .task-view-dialog{
     .el-dialog{
-        min-width: 960px;
+        min-width: 80%;
         max-height:calc(100% - 50px);
         overflow:auto;
         margin-bottom: 25px;
@@ -82,8 +82,6 @@
 </style>
 
 <style lang="scss" scoped>
-
-    
     .tips-none{
     text-align: center;
     margin-top: 40px;

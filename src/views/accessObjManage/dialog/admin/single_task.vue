@@ -30,7 +30,7 @@
                 <h2>字段类型映射</h2>
               </div>
             </div>
-            <type-map :tableId="this.pdata.id" :maptype="this.$store.state.jrtype" @pre="next('first')" @nre="next('third')"></type-map>
+            <type-map :tableId="this.pdata.id" :maptype="this.$route.params.type" @pre="next('first')" @nre="next('third')"></type-map>
           </el-tab-pane>
           <el-tab-pane name="third" disabled><span slot="label"><i class="el-icon-circle">3</i>设置接入信息</span>
             <div class="daiInfo proInfo">
