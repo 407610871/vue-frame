@@ -37,7 +37,7 @@ export function updateTest(data) {
 //下载规范
 export function downLoadFile(params) {
   return request({
-    url:"/public/data/test.docx",
+    url:"/static/test.docx",
     method: "get",
     params
   });
