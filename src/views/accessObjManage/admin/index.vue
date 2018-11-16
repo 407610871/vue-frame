@@ -149,7 +149,7 @@
       </el-main>
       <el-footer>
         <div class="enc-pagination">
-          <el-pagination v-if="queryParamReady" v-show="pageShow" style="float:right; margin:10px;" @current-change="goPage" background :page-size="20" :total="mainTableDataTotal" layout="prev, pager, next, jumper" :current-page.sync="currentPage">
+          <el-pagination v-if="queryParamReady" v-show="pageShow" style="float:right; margin:10px;" @current-change="goPage" background :page-size="pageSize" :total="mainTableDataTotal" layout="prev, pager, next, jumper" :current-page.sync="currentPage">
           </el-pagination>
         </div>
       </el-footer>
@@ -176,6 +176,7 @@ export default {
       mainTableReady: true,
       mainTableData: [],
       currentPage: 1,
+			pageSize:20,
       mainTableDataTotal: 1,
       dialogVisible: false,
       myDialogRouter: 'adminAdd',
@@ -277,9 +278,10 @@ export default {
       _self.jrtype = this.$store.state.jrtype;
 
       _self.loading = true;
+			_self.pageSize = this.$store.state.pageSize;
       var paramsObj = { //不要问我为什么，后台接口就是这2个参数名
         pagNum: this.tableParams.pageNum,
-        count: this.$store.state.pageSize
+        count: _self.pageSize
       };
       paramsObj.condition = this.tableParams.condition ? this.tableParams.condition : "";
       paramsObj.objectType = this.tableParams.objectType.join(',');

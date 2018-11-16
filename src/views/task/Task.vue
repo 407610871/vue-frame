@@ -18,10 +18,12 @@
         <el-form-item label="已选查询条件:">
           <div v-show="taskPeriodType.length>0" class="selected-task-type" style="display: inline-block;">
             <span>任务类型:</span>
-            <span v-show="taskPeriodType.indexOf('0')>-1">实时任务<span @click="pop('0',taskPeriodType);"><i class="el-icon-error"></i></span></span>
-            <span v-show="taskPeriodType.indexOf('1')>-1">一次性任务<span @click="pop('1',taskPeriodType);"><i class="el-icon-error"></i></span></span>
-            <span v-show="taskPeriodType.indexOf('2')>-1">周期任务<span @click="pop('2',taskPeriodType);"><i class="el-icon-error"></i></span></span>
-            <span v-show="taskPeriodType.indexOf('3')>-1">全量任务<span @click="pop('3',taskPeriodType);"><i class="el-icon-error"></i></span></span>
+            <span v-show="taskPeriodType.indexOf('0')>-1">实时<span @click="pop('0',taskPeriodType);"><i class="el-icon-error"></i></span></span>
+            <span v-show="taskPeriodType.indexOf('1')>-1">周期间隔增量<span @click="pop('1',taskPeriodType);"><i class="el-icon-error"></i></span></span>
+            <span v-show="taskPeriodType.indexOf('2')>-1">周期定时增量<span @click="pop('2',taskPeriodType);"><i class="el-icon-error"></i></span></span>
+            <span v-show="taskPeriodType.indexOf('3')>-1">一次性接入<span @click="pop('3',taskPeriodType);"><i class="el-icon-error"></i></span></span>
+            <span v-show="taskPeriodType.indexOf('4')>-1">周期间隔全量;<span @click="pop('4',taskPeriodType);"><i class="el-icon-error"></i></span></span>
+            <span v-show="taskPeriodType.indexOf('5')>-1">周期定时全量<span @click="pop('5',taskPeriodType);"><i class="el-icon-error"></i></span></span>
           </div>
           <div label="任务状态:" v-show="status.length>0" class="selected-task-type" style="display: inline-block;">
             <span>任务状态:</span>
@@ -38,10 +40,12 @@
         </el-form-item>
         <el-form-item label="任务类型:">
           <el-checkbox-group v-model="taskPeriodType">
-            <el-checkbox label="0" name="taskPeriodType">实时任务</el-checkbox>
-            <el-checkbox label="1" name="taskPeriodType">一次性任务</el-checkbox>
-            <el-checkbox label="2" name="taskPeriodType">周期任务</el-checkbox>
-            <el-checkbox label="3" name="taskPeriodType">全量任务</el-checkbox>
+            <el-checkbox label="0" name="taskPeriodType">实时</el-checkbox>
+            <el-checkbox label="1" name="taskPeriodType">周期间隔增量</el-checkbox>
+            <el-checkbox label="2" name="taskPeriodType">周期定时增量</el-checkbox>
+            <el-checkbox label="3" name="taskPeriodType">一次性接入</el-checkbox>
+            <el-checkbox label="4" name="taskPeriodType">周期间隔全量</el-checkbox>
+            <el-checkbox label="5" name="taskPeriodType">周期定时全量</el-checkbox>
           </el-checkbox-group>
         </el-form-item>
         <el-form-item label="任务状态:">
@@ -100,10 +104,12 @@
         <el-table-column prop="endTime" label="任务结束时间" width="140" :show-overflow-tooltip='true'></el-table-column>
         <el-table-column label="任务类型" width="100">
           <template slot-scope="scope">
-            <span v-if="scope.row.isPeriod==0">实时性任务</span>
-            <span v-if="scope.row.isPeriod==1">一次性任务</span>
-            <span v-else-if="scope.row.isPeriod==2">周期任务</span>
-            <span v-else-if="scope.row.isPeriod==3">全量任务</span>
+            <span v-if="scope.row.isPeriod==0">实时</span>
+            <span v-if="scope.row.isPeriod==1">周期间隔增量</span>
+            <span v-else-if="scope.row.isPeriod==2">周期定时增量</span>
+            <span v-else-if="scope.row.isPeriod==3">一次性接入</span>
+            <span v-else-if="scope.row.isPeriod==4">周期间隔全量</span>
+            <span v-else-if="scope.row.isPeriod==5">周期定时全量</span>
           </template>
         </el-table-column>
         <el-table-column label="当前状态" width="100">

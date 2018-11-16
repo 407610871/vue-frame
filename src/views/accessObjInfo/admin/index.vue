@@ -64,7 +64,7 @@
           </el-main>
           <el-footer>
             <div class="enc-pagination">
-              <el-pagination v-if="mainTableReady" v-show="pageShow" style="float:right; margin:10px;" @current-change="goPage" background :page-size="20" :total="mainTableDataTotal1" layout="prev, pager, next, jumper" :current-page.sync="currentPage1">
+              <el-pagination v-if="mainTableReady" v-show="pageShow" style="float:right; margin:10px;" @current-change="goPage" background :page-size="pageSize" :total="mainTableDataTotal1" layout="prev, pager, next, jumper" :current-page.sync="currentPage1">
               </el-pagination>
             </div>
           </el-footer>
@@ -72,19 +72,19 @@
         <el-container style="height:100%;" class="dashboard-container" v-show="tabPosition != 'metadataManage'">
           <el-main style="padding-bottom:0;">
             <el-table :data="mainTableData2" stripe :height="tableHeight" border style="width: 100%" tooltip-effect="light">
-              <el-table-column v-for="(val, key, index) in data2Columns" v-if="index<6" :prop="key" :label="key" width="width">
+              <el-table-column v-for="(val, key, index) in data2Columns" v-if="index<6" :prop="key" :label="getLabel(key)" width="width">
               </el-table-column>
               
-                    <el-table-column label="描述">
-                      <template slot-scope="scope">
-                        <el-popover placement="left-start" width="400" trigger="hover">
-                          <ul class="popup-menu">
-                            <li v-for="(val, key, index) in data2Columns">{{key}}：{{scope.row[key]}}</li>
-                          </ul>
-                          <a slot="reference" href="javascript:void(0)">更多详情<i class="el-icon-caret-bottom"></i></a> 
-                        </el-popover>
-                      </template>
-                    </el-table-column>
+							<el-table-column label="描述">
+								<template slot-scope="scope">
+									<el-popover placement="left-start" width="400" trigger="hover">
+										<ul class="popup-menu">
+											<li v-for="(val, key, index) in data2Columns">{{key}}：{{scope.row[key]}}</li>
+										</ul>
+										<a slot="reference" href="javascript:void(0)">更多详情<i class="el-icon-caret-bottom"></i></a> 
+									</el-popover>
+								</template>
+							</el-table-column>
             </el-table>
           </el-main>
         </el-container>
@@ -105,12 +105,13 @@
         loading: false,
         queryParamReady: true,
         currentPage1: 1,
+				pageSize:20,
         pageShow: true,
         tableHeight: window.innerHeight - 280,
         mainTableReady: true,
         mainTableData1: [],
         mainTableData2: [],
-      
+				mainTableTitle:[],
         data2Columns: {},
         width: 180,
         editingRow: {
@@ -297,9 +298,10 @@
       loadTable: function(flag) {
         var _self = this;
         this.loading = true;
+				_self.pageSize = this.$store.state.pageSize;
         var paramsObj = {
           pagNum: this.tableParams.pageNum1,
-          count: this.$store.state.pageSize,
+          count: _self.pageSize,
           objectInfoId: this.$route.params.objId,
           ACCESS_SYS_DIALECT_ID: this.tableParams.ACCESS_SYS_DIALECT_ID,
           accessSysId: this.tableParams.accessSysId
@@ -352,7 +354,8 @@
             accessSysId: this.tableParams.accessSysId,
             filter: null
           }
-          this.$ajax.post(window.ENV.API_DACM + '/objDetail/previewData', paramsObj).then(function(res) {
+          // this.$ajax.post(window.ENV.API_DACM + '/objDetail/previewData', paramsObj).then(function(res) {
+          this.$ajax.post('http://10.19.160.171:8080/DACM/objDetail/previewData', paramsObj).then(function(res) {
               console.log('tableLoaded:dataPreview');
               if (res.data.success) {
                 resolve(res);
@@ -384,6 +387,7 @@
         Promise.all([promist0, promist1]).then((resultList) => {
           if (resultList[1].data.datas.length > 0) {
             _self.data2Columns = resultList[1].data.datas[0];
+						_self.mainTableTitle = resultList[1].data.titles;
             var len = 0;
             for (var i in _self.data2Columns) {
               len++;
@@ -398,6 +402,15 @@
         });
 
       },
+			getLabel(key){
+				console.log(key);
+				for(var value of this.mainTableTitle){
+					if(key == value.key){
+						return value.name;
+					}
+				}
+				return '未知标题';
+			},
       goPage: function(val) {
         var obj = {};
         var paramName = this.tabPosition == 'metadataManage' ? 'pageNum1' : 'pageNum2';

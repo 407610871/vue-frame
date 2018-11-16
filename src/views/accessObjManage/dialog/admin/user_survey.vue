@@ -430,7 +430,7 @@ export default {
       downLoadFile().then(
         function(response) {
           let disposition = response.headers['content-disposition'];
-          let filename = disposition ? decodeURI(disposition.match(/filename=(\S*)/)[1]) : "资源目录下载规范.doc";
+          let filename = disposition ? decodeURI(disposition.match(/filename=(\S*)/)[1]) : "资源目录下载规范.docx";
           fileDownload(response.data, filename);
         }.bind(this)
       ).catch(
