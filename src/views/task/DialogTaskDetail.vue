@@ -1,6 +1,6 @@
 <template>
   <div class="taskMDialog" style="padding-bottom:15px;" >
-    <el-dialog width="60%" :title="reqObj.taskName" :close-on-click-modal="false" :visible.sync="showInnerDialog" @closed="closeDia">
+    <el-dialog :title="reqObj.taskName" :close-on-click-modal="false" :visible.sync="showInnerDialog" @closed="closeDia" class="task-Detail-dialog">
       <div class="title-gra">
         <span class="grab gra-l"></span>
         <span class="grab gra-r"></span>
@@ -138,25 +138,25 @@
             <el-col :span="4">
               <el-button type="primary" size="small" @click="testConnect()">测试连接</el-button>
             </el-col>
-            <el-col :span="10">
+            <el-col :span="12">
               <el-form-item label="最近一次任务开始时间:">
                 <span>{{taskBaseInfo.startTime}}</span>
               </el-form-item>
             </el-col>
-            <el-col :span="4" class="bank">bank</el-col>
+            <!-- <el-col :span="4" class="bank">bank</el-col> -->
             <!-- <el-col :span="10" class="bank">bank</el-col> -->
-            <el-col :span="10">
+            <el-col :span="12">
               <el-form-item label="任务创建时间:">
                 <span>{{taskBaseInfo.createTime}}</span>
               </el-form-item>
             </el-col>
-            <el-col :span="10">
+            <el-col :span="12">
               <el-form-item label="最近一次任务结束时间:" >
                 <span>{{taskBaseInfo.endTime}}</span>
               </el-form-item>
             </el-col>
-            <el-col :span="4" class="bank">bank</el-col>
-            <el-col :span="10">
+            <!-- <el-col :span="4" class="bank">bank</el-col> -->
+            <el-col :span="12">
               <el-form-item label="任务创建人:">
                 <span>{{taskBaseInfo.creater}}</span>
               </el-form-item>
@@ -243,9 +243,20 @@
     <dialogIsCheck :msgCheck="reqObj" v-if="isShowCheck"></dialogIsCheck>
   </div>
 </template>
+<style lang="scss">
+.task-Detail-dialog {
+  .el-dialog{
+        min-width: 80%;
+        max-height:calc(100% - 50px);
+        overflow:auto;
+        margin-bottom: 25px;
+        margin-top: 25px!important;
+        height: 100%!important;
+    }
+}
+</style>
+
 <style lang="scss" scoped>
-// @import "@/assets/css/base.scss";
-// @import "@/assets/css/dialog.scss";
 .el-radio+.el-radio {
   margin-left: 19px;
 }
