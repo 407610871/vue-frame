@@ -793,7 +793,7 @@ export default {
             this.ruleForm.dtmin = pollMs[1];
             this.ruleForm.dthour = pollMs[2];
           }
-          this.ruleForm.dLibrary = data.sinkId;
+          this.ruleForm.dLibrary = data.sinkId.toStirng();
           this.taskInfoId = data.task_info_id;
           this.isregin = true;
         }

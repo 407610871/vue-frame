@@ -1,8 +1,11 @@
 <template>
-  <div class="taskMDialog userSurveyDialog setTaskDia">
-    <el-button size="mini" class="diabtn incbtn" type="danger" @click="dialogVisible = true">设置通配符</el-button>
+  <div class="taskMDialog userSurveyDialog setTaskDia diaicon">
+    <!-- <el-button size="mini" class="diabtn incbtn" type="danger" @click="dialogVisible = true">设置通配符</el-button> -->
     <!-- <i class="el-icon-info" @click="dialogVisible = true">设置通配符</i> -->
-    <el-dialog title="非关系型" :visible.sync="dialogVisible" width="60%" :before-close="closeDialog">
+    <el-tooltip class="item" effect="light" content="设置通配符" placement="top">
+      <i class="enc-icon-danbiaocaiji" @click="dialogVisible = true"></i>
+    </el-tooltip>
+    <el-dialog title="设置通配符" :visible.sync="dialogVisible" width="60%" :before-close="closeDialog">
       <div class="title-gra plr30">
         <span class="grab gra-l"></span>
         <span class="grab gra-r"></span>
