@@ -13,7 +13,7 @@
           <path-ftp class="right-btn" @refresh="loadTable" v-if="type=='ftp'"></path-ftp>
           <set-task v-if="type=='mysql'|| type=='oracle'|| type=='postgresql' || type=='sqlserver' || type=='file'" class="right-btn" :rowList="rowList" :jrtype="type"></set-task>
         </div>
-        <el-table ref="multipleTable" :data="mainTableData" stripe :height="tableHeight" border style="width: 100%" tooltip-effect="light" @selection-change="handleSelectionChange">
+        <el-table ref="multipleTable" :data="mainTableData" stripe :height="tableHeight" border style="width: 100%" tooltip-effect="light" :row-class-name="tableRowClassName" @selection-change="handleSelectionChange">
           <el-table-column type="selection">
           </el-table-column>
 					<!-- ftp -->
@@ -269,6 +269,14 @@ export default {
     })
   },
   methods: {
+    tableRowClassName:function(scope, rowIndex) {
+        if (scope.row.isDeleted == 1) {//删除
+          return 'delete-row';
+        } else if (scope.row.isHistory == 2) {//新增
+          return 'add-row';
+        }
+        return '';
+      },
     collapseExpand: function() {
       this.collapse = !this.collapse;
     },
@@ -405,6 +413,7 @@ export default {
     },
     updataSource: function() {
       var _self = this;
+      self.loadTable = true;
       this.$ajax.get(window.ENV.API_DACM+'/ctables/synchronize', {
         params: {
           accessSysId: this.$route.params.sourceId
@@ -414,6 +423,7 @@ export default {
           _self.$alert('更新成功', '提示', {
             confirmButtonText: '确定'
           });
+          _self.loadTable();
         } else {
           _self.$alert('更新失败', '提示', {
             confirmButtonText: '确定'
@@ -513,6 +523,16 @@ export default {
 }
 
 </script>
+<style lang="scss">
+  .el-table .delete-row {
+    color:red;
+  }
+
+  .el-table .add-row {
+    color:rgb(179, 243, 50);
+  }
+</style>
+
 <style rel="stylesheet/scss" lang="scss" scoped>
 .dashboard-container {
   background: #fff;
