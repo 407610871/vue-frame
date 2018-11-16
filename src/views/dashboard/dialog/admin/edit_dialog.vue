@@ -758,7 +758,7 @@ export default {
                     });
 
                   } else {
-                    this.$alert('更新失败', '信息', {
+                    this.$alert(res.data.message, '信息', {
                       confirmButtonText: '确定',
                       callback: action => {}
                     });
@@ -798,7 +798,7 @@ export default {
                     });
 
                   } else {
-                    this.$alert('更新失败', '信息', {
+                    this.$alert(res.data.message, '信息', {
                       confirmButtonText: '确定',
                       callback: action => {
 
