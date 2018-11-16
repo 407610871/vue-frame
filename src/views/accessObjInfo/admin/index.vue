@@ -354,8 +354,8 @@
             accessSysId: this.tableParams.accessSysId,
             filter: null
           }
-          // this.$ajax.post(window.ENV.API_DACM + '/objDetail/previewData', paramsObj).then(function(res) {
-          this.$ajax.post('http://10.19.160.171:8080/DACM/objDetail/previewData', paramsObj).then(function(res) {
+          this.$ajax.post(window.ENV.API_DACM + '/objDetail/previewData', paramsObj).then(function(res) {
+         /* this.$ajax.post('http://10.19.160.171:8080/DACM/objDetail/previewData', paramsObj).then(function(res) {*/
               console.log('tableLoaded:dataPreview');
               if (res.data.success) {
                 resolve(res);
