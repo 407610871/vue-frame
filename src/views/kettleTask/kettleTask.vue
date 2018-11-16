@@ -17,7 +17,7 @@
             @close="handleClose(item)">
             {{getStatusName(item)}}
         </el-tag> -->
-        <el-form ref="form"  label-width="110px" class="formGroup" v-if="moreSearch">
+        <el-form label-width="110px" class="formGroup">
             <el-form-item label="已选查询条件:">
                 <div v-show="status.length>0" class="selected-task-type" style="display: inline-block;">
                     <span>任务状态:</span>
@@ -32,6 +32,8 @@
                     <span>{{time[0]}} - {{time[1]}}<span @click="time=[]"><i class="el-icon-error"></i></span></span>
                 </div>
             </el-form-item>
+        </el-form>
+        <el-form ref="form"  label-width="110px" class="formGroup" v-if="moreSearch">
             <el-form-item label="任务状态:">
                 <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>
                 <el-checkbox-group v-model="status" @change="handleCheckedCitiesChange">
@@ -135,7 +137,7 @@ export default {
     },
     computed:{
         tableHeight() {
-            return  !this.moreSearch?   window.innerHeight - 280:window.innerHeight - 455;
+            return  !this.moreSearch?   window.innerHeight - 340:window.innerHeight - 455;
         },
         _checkStatus(){
             return this.checkStatus.map(item => item.label);
@@ -266,7 +268,7 @@ export default {
         //高级搜索
         doMoreSearch(){
             this.moreSearch=!this.moreSearch;
-            this.status=[];
+            //this.status=[];
         },
     },
     filters:{
