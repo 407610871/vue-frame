@@ -33,7 +33,7 @@
       </el-row>
     </div>
     <div class="enc-pagination" v-if="pageSize<total && pageReady">
-      <el-pagination style="float:right; margin:10px;" @current-change="goPage" background :page-size="1" :total="total" layout="prev, pager, next, jumper" :current-page.sync="currentPage">
+      <el-pagination style="float:right; margin:10px;" @current-change="goPage" background :page-size="pageSize" :total="total" layout="prev, pager, next, jumper" :current-page.sync="currentPage">
       </el-pagination>
     </div>
     <div class="regbtn">
