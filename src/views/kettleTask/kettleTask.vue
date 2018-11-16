@@ -135,7 +135,7 @@ export default {
     },
     computed:{
         tableHeight() {
-            return  !this.moreSearch?   window.innerHeight - 280:window.innerHeight - 395;
+            return  !this.moreSearch?   window.innerHeight - 280:window.innerHeight - 455;
         },
         _checkStatus(){
             return this.checkStatus.map(item => item.label);
