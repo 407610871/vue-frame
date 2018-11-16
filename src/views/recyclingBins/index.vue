@@ -65,7 +65,7 @@
           <el-pagination v-if="queryParamReady" v-show="pageShow" style="float:right; margin:10px;"
             @current-change="goPage"
             background
-            :page-size="20"
+            :page-size="pageSize"
             :total="mainTableDataTotal"
             layout="prev, pager, next, jumper"
             :current-page.sync="currentPage">
@@ -101,6 +101,7 @@ export default {
       mainTableData: [],
       currentPage: 1,
       mainTableDataTotal: 1,
+			pageSize:20,
 			pageShow:true,
       //dialogVisible:false,
       //myDialogRouter:'adminAdd',
@@ -171,8 +172,9 @@ export default {
     loadTable:function(){
       var _self = this;
       _self.loading = true;
+			_self.pageSize = this.$store.state.pageSize;
       var paramsObj = {
-        pageSize:this.$store.state.pageSize,
+        pageSize:_self.pageSize,
         pageNum:this.tableParams.pageNum,
         domain:1
       };

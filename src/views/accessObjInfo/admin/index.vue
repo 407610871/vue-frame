@@ -64,7 +64,7 @@
           </el-main>
           <el-footer>
             <div class="enc-pagination">
-              <el-pagination v-if="mainTableReady" v-show="pageShow" style="float:right; margin:10px;" @current-change="goPage" background :page-size="20" :total="mainTableDataTotal1" layout="prev, pager, next, jumper" :current-page.sync="currentPage1">
+              <el-pagination v-if="mainTableReady" v-show="pageShow" style="float:right; margin:10px;" @current-change="goPage" background :page-size="pageSize" :total="mainTableDataTotal1" layout="prev, pager, next, jumper" :current-page.sync="currentPage1">
               </el-pagination>
             </div>
           </el-footer>
@@ -105,6 +105,7 @@
         loading: false,
         queryParamReady: true,
         currentPage1: 1,
+				pageSize:20,
         pageShow: true,
         tableHeight: window.innerHeight - 280,
         mainTableReady: true,
@@ -297,9 +298,10 @@
       loadTable: function(flag) {
         var _self = this;
         this.loading = true;
+				_self.pageSize = this.$store.state.pageSize;
         var paramsObj = {
           pagNum: this.tableParams.pageNum1,
-          count: this.$store.state.pageSize,
+          count: _self.pageSize,
           objectInfoId: this.$route.params.objId,
           ACCESS_SYS_DIALECT_ID: this.tableParams.ACCESS_SYS_DIALECT_ID,
           accessSysId: this.tableParams.accessSysId

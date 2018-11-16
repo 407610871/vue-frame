@@ -64,7 +64,7 @@
           <el-pagination v-if="queryParamReady" v-show="pageShow" style="float:right; margin:10px;"
             @current-change="goPage"
             background
-            :page-size="20"
+            :page-size="pageSize"
             :total="mainTableDataTotal"
             layout="prev, pager, next, jumper"
             :current-page.sync="currentPage">
@@ -91,6 +91,7 @@ export default {
       queryParamReady:false,
       pageShow:true,
       currentPage:1,
+			pageSize:20,
       mainTableData: [],
       mainTableDataTotal: 1,
       countTotal:'',
@@ -224,8 +225,9 @@ export default {
     loadTable:function(){
       var _self = this;
       _self.loading = true;
+			_self.pageSize = this.$store.state.pageSize;
       var paramsObj = {
-        pageSize:this.$store.state.pageSize,
+        pageSize:_self.pageSize,
         pageNum:this.tableParams.pageNum,
         domain:'0',
 				_:new Date().getTime()
