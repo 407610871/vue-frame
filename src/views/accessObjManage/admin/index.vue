@@ -311,7 +311,8 @@ export default {
 					for(var value of data){
 						value.showEdit = false;
 					}
-					_self.mainTableData = data;
+          _self.mainTableData = data;
+          console.log("_self.mainTableData",JSON.stringify(_self.mainTableData[0]));
 					_self.mainTableDataTotal = res.data.data.total;
 					if (res.data.data.list.length > 0) {
 						_self.tablePa = res.data.data.list[0];
