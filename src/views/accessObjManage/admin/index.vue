@@ -9,9 +9,9 @@
         <div class="table-tools">
           <!-- <i title="数据更新" class="enc-icon-shujugengxin"  v-on:click="updataSource"><i> -->
 					<el-button v-on:click="updataSource" class="right-btn" style="margin-left:10px;">接入源更新</el-button>
-          <table-inver v-show="jrtype=='mysql'|| jrtype=='oracle'|| jrtype=='postgresql' || jrtype=='sqlserver'" class="right-btn" :pdata="tablePa"></table-inver>
-          <path-ftp class="right-btn" @refresh="loadTable" v-if="jrtype=='ftp'"></path-ftp>
-          <set-task class="right-btn" :rowList="rowList" :jrtype="jrtype"></set-task>
+          <table-inver v-if="type=='mysql'|| type=='oracle'|| type=='postgresql' || type=='sqlserver'" class="right-btn" :pdata="tablePa"></table-inver>
+          <path-ftp class="right-btn" @refresh="loadTable" v-if="type=='ftp'"></path-ftp>
+          <set-task v-if="type=='mysql'|| type=='oracle'|| type=='postgresql' || type=='sqlserver' || type=='file'" class="right-btn" :rowList="rowList" :jrtype="type"></set-task>
         </div>
         <el-table ref="multipleTable" :data="mainTableData" stripe :height="tableHeight" border style="width: 100%" tooltip-effect="light" @selection-change="handleSelectionChange">
           <el-table-column type="selection">
@@ -61,7 +61,7 @@
           </el-table-column>
 					
 					<!-- 本地文件 -->
-					<el-table-column label="状态" v-if="type=='activemq'">
+					<el-table-column label="状态" v-if="type=='file'">
 						<template slot-scope="scope">
               <span>{{getPeriod(scope.row)}}</span>
             </template>
@@ -124,7 +124,7 @@
           <el-table-column label="操作">
             <template slot-scope="scope">
               <!-- <el-button size="mini" v-on:click="updataSourceSingle(scope.$index, scope.row)" title="数据量更新">数据量更新</el-button> -->
-							<el-tooltip class="item" effect="light" content="数据量更新" placement="top">
+							<el-tooltip class="item" effect="light" content="数据量更新" placement="top" v-if="type=='mysql'|| type=='oracle'|| type=='postgresql' || type=='sqlserver'">
 								<i class="enc-icon-shujugengxin" v-on:click="updataSourceSingle(scope.$index, scope.row)" title="数据量更新"></i>
 							</el-tooltip>
               <div class="survey">
