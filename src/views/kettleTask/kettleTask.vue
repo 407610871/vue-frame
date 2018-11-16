@@ -55,12 +55,12 @@
         <el-table-column label="序号" type="index" width="100"></el-table-column>
         <el-table-column label="任务名称" prop="taskName" :show-overflow-tooltip='true'></el-table-column>
         <el-table-column label="任务类型"  prop="taskType"></el-table-column>
-        <el-table-column label="任务开始时间">
+        <el-table-column label="任务开始时间" :show-overflow-tooltip='true'>
             <template slot-scope="scope">
                 <span>{{scope.row.startTime | formatDateTime}}</span>
             </template>
         </el-table-column>
-        <el-table-column label="任务停止时间">
+        <el-table-column label="任务停止时间" :show-overflow-tooltip='true'>
             <template slot-scope="scope">
                 <span>{{scope.row.endTime | formatDateTime}}</span>
             </template>

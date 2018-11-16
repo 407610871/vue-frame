@@ -1,6 +1,6 @@
 <template>
 <div class="taskMDialog" style="padding-bottom:15px;">
-<el-dialog width="60%" :title="title"  top="25px" :visible.sync="showInnerDialog" class="check-data-dialog" @closed="closeDiaChk">
+<el-dialog width="60%" :title="title"  top="25px" :visible.sync="showInnerDialog" class="check-data-dialog" @closed="closeDiaChk" :close-on-click-modal="false">
   <div class="title-gra">
     <span class="grab gra-l"></span>
     <span class="grab gra-r"></span>
@@ -497,6 +497,7 @@ h5{
     min-width:810px;
     max-height:calc(100% - 50px);
     overflow:auto;
+    height:100%;
   }
 }
 .el-picker-panel__icon-btn{
