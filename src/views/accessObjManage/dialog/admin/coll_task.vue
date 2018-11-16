@@ -411,7 +411,7 @@ export default {
     },
     finish() {
       //间隔执行
-      var pollIntervalMs;
+      var pollIntervalMs = -1;
       if (this.ruleForm.cycleSet == '0') {
         let jday = 0;
         let jhour = 0;
@@ -515,6 +515,9 @@ export default {
           return false;
         }*/
         ctt = '5'
+      }
+      if(this.ruleForm.accessMode=="2"){
+        pollIntervalMs = -1;
       }
       var save = {
         "accessSysObjDetails": this.increArr,
