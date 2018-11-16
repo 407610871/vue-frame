@@ -496,6 +496,12 @@ export default {
       }
       var ctt = '';
       if (this.ruleForm.accessMode == "0") { //实时
+        if(this.$route.params.type=='oracle'){
+          if(this.ruleForm.xStreamServiceName==''){
+           this.$message.warning('XStream服务名不能为空');
+           return false;
+          }
+        }
         ctt = '0'
       }
       if (this.ruleForm.accessMode == "2") { //实时
