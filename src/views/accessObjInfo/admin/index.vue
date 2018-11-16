@@ -22,7 +22,7 @@
       <el-main style="padding:0;">
         <el-container style="height:100%;" class="dashboard-container" v-show="tabPosition == 'metadataManage'">
           <el-main style="padding-bottom:0;">
-            <el-table :data="mainTableData1" stripe :height="tableHeight" border style="width: 100%" id="mainTable2" tooltip-effect="light">
+            <el-table :data="mainTableData1" stripe :height="tableHeight" border style="width: 100%" id="mainTable2" tooltip-effect="light" :row-class-name="tableRowClassName">
               <el-table-column label="字段中文名" width="180" show-overflow-tooltip>
                 <template slot-scope="scope">
                   <div>
@@ -180,8 +180,9 @@
         return this.$store.state.queryParams.accessObjInfo;
       },
       exportUrl: function() {
-        /*return window.ENV.API_DACM + '/objDetail/exportTemplateFile?objInfoId=' + this.$route.params.objId + '&tableName=' + this.$route.params.objName + '&diyComments=' + this.tableParams.diyComments + '&accessSysDialectId=' + this.tableParams.ACCESS_SYS_DIALECT_ID + '&browser=' + 'chrome';*/
-        return 'http://10.19.160.171:8080/DACM/objDetail/exportTemplateFile?objInfoId=' + this.$route.params.objId + '&tableName=' + this.$route.params.objName + '&diyComments=' + this.tableParams.diyComments + '&accessSysDialectId=' + this.tableParams.ACCESS_SYS_DIALECT_ID + '&browser=' + 'chrome';
+        return window.ENV.API_DACM + '/objDetail/exportTemplateFile?objInfoId=' + this.$route.params.objId + '&tableName=' + this.$route.params.objName + '&diyComments=' + this.tableParams.diyComments + '&accessSysDialectId=' + this.tableParams.ACCESS_SYS_DIALECT_ID + '&browser=' + 'chrome';
+        /*return 'http://10.19.160.171:8080/DACM/objDetail/exportTemplateFile?objInfoId=' + this.$route.params.objId + '&tableName=' + this.$route.params.objName + '&diyComments=' + this.tableParams.diyComments + '&accessSysDialectId=' + this.tableParams.ACCESS_SYS_DIALECT_ID + '&browser=' + 'chrome';*/
+       /* return 'http://10.19.160.171:8080/DACM/objDetail/exportTemplateFile?objInfoId=10053886&tableName=aaaa&diyComments=VIEW&accessSysDialectId=10001&browser=chrome';*/
       },
       tableName: function() {
         return this.$route.params.objName;
@@ -250,6 +251,14 @@
         let len = this.searchForm.length;
         if(len > 4) return;
         this.searchForm.push(this.searchFormCont);
+      },
+      tableRowClassName:function(scope, rowIndex) {
+        if (scope.row.isDeleted == 1) {//删除
+          return 'delete-row';
+        } else if (scope.row.isHistory == 2) {//新增
+          return 'add-row';
+        }
+        return '';
       },
       refresh() {
         var _self = this;
@@ -539,6 +548,15 @@
   }
 
   </script>
+  <style lang="scss">
+  .el-table .delete-row {
+    color:red;
+  }
+
+  .el-table .add-row {
+    color:rgb(179, 243, 50);
+  }
+</style>
   <style rel="stylesheet/scss" lang="scss" scoped>
   .dashboard-container {
     background: #fff;

@@ -57,6 +57,14 @@
               <span class="ml25 tasktips">tips:仅支持以下三种类型:(自增变量(整型),自增时间戳(long型),自增时间戳(字符型,varchar))</span>
             </el-col>
           </el-col>
+          <el-col :span="24" v-show="ruleForm.accessMode=='0'&&this.$route.params.type=='oracle'">
+            <el-col :span="6">
+              <el-form-item label="XStream服务名:">
+                <el-input v-model="ruleForm.xStreamServiceName" class="fl"></el-input>
+              </el-form-item>
+            </el-col>
+          
+          </el-col>
           <el-col :span="24">
             <el-col :span="8" class="collbg">
               <el-form-item label="增量字段:" prop="increment">
@@ -305,6 +313,7 @@ export default {
       treeData: [],
       isregin: false,
       appId: '',
+
       taskInfoId: '',
       accId: '',
       yid: '', //反写的增量字段id
@@ -321,6 +330,7 @@ export default {
         jday: '', //间隔执行天数
         jmin: '',
         jhour: '',
+        xStreamServiceName:'',
         dfmon: '', //定时执行月数
         dfmin: '',
         dsmin: '',
@@ -486,6 +496,12 @@ export default {
       }
       var ctt = '';
       if (this.ruleForm.accessMode == "0") { //实时
+        if(this.$route.params.type=='oracle'){
+          if(this.ruleForm.xStreamServiceName==''){
+           this.$message.warning('XStream服务名不能为空');
+           return false;
+          }
+        }
         ctt = '0'
       }
       if (this.ruleForm.accessMode == "2") { //实时
@@ -532,7 +548,8 @@ export default {
           "collectionTaskType": ctt,
           "isStartOverTask": this.ruleForm.taskSubMode,
           "timeType": this.radio,
-          "startLocation": this.ruleForm.startLocation
+          "startLocation": this.ruleForm.startLocation,
+          "xStreamServiceName":this.ruleForm.xStreamServiceName
         }
         this.loading = true;
         if (JSON.stringify(this.$store.state.userList) == "{}") {
@@ -628,7 +645,8 @@ export default {
           "collectionTaskType": ctt,
           "isStartOverTask": this.ruleForm.taskSubMode,
           "timeType": this.radio,
-          "startLocation": this.ruleForm.startLocation
+          "startLocation": this.ruleForm.startLocation,
+          "xStreamServiceName":this.ruleForm.xStreamServiceName
         }
         this.loading = true;
         if (JSON.stringify(this.$store.state.userList) == "{}") {
@@ -793,9 +811,10 @@ export default {
             this.ruleForm.dtmin = pollMs[1];
             this.ruleForm.dthour = pollMs[2];
           }
-          this.ruleForm.dLibrary = data.sinkId;
+          this.ruleForm.dLibrary = data.sinkId.toStirng();
           this.taskInfoId = data.task_info_id;
           this.isregin = true;
+          this.ruleForm.xStreamServiceName = res.xStreamServiceName;
         }
       })
     },

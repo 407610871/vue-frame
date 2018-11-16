@@ -9,11 +9,11 @@
         <div class="table-tools">
           <!-- <i title="数据更新" class="enc-icon-shujugengxin"  v-on:click="updataSource"><i> -->
 					<el-button v-on:click="updataSource" class="right-btn" style="margin-left:10px;">接入源更新</el-button>
-          <table-inver v-show="jrtype=='mysql'|| jrtype=='oracle'|| jrtype=='postgresql' || jrtype=='sqlserver'" class="right-btn" :pdata="tablePa"></table-inver>
-          <path-ftp class="right-btn" @refresh="loadTable" v-if="jrtype=='ftp'"></path-ftp>
-          <set-task class="right-btn" :rowList="rowList" :jrtype="jrtype"></set-task>
+          <table-inver v-if="type=='mysql'|| type=='oracle'|| type=='postgresql' || type=='sqlserver'" class="right-btn" :pdata="tablePa"></table-inver>
+          <path-ftp class="right-btn" @refresh="loadTable" v-if="type=='ftp'"></path-ftp>
+          <set-task v-if="type=='mysql'|| type=='oracle'|| type=='postgresql' || type=='sqlserver' || type=='file'" class="right-btn" :rowList="rowList" :jrtype="type"></set-task>
         </div>
-        <el-table ref="multipleTable" :data="mainTableData" stripe :height="tableHeight" border style="width: 100%" tooltip-effect="light" @selection-change="handleSelectionChange">
+        <el-table ref="multipleTable" :data="mainTableData" stripe :height="tableHeight" border style="width: 100%" tooltip-effect="light" :row-class-name="tableRowClassName" @selection-change="handleSelectionChange">
           <el-table-column type="selection">
           </el-table-column>
 					<!-- ftp -->
@@ -61,7 +61,7 @@
           </el-table-column>
 					
 					<!-- 本地文件 -->
-					<el-table-column label="状态" v-if="type=='activemq'">
+					<el-table-column label="状态" v-if="type=='file'">
 						<template slot-scope="scope">
               <span>{{getPeriod(scope.row)}}</span>
             </template>
@@ -124,7 +124,7 @@
           <el-table-column label="操作">
             <template slot-scope="scope">
               <!-- <el-button size="mini" v-on:click="updataSourceSingle(scope.$index, scope.row)" title="数据量更新">数据量更新</el-button> -->
-							<el-tooltip class="item" effect="light" content="数据量更新" placement="top">
+							<el-tooltip class="item" effect="light" content="数据量更新" placement="top" v-if="type=='mysql'|| type=='oracle'|| type=='postgresql' || type=='sqlserver'">
 								<i class="enc-icon-shujugengxin" v-on:click="updataSourceSingle(scope.$index, scope.row)" title="数据量更新"></i>
 							</el-tooltip>
               <div class="survey">
@@ -269,6 +269,14 @@ export default {
     })
   },
   methods: {
+    tableRowClassName:function(scope, rowIndex) {
+        if (scope.row.isDeleted == 1) {//删除
+          return 'delete-row';
+        } else if (scope.row.isHistory == 2) {//新增
+          return 'add-row';
+        }
+        return '';
+      },
     collapseExpand: function() {
       this.collapse = !this.collapse;
     },
@@ -290,6 +298,7 @@ export default {
       this.$ajax({
 				// url: window.ENV.API_DACM+'ctables/datas',
 				url:window.ENV.API_DACM+'/ctables/datas',
+       /* url:'http://10.19.160.25:8080/DACM/ctables/datas',*/
 				method: 'post',
 				data: JSON.stringify(paramsObj),
 				headers: {
@@ -302,7 +311,8 @@ export default {
 					for(var value of data){
 						value.showEdit = false;
 					}
-					_self.mainTableData = data;
+          _self.mainTableData = data;
+          console.log("_self.mainTableData",JSON.stringify(_self.mainTableData[0]));
 					_self.mainTableDataTotal = res.data.data.total;
 					if (res.data.data.list.length > 0) {
 						_self.tablePa = res.data.data.list[0];
@@ -404,6 +414,7 @@ export default {
     },
     updataSource: function() {
       var _self = this;
+      self.loadTable = true;
       this.$ajax.get(window.ENV.API_DACM+'/ctables/synchronize', {
         params: {
           accessSysId: this.$route.params.sourceId
@@ -413,6 +424,7 @@ export default {
           _self.$alert('更新成功', '提示', {
             confirmButtonText: '确定'
           });
+          _self.loadTable();
         } else {
           _self.$alert('更新失败', '提示', {
             confirmButtonText: '确定'
@@ -512,6 +524,16 @@ export default {
 }
 
 </script>
+<style lang="scss">
+  .el-table .delete-row {
+    color:red;
+  }
+
+  .el-table .add-row {
+    color:rgb(179, 243, 50);
+  }
+</style>
+
 <style rel="stylesheet/scss" lang="scss" scoped>
 .dashboard-container {
   background: #fff;

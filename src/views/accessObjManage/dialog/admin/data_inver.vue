@@ -185,7 +185,7 @@ export default {
       }).then(res => {
         if (res.data.success == "true" || res.data.success == true) {
           this.resData = res.data.data;
-          this.logId = res.data.id;
+          this.logId = res.data.data.id;
           if (res.data.data.status == "1") {
             this.textShow = false;
             window.clearInterval(this.timer);
@@ -370,7 +370,7 @@ export default {
   watch: {
     dialogVisible() {
       if (this.dialogVisible) {
-        this.taskId = this.pdata.accessConnectorSource.task_info_id;
+        this.taskId = this.pdata.accessConnectorSource.taskInfoId;
         this._queryInver();
         this._queryHis();
       }
