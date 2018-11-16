@@ -60,6 +60,12 @@
               </el-table-column>
               <el-table-column prop="comments" label="描述">
               </el-table-column>
+              <el-table-column label="是否为增量">
+                <template slot-scope="scope">
+                  <span v-if="scope.row.isIncremental == '1'">是</span>
+                  <span v-if="scope.row.isIncremental == '0'">否</span>
+                </template>
+              </el-table-column>
             </el-table>
           </el-main>
           <el-footer>
