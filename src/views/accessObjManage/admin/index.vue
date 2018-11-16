@@ -195,15 +195,15 @@ export default {
       jrtype: '',
       objectType: [{
         id: 1,
-				diyComments:'TABLE',
+				diyComments:['TABLE'],
         name: '表'
       }, {
         id: 2,
-				diyComments:'v',
+				diyComments:['v','VIEW'],
         name: '视图'
       }, {
         id: 3,
-				diyComments:'OTHER',
+				diyComments:['OTHER'],
         name: '其他'
       }],
       dataRange: [{
@@ -488,7 +488,7 @@ export default {
 		},
 		getObjType(id){
 			for(var value of this.formFilterData[0].checkData){
-				if(value.diyComments == id){
+				if(value.diyComments.indexOf(id) != -1){
 					return value.name
 				}
 			}

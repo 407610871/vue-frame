@@ -37,7 +37,7 @@ export function updateTest(data) {
 //下载规范
 export function downLoadFile(params) {
   return request({
-    url:window.ENV.API_DACM + "/dataTable/downloadSpecification",
+    url:"/public/data/test.docx",
     method: "get",
     params
   });

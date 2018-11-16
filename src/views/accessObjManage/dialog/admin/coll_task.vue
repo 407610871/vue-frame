@@ -62,7 +62,7 @@
               <el-form-item label="增量字段:" prop="increment">
                 <el-input v-model="ruleForm.increment" class="fl"></el-input>
                 <el-button type="primary" class="fl increbtn" @click="innerVisible = true">选择</el-button>
-                <incre-map :msg='innerVisible' :incid="pdata.id" :alincre="this.increArr" @showIncre="showIncrement()" @saveIncre="saveIncrement($event)"></incre-map>
+                <incre-map :msg='innerVisible' :incid="pdata.id" :yid="yid" :alincre="this.increArr" @showIncre="showIncrement()" @saveIncre="saveIncrement($event)"></incre-map>
               </el-form-item>
             </el-col>
             <el-col :span="6">
@@ -304,6 +304,7 @@ export default {
       treeData: [],
       appId: '',
       accId: '',
+      yid: '', //反写的增量字段id
       loading: false,
       radio: '',
       ruleForm: {
@@ -626,14 +627,82 @@ export default {
       this.$ajax({
         method: 'POST',
         url: this.GLOBAL.api.API_DACM + '/task/getSourceConfig',
+       /* url: 'http://10.19.160.168:8080/DACM/task/getSourceConfig',*/
         params: {
           accessSysObjInfoId: this.pdata.id,
-
+          /*accessSysObjInfoId: '91936619'*/
         }
 
       }).then(res => {
-
+        if (res.data.success) {
+          var data = res.data.data;
+          this.ruleForm.priority = data.priority; //优先级
+          this.yid = data.incrementColumnId; //增量字段的id
+          //增量字段
+          this.ruleForm.increment = data.incrementColumn;
+          this.increArr = {};
+          this.increArr.id = data.incrementColumnId;
+          this.increArr.name = data.incrementColumn;
+          this.increArr.datatype = data.incrementColumnDataType;
+          this.ruleForm.startLocation = data.start_location; //接入起始点
+          if (data.isPeriod == '1') {
+            this.ruleForm.accessMode = '1';
+            this.ruleForm.cycleSet == "0";
+          }
+          if (data.isPeriod == "2") {
+            this.ruleForm.accessMode = '1';
+            this.ruleForm.cycleSet = "1";
+          }
+          if (data.isPeriod == "4") {
+            this.ruleForm.accessMode = '3';
+            this.ruleForm.cycleSet = "0";
+          }
+          if (data.isPeriod == "5") {
+            this.ruleForm.accessMode = '3';
+            this.ruleForm.cycleSet = "1";
+          }
+          if (data.isPeriod == "0") {
+            this.ruleForm.accessMode = '0';
+          }
+          if (data.isPeriod == "3") {
+            this.ruleForm.accessMode = "2"
+          }
+          if (this.ruleForm.cycleSet == "0") {
+            this.formatDuring(data.interval_ms);
+          }
+          if(this.ruleForm.cycleSet=="1" && data.timeType=="2"){
+            this.radio = '2';
+            let pollMs = data.interval_ms.split(' ');
+            this.ruleForm.dfmin = pollMs[1];
+            this.ruleForm.dfhour = pollMs[2];
+            this.ruleForm.dfmon = pollMs[3];
+          }
+          if(this.ruleForm.cycleSet=='1' && data.timeType=='3'){
+            this.radio = '3';
+            let pollMs = data.interval_ms.split(' ');
+            this.ruleForm.dsmin = pollMs[1];
+            this.ruleForm.dshour = pollMs[2];
+            this.ruleForm.dsweek = pollMs[5];
+          }
+          if(this.ruleForm.cycleSet=='1' && data.timeType=='4'){
+            this.radio ='4';
+            let pollMs = data.interval_ms.split(' ');
+           this.ruleForm.dtmin = pollMs[1];
+            this.ruleForm.dthour = pollMs[2];
+          }
+        }
       })
+    },
+    //毫秒转为天时分
+   formatDuring(mss) {
+      var days = parseInt(mss / (1000 * 60 * 60 * 24));
+      var hours = parseInt((mss % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      var minutes = parseInt((mss % (1000 * 60 * 60)) / (1000 * 60));
+      this.ruleForm.jday = days;
+      this.ruleForm.jhour = hours;
+      this.ruleForm.jmin = minutes;
+
+
     }
   },
   components: {
@@ -645,6 +714,7 @@ export default {
     this._hourData();
     this._weekData();
     this._getTree();
+    this._getInit();
 
   },
   created() {
