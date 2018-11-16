@@ -77,6 +77,35 @@
         </el-container>
         <el-container style="height:100%;" class="dashboard-container" v-show="tabPosition != 'metadataManage'">
           <el-main style="padding-bottom:0;">
+            <el-form :model="searchForm[0]" label-width="100px" class="search-form">
+              <el-row :gutter="20">
+                <el-col :span="5">
+                  <el-form-item label="设置查询条数:">
+                    <el-input v-model="count" placeholder="请输入次数" ></el-input>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="5">
+                  <el-select v-model="searchForm[0].filtercolumn" placeholder="查询项">
+                    <el-option v-for="(item,index) in filtercolumnList" :key="index" :value="item" :label="item"></el-option>
+                  </el-select>
+                </el-col>
+                <el-col :span="5">
+                  <el-select v-model="searchForm[0].filtertype" placeholder="">
+                    <el-option v-for="(item,index) in filtertypeList" :key="index" :value="item.value" :label="item.name"></el-option>
+                  </el-select>
+                </el-col>
+                <el-col :span="5">
+                  <el-input v-model="searchForm[0].filterdata" placeholder="请输入查询的条件"></el-input>
+                </el-col>
+                <el-col :span="4">
+                  <el-button type="primary" size="mini" @click="searchAll">查询</el-button>
+                </el-col>
+              </el-row>
+              <search-condition :filtercolumnList = filtercolumnList :searchForm = searchForm></search-condition>
+              <el-row>
+                <el-col><el-button type="primary" size="mini" @click="addCondition">增加搜索条件</el-button></el-col>
+              </el-row>
+            </el-form>
             <el-table :data="mainTableData2" stripe :height="tableHeight" border style="width: 100%" tooltip-effect="light">
               <el-table-column v-for="(val, key, index) in data2Columns" v-if="index<6" :prop="key" :label="getLabel(key)" width="width">
               </el-table-column>
@@ -102,12 +131,17 @@
   <script>
   import { mapState } from 'vuex'
   import dataImport from './../dialog/admin/data_import'
-
+  import searchCondition from './searchCondition'
 
   export default {
     name: 'DashboardAdmin',
     data() {
       return {
+        count:0,
+        searchForm:[{filtertype:'4',outrelate:'and'}],
+        searchFormCont:{filtertype:'4',outrelate:'and'},
+        filtercolumnList:[],
+        filtertypeList:[{name:'模糊查询',value:'4'},{name:'等于',value:'0'}],
         loading: false,
         queryParamReady: true,
         currentPage1: 1,
@@ -157,7 +191,8 @@
       }
     },
     components: {
-      dataImport
+      dataImport,
+      searchCondition,
     },
     watch: {
       tableParams(newVal, oldVal) {
@@ -187,8 +222,35 @@
       this.$root.eventHub.$on('search', (keyword) => {
         this.search(keyword);
       })
+      this.getFiltercolumnList();
     },
     methods: {
+      searchAll(){
+        this.loadTable();
+        //console.log(this.searchForm);
+      },
+      getFiltercolumnList(){
+        this.$ajax.post(window.ENV.API_DACM + '/objDetail/dataList', {
+          count:500,
+          objectInfoId:10659903,
+          pagNum:1,
+          trem:''
+        }).then(res =>{
+          res = res.data;
+          if(res.success){
+            let list = res.data.list;
+            this.filtercolumnList = list.map(item => item.name);
+          }
+        }).catch(()=>{
+
+        });
+      },
+      //增加搜索条件
+      addCondition(){
+        let len = this.searchForm.length;
+        if(len > 4) return;
+        this.searchForm.push(this.searchFormCont);
+      },
       refresh() {
         var _self = this;
         this.loading = true;
@@ -353,12 +415,18 @@
             });
         });
         const promist1 = new Promise((resolve, reject) => {
+          let count = 0;
+          if(!this.count){
+            count = this.$store.state.pageSize;
+          }else{
+            count = this.count;
+          }
           var paramsObj = {
-            count: this.$store.state.pageSize,
+            count: count,
             objInfoId: this.$route.params.objId,
             ACCESS_SYS_DIALECT_ID: this.tableParams.ACCESS_SYS_DIALECT_ID,
             accessSysId: this.tableParams.accessSysId,
-            filter: null
+            filter: this.searchForm
           }
           this.$ajax.post(window.ENV.API_DACM + '/objDetail/previewData', paramsObj).then(function(res) {
          /* this.$ajax.post('http://10.19.160.171:8080/DACM/objDetail/previewData', paramsObj).then(function(res) {*/
@@ -524,5 +592,7 @@
     word-break: break-all;
     word-wrap: break-word;
   }
-
+.search-form{
+  margin-bottom:20px;
+}
   </style>
