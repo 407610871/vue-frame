@@ -307,7 +307,6 @@ export default {
       this.loadTable();
     },
     goSubPage: function(index, type) {
-      debugger;
       this.$store.commit("setJrtype", type);
       this.$store.commit("resetQueryParam", {
         resetData: "accessObjManage"
