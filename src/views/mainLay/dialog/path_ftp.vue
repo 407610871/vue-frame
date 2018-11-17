@@ -26,7 +26,7 @@
           </el-col>
           <el-col :span="24" class="tip-box">
             <el-col :span="2" class="bank">bank</el-col>
-            <el-col :span="5">
+            <el-col :span="6">
               <el-checkbox v-model="ruleForm.delete">备选项</el-checkbox>采集后源文件是否需要删除</el-radio>
             </el-col>
             <el-col :span="8">
