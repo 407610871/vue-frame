@@ -54,6 +54,7 @@
 <script>
 import dataTop from '@/views/accessObjManage/dialog/admin/data_top_inver'
 import { myBrowser } from '@/utils/mix.js'
+import request from "@/utils/request"
 export default {
   name: "dataInver",
   data: function() {
@@ -168,7 +169,29 @@ export default {
       if (!browser) {
         browser = 'IE'
       }
-      window.location.href = `${this.GLOBAL.api.API_DACM}/ccheckData/downloadCheckDataById?id=${this.pdata.id}&browser=${browser}&accessName=${this.$route.params.sourceName}`
+      request({
+        /*url: this.exportUrl,*/
+        url: `${this.GLOBAL.api.API_DACM}/ccheckData/downloadCheckDataById?id=${this.pdata.id}&browser=${browser}&accessName=${this.$route.params.sourceName}`,
+        method: "GET",
+        responseType: "blob"
+      }).then(res => {
+        console.log(res);　
+        var blob = new Blob([res.data], { type: 'text/csv,charset=UTF-8' }); //application/vnd.openxmlformats-officedocument.spreadsheetml.sheet这里表示xlsx类型
+        　　
+        var downloadElement = document.createElement('a');　　
+        var href = window.URL.createObjectURL(blob); //创建下载的链接
+        　　
+        downloadElement.href = href;　　
+        downloadElement.download = "资源目录规范.docx"; //下载后文件名
+        　　
+        document.body.appendChild(downloadElement);　　
+        downloadElement.click(); //点击下载
+        　　
+        document.body.removeChild(downloadElement); //下载完成移除元素
+        　　
+        window.URL.revokeObjectURL(href); //释放掉blob对象 
+      })
+     /* window.location.href = `${this.GLOBAL.api.API_DACM}/ccheckData/downloadCheckDataById?id=${this.pdata.id}&browser=${browser}&accessName=${this.$route.params.sourceName}`*/
     }
   },
   components: {
