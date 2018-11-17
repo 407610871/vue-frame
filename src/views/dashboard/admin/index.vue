@@ -62,7 +62,7 @@
         </el-main>
         <el-footer>
             <div class="enc-pagination">
-                <el-pagination v-if="queryParamReady" style="float:right; margin:10px;" @current-change="goPage" background :page-size="20" :total="mainTableDataTotal" layout="prev, pager, next, jumper" :current-page.sync="currentPage">
+                <el-pagination v-if="queryParamReady" style="float:right; margin:10px;" @current-change="goPage" background :page-size:sync="pageSize" :total="mainTableDataTotal" layout="prev, pager, next, jumper" :current-page.sync="currentPage">
                 </el-pagination>
             </div>
         </el-footer>
@@ -106,13 +106,15 @@ export default {
                 total: "",
                 list: []
             },
-            formFilterData: []
+            formFilterData: [],
+            pageSize:"20",
         };
     },
     computed: {
         tableParams: function () {
             return this.$store.state.queryParams.dashboard;
         },
+       
         tableHeight: function () {
             return this.collapse ?
                 window.innerHeight - 430 :
@@ -139,7 +141,8 @@ export default {
                 this.loadTable();
 
             }
-        }
+        },
+        
     },
     created() {
         // this.$root.eventHub.$on("search", keyword => {
@@ -160,8 +163,8 @@ export default {
         );
         this.$root.eventHub.$emit("setActiveNav", 1);
         this.storeReady();
-        debugger;
         this.setCount();
+
     },
     methods: {
         hightrue: function (a) {
@@ -269,6 +272,7 @@ export default {
             this.$ajax
                 .post(window.ENV.API_DACM + "/caccess/query", paramsObj)
                 .then(function (res) {
+                  this.pageSize = this.$store.state.pageSize;
                     console.log("tableLoaded:dashboard");
                     if (res.data.code == "0000") {
                         _self.mainTableData = res.data.data.list;
@@ -372,7 +376,6 @@ export default {
                                 confirmButtonText: "确定"
                             });
                         }
-
                     })
                     .catch(function (err) {
                         console.log(err);
