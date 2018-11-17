@@ -18,6 +18,7 @@
 				:props="defaultProps"
 				check-strictly
 				:default-checked-keys="checkedDepts"
+				@node-click="handleNodeClick"
 				@check="selDept"
 				@node-drop="dragDept"
 				ref="tree"
@@ -171,7 +172,7 @@
           }
         },
         delNode(){
-          if(this.$refs.tree.getCheckedKeys()){
+          if(this.editingNode){
 						this.$confirm('确认要删除此部门节点吗?', '提示', {
 							confirmButtonText: '删除',
 							cancelButtonText: '取消',
@@ -214,8 +215,11 @@
 								const children = parent.data.children || parent.data;
 								const index = children.findIndex(d => d.id === _self.editingNode.id);
 								children.splice(index, 1);
-							//传空数组给监控页面，如果当前选择不是
-							_self.$root.eventHub.$emit('selDept',[]);
+								//删除成功，将存放当前节点的变量清空
+								_self.editingData=null;
+								_self.editingNode=null;
+								//传空数组给监控页面，如果当前选择不是
+								_self.$root.eventHub.$emit('selDept',[]);
 							}else{
 								console.log(res.data.code)
 								_self.$alert('删除部门节点失败','提示', {
@@ -239,8 +243,6 @@
         selDept(node,nodeStatus){
 					var list = this.$refs.tree.getCheckedNodes();
 					var deptIds = this.$refs.tree.getCheckedKeys();
-          this.editingData = this.$refs.tree.getNode(node);
-					this.editingNode = this.editingData.data;
 					var factorial;
           if(nodeStatus.checkedKeys.indexOf(node.id) == -1){
 						factorial=(function f(obj,tree){
