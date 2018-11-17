@@ -307,17 +307,13 @@ export default {
       this.loadTable();
     },
     goSubPage: function(index, type) {
+      debugger;
       this.$store.commit("setJrtype", type);
       this.$store.commit("resetQueryParam", {
         resetData: "accessObjManage"
       });
-      this.$router.push({
-        name: "accessObjManage",
-        params: {
-          sourceId: this.mainTableData[index].id,
-          sourceName: encodeURI(this.mainTableData[index].name)
-        }
-      });
+     var dataSourceName = this.mainTableData[index].dataSourceName == '本地文件'?'file':this.mainTableData[index].dataSourceName;
+      this.$router.push({name:'accessObjManage',params:{sourceId:this.mainTableData[index].id,sourceName:encodeURI(this.mainTableData[index].name),type:dataSourceName}});
     },
     handleCopy: function(index, row) {
       this.$confirm("确认要复制" + row.name + "吗?", "提示", {
