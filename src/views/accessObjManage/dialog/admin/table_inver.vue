@@ -211,7 +211,8 @@ export default {
       if (this.dialogVisible) {
         this.accessSysId = this.pdata.accessSys.accessSysDialectId;
         this._getTableNum();
-        this.name = this.$route.params.sourceName;
+        debugger;
+        this.name = decodeURI(this.$route.params.sourceName);
       }
     }
 
