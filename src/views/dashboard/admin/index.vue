@@ -337,6 +337,7 @@ export default {
               pageNum: 1,
               timeFlag: new Date().getTime()
             });
+             _self.loadTable();
           })
           .catch(function(err) {
             console.log(err);
