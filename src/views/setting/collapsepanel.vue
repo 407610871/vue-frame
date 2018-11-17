@@ -24,7 +24,7 @@
         <el-col :span="9" class="collapsepanel-tools">
           <div class="grid-content">
             <div class="edithdd" style="display: inline-block; margin-left:10px; margin-right: 10px;">
-              <hdfs-edit :indexEq="index" :ownId="item.storageId" @refresh="refresh()"></hdfs-edit>
+              <hdfs-edit :indexEq="index" :ownId="item.storageId" @refreshs="refresh('edit')"></hdfs-edit>
             </div>
             <el-button type="primary" @click="setConnect" :id="item.storageId" :disabled="item.storageId == seledId">关联</el-button>
             <el-button type="primary" @click="setDelete" :id="item.storageId" :disabled="item.storageId != seledId">删除</el-button>
@@ -69,7 +69,6 @@ export default {
     settingList: {
       deep: true,
       handler: function(newVal, oldVal) {
-        debugger;
         this.settingList = newVal;
         console.log(this.settingList);
         console.log(oldVal);
@@ -89,7 +88,7 @@ export default {
     }
   },
   mounted() {
-   debugger;
+
     console.log('111');
     console.log(this.settingList.list);
     this.seledId = this.settingList.seledId;
@@ -172,6 +171,9 @@ export default {
     //新增成功刷新
     refresh() {
       this.$emit('refresh');
+    },
+    refreshs(value){
+     this.$emit('refresh','edit');
     },
     goPage: function(val) {
       this.pageNum = val;

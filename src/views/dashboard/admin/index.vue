@@ -87,7 +87,7 @@ export default {
   data() {
     return {
       loading: false,
-      queryParamReady: false,
+      queryParamReady: true,
       currentPage: 1,
       mainTableData: [],
       mainTableDataTotal: 1,
@@ -243,6 +243,7 @@ export default {
           limit: 4
         }
       ];
+
       this.queryParamReady = true;
     },
     collapseExpand: function() {
