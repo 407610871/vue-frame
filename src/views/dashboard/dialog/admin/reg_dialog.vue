@@ -307,21 +307,42 @@ export default {
         callback();
       }
     };
+    const validateSq = (rule, value, callback) => {
+      if (this.ruleForm.author == "true") {
+        if (value == "") {
+          callback(new Error("不能为空"));
+        } else {
+
+          callback();
+        }
+      } else {
+        callback();
+      }
+    }
     //校验ip
     const validateIp = (rule, value, callback) => {
-      if (value == "" || /.*[\u4e00-\u9fa5]+.*$/.test(value)) {
-        callback(new Error("请输入正确的ip"));
+      if (this.ruleForm.author == 'true') {
+        if (value == "" || /.*[\u4e00-\u9fa5]+.*$/.test(value)) {
+          callback(new Error("请输入正确的ip"));
+        } else {
+          callback()
+        }
+      } else {
+        callback();
+      }
+
+    };
+    const validatePort = (rule, value, callback) => {
+      if (this.ruleForm.author == 'true') {
+        if (value == "" || /[^0-9]+/.test(value)) {
+          callback(new Error("请输入正确的端口号"));
+        } else {
+          callback()
+        }
       } else {
         callback()
       }
-    };
-    const validatePort = (rule,value,callback) =>{
-      if(value == "" ||/[^0-9]+/.test(value)){
-        callback(new Error("请输入正确的端口号"));
-      }
-      else{
-        callback()
-      }
+
     }
     //校验email
     return {
@@ -385,28 +406,28 @@ export default {
           { required: true, message: '不能为空', validator: validateIp, trigger: "blur" }
         ],
         username: [
-          { required: true, message: '不能为空', validator: validateNull, trigger: "blur" }
+          { required: true, message: '不能为空', validator: validateSq, trigger: "blur" }
         ],
         dockname: [
-          { required: true, message: '不能为空',validator: validateNull, trigger: "blur" }
+          { required: true, message: '不能为空', validator: validateNull, trigger: "blur" }
         ],
         password: [
-          { required: true, message: '不能为空', validator: validateNull, trigger: "blur" }
+          { required: true, message: '不能为空', validator: validateSq, trigger: "blur" }
         ],
         iport: [
           { required: true, message: '请输入正确的端口号', validator: validatePort, trigger: "blur" }
         ],
         instanceName: [
-          { required: true, message: '不能为空', validator: validateNull, trigger: "blur" }
+          { required: true, message: '不能为空', validator: validateSq, trigger: "blur" }
         ],
         hadoopDir: [
-          { required: true, message: '不能为空', validator: validateNull, trigger: "blur" }
+          { required: true, message: '不能为空', validator: validateSq, trigger: "blur" }
         ],
         hadoopHomes: [
-          { required: true, message: '不能为空', validator: validateNull, trigger: "blur" }
+          { required: true, message: '不能为空', validator: validateSq, trigger: "blur" }
         ],
         vhost: [
-          { required: true, message: '不能为空', validator: validateNull, trigger: "blur" }
+          { required: true, message: '不能为空', validator: validateSq, trigger: "blur" }
         ],
         dockdata: [
           { required: true, message: '不能为空', validator: validateNull, trigger: "blur" }
@@ -421,7 +442,7 @@ export default {
           { validator: this.GLOBAL.validatePhone, trigger: 'blur' }
         ],
         dockphone: [
-          {required: true, message: '输入正确的号码', validator: this.GLOBAL.validatePhone, trigger: 'blur' }
+          { required: true, message: '输入正确的号码', validator: this.GLOBAL.validatePhone, trigger: 'blur' }
         ]
       },
       treedata: [],
@@ -961,7 +982,7 @@ export default {
                 this.$ajax({
                   method: "POST",
                   url: this.GLOBAL.api.API_DACM + '/register/fileSourceInsert',
-                 /* url:'http://10.19.160.211:8080/DACM/register/fileSourceInsert',*/
+                  /* url:'http://10.19.160.211:8080/DACM/register/fileSourceInsert',*/
                   processData: false,
                   contentType: false,
                   data: formData
@@ -983,8 +1004,8 @@ export default {
           }
         } else {
           const isPhone = /^([0-9]{3,4}-)?[0-9]{7,8}$/;
-  const isMob = /^((\+?86)|(\(\+86\)))?(13[012356789][0-9]{8}|15[012356789][0-9]{8}|18[02356789][0-9]{8}|147[0-9]{8}|1349[0-9]{7})$/;
-          if (this.ruleForm.syskind == '10023' && this.ruleForm.jrname != ''&&this.ruleForm.dockname!=''&&(isPhone.test(this.ruleForm.dockphone) || isMob.test(this.ruleForm.dockphone))) {
+          const isMob = /^((\+?86)|(\(\+86\)))?(13[012356789][0-9]{8}|15[012356789][0-9]{8}|18[02356789][0-9]{8}|147[0-9]{8}|1349[0-9]{7})$/;
+          if (this.ruleForm.syskind == '10023' && this.ruleForm.jrname != '' && this.ruleForm.dockname != '' && (isPhone.test(this.ruleForm.dockphone) || isMob.test(this.ruleForm.dockphone))) {
             var formData = new FormData();
             var save = {};
             save = {
