@@ -134,7 +134,7 @@ export default {
         JSON.stringify(newVal) != JSON.stringify(oldVal) &&
         newVal.timeFlag != 0
       ) {
-                // this.loadTable();
+                this.loadTable();
 
 
       }
