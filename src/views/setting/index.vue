@@ -2,7 +2,7 @@
   <div style="padding:20px; background: #fff; overflow-y:auto;" v-bind:style="{height:mainHeight}">
     <div class="panel">
       <div class="panel-title" style="margin-bottom:10px;">库区设置</div>
-      <collapsePanel @refresh="init()" v-if="dataReady" v-bind:settingList="settingList" />
+      <collapsePanel @refresh="init" v-if="dataReady" v-bind:settingList="settingList" />
     </div>
     <div class="panel">
       <div class="panel-title">外观</div>
@@ -82,6 +82,7 @@ export default {
       settingList: {},
       provinceList: [],
       cityList: [],
+      datas: '',
       sysParam: {
         mecodeOrg: '',
         hdfsPaOrg: '',
@@ -112,8 +113,9 @@ export default {
     this.initPage()
   },
   methods: {
-    init(data){
-     console.log(data);
+    init(data) {
+      this.datas = data;
+      this.initPage();
     },
     initPage(cvalue) {
       var _self = this;
@@ -149,14 +151,15 @@ export default {
             }
             list.push(obj);
           }
-          if (cvalue == 'edit') {
+          if (_self.datas == 'edit') {
             _self.settingList = {
-              seledId: res.data.storages[0].id,
+              seledId: res.data.select,
               list: list
             }
           } else {
+
             _self.settingList = {
-              seledId: res.data.select,
+              seledId: res.data.storages[0].id,
               list: list
             }
           }

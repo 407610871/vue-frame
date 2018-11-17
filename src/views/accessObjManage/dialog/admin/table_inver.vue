@@ -209,7 +209,7 @@ export default {
   watch: {
     dialogVisible() {
       if (this.dialogVisible) {
-        this.accessSysId = this.pdata.accessSys.accessSysDialectId;
+        this.accessSysId = this.pdata.accessSysId;
         this._getTableNum();
         debugger;
         this.name = decodeURI(this.$route.params.sourceName);
