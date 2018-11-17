@@ -55,11 +55,11 @@ export default {
   data: function() {
     //判断是否必选项为空
     const validateNull = (rule, value, callback) => {
-      debugger;
+      // debugger;
       if (value == "") {
         callback(new Error("不能为空"));
       } else {
-        debugger;
+        // debugger;
         callback();
       }
     };

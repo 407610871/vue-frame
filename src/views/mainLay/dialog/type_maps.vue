@@ -205,7 +205,7 @@ export default {
       this.tableId = this.rowList[0].id;
     },
     msg() {
-      debugger;
+      // debugger;
       if (this.msg == 'third') {
         if (this.flag == '0') {
           if (this.$store.state.matchflag == '0') {

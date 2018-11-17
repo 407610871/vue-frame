@@ -225,7 +225,7 @@ export default {
     _getType() {
       var _self = this;
       this.$ajax.get('./getColumnType').then(function(res) {
-          debugger;
+          // debugger;
           for (let m = 0; m < res.data.length; m++) {
             if (_self.rowList[0].accessSys.accessSysDialect.name == res.data[m].type) {
               _self.TypeData = res.data[m].datas;

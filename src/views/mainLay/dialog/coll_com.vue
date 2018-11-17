@@ -397,7 +397,7 @@ export default {
       this.$emit('pre');
     },
     finish() {
-      debugger;
+      // debugger;
       //间隔执行
       var pollIntervalMs;
       if (this.ruleForm.cycleSet == '0') {

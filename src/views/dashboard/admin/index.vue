@@ -253,27 +253,29 @@ export default {
             this.collapse = !this.collapse;
         },
         loadTable: function () {
+          // debugger;
             var _self = this;
             _self.loading = true;
             var paramsObj = {
-                pageSize: this.$store.state.pageSize,
-                pageNum: this.tableParams.pageNum,
+                pageSize: _self.$store.state.pageSize,
+                pageNum: _self.tableParams.pageNum,
                 domain: "0",
                 _: new Date().getTime()
             };
-            paramsObj.condition = this.tableParams.condition ?
-                this.tableParams.condition :
+            paramsObj.condition = _self.tableParams.condition ?
+                _self.tableParams.condition :
                 "";
-            paramsObj.network = this.tableParams.network;
-            paramsObj.dataSourceName = this.tableParams.dataSourceName;
-            paramsObj.platform = this.tableParams.platform;
-            paramsObj.deptIds = this.tableParams.deptId;
+            paramsObj.network = _self.tableParams.network;
+            paramsObj.dataSourceName = _self.tableParams.dataSourceName;
+            paramsObj.platform = _self.tableParams.platform;
+            paramsObj.deptIds = _self.tableParams.deptId;
 
             this.$ajax
                 .post(window.ENV.API_DACM + "/caccess/query", paramsObj)
                 .then(function (res) {
-                  this.pageSize = this.$store.state.pageSize;
+                  _self.pageSize = _self.$store.state.pageSize;
                     console.log("tableLoaded:dashboard");
+                    // debugger;
                     if (res.data.code == "0000") {
                         _self.mainTableData = res.data.data.list;
                         _self.mainTableDataTotal = res.data.data.total;

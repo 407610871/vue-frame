@@ -289,7 +289,7 @@ export default {
     inverCheck() {
       if (this.ruleForm.setVer == "0") {
         this.startTime = ["", ""];
-        debugger;
+        // debugger;
       } else if (this.ruleForm.setVer == "1" && this.ruleForm.startTime == null) {
         this.$alert("请填写开始与结束时间", "核验", {
           confirmButtonText: "确定"
@@ -336,7 +336,7 @@ export default {
           taskId: this.taskId
         }
       }).then(res => {
-        debugger;
+        // debugger;
         if (res.data.success) {
           this.tableData = res.data.data.data;
           console.log(this.tableData);
