@@ -439,8 +439,7 @@ export default {
           console.log(error);
         }.bind(this))*/
         request({
-          /*url: this.exportUrl,*/
-           url: 'http://10.19.160.171:8080/DACM/dataTable/downloadSpecification',
+          url: this.GLOBAL.api.API_DACM +'/dataTable/downloadSpecification',
           method: "GET",
           responseType: "blob"
         }).then(res => {
