@@ -255,6 +255,7 @@ export default {
         loadTable: function () {
             var _self = this;
             _self.loading = true;
+               this.pageSize = this.$store.state.pageSize;
             var paramsObj = {
                 pageSize: this.$store.state.pageSize,
                 pageNum: this.tableParams.pageNum,
@@ -272,7 +273,7 @@ export default {
             this.$ajax
                 .post(window.ENV.API_DACM + "/caccess/query", paramsObj)
                 .then(function (res) {
-                  this.pageSize = this.$store.state.pageSize;
+               
                     console.log("tableLoaded:dashboard");
                     if (res.data.code == "0000") {
                         _self.mainTableData = res.data.data.list;
