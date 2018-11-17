@@ -133,7 +133,8 @@
                 if (!_self.editingNode.children) {
                   _self.$set(_self.editingNode, 'children', []);
                 }
-                _self.editingNode.children.push(newChild);
+								_self.editingNode.children.push(newChild);
+							
               }else{
                 console.log(res.data.code)
 								_self.$alert('添加部门节点失败','提示', {
@@ -213,6 +214,8 @@
 								const children = parent.data.children || parent.data;
 								const index = children.findIndex(d => d.id === _self.editingNode.id);
 								children.splice(index, 1);
+							//传空数组给监控页面，如果当前选择不是
+							_self.$root.eventHub.$emit('selDept',[]);
 							}else{
 								console.log(res.data.code)
 								_self.$alert('删除部门节点失败','提示', {

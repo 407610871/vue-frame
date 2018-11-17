@@ -147,12 +147,12 @@ export default {
     // this.$root.eventHub.$on("search", keyword => {
     //   this.search(keyword);
     // });
-     this.loadTable();
     this.$root.eventHub.$on("selDept", ids => {
       this.setStore({
         deptId: ids
       });
       this.setCount();
+      this.loadTable();
     });
   },
   mounted() {
