@@ -239,7 +239,7 @@ export default {
     display: inline-block;
     max-height: 70px;
     overflow-y: auto;
-    width: 540px;
+    width: 580px;
     float: left;
   }
   .moreSeclect {

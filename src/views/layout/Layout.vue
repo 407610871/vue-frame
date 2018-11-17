@@ -109,11 +109,16 @@ export default {
         console.log(err);
       });
     this.$ajax
-      .get(window.ENV.API_DACM + "/commonInter/getDictDataCategory")
+      .get(window.ENV.API_DACM + "/commonInter/getListStaticDataOrder.do",{
+ params: {
+          dictCode: 'NetWork'
+        }
+
+      })
       .then(function(res) {
         var list = [];
-        if (res.data.staticDatas.SJLY != undefined) {
-          for (var value of res.data.staticDatas.SJLY) {
+        if (res.data != undefined) {
+          for (var value of res.data) {
             list.push({
               id: value.sTATIC_CODE,
               name: value.sTATIC_NAME
@@ -130,7 +135,7 @@ export default {
         console.log(err);
       });
     this.$ajax
-      .get(window.ENV.API_DACM + "/commonInter/getListStaticData.do", {
+      .get(window.ENV.API_DACM + "/commonInter/getListStaticDataOrder.do", {
         params: {
           dictCode: 'ButtPlatForm'
         }
