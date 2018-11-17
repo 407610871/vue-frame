@@ -5,7 +5,7 @@
       <a href="javascript:void(0)" v-on:click="editNode"><i class="el-icon-edit"></i></a>
       <a href="javascript:void(0)" v-on:click="delNode"><i class="el-icon-close"></i></a>
     </div>
-		<div class="treeContainer"">
+		<div class="treeContainer">
 			<el-tree
 				v-if="dataReady"
 				:data="data"
@@ -16,7 +16,6 @@
 				highlight-current
 				draggable
 				:props="defaultProps"
-				@node-click="handleNodeClick"
 				check-strictly
 				:default-checked-keys="checkedDepts"
 				@check="selDept"
@@ -171,7 +170,7 @@
           }
         },
         delNode(){
-          if(this.$refs.tree.getCurrentKey()){
+          if(this.$refs.tree.getCheckedKeys()){
 						this.$confirm('确认要删除此部门节点吗?', '提示', {
 							confirmButtonText: '删除',
 							cancelButtonText: '取消',
@@ -187,7 +186,7 @@
 					var _self = this;
 					const promise0 = new Promise((resolve, reject) => {
 						// this.$ajax.post(window.ENV.API_DACM+'/deptInfo/delDeptInfo?id='+this.editingNode.id).then(function(res){
-						this.$ajax.post('http://10.19.160.175:8080/DACM/deptInfo/queryDeptInfo?id='+this.editingNode.id).then(function(res){
+						this.$ajax.post('http://10.19.160.175:8080/DACM/deptInfo/queryDeptInfo?id='+_self.editingNode.id).then(function(res){
 							console.log(res);
 							if(res.data.success){
 								resolve();
@@ -237,6 +236,8 @@
         selDept(node,nodeStatus){
 					var list = this.$refs.tree.getCheckedNodes();
 					var deptIds = this.$refs.tree.getCheckedKeys();
+          this.editingData = this.$refs.tree.getNode(node);
+					this.editingNode = this.editingData.data;
 					var factorial;
           if(nodeStatus.checkedKeys.indexOf(node.id) == -1){
 						factorial=(function f(obj,tree){
@@ -270,7 +271,6 @@
 					}else{
 						this.$refs.tree.setCheckedKeys(deptIds)
 					}
-					
 					// var listCount = this.$refs.tree.getCheckedNodes();
 					// var deptIdsCount = this.$refs.tree.getCheckedKeys();
 					
