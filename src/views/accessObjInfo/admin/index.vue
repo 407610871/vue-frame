@@ -139,6 +139,7 @@
   import dataImport from './../dialog/admin/data_import'
   import searchCondition from './searchCondition'
 
+  import request from "@/utils/request"
   export default {
     name: 'DashboardAdmin',
     data() {
@@ -355,8 +356,9 @@
         this.$refs.inputer.files = [];
       },
       exportData() {
-        this.$ajax({
+        request({
           url: this.exportUrl,
+          // url: 'http://10.19.248.200:31653/DAM/manager/exportAction/exportTableDataCount',
           method: "GET",
           responseType: "blob"
         }).then(res => {

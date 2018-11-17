@@ -37,7 +37,8 @@ export function updateTest(data) {
 //下载规范
 export function downLoadFile(params) {
   return request({
-    url:window.ENV.API_DACM + "/dataTable/downloadSpecification",
+   /* url:window.ENV.API_DACM + "/dataTable/downloadSpecification",*/
+   url:'http://10.19.160.171:8080/DACM/dataTable/downloadSpecification',
     method: "get",
     params
   });

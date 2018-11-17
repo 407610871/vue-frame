@@ -17,7 +17,7 @@ import store from "./store";
 import i18n from "./lang"; // Internationalization
 import "./icons"; // icon
 import "./errorLog"; // error log
-import "./mock"; // simulation data
+// import "./mock"; // simulation data
 import global_ from "./views/mainLay/dialog/common.vue"; //接口地址
 import * as filters from "./filters"; // global filters
 
