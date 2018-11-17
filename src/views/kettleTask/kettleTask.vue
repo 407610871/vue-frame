@@ -27,9 +27,9 @@
                     <span v-show="status.indexOf('Running')>-1">运行<span @click="pop('Running',status);"><i class="el-icon-error"></i></span></span>
                     <span v-show="status.indexOf('Finished')>-1">完成<span @click="pop('Finished',status);"><i class="el-icon-error"></i></span></span>
                 </div>
-                <div v-show="time.length>0" class="selected-task-type">
+                <div v-show="time!=null && time.length>0" class="selected-task-type">
                     <span style="margin-right:10px;">任务开始时间:</span>
-                    <span>{{time[0]}} - {{time[1]}}<span @click="time=[]"><i class="el-icon-error"></i></span></span>
+                    <span>{{time==null?'':time[0]}} - {{time==null?'':time[1]}}<span @click="time=[]"><i class="el-icon-error"></i></span></span>
                 </div>
             </el-form-item>
         </el-form>
