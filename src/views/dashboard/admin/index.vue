@@ -50,13 +50,16 @@
           </el-table-column>
           <el-table-column label="操作">
             <template slot-scope="scope">
+            <div class="lofile">
               <edit-dialog :acId="scope.row.id" @refreshTable="loadTable"></edit-dialog>
-              <el-tooltip class="item" effect="light" content="复制" placement="top">
+
+              <el-tooltip class="item" effect="light" content="复制" placement="top" v-if="scope.row.dataSourceName!='本地文件'">
                 <i @click="handleCopy(scope.$index, scope.row)" class="enc-icon-fuzhi table-action-btn"></i>
               </el-tooltip>
               <el-tooltip class="item" effect="light" content="废止" placement="top">
                 <i @click="handleDelete(scope.$index, scope.row)" class="enc-icon-feizhi table-action-btn"></i>
               </el-tooltip>
+              </div>
             </template>
           </el-table-column>
         </el-table>
@@ -489,5 +492,10 @@ export default {
   .cell i {
     cursor: pointer;
   }
+}
+.lofile{
+  width:70px;
+  text-align: left;
+  margin :0 auto;
 }
 </style>

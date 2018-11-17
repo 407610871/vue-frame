@@ -101,7 +101,7 @@
                   <el-button type="primary" size="mini" @click="searchAll">查询</el-button>
                 </el-col>
               </el-row>
-              <search-condition :filtercolumnList = filtercolumnList :searchForm = searchForm></search-condition>
+              <search-condition :filtercolumnList = "filtercolumnList" :searchForm = "searchForm"></search-condition>
               <el-row>
                 <el-col><el-button type="primary" size="mini" @click="addCondition">增加搜索条件</el-button></el-col>
               </el-row>
@@ -139,6 +139,7 @@
   import dataImport from './../dialog/admin/data_import'
   import searchCondition from './searchCondition'
 
+  import request from "@/utils/request"
   export default {
     name: 'DashboardAdmin',
     data() {
@@ -357,8 +358,9 @@
         this.$refs.inputer.files = [];
       },
       exportData() {
-        this.$ajax({
+        request({
           url: this.exportUrl,
+          // url: 'http://10.19.248.200:31653/DAM/manager/exportAction/exportTableDataCount',
           method: "GET",
           responseType: "blob"
         }).then(res => {

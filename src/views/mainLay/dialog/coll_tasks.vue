@@ -401,6 +401,7 @@ export default {
       debugger;
       //间隔执行
       var pollIntervalMs;
+      var actech = this.ruleForm.actech;
       if (this.ruleForm.cycleSet == '0') {
         let jday = 0;
         let jhour = 0;
@@ -472,7 +473,8 @@ export default {
       }
       var ctt = '';
       if (this.ruleForm.accessMode == "0") { //实时
-        ctt = '0'
+        ctt = '0';
+        //actech = this.$route.params.type;
       }
       if (this.ruleForm.accessMode == "2") { //实时
         ctt = '3'
@@ -508,7 +510,7 @@ export default {
       var save = {
         "accessSysObjDetails": this.increArr,
         "priority": this.ruleForm.accessPri,
-        "jobType": this.ruleForm.actech,
+        "jobType": actech,
         "accessSysObjInfoId": this.accId,
         "pollIntervalMs": pollIntervalMs,
         "schemaMappingDTOList": this.$store.state.schemaList,
@@ -560,7 +562,7 @@ export default {
           if (res.data.success) {
             this.$ajax({
               method: "post",
-              url: this.GLOBAL.api.API_DACM +'/saveRegexHeliumTask',
+              url: this.GLOBAL.api.API_DACM +'/task/saveRegexHeliumTask',
               // headers:{
               //   'Content-Type':'application/json;charset=utf-8',
               // },

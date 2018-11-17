@@ -63,7 +63,6 @@
                 <el-input v-model="ruleForm.xStreamServiceName" class="fl"></el-input>
               </el-form-item>
             </el-col>
-          
           </el-col>
           <el-col :span="24">
             <el-col :span="8" class="collbg">
@@ -330,7 +329,7 @@ export default {
         jday: '', //间隔执行天数
         jmin: '',
         jhour: '',
-        xStreamServiceName:'',
+        xStreamServiceName: '',
         dfmon: '', //定时执行月数
         dfmin: '',
         dsmin: '',
@@ -425,6 +424,7 @@ export default {
     finish() {
       //间隔执行
       var pollIntervalMs = -1;
+      var actech = 'JDBC';
       if (this.ruleForm.cycleSet == '0') {
         let jday = 0;
         let jhour = 0;
@@ -496,13 +496,14 @@ export default {
       }
       var ctt = '';
       if (this.ruleForm.accessMode == "0") { //实时
-        if(this.$route.params.type=='oracle'){
-          if(this.ruleForm.xStreamServiceName==''){
-           this.$message.warning('XStream服务名不能为空');
-           return false;
+        if (this.$route.params.type == 'oracle') {
+          if (this.ruleForm.xStreamServiceName == '') {
+            this.$message.warning('XStream服务名不能为空');
+            return false;
           }
         }
-        ctt = '0'
+        ctt = '0';
+        actech = this.$route.params.type;
       }
       if (this.ruleForm.accessMode == "2") { //实时
         ctt = '3'
@@ -549,7 +550,7 @@ export default {
           "isStartOverTask": this.ruleForm.taskSubMode,
           "timeType": this.radio,
           "startLocation": this.ruleForm.startLocation,
-          "xStreamServiceName":this.ruleForm.xStreamServiceName
+          "xStreamServiceName": this.ruleForm.xStreamServiceName
         }
         this.loading = true;
         if (JSON.stringify(this.$store.state.userList) == "{}") {
@@ -588,7 +589,7 @@ export default {
             url: this.GLOBAL.api.API_DACM + '/dataTable/inputSurvey',
             data: this.$store.state.userList
           }).then(res => {
-            this.loading = false;
+            
             if (res.data.success) {
               this.$ajax({
                 method: "post",
@@ -605,7 +606,7 @@ export default {
                   this.$alert('采集任务启动成功！', '信息', {
                     confirmButtonText: '确定',
                     callback: action => {
-                       this.isregin = false;
+                      this.isregin = false;
                       this.$emit('fresh');
                     }
                   });
@@ -636,7 +637,7 @@ export default {
         var save = {
           "accessSysObjDetails": this.increArr,
           "priority": this.ruleForm.accessPri,
-          "jobType": this.ruleForm.actech,
+          "jobType": actech,
           "accessSysObjInfoId": this.pdata.id,
           "pollIntervalMs": pollIntervalMs,
           "schemaMappingDTOList": this.$store.state.schemaList,
@@ -646,7 +647,7 @@ export default {
           "isStartOverTask": this.ruleForm.taskSubMode,
           "timeType": this.radio,
           "startLocation": this.ruleForm.startLocation,
-          "xStreamServiceName":this.ruleForm.xStreamServiceName
+          "xStreamServiceName": this.ruleForm.xStreamServiceName
         }
         this.loading = true;
         if (JSON.stringify(this.$store.state.userList) == "{}") {
@@ -746,75 +747,81 @@ export default {
     _getInit() {
       this.$ajax({
         method: 'POST',
-         url: this.GLOBAL.api.API_DACM + '/task/getSourceConfig',
-       /* url: 'http://10.19.160.168:8080/DACM/task/getSourceConfig',*/
+        url: this.GLOBAL.api.API_DACM + '/task/getSourceConfig',
+        /* url: 'http://10.19.160.168:8080/DACM/task/getSourceConfig',*/
         params: {
-           accessSysObjInfoId: this.pdata.id,
-         /* accessSysObjInfoId: '10658915'*/
+          accessSysObjInfoId: this.pdata.id,
+          /* accessSysObjInfoId: '10658915'*/
         }
 
       }).then(res => {
         if (res.data.success) {
           var data = res.data.data;
-          this.ruleForm.accessPri= data.priority; //优先级
-          this.yid = data.incrementColumnId; //增量字段的id
-          //增量字段
-          this.isdisable = true;
-          this.ruleForm.increment = data.incrementColumn;
-          this.increArr = {};
-          this.increArr.id = data.incrementColumnId;
-          this.increArr.name = data.incrementColumn;
-          this.increArr.datatype = data.incrementColumnDataType;
-          this.ruleForm.startLocation = data.start_location; //接入起始点
-          if (data.isPeriod == '1') {
-            this.ruleForm.accessMode = '1';
-            this.ruleForm.cycleSet == "0";
+          if (data != undefined) {
+            this.ruleForm.accessPri = data.priority; //优先级
+            this.yid = data.incrementColumnId; //增量字段的id
+            //增量字段
+            this.isdisable = true;
+            this.ruleForm.increment = data.incrementColumn;
+            this.increArr = {};
+            this.increArr.id = data.incrementColumnId;
+            this.increArr.name = data.incrementColumn;
+            this.increArr.datatype = data.incrementColumnDataType;
+            this.ruleForm.startLocation = data.start_location; //接入起始点
+            if (data.isPeriod == '1') {
+              this.ruleForm.accessMode = '1';
+              this.ruleForm.cycleSet == "0";
+            }
+            if (data.isPeriod == "2") {
+              this.ruleForm.accessMode = '1';
+              this.ruleForm.cycleSet = "1";
+            }
+            if (data.isPeriod == "4") {
+              this.ruleForm.accessMode = '3';
+              this.ruleForm.cycleSet = "0";
+            }
+            if (data.isPeriod == "5") {
+              this.ruleForm.accessMode = '3';
+              this.ruleForm.cycleSet = "1";
+            }
+            if (data.isPeriod == "0") {
+              this.ruleForm.accessMode = '0';
+            }
+            if (data.isPeriod == "3") {
+              this.ruleForm.accessMode = "2"
+            }
+            if (this.ruleForm.cycleSet == "0") {
+              this.formatDuring(data.interval_ms);
+            }
+            if (this.ruleForm.cycleSet == "1" && data.timeType == "2") {
+              this.radio = '2';
+              let pollMs = data.interval_ms.split(' ');
+              this.ruleForm.dfmin = pollMs[1];
+              this.ruleForm.dfhour = pollMs[2];
+              this.ruleForm.dfmon = pollMs[3];
+            }
+            if (this.ruleForm.cycleSet == '1' && data.timeType == '3') {
+              this.radio = '3';
+              let pollMs = data.interval_ms.split(' ');
+              this.ruleForm.dsmin = pollMs[1];
+              this.ruleForm.dshour = pollMs[2];
+              this.ruleForm.dsweek = pollMs[5];
+            }
+            if (this.ruleForm.cycleSet == '1' && data.timeType == '4') {
+              this.radio = '4';
+              let pollMs = data.interval_ms.split(' ');
+              this.ruleForm.dtmin = pollMs[1];
+              this.ruleForm.dthour = pollMs[2];
+            }
+
+
+            this.ruleForm.dLibrary = data.sinkId.toString();
+
+            this.taskInfoId = data.task_info_id;
+            this.isregin = true;
+            this.ruleForm.xStreamServiceName = res.xStreamServiceName;
           }
-          if (data.isPeriod == "2") {
-            this.ruleForm.accessMode = '1';
-            this.ruleForm.cycleSet = "1";
-          }
-          if (data.isPeriod == "4") {
-            this.ruleForm.accessMode = '3';
-            this.ruleForm.cycleSet = "0";
-          }
-          if (data.isPeriod == "5") {
-            this.ruleForm.accessMode = '3';
-            this.ruleForm.cycleSet = "1";
-          }
-          if (data.isPeriod == "0") {
-            this.ruleForm.accessMode = '0';
-          }
-          if (data.isPeriod == "3") {
-            this.ruleForm.accessMode = "2"
-          }
-          if (this.ruleForm.cycleSet == "0") {
-            this.formatDuring(data.interval_ms);
-          }
-          if (this.ruleForm.cycleSet == "1" && data.timeType == "2") {
-            this.radio = '2';
-            let pollMs = data.interval_ms.split(' ');
-            this.ruleForm.dfmin = pollMs[1];
-            this.ruleForm.dfhour = pollMs[2];
-            this.ruleForm.dfmon = pollMs[3];
-          }
-          if (this.ruleForm.cycleSet == '1' && data.timeType == '3') {
-            this.radio = '3';
-            let pollMs = data.interval_ms.split(' ');
-            this.ruleForm.dsmin = pollMs[1];
-            this.ruleForm.dshour = pollMs[2];
-            this.ruleForm.dsweek = pollMs[5];
-          }
-          if (this.ruleForm.cycleSet == '1' && data.timeType == '4') {
-            this.radio = '4';
-            let pollMs = data.interval_ms.split(' ');
-            this.ruleForm.dtmin = pollMs[1];
-            this.ruleForm.dthour = pollMs[2];
-          }
-          this.ruleForm.dLibrary = data.sinkId.toStirng();
-          this.taskInfoId = data.task_info_id;
-          this.isregin = true;
-          this.ruleForm.xStreamServiceName = res.xStreamServiceName;
+
         }
       })
     },

@@ -34,6 +34,7 @@
 </template>
 <script>
 import { mapState, mapMutations, mapActions } from 'vuex'
+import columnJson from '@/static/json/columnType'
 export default {
   name: "userSurvey",
   data: function() {
@@ -108,77 +109,73 @@ export default {
     },
     _getType() {
       var _self = this;
-      this.$ajax.get('./getColumnType').then(function(res) {
-          /*_self.TypeData = res.data[0].datas_mapping;*/
-          let reData = [];
-          for (let m = 0; m < res.data.length; m++) {
-            if (_self.maptype == res.data[m].type) {
-              reData = res.data[m].datas_mapping;
-            }
+
+      /*_self.TypeData = res.data[0].datas_mapping;*/
+      let reData = [];
+      for (let m = 0; m < columnJson.length; m++) {
+        if (_self.maptype == columnJson[m].type) {
+          reData = columnJson[m].datas_mapping;
+        }
+      }
+      for (let i = 0; i < reData.length; i++) {
+        for (let j = i + 1; j < reData.length; j++) {
+          if (reData[i] == reData[j]) {
+            j = ++i;
           }
-          for (let i = 0; i < reData.length; i++) {
-            for (let j = i + 1; j < reData.length; j++) {
-              if (reData[i] == reData[j]) {
-                j = ++i;
-              }
-            }
-            _self.TypeData.push(reData[i]);
-          }
-          console.log(_self.TypeData);
-        })
-        .catch(function(err) {
-          console.log(err)
-        });
+        }
+        _self.TypeData.push(reData[i]);
+      }
+      console.log(_self.TypeData);
+
+
 
     },
     _getAllType() {
       var _self = this;
-      this.$ajax.get('./getColumnType').then(function(res) {
-          for (let m = 0; m < res.data.length; m++) {
-            if (_self.maptype == res.data[m].type) {
-              _self.mapData = res.data[m];
-            }
-          }
-          /**/
-          for (let i = 0; i < _self.tableData.length; i++) {
-            let flag = false;
-            let temp;
-            for (let j = 0; j < _self.mapData.datas.length; j++) {
-              if (_self.tableData[i].datatype.toUpperCase() == _self.mapData.datas[j]) {
 
-                flag = true;
-                temp = j;
-                break;
-                /*_self.cloneData.push({
-                  'mapping': _self.mapData.datas_mapping[j]
-                })*/
-              } else {
-                if (_self.tableData[i].datatype.toUpperCase().indexOf(_self.mapData.datas[j]) > -1) {
-                  flag = true;
-                  temp = j;
-                }
-              }
-            }
+      for (let m = 0; m < columnJson.length; m++) {
+        if (_self.maptype == columnJson[m].type) {
+          _self.mapData = columnJson[m];
+        }
+      }
+      /**/
+      for (let i = 0; i < _self.tableData.length; i++) {
+        let flag = false;
+        let temp;
+        for (let j = 0; j < _self.mapData.datas.length; j++) {
+          if (_self.tableData[i].datatype.toUpperCase() == _self.mapData.datas[j]) {
 
-            if (flag) {
-              _self.cloneData.push(
-                _self.mapData.datas_mapping[temp]
-              )
-            } else {
-              _self.cloneData.push(
-                _self.mapData.datas_mapping[0]
-              )
+            flag = true;
+            temp = j;
+            break;
+            /*_self.cloneData.push({
+              'mapping': _self.mapData.datas_mapping[j]
+            })*/
+          } else {
+            if (_self.tableData[i].datatype.toUpperCase().indexOf(_self.mapData.datas[j]) > -1) {
+              flag = true;
+              temp = j;
             }
-            console.log(_self.cloneData);
           }
-          for (let n = 0; n < _self.cloneData.length; n++) {
-            _self.schemaMappingDTOList[n].newColumnType = _self.cloneData[n];
-          }
-          console.log(_self.schemaMappingDTOList);
-        })
-        .catch(function(err) {
-          console.log(err)
-        });
+        }
+
+        if (flag) {
+          _self.cloneData.push(
+            _self.mapData.datas_mapping[temp]
+          )
+        } else {
+          _self.cloneData.push(
+            _self.mapData.datas_mapping[0]
+          )
+        }
+        console.log(_self.cloneData);
+      }
+      for (let n = 0; n < _self.cloneData.length; n++) {
+        _self.schemaMappingDTOList[n].newColumnType = _self.cloneData[n];
+      }
+      console.log(_self.schemaMappingDTOList);
+
+
 
     },
     //上一步
