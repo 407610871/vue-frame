@@ -287,13 +287,46 @@ export default {
   name: "taskMDialog",
   data: function() {
     //判断是否必选项为空
+        const _self = this;
+    //校验电话号码和座机
+    const validatePhone = (rule, value, callback) => {
+      if (_self.testflag && rule.field == "dockphone") {
+        callback();
+      } else {
+        const isPhone = /^([0-9]{3,4}-)?[0-9]{7,8}$/;
+        const isMob = /^((\+?86)|(\(\+86\)))?(13[012356789][0-9]{8}|15[012356789][0-9]{8}|18[02356789][0-9]{8}|17[02356789][0-9]{8}|147[0-9]{8}|1349[0-9]{7})$/;
+        if (rule.required) {
+          if (value == "") {
+            callback(new Error("请输入正确的号码"));
+          } else {
+            if (isPhone.test(value) || isMob.test(value)) {
+              callback();
+            } else {
+              callback(new Error("请输入正确的号码"));
+            }
+          }
+        }
+        if (value != "") {
+          if (isPhone.test(value) || isMob.test(value)) {
+            callback();
+          } else {
+            callback(new Error("请输入正确的号码"));
+          }
+        } else {
+          callback();
+        }
+      }
+    };
     const validateNull = (rule, value, callback) => {
 
-      if (value == "") {
-        callback(new Error("不能为空"));
-      } else {
-
+       if (_self.testflag && rule.field == "dockname") {
         callback();
+      } else {
+        if (value == "") {
+          callback(new Error("不能为空"));
+        } else {
+          callback();
+        }
       }
     };
      const validateSq = (rule, value, callback) => {
@@ -346,6 +379,7 @@ export default {
       deptData: [],
       deIndex: 0,
       tableMsg: [],
+      testflag:false,
       loading: false,
       appId: '',
       ruleForm: {
@@ -429,7 +463,7 @@ export default {
           { validator: this.GLOBAL.validatePhone, trigger: 'blur' }
         ],
         dockphone: [
-          { required: true, message: '输入正确的号码', validator: this.GLOBAL.validatePhone, trigger: 'blur' }
+          { required: true, message: '输入正确的号码', validator: validatePhone, trigger: 'blur' }
         ]
       },
       treedata: [],
@@ -603,6 +637,7 @@ export default {
     },
     //保存信息
     submitForm(formName) {
+      this.testflag = false;
       console.log(this.ruleForm.syskind);
       var _self = this;
       this.$refs[formName].validate((valid) => {
@@ -845,7 +880,7 @@ export default {
     },
     //测试连接
     testForm(formName) {
-
+      this.testflag = true;
       this.$refs[formName].validate((valid) => {
         if (valid) {
           this.fullscreenLoading = true;
