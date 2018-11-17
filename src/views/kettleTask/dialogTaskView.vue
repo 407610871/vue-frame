@@ -197,6 +197,12 @@ export default {
             let hours = date.getHours();
             let minutes = date.getMinutes();
             let seconds = date.getSeconds();
+            debugger;
+            month = month.toString().length==1?'0'+month:month;
+            day = day.toString().length==1?'0'+day:day;
+            hours = hours.toString().length==1?'0'+hours:hours;
+            minutes = minutes.toString().length==1?'0'+minutes:minutes;
+            seconds = seconds.toString().length==1?'0'+seconds:seconds;
             return years+'-'+month+'-'+day+' '+hours+':'+minutes+':'+seconds;
         }
     },

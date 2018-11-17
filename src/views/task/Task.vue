@@ -33,9 +33,9 @@
             <span v-show="status.indexOf('3')>-1">失败<span @click="pop('3',status);"><i class="el-icon-error"></i></span></span>
             <span v-show="status.indexOf('4')>-1">完成<span @click="pop('4',status);"><i class="el-icon-error"></i></span></span>
           </div>
-          <div v-show="time.length>0" class="selected-task-type">
+          <div v-show="time!=null && time.length>0" class="selected-task-type">
             <span style="margin-right:10px;">任务开始时间:</span>
-            <span>{{time[0]}} - {{time[1]}}<span @click="time=[]"><i class="el-icon-error"></i></span></span>
+            <span>{{time==null?'':time[0]}} - {{time==null?'':time[1]}}<span @click="time=[]"><i class="el-icon-error"></i></span></span>
           </div>
         </el-form-item>
         <el-form-item label="任务类型:">

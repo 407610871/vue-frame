@@ -147,6 +147,7 @@ export default {
     // this.$root.eventHub.$on("search", keyword => {
     //   this.search(keyword);
     // });
+    debugger;
     this.$root.eventHub.$on("selDept", ids => {
       this.setStore({
         deptId: ids
@@ -161,6 +162,7 @@ export default {
     );
     this.$root.eventHub.$emit("setActiveNav", 1);
     this.storeReady();
+    debugger;
     this.setCount();
   },
   methods: {
@@ -335,6 +337,7 @@ export default {
               pageNum: 1,
               timeFlag: new Date().getTime()
             });
+             _self.loadTable();
           })
           .catch(function(err) {
             console.log(err);
