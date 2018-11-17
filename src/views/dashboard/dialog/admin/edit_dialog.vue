@@ -46,7 +46,7 @@
             </el-col>
             <el-col :span="10">
               <el-form-item label="数据授权情况:" prop="author">
-                <el-radio-group v-model="ruleForm.author">
+                <el-radio-group v-model="ruleForm.author" disabled>
                   <el-radio label="true">已授权</el-radio>
                   <el-radio label="false">未授权</el-radio>
                 </el-radio-group>
@@ -296,20 +296,42 @@ export default {
         callback();
       }
     };
-    //校验ip
-    const validateIp = (rule, value, callback) => {
-      if (value == "" || /.*[\u4e00-\u9fa5]+.*$/.test(value)) {
-        callback(new Error("请输入正确的ip"));
+     const validateSq = (rule, value, callback) => {
+      if (this.ruleForm.author == "true") {
+        if (value == "") {
+          callback(new Error("不能为空"));
+        } else {
+
+          callback();
+        }
       } else {
-        callback()
+        callback();
       }
     }
+    //校验ip
+    const validateIp = (rule, value, callback) => {
+      if (this.ruleForm.author == 'true') {
+        if (value == "" || /.*[\u4e00-\u9fa5]+.*$/.test(value)) {
+          callback(new Error("请输入正确的ip"));
+        } else {
+          callback()
+        }
+      } else {
+        callback();
+      }
+
+    };
     const validatePort = (rule, value, callback) => {
-      if (value == "" || /[^0-9]+/.test(value)) {
-        callback(new Error("请输入正确的端口号"));
+      if (this.ruleForm.author == 'true') {
+        if (value == "" || /[^0-9]+/.test(value)) {
+          callback(new Error("请输入正确的端口号"));
+        } else {
+          callback()
+        }
       } else {
         callback()
       }
+
     }
     return {
       i: 0, //树节点只允许单选
@@ -371,10 +393,10 @@ export default {
           { required: true, message: '不能为空', validator: validateIp, trigger: "blur" }
         ],
         username: [
-          { required: true, message: '不能为空', validator: validateNull, trigger: "blur" }
+          { required: true, message: '不能为空', validator: validateSq, trigger: "blur" }
         ],
         password: [
-          { required: true, message: '不能为空', validator: validateNull, trigger: "blur" }
+          { required: true, message: '不能为空', validator: validateSq, trigger: "blur" }
         ],
         dockname: [
           { required: true, message: '不能为空', validator: validateNull, trigger: "blur" }
@@ -383,16 +405,16 @@ export default {
           { required: true, message: '请输入正确的端口号', validator: validatePort, trigger: "blur" }
         ],
         instanceName: [
-          { required: true, message: '不能为空', validator: validateNull, trigger: "blur" }
+          { required: true, message: '不能为空', validator: validateSq, trigger: "blur" }
         ],
         hadoopDir: [
-          { required: true, message: '不能为空', validator: validateNull, trigger: "blur" }
+          { required: true, message: '不能为空', validator: validateSq, trigger: "blur" }
         ],
         hadoopHomes: [
-          { required: true, message: '不能为空', validator: validateNull, trigger: "blur" }
+          { required: true, message: '不能为空', validator: validateSq, trigger: "blur" }
         ],
         vhost: [
-          { required: true, message: '不能为空', validator: validateNull, trigger: "blur" }
+          { required: true, message: '不能为空', validator: validateSq, trigger: "blur" }
         ],
         dockdata: [
           { required: true, message: '不能为空', validator: validateNull, trigger: "blur" }
