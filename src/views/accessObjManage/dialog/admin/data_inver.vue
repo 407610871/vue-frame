@@ -1,9 +1,9 @@
 <template>
   <div class="taskMDialog userSurveyDialog diaicon">
     <!-- <el-button size="mini" class="diabtn incbtn" type="danger" @click="dialogVisible = true">数据核验</el-button> -->
-		<el-tooltip class="item" effect="light" content="数据核验" placement="top">
-			<i class="enc-icon-shujuheyan" @click="dialogVisible = true"></i>
-		</el-tooltip>
+    <el-tooltip class="item" effect="light" content="数据核验" placement="top">
+      <i class="enc-icon-shujuheyan" @click="dialogVisible = true"></i>
+    </el-tooltip>
     <el-dialog title="数据核验" :visible.sync="dialogVisible" width="60%" :before-close="closeDialog">
       <div class="title-gra">
         <span class="grab gra-l"></span>
@@ -129,7 +129,8 @@
   </div>
 </template>
 <script>
-import {myBrowser} from '@/utils/mix.js'
+import { myBrowser } from '@/utils/mix.js'
+import request from "@/utils/request"
 export default {
   name: "dataInver",
   data: function() {
@@ -173,8 +174,8 @@ export default {
     _queryInver() {
       this.$ajax({
         method: "GET",
-        url: this.GLOBAL.api.API_DACM +'/ccheckData/tableNum',
-       /* url:'http://10.19.160.59:8080/DACM/ccheckData/tableNum',*/
+        url: this.GLOBAL.api.API_DACM + '/ccheckData/tableNum',
+        /* url:'http://10.19.160.59:8080/DACM/ccheckData/tableNum',*/
         // headers:{
         //   'Content-Type':'application/json;charset=utf-8',
         // },
@@ -239,7 +240,7 @@ export default {
       this.loading2 = true;
       this.$ajax({
         method: "GET",
-        url: this.GLOBAL.api.API_DACM +'/ccheckData/checkLog',
+        url: this.GLOBAL.api.API_DACM + '/ccheckData/checkLog',
         // headers:{
         //   'Content-Type':'application/json;charset=utf-8',
         // },
@@ -250,7 +251,7 @@ export default {
       }).then(res => {
         this.loading2 = false;
         if (res.data.success == "true" || res.data.success == true) {
-         
+
           if (res.data.data.result == false) {
             this.textShow = false;
             this.$alert("查看日志失败", "查看日志", {
@@ -258,7 +259,7 @@ export default {
             });
             return false;
           }
-           this.textShow = true;
+          this.textShow = true;
           let logData = res.data.data.testresults_result == 0 ? "一致" : "不一致";
           this.loginfo = `源库：${res.data.data.source_library}\n
 源表：${res.data.data.source_tableName}\n
@@ -352,7 +353,29 @@ export default {
       if (!browser) {
         browser = 'IE'
       }
-      window.location.href = `${this.GLOBAL.api.API_DACM}/ccheckData/downloadCheckDataById?id=${item.id}&browser=${browser}&accessName=${this.$route.params.sourceName}`
+      request({
+        url: 'http://10.19.160.59:8080/DACM/ccheckData/downloadCheckDataById?id=32&browser=fox&accessName=ww',
+       /* url: `${this.GLOBAL.api.API_DACM}/ccheckData/downloadCheckDataById?id=${item.id}&browser=${browser}&accessName=${this.$route.params.sourceName}`,*/
+        method: "GET",
+        responseType: "blob"
+      }).then(res => {
+        console.log(res);　
+        var blob = new Blob([res.data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8' }); //application/vnd.openxmlformats-officedocument.spreadsheetml.sheet这里表示xlsx类型
+        　　
+        var downloadElement = document.createElement('a');　　
+        var href = window.URL.createObjectURL(blob); //创建下载的链接
+        　　
+        downloadElement.href = href;　　
+        downloadElement.download = "资源目录规范.docx"; //下载后文件名
+        　　
+        document.body.appendChild(downloadElement);　　
+        downloadElement.click(); //点击下载
+        　　
+        document.body.removeChild(downloadElement); //下载完成移除元素
+        　　
+        window.URL.revokeObjectURL(href); //释放掉blob对象 
+      })
+      /*window.location.href = `${this.GLOBAL.api.API_DACM}/ccheckData/downloadCheckDataById?id=${item.id}&browser=${browser}&accessName=${this.$route.params.sourceName}`*/
     }
   },
   components: {
@@ -500,15 +523,18 @@ li {
   padding-left: 35px !important;
 }
 
-.hisInver .el-table--medium td,.hisInver
-.el-table--medium th {
+.hisInver .el-table--medium td,
+.hisInver .el-table--medium th {
   padding: 0px !important;
 }
-.hisInver .el-table th > .cell{
+
+.hisInver .el-table th>.cell {
   line-height: 32px !important;
 }
-.diaicon i{
+
+.diaicon i {
   cursor: pointer;
-  font-size:20px;
+  font-size: 20px;
 }
+
 </style>

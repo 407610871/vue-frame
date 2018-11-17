@@ -34,6 +34,7 @@
 </template>
 <script>
 import { mapState, mapMutations, mapActions } from 'vuex'
+import columnJson from '@/static/json/columnType'
 export default {
   name: "userSurvey",
   data: function() {
@@ -99,12 +100,12 @@ export default {
     },
     _getType() {
       var _self = this;
-      this.$ajax.get('./getColumnType').then(function(res) {
+      
           /*_self.TypeData = res.data[0].datas_mapping;*/
           let reData = [];
-          for (let m = 0; m < res.data.length; m++) {
-            if (_self.$store.state.jrtype == res.data[m].type) {
-              reData = res.data[m].datas_mapping;
+          for (let m = 0; m < columnJson.length; m++) {
+            if (_self.$store.state.jrtype == columnJson[m].type) {
+              reData = columnJson[m].datas_mapping;
             }
           }
           for (let i = 0; i < reData.length; i++) {
@@ -116,18 +117,16 @@ export default {
             _self.TypeData.push(reData[i]);
           }
           console.log(_self.TypeData);
-        })
-        .catch(function(err) {
-          console.log(err)
-        });
+       
+        
 
     },
     _getAllType() {
       var _self = this;
-      this.$ajax.get('./getColumnType').then(function(res) {
-          for (let m = 0; m < res.data.length; m++) {
-            if (_self.$store.state.jrtype == res.data[m].type) {
-              _self.mapData = res.data[m];
+     
+          for (let m = 0; m < columnJson.length; m++) {
+            if (_self.$store.state.jrtype == columnJson[m].type) {
+              _self.mapData = columnJson[m];
             }
           }
           /**/
@@ -166,10 +165,8 @@ export default {
             _self.schemaMappingDTOList[n].newColumnType = _self.cloneData[n];
           }
           console.log(_self.schemaMappingDTOList);
-        })
-        .catch(function(err) {
-          console.log(err)
-        });
+      
+        
 
     },
     //上一步
