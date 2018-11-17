@@ -560,7 +560,7 @@ export default {
           if (res.data.success) {
             this.$ajax({
               method: "post",
-              url: this.GLOBAL.api.API_DACM +'/saveRegexHeliumTask',
+              url: this.GLOBAL.api.API_DACM +'/task/saveRegexHeliumTask',
               // headers:{
               //   'Content-Type':'application/json;charset=utf-8',
               // },
