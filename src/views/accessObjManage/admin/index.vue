@@ -158,7 +158,7 @@
 </template>
 <script>
 import { mapState } from 'vuex'
-import formFliter from './../../../components/formFliter'
+import formFliter from './../../../components/formFliter2'
 import userSurvey from '@/views/accessObjManage/dialog/admin/user_survey'
 import setTask from '@/views/accessObjManage/dialog/admin/set_task'
 import singleTask from '@/views/accessObjManage/dialog/admin/single_task'

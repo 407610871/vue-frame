@@ -89,7 +89,7 @@
 <script>
 import { mapState} from 'vuex'
 import add1 from './dialog/'
-import formFliter from './../../components/formFliter'
+import formFliter from './../../components/formFliter2'
 
 export default {
   name: 'DashboardAdmin',

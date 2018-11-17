@@ -107,21 +107,20 @@
               </el-row>
             </el-form>
             <el-table :data="mainTableData2" stripe :height="tableHeight" border style="width: 100%" tooltip-effect="light">
-              <el-table-column v-for="(val, key, index) in data2Columns" v-if="index<6" :prop="key" :label="getLabel(key)" width="width">
+              <!-- <el-table-column v-for="(val, key, index) in data2Columns" v-if="index<6" :prop="key" :label="getLabel(key)" width="width"> -->
               </el-table-column>
               
 							<el-table-column label="描述">
 
 
 <!-- hjhhhkjhjkjkjlkjk -->
-
-
+                
 
 
 								<template slot-scope="scope">
 									<el-popover placement="left-start" width="400" trigger="hover">
 										<ul class="popup-menu">
-											<li v-for="(val, key, index) in data2Columns">{{key}}：{{scope.row[key]}}</li>
+											<!-- <li v-for="(val, key, index) in data2Columns">{{key}}：{{scope.row[key]}}</li> -->
 										</ul>
 										<a slot="reference" href="javascript:void(0)">更多详情<i class="el-icon-caret-bottom"></i></a> 
 									</el-popover>
