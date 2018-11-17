@@ -354,8 +354,8 @@ export default {
         browser = 'IE'
       }
       request({
-        url: 'http://10.19.160.59:8080/DACM/ccheckData/downloadCheckDataById?id=32&browser=fox&accessName=ww',
-       /* url: `${this.GLOBAL.api.API_DACM}/ccheckData/downloadCheckDataById?id=${item.id}&browser=${browser}&accessName=${this.$route.params.sourceName}`,*/
+       /* url: 'http://10.19.160.59:8080/DACM/ccheckData/downloadCheckDataById?id=32&browser=fox&accessName=ww',*/
+        url: `${this.GLOBAL.api.API_DACM}/ccheckData/downloadCheckDataById?id=${item.id}&browser=${browser}&accessName=${this.$route.params.sourceName}`,
         method: "GET",
         responseType: "blob"
       }).then(res => {
@@ -366,7 +366,7 @@ export default {
         var href = window.URL.createObjectURL(blob); //创建下载的链接
         　　
         downloadElement.href = href;　　
-        downloadElement.download = "资源目录规范.docx"; //下载后文件名
+        downloadElement.download = res.headers.filename; //下载后文件名
         　　
         document.body.appendChild(downloadElement);　　
         downloadElement.click(); //点击下载

@@ -589,7 +589,7 @@ export default {
             url: this.GLOBAL.api.API_DACM + '/dataTable/inputSurvey',
             data: this.$store.state.userList
           }).then(res => {
-            this.loading = false;
+            
             if (res.data.success) {
               this.$ajax({
                 method: "post",

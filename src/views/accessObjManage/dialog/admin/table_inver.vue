@@ -176,13 +176,13 @@ export default {
         responseType: "blob"
       }).then(res => {
         console.log(res);　
-        var blob = new Blob([res.data], { type: 'text/csv,charset=UTF-8' }); //application/vnd.openxmlformats-officedocument.spreadsheetml.sheet这里表示xlsx类型
+        var blob = new Blob([res.data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8' }); //application/vnd.openxmlformats-officedocument.spreadsheetml.sheet这里表示xlsx类型
         　　
         var downloadElement = document.createElement('a');　　
         var href = window.URL.createObjectURL(blob); //创建下载的链接
         　　
         downloadElement.href = href;　　
-        downloadElement.download = "资源目录规范.docx"; //下载后文件名
+        downloadElement.download =  res.headers.filename; //下载后文件名
         　　
         document.body.appendChild(downloadElement);　　
         downloadElement.click(); //点击下载
