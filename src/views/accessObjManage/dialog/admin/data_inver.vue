@@ -354,13 +354,13 @@ export default {
         browser = 'IE'
       }
       request({
-        /*url: this.exportUrl,*/
-        url: `${this.GLOBAL.api.API_DACM}/ccheckData/downloadCheckDataById?id=${item.id}&browser=${browser}&accessName=${this.$route.params.sourceName}`,
+        url: 'http://10.19.160.59:8080/DACM/ccheckData/downloadCheckDataById?id=32&browser=fox&accessName=ww',
+       /* url: `${this.GLOBAL.api.API_DACM}/ccheckData/downloadCheckDataById?id=${item.id}&browser=${browser}&accessName=${this.$route.params.sourceName}`,*/
         method: "GET",
         responseType: "blob"
       }).then(res => {
         console.log(res);　
-        var blob = new Blob([res.data], { type: 'text/csv,charset=UTF-8' }); //application/vnd.openxmlformats-officedocument.spreadsheetml.sheet这里表示xlsx类型
+        var blob = new Blob([res.data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8' }); //application/vnd.openxmlformats-officedocument.spreadsheetml.sheet这里表示xlsx类型
         　　
         var downloadElement = document.createElement('a');　　
         var href = window.URL.createObjectURL(blob); //创建下载的链接
