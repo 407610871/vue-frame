@@ -474,7 +474,7 @@ export default {
       var ctt = '';
       if (this.ruleForm.accessMode == "0") { //实时
         ctt = '0';
-       actech = this.$route.params.type;
+        //actech = this.$route.params.type;
       }
       if (this.ruleForm.accessMode == "2") { //实时
         ctt = '3'
