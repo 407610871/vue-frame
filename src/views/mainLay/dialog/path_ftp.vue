@@ -191,7 +191,7 @@ export default {
       } else {
 
         var params = {
-          accessSysId: node.data.id,
+          accessSysId: this.$route.params.sourceId,
           linkPath: node.data.linkPath
           /* accessSysId :'58714',
            linkPath: '/boot/'*/
