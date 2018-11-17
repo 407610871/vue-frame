@@ -15,7 +15,7 @@
           <span v-for="(dataSourceName,key,index) in formSeledShow.dataSourceName" :key="index"> {{dataSourceName.name}} <i class="el-icon-error" @click="delSelect(index,1)"></i>
           </span>
         </div>
-        <div class="look" v-show="formSeled.network!=''">接入数据来源：
+        <div class="look" v-show="formSeled.network!=''||formSeled.network==undefined">接入数据来源：
           <span v-if="formSeled.network==1">公安网<i class="el-icon-error" @click="delSelect(formSeled.network,2)"></i></span>
           <span v-else-if="formSeled.network==2">私网<i class="el-icon-error" @click="delSelect(formSeled.network,2)"></i></span>
           <span v-else-if="formSeled.network==3">委办网<i class="el-icon-error" @click="delSelect(formSeled.network,2)"></i></span>
@@ -66,7 +66,10 @@ export default {
     }
   },
   computed: {},
-  created() {},
+  created() {
+
+
+  },
   mounted() {
     this.getFormSeled();
   },
@@ -78,6 +81,7 @@ export default {
       this.collapse=!this.collapse;
             this.$emit("highSeaech", this.collapse);
         // console.log(this.collapse)
+    console.log(this.formSeled);
 
     },
     //搜索条件关闭
