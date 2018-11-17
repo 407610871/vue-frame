@@ -69,6 +69,7 @@ export default {
     settingList: {
       deep: true,
       handler: function(newVal, oldVal) {
+        debugger;
         this.settingList = newVal;
         console.log(this.settingList);
         console.log(oldVal);
@@ -88,7 +89,7 @@ export default {
     }
   },
   mounted() {
-
+   debugger;
     console.log('111');
     console.log(this.settingList.list);
     this.seledId = this.settingList.seledId;
