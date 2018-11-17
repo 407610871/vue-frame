@@ -184,14 +184,14 @@ export default {
       paramsObj.platform = this.tableParams.platform;
 			paramsObj.deptIds = this.tableParams.deptId;
       this.$ajax.post(window.ENV.API_DACM+'/caccess/query',paramsObj).then(function(res){
-        console.log('tableLoaded:dashboard');
+        // console.log('tableLoaded:dashboard');
         if(res.data.success){
           _self.mainTableData = res.data.data.list;
           _self.mainTableDataTotal = res.data.data.total;
           _self.currentPage = _self.tableParams.pageNum;
 					_self.pageShow = true;
         }else{
-          console.log(res.data.code)
+          // console.log(res.data.code)
 					_self.mainTableData = [];
 					_self.pageShow = false;
 					_self.$alert('字段废止数据源列表失败','提示', {
@@ -226,7 +226,7 @@ export default {
 					if(res.data.success){
 						_self.loadTable();
 					}else{
-						console.log(res.data.code)
+						// console.log(res.data.code)
 						_self.$alert('恢复失败','提示', {
 							confirmButtonText: '确定'
 						});
@@ -259,7 +259,7 @@ export default {
 					if(res.data.success){
 						_self.loadTable();
 					}else{
-						console.log(res.data.code)
+						// console.log(res.data.code)
 						_self.$alert('删除失败','提示', {
 							confirmButtonText: '确定'
 						});

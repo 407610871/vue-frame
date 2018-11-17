@@ -90,7 +90,7 @@
                   </el-select>
                 </el-col>
                 <el-col :span="5">
-                  <el-select v-model="searchForm[0].filtertype" placeholder="">
+                  <el-select v-model="searchForm[0].filtertype"  placeholder="">
                     <el-option v-for="(item,index) in filtertypeList" :key="index" :value="item.value" :label="item.name"></el-option>
                   </el-select>
                 </el-col>
@@ -107,7 +107,7 @@
               </el-row>
             </el-form>
             <el-table :data="mainTableData2" stripe :height="tableHeight" border style="width: 100%" tooltip-effect="light">
-              <!-- <el-table-column v-for="(val, key, index) in data2Columns" v-if="index<6" :prop="key" :label="getLabel(key)" width="width"> -->
+              <el-table-column v-for="(val, key, index) in data2Columns" v-if="index<6" :prop="key" :label="getLabel(key)" width="width">
               </el-table-column>
               
 							<el-table-column label="描述">
@@ -120,7 +120,7 @@
 								<template slot-scope="scope">
 									<el-popover placement="left-start" width="400" trigger="hover">
 										<ul class="popup-menu">
-											<!-- <li v-for="(val, key, index) in data2Columns">{{key}}：{{scope.row[key]}}</li> -->
+											<li v-for="(val, key, index) in data2Columns">{{key}}：{{scope.row[key]}}</li>
 										</ul>
 										<a slot="reference" href="javascript:void(0)">更多详情<i class="el-icon-caret-bottom"></i></a> 
 									</el-popover>
@@ -210,6 +210,7 @@
         this.tabPosition = newVal.tabPosition;
       },
       tabPosition(newVal, oldVal) {
+        this.searchForm=[{filtertype:'4',outrelate:'and'}];
         this.setStore({
           tabPosition: newVal
         });
@@ -247,6 +248,7 @@
           res = res.data;
           if(res.success){
             let list = res.data.list;
+
             this.filtercolumnList = list.map(item => item.name);
           }
         }).catch(()=>{
@@ -438,6 +440,14 @@
           }else{
             count = this.count;
           }
+
+          for(let i=0;i<this.searchForm.length;i++){
+            if(this.searchForm[i].filterdata==undefined){
+                this.searchForm.splice(i,1);
+            }
+          }
+          console.log(this.searchForm)
+
           var paramsObj = {
             count: count,
             objInfoId: this.$route.params.objId,
@@ -445,6 +455,8 @@
             accessSysId: this.tableParams.accessSysId,
             filter: this.searchForm
           }
+
+
           this.$ajax.post(window.ENV.API_DACM + '/objDetail/previewData', paramsObj).then(function(res) {
          /* this.$ajax.post('http://10.19.160.171:8080/DACM/objDetail/previewData', paramsObj).then(function(res) {*/
               console.log('tableLoaded:dataPreview');
@@ -478,6 +490,7 @@
         Promise.all([promist0, promist1]).then((resultList) => {
           if (resultList[1].data.datas.length > 0) {
             _self.data2Columns = resultList[1].data.datas[0];
+            console.log(_self.data2Columns)
 						_self.mainTableTitle = resultList[1].data.titles;
             var len = 0;
             for (var i in _self.data2Columns) {
