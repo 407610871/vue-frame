@@ -47,7 +47,7 @@
                 type="datetimerange"
                 start-placeholder="开始时间"
                 end-placeholder="结束时间"
-                value-format="yyyy-MM-dd HH:MM:ss"
+                value-format="yyyy-MM-dd HH:mm:ss"
                 :default-time="['12:00:00']">
                 </el-date-picker>
             </el-form-item>

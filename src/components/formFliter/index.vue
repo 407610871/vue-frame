@@ -77,7 +77,7 @@ export default {
 
       this.collapse=!this.collapse;
             this.$emit("highSeaech", this.collapse);
-        console.log(this.collapse)
+        // console.log(this.collapse)
 
     },
     //搜索条件关闭
