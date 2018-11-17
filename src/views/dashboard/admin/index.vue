@@ -147,7 +147,7 @@ export default {
     // this.$root.eventHub.$on("search", keyword => {
     //   this.search(keyword);
     // });
-    debugger;
+     this.loadTable();
     this.$root.eventHub.$on("selDept", ids => {
       this.setStore({
         deptId: ids
