@@ -17,7 +17,7 @@
     "DOUBLE",
     "FLOAT",
     "DECIMAL",
-    "TIMESTAMP"
+    "STRING"
   ]
 },
 {
@@ -48,13 +48,13 @@
     "DECIMAL",
     "STRING",
     "STRING",
-    "TIMESTAMP",
-    "TIMESTAMP",
     "STRING",
     "STRING",
     "STRING",
-    "TIMESTAMP",
-    "TIMESTAMP"
+    "STRING",
+    "STRING",
+    "STRING",
+    "STRING"
   ]
 },
 {
@@ -72,7 +72,7 @@
     "DOUBLE",
     "STRING",
     "STRING",
-    "TIMESTAMP",
+    "STRING",
     "FLOAT"
   ]
 },
@@ -162,9 +162,9 @@
     "BOOLEAN",
     "DOUBLE",
     "ARRAYS",
-    "TIMESTAMP",
     "STRING",
-    "TIMESTAMP"
+    "STRING",
+    "STRING"
   ]
 },
 {
@@ -219,7 +219,7 @@
     "STRING",
     "STRING",
     "STRING",
-    "TIMESTAMP",
+    "STRING",
     "STRING",
     "FLOAT",
     "FLOAT",
@@ -241,10 +241,10 @@
     "STRING",
     "STRING",
     "STRING",
-    "TIMESTAMP",
-    "TIMESTAMP",
     "STRING",
-    "TIMESTAMP",
+    "STRING",
+    "STRING",
+    "STRING",
     "STRING",
     "STRING",
     "STRING",

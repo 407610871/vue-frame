@@ -376,12 +376,12 @@ export default {
       console.log(this.monthData);
     },
     _minData() {
-      for (let i = 0; i < 60; i++) {
+      for (let i = 1; i < 60; i++) {
         this.$set(this.minData, i, i);
       }
     },
     _hourData() {
-      for (let i = 0; i < 24; i++) {
+      for (let i = 1; i < 24; i++) {
         this.$set(this.hourData, i, i);
       }
     },
@@ -421,6 +421,52 @@ export default {
     pre() {
       this.$emit('pre');
     },
+    weekTrans(val){
+     if(val=='1'){
+      return 'MON';
+     }
+      if(val=='2'){
+      return 'TUE';
+     }
+      if(val=='3'){
+      return 'WED';
+     }
+      if(val=='4'){
+      return 'THU';
+     }
+      if(val=='5'){
+      return 'FRI';
+     }
+      if(val=='6'){
+      return 'SAT';
+     }
+      if(val=='7'){
+      return 'SUN';
+     }
+    },
+    Unweek(val){
+      if(val=='MON'){
+      return 1;
+     }
+      if(val=='TUE'){
+      return 2;
+     }
+      if(val=='WED'){
+      return 3;
+     }
+      if(val=='THU'){
+      return 4;
+     }
+      if(val=='FRI'){
+      return 5;
+     }
+      if(val=='SAT'){
+      return 6;
+     }
+      if(val=='SUN'){
+      return 7;
+     }
+    },
     finish() {
       //间隔执行
       var pollIntervalMs = -1;
@@ -429,7 +475,7 @@ export default {
         let jday;;
         let jhour;
         let jmin;
-        if(this.ruleForm.jday==''||this.ruleForm.jhour==''|| this.ruleForm.jmin==''){
+        if(this.ruleForm.jday==' '||this.ruleForm.jhour==' '|| this.ruleForm.jmin==' '){
            this.$message.warning('请将间隔执行时间填写完整');
           return false;
         }
@@ -451,10 +497,10 @@ export default {
         }
         if (this.radio == '2') {
           //第一队列
-          let dfmin = '?';
-          let dfhour = '?';
-          let dfmon = '?';
-          if(this.ruleForm.dfmin==''||this.ruleForm.dfhour==''||this.ruleForm.dfmon==''){
+          let dfmin;
+          let dfhour;
+          let dfmon;
+          if(this.ruleForm.dfmin==' '||this.ruleForm.dfhour==' '||this.ruleForm.dfmon==' '){
              this.$message.warning('请将定时执行时间填写完整');
              return false;
           }
@@ -467,15 +513,15 @@ export default {
           if (this.ruleForm.dfmon != '' && this.ruleForm.dfmon != undefined) {
             dfmon = this.ruleForm.dfmon;
           }
-          var pollIntervalMs = `0 ${dfmin} ${dfhour} ${dfmon} ? ? *`;
+          var pollIntervalMs = `0 ${dfmin} ${dfhour} 1 ${dfmon} ?`;
           console.log(pollIntervalMs);
         }
         if (this.radio == '3') {
           //第二队列
-          let dsmin = '?';
-          let dshour = '?';
-          let dsweek = '?';
-          if(this.ruleForm.dsmin==''||this.ruleForm.dshour==''||this.ruleForm.dsweek==''){
+          let dsmin;
+          let dshour;
+          let dsweek;
+          if(this.ruleForm.dsmin==' '||this.ruleForm.dshour==' '||this.ruleForm.dsweek==' '){
              this.$message.warning('请将定时执行时间填写完整');
              return false;
           }
@@ -486,16 +532,17 @@ export default {
             dshour = this.ruleForm.dshour;
           }
           if (this.ruleForm.dsweek != '' && this.ruleForm.dsweek != undefined) {
-            dsweek = this.ruleForm.dsweek;
+
+            dsweek = this.weekTrans(this.ruleForm.dsweek);
           }
-          var pollIntervalMs = `0 ${dsmin} ${dshour} ? ? ${dsweek} *`;
+          var pollIntervalMs = `0 ${dsmin} ${dshour} ? * ${dsweek}`;
           console.log(pollIntervalMs);
         }
         if (this.radio == '4') {
           //第三队列
-          let dtmin = '?';
-          let dthour = '?';
-          if(this.ruleForm.dtmin==''||this.ruleForm.dthour==''){
+          let dtmin;
+          let dthour;
+          if(this.ruleForm.dtmin==' '||this.ruleForm.dthour==' '){
              this.$message.warning('请将定时执行时间填写完整');
              return false;
           }
@@ -506,7 +553,7 @@ export default {
             dthour = this.ruleForm.dthour;
           }
 
-          var pollIntervalMs = `0 ${dtmin} ${dthour} ? ? ? *`;
+          var pollIntervalMs = `0 ${dtmin} ${dthour} * * ? *`;
           console.log(pollIntervalMs);
         }
       }
@@ -821,7 +868,7 @@ export default {
               let pollMs = data.interval_ms.split(' ');
               this.ruleForm.dsmin = pollMs[1];
               this.ruleForm.dshour = pollMs[2];
-              this.ruleForm.dsweek = pollMs[5];
+              this.ruleForm.dsweek = this.Unweek(pollMs[5]);
             }
             if (this.ruleForm.cycleSet == '1' && data.timeType == '4') {
               this.radio = '4';
