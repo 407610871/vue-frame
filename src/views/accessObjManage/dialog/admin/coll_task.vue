@@ -513,7 +513,7 @@ export default {
           if (this.ruleForm.dfmon != '' && this.ruleForm.dfmon != undefined) {
             dfmon = this.ruleForm.dfmon;
           }
-          var pollIntervalMs = `0 ${dfmin} ${dfhour} 1 ${dfmon} ?`;
+          var pollIntervalMs = `0 ${dfmin} ${dfhour} ${dfmon} * ?`;
           console.log(pollIntervalMs);
         }
         if (this.radio == '3') {
