@@ -87,7 +87,7 @@ export default {
        this.setMatchType(this.clear);
        this.setRegInfo(this.regClear);
        this.setSchemaList(this.clear);
-
+ this.$emit('fre');
       //this.$refs['ruleForm'].resetFields();
     },
     //步骤条
