@@ -104,7 +104,7 @@ export default {
           /*_self.TypeData = res.data[0].datas_mapping;*/
           let reData = [];
           for (let m = 0; m < columnJson.length; m++) {
-            if (_self.$store.state.jrtype == columnJson[m].type) {
+            if (this.$route.params.type == columnJson[m].type) {
               reData = columnJson[m].datas_mapping;
             }
           }
@@ -125,7 +125,7 @@ export default {
       var _self = this;
      
           for (let m = 0; m < columnJson.length; m++) {
-            if (_self.$store.state.jrtype == columnJson[m].type) {
+            if (this.$route.params.type == columnJson[m].type) {
               _self.mapData = columnJson[m];
             }
           }
