@@ -500,7 +500,7 @@ export default {
           let dfmin;
           let dfhour;
           let dfmon;
-          if(this.ruleForm.dfmin==' '||this.ruleForm.dfhour==' '||this.ruleForm.dfmon==' '){
+          if(this.ruleForm.dfmin==''||this.ruleForm.dfhour==''||this.ruleForm.dfmon==''){
              this.$message.warning('请将定时执行时间填写完整');
              return false;
           }
@@ -521,7 +521,7 @@ export default {
           let dsmin;
           let dshour;
           let dsweek;
-          if(this.ruleForm.dsmin==' '||this.ruleForm.dshour==' '||this.ruleForm.dsweek==' '){
+          if(this.ruleForm.dsmin==''||this.ruleForm.dshour==''||this.ruleForm.dsweek==''){
              this.$message.warning('请将定时执行时间填写完整');
              return false;
           }
@@ -542,7 +542,7 @@ export default {
           //第三队列
           let dtmin;
           let dthour;
-          if(this.ruleForm.dtmin==' '||this.ruleForm.dthour==' '){
+          if(this.ruleForm.dtmin==''||this.ruleForm.dthour==''){
              this.$message.warning('请将定时执行时间填写完整');
              return false;
           }
