@@ -60,7 +60,7 @@ export default {
       var map = {
         objectInfoId: this.tableId,
         pagNum: 1,
-        count: 20,
+        count: 100,
         term: ""
       }
       this.$ajax.post(this.GLOBAL.api.API_DACM + '/objDetail/dataList', map).then(function(res) {
