@@ -100,8 +100,10 @@ export default {
     },
     _getType() {
       var _self = this;
-      
+          _self.TypeData = [];
           /*_self.TypeData = res.data[0].datas_mapping;*/
+          console.log("o3ou3ou2o34");
+          console.log(columnJson+"hhhhhhh");
           let reData = [];
           for (let m = 0; m < columnJson.length; m++) {
             if (this.$route.params.type == columnJson[m].type) {

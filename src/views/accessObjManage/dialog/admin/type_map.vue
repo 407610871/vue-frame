@@ -109,7 +109,7 @@ export default {
     },
     _getType() {
       var _self = this;
-
+ _self.TypeData = [];
       /*_self.TypeData = res.data[0].datas_mapping;*/
       let reData = [];
       for (let m = 0; m < columnJson.length; m++) {
