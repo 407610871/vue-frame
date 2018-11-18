@@ -151,15 +151,15 @@ export default {
             }
             list.push(obj);
           }
-          if (_self.datas == 'edit') {
+          if (_self.datas != '') {
             _self.settingList = {
-              seledId: res.data.select,
+              seledId: res.data.storages[_self.datas].id,
               list: list
             }
           } else {
 
             _self.settingList = {
-              seledId: res.data.storages[0].id,
+              seledId: res.data.select,
               list: list
             }
           }
