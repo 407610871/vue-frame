@@ -426,10 +426,10 @@ export default {
       var pollIntervalMs;
       var actech = this.ruleForm.actech;
      if (this.ruleForm.cycleSet == '0'&&this.ruleForm.accessMode != "0" &&this.ruleForm.accessMode != "2") {
-        let jday;;
-        let jhour;
+        let jday = 0;;
+        let jhour = 0;
         let jmin;
-        if (this.ruleForm.jday == '' || this.ruleForm.jhour == '' || this.ruleForm.jmin == '') {
+        if (this.ruleForm.jmin == '') {
           this.$message.warning('请将间隔执行时间填写完整');
           return false;
         }
