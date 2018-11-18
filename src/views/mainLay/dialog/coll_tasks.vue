@@ -420,29 +420,6 @@ export default {
         return 'SUN';
       }
     },
-     Unweek(){
-      if(val=='MON'){
-      return '1';
-     }
-      if(val=='TUE'){
-      return '2';
-     }
-      if(val=='WED'){
-      return '3';
-     }
-      if(val=='THU'){
-      return '4';
-     }
-      if(val=='FRI'){
-      return '5';
-     }
-      if(val=='SAT'){
-      return '6';
-     }
-      if(val=='SUN'){
-      return '7';
-     }
-    },
     finish() {
       // debugger;
       //间隔执行

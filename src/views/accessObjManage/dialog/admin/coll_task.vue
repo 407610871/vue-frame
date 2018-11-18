@@ -471,11 +471,11 @@ export default {
       //间隔执行
       var pollIntervalMs = -1;
       var actech = 'JDBC';
-      if (this.ruleForm.cycleSet == '0') {
+      if (this.ruleForm.cycleSet == '0'&&this.ruleForm.accessMode != "0" &&this.ruleForm.accessMode != "2") {
         let jday;;
         let jhour;
         let jmin;
-        if(this.ruleForm.jday==' '||this.ruleForm.jhour==' '|| this.ruleForm.jmin==' '){
+        if(this.ruleForm.jday==''||this.ruleForm.jhour==''|| this.ruleForm.jmin==''){
            this.$message.warning('请将间隔执行时间填写完整');
           return false;
         }
@@ -490,7 +490,7 @@ export default {
         }
         var pollIntervalMs = this.formateTime(parseInt(jday), parseInt(jhour), parseInt(jmin));
         console.log(pollIntervalMs);
-      } else if (this.ruleForm.cycleSet == '1') {
+      } else if (this.ruleForm.cycleSet == '1'&&this.ruleForm.accessMode != "0" &&this.ruleForm.accessMode != "2") {
         if (this.radio == '') {
           this.$message.warning('请选择定时执行时间');
           return false;
