@@ -376,12 +376,12 @@ export default {
       console.log(this.monthData);
     },
     _minData() {
-      for (let i = 1; i < 60; i++) {
+      for (let i = 0; i < 60; i++) {
         this.$set(this.minData, i, i);
       }
     },
     _hourData() {
-      for (let i = 1; i < 24; i++) {
+      for (let i = 0; i < 24; i++) {
         this.$set(this.hourData, i, i);
       }
     },
@@ -426,9 +426,13 @@ export default {
       var pollIntervalMs = -1;
       var actech = 'JDBC';
       if (this.ruleForm.cycleSet == '0') {
-        let jday = 0;
-        let jhour = 0;
-        let jmin = 0;
+        let jday;;
+        let jhour;
+        let jmin;
+        if(this.ruleForm.jday==''||this.ruleForm.jhour==''|| this.ruleForm.jmin==''){
+           this.$message.warning('请将间隔执行时间填写完整');
+          return false;
+        }
         if (this.ruleForm.jday != '' && this.ruleForm.jday != undefined) {
           jday = this.ruleForm.jday;
         }
@@ -450,6 +454,10 @@ export default {
           let dfmin = '?';
           let dfhour = '?';
           let dfmon = '?';
+          if(this.ruleForm.dfmin==''||this.ruleForm.dfhour==''||this.ruleForm.dfmon==''){
+             this.$message.warning('请将定时执行时间填写完整');
+             return false;
+          }
           if (this.ruleForm.dfmin != '' && this.ruleForm.dfmin != undefined) {
             dfmin = this.ruleForm.dfmin;
           }
@@ -467,6 +475,10 @@ export default {
           let dsmin = '?';
           let dshour = '?';
           let dsweek = '?';
+          if(this.ruleForm.dsmin==''||this.ruleForm.dshour==''||this.ruleForm.dsweek==''){
+             this.$message.warning('请将定时执行时间填写完整');
+             return false;
+          }
           if (this.ruleForm.dsmin != '' && this.ruleForm.dsmin != undefined) {
             dsmin = this.ruleForm.dsmin;
           }
@@ -483,6 +495,10 @@ export default {
           //第三队列
           let dtmin = '?';
           let dthour = '?';
+          if(this.ruleForm.dtmin==''||this.ruleForm.dthour==''){
+             this.$message.warning('请将定时执行时间填写完整');
+             return false;
+          }
           if (this.ruleForm.dtmin != '' && this.ruleForm.dtmin != undefined) {
             dtmin = this.ruleForm.dtmin;
           }
