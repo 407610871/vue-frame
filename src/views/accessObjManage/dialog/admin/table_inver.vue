@@ -39,7 +39,7 @@
                 <el-button size="mini" type="info" v-if="scope.row.status=='0'" class="fl mr10">核验中</el-button>
                 <el-button v-if="scope.row.status=='1'" size="mini" type="primary" @click="startDaver(scope.row.taskId)" class="fl mr10">核验</el-button>
                 <data-top :msg='innerVisible' :taskId='taskId' @showIncre="showInver()" @saveIncre="saveInver($event)"></data-top>
-                <el-button size="mini" type="primary" class="fl" @click="checkLog(scope.row.taskId,scope.$index)">查看日志</el-button>
+                <el-button size="mini" type="primary" class="fl" @click="checkLog(scope.row.id,scope.$index)">查看日志</el-button>
               </template>
             </el-table-column>
           </el-table>
