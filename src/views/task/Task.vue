@@ -615,7 +615,7 @@ export default {
         //批量停止
         let errorData = [];
         for (let i = 0; i < row.length; i++) {
-          if (row[i].status == 1) {
+          if (row[i].status != 1) {
             errorData.push(row[i]);
           }
         }
