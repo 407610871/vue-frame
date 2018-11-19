@@ -241,7 +241,7 @@
       getFiltercolumnList(){
         this.$ajax.post(window.ENV.API_DACM + '/objDetail/dataList', {
           count:500,
-          objectInfoId:10659903,
+          objectInfoId:this.$route.params.objId,
           pagNum:1,
           trem:''
         }).then(res =>{
