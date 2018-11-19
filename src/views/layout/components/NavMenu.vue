@@ -1,5 +1,5 @@
 <template>
-  <div class="nav-menu">
+  <div class="nav-menu owntmenu">
     <el-menu :default-active="activeIndex" class="enc-nav-menu" mode="horizontal" @select="handleSelect" text-color="#425365" active-text-color="#499bd7">
       <el-menu-item index="1"><i class="enc-icon-shujujieru"></i>数据接入</el-menu-item>
       <el-menu-item index="2"><i class="enc-icon-shujuchuli"></i>数据处理</el-menu-item>
@@ -49,6 +49,14 @@ export default {
 };
 
 </script>
+<style rel="stylesheet/scss" lang="scss">
+  .owntmenu .el-menu:hover,
+    .owntmenu .el-menu:focus {
+      i {
+        color: #fff;
+      }
+    }
+</style>
 <style rel="stylesheet/scss" lang="scss" scoped>
 @import "src/styles/variables.scss";
 .nav-menu {
@@ -92,15 +100,7 @@ export default {
       height: $enc-nav-header-height;
       line-height: $enc-nav-header-height;
     }
-    .el-submenu:hover,
-    .el-submenu:focus {
-      i {
-        color: #fff;
-      }
-      .el-submenu__title i {
-        color: #fff;
-      }
-    }
+    
   }
 }
 
