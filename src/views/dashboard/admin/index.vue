@@ -139,6 +139,7 @@ export default {
                 newVal.timeFlag != 0
             ) {
                 // this.loadTable();
+                console.log()
 
             }
         },
@@ -273,6 +274,7 @@ export default {
             paramsObj.dataSourceName = this.tableParams.dataSourceName;
             paramsObj.platform = this.tableParams.platform;
             paramsObj.deptIds = this.tableParams.deptId;
+            console.log(this.tableParams)
 
             this.$ajax
                 .post(window.ENV.API_DACM + "/caccess/query", paramsObj)

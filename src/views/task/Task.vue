@@ -432,6 +432,7 @@ export default {
     },
     //手动全选事件
     selectAll(selection) {
+
       this.allSecectData[this.pageNum] = selection;
     },
     //批量操作
@@ -441,6 +442,7 @@ export default {
       let row = [];
 
       let row1 = Object.keys(this.allSecectData);
+      console.log(this.allSecectData);
       if (row1.length == 0) {
         this.$alert("请选择相应的任务！", "提示", {
           dangerouslyUseHTMLString: true
@@ -459,6 +461,12 @@ export default {
       let params = {
         taskInfoIds: tableParams.join(",")
       };
+
+      //  <span v-if="scope.row.status==0">新建</span>
+      //       <span v-if="scope.row.status==1">运行</span>
+      //       <span v-else-if="scope.row.status==2">暂停</span>
+      //       <span v-else-if="scope.row.status==3" style="color:red">失败</span>
+      //       <span v-else-if="scope.row.status==4">完成</span>
       if (a == 1) {
         //批量汇聚
         let errorData = [];
