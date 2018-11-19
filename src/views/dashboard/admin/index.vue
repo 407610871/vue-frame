@@ -461,7 +461,7 @@ export default {
         background: #fff;
 
         .count-container {
-            border-bottom: 1px solid #d9d9d9;
+            // border-bottom: 1px solid #d9d9d9;
             margin: 0 20px 10px 20px;
 
             .count-title {

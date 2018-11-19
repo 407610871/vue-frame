@@ -377,7 +377,7 @@ initSearch(){
     width: auto;
   }
   .checkDivItem {
-    border-bottom: 1px solid #d9d9d9;
+    border-bottom: 1px solid #d9d9d957;
   }
   .el-checkbox-group {
     display: inline-block;

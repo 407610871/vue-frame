@@ -249,6 +249,7 @@ export default {
     //查询按钮
     search() {
       let keyword = this.keyword;
+      this.allSecectData={};
       this.init(keyword);
     },
     //高级搜索
@@ -442,10 +443,17 @@ export default {
       let row = [];
 
       let row1 = Object.keys(this.allSecectData);
-      console.log(this.allSecectData)
-      // debugger;
+      // console.log(this.allSecectData)
+            // console.log(row1)
+            // console.log(row1.length)
+if(row1.length==0){
+   this.$alert("请选择相应的任务！", "提示", {
+          dangerouslyUseHTMLString: true
+        });
+        return;
+}
      for(let i=0;i<row1.length;i++){
-      if (this.allSecectData[row1[i]].length == 0) {
+      if (this.allSecectData[row1[i]].length == 0||row1.length==0) {
         this.$alert("请选择相应的任务！", "提示", {
           dangerouslyUseHTMLString: true
         });
