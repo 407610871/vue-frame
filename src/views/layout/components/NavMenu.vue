@@ -49,14 +49,6 @@ export default {
 };
 
 </script>
-<style rel="stylesheet/scss" lang="scss">
-  .owntmenu .el-menu:hover,
-    .owntmenu .el-menu:focus {
-      i {
-        color: #fff;
-      }
-    }
-</style>
 <style rel="stylesheet/scss" lang="scss" scoped>
 @import "src/styles/variables.scss";
 .nav-menu {
@@ -100,10 +92,27 @@ export default {
       height: $enc-nav-header-height;
       line-height: $enc-nav-header-height;
     }
-    
+  }
+  .el-submenu:hover,
+  .el-submenu:focus {
+    i {
+      color: #fff;
+    }
+    .el-submenu__title i {
+      color: #fff;
+    }
   }
 }
 
-
-
+</style>
+<style rel="stylesheet/scss" lang="scss">
+.owntmenu .el-submenu:hover,
+.owntmenu .el-submenu:focus {
+    i {
+        color: #fff;
+    }
+    .el-submenu__title i {
+        color: #fff;
+    }
+}
 </style>
