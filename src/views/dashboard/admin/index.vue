@@ -107,14 +107,14 @@ export default {
                 list: []
             },
             formFilterData: [],
-            pageSize:"20",
+            pageSize: "20",
         };
     },
     computed: {
         tableParams: function () {
             return this.$store.state.queryParams.dashboard;
         },
-       
+
         tableHeight: function () {
             return this.collapse ?
                 window.innerHeight - 430 :
@@ -142,7 +142,7 @@ export default {
 
             }
         },
-        
+
     },
     created() {
         // this.$root.eventHub.$on("search", keyword => {
@@ -212,18 +212,17 @@ export default {
         setFliter(data) {
             var queryParams = this.$store.state.queryParams[this.$route.name];
             var dataSourceName = queryParams.dataSourceName ?
-                queryParams.dataSourceName :
-                [];
-            var network = queryParams.network?queryParams.network:[];
+                queryParams.dataSourceName : [];
+            var network = queryParams.network ? queryParams.network : [];
             var platform = queryParams.platform ? queryParams.platform : [];
             let radioData = data.network.data;
-//             if(data.network.data[data.network.data.length-1].name!="取消"){
-// radioData[data.network.data.length] = {
-//                 id: "",
-//                 name: "取消"
-//             };
-//             }
-            
+            //             if(data.network.data[data.network.data.length-1].name!="取消"){
+            // radioData[data.network.data.length] = {
+            //                 id: "",
+            //                 name: "取消"
+            //             };
+            //             }
+
             this.formFilterData = [{
                     name: "接入源类型：",
                     id: "dataSourceName",
@@ -259,7 +258,7 @@ export default {
         loadTable: function () {
             var _self = this;
             _self.loading = true;
-               this.pageSize = this.$store.state.pageSize;
+            this.pageSize = this.$store.state.pageSize;
             var paramsObj = {
                 pageSize: this.$store.state.pageSize,
                 pageNum: this.tableParams.pageNum,
@@ -277,7 +276,7 @@ export default {
             this.$ajax
                 .post(window.ENV.API_DACM + "/caccess/query", paramsObj)
                 .then(function (res) {
-               
+
                     console.log("tableLoaded:dashboard");
                     if (res.data.code == "0000") {
                         _self.mainTableData = res.data.data.list;
@@ -376,6 +375,10 @@ export default {
                     .then(function (res) {
                         if (res.data.success == true) {
                             _self.loadTable();
+                        } else if (res.data.code ="9999") {
+                            _self.$alert("提示有采集任务正在执行，不可废止", "提示", {
+                                confirmButtonText: "确定"
+                            });
                         } else {
                             _self.$alert(res.data.message, "提示", {
                                 confirmButtonText: "确定"
