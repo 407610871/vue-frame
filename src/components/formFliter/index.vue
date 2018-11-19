@@ -145,7 +145,7 @@ this.initSearch()
     },
     //搜索条件关闭
     delSelect(index, a) {
-      debugger;
+      // debugger;
       if (a == 1) {
         this.formSeledShow.dataSourceName.splice(index, 1);
         this.formSeled.dataSourceName.splice(index, 1);
