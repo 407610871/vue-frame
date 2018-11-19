@@ -88,6 +88,7 @@ export default {
 			this.$emit('closeImport');
 		},
 		importCommit(){
+			debugger;
 			var formdata = new FormData();
 			formdata.append('filePath',this.importList.filePath);
 			formdata.append('objInfoId',this.importList.objInfoId);
