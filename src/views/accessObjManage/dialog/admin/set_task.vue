@@ -83,19 +83,10 @@ export default {
     closeDialog() {
       this.dialogVisible = false;
       this.msg = false;
-<<<<<<< HEAD
-      this.activeName = "first"
-      this.setMatchType(this.clear);
-      this.setRegInfo(this.regClear);
-      this.setSchemaList(this.clear);
-     // this.$emit('fre');
-=======
       this.activeName ="first"
        this.setMatchType(this.clear);
        this.setRegInfo(this.regClear);
        this.setSchemaList(this.clear);
-
->>>>>>> bb88ca1cf0299c4224aa32021075d2b9309822c6
       //this.$refs['ruleForm'].resetFields();
     },
     //步骤条
