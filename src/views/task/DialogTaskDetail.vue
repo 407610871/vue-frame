@@ -58,8 +58,8 @@
               </el-form-item>
             </el-col>
             <el-col :span="10">
-              <el-form-item label="接入对象:">
-                <span>{{sourceBaseInfo.sourceObjName}}</span>
+              <el-form-item label="接入对象:" :title="sourceBaseInfo.sourceObjNameList">
+              <span>{{sourceBaseInfo.sourceObjNameList}}</span>
               </el-form-item>
             </el-col>
             <el-col :span="4" class="bank">bank</el-col>
@@ -254,6 +254,11 @@
         height: 100%!important;
     }
 }
+.el-form-item--medium .el-form-item__content{
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 170px;
+}
 </style>
 
 <style lang="scss" scoped>
@@ -355,7 +360,8 @@ export default {
         period :"",
         sourceObjName :"",
         incrementColumn :"",
-        columnType :""
+        columnType :"",
+        sourceObjNameList:""
       },
       //接入数据更新信息
       sourceDataInfo:{
@@ -479,6 +485,12 @@ export default {
           that.loading1 = false;
           return;
         }
+        let sourceObjNameList = "";
+        let len = res.data.data.sourceTableName.length;
+        for(let i=0;i<len;i++){
+          sourceObjNameList = res.data.data.sourceTableName[i];
+          sourceObjNameList = sourceObjNameList+(i==len-1?"":",");
+        }
         let innerReqData = {
           params:{
             taskInfoDetailId:that.reqObj.taskInfoDetailId,
@@ -507,6 +519,8 @@ export default {
           }
           //接入类型翻译
           that.sourceBaseInfo.periodDesc = periodMap[innerRes.data.data.period];
+          //接入对象展示集合
+          that.sourceBaseInfo.sourceObjNameList = sourceObjNameList;
           that.loading1 = false;
         }).catch(function(err) {
           console.log(err);
