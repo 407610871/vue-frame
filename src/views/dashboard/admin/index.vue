@@ -62,7 +62,7 @@
         </el-main>
         <el-footer>
             <div class="enc-pagination">
-                <el-pagination v-if="queryParamReady" style="float:right; margin:10px;" @current-change="goPage" background :page-size:sync="pageSize" :total="mainTableDataTotal" layout="prev, pager, next, jumper" :current-page.sync="currentPage">
+                <el-pagination v-if="queryParamReady" style="float:right; margin:10px;" @current-change="goPage" background :page-size.sync="pageSize" :total="mainTableDataTotal" layout="prev, pager, next, jumper" :current-page.sync="currentPage">
                 </el-pagination>
             </div>
         </el-footer>
