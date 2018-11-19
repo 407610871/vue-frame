@@ -332,7 +332,8 @@
                   _self.importList.tableName = _self.$route.params.objName;
                   _self.importList.objInfoId = _self.$route.params.objId;
                   _self.importList.accessSysDialectId = _self.tableParams.ACCESS_SYS_DIALECT_ID;
-                  _self.importList.filePath = document.getElementById('file').value;
+                  // _self.importList.filePath = document.getElementById('file').value;
+                   _self.importList.filePath =res.data.data.filePath
                   _self.importList.ready = true;
                 } else {
                   _self.$alert('导入列表为空', '提示', {
@@ -368,18 +369,16 @@
       exportData() {
         request({
           url: this.exportUrl,
-         /* url: 'http://10.19.160.171:8080/DACM/objDetail/exportTemplateFile?objInfoId=10665724&tableName=impalakw3&diyComments=%E4%BD%A0%E5%A5%BD%E5%95%8A&accessSysDialectId=10002&browser=chrome',*/
+        //  url: 'http://10.19.160.171:8080/DACM/objDetail/exportTemplateFile?objInfoId=10665724&tableName=impalakw3&diyComments=%E4%BD%A0%E5%A5%BD%E5%95%8A&accessSysDialectId=10002&browser=chrome',
           method: "GET",
           responseType: "blob"
         }).then(res => {
-          console.log(res);　
-          var blob = new Blob([res.data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8' }); //application/vnd.openxmlformats-officedocument.spreadsheetml.sheet这里表示xlsx类型
-          　　
+          var blob = new Blob([res.data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8' }); //application/vnd.openxmlformats-officedocument.spreadsheetml.sheet这里表示xlsx类型　
           var downloadElement = document.createElement('a');　　
           var href = window.URL.createObjectURL(blob); //创建下载的链接
-          　　
-          downloadElement.href = href;　　
-          downloadElement.download = res.headers.filename; //下载后文件名
+          downloadElement.href = href;　
+          var str= this.tohanzi( res.headers.filename);
+          downloadElement.download =str; //下载后文件名
           　　
           document.body.appendChild(downloadElement);　　
           downloadElement.click(); //点击下载
@@ -672,7 +671,8 @@
           name: this.$route.name,
           data: storeData
         });
-      }
+      },
+    
     }
   }
 
