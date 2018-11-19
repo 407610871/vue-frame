@@ -62,8 +62,7 @@
         </el-main>
         <el-footer>
             <div class="enc-pagination">
-                               <el-pagination v-if="queryParamReady" style="float:right; margin:10px;" @current-change="goPage" background :page-size:sync="pageSize"   :page-count.sync="pageCount" layout="prev, pager, next, jumper" :current-page.sync="currentPage">
-
+                <el-pagination v-if="queryParamReady" style="float:right; margin:10px;" @current-change="goPage" background :page-size.sync="pageSize" :total="mainTableDataTotal" layout="prev, pager, next, jumper" :current-page.sync="currentPage">
                 </el-pagination>
             </div>
         </el-footer>
@@ -90,6 +89,7 @@ export default {
             queryParamReady: true,
             currentPage: 1,
             mainTableData: [],
+            mainTableDataTotal: 1,
             countTotal: "",
             keyword: "",
             // highSeaech:true,
@@ -107,15 +107,14 @@ export default {
                 list: []
             },
             formFilterData: [],
-            pageSize: 20,
-            pageCount:1,
+            pageSize:"20",
         };
     },
     computed: {
         tableParams: function () {
             return this.$store.state.queryParams.dashboard;
         },
-
+       
         tableHeight: function () {
             return this.collapse ?
                 window.innerHeight - 430 :
@@ -140,11 +139,10 @@ export default {
                 newVal.timeFlag != 0
             ) {
                 // this.loadTable();
-                console.log()
 
             }
         },
-
+        
     },
     created() {
         // this.$root.eventHub.$on("search", keyword => {
@@ -166,7 +164,6 @@ export default {
         this.$root.eventHub.$emit("setActiveNav", 1);
         this.storeReady();
         this.setCount();
-           this.loadTable();
 
     },
     methods: {
@@ -215,17 +212,18 @@ export default {
         setFliter(data) {
             var queryParams = this.$store.state.queryParams[this.$route.name];
             var dataSourceName = queryParams.dataSourceName ?
-                queryParams.dataSourceName : [];
-            var network = queryParams.network ? queryParams.network : [];
+                queryParams.dataSourceName :
+                [];
+            var network = queryParams.network?queryParams.network:[];
             var platform = queryParams.platform ? queryParams.platform : [];
             let radioData = data.network.data;
-            //             if(data.network.data[data.network.data.length-1].name!="取消"){
-            // radioData[data.network.data.length] = {
-            //                 id: "",
-            //                 name: "取消"
-            //             };
-            //             }
-
+//             if(data.network.data[data.network.data.length-1].name!="取消"){
+// radioData[data.network.data.length] = {
+//                 id: "",
+//                 name: "取消"
+//             };
+//             }
+            
             this.formFilterData = [{
                     name: "接入源类型：",
                     id: "dataSourceName",
@@ -261,7 +259,7 @@ export default {
         loadTable: function () {
             var _self = this;
             _self.loading = true;
-           _self.pageSize = this.$store.state.pageSize;
+               this.pageSize = this.$store.state.pageSize;
             var paramsObj = {
                 pageSize: this.$store.state.pageSize,
                 pageNum: this.tableParams.pageNum,
@@ -275,18 +273,19 @@ export default {
             paramsObj.dataSourceName = this.tableParams.dataSourceName;
             paramsObj.platform = this.tableParams.platform;
             paramsObj.deptIds = this.tableParams.deptId;
-            console.log(this.tableParams)
 
             this.$ajax
                 .post(window.ENV.API_DACM + "/caccess/query", paramsObj)
                 .then(function (res) {
+               
+                    console.log("tableLoaded:dashboard");
                     if (res.data.code == "0000") {
                         _self.mainTableData = res.data.data.list;
+                        _self.mainTableDataTotal = res.data.data.total;
                         _self.currentPage = _self.tableParams.pageNum;
-                           _self.pageCount = res.data.data.pages;
                     } else if (res.data.code == "5000") {
                         _self.mainTableData = [];
-                        _self.pageCount =1;
+                        _self.mainTableDataTotal = 1;
                         _self.currentPage = 1;
                     } else {
                         _self.$alert("加载数据源数据失败", "提示", {
@@ -377,10 +376,6 @@ export default {
                     .then(function (res) {
                         if (res.data.success == true) {
                             _self.loadTable();
-                        } else if (res.data.code ="9999") {
-                            _self.$alert("提示有采集任务正在执行，不可废止", "提示", {
-                                confirmButtonText: "确定"
-                            });
                         } else {
                             _self.$alert(res.data.message, "提示", {
                                 confirmButtonText: "确定"

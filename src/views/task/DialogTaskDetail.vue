@@ -25,7 +25,7 @@
           </div>
           <div class="proInfo-box clearfix">
             <el-col :span="10">
-              <el-form-item label="接入源名称:">
+              <el-form-item label="接入源名称:" :title="sourceBaseInfo.resourceName">
                 <span>{{sourceBaseInfo.resourceName}}</span>
               </el-form-item>
             </el-col>
@@ -80,7 +80,7 @@
         <!-- 接入基本信息 模块结束 -->
 
         <!-- 接入数据更新 模块开始 -->
-        <div class="daiInfo dockInfo" v-loading="loading2">
+        <div class="daiInfo dockInfo" v-loading="loading2||isCheckLoading">
           <div class="daiInfo-title">
             <h2>接入数据更新</h2>
           </div>
@@ -90,8 +90,9 @@
                 <span>{{sourceDataInfo.writeNum||'0'}}</span>
               </el-form-item>
             </el-col>
-            <el-col :span="4">
-              <el-button v-show="taskBaseInfo.status==1||taskBaseInfo.status==2||taskBaseInfo.status==4" type="primary" size="small" @click="checkData">数据核验</el-button>
+            <el-col :span="4" :class="{bank:!(reqObj.status==1||reqObj.status==2||reqObj.status==4)}">
+              {{(reqObj.status==1||reqObj.status==2||reqObj.status==4)?'':'bank'}}
+              <el-button v-show="reqObj.status==1||reqObj.status==2||reqObj.status==4" type="primary" size="small" @click="checkData">数据核验</el-button>
             </el-col>
             <el-col :span="10">
               <el-form-item label="剩余数据量预估:">
@@ -240,7 +241,7 @@
         
       </el-form>
     </el-dialog>
-    <dialogIsCheck :msgCheck="reqObj" v-if="isShowCheck&&isTestLink"></dialogIsCheck>
+    <dialogIsCheck :msgCheck="reqObj" v-if="isTestLink&&showCheckData"></dialogIsCheck>
   </div>
 </template>
 <style lang="scss">
@@ -258,6 +259,7 @@
   overflow: hidden;
   text-overflow: ellipsis;
   width: 170px;
+  white-space: nowrap;
 }
 </style>
 
@@ -334,8 +336,9 @@ export default {
       loading6:true,//数据预览的loading
       flagDesc:'',
       showInnerDialog: true,
-      isShowCheck:false,//是否展示数据核验
       isTestLink:false,//测试连接是否正常
+      showCheckData:false,
+      isCheckLoading:false,//是否因为点击数据核验而展示loading
       httpUrl:window.ENV.API_DOWN+'/',
       httpUrl2:window.ENV.API_DACM+'/',
       operateList:[
@@ -414,7 +417,6 @@ export default {
     },
     //关闭对话框
     closeDia(){
-
       this.$emit('closeDia',);
     },
     //切换当前任务状态
@@ -522,6 +524,8 @@ export default {
           that.sourceBaseInfo.periodDesc = periodMap[innerRes.data.data.period];
           //接入对象展示集合
           that.sourceBaseInfo.sourceObjNameList = sourceObjNameList;
+          //接入源名称
+          that.sourceBaseInfo.resourceName = res.data.data.sourceSysName;
           that.loading1 = false;
         }).catch(function(err) {
           console.log(err);
@@ -581,11 +585,14 @@ export default {
         });
     },
     //数据核验按钮点击
-    checkData(){
+    checkData(){ 
+      //isTestLink控制是否展示数据核验弹框
+      //isTestLink表示测试连接是否中断，若中断，则无法数据核验
       this.isTestLink=false;
-      this.isShowCheck=false;
+      this.showCheckData = true;
+      //接入数据更新是否通过测试连接接口展示loading，这个时候是点击“数据核验”时加载的loading
+      this.isCheckLoading = true;
       this.testConnect();
-      this.isShowCheck=true
     },
     //点击测试连接按钮，进行接口条用
     testConnect(){
@@ -607,17 +614,20 @@ export default {
             that.newWorkTrans(that.taskBaseInfo.networkStatus,res.data.data.speed);
             if(that.taskBaseInfo.networkStatus==2){
               that.isTestLink = false;
+              that.doMsg('数据核验失败！','error');
             }else{
               that.isTestLink = true;
             }
-            
           }
           that.loading3 = false;
+          that.isCheckLoading = false;
         }
       ).catch(
         function(err){
           console.log(err);
           that.loading3 = false;
+          that.isCheckLoading = false;
+          that.isTestLink = false;
         }
       )
     },

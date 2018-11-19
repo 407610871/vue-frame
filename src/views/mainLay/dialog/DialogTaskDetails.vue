@@ -90,9 +90,7 @@
                 <span>{{sourceDataInfo.writeNum}}</span>
               </el-form-item>
             </el-col>
-            <el-col :span="4">
-              <!-- <el-button type="primary" size="small" @click="isShowCheck=true">数据核验</el-button> -->
-            </el-col>
+           <el-col :span="4" class="bank">bank</el-col>
             <el-col :span="10">
               <el-form-item label="剩余数据量预估:">
                 <span>{{sourceDataInfo.left}}</span>
@@ -394,7 +392,7 @@ export default {
       that.loading1 = true;
       let reqData = {
         params:{
-          taskInfoDetailId:that.reqObj.taskInfoDetailsId,
+          taskInfoDetailId:that.reqObj.extendParams.taskInfoDetailsId,
           sourceObjType:that.reqObj.extendParams.objectType
         }
       };
