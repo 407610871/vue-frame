@@ -614,7 +614,7 @@ export default {
             that.newWorkTrans(that.taskBaseInfo.networkStatus,res.data.data.speed);
             if(that.taskBaseInfo.networkStatus==2){
               that.isTestLink = false;
-              taat.doMsg('数据核验失败！','error');
+              that.doMsg('数据核验失败！','error');
             }else{
               that.isTestLink = true;
             }
