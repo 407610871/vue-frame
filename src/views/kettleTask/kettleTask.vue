@@ -215,7 +215,8 @@ export default {
                res = res.data;
                this.loading = false;
                if(res.success){
-                   row.status = 'Running';
+                   //row.status = 'Running';
+                   this.init();
                }else{
                    row.status = 'Finished (with errors)';
                }
