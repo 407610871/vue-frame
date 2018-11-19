@@ -25,7 +25,7 @@
           </div>
           <div class="proInfo-box clearfix">
             <el-col :span="10">
-              <el-form-item label="接入源名称:">
+              <el-form-item label="接入源名称:" :title="sourceBaseInfo.resourceName">
                 <span>{{sourceBaseInfo.resourceName}}</span>
               </el-form-item>
             </el-col>
@@ -241,7 +241,7 @@
         
       </el-form>
     </el-dialog>
-    <dialogIsCheck :msgCheck="reqObj" v-if="isTestLink"></dialogIsCheck>
+    <dialogIsCheck :msgCheck="reqObj" v-if="isTestLink&&showCheckData"></dialogIsCheck>
   </div>
 </template>
 <style lang="scss">
@@ -259,6 +259,7 @@
   overflow: hidden;
   text-overflow: ellipsis;
   width: 170px;
+  white-space: nowrap;
 }
 </style>
 
@@ -336,6 +337,7 @@ export default {
       flagDesc:'',
       showInnerDialog: true,
       isTestLink:false,//测试连接是否正常
+      showCheckData:false,
       isCheckLoading:false,//是否因为点击数据核验而展示loading
       httpUrl:window.ENV.API_DOWN+'/',
       httpUrl2:window.ENV.API_DACM+'/',
@@ -583,10 +585,11 @@ export default {
         });
     },
     //数据核验按钮点击
-    checkData(){
+    checkData(){ 
       //isTestLink控制是否展示数据核验弹框
       //isTestLink表示测试连接是否中断，若中断，则无法数据核验
       this.isTestLink=false;
+      this.showCheckData = true;
       //接入数据更新是否通过测试连接接口展示loading，这个时候是点击“数据核验”时加载的loading
       this.isCheckLoading = true;
       this.testConnect();
@@ -624,6 +627,7 @@ export default {
           console.log(err);
           that.loading3 = false;
           that.isCheckLoading = false;
+          that.isTestLink = false;
         }
       )
     },
