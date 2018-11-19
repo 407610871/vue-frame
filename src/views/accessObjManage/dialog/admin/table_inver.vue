@@ -2,7 +2,7 @@
   <div class="taskMDialog userSurveyDialog">
     <el-button class="diabtn tin-btn add-btn" @click="dialogVisible = true">核验报告</el-button>
     <!--  <i class="el-icon-info" @click="dialogVisible = true">用户调研</i> -->
-    <el-dialog title="核验报告" :visible.sync="dialogVisible" width="60%" :before-close="closeDialog">
+    <el-dialog title="核验报告" :visible.sync="dialogVisible" width="73%" :before-close="closeDialog">
       <div class="title-gra plr30">
         <span class="grab gra-l"></span>
         <span class="grab gra-r"></span>
@@ -14,7 +14,7 @@
       <div class="proInfo-box">
         <div class="comTable">
           <el-table :data="tableData" style="width: 100%" height="250" stripe>
-            <el-table-column prop="source_tableName" label="源表">
+            <el-table-column prop="source_library" label="源表">
             </el-table-column>
             <el-table-column prop="flag" label="状态">
               <template slot-scope="scope">
@@ -23,7 +23,7 @@
             </el-table-column>
             <el-table-column prop="source_tableNum" label="源数据量">
             </el-table-column>
-            <el-table-column prop="target_tableName" label="目标表">
+            <el-table-column prop="target_library" label="目标表">
             </el-table-column>
             <el-table-column prop="target_tableNum" label="数据量">
             </el-table-column>
@@ -39,7 +39,7 @@
                 <el-button size="mini" type="info" v-if="scope.row.status=='0'" class="fl mr10">核验中</el-button>
                 <el-button v-if="scope.row.status=='1'" size="mini" type="primary" @click="startDaver(scope.row.taskId)" class="fl mr10">核验</el-button>
                 <data-top :msg='innerVisible' :taskId='taskId' @showIncre="showInver()" @saveIncre="saveInver($event)"></data-top>
-                <el-button size="mini" type="primary" class="fl" @click="checkLog(scope.row.taskId,scope.$index)">查看日志</el-button>
+                <el-button size="mini" type="primary" class="fl" @click="checkLog(scope.row.id,scope.$index)">查看日志</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -211,7 +211,7 @@ export default {
       if (this.dialogVisible) {
         this.accessSysId = this.pdata.accessSysId;
         this._getTableNum();
-        // debugger;
+        debugger;
         this.name = decodeURI(this.$route.params.sourceName);
       }
     }

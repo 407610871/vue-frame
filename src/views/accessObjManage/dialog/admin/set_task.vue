@@ -2,7 +2,7 @@
   <div class="taskMDialog userSurveyDialog setTaskDia">
     <el-button @click="setTask()" class="add-btn fr">批量采集</el-button>
     <!--  <i class="el-icon-info" @click="dialogVisible = true">设置通配符</i> -->
-    <el-dialog title="批量接入任务向导" :visible.sync="dialogVisible" width="60%" :before-close="closeDialog">
+    <el-dialog title="批量接入任务向导" :visible.sync="dialogVisible" width="73%" :before-close="closeDialog">
       <div class="title-gra plr30">
         <span class="grab gra-l"></span>
         <span class="grab gra-r"></span>
@@ -16,7 +16,7 @@
                 <h2>提供方信息</h2>
               </div>
             </div>
-            <user-surveybak  :info="rowList" @pre="next('second')" @closeuser="closeDialog()" ref="survey"></user-surveybak>
+            <user-surveybak :info="rowList" @pre="next('second')" @closeuser="closeDialog()" ref="survey"></user-surveybak>
             <!--  <div class="btn tcenter">
              <el-button type="primary" style="margin-top: 12px;" @click="next('second')">下一步</el-button>
              <el-button style="margin-top: 12px;" @click="closeDialog">取消</el-button>
@@ -44,7 +44,7 @@
                 <h2>设置采集任务</h2>
               </div>
             </div>
-            <coll-task :msg="activeName" :rowList="rowList" @pre="next('third')" @fresh="closeDialog()"> </coll-task>
+            <coll-task :msg="activeName" :rowList="rowList" @pre="next('third')" @fresh="fresh()"> </coll-task>
             <!-- <div class="btn tcenter mt30">
               <el-button type="primary" style="margin-top: 12px;" @click="next('third')">上一步</el-button>
               <el-button type="primary" style="margin-top: 12px;">完成</el-button>
@@ -68,16 +68,16 @@ export default {
       activeName: 'first',
       dialogVisible: false,
       tabs: '',
-      msg:false,
+      msg: false,
       event: '',
       idList: [],
-      clear:[],
-      regClear:{},
+      clear: [],
+      regClear: {},
     };
   },
   methods: {
-     ...mapMutations([
-      'setRegInfo', 'setMatchType','setSchemaList'
+    ...mapMutations([
+      'setRegInfo', 'setMatchType', 'setSchemaList'
     ]),
     //关闭对话框
     closeDialog() {
@@ -87,7 +87,6 @@ export default {
        this.setMatchType(this.clear);
        this.setRegInfo(this.regClear);
        this.setSchemaList(this.clear);
- this.$emit('fre');
       //this.$refs['ruleForm'].resetFields();
     },
     //步骤条
@@ -100,6 +99,10 @@ export default {
       this.$emit('fre');
       this.activeName = 'first';
       this.dialogVisible = false;
+      this.setMatchType(this.clear);
+      this.setRegInfo(this.regClear);
+      this.setSchemaList(this.clear);
+      this.$emit('fre');
     },
     next(steps) {
       this.activeName = steps;
@@ -144,15 +147,15 @@ export default {
   computed: {
 
   },
-  watch:{
-    dialogVisible(){
-      if(this.dialogVisible){
+  watch: {
+    dialogVisible() {
+      if (this.dialogVisible) {
         this.msg = true;
         console.log(this.jrtype + "54546465454");
       }
     }
   },
-  props: ['rowList','jrtype']
+  props: ['rowList', 'jrtype']
 
 };
 

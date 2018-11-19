@@ -395,7 +395,7 @@ export default {
       let reqData = {
         params:{
           taskInfoDetailId:that.reqObj.taskInfoDetailId,
-          sourceObjType:that.reqObj.sourceObjType
+          sourceObjType:that.reqObj.objectType
         }
       };
       axios.get(that.httpUrl+"manager/task/detail/source",reqData).then(function(res){

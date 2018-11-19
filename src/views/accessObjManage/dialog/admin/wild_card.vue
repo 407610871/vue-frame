@@ -93,7 +93,6 @@
 <script>
 import { mapState, mapMutations, mapActions } from 'vuex'
 import norelaWild from '@/views/mainLay/dialog/norela_wild'
-import columnJson from '@/static/json/columnType'
 export default {
   name: "userSurvey",
   data: function() {
@@ -155,10 +154,26 @@ export default {
           return false;
         } else {
           if (this.ruleForm.typeKind == '0') {
-            var RegInfo = {
-              baseStart: this.ruleForm.baseStart,
-              baseEnd: this.ruleForm.baseEnd,
-              baseflag: false
+            if (this.ruleForm.baseEnd.indexOf('-') != -1) {
+              var RegInfo = {
+                baseStart: this.ruleForm.baseStart,
+                baseEnd: `\/\/d{4}(-)\/\/d{1,2}\/\/1\/\/d{1,2}`,
+                baseflag: false
+              }
+            }
+            if (this.ruleForm.baseEnd.indexOf('/') != -1) {
+              var RegInfo = {
+                baseStart: this.ruleForm.baseStart,
+                baseEnd: `\/\/d{4}(/)\/\/d{1,2}\/\/1\/\/d{1,2}`,
+                baseflag: false
+              }
+            }
+            if (this.ruleForm.baseEnd.indexOf(':') != -1) {
+              var RegInfo = {
+                baseStart: this.ruleForm.baseStart,
+                baseEnd: `\/\/d{4}(:)\/\/d{1,2}\/\/1\/\/d{1,2}`,
+                baseflag: false
+              }
             }
             this.setRegInfo(RegInfo);
           } else {
@@ -225,14 +240,18 @@ export default {
     //得到字段类型
     _getType() {
       var _self = this;
-
-      for (let m = 0; m < columnJson.length; m++) {
-        if (this.$route.params.type == columnJson[m].type) {
-          _self.TypeData = columnJson[m].datas;
-        }
-      }
-      //console.log(_self.TypeData);
-
+      this.$ajax.get('./getColumnType').then(function(res) {
+          debugger;
+          for (let m = 0; m < res.data.length; m++) {
+            if (_self.rowList[0].accessSys.accessSysDialect.name == res.data[m].type) {
+              _self.TypeData = res.data[m].datas;
+            }
+          }
+          //console.log(_self.TypeData);
+        })
+        .catch(function(err) {
+          console.log(err)
+        });
 
     },
   },
@@ -248,13 +267,14 @@ export default {
   computed: {
 
   },
-  props: ['rowList', 'msg', 'jrtype'],
+  props: ['rowList', 'msg','jrtype'],
   watch: {
     msg() {
-      if (this.msg == "second") {
-        if (this.jrtype == 'mysql' || this.jrtype == 'oracle' || this.jrtype == 'postgresql' || this.jrtype == 'sqlserver') {
+      if (this.msg=="second") {
+        if(this.jrtype=='mysql' || this.jrtype=='oracle'|| this.jrtype=='postgresql' || this.jrtype=='sqlserver'){
           this.ruleForm.matchType = '0'
-        } else {
+        }
+        else{
           this.ruleForm.matchType = '1';
         }
         this._getRegexList();

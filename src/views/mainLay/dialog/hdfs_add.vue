@@ -1,7 +1,7 @@
 <template>
   <div class="taskMDialog">
     <el-button @click="dialogVisible = true" class="add-btn">新增</el-button>
-    <el-dialog title="新增" :visible.sync="dialogVisible" width="50%" :before-close="closeDialog">
+    <el-dialog title="新增" :visible.sync="dialogVisible" width="73%" :before-close="closeDialog">
       <div class="title-gra">
         <span class="grab gra-l"></span>
         <span class="grab gra-r"></span>
@@ -201,7 +201,7 @@ export default {
     },
     //获取预设接口
     _getProData() {
-      // debugger;
+      debugger;
       console.log(this.GLOBAL);
       this.$ajax({
         method: "get",
