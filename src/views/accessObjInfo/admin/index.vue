@@ -241,7 +241,7 @@
       getFiltercolumnList(){
         this.$ajax.post(window.ENV.API_DACM + '/objDetail/dataList', {
           count:500,
-          objectInfoId:10659903,
+          objectInfoId:this.$route.params.objId,
           pagNum:1,
           trem:''
         }).then(res =>{
@@ -360,7 +360,7 @@
       exportData() {
         request({
           url: this.exportUrl,
-          // url: 'http://10.19.248.200:31653/DAM/manager/exportAction/exportTableDataCount',
+         /* url: 'http://10.19.160.171:8080/DACM/objDetail/exportTemplateFile?objInfoId=10665724&tableName=impalakw3&diyComments=%E4%BD%A0%E5%A5%BD%E5%95%8A&accessSysDialectId=10002&browser=chrome',*/
           method: "GET",
           responseType: "blob"
         }).then(res => {

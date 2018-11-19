@@ -1,6 +1,6 @@
 <template>
   <div class="taskMDialog" style="padding-bottom:15px;" >
-    <el-dialog :title="reqObj.taskName" :close-on-click-modal="false" :visible.sync="showInnerDialog" @closed="closeDia" class="task-Detail-dialog" width="73%">
+    <el-dialog :title="reqObj.taskName" :close-on-click-modal="false" :visible.sync="showInnerDialog" @closed="closeDia" class="task-Detail-dialog">
       <div class="title-gra">
         <span class="grab gra-l"></span>
         <span class="grab gra-r"></span>
@@ -58,8 +58,8 @@
               </el-form-item>
             </el-col>
             <el-col :span="10">
-              <el-form-item label="接入对象:" :title="sourceBaseInfo.sourceObjNameList">
-              <span>{{sourceBaseInfo.sourceObjNameList}}</span>
+              <el-form-item label="接入对象:">
+                <span>{{sourceBaseInfo.sourceObjName}}</span>
               </el-form-item>
             </el-col>
             <el-col :span="4" class="bank">bank</el-col>
@@ -91,7 +91,7 @@
               </el-form-item>
             </el-col>
             <el-col :span="4">
-              <el-button type="primary" size="small" @click="isShowCheck=true">数据核验</el-button>
+              <!-- <el-button type="primary" size="small" @click="isShowCheck=true">数据核验</el-button> -->
             </el-col>
             <el-col :span="10">
               <el-form-item label="剩余数据量预估:">
@@ -164,83 +164,14 @@
             <el-col :span="10" class="bank">bank</el-col>
           </div>
           <!-- 四个日志tab 开始 -->
-          <div class="daiInfo-tabs">
-            <el-tabs type="border-card" style="height:265px;">
-              <el-tab-pane label="汇聚任务日志信息">
-                <div class="dataCheck-tab" v-loading="loading4">
-                  <textarea v-show="taskLog!=''" name="" id="" cols="30" rows="12" disabled="disabled" style="resize:none;width: 100%; height: 180px;border:none;background:inherit" >{{taskLog}}</textarea>
-                  <div class="tips-none" v-show="taskLog==''">暂无数据</div>
-                </div>
-              </el-tab-pane>
-              <el-tab-pane label="数据核验日志信息">
-                <div class="dataCheck-tab" v-loading="loading5">
-                  <div class="logItem" v-for="item in dataCheckList" :key="item.source_library">
-                    <span class="lab">源库：</span><span>{{item.source_library}}</span>
-                    <br>
-                    <span class="lab">源表：</span><span>{{item.source_tableName}}</span>
-                    <br>
-                    <span class="lab">执行结果：</span><span>{{item.source_tableNum}}</span>
-                    <br>
-                    <span class="lab">数据核验查询语句：</span><span>{{item.source_sql}}</span>
-                    <br>
-                    <br>
-                    <span class="lab">目标库：</span><span>{{item.target_library}}</span>
-                    <br>
-                    <span class="lab">目标表：</span><span>{{item.target_tableName}}</span>
-                    <br>
-                    <span class="lab">执行结果：</span><span>{{item.target_tableNum}}</span>
-                    <br>
-                    <span class="lab">数据核验查询语句：</span><span>{{item.target_sql}}</span>
-                    <br>
-                    <br>
-                    <span class="lab">核验结果：</span><span>{{item.testresults_result==0?'成功':'失败'}}</span>
-                    <br>
-                    <span class="lab">核验差值</span><span>{{item.testresults_dvalue}}</span>
-                    <br>
-                    <br>
-                    <div class="logItem-line"></div>
-                    <br>
-                    <br>
-                  </div>
-                  <div class="tips-none" v-show="dataCheckList.length==0">暂无数据核验日志信息</div>
-                </div>
-              </el-tab-pane>
-              <el-tab-pane label="网络连接信息">
-                <div class="dataCheck-tab" v-loading="loading3">
-                  {{taskBaseInfo.newWorkDesc}}
-                </div>
-              </el-tab-pane>
-              <el-tab-pane class="test" label="数据预览">
-                <!-- 数据预览 表格开始 -->
-                <!-- 数据预览表头不确定，根据接口返回的list集合对象里的key值来确定，所以采用如下写法实现 -->
-                <div class="dataViews-table" v-loading="loading6">
-                  <div class="table-header">
-                    <div class="table-th">
-                      <span v-for="keyitem in keyList" :key="keyitem">{{keyitem}}</span>
-                    </div>
-                    <div class=table-tr-line></div>
-                  </div>
-                  <div class="table-body">
-                    <div class="table-tr" v-for="item in dataViewsList" :key="item[keyList[0]]">
-                      <div class=table-tr-context>
-                        <span v-for="keyitem in keyList" :key="keyitem">{{item[keyitem]}}</span>
-                      </div>
-                      <div class=table-tr-line></div>
-                    </div>
-                  </div>
-                  <div class="tips-none" v-show="keyList.length==0">暂无数据</div>
-                </div>
-                <!-- 数据预览 表格结束 -->
-              </el-tab-pane>
-            </el-tabs>
-          </div>
+         
           <!-- 四个日志tab 结束 -->
         </div>
         <!-- 任务基本信息 模块结束 -->
         
       </el-form>
     </el-dialog>
-    <dialogIsCheck :msgCheck="reqObj" v-if="isShowCheck"></dialogIsCheck>
+    
   </div>
 </template>
 <style lang="scss">
@@ -253,11 +184,6 @@
         margin-top: 25px!important;
         height: 100%!important;
     }
-}
-.el-form-item--medium .el-form-item__content{
-  overflow: hidden;
-  text-overflow: ellipsis;
-  width: 170px;
 }
 </style>
 
@@ -320,7 +246,6 @@
 </style>
 <script>
 import axios from "axios";
-import DialogIsCheck from "./DialogIsCheck";
 export default {
   name: "taskMDialog",
   data: function() {
@@ -360,8 +285,7 @@ export default {
         period :"",
         sourceObjName :"",
         incrementColumn :"",
-        columnType :"",
-        sourceObjNameList:""
+        columnType :""
       },
       //接入数据更新信息
       sourceDataInfo:{
@@ -385,7 +309,7 @@ export default {
   },
   props: ["title",'reqObj'],
   components:{
-    DialogIsCheck
+   
   },
   created(){
     console.log("页面入参",this.reqObj);
@@ -398,7 +322,7 @@ export default {
     //查询接入任务日志信息
     this.getSourceTaskLog();
     //查询数据核验日志信息
-    this.getDataCheckLog();
+   // this.getDataCheckLog();
     //查询网络连接信息--与上面查询任务基本信息一个接口，所以在此不需要调用专门的查询
     //this.getNewworkConLog();
     //查询数据预览
@@ -471,7 +395,7 @@ export default {
       let reqData = {
         params:{
           taskInfoDetailId:that.reqObj.taskInfoDetailId,
-          sourceObjType:that.reqObj.sourceObjType
+          sourceObjType:that.reqObj.objectType
         }
       };
       axios.get(that.httpUrl+"manager/task/detail/source",reqData).then(function(res){
@@ -484,12 +408,6 @@ export default {
           that.doMsg('“/manager/task/detail/source”'+res.data.message,"error");
           that.loading1 = false;
           return;
-        }
-        let sourceObjNameList = "";
-        let len = res.data.data.sourceTableName.length;
-        for(let i=0;i<len;i++){
-          sourceObjNameList = res.data.data.sourceTableName[i];
-          sourceObjNameList = sourceObjNameList+(i==len-1?"":",");
         }
         let innerReqData = {
           params:{
@@ -519,8 +437,6 @@ export default {
           }
           //接入类型翻译
           that.sourceBaseInfo.periodDesc = periodMap[innerRes.data.data.period];
-          //接入对象展示集合
-          that.sourceBaseInfo.sourceObjNameList = sourceObjNameList;
           that.loading1 = false;
         }).catch(function(err) {
           console.log(err);

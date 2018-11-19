@@ -15,22 +15,22 @@
           <span v-for="(dataSourceName,key,index) in formSeledShow.dataSourceName" :key="index"> {{dataSourceName.name}} <i class="el-icon-error" @click="delSelect(index,1)"></i>
           </span>
         </div>
-        <div class="look" v-show="formSeled.network!=''||formSeled.network==undefined">接入数据来源：
-          <span v-if="formSeled.network==1">公安网<i class="el-icon-error" @click="delSelect(formSeled.network,2)"></i></span>
-          <span v-else-if="formSeled.network==2">私网<i class="el-icon-error" @click="delSelect(formSeled.network,2)"></i></span>
-          <span v-else-if="formSeled.network==3">委办网<i class="el-icon-error" @click="delSelect(formSeled.network,2)"></i></span>
+        <div class="look" v-show="formSeledShow.network.length!=0">接入数据来源：
+         
+                    <span v-for="(network,key,index) in formSeledShow.network" :key="index">{{network.name}} <i class="el-icon-error" @click="delSelect(index,2)"></i> </span>
+
         </div>
         <div class="look" v-show="formSeledShow.platform.length!=0">对接平台：
-          <span v-for="(platform,index) in formSeledShow.platform" :key="index">{{platform.name}} <i class="el-icon-error" @click="delSelect(index,3)"></i> </span>
+          <span v-for="(platform,key,index) in formSeledShow.platform" :key="index">{{platform.name}} <i class="el-icon-error" @click="delSelect(index,3)"></i> </span>
         </div>
       </el-form-item>
       <el-form-item v-show="!collapse" v-for="(item,indexs) in dataObj" :label="item.name" :key="indexs" class="checkDivItem">
         <el-checkbox-group v-if="item.type=='checkbox'" v-model="formSeled[item.id]" @change="formFilter">
           <el-checkbox v-for="(subItem,index) in item.checkData" v-show="index<=dataObj[indexs].limit" :label="subItem.id" :key="subItem.id">{{subItem.name}}</el-checkbox>
 
-        </el-checkbox-group>
+        </el-checkbox-group> 
 
-        <el-radio  v-if="item.type=='radio'" v-for="subItem in item.checkData" v-model="formSeled[item.id]" :label="subItem.id" :key="subItem.id" @change="formFilter">{{subItem.name}}</el-radio>
+        <el-radio  v-if="item.type=='radio'" v-for="(subItem) in item.checkData" v-model="formSeled[item.id]" :label="subItem.id" :key="subItem.id" @change="formFilter">{{subItem.name}}</el-radio>
         <span v-if="item.type=='checkbox'" class="moreSeclect" @click="domoreSeclect(indexs)"> {{doMoreArray[indexs]?"收起":" 更多 "}} <i :class="!doMoreArray[indexs]?'el-icon-caret-bottom':'el-icon-caret-top'"></i> </span>
       </el-form-item>
     </div>
@@ -43,9 +43,13 @@ export default {
       formSeled: {},
       formSeledShow: {
         dataSourceName: [],
-        network: "",
-        platform: []
+        network: [],
+        platform: [],
+        formFilterData:[]
       },
+      dataObj:[],
+              formFilterData:[],
+
       collapse: true,
       keyword: "",
       typeLength: 4,
@@ -55,10 +59,10 @@ export default {
     };
   },
   props: {
-    dataObj: {
-      type: Array,
-      required: true
-    },
+    // dataObj: {
+    //   // type: Array,
+    //   // required: true
+    // },
     formCollapse: {
       type: Boolean,
       required: false,
@@ -67,30 +71,90 @@ export default {
   },
   computed: {},
   created() {
-
+    this.storeReady();
+                console.log(this.dataObj)
 
   },
   mounted() {
     this.getFormSeled();
+          // console.log(this.formSeled);
+this.initSearch()
   },
 
   methods: {
+     storeReady: function () {
+            var fliterItemList = this.$store.state.fliterItemList;
+            if (
+                fliterItemList.network.ready &&
+                fliterItemList.dataSourceName.ready &&
+                fliterItemList.platform.ready &&
+                this.$store.state.pageReady
+            ) {
+                // console.log(fliterItemList);
+                this.setFliter(fliterItemList);
+            } else {
+                var _self = this;
+                setTimeout(function () {
+                    _self.storeReady();
+                }, 200);
+            }
+        },
+           setFliter(data) {
+            var queryParams = this.$store.state.queryParams[this.$route.name];
+            var dataSourceName = queryParams.dataSourceName ?
+                queryParams.dataSourceName :
+                [];
+            var network = queryParams.network?queryParams.network:[];
+            var platform = queryParams.platform ? queryParams.platform : [];
+            let radioData = data.network.data;
+         
+            this.formFilterData = [{
+                    name: "接入源类型：",
+                    id: "dataSourceName",
+                    type: "checkbox",
+                    checkData: data.dataSourceName.data,
+                    seledData: dataSourceName,
+                    limit: 4
+                },
+                {
+                    name: "接入数据来源：",
+                    id: "network",
+                    type: "checkbox",
+                    checkData: data.network.data,
+                    seledData: network,
+                    limit: 4
+                },
+                {
+                    name: "对接平台：",
+                    id: "platform",
+                    type: "checkbox",
+                    checkData: data.platform.data,
+                    seledData: platform,
+                    limit: 4
+                }
+            ];
+            this.queryParamReady = true;
+            // console.log(this.formFilterData)
+            this.dataObj=this.formFilterData
+
+        },
     //高级搜索
-    doCollapse(){
-
-      this.collapse=!this.collapse;
-            this.$emit("highSeaech", this.collapse);
-        // console.log(this.collapse)
-    console.log(this.formSeled);
-
+    doCollapse() {
+      this.collapse = !this.collapse;
+      this.$emit("highSeaech", this.collapse);
+      // console.log(this.collapse)
+      // console.log(this.dataObj);
     },
     //搜索条件关闭
     delSelect(index, a) {
+      // debugger;
       if (a == 1) {
         this.formSeledShow.dataSourceName.splice(index, 1);
         this.formSeled.dataSourceName.splice(index, 1);
       } else if (a == 2) {
-        this.formSeled.network = "";
+        this.formSeledShow.network.splice(index, 1);
+        this.formSeled.network.splice(index, 1);
+        // this.formSeled.network = "";
       } else if (a == 3) {
         this.formSeledShow.platform.splice(index, 1);
         this.formSeled.platform.splice(index, 1);
@@ -108,32 +172,106 @@ export default {
     search() {
       this.$emit("doSearch", this.keyword);
     },
+//初始化查询条件
+initSearch(){
+
+   this.formSeledShow.dataSourceName = [];
+      this.formSeledShow.platform = [];
+            this.formSeledShow.network = [];
+
+      // console.log(this.dataObj);
+      // debugger;
+      if (this.formSeled.dataSourceName.length != undefined) {
+        for (let i = 0; i < this.formSeled.dataSourceName.length; i++) {
+          for (let z = 0; z < this.dataObj[0].checkData.length; z++) {
+            if (
+              this.formSeled.dataSourceName[i] ==
+              this.dataObj[0].checkData[z].id
+            ) {
+              this.formSeledShow.dataSourceName.push({
+                id: this.dataObj[0].checkData[z].id,
+                name: this.dataObj[0].checkData[z].name
+              });
+            }
+          }
+        }
+      }
+      if (this.formSeled.network.length != undefined) {
+        for (let i = 0; i < this.formSeled.network.length; i++) {
+          for (let z = 0; z < this.dataObj[1].checkData.length; z++) {
+            if (this.formSeled.network[i] == this.dataObj[1].checkData[z].id) {
+              this.formSeledShow.network.push({
+                id: this.dataObj[1].checkData[z].id,
+                name: this.dataObj[1].checkData[z].name
+              });
+            }
+          }
+        }
+      }
+      if (this.formSeled.platform.length != undefined) {
+        for (let i = 0; i < this.formSeled.platform.length; i++) {
+          for (let z = 0; z < this.dataObj[2].checkData.length; z++) {
+            if (this.formSeled.platform[i] == this.dataObj[2].checkData[z].id) {
+              this.formSeledShow.platform.push({
+                id: this.dataObj[2].checkData[z].id,
+                name: this.dataObj[2].checkData[z].name
+              });
+            }
+          }
+        }
+      }
+
+},
+
     formFilter: function() {
       this.formSeledShow.dataSourceName = [];
       this.formSeledShow.platform = [];
+            this.formSeledShow.network = [];
+
+      // console.log(this.dataObj);
       // debugger;
-      for (let i = 0; i < this.formSeled.dataSourceName.length; i++) {
-        for (let z = 0; z < this.dataObj[0].checkData.length; z++) {
-          if (
-            this.formSeled.dataSourceName[i] == this.dataObj[0].checkData[z].id
-          ) {
-            this.formSeledShow.dataSourceName.push({
-              id: this.dataObj[0].checkData[z].id,
-              name: this.dataObj[0].checkData[z].name
-            });
+      if (this.formSeled.dataSourceName.length != undefined) {
+        for (let i = 0; i < this.formSeled.dataSourceName.length; i++) {
+          for (let z = 0; z < this.dataObj[0].checkData.length; z++) {
+            if (
+              this.formSeled.dataSourceName[i] ==
+              this.dataObj[0].checkData[z].id
+            ) {
+              this.formSeledShow.dataSourceName.push({
+                id: this.dataObj[0].checkData[z].id,
+                name: this.dataObj[0].checkData[z].name
+              });
+            }
           }
         }
       }
-      for (let i = 0; i < this.formSeled.platform.length; i++) {
-        for (let z = 0; z < this.dataObj[2].checkData.length; z++) {
-          if (this.formSeled.platform[i] == this.dataObj[2].checkData[z].id) {
-            this.formSeledShow.platform.push({
-              id: this.dataObj[2].checkData[z].id,
-              name: this.dataObj[2].checkData[z].name
-            });
+      if (this.formSeled.network.length != undefined) {
+        for (let i = 0; i < this.formSeled.network.length; i++) {
+          for (let z = 0; z < this.dataObj[1].checkData.length; z++) {
+            if (this.formSeled.network[i] == this.dataObj[1].checkData[z].id) {
+              this.formSeledShow.network.push({
+                id: this.dataObj[1].checkData[z].id,
+                name: this.dataObj[1].checkData[z].name
+              });
+            }
           }
         }
       }
+      if (this.formSeled.platform.length != undefined) {
+        for (let i = 0; i < this.formSeled.platform.length; i++) {
+          for (let z = 0; z < this.dataObj[2].checkData.length; z++) {
+            if (this.formSeled.platform[i] == this.dataObj[2].checkData[z].id) {
+              this.formSeledShow.platform.push({
+                id: this.dataObj[2].checkData[z].id,
+                name: this.dataObj[2].checkData[z].name
+              });
+            }
+          }
+        }
+      }
+
+      // console.log(this.formSeled);
+            // console.log(this.formSeledShow);
 
       this.$emit("formFilter", this.formSeled);
     },
@@ -141,11 +279,17 @@ export default {
     getFormSeled: function() {
       // console.log('this.dataObj');
       // console.log(this.dataObj);
-      var obj = {};
-      for (var value of this.dataObj) {
-        obj[value.id] = value.seledData;
+      let obj = {};
+      // for (var value of this.dataObj) {
+      //   obj[value.id] = value.seledData;
+      // }
+
+      for (let i = 0; i < this.dataObj.length; i++) {
+        obj[this.dataObj[i].id] = this.dataObj[i].seledData;
       }
       this.formSeled = obj;
+
+      // console.log(this.formSeled);
     }
   }
 };
@@ -229,9 +373,9 @@ export default {
     margin-left: 20px;
     width: 100%;
   }
-.look{
+  .look {
     width: auto;
-}
+  }
   .checkDivItem {
     border-bottom: 1px solid #d9d9d9;
   }

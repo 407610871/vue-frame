@@ -17,7 +17,7 @@
             </el-col>
             <el-col :span="1" class="bank">bank</el-col>
             <el-col :span="6">
-             <!--  <el-input v-model="ruleForm.tablename"></el-input> -->
+              <!--  <el-input v-model="ruleForm.tablename"></el-input> -->
             </el-col>
           </el-col>
           <el-col :span="24">
@@ -397,15 +397,42 @@ export default {
     pre() {
       this.$emit('pre');
     },
+    weekTrans(val) {
+      if (val == '1') {
+        return 'MON';
+      }
+      if (val == '2') {
+        return 'TUE';
+      }
+      if (val == '3') {
+        return 'WED';
+      }
+      if (val == '4') {
+        return 'THU';
+      }
+      if (val == '5') {
+        return 'FRI';
+      }
+      if (val == '6') {
+        return 'SAT';
+      }
+      if (val == '7') {
+        return 'SUN';
+      }
+    },
     finish() {
-      debugger;
+      // debugger;
       //间隔执行
       var pollIntervalMs;
       var actech = this.ruleForm.actech;
-      if (this.ruleForm.cycleSet == '0') {
-        let jday = 0;
+     if (this.ruleForm.cycleSet == '0'&&this.ruleForm.accessMode != "0" &&this.ruleForm.accessMode != "2") {
+        let jday = 0;;
         let jhour = 0;
-        let jmin = 0;
+        let jmin;
+        if (this.ruleForm.jmin == '') {
+          this.$message.warning('请将间隔执行时间填写完整');
+          return false;
+        }
         if (this.ruleForm.jday != '' && this.ruleForm.jday != undefined) {
           jday = this.ruleForm.jday;
         }
@@ -417,16 +444,21 @@ export default {
         }
         var pollIntervalMs = this.formateTime(parseInt(jday), parseInt(jhour), parseInt(jmin));
         console.log(pollIntervalMs);
-      } else if (this.ruleForm.cycleSet == '1') {
+      }else if (this.ruleForm.cycleSet == '1'&&this.ruleForm.accessMode != "0" &&this.ruleForm.accessMode != "2") {
         if (this.radio == '') {
           this.$message.warning('请选择定时执行时间');
           return false;
         }
         if (this.radio == '2') {
           //第一队列
-          let dfmin = '?';
-          let dfhour = '?';
-          let dfmon = '?';
+          //第一队列
+          let dfmin;
+          let dfhour;
+          let dfmon;
+          if (this.ruleForm.dfmin == '' || this.ruleForm.dfhour == '' || this.ruleForm.dfmon == '') {
+            this.$message.warning('请将定时执行时间填写完整');
+            return false;
+          }
           if (this.ruleForm.dfmin != '' && this.ruleForm.dfmin != undefined) {
             dfmin = this.ruleForm.dfmin;
           }
@@ -436,14 +468,18 @@ export default {
           if (this.ruleForm.dfmon != '' && this.ruleForm.dfmon != undefined) {
             dfmon = this.ruleForm.dfmon;
           }
-          var pollIntervalMs = `0 ${dfmin} ${dfhour} ${dfmon} ? ? *`;
+          var pollIntervalMs = `0 ${dfmin} ${dfhour} ${dfmon} * ?`;
           console.log(pollIntervalMs);
         }
         if (this.radio == '3') {
           //第二队列
-          let dsmin = '?';
-          let dshour = '?';
-          let dsweek = '?';
+          let dsmin;
+          let dshour;
+          let dsweek;
+          if (this.ruleForm.dsmin == '' || this.ruleForm.dshour == '' || this.ruleForm.dsweek == '') {
+            this.$message.warning('请将定时执行时间填写完整');
+            return false;
+          }
           if (this.ruleForm.dsmin != '' && this.ruleForm.dsmin != undefined) {
             dsmin = this.ruleForm.dsmin;
           }
@@ -451,15 +487,19 @@ export default {
             dshour = this.ruleForm.dshour;
           }
           if (this.ruleForm.dsweek != '' && this.ruleForm.dsweek != undefined) {
-            dsweek = this.ruleForm.dsweek;
+            dsweek = this.weekTrans(this.ruleForm.dsweek);
           }
-          var pollIntervalMs = `0 ${dsmin} ${dshour} ? ? ${dsweek} *`;
+          var pollIntervalMs = `0 ${dsmin} ${dshour} ? * ${dsweek}`;
           console.log(pollIntervalMs);
         }
         if (this.radio == '4') {
           //第三队列
-          let dtmin = '?';
-          let dthour = '?';
+          let dtmin;
+          let dthour;
+          if (this.ruleForm.dtmin == '' || this.ruleForm.dthour =='') {
+            this.$message.warning('请将定时执行时间填写完整');
+            return false;
+          }
           if (this.ruleForm.dtmin != '' && this.ruleForm.dtmin != undefined) {
             dtmin = this.ruleForm.dtmin;
           }
@@ -467,7 +507,7 @@ export default {
             dthour = this.ruleForm.dthour;
           }
 
-          var pollIntervalMs = `0 ${dtmin} ${dthour} ? ? ? *`;
+          var pollIntervalMs = `0 ${dtmin} ${dthour} * * ? *`;
           console.log(pollIntervalMs);
         }
       }
@@ -495,10 +535,10 @@ export default {
       }
       if (this.ruleForm.accessMode == "3" && this.ruleForm.cycleSet == "0") { //间隔
         ctt = '4';
-       /* if (this.increArr.id == undefined) {
-          this.$message.warning('请选择增量字段');
-          return false;
-        }*/
+        /* if (this.increArr.id == undefined) {
+           this.$message.warning('请选择增量字段');
+           return false;
+         }*/
       }
       if (this.ruleForm.accessMode == "3" && this.ruleForm.cycleSet == "1") { //实时
         ctt = '5';
@@ -528,7 +568,7 @@ export default {
       if (JSON.stringify(this.$store.state.userList) == "{}") {
         this.$ajax({
           method: "post",
-          url: this.GLOBAL.api.API_DACM +'/task/saveRegexHeliumTask',
+          url: this.GLOBAL.api.API_DACM + '/task/saveRegexHeliumTask',
           // headers:{
           //   'Content-Type':'application/json;charset=utf-8',
           // },
@@ -555,14 +595,14 @@ export default {
       } else {
         this.$ajax({
           method: 'post',
-          url: this.GLOBAL.api.API_DACM +'/dataTable/inputSurvey',
+          url: this.GLOBAL.api.API_DACM + '/dataTable/inputSurvey',
           data: this.$store.state.userList
         }).then(res => {
-          
+
           if (res.data.success) {
             this.$ajax({
               method: "post",
-              url: this.GLOBAL.api.API_DACM +'/task/saveRegexHeliumTask',
+              url: this.GLOBAL.api.API_DACM + '/task/saveRegexHeliumTask',
               // headers:{
               //   'Content-Type':'application/json;charset=utf-8',
               // },
@@ -574,7 +614,7 @@ export default {
                 this.$alert('采集任务启动成功！', '信息', {
                   confirmButtonText: '确定',
                   callback: action => {
-                    this.$emit('close');
+                    this.$emit('fresh');
                   }
                 });
               } else {
@@ -609,7 +649,7 @@ export default {
     _getTree() {
       this.$ajax({
         method: 'get',
-        url: this.GLOBAL.api.API_DACM +'/caccesssysRelationWorkInfo/getDataAreaNode',
+        url: this.GLOBAL.api.API_DACM + '/caccesssysRelationWorkInfo/getDataAreaNode',
 
       }).then(res => {
         this.treeData = res.data;
@@ -635,11 +675,10 @@ export default {
       console.log("4545645");
     },
     msg() {
-      if (this.msg=="fourth") {
-        if(this.rowList.length!=undefined){
+      if (this.msg == "fourth") {
+        if (this.rowList.length != undefined) {
           this.accId = this.rowList[0].id;
-        }
-        else{
+        } else {
           this.accId = this.rowList.id;
         }
         this._monthData();

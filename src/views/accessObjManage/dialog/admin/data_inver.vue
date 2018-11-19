@@ -4,7 +4,7 @@
     <el-tooltip class="item" effect="light" content="数据核验" placement="top">
       <i class="enc-icon-shujuheyan" @click="dialogVisible = true"></i>
     </el-tooltip>
-    <el-dialog title="数据核验" :visible.sync="dialogVisible" width="60%" :before-close="closeDialog">
+    <el-dialog title="数据核验" :visible.sync="dialogVisible" width="73%" :before-close="closeDialog">
       <div class="title-gra">
         <span class="grab gra-l"></span>
         <span class="grab gra-r"></span>

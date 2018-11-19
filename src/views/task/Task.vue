@@ -69,7 +69,7 @@
           <el-checkbox-group v-model="priority">
             <el-checkbox label="1" name="priority">高</el-checkbox>
             <el-checkbox label="2" name="priority">中</el-checkbox>
-            <el-checkbox label="3" name="priority">底</el-checkbox>
+            <el-checkbox label="3" name="priority">低</el-checkbox>
            
           </el-checkbox-group>
         </el-form-item>
@@ -118,7 +118,7 @@
         <el-table-column prop="targetTableName" label="目标表" width="200" :show-overflow-tooltip='true'></el-table-column>
         <el-table-column prop="startTime" label="任务开始时间" width="140" :show-overflow-tooltip='true'> </el-table-column>
         <el-table-column prop="endTime" label="任务结束时间" width="140" :show-overflow-tooltip='true'></el-table-column>
-        <el-table-column label="任务类型" width="100">
+        <el-table-column label="任务类型" width="100" :show-overflow-tooltip='true'>
           <template slot-scope="scope">
             <span v-if="scope.row.isPeriod==0">实时</span>
             <span v-if="scope.row.isPeriod==1">周期间隔增量</span>
