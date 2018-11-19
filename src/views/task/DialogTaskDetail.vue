@@ -255,7 +255,7 @@
         height: 100%!important;
     }
 }
-.task-Detail-dialog .el-form-item--medium .el-form-item__content{
+.task-Detail-dialog .proInfo-box .el-form-item--medium .el-form-item__content{
   overflow: hidden;
   text-overflow: ellipsis;
   width: 170px;
@@ -338,6 +338,7 @@ export default {
       showInnerDialog: true,
       isTestLink:false,//测试连接是否正常
       showCheckData:false,
+      entFromCheck:false,//是否从数据核验处点击入口
       isCheckLoading:false,//是否因为点击数据核验而展示loading
       httpUrl:window.ENV.API_DOWN+'/',
       httpUrl2:window.ENV.API_DACM+'/',
@@ -590,6 +591,7 @@ export default {
       //isTestLink表示测试连接是否中断，若中断，则无法数据核验
       this.isTestLink=false;
       this.showCheckData = true;
+      this.entFromCheck = true;
       //接入数据更新是否通过测试连接接口展示loading，这个时候是点击“数据核验”时加载的loading
       this.isCheckLoading = true;
       this.testConnect();
@@ -614,13 +616,18 @@ export default {
             that.newWorkTrans(that.taskBaseInfo.networkStatus,res.data.data.speed);
             if(that.taskBaseInfo.networkStatus==2){
               that.isTestLink = false;
-              that.doMsg('数据核验失败！','error');
+              if(that.entFromCheck){
+                that.doMsg('数据核验失败！','error');
+                
+              }
+              
             }else{
               that.isTestLink = true;
             }
           }
           that.loading3 = false;
           that.isCheckLoading = false;
+          that.entFromCheck = false;
         }
       ).catch(
         function(err){
@@ -628,6 +635,7 @@ export default {
           that.loading3 = false;
           that.isCheckLoading = false;
           that.isTestLink = false;
+          that.entFromCheck = false;
         }
       )
     },
