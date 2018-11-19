@@ -116,7 +116,7 @@
           </el-table-column>
           <el-table-column prop="objectStatus" label="状态信息" v-if="type=='oracle' || type=='mysql' || type=='postgresql'">
             <template slot-scope="scope">
-              <span v-if="scope.row.extendParams.taskInfoId!=undefined" @click="doDetail(scope.$index, scope.row.extendParams)">{{scope.row.objectStatus}}</span>
+              <span style="cursor: pointer" v-if="scope.row.extendParams.taskInfoId!=undefined" @click="doDetail(scope.$index, scope.row)">{{scope.row.objectStatus}}</span>
               <span v-if="scope.row.extendParams.taskInfoId==undefined">{{scope.row.objectStatus}}</span>
             </template>
           </el-table-column>
