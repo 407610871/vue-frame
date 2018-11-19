@@ -9,54 +9,56 @@
 </el-form-item> 
 </el-form> 
 </template> 
-<script> 
-export default { 
-data(){ 
-return { 
-formSeled:{} 
-} 
-}, 
-props: { 
-dataObj: { 
-type: Array, 
-required: true 
-}, 
-formCollapse:{ 
-type: Boolean, 
-required: false, 
-default:true 
-} 
-}, 
-computed:{ 
-formHeight:function(){ 
-return this.formCollapse?'40px':'auto'; 
-} 
-}, 
-mounted(){ 
-this.getFormSeled(); 
-}, 
-methods: { 
-formFilter:function(){ 
-this.$emit('formFilter',this.formSeled); 
-}, 
-getFormSeled:function(){ 
-// console.log('this.dataObj'); 
-// console.log(this.dataObj); 
-var obj = {}; 
-for(var value of this.dataObj){ 
-obj[value.id] = value.seledData; 
-} 
-this.formSeled = obj; 
-} 
-} 
-} 
+<script>
+export default {
+  data() {
+    return {
+      formSeled: {}
+    };
+  },
+  props: {
+    dataObj: {
+      type: Array,
+      required: true
+    },
+    formCollapse: {
+      type: Boolean,
+      required: false,
+      default: true
+    }
+  },
+  computed: {
+    formHeight: function() {
+      return this.formCollapse ? "40px" : "auto";
+    }
+  },
+  mounted() {
+    this.getFormSeled();
+  },
+  methods: {
+    formFilter: function() {
+      this.$emit("formFilter", this.formSeled);
+    },
+    getFormSeled: function() {
+      // console.log('this.dataObj');
+      // console.log(this.dataObj);
+      var obj = {};
+      for (var value of this.dataObj) {
+        obj[value.id] = value.seledData;
+      }
+      this.formSeled = obj;
+     
+           
+    }
+  }
+};
 </script> 
 
-<style rel="stylesheet/scss" lang="scss" scoped> 
-.form-fliter{ 
-overflow: hidden; 
-.el-form-item{ 
-margin-bottom:2px; 
-} 
-} 
+<style rel="stylesheet/scss" lang="scss" scoped>
+.form-fliter {
+  overflow: hidden;
+  .el-form-item {
+    margin-bottom: 2px;
+  }
+}
 </style> 

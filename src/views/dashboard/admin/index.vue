@@ -138,7 +138,7 @@ export default {
                 JSON.stringify(newVal) != JSON.stringify(oldVal) &&
                 newVal.timeFlag != 0
             ) {
-                this.loadTable();
+                // this.loadTable();
 
             }
         },
@@ -169,7 +169,7 @@ export default {
     methods: {
         hightrue: function (a) {
             this.collapse = a;
-            console.log(a);
+            // console.log(a);
         },
         setCount() {
             var _self = this;
@@ -196,7 +196,7 @@ export default {
                         }
                         _self.countReady = true;
                     } else {
-                        console.log(res.data.code);
+                        // console.log(res.data.code);
                         _self.$alert("加载统计数据失败", "提示", {
                             confirmButtonText: "确定"
                         });
@@ -214,13 +214,16 @@ export default {
             var dataSourceName = queryParams.dataSourceName ?
                 queryParams.dataSourceName :
                 [];
-            var network = queryParams.network;
+            var network = queryParams.network?queryParams.network:[];
             var platform = queryParams.platform ? queryParams.platform : [];
             let radioData = data.network.data;
-            radioData[3] = {
-                id: "",
-                name: "取消"
-            };
+//             if(data.network.data[data.network.data.length-1].name!="取消"){
+// radioData[data.network.data.length] = {
+//                 id: "",
+//                 name: "取消"
+//             };
+//             }
+            
             this.formFilterData = [{
                     name: "接入源类型：",
                     id: "dataSourceName",
@@ -232,7 +235,7 @@ export default {
                 {
                     name: "接入数据来源：",
                     id: "network",
-                    type: "radio",
+                    type: "checkbox",
                     checkData: data.network.data,
                     seledData: network,
                     limit: 4
@@ -246,8 +249,9 @@ export default {
                     limit: 4
                 }
             ];
-
             this.queryParamReady = true;
+            // console.log(this.formFilterData)
+
         },
         collapseExpand: function () {
             this.collapse = !this.collapse;
