@@ -168,7 +168,7 @@ import tableInver from '@/views/accessObjManage/dialog/admin/table_inver'
 import dataInver from '@/views/accessObjManage/dialog/admin/data_inver'
 import pathFtp from '@/views/mainLay/dialog/path_ftp'
 import norelaColl from '@/views/mainLay/dialog/norela_coll'
-import DialogTaskDetail from '@/views/mainLay/dialog/DialogTaskDetail'
+import DialogTaskDetail from '@/views/mainLay/dialog/DialogTaskDetails'
 export default {
   name: 'DashboardAdmin',
   data() {
