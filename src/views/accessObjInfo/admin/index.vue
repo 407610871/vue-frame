@@ -135,545 +135,503 @@
   </div>
   </template>
   <script>
-import { mapState } from "vuex";
-import dataImport from "./../dialog/admin/data_import";
-import searchCondition from "./searchCondition";
+  import { mapState } from 'vuex'
+  import dataImport from './../dialog/admin/data_import'
+  import searchCondition from './searchCondition'
 
-import request from "@/utils/request";
-export default {
-  name: "DashboardAdmin",
-  data() {
-    return {
-      count: 0,
-      searchForm: [{ filtertype: "4", outrelate: "and" }],
-      searchFormCont: { filtertype: "4", outrelate: "and" },
-      filtercolumnList: [],
-      filtertypeList: [
-        { name: "模糊查询", value: "4" },
-        { name: "等于", value: "0" }
-      ],
-      loading: false,
-      queryParamReady: true,
-      currentPage1: 1,
-      pageSize: 20,
-      pageShow: true,
-      tableHeight: window.innerHeight - 280,
-      mainTableReady: true,
-      mainTableData1: [],
-      mainTableData2: [],
-      mainTableTitle: [],
-      data2Columns: {},
-      width: 180,
-      editingRow: {
-        index: 0,
-        diyComments: ""
+  import request from "@/utils/request"
+  export default {
+    name: 'DashboardAdmin',
+    data() {
+      return {
+        count:0,
+        searchForm:[{filtertype:'4',outrelate:'and'}],
+        searchFormCont:{filtertype:'4',outrelate:'and'},
+        filtercolumnList:[],
+        filtertypeList:[{name:'模糊查询',value:'4'},{name:'等于',value:'0'}],
+        loading: false,
+        queryParamReady: true,
+        currentPage1: 1,
+				pageSize:20,
+        pageShow: true,
+        tableHeight: window.innerHeight - 280,
+        mainTableReady: true,
+        mainTableData1: [],
+        mainTableData2: [],
+				mainTableTitle:[],
+        data2Columns: {},
+        width: 180,
+        editingRow: {
+          index: 0,
+          diyComments: ''
+        },
+      
+        mainTableDataTotal1: 1,
+        dialogVisible: false,
+        myDialogRouter: 'adminAdd',
+        dialogTitle: '新增',
+        tabPosition: 'metadataManage',
+        importList: {
+          ready: false,
+          data: [],
+          tableName: '',
+          objInfoId: '',
+          accessSysDialectId: '',
+          filePath: ''
+        },
+        flagInterval: null
+      }
+    },
+    computed: {
+      tableParams: function() {
+        return this.$store.state.queryParams.accessObjInfo;
       },
-
-      mainTableDataTotal1: 1,
-      dialogVisible: false,
-      myDialogRouter: "adminAdd",
-      dialogTitle: "新增",
-      tabPosition: "metadataManage",
-      importList: {
-        ready: false,
-        data: [],
-        tableName: "",
-        objInfoId: "",
-        accessSysDialectId: "",
-        filePath: ""
+      exportUrl: function() {
+        return window.ENV.API_DACM + '/objDetail/exportTemplateFile?objInfoId=' + this.$route.params.objId + '&tableName=' + this.$route.params.objName + '&diyComments=' + this.tableParams.diyComments + '&accessSysDialectId=' + this.tableParams.ACCESS_SYS_DIALECT_ID + '&browser=' + 'chrome';
+        /*return 'http://10.19.160.171:8080/DACM/objDetail/exportTemplateFile?objInfoId=' + this.$route.params.objId + '&tableName=' + this.$route.params.objName + '&diyComments=' + this.tableParams.diyComments + '&accessSysDialectId=' + this.tableParams.ACCESS_SYS_DIALECT_ID + '&browser=' + 'chrome';*/
+       /* return 'http://10.19.160.171:8080/DACM/objDetail/exportTemplateFile?objInfoId=10053886&tableName=aaaa&diyComments=VIEW&accessSysDialectId=10001&browser=chrome';*/
       },
-      flagInterval: null
-    };
-  },
-  computed: {
-    tableParams: function() {
-      return this.$store.state.queryParams.accessObjInfo;
+      tableName: function() {
+        return this.$route.params.objName;
+      },
+      accessSysDialectId: function() {
+        return this.tableParams.ACCESS_SYS_DIALECT_ID;
+      }
     },
-    exportUrl: function() {
-      return (
-        window.ENV.API_DACM +
-        "/objDetail/exportTemplateFile?objInfoId=" +
-        this.$route.params.objId +
-        "&tableName=" +
-        this.$route.params.objName +
-        "&diyComments=" +
-        this.tableParams.diyComments +
-        "&accessSysDialectId=" +
-        this.tableParams.ACCESS_SYS_DIALECT_ID +
-        "&browser=" +
-        "chrome"
-      );
-      /*return 'http://10.19.160.171:8080/DACM/objDetail/exportTemplateFile?objInfoId=' + this.$route.params.objId + '&tableName=' + this.$route.params.objName + '&diyComments=' + this.tableParams.diyComments + '&accessSysDialectId=' + this.tableParams.ACCESS_SYS_DIALECT_ID + '&browser=' + 'chrome';*/
-      /* return 'http://10.19.160.171:8080/DACM/objDetail/exportTemplateFile?objInfoId=10053886&tableName=aaaa&diyComments=VIEW&accessSysDialectId=10001&browser=chrome';*/
+    components: {
+      dataImport,
+      searchCondition,
     },
-    tableName: function() {
-      return this.$route.params.objName;
+    watch: {
+      tableParams(newVal, oldVal) {
+        if ((newVal.ACCESS_SYS_DIALECT_ID != oldVal.ACCESS_SYS_DIALECT_ID || newVal.accessSysId != oldVal.accessSysId || newVal.diyComments != oldVal.diyComments || newVal.pageNum1 != oldVal.pageNum1 || newVal.keyword != oldVal.keyword || newVal.timeFlag != oldVal.timeFlag)) {
+          this.loadTable();
+        }
+        this.tabPosition = newVal.tabPosition;
+      },
+      tabPosition(newVal, oldVal) {
+        this.searchForm=[{filtertype:'4',outrelate:'and'}];
+        this.setStore({
+          tabPosition: newVal
+        });
+      }
     },
-    accessSysDialectId: function() {
-      return this.tableParams.ACCESS_SYS_DIALECT_ID;
-    }
-  },
-  components: {
-    dataImport,
-    searchCondition
-  },
-  watch: {
-    tableParams(newVal, oldVal) {
-      if (
-        newVal.ACCESS_SYS_DIALECT_ID != oldVal.ACCESS_SYS_DIALECT_ID ||
-        newVal.accessSysId != oldVal.accessSysId ||
-        newVal.diyComments != oldVal.diyComments ||
-        newVal.pageNum1 != oldVal.pageNum1 ||
-        newVal.keyword != oldVal.keyword ||
-        newVal.timeFlag != oldVal.timeFlag
-      ) {
+    mounted() {
+      var tableParams = this.$store.state.queryParams.accessObjInfo;
+      this.$root.eventHub.$emit('setActiveNav', 1);
+      var _self = this;
+      this.flagInterval = setInterval(function() {
+        if (_self.$store.state.pageReady) {
+          _self.loadTable(true);
+          clearInterval(_self.flagInterval);
+        }
+      }, 200);
+    },
+    created() {
+      this.$root.eventHub.$on('search', (keyword) => {
+        this.search(keyword);
+      })
+      this.getFiltercolumnList();
+    },
+    methods: {
+      searchAll(){
         this.loadTable();
-      }
-      this.tabPosition = newVal.tabPosition;
-    },
-    tabPosition(newVal, oldVal) {
-      this.searchForm = [{ filtertype: "4", outrelate: "and" }];
-      this.setStore({
-        tabPosition: newVal
-      });
-    }
-  },
-  mounted() {
-    var tableParams = this.$store.state.queryParams.accessObjInfo;
-    this.$root.eventHub.$emit("setActiveNav", 1);
-    var _self = this;
-    this.flagInterval = setInterval(function() {
-      if (_self.$store.state.pageReady) {
-        _self.loadTable(true);
-        clearInterval(_self.flagInterval);
-      }
-    }, 200);
-  },
-  created() {
-    this.$root.eventHub.$on("search", keyword => {
-      this.search(keyword);
-    });
-    this.getFiltercolumnList();
-  },
-  methods: {
-    searchAll() {
-      this.loadTable();
-      //console.log(this.searchForm);
-    },
-    getFiltercolumnList() {
-      this.$ajax
-        .post(window.ENV.API_DACM + "/objDetail/dataList", {
-          count: 500,
-          objectInfoId: 10659903,
-          pagNum: 1,
-          trem: ""
-        })
-        .then(res => {
+        //console.log(this.searchForm);
+      },
+      getFiltercolumnList(){
+        this.$ajax.post(window.ENV.API_DACM + '/objDetail/dataList', {
+          count:500,
+          objectInfoId:10659903,
+          pagNum:1,
+          trem:''
+        }).then(res =>{
           res = res.data;
-          if (res.success) {
+          if(res.success){
             let list = res.data.list;
 
             this.filtercolumnList = list.map(item => item.name);
           }
-        })
-        .catch(() => {});
-    },
-    //增加搜索条件
-    addCondition() {
-      let len = this.searchForm.length;
-      if (len > 4) return;
-      this.searchForm.push(this.searchFormCont);
-    },
-    tableRowClassName: function(scope, rowIndex) {
-      if (scope.row.isDeleted == 1) {
-        //删除
-        return "delete-row";
-      } else if (scope.row.isHistory == 2) {
-        //新增
-        return "add-row";
-      }
-      return "";
-    },
-    refresh() {
-      var _self = this;
-      this.loading = true;
-      this.$ajax
-        .get(window.ENV.API_DACM + "/objDetail/synchronize", {
-          params: {
-            id: this.$route.params.objId
-          }
-        })
-        .then(function(res) {
-          console.log(res.data.success);
-          if (res.data.success) {
-            _self.loadTable();
-          } else {
-            console.log(res.data.code);
-            _self.$alert("刷新失败", "提示", {
-              confirmButtonText: "确定"
-            });
-          }
-          _self.loading = false;
-        })
-        .catch(function(err) {
-          console.log(err);
-          _self.loading = false;
-          _self.$alert("刷新失败", "提示", {
-            confirmButtonText: "确定"
-          });
+        }).catch(()=>{
+
         });
-    },
-    importData() {
-      document.getElementById("file").click();
-    },
-    importAjax() {
-      let inputDOM = this.$refs.inputer;
-      // 通过DOM取文件数据
-      this.file = inputDOM.files[0];
-      if (!this.file) {
-        return;
-      }
-      var formdata = new FormData();
-      formdata.append("inputFile", inputDOM.files[0]);
-      formdata.append("tableName", this.$route.params.objName);
-      formdata.append(
-        "accessSysDialectId",
-        this.tableParams.ACCESS_SYS_DIALECT_ID
-      );
-      var _self = this;
-      this.$ajax({
-        url: window.ENV.API_DACM + "/objDetail/readExcelFile",
-        method: "post",
-        data: formdata,
-        headers: { "Content-Type": false }
-      })
-        .then(function(res) {
-          if (res.data.success) {
-            if (res.data.data.success) {
-              if (res.data.data.data.length > 0) {
-                _self.importList.data = res.data.data.data[0];
-                _self.importList.tableName = _self.$route.params.objName;
-                _self.importList.objInfoId = _self.$route.params.objId;
-                _self.importList.accessSysDialectId =
-                  _self.tableParams.ACCESS_SYS_DIALECT_ID;
-                _self.importList.filePath = document.getElementById(
-                  "file"
-                ).value;
-                _self.importList.ready = true;
+      },
+      //增加搜索条件
+      addCondition(){
+        let len = this.searchForm.length;
+        if(len > 4) return;
+        this.searchForm.push(this.searchFormCont);
+      },
+      tableRowClassName:function(scope, rowIndex) {
+        if (scope.row.isDeleted == 1) {//删除
+          return 'delete-row';
+        } else if (scope.row.isHistory == 2) {//新增
+          return 'add-row';
+        }
+        return '';
+      },
+      refresh() {
+        var _self = this;
+        this.loading = true;
+        this.$ajax.get(window.ENV.API_DACM + '/objDetail/synchronize', {
+            params: {
+              id: this.$route.params.objId
+            }
+          }).then(function(res) {
+            console.log(res.data.success);
+            if (res.data.success) {
+              _self.loadTable();
+            } else {
+              console.log(res.data.code);
+              _self.$alert('刷新失败', '提示', {
+                confirmButtonText: '确定'
+              });
+            }
+            _self.loading = false;
+          })
+          .catch(function(err) {
+            console.log(err)
+            _self.loading = false;
+            _self.$alert('刷新失败', '提示', {
+              confirmButtonText: '确定'
+            });
+          });
+      },
+      importData() {
+        document.getElementById('file').click();
+      },
+      importAjax() {
+        let inputDOM = this.$refs.inputer;
+        // 通过DOM取文件数据
+        this.file = inputDOM.files[0];
+        if (!this.file) {
+          return;
+        }
+        var formdata = new FormData();
+        formdata.append('inputFile', inputDOM.files[0]);
+        formdata.append('tableName', this.$route.params.objName);
+        formdata.append('accessSysDialectId', this.tableParams.ACCESS_SYS_DIALECT_ID);
+        var _self = this;
+        this.$ajax({
+            url: window.ENV.API_DACM + '/objDetail/readExcelFile',
+            method: 'post',
+            data: formdata,
+            headers: { 'Content-Type': false }
+          }).then(function(res) {
+            if (res.data.success) {
+              if (res.data.data.success) {
+                if (res.data.data.data.length > 0) {
+                  _self.importList.data = res.data.data.data[0];
+                  _self.importList.tableName = _self.$route.params.objName;
+                  _self.importList.objInfoId = _self.$route.params.objId;
+                  _self.importList.accessSysDialectId = _self.tableParams.ACCESS_SYS_DIALECT_ID;
+                  _self.importList.filePath = document.getElementById('file').value;
+                  _self.importList.ready = true;
+                } else {
+                  _self.$alert('导入列表为空', '提示', {
+                    confirmButtonText: '确定'
+                  });
+                }
               } else {
-                _self.$alert("导入列表为空", "提示", {
-                  confirmButtonText: "确定"
+                _self.$alert('上传错误', {
+                  confirmButtonText: '确定'
                 });
               }
             } else {
-              _self.$alert("上传错误", {
-                confirmButtonText: "确定"
+              _self.$alert('上传错误', {
+                confirmButtonText: '确定'
               });
+              console.log(res);
             }
-          } else {
-            _self.$alert("上传错误", {
-              confirmButtonText: "确定"
+          })
+          .catch(function(err) {
+            _self.$alert('未知错误', {
+              confirmButtonText: '确定'
             });
-            console.log(res);
-          }
+            console.log(err);
+          })
+      },
+      closeImport() {
+        this.importList = [];
+        document.getElementById('file').value = "";
+        document.getElementById('file').outerHtml = document.getElementById('file').outerHtml
+        this.$refs.inputer.value = ''
+        this.$refs.inputer.files = [];
+      },
+      exportData() {
+        request({
+          url: this.exportUrl,
+          // url: 'http://10.19.248.200:31653/DAM/manager/exportAction/exportTableDataCount',
+          method: "GET",
+          responseType: "blob"
+        }).then(res => {
+          console.log(res);　
+          var blob = new Blob([res.data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8' }); //application/vnd.openxmlformats-officedocument.spreadsheetml.sheet这里表示xlsx类型
+          　　
+          var downloadElement = document.createElement('a');　　
+          var href = window.URL.createObjectURL(blob); //创建下载的链接
+          　　
+          downloadElement.href = href;　　
+          downloadElement.download = res.headers.filename; //下载后文件名
+          　　
+          document.body.appendChild(downloadElement);　　
+          downloadElement.click(); //点击下载
+          　　
+          document.body.removeChild(downloadElement); //下载完成移除元素
+          　　
+          window.URL.revokeObjectURL(href); //释放掉blob对象 
         })
-        .catch(function(err) {
-          _self.$alert("未知错误", {
-            confirmButtonText: "确定"
-          });
-          console.log(err);
-        });
-    },
-    closeImport() {
-      this.importList = [];
-      document.getElementById("file").value = "";
-      document.getElementById("file").outerHtml = document.getElementById(
-        "file"
-      ).outerHtml;
-      this.$refs.inputer.value = "";
-      this.$refs.inputer.files = [];
-    },
-    exportData() {
-      request({
-        url: this.exportUrl,
-        // url: 'http://10.19.248.200:31653/DAM/manager/exportAction/exportTableDataCount',
-        method: "GET",
-        responseType: "blob"
-      }).then(res => {
-        console.log(res);
-        var blob = new Blob([res.data], {
-          type:
-            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8"
-        }); //application/vnd.openxmlformats-officedocument.spreadsheetml.sheet这里表示xlsx类型
-        var downloadElement = document.createElement("a");
-        var href = window.URL.createObjectURL(blob); //创建下载的链接
-        downloadElement.href = href;
-        downloadElement.download = res.headers.filename; //下载后文件名
-        document.body.appendChild(downloadElement);
-        downloadElement.click(); //点击下载
-        document.body.removeChild(downloadElement); //下载完成移除元素
-        window.URL.revokeObjectURL(href); //释放掉blob对象
-      });
-      /*window.open(this.exportUrl);*/
-    },
-    loadTable: function(flag) {
-      var _self = this;
-      _self.loading = true;
-      // debugger;
-
-      _self.pageSize = _self.$store.state.pageSize;
-
-      var paramsObj = {
-        pagNum: _self.tableParams.pageNum1,
-        count: _self.pageSize,
-        objectInfoId: _self.$route.params.objId,
-        ACCESS_SYS_DIALECT_ID: _self.tableParams.ACCESS_SYS_DIALECT_ID,
-        accessSysId: _self.tableParams.accessSysId
-      };
-      const promist0 = new Promise((resolve, reject) => {
-        this.$ajax
-          .post(window.ENV.API_DACM + "/objDetail/dataList", paramsObj)
-          .then(function(res) {
-            console.log("tableLoaded:metadataManage");
-            if (res.data.success) {
-              var data = res.data.data.list;
-              for (var value of data) {
-                value.showEdit = false;
+        /*window.open(this.exportUrl);*/
+      },
+      loadTable: function(flag) {
+        var _self = this;
+        this.loading = true;
+				_self.pageSize = this.$store.state.pageSize;
+        var paramsObj = {
+          pagNum: this.tableParams.pageNum1,
+          count: _self.pageSize,
+          objectInfoId: this.$route.params.objId,
+          ACCESS_SYS_DIALECT_ID: this.tableParams.ACCESS_SYS_DIALECT_ID,
+          accessSysId: this.tableParams.accessSysId
+        }
+        const promist0 = new Promise((resolve, reject) => {
+          this.$ajax.post(window.ENV.API_DACM + '/objDetail/dataList', paramsObj).then(function(res) {
+              console.log('tableLoaded:metadataManage');
+              if (res.data.success) {
+                var data = res.data.data.list;
+                for (var value of data) {
+                  value.showEdit = false;
+                }
+                _self.mainTableData1 = data;
+                _self.mainTableDataTotal1 = res.data.data.total;
+                //这里是异步的，存在延迟，所以没问题,如果是同步的话可能存在问题
+                _self.currentPage1 = _self.tableParams.pageNum1;
+                _self.pageShow = true;
+                resolve(res);
+              } else {
+                console.log(res.data.code);
+                _self.mainTableData1 = [];
+                _self.pageShow = false;
+                reject(res);
+                _self.$alert('获取表信息失败', '提示', {
+                  confirmButtonText: '确定'
+                });
               }
-              _self.mainTableData1 = data;
-              _self.mainTableDataTotal1 = res.data.data.total;
-              //这里是异步的，存在延迟，所以没问题,如果是同步的话可能存在问题
-              _self.currentPage1 = _self.tableParams.pageNum1;
-              _self.pageShow = true;
-              resolve(res);
-            } else {
-              console.log(res.data.code);
+              if (_self.tabPosition == 'metadataManage') {
+                _self.loading = false;
+              }
+            })
+            .catch(function(err) {
               _self.mainTableData1 = [];
               _self.pageShow = false;
-              reject(res);
-              _self.$alert("获取表信息失败", "提示", {
-                confirmButtonText: "确定"
+              console.log(err)
+              if (_self.tabPosition == 'metadataManage') {
+                _self.loading = false;
+              }
+              reject(err);
+              _self.$alert('获取表信息失败', '提示', {
+                confirmButtonText: '确定'
               });
-            }
-            if (_self.tabPosition == "metadataManage") {
-              _self.loading = false;
-            }
-          })
-          .catch(function(err) {
-            _self.mainTableData1 = [];
-            _self.pageShow = false;
-            console.log(err);
-            if (_self.tabPosition == "metadataManage") {
-              _self.loading = false;
-            }
-            reject(err);
-            _self.$alert("获取表信息失败", "提示", {
-              confirmButtonText: "确定"
             });
-          });
-      });
-      const promist1 = new Promise((resolve, reject) => {
-        let count = 0;
-        if (!_self.count) {
-          count = _self.$store.state.pageSize;
-        } else {
-          count = _self.count;
-        }
-
-        var searchForm2 = [];
-        for (let i = 0; i < _self.searchForm.length; i++) {
-          if (_self.searchForm[i].filterdata != undefined) {
-            searchForm2.push(_self.searchForm[i]);
-          }
-        }
-        var paramsObj = {
-          count: count,
-          objInfoId: _self.$route.params.objId,
-          ACCESS_SYS_DIALECT_ID: _self.tableParams.ACCESS_SYS_DIALECT_ID,
-          accessSysId: _self.tableParams.accessSysId,
-          filter: searchForm2
-        };
-
-        this.$ajax
-          .post(window.ENV.API_DACM + "/objDetail/previewData", paramsObj)
-          .then(function(res) {
-            /* this.$ajax.post('http://10.19.160.171:8080/DACM/objDetail/previewData', paramsObj).then(function(res) {*/
-            console.log("tableLoaded:dataPreview");
-            if (res.data.success) {
-              resolve(res);
-            } else {
-              _self.mainTableData2 = [];
-              console.log(res.data.code);
-              reject(res);
-              _self.$alert("获取预览信息失败", "提示", {
-                confirmButtonText: "确定"
-              });
-            }
-            if (_self.tabPosition != "metadataManage") {
-              _self.loading = false;
-            }
-          })
-          .catch(function(err) {
-            console.log(err);
-            _self.mainTableData2 = [];
-            reject(err);
-            _self.$alert("获取预览信息失败", "提示", {
-              confirmButtonText: "确定"
-            });
-            if (_self.tabPosition != "metadataManage") {
-              _self.loading = false;
-            }
-          });
-      });
-
-      Promise.all([promist0, promist1]).then(resultList => {
-        if (resultList[1].data.datas.length > 0) {
-          _self.data2Columns = resultList[1].data.datas[0];
-          console.log(_self.data2Columns);
-          _self.mainTableTitle = resultList[1].data.titles;
-          var len = 0;
-          for (var i in _self.data2Columns) {
-            len++;
-            if (len == 6) {
-              break;
-            }
-          }
-          var tableW = document.getElementById("mainTable2").offsetWidth;
-          _self.width =
-            len == 6 ? tableW / (len + 1) + "%" : tableW / len + "%";
-        }
-        _self.mainTableData2 = resultList[1].data.datas;
-      });
-    },
-    getLabel(key) {
-      for (var value of this.mainTableTitle) {
-        if (key == value.key) {
-          return value.name;
-        }
-      }
-      return "未知标题";
-    },
-    goPage: function(val) {
-      var obj = {};
-      var paramName =
-        this.tabPosition == "metadataManage" ? "pageNum1" : "pageNum2";
-      obj[paramName] = val;
-      this.setStore(obj);
-    },
-    search: function(keyword) {
-      this.setStore({
-        pageNum: 1,
-        keyword: keyword
-      });
-    },
-    changeName: function(index, row) {
-      var _self = this;
-      this.loading = true;
-      this.$ajax
-        .get(window.ENV.API_DACM + "/objDetail/diyComment", {
-          params: {
-            id: row.id,
-            value: this.editingRow.diyComments
-          }
-        })
-        .then(function(res) {
-          if (res.data.success) {
-            row.diyComments = _self.editingRow.diyComments;
-            row.showEdit = false;
-          } else {
-            console.log(res.data.code);
-            _self.$alert("字段中文名称修改失败", "提示", {
-              confirmButtonText: "确定"
-            });
-          }
-          _self.loading = false;
-        })
-        .catch(function(err) {
-          console.log(err);
-          _self.loading = false;
-          _self.$alert("字段中文名称修改失败", "提示", {
-            confirmButtonText: "确定"
-          });
         });
-    },
-    setStore: function(obj) {
-      let storeData = JSON.parse(
-        JSON.stringify(this.$store.state.queryParams[this.$route.name])
-      );
-      for (var i in obj) {
-        storeData[i] = obj[i];
+        const promist1 = new Promise((resolve, reject) => {
+          let count = 0;
+          if(!this.count){
+            count = this.$store.state.pageSize;
+          }else{
+            count = this.count;
+          }
+
+          for(let i=0;i<this.searchForm.length;i++){
+            if(this.searchForm[i].filterdata==undefined){
+                this.searchForm.splice(i,1);
+            }
+          }
+          console.log(this.searchForm)
+
+          var paramsObj = {
+            count: count,
+            objInfoId: this.$route.params.objId,
+            ACCESS_SYS_DIALECT_ID: this.tableParams.ACCESS_SYS_DIALECT_ID,
+            accessSysId: this.tableParams.accessSysId,
+            filter: this.searchForm
+          }
+
+
+          this.$ajax.post(window.ENV.API_DACM + '/objDetail/previewData', paramsObj).then(function(res) {
+         /* this.$ajax.post('http://10.19.160.171:8080/DACM/objDetail/previewData', paramsObj).then(function(res) {*/
+              console.log('tableLoaded:dataPreview');
+              if (res.data.success) {
+                resolve(res);
+              } else {
+                _self.mainTableData2 = [];
+                console.log(res.data.code);
+                reject(res);
+                _self.$alert('获取预览信息失败', '提示', {
+                  confirmButtonText: '确定'
+                });
+              }
+              if (_self.tabPosition != 'metadataManage') {
+                _self.loading = false;
+              }
+            })
+            .catch(function(err) {
+              console.log(err)
+              _self.mainTableData2 = [];
+              reject(err);
+              _self.$alert('获取预览信息失败', '提示', {
+                confirmButtonText: '确定'
+              });
+              if (_self.tabPosition != 'metadataManage') {
+                _self.loading = false;
+              }
+            });
+        });
+
+        Promise.all([promist0, promist1]).then((resultList) => {
+          if (resultList[1].data.datas.length > 0) {
+            _self.data2Columns = resultList[1].data.datas[0];
+            console.log(_self.data2Columns)
+						_self.mainTableTitle = resultList[1].data.titles;
+            var len = 0;
+            for (var i in _self.data2Columns) {
+              len++;
+              if (len == 6) {
+                break;
+              }
+            }
+            var tableW = document.getElementById("mainTable2").offsetWidth;
+            _self.width = len == 6 ? tableW / (len + 1) + '%' : tableW / len + '%'
+          }
+          _self.mainTableData2 = resultList[1].data.datas;
+        });
+
+      },
+			getLabel(key){
+				console.log(key);
+				for(var value of this.mainTableTitle){
+					if(key == value.key){
+						return value.name;
+					}
+				}
+				return '未知标题';
+			},
+      goPage: function(val) {
+        var obj = {};
+        var paramName = this.tabPosition == 'metadataManage' ? 'pageNum1' : 'pageNum2';
+        obj[paramName] = val;
+        this.setStore(obj);
+      },
+      search: function(keyword) {
+        this.setStore({
+          pageNum: 1,
+          keyword: keyword
+        });
+      },
+      changeName: function(index, row) {
+        var _self = this;
+        this.loading = true;
+        this.$ajax.get(window.ENV.API_DACM + '/objDetail/diyComment', {
+            params: {
+              id: row.id,
+              value: this.editingRow.diyComments
+            }
+          }).then(function(res) {
+            if (res.data.success) {
+              row.diyComments = _self.editingRow.diyComments;
+              row.showEdit = false;
+            } else {
+              console.log(res.data.code);
+              _self.$alert('字段中文名称修改失败', '提示', {
+                confirmButtonText: '确定'
+              });
+            }
+            _self.loading = false;
+          })
+          .catch(function(err) {
+            console.log(err)
+            _self.loading = false;
+            _self.$alert('字段中文名称修改失败', '提示', {
+              confirmButtonText: '确定'
+            });
+          });
+      },
+      setStore: function(obj) {
+        let storeData = JSON.parse(JSON.stringify(this.$store.state.queryParams[this.$route.name]));
+        for (var i in obj) {
+          storeData[i] = obj[i];
+        }
+        this.$store.commit('setQueryParams', {
+          name: this.$route.name,
+          data: storeData
+        });
       }
-      this.$store.commit("setQueryParams", {
-        name: this.$route.name,
-        data: storeData
-      });
     }
   }
-};
-</script>
-  <style lang="scss">
-.el-table .delete-row {
-  color: red;
-}
 
-.el-table .add-row {
-  color: rgb(179, 243, 50);
-}
+  </script>
+  <style lang="scss">
+  .el-table .delete-row {
+    color:red;
+  }
+
+  .el-table .add-row {
+    color:rgb(179, 243, 50);
+  }
 </style>
   <style rel="stylesheet/scss" lang="scss" scoped>
-.dashboard-container {
-  background: #fff;
-  .filter-container {
-    padding-top: 40px;
-    .right-tools {
-      float: right;
-      margin-right: 10px;
-      a {
-        font-size: 26px;
-        color: #479ad8;
-        :hover,
-        :active {
-          color: #f93;
-        }
-        i {
-          font-size: 32px;
+  .dashboard-container {
+    background: #fff;
+    .filter-container {
+      padding-top: 40px;
+      .right-tools {
+        float: right;
+        margin-right: 10px;
+        a {
+          font-size: 26px;
+          color: #479ad8;
+           :hover,
+           :active {
+            color: #f93;
+          }
+          i {
+            font-size: 32px;
+          }
         }
       }
+      form {
+        margin-right: 100px;
+      }
+      .el-form-item {
+        margin-bottom: 2px;
+      }
+      .add-btn {
+        float: right;
+      }
     }
-    form {
-      margin-right: 100px;
+    .table-container {
+      padding: 32px;
     }
-    .el-form-item {
-      margin-bottom: 2px;
-    }
-    .add-btn {
+    .enc-pagination {
       float: right;
     }
+    .cell i {
+      cursor: pointer;
+    }
   }
-  .table-container {
-    padding: 32px;
-  }
-  .enc-pagination {
-    float: right;
-  }
-  .cell i {
-    cursor: pointer;
-  }
-}
 
-.popup-menu {
-  margin: 0;
-  padding: 0;
-}
+  .popup-menu {
+    margin: 0;
+    padding: 0;
+  }
 
-.popup-menu li {
-  margin: 0;
-  padding: 0;
-  white-space: normal;
-  word-break: break-all;
-  word-wrap: break-word;
+  .popup-menu li {
+    margin: 0;
+    padding: 0;
+    white-space: normal;
+    word-break: break-all;
+    word-wrap: break-word;
+  }
+.search-form{
+  margin-bottom:20px;
 }
-.search-form {
-  margin-bottom: 20px;
-}
-</style>
+  </style>

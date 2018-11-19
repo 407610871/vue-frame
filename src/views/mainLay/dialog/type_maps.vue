@@ -60,7 +60,7 @@ export default {
       var map = {
         objectInfoId: this.rowList[0].id,
         pagNum: 1,
-        count: 100,
+        count: 20,
         term: ""
       }
       this.$ajax.post(this.GLOBAL.api.API_DACM + '/objDetail/dataList', map).then(function(res) {
@@ -100,13 +100,11 @@ export default {
     },
     _getType() {
       var _self = this;
-          _self.TypeData = [];
+      
           /*_self.TypeData = res.data[0].datas_mapping;*/
-          console.log("o3ou3ou2o34");
-          console.log(columnJson+"hhhhhhh");
           let reData = [];
           for (let m = 0; m < columnJson.length; m++) {
-            if (this.$route.params.type == columnJson[m].type) {
+            if (_self.$store.state.jrtype == columnJson[m].type) {
               reData = columnJson[m].datas_mapping;
             }
           }
@@ -127,7 +125,7 @@ export default {
       var _self = this;
      
           for (let m = 0; m < columnJson.length; m++) {
-            if (this.$route.params.type == columnJson[m].type) {
+            if (_self.$store.state.jrtype == columnJson[m].type) {
               _self.mapData = columnJson[m];
             }
           }
@@ -207,7 +205,7 @@ export default {
       this.tableId = this.rowList[0].id;
     },
     msg() {
-      // debugger;
+      debugger;
       if (this.msg == 'third') {
         if (this.flag == '0') {
           if (this.$store.state.matchflag == '0') {

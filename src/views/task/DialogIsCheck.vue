@@ -356,7 +356,7 @@ export default {
       }
       request({
         /* url: 'http://10.19.160.59:8080/DACM/ccheckData/downloadCheckDataById?id=32&browser=fox&accessName=ww',*/
-        url: `${baseUrl}/ccheckData/downloadCheckDataById?id=${value}&browser=${browser}&accessName=ww`,
+        url: `${baseUrl}/ccheckData/downloadCheckDataById?id=${value}&browser=${browser}&accessName=${this.msgCheck.targetTableName}`,
         method: "GET",
         responseType: "blob"
       }).then(res => {
