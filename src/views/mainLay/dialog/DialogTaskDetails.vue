@@ -103,7 +103,7 @@
                 <span>{{sourceDataInfo.source_record_poll_rate}}</span>
               </el-form-item>
             </el-col>
-            <el-col :span="4" class="bank">bank</el-col>
+            
             <el-col :span="10">
               <el-form-item label="待处理数据量:">
                 <span>{{sourceDataInfo.waiting4processing}}</span>
@@ -394,7 +394,7 @@ export default {
       that.loading1 = true;
       let reqData = {
         params:{
-          taskInfoDetailId:that.reqObj.taskInfoDetailsId,
+          taskInfoDetailId:that.reqObj.extendParams.taskInfoDetailsId,
           sourceObjType:that.reqObj.extendParams.objectType
         }
       };
