@@ -90,9 +90,7 @@
                 <span>{{sourceDataInfo.writeNum}}</span>
               </el-form-item>
             </el-col>
-            <el-col :span="4">
-              <!-- <el-button type="primary" size="small" @click="isShowCheck=true">数据核验</el-button> -->
-            </el-col>
+           <el-col :span="4" class="bank">bank</el-col>
             <el-col :span="10">
               <el-form-item label="剩余数据量预估:">
                 <span>{{sourceDataInfo.left}}</span>
@@ -103,7 +101,7 @@
                 <span>{{sourceDataInfo.source_record_poll_rate}}</span>
               </el-form-item>
             </el-col>
-            
+            <el-col :span="4" class="bank">bank</el-col>
             <el-col :span="10">
               <el-form-item label="待处理数据量:">
                 <span>{{sourceDataInfo.waiting4processing}}</span>
