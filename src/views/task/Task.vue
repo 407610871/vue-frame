@@ -37,7 +37,7 @@
             <span>任务状态:</span>
             <span v-show="priority.indexOf('1')>-1">高<span @click="pop('1',priority);"><i class="el-icon-error"></i></span></span>
             <span v-show="priority.indexOf('2')>-1">中<span @click="pop('2',priority);"><i class="el-icon-error"></i></span></span>
-            <span v-show="priority.indexOf('3')>-1">底<span @click="pop('3',priority);"><i class="el-icon-error"></i></span></span>
+            <span v-show="priority.indexOf('3')>-1">低<span @click="pop('3',priority);"><i class="el-icon-error"></i></span></span>
             
           </div>
 
@@ -249,6 +249,7 @@ export default {
     //查询按钮
     search() {
       let keyword = this.keyword;
+      this.allSecectData={};
       this.init(keyword);
     },
     //高级搜索
@@ -432,6 +433,7 @@ export default {
     },
     //手动全选事件
     selectAll(selection) {
+
       this.allSecectData[this.pageNum] = selection;
     },
     //批量操作
@@ -441,12 +443,25 @@ export default {
       let row = [];
 
       let row1 = Object.keys(this.allSecectData);
-      if (row1.length == 0) {
+      // console.log(this.allSecectData)
+            // console.log(row1)
+            // console.log(row1.length)
+if(row1.length==0){
+   this.$alert("请选择相应的任务！", "提示", {
+     height:50,
+          dangerouslyUseHTMLString: true
+        });
+        return;
+}
+     for(let i=0;i<row1.length;i++){
+      if (this.allSecectData[row1[i]].length == 0||row1.length==0) {
         this.$alert("请选择相应的任务！", "提示", {
           dangerouslyUseHTMLString: true
         });
         return;
       }
+     }
+      
       for (let i = 0; i < row1.length; i++) {
         for (let j = 0; j < this.allSecectData[row1[i]].length; j++) {
           row.push(this.allSecectData[row1[i]][j]);
@@ -459,6 +474,12 @@ export default {
       let params = {
         taskInfoIds: tableParams.join(",")
       };
+
+      //  <span v-if="scope.row.status==0">新建</span>
+      //       <span v-if="scope.row.status==1">运行</span>
+      //       <span v-else-if="scope.row.status==2">暂停</span>
+      //       <span v-else-if="scope.row.status==3" style="color:red">失败</span>
+      //       <span v-else-if="scope.row.status==4">完成</span>
       if (a == 1) {
         //批量汇聚
         let errorData = [];
@@ -833,6 +854,16 @@ export default {
 .el-form-item {
   margin-bottom: 10px;
 }
+.el-message-box{
+  max-height: 50%;
+    overflow: auto;
+}
+.el-message-box__wrapper{
+  .el-message-box{
+  max-height: 50%;
+    overflow: auto;
+}
+}
 </style>
 <style>
 .el-picker-panel__icon-btn {
@@ -844,6 +875,16 @@ export default {
 .zcTable .el-table__body-wrapper {
   background-color: #fff;
 }
+.el-message-box{
+  max-height: 50%;
+    overflow: auto;
+}
+.el-message-box__wrapper
+  .el-message-box{
+  max-height: 50%;
+    overflow: auto;
+}
+
 </style>
 
 

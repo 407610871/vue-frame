@@ -9,7 +9,7 @@ Vue.use(Vuex);
 const queryParamsDefault = {
   dashboard:{
     dataSourceName:[],
-    network:'',
+    network:[],
     platform:[],
     condition:'',
 		deptId:[],

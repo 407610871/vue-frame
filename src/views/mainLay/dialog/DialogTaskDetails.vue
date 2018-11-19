@@ -6,7 +6,7 @@
         <span class="grab gra-r"></span>
       </div>
       <el-form label-width="150px" class="demo-ruleForm">
-        <span style="float:right">当前状态:
+        <!-- <span style="float:right">当前状态:
           <el-select v-model="flagDesc" :disabled="loading3" placeholder="请选择" @change="changeStatus" class="select">
             <el-option
               v-for="item in operateList"
@@ -16,8 +16,8 @@
               :disabled="item.disabled">
             </el-option>
           </el-select>
-          <!-- <el-button style="margin-left:10px" type="primary" size="small" @click="changeStatus">{{flagDesc=='stop'?'暂停':'运行'}}</el-button> -->
-          </span>
+          <el-button style="margin-left:10px" type="primary" size="small" @click="changeStatus">{{flagDesc=='stop'?'暂停':'运行'}}</el-button>
+          </span> -->
         <!-- 接入基本信息 模块开始-->
         <div class="daiInfo proInfo" v-loading="loading1">
           <div class="daiInfo-title proInfo-title">
@@ -90,9 +90,7 @@
                 <span>{{sourceDataInfo.writeNum}}</span>
               </el-form-item>
             </el-col>
-            <el-col :span="4">
-              <!-- <el-button type="primary" size="small" @click="isShowCheck=true">数据核验</el-button> -->
-            </el-col>
+           <el-col :span="4" class="bank">bank</el-col>
             <el-col :span="10">
               <el-form-item label="剩余数据量预估:">
                 <span>{{sourceDataInfo.left}}</span>
@@ -346,7 +344,7 @@ export default {
       that.loading3 = true;
       if(that.flagDesc=='stop'){
         //调用暂停接口
-        axios.put(that.httpUrl+'manager/taskOperate/pause/'+that.reqObj.taskInfoId).then(
+        axios.put(that.httpUrl+'manager/taskOperate/pause/'+that.reqObj.extendParams.taskInfoId).then(
           function(res){
             if(res.data.code!='200'&&res.data.code!='0000'){
               that.doMsg(res.data.message,'error');
@@ -367,7 +365,7 @@ export default {
         })
       }else if(that.flagDesc=='run'){
         //调用运行接口
-        axios.put(that.httpUrl+'manager/taskOperate/start/'+that.reqObj.taskInfoId).then(
+        axios.put(that.httpUrl+'manager/taskOperate/start/'+that.reqObj.extendParams.taskInfoId).then(
           function(res){
             if(res.data.code!='200'&&res.data.code!='0000'){
               that.doMsg(res.data.message,'error');
@@ -394,8 +392,8 @@ export default {
       that.loading1 = true;
       let reqData = {
         params:{
-          taskInfoDetailId:that.reqObj.taskInfoDetailId,
-          sourceObjType:that.reqObj.objectType
+          taskInfoDetailId:that.reqObj.extendParams.taskInfoDetailsId,
+          sourceObjType:that.reqObj.extendParams.objectType
         }
       };
       axios.get(that.httpUrl+"manager/task/detail/source",reqData).then(function(res){
@@ -411,8 +409,8 @@ export default {
         }
         let innerReqData = {
           params:{
-            taskInfoDetailId:that.reqObj.taskInfoDetailId,
-            sourceTableName:res.data.data.sourceTableName[0]
+            taskInfoDetailId:that.reqObj.extendParams.taskInfoDetailsId,
+            sourceTableName:that.reqObj.name
           }
         }
         axios.get(that.httpUrl+'manager/task/detail/target',innerReqData).then(function(innerRes){
@@ -454,7 +452,7 @@ export default {
       //数据获取
       let searchData = {
         params: {
-          taskInfoId:that.reqObj.taskInfoId
+          taskInfoId:that.reqObj.extendParams.taskInfoId
         }
       };
       axios
@@ -501,7 +499,7 @@ export default {
       that.loading3 = true;
       let reqData = {
         params:{
-          taskInfoId:that.reqObj.taskInfoId
+          taskInfoId:that.reqObj.extendParams.taskInfoId
         }
       }
       axios.get(that.httpUrl+'manager/task/testTaskNetworkStatus',reqData).then(
@@ -527,7 +525,7 @@ export default {
     getSourceDataInfo(){
       let that = this;
       that.loading2 = true;
-      axios.put(that.httpUrl+'manager/taskOperate/dataInfo/'+that.reqObj.taskInfoId).then(
+      axios.put(that.httpUrl+'manager/taskOperate/dataInfo/'+that.reqObj.extendParams.taskInfoId).then(
         function(res){
           if(res.data==undefined||res.data==null||res.data===''){
             that.doMsg('服务无数据返回','error');
@@ -549,7 +547,7 @@ export default {
     getSourceTaskLog(){
       let that = this;
       that.loading4 = true;
-      axios.put(that.httpUrl+'manager/taskOperate/taskLogInfo/'+that.reqObj.taskInfoId).then(
+      axios.put(that.httpUrl+'manager/taskOperate/taskLogInfo/'+that.reqObj.extendParams.taskInfoId).then(
         function(res){
           //判断响应是否异常
           if(res.data.code!="200"&&res.data.code!="0000"){
@@ -573,7 +571,7 @@ export default {
       that.loading5 = true;
       let reqData = {
         params:{
-          'taskId':that.reqObj.taskInfoId
+          'taskId':that.reqObj.extendParams.taskInfoId
           // 'taskId':92066
         }
       }//http://10.19.160.59:8081/DEMO/ccheckData/checkLogByTaskId
@@ -598,7 +596,7 @@ export default {
     getDataViews(){
       let that = this;
       that.loading6 = true;
-      axios.put(that.httpUrl+'manager/taskOperate/dataPreview/'+that.reqObj.taskInfoId).then(
+      axios.put(that.httpUrl+'manager/taskOperate/dataPreview/'+that.reqObj.extendParams.taskInfoId).then(
         function(res){
           if(res.data.code!="200"&&res.data.code!="0000"){
             that.doMsg("/manager/taskOperate/dataPreview："+res.data.message,'error');
