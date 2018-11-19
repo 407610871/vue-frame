@@ -33,14 +33,12 @@ let Authen = {
             "SET_TOKEN",
             keycloak.tokenParsed.typ + " " + keycloak.token
           );
-          console.log(keycloak)
           setInterval(() => {
             keycloak.updateToken(300).then(refreshed => {
               if (refreshed) {
                 watch.token = keycloak.token;
                 watch.tokenType = keycloak.tokenParsed.typ;
                 store.commit("SET_TOKEN",keycloak.tokenParsed.typ+ ' ' + keycloak.token );
-
               }
             });
           }, 290000);
