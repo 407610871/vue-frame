@@ -118,6 +118,9 @@
           <el-table-column prop="dataRange" label="数据范围" v-if="type=='oracle' || type=='mysql' || type=='postgresql'">
           </el-table-column>
           <el-table-column prop="objectStatus" label="状态信息" v-if="type=='oracle' || type=='mysql' || type=='postgresql'">
+             <template slot-scope="scope">
+              <span>{{scope.row.objectStatus}}</span>
+            </template>
           </el-table-column>
           <el-table-column prop="collectName" label="数据采集方式" v-if="type=='oracle' || type=='mysql' || type=='postgresql'">
           </el-table-column>
