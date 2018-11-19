@@ -541,7 +541,8 @@ export default {
 }
 
 .el-table .add-row {
-  color: rgb(179, 243, 50);
+  color: red;
+  
 }
 
 </style>

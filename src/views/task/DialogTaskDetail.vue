@@ -87,26 +87,26 @@
           <div class="daiInfo-box clearfix">
             <el-col :span="10">
               <el-form-item label="已接入数据量:">
-                <span>{{sourceDataInfo.writeNum}}</span>
+                <span>{{sourceDataInfo.writeNum||'0'}}</span>
               </el-form-item>
             </el-col>
             <el-col :span="4">
-              <el-button type="primary" size="small" @click="isShowCheck=true">数据核验</el-button>
+              <el-button v-show="taskBaseInfo.status==1||taskBaseInfo.status==2||taskBaseInfo.status==4" type="primary" size="small" @click="checkData">数据核验</el-button>
             </el-col>
             <el-col :span="10">
               <el-form-item label="剩余数据量预估:">
-                <span>{{sourceDataInfo.left}}</span>
+                <span>{{sourceDataInfo.left||'0'}}</span>
               </el-form-item>
             </el-col>
             <el-col :span="10">
               <el-form-item label="当前数据接入速率:">
-                <span>{{sourceDataInfo.source_record_poll_rate}}</span>
+                <span>{{sourceDataInfo.source_record_poll_rate||'0.0'}}</span>
               </el-form-item>
             </el-col>
             <el-col :span="4" class="bank">bank</el-col>
             <el-col :span="10">
               <el-form-item label="待处理数据量:">
-                <span>{{sourceDataInfo.waiting4processing}}</span>
+                <span>{{sourceDataInfo.waiting4processing||'0'}}</span>
               </el-form-item>
             </el-col>
             <el-col :span="10" class="bank">bank</el-col>
@@ -240,7 +240,7 @@
         
       </el-form>
     </el-dialog>
-    <dialogIsCheck :msgCheck="reqObj" v-if="isShowCheck"></dialogIsCheck>
+    <dialogIsCheck :msgCheck="reqObj" v-if="isShowCheck&&isTestLink"></dialogIsCheck>
   </div>
 </template>
 <style lang="scss">
@@ -254,7 +254,7 @@
         height: 100%!important;
     }
 }
-.el-form-item--medium .el-form-item__content{
+.task-Detail-dialog .el-form-item--medium .el-form-item__content{
   overflow: hidden;
   text-overflow: ellipsis;
   width: 170px;
@@ -334,7 +334,8 @@ export default {
       loading6:true,//数据预览的loading
       flagDesc:'',
       showInnerDialog: true,
-      isShowCheck:false,
+      isShowCheck:false,//是否展示数据核验
+      isTestLink:false,//测试连接是否正常
       httpUrl:window.ENV.API_DOWN+'/',
       httpUrl2:window.ENV.API_DACM+'/',
       operateList:[
@@ -579,6 +580,13 @@ export default {
           that.loading3 = false;
         });
     },
+    //数据核验按钮点击
+    checkData(){
+      this.isTestLink=false;
+      this.isShowCheck=false;
+      this.testConnect();
+      this.isShowCheck=true
+    },
     //点击测试连接按钮，进行接口条用
     testConnect(){
       let that = this;
@@ -597,6 +605,12 @@ export default {
           }else{
             that.taskBaseInfo.networkStatus = res.data.data.networkStatus;
             that.newWorkTrans(that.taskBaseInfo.networkStatus,res.data.data.speed);
+            if(that.taskBaseInfo.networkStatus==2){
+              that.isTestLink = false;
+            }else{
+              that.isTestLink = true;
+            }
+            
           }
           that.loading3 = false;
         }
