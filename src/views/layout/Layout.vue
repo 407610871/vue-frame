@@ -130,7 +130,7 @@ export default {
             data: list
           });
         }
-        // console.log(list)
+        console.log(list)
 
       })
       .catch(function(err) {

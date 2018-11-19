@@ -116,7 +116,7 @@
           </el-table-column>
           <el-table-column prop="objectStatus" label="状态信息" v-if="type=='oracle' || type=='mysql' || type=='postgresql'">
             <template slot-scope="scope">
-              <span v-if="scope.row.extendParams.taskInfoId!=undefined" @click="doDetail(scope.$index, scope.row.extendParams)">{{scope.row.objectStatus}}</span>
+              <span style="cursor: pointer" v-if="scope.row.extendParams.taskInfoId!=undefined" @click="doDetail(scope.$index, scope.row)">{{scope.row.objectStatus}}</span>
               <span v-if="scope.row.extendParams.taskInfoId==undefined">{{scope.row.objectStatus}}</span>
             </template>
           </el-table-column>
@@ -168,7 +168,7 @@ import tableInver from '@/views/accessObjManage/dialog/admin/table_inver'
 import dataInver from '@/views/accessObjManage/dialog/admin/data_inver'
 import pathFtp from '@/views/mainLay/dialog/path_ftp'
 import norelaColl from '@/views/mainLay/dialog/norela_coll'
-import DialogTaskDetail from '@/views/mainLay/dialog/DialogTaskDetail'
+import DialogTaskDetail from '@/views/mainLay/dialog/DialogTaskDetails'
 export default {
   name: 'DashboardAdmin',
   data() {
