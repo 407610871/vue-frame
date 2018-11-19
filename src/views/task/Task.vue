@@ -448,6 +448,7 @@ export default {
             // console.log(row1.length)
 if(row1.length==0){
    this.$alert("请选择相应的任务！", "提示", {
+     height:50,
           dangerouslyUseHTMLString: true
         });
         return;
@@ -853,6 +854,16 @@ if(row1.length==0){
 .el-form-item {
   margin-bottom: 10px;
 }
+.el-message-box{
+  max-height: 50%;
+    overflow: auto;
+}
+.el-message-box__wrapper{
+  .el-message-box{
+  max-height: 50%;
+    overflow: auto;
+}
+}
 </style>
 <style>
 .el-picker-panel__icon-btn {
@@ -864,6 +875,16 @@ if(row1.length==0){
 .zcTable .el-table__body-wrapper {
   background-color: #fff;
 }
+.el-message-box{
+  max-height: 50%;
+    overflow: auto;
+}
+.el-message-box__wrapper
+  .el-message-box{
+  max-height: 50%;
+    overflow: auto;
+}
+
 </style>
 
 
