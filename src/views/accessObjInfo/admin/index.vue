@@ -196,7 +196,15 @@
       },
       accessSysDialectId: function() {
         return this.tableParams.ACCESS_SYS_DIALECT_ID;
-      }
+      },
+      filters(){
+        /* for(let i=0;i<_self.searchForm.length;i++){
+              if(_self.searchForm[i].filterdata==undefined){
+                  _self.searchForm.splice(i,1);
+              }
+            } */
+        return this.searchForm.filter(item => typeof(item.filterdata) != "undefined");
+      },
     },
     components: {
       dataImport,
@@ -384,6 +392,52 @@
       },
       loadTable: function(flag) {
         var _self = this;
+        function promist0(){
+          return new Promise((resolve, reject) => {
+            _self.loading = true;
+            _self.pageSize = _self.$store.state.pageSize;
+            var paramsObj = {
+              pagNum: _self.tableParams.pageNum1,
+              count: _self.pageSize,
+              objectInfoId: _self.$route.params.objId,
+              ACCESS_SYS_DIALECT_ID: _self.tableParams.ACCESS_SYS_DIALECT_ID,
+              accessSysId: _self.tableParams.accessSysId
+            }
+            _self.$ajax.post(window.ENV.API_DACM + '/objDetail/dataList', paramsObj).then(function(res) {
+                if (res.data.success) {
+                  var data = res.data.data.list;
+                  for (var value of data) {
+                    value.showEdit = false;
+                  }
+                  _self.mainTableData1 = data;
+                  _self.mainTableDataTotal1 = res.data.data.total;
+                  //这里是异步的，存在延迟，所以没问题,如果是同步的话可能存在问题
+                  _self.currentPage1 = _self.tableParams.pageNum1;
+                  _self.pageShow = true;
+                  resolve(res);
+                } else {
+                  console.log(res.data.code);
+                  _self.mainTableData1 = [];
+                  _self.pageShow = false;
+                  reject(res);
+                  _self.$alert('获取表信息失败', '提示', {
+                    confirmButtonText: '确定'
+                  });
+                }
+                 _self.loading = false;
+              })
+              .catch(function(err) {
+                _self.mainTableData1 = [];
+                _self.pageShow = false;
+                _self.loading = false;
+                reject(err);
+                _self.$alert('获取表信息失败', '提示', {
+                  confirmButtonText: '确定'
+                });
+              });
+          });
+        }
+        /* var _self = this;
         this.loading = true;
 				_self.pageSize = this.$store.state.pageSize;
         var paramsObj = {
@@ -433,7 +487,47 @@
               });
             });
         });
-        const promist1 = new Promise((resolve, reject) => {
+ */
+        function promist1(){
+          return new Promise((resolve, reject) => {
+            let count = 0;
+            if(!_self.count){
+              count = _self.$store.state.pageSize;
+            }else{
+              count = _self.count;
+            }
+
+            var paramsObj = {
+              count: count,
+              objInfoId: _self.$route.params.objId,
+              ACCESS_SYS_DIALECT_ID: _self.tableParams.ACCESS_SYS_DIALECT_ID,
+              accessSysId: _self.tableParams.accessSysId,
+              filter: _self.filters
+            }
+
+            _self.$ajax.post(window.ENV.API_DACM + '/objDetail/previewData', paramsObj).then(function(res) {
+                if (res.data.success) {
+                  resolve(res);
+                } else {
+                  _self.mainTableData2 = [];
+                  reject(res);
+                  _self.$alert('获取预览信息失败', '提示', {
+                    confirmButtonText: '确定'
+                  });
+                }
+                 _self.loading = false;
+              })
+              .catch(function(err) {
+                _self.mainTableData2 = [];
+                reject(err);
+                _self.$alert('获取预览信息失败', '提示', {
+                  confirmButtonText: '确定'
+                });
+                _self.loading = false;
+              });
+          });
+        }
+        /* const promist1 = new Promise((resolve, reject) => {
           let count = 0;
           if(!this.count){
             count = this.$store.state.pageSize;
@@ -458,7 +552,6 @@
 
 
           this.$ajax.post(window.ENV.API_DACM + '/objDetail/previewData', paramsObj).then(function(res) {
-         /* this.$ajax.post('http://10.19.160.171:8080/DACM/objDetail/previewData', paramsObj).then(function(res) {*/
               console.log('tableLoaded:dataPreview');
               if (res.data.success) {
                 resolve(res);
@@ -485,9 +578,24 @@
                 _self.loading = false;
               }
             });
+        }); */
+        promist0().then(promist1).then((resultList) => {
+          if (resultList.data.datas.length > 0) {
+            _self.data2Columns = resultList.data.datas[0];
+						_self.mainTableTitle = resultList.data.titles;
+            var len = 0;
+            for (var i in _self.data2Columns) {
+              len++;
+              if (len == 6) {
+                break;
+              }
+            }
+            var tableW = document.getElementById("mainTable2").offsetWidth;
+            _self.width = len == 6 ? tableW / (len + 1) + '%' : tableW / len + '%'
+          }
+          _self.mainTableData2 = resultList.data.datas;
         });
-
-        Promise.all([promist0, promist1]).then((resultList) => {
+        /* Promise.all([promist0, promist1]).then((resultList) => {
           if (resultList[1].data.datas.length > 0) {
             _self.data2Columns = resultList[1].data.datas[0];
             console.log(_self.data2Columns)
@@ -503,7 +611,7 @@
             _self.width = len == 6 ? tableW / (len + 1) + '%' : tableW / len + '%'
           }
           _self.mainTableData2 = resultList[1].data.datas;
-        });
+        }); */
 
       },
 			getLabel(key){
