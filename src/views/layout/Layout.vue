@@ -116,6 +116,7 @@ export default {
 
       })
       .then(function(res) {
+//  console.log(res)
         var list = [];
         if (res.data != undefined) {
           for (var value of res.data) {
@@ -129,6 +130,7 @@ export default {
             data: list
           });
         }
+        // console.log(list)
 
       })
       .catch(function(err) {
@@ -141,6 +143,8 @@ export default {
         }
       })
       .then(function(res) {
+        //  console.log(res)
+
         var list = [];
         for (var value of res.data) {
           list.push({
@@ -148,6 +152,8 @@ export default {
             name: value.sTATIC_NAME
           });
         }
+        // console.log(list)
+
         _self.$store.commit("setFilterItmeList", {
           name: "platform",
           data: list

@@ -77,11 +77,11 @@ export default {
   methods: {
     //高级搜索
     doCollapse(){
-    console.log(this.dataObj);
 
       this.collapse=!this.collapse;
             this.$emit("highSeaech", this.collapse);
         // console.log(this.collapse)
+    console.log(this.formSeled);
 
     },
     //搜索条件关闭

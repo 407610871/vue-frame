@@ -293,50 +293,18 @@
   </div>
 </template>
 <script>
-import { validateEmail } from "@/utils/validate.js";
+import { validateEmail } from '@/utils/validate.js'
 export default {
   name: "taskMDialog",
   data: function() {
     //判断是否必选项为空
-    const _self = this;
-    //校验电话号码和座机
-    const validatePhone = (rule, value, callback) => {
-      if (_self.testflag && rule.field == "dockphone") {
-        callback();
-      } else {
-        const isPhone = /^([0-9]{3,4}-)?[0-9]{7,8}$/;
-        const isMob = /^((\+?86)|(\(\+86\)))?(13[012356789][0-9]{8}|15[012356789][0-9]{8}|18[02356789][0-9]{8}|17[02356789][0-9]{8}|147[0-9]{8}|1349[0-9]{7})$/;
-        if (rule.required) {
-          if (value == "") {
-            callback(new Error("请输入正确的号码"));
-          } else {
-            if (isPhone.test(value) || isMob.test(value)) {
-              callback();
-            } else {
-              callback(new Error("请输入正确的号码"));
-            }
-          }
-        }
-        if (value != "") {
-          if (isPhone.test(value) || isMob.test(value)) {
-            callback();
-          } else {
-            callback(new Error("请输入正确的号码"));
-          }
-        } else {
-          callback();
-        }
-      }
-    };
     const validateNull = (rule, value, callback) => {
-      if (_self.testflag && rule.field == "dockname") {
-        callback();
+
+      if (value == "") {
+        callback(new Error("不能为空"));
       } else {
-        if (value == "") {
-          callback(new Error("不能为空"));
-        } else {
-          callback();
-        }
+
+        callback();
       }
     };
     const validateSq = (rule, value, callback) => {
@@ -344,35 +312,38 @@ export default {
         if (value == "") {
           callback(new Error("不能为空"));
         } else {
+
           callback();
         }
       } else {
         callback();
       }
-    };
+    }
     //校验ip
     const validateIp = (rule, value, callback) => {
-      if (this.ruleForm.author == "true") {
+      if (this.ruleForm.author == 'true') {
         if (value == "" || /.*[\u4e00-\u9fa5]+.*$/.test(value)) {
           callback(new Error("请输入正确的ip"));
         } else {
-          callback();
+          callback()
         }
       } else {
         callback();
       }
+
     };
     const validatePort = (rule, value, callback) => {
-      if (this.ruleForm.author == "true") {
+      if (this.ruleForm.author == 'true') {
         if (value == "" || /[^0-9]+/.test(value)) {
           callback(new Error("请输入正确的端口号"));
         } else {
-          callback();
+          callback()
         }
       } else {
-        callback();
+        callback()
       }
-    };
+
+    }
     //校验email
     return {
       i: 0, //树节点只允许单选
@@ -386,153 +357,99 @@ export default {
       fileList: [], //上传的文件列表
       tableMsg: [],
       deptData: [],
-      testflag: false,
-      accdiaName: "更多",
+      accdiaName: '更多',
       accdiaFlag: false,
       deIndex: 0,
       loading: false,
       ruleForm: {
-        jrname: "",
-        proname: "",
-        resource: "",
-        prophone: "",
-        author: "true",
-        authorf: "",
-        authors: "",
-        proemail: "",
-        proqq: "",
-        dockdata: "", //所属部门名称
-        dockid: "", //所属部门id
-        dockname: "",
-        dockpart: "",
-        dockphone: "",
-        syskind: "",
-        ipname: "",
-        username: "",
-        instanceName: "",
-        password: "",
-        iport: "",
-        model: "",
-        dockPlat: "",
-        url: "",
-        transmode: "false",
-        operationName: "",
-        parameterName: "",
-        timeout: "",
-        tableStructure: "",
-        fromPath: "",
-        toPath: "",
-        hadoopDir: "",
-        hadoopHomes: "",
-        vhost: "",
-        upfile: ""
+        jrname: '',
+        proname: '',
+        resource: '',
+        prophone: '',
+        author: 'true',
+        authorf: '',
+        authors: '',
+        proemail: '',
+        proqq: '',
+        dockdata: '', //所属部门名称
+        dockid: '', //所属部门id
+        dockname: '',
+        dockpart: '',
+        dockphone: '',
+        syskind: '',
+        ipname: '',
+        username: '',
+        instanceName: '',
+        password: '',
+        iport: '',
+        model: '',
+        dockPlat: '',
+        url: '',
+        transmode: 'false',
+        operationName: '',
+        parameterName: '',
+        timeout: '',
+        tableStructure: '',
+        fromPath: '',
+        toPath: '',
+        hadoopDir: '',
+        hadoopHomes: '',
+        vhost: '',
+        upfile: ''
+
       },
       formRules: {
         jrname: [
-          {
-            required: true,
-            message: "不能为空",
-            validator: validateNull,
-            trigger: "blur"
-          }
+          { required: true, message: '不能为空', validator: validateNull, trigger: "blur" }
         ],
         ipname: [
-          {
-            required: true,
-            message: "不能为空",
-            validator: validateIp,
-            trigger: "blur"
-          }
+          { required: true, message: '不能为空', validator: validateIp, trigger: "blur" }
         ],
         username: [
-          {
-            required: true,
-            message: "不能为空",
-            validator: validateSq,
-            trigger: "blur"
-          }
+          { required: true, message: '不能为空', validator: validateSq, trigger: "blur" }
         ],
         dockname: [
-          {
-            required: true,
-            message: "不能为空",
-            validator: validateNull,
-            trigger: "blur"
-          }
+          { required: true, message: '不能为空', validator: validateNull, trigger: "blur" }
         ],
         password: [
-          {
-            required: true,
-            message: "不能为空",
-            validator: validateSq,
-            trigger: "blur"
-          }
+          { required: true, message: '不能为空', validator: validateSq, trigger: "blur" }
         ],
         iport: [
-          {
-            required: true,
-            message: "请输入正确的端口号",
-            validator: validatePort,
-            trigger: "blur"
-          }
+          { required: true, message: '请输入正确的端口号', validator: validatePort, trigger: "blur" }
         ],
         instanceName: [
-          {
-            required: true,
-            message: "不能为空",
-            validator: validateSq,
-            trigger: "blur"
-          }
+          { required: true, message: '不能为空', validator: validateSq, trigger: "blur" }
         ],
         hadoopDir: [
-          {
-            required: true,
-            message: "不能为空",
-            validator: validateSq,
-            trigger: "blur"
-          }
+          { required: true, message: '不能为空', validator: validateSq, trigger: "blur" }
         ],
         hadoopHomes: [
-          {
-            required: true,
-            message: "不能为空",
-            validator: validateSq,
-            trigger: "blur"
-          }
+          { required: true, message: '不能为空', validator: validateSq, trigger: "blur" }
         ],
         vhost: [
-          {
-            required: true,
-            message: "不能为空",
-            validator: validateSq,
-            trigger: "blur"
-          }
+          { required: true, message: '不能为空', validator: validateSq, trigger: "blur" }
         ],
         dockdata: [
-          {
-            required: true,
-            message: "不能为空",
-            validator: validateNull,
-            trigger: "blur"
-          }
+          { required: true, message: '不能为空', validator: validateNull, trigger: "blur" }
         ],
-        proemail: [{ validator: this.GLOBAL.validateEmail, trigger: "blur" }],
-        proqq: [{ validator: this.GLOBAL.validateNumber, trigger: "blur" }],
-        prophone: [{ validator: this.GLOBAL.validatePhone, trigger: "blur" }],
+        proemail: [
+          { validator: this.GLOBAL.validateEmail, trigger: 'blur' }
+        ],
+        proqq: [
+          { validator: this.GLOBAL.validateNumber, trigger: 'blur' }
+        ],
+        prophone: [
+          { validator: this.GLOBAL.validatePhone, trigger: 'blur' }
+        ],
         dockphone: [
-          {
-            required: true,
-            message: "输入正确的号码",
-            validator:validatePhone,
-            trigger: "blur"
-          }
+          { required: true, message: '输入正确的号码', validator: this.GLOBAL.validatePhone, trigger: 'blur' }
         ]
       },
       treedata: [],
       defaultProps: {
-        children: "children",
-        label: "deptName"
-      }
+        children: 'children',
+        label: 'deptName'
+      },
 
       // msgId:this.dialogMsg?this.dialogMsg[1]:''
     };
@@ -541,9 +458,9 @@ export default {
     //关闭对话框
     closeDialog() {
       this.dialogVisible = false;
-      this.$refs["ruleForm"].resetFields();
+      this.$refs['ruleForm'].resetFields();
       this.accdiaFlag = false;
-      this.accdiaName = "更多";
+      this.accdiaName = '更多';
     },
     //实现树的单选
     handleClick(data, checked, node) {
@@ -554,7 +471,7 @@ export default {
     },
     //树的点击
     nodeClick(data, checked, node) {
-      this.checkedId = data.id;
+      this.checkedId = data.id
       this.$refs.treeForm.setCheckedNodes([data]);
       this.ruleForm.dockdata = data.deptName;
       this.ruleForm.dockid = data.id;
@@ -562,7 +479,7 @@ export default {
     //关闭
     closeForm() {
       this.dialogVisible = false;
-      this.$refs["ruleForm"].resetFields();
+      this.$refs['ruleForm'].resetFields();
     },
     //文件的上传
     submitUpload() {
@@ -576,74 +493,78 @@ export default {
     },
     _getSJLYandSSJZ() {
       let _self = this;
-      _self
-        .$ajax({
-          methods: "get",
-          url: this.GLOBAL.api.API_DACM + "/commonInter/getDictDataCategory",
-          params: {}
-        })
-        .then(res => {
-          if (res.data.staticDatas.SJLY == undefined) {
-            this.$alert("获取资产数据失败", "信息", {
-              confirmButtonText: "确定",
-              callback: action => {
-                return false;
-              }
-            });
-            return false;
-          }
-          _self.SJLY = res.data.staticDatas.SJLY;
-          _self.SSJZ = res.data.staticDatas.SSJZ;
-          console.log(_self.SSJZ);
-          _self.ruleForm.resource = _self.SJLY[0].sTATIC_CODE;
-          _self.ruleForm.authorf = _self.SSJZ[0].sTATIC_CODE;
-        });
+      _self.$ajax({
+        methods: "get",
+        url: this.GLOBAL.api.API_DACM + '/commonInter/getDictDataCategory',
+        params: {
+
+        }
+      }).then(res => {
+        if (res.data.staticDatas.SJLY == undefined) {
+          this.$alert('获取资产数据失败', '信息', {
+            confirmButtonText: '确定',
+            callback: action => {
+              return false;
+            }
+          });
+          return false;
+        }
+        _self.SJLY = res.data.staticDatas.SJLY;
+        _self.SSJZ = res.data.staticDatas.SSJZ;
+        console.log(_self.SSJZ);
+        _self.ruleForm.resource = _self.SJLY[0].sTATIC_CODE;
+        _self.ruleForm.authorf = _self.SSJZ[0].sTATIC_CODE;
+      })
     },
     _getAccessDialect() {
       this.$ajax({
         methods: "get",
-        url: this.GLOBAL.api.API_DACM + "/commonInter/sysdialect",
+        url: this.GLOBAL.api.API_DACM + '/commonInter/sysdialect',
         params: {
-          type: "2"
+          type: '2'
         }
       }).then(res => {
+
         this.syskindList = res.data;
         this.ruleForm.syskind = res.data[0].id;
-      });
+      })
     },
     more(flag) {
       if (flag) {
         this.accdiaFlag = false;
-        this.accdiaName = "更多";
+        this.accdiaName = '更多';
       } else {
         this.accdiaFlag = true;
-        this.accdiaName = "收起";
+        this.accdiaName = '收起';
       }
     },
     //对接部门
     _getDJBM() {
       this.$ajax({
         methods: "get",
-        url: this.GLOBAL.api.API_DACM + "/commonInter/sysDepartment",
-        params: {}
+        url: this.GLOBAL.api.API_DACM + '/commonInter/sysDepartment',
+        params: {
+
+        }
       }).then(res => {
+
         this.DJBM = res.data;
         this.ruleForm.dockpart = res.data[0].id;
-      });
+      })
     },
     //对接平台
     _getDJPT() {
       var _self = this;
       this.$ajax({
         methods: "get",
-        url: this.GLOBAL.api.API_DACM + "/commonInter/getListStaticData.do",
+        url: this.GLOBAL.api.API_DACM + '/commonInter/getListStaticData.do',
         params: {
-          dictCode: "ButtPlatForm"
+          dictCode: 'ButtPlatForm'
         }
       }).then(res => {
         _self.DJPT = res.data;
         _self.ruleForm.dockPlat = res.data[0].sTATIC_CODE;
-      });
+      })
     },
     //数据所属部门
     _getSYBM() {
@@ -653,13 +574,14 @@ export default {
         })*/
       this.$ajax({
         method: "post",
-        url: this.GLOBAL.api.API_DACM + "/deptInfo/getDeptInfo"
+        url: this.GLOBAL.api.API_DACM + '/deptInfo/getDeptInfo',
       }).then(res => {
         console.log(res);
         _self.treedata = res.data.datas;
         if (_self.$store.state.deptId.length == 0) {
           _self.ruleForm.dockid = _self.treedata[0].id;
-          _self.ruleForm.dockdata = _self.treedata[0].deptName;
+          _self.ruleForm.dockdata = _self.treedata[0].deptName
+
         } else {
           let depIds = _self.$store.state.deptId;
           console.log(depIds);
@@ -668,11 +590,8 @@ export default {
               id: _self.treedata[i].id,
               name: _self.treedata[i].deptName,
               pid: _self.treedata[i].pid
-            });
-            if (
-              _self.treedata[i].children.length != 0 &&
-              _self.treedata[i].children.length != undefined
-            ) {
+            })
+            if (_self.treedata[i].children.length != 0 && _self.treedata[i].children.length != undefined) {
               this._getDepId(_self.treedata[i].children);
             }
           }
@@ -680,11 +599,12 @@ export default {
             if (_self.deptData[m].id == depIds[0]) {
               _self.ruleForm.dockid = _self.deptData[m].id;
               _self.ruleForm.dockdata = _self.deptData[m].name;
-              _self.deIndex = _self.deptData[m].pid;
+              _self.deIndex = _self.deptData[m].pid
             }
           }
         }
-      });
+
+      })
     },
     //找到id的index值
     _getDepId(value) {
@@ -693,148 +613,144 @@ export default {
           id: value[n].id,
           name: value[n].deptName,
           pid: value[n].pid
-        });
-        if (
-          value[n].children.length != 0 &&
-          value[n].children.length != undefined
-        ) {
+        })
+        if (value[n].children.length != 0 && value[n].children.length != undefined) {
           this._getDepId(value[n].children);
         }
       }
     },
     //保存信息
     submitForm(formName) {
-      this.testflag = false;
       console.log(this.ruleForm.syskind);
       var _self = this;
-      this.$refs[formName].validate(valid => {
+      this.$refs[formName].validate((valid) => {
         if (valid) {
-          if (_self.ruleForm.syskind != "10023") {
+          if (_self.ruleForm.syskind != '10023') {
             let save = {};
             save = {
-              name: _self.ruleForm.jrname, // 接入源名称
-              accessSysDialectId: _self.ruleForm.syskind, //mysql,oracle接入源类型
-              registerName: _self.ruleForm.dockname, // 注册人姓名
-              registerPhone: _self.ruleForm.dockphone, // 注册人电话
-              contactsPhone: _self.ruleForm.prophone, //数据提供人电话
-              contactsEmail: _self.ruleForm.proemail, //数据提供人 邮箱
-              accessSysDeptInfoId: _self.ruleForm.dockid, //所属部门
-              attr: [
-                {
+              "name": _self.ruleForm.jrname, // 接入源名称
+              "accessSysDialectId": _self.ruleForm.syskind, //mysql,oracle接入源类型
+              "registerName": _self.ruleForm.dockname, // 注册人姓名 
+              "registerPhone": _self.ruleForm.dockphone, // 注册人电话 
+              "contactsPhone": _self.ruleForm.prophone, //数据提供人电话
+              "contactsEmail": _self.ruleForm.proemail, //数据提供人 邮箱
+              "accessSysDeptInfoId": _self.ruleForm.dockid, //所属部门
+              "attr": [{
                   //数据提供人姓名
-                  key: "sourceQQ",
-                  value: _self.ruleForm.proqq
+                  "key": "sourceQQ",
+                  "value": _self.ruleForm.proqq
                 },
                 {
                   //数据提供人电话
-                  key: "sourceEmail",
-                  value: _self.ruleForm.proemail
+                  "key": "sourceEmail",
+                  "value": _self.ruleForm.proemail
                 },
                 {
-                  key: "network",
-                  value: _self.ruleForm.resource //  接入数据来源
+                  "key": "network",
+                  "value": _self.ruleForm.resource //  接入数据来源
                 },
                 {
                   //数据授权
-                  key: "accredit",
-                  value: _self.ruleForm.author
+                  "key": "accredit",
+                  "value": _self.ruleForm.author
                 },
                 {
                   //对接部门
-                  key: "abutment",
-                  value: _self.ruleForm.dockpart
+                  "key": "abutment",
+                  "value": _self.ruleForm.dockpart
                 },
                 {
                   //数据所属部门
-                  key: "department",
-                  value: _self.ruleForm.dockdata
+                  "key": "department",
+                  "value": _self.ruleForm.dockdata
                 },
                 {
-                  key: "depId",
-                  value: _self.ruleForm.dockid
+                  "key": "depId",
+                  "value": _self.ruleForm.dockid
                 },
                 {
                   //归属大类
-                  key: "ascription",
-                  value: ""
+                  "key": "ascription",
+                  "value": ""
                 },
                 {
                   //对接平台
-                  key: "platform",
-                  value: _self.ruleForm.dockPlat
+                  "key": "platform",
+                  "value": _self.ruleForm.dockPlat
                 },
                 {
                   //业务类别
-                  key: "rcategory",
-                  value: _self.ruleForm.authorf
+                  "key": "rcategory",
+                  "value": _self.ruleForm.authorf
                 },
                 //属性值
                 {
-                  key: "ip",
-                  value: _self.ruleForm.ipname
+                  "key": "ip",
+                  "value": _self.ruleForm.ipname
                 },
                 {
-                  key: "port",
-                  value: _self.ruleForm.iport
+                  "key": "port",
+                  "value": _self.ruleForm.iport
                 },
                 {
-                  key: "url",
-                  value: _self.ruleForm.url
+                  "key": "url",
+                  "value": _self.ruleForm.url
                 },
                 {
-                  key: "timeOut",
-                  value: _self.ruleForm.timeout
+                  "key": "timeOut",
+                  "value": _self.ruleForm.timeout
                 },
                 {
-                  key: "databasename",
-                  value: _self.ruleForm.instanceName
+                  "key": "databasename",
+                  "value": _self.ruleForm.instanceName
                 },
                 {
-                  key: "username",
-                  value: _self.ruleForm.username
+                  "key": "username",
+                  "value": _self.ruleForm.username
                 },
                 {
-                  key: "password",
-                  value: _self.ruleForm.password
+                  "key": "password",
+                  "value": _self.ruleForm.password
                 },
                 {
-                  key: "model",
-                  value: _self.ruleForm.model
+                  "key": "model",
+                  "value": _self.ruleForm.model
                 },
                 {
-                  key: "linkman",
-                  value: _self.ruleForm.proname
+                  "key": "linkman",
+                  "value": _self.ruleForm.proname
                 },
                 {
-                  key: "dept_name",
-                  value: _self.ruleForm.dockdata
+                  "key": "dept_name",
+                  "value": _self.ruleForm.dockdata
                 },
                 {
-                  key: "vhost",
-                  value: _self.ruleForm.vhost
+                  "key": 'vhost',
+                  "value": _self.ruleForm.vhost
                 },
                 {
-                  key: "isActive",
-                  value: _self.ruleForm.transmode
+                  "key": 'isActive',
+                  "value": _self.ruleForm.transmode
                 },
                 {
-                  key: "fromPath",
-                  value: _self.ruleForm.fromPath
+                  "key": 'fromPath',
+                  "value": _self.ruleForm.fromPath
                 },
                 {
-                  key: "toPath",
-                  value: _self.ruleForm.toPath
+                  "key": 'toPath',
+                  "value": _self.ruleForm.toPath
                 },
                 {
-                  key: "tableStructure",
-                  value: _self.ruleForm.tableStructure
+                  "key": 'tableStructure',
+                  "value": _self.ruleForm.tableStructure
                 }
+
               ]
-            };
-            console.log(typeof save);
+            }
+            console.log(typeof(save));
             this.$ajax({
               method: "get",
-              url: this.GLOBAL.api.API_DACM + "/register/dataSourceCheck",
+              url: this.GLOBAL.api.API_DACM + '/register/dataSourceCheck',
               // headers:{
               //   'Content-Type':'application/json;charset=utf-8',
               // },
@@ -843,455 +759,465 @@ export default {
                 username: this.ruleForm.username,
                 name: this.ruleForm.jrname
               }
+
             }).then(res => {
               console.log(res);
               if (res.data.data.exist) {
                 if (res.data.data.existName) {
-                  this.$message.warning("接入源名称已存在");
+                  this.$message.warning('接入源名称已存在');
                   return false;
                 }
-                this.$confirm(
-                  "已经存在同IP地址同用户的数据源，确定保存?",
-                  "信息",
-                  {
-                    confirmButtonText: "确定",
-                    cancelButtonText: "取消"
-                  }
-                )
-                  .then(() => {
-                    this.loading = true;
-                    this.$ajax({
-                      method: "POST",
-                      url:
-                        this.GLOBAL.api.API_DACM + "/register/dataSourceInsert",
-                      // headers:{
-                      //   'Content-Type':'application/json;charset=utf-8',
-                      // },
-                      data: save
-                    }).then(res => {
-                      this.loading = false;
-                      if (res.data.success) {
-                        this.$alert("注册成功", "信息", {
-                          confirmButtonText: "确定",
-                          callback: action => {
-                            this.$refs["ruleForm"].resetFields();
-                            this.dialogVisible = false;
-                            this.$emit("refreshTable");
-                          }
-                        });
-                      } else {
-                        this.$alert(res.data.message, "信息", {
-                          confirmButtonText: "确定",
-                          callback: action => {}
-                        });
-                      }
-                    });
+                this.$confirm('已经存在同IP地址同用户的数据源，确定保存?', '信息', {
+                  confirmButtonText: '确定',
+                  cancelButtonText: '取消',
+                }).then(() => {
+                  this.loading = true;
+                  this.$ajax({
+                    method: "POST",
+                    url: this.GLOBAL.api.API_DACM + '/register/dataSourceInsert',
+                    // headers:{
+                    //   'Content-Type':'application/json;charset=utf-8',
+                    // },
+                    data: save
+
+                  }).then(res => {
+                    this.loading = false;
+                    if (res.data.success) {
+                      this.$alert('注册成功', '信息', {
+                        confirmButtonText: '确定',
+                        callback: action => {
+                          this.$refs['ruleForm'].resetFields();
+                          this.dialogVisible = false;
+                          this.$emit('refreshTable');
+                        }
+                      });
+
+                    } else {
+                      this.$alert(res.data.message, '信息', {
+                        confirmButtonText: '确定',
+                        callback: action => {
+
+                        }
+                      });
+                    }
+
                   })
-                  .catch(() => {});
+                }).catch(() => {
+
+                })
+
               } else {
                 this.loading = true;
                 this.$ajax({
                   method: "POST",
-                  url: this.GLOBAL.api.API_DACM + "/register/dataSourceInsert",
+                  url: this.GLOBAL.api.API_DACM + '/register/dataSourceInsert',
                   // headers:{
                   //   'Content-Type':'application/json;charset=utf-8',
                   // },
                   data: save
+
                 }).then(res => {
                   this.loading = false;
                   if (res.data.success) {
-                    this.$alert("注册成功", "信息", {
-                      confirmButtonText: "确定",
+                    this.$alert('注册成功', '信息', {
+                      confirmButtonText: '确定',
                       callback: action => {
-                        this.$refs["ruleForm"].resetFields();
+                        this.$refs['ruleForm'].resetFields();
                         this.dialogVisible = false;
-                        this.$emit("refreshTable");
+                        this.$emit('refreshTable');
                       }
                     });
+
                   } else {
-                    this.$alert(res.data.message, "信息", {
-                      confirmButtonText: "确定",
-                      callback: action => {}
+                    this.$alert(res.data.message, '信息', {
+                      confirmButtonText: '确定',
+                      callback: action => {
+
+                      }
                     });
                   }
-                });
+
+                })
               }
-            });
+
+            })
+
           } else {
-            if (
-              this.ruleForm.syskind == "10023" &&
-              this.ruleForm.jrname != ""
-            ) {
+            if (this.ruleForm.syskind == '10023' && this.ruleForm.jrname != '') {
               var formData = new FormData();
               var save = {};
               save = {
-                name: _self.ruleForm.jrname, // 接入源名称
-                accessSysDialectId: _self.ruleForm.syskind, //mysql,oracle接入源类型
-                registerName: _self.ruleForm.dockname, // 注册人姓名
-                registerPhone: _self.ruleForm.dockphone, // 注册人电话
-                contactsPhone: _self.ruleForm.prophone, //数据提供人电话
-                contactsEmail: _self.ruleForm.proemail, //数据提供人 邮箱
-                accessSysDeptInfoId: _self.ruleForm.dockid, //所属部门
-                attr: [
-                  {
+                "name": _self.ruleForm.jrname, // 接入源名称
+                "accessSysDialectId": _self.ruleForm.syskind, //mysql,oracle接入源类型
+                "registerName": _self.ruleForm.dockname, // 注册人姓名 
+                "registerPhone": _self.ruleForm.dockphone, // 注册人电话 
+                "contactsPhone": _self.ruleForm.prophone, //数据提供人电话
+                "contactsEmail": _self.ruleForm.proemail, //数据提供人 邮箱
+                "accessSysDeptInfoId": _self.ruleForm.dockid, //所属部门
+                "attr": [{
                     //数据提供人姓名
-                    key: "sourceQQ",
-                    value: _self.ruleForm.proqq
+                    "key": "sourceQQ",
+                    "value": _self.ruleForm.proqq
                   },
                   {
                     //数据提供人电话
-                    key: "sourceEmail",
-                    value: _self.ruleForm.proemail
+                    "key": "sourceEmail",
+                    "value": _self.ruleForm.proemail
                   },
                   {
-                    key: "network",
-                    value: _self.ruleForm.resource //  接入数据来源
+                    "key": "network",
+                    "value": _self.ruleForm.resource //  接入数据来源
                   },
                   {
                     //数据授权
-                    key: "accredit",
-                    value: _self.ruleForm.author
+                    "key": "accredit",
+                    "value": _self.ruleForm.author
                   },
                   {
                     //对接部门
-                    key: "abutment",
-                    value: _self.ruleForm.dockpart
+                    "key": "abutment",
+                    "value": _self.ruleForm.dockpart
                   },
                   {
                     //数据所属部门
-                    key: "department",
-                    value: _self.ruleForm.dockdata
+                    "key": "department",
+                    "value": _self.ruleForm.dockdata
                   },
                   {
-                    key: "depId",
-                    value: _self.ruleForm.dockid
+                    "key": "depId",
+                    "value": _self.ruleForm.dockid
                   },
                   {
                     //归属大类
-                    key: "ascription",
-                    value: ""
+                    "key": "ascription",
+                    "value": ""
                   },
                   {
                     //对接平台
-                    key: "platform",
-                    value: _self.ruleForm.dockPlat
+                    "key": "platform",
+                    "value": _self.ruleForm.dockPlat
                   },
                   {
                     //业务类别
-                    key: "rcategory",
-                    value: _self.ruleForm.authorf
+                    "key": "rcategory",
+                    "value": _self.ruleForm.authorf
                   },
                   //属性值
                   {
-                    key: "ip",
-                    value: _self.ruleForm.ipname
+                    "key": "ip",
+                    "value": _self.ruleForm.ipname
                   },
                   {
-                    key: "port",
-                    value: _self.ruleForm.iport
+                    "key": "port",
+                    "value": _self.ruleForm.iport
                   },
                   {
-                    key: "url",
-                    value: _self.ruleForm.url
+                    "key": "url",
+                    "value": _self.ruleForm.url
                   },
                   {
-                    key: "timeOut",
-                    value: _self.ruleForm.timeout
+                    "key": "timeOut",
+                    "value": _self.ruleForm.timeout
                   },
                   {
-                    key: "databasename",
-                    value: _self.ruleForm.instanceName
+                    "key": "databasename",
+                    "value": _self.ruleForm.instanceName
                   },
                   {
-                    key: "username",
-                    value: _self.ruleForm.username
+                    "key": "username",
+                    "value": _self.ruleForm.username
                   },
                   {
-                    key: "password",
-                    value: _self.ruleForm.password
+                    "key": "password",
+                    "value": _self.ruleForm.password
                   },
                   {
-                    key: "model",
-                    value: _self.ruleForm.model
+                    "key": "model",
+                    "value": _self.ruleForm.model
                   },
                   {
-                    key: "linkman",
-                    value: _self.ruleForm.proname
+                    "key": "linkman",
+                    "value": _self.ruleForm.proname
                   },
                   {
-                    key: "dept_name",
-                    value: _self.ruleForm.dockdata
+                    "key": "dept_name",
+                    "value": _self.ruleForm.dockdata
                   },
                   {
-                    key: "vhost",
-                    value: _self.ruleForm.vhost
+                    "key": 'vhost',
+                    "value": _self.ruleForm.vhost
                   },
                   {
-                    key: "isActive",
-                    value: _self.ruleForm.transmode
+                    "key": 'isActive',
+                    "value": _self.ruleForm.transmode
                   },
                   {
-                    key: "fromPath",
-                    value: _self.ruleForm.fromPath
+                    "key": 'fromPath',
+                    "value": _self.ruleForm.fromPath
                   },
                   {
-                    key: "toPath",
-                    value: _self.ruleForm.toPath
+                    "key": 'toPath',
+                    "value": _self.ruleForm.toPath
                   },
                   {
-                    key: "tableStructure",
-                    value: _self.ruleForm.tableStructure
+                    "key": 'tableStructure',
+                    "value": _self.ruleForm.tableStructure
                   }
+
                 ]
-              };
+              }
               if (_self.$refs.upload.uploadFiles.length == 0) {
-                this.$message.error("请至少选择一个本地文件");
+                this.$message.error('请至少选择一个本地文件');
               } else {
                 var formbak = _self.$refs.upload.uploadFiles;
                 for (var i = 0; i < formbak.length; i++) {
-                  formData.append("files", formbak[i].raw);
+                  formData.append('files', formbak[i].raw);
                 }
-                formData.append("save", JSON.stringify(save));
-                this.$message.success("正在上传,请稍后刷新");
+                formData.append('save', JSON.stringify(save));
+                this.$message.success('正在上传,请稍后刷新');
                 this.$refs.upload.clearFiles();
-                this.$refs["ruleForm"].resetFields();
+                this.$refs['ruleForm'].resetFields();
                 this.dialogVisible = false;
                 //this.dialogVisible = false;
                 this.$ajax({
                   method: "POST",
-                  url: this.GLOBAL.api.API_DACM + "/register/fileSourceInsert",
+                  url: this.GLOBAL.api.API_DACM + '/register/fileSourceInsert',
                   /* url:'http://10.19.160.211:8080/DACM/register/fileSourceInsert',*/
                   processData: false,
                   contentType: false,
                   data: formData
+
                 }).then(res => {
                   if (res.data.success) {
-                    this.$alert(res.data.message, "信息", {
-                      confirmButtonText: "确定"
+                    this.$alert(res.data.message, '信息', {
+                      confirmButtonText: '确定'
                     });
                   } else {
-                    this.$alert(res.data.message, "信息", {
-                      confirmButtonText: "确定"
+                    this.$alert(res.data.message, '信息', {
+                      confirmButtonText: '确定'
                     });
                   }
-                });
+
+                })
               }
             }
           }
         } else {
           const isPhone = /^([0-9]{3,4}-)?[0-9]{7,8}$/;
           const isMob = /^((\+?86)|(\(\+86\)))?(13[012356789][0-9]{8}|15[012356789][0-9]{8}|18[02356789][0-9]{8}|147[0-9]{8}|1349[0-9]{7})$/;
-          if (
-            this.ruleForm.syskind == "10023" &&
-            this.ruleForm.jrname != "" &&
-            this.ruleForm.dockname != "" &&
-            (isPhone.test(this.ruleForm.dockphone) ||
-              isMob.test(this.ruleForm.dockphone))
-          ) {
+          if (this.ruleForm.syskind == '10023' && this.ruleForm.jrname != '' && this.ruleForm.dockname != '' && (isPhone.test(this.ruleForm.dockphone) || isMob.test(this.ruleForm.dockphone))) {
             var formData = new FormData();
             var save = {};
             save = {
-              name: _self.ruleForm.jrname, // 接入源名称
-              accessSysDialectId: _self.ruleForm.syskind, //mysql,oracle接入源类型
-              registerName: _self.ruleForm.dockname, // 注册人姓名
-              registerPhone: _self.ruleForm.dockphone, // 注册人电话
-              contactsPhone: _self.ruleForm.prophone, //数据提供人电话
-              contactsEmail: _self.ruleForm.proemail, //数据提供人 邮箱
-              accessSysDeptInfoId: _self.ruleForm.dockid, //所属部门
-              attr: [
-                {
+              "name": _self.ruleForm.jrname, // 接入源名称
+              "accessSysDialectId": _self.ruleForm.syskind, //mysql,oracle接入源类型
+              "registerName": _self.ruleForm.dockname, // 注册人姓名 
+              "registerPhone": _self.ruleForm.dockphone, // 注册人电话 
+              "contactsPhone": _self.ruleForm.prophone, //数据提供人电话
+              "contactsEmail": _self.ruleForm.proemail, //数据提供人 邮箱
+              "accessSysDeptInfoId": _self.ruleForm.dockid, //所属部门
+              "attr": [{
                   //数据提供人姓名
-                  key: "sourceQQ",
-                  value: _self.ruleForm.proqq
+                  "key": "sourceQQ",
+                  "value": _self.ruleForm.proqq
                 },
                 {
                   //数据提供人电话
-                  key: "sourceEmail",
-                  value: _self.ruleForm.proemail
+                  "key": "sourceEmail",
+                  "value": _self.ruleForm.proemail
                 },
                 {
-                  key: "network",
-                  value: _self.ruleForm.resource //  接入数据来源
+                  "key": "network",
+                  "value": _self.ruleForm.resource //  接入数据来源
                 },
                 {
                   //数据授权
-                  key: "accredit",
-                  value: _self.ruleForm.author
+                  "key": "accredit",
+                  "value": _self.ruleForm.author
                 },
                 {
                   //对接部门
-                  key: "abutment",
-                  value: _self.ruleForm.dockpart
+                  "key": "abutment",
+                  "value": _self.ruleForm.dockpart
                 },
                 {
                   //数据所属部门
-                  key: "department",
-                  value: _self.ruleForm.dockdata
+                  "key": "department",
+                  "value": _self.ruleForm.dockdata
                 },
                 {
-                  key: "depId",
-                  value: _self.ruleForm.dockid
+                  "key": "depId",
+                  "value": _self.ruleForm.dockid
                 },
                 {
                   //归属大类
-                  key: "ascription",
-                  value: ""
+                  "key": "ascription",
+                  "value": ""
                 },
                 {
                   //对接平台
-                  key: "platform",
-                  value: _self.ruleForm.dockPlat
+                  "key": "platform",
+                  "value": _self.ruleForm.dockPlat
                 },
                 {
                   //业务类别
-                  key: "rcategory",
-                  value: _self.ruleForm.authorf
+                  "key": "rcategory",
+                  "value": _self.ruleForm.authorf
                 },
                 //属性值
                 {
-                  key: "ip",
-                  value: _self.ruleForm.ipname
+                  "key": "ip",
+                  "value": _self.ruleForm.ipname
                 },
                 {
-                  key: "port",
-                  value: _self.ruleForm.iport
+                  "key": "port",
+                  "value": _self.ruleForm.iport
                 },
                 {
-                  key: "url",
-                  value: _self.ruleForm.url
+                  "key": "url",
+                  "value": _self.ruleForm.url
                 },
                 {
-                  key: "timeOut",
-                  value: _self.ruleForm.timeout
+                  "key": "timeOut",
+                  "value": _self.ruleForm.timeout
                 },
                 {
-                  key: "databasename",
-                  value: _self.ruleForm.instanceName
+                  "key": "databasename",
+                  "value": _self.ruleForm.instanceName
                 },
                 {
-                  key: "username",
-                  value: _self.ruleForm.username
+                  "key": "username",
+                  "value": _self.ruleForm.username
                 },
                 {
-                  key: "password",
-                  value: _self.ruleForm.password
+                  "key": "password",
+                  "value": _self.ruleForm.password
                 },
                 {
-                  key: "model",
-                  value: _self.ruleForm.model
+                  "key": "model",
+                  "value": _self.ruleForm.model
                 },
                 {
-                  key: "linkman",
-                  value: _self.ruleForm.proname
+                  "key": "linkman",
+                  "value": _self.ruleForm.proname
                 },
                 {
-                  key: "dept_name",
-                  value: _self.ruleForm.dockdata
+                  "key": "dept_name",
+                  "value": _self.ruleForm.dockdata
                 },
                 {
-                  key: "vhost",
-                  value: _self.ruleForm.vhost
+                  "key": 'vhost',
+                  "value": _self.ruleForm.vhost
                 },
                 {
-                  key: "isActive",
-                  value: _self.ruleForm.transmode
+                  "key": 'isActive',
+                  "value": _self.ruleForm.transmode
                 },
                 {
-                  key: "fromPath",
-                  value: _self.ruleForm.fromPath
+                  "key": 'fromPath',
+                  "value": _self.ruleForm.fromPath
                 },
                 {
-                  key: "toPath",
-                  value: _self.ruleForm.toPath
+                  "key": 'toPath',
+                  "value": _self.ruleForm.toPath
                 },
                 {
-                  key: "tableStructure",
-                  value: _self.ruleForm.tableStructure
+                  "key": 'tableStructure',
+                  "value": _self.ruleForm.tableStructure
                 }
+
               ]
-            };
+            }
             if (_self.$refs.upload.uploadFiles.length == 0) {
-              this.$message.error("请至少选择一个本地文件");
+              this.$message.error('请至少选择一个本地文件');
             } else {
               var formbak = _self.$refs.upload.uploadFiles;
               for (var i = 0; i < formbak.length; i++) {
-                formData.append("files", formbak[i].raw);
+                formData.append('files', formbak[i].raw);
               }
-              formData.append("save", JSON.stringify(save));
-              this.$message.success("正在上传,请稍后刷新");
+              formData.append('save', JSON.stringify(save));
+              this.$message.success('正在上传,请稍后刷新');
               this.$refs.upload.clearFiles();
-              this.$refs["ruleForm"].resetFields();
+              this.$refs['ruleForm'].resetFields();
               this.dialogVisible = false;
               this.$ajax({
                 method: "POST",
-                url: this.GLOBAL.api.API_DACM + "/register/fileSourceInsert",
+                url: this.GLOBAL.api.API_DACM + '/register/fileSourceInsert',
                 /* url:'http://10.19.160.211:8080/DACM/register/fileSourceInsert',*/
                 processData: false,
                 contentType: false,
                 data: formData
+
               }).then(res => {
                 if (res.data.success) {
-                  this.$alert(res.data.message, "信息", {
-                    confirmButtonText: "确定"
+                  this.$alert(res.data.message, '信息', {
+                    confirmButtonText: '确定'
                   });
                 } else {
-                  this.$alert(res.data.message, "信息", {
-                    confirmButtonText: "确定"
+                  this.$alert(res.data.message, '信息', {
+                    confirmButtonText: '确定'
                   });
                 }
-              });
+
+              })
             }
           } else {
-            console.log("error submit!!");
+            console.log('error submit!!');
             return false;
+
           }
+
         }
       });
     },
     //测试连接
     testForm(formName) {
-      this.testflag = true;
-      this.$refs[formName].validate(valid => {
+
+      this.$refs[formName].validate((valid) => {
         if (valid) {
-          this.loading = true;
+          this.loading = true
           let testData = {};
           testData = {
-            ip: this.ruleForm.ipname,
-            port: this.ruleForm.iport,
-            instanceName: this.ruleForm.instanceName,
-            model: this.ruleForm.model,
-            username: this.ruleForm.username,
-            password: this.ruleForm.password,
-            url: this.ruleForm.url,
-            accessDialectId: this.ruleForm.syskind.toString()
-          };
+            "ip": this.ruleForm.ipname,
+            "port": this.ruleForm.iport,
+            "instanceName": this.ruleForm.instanceName,
+            "model": this.ruleForm.model,
+            "username": this.ruleForm.username,
+            "password": this.ruleForm.password,
+            "url": this.ruleForm.url,
+            "accessDialectId": this.ruleForm.syskind.toString()
+          }
           this.$ajax({
             method: "POST",
-            url: this.GLOBAL.api.API_DACM + "/register/dataSourceConnect",
+            url: this.GLOBAL.api.API_DACM + '/register/dataSourceConnect',
             // headers:{
             //   'Content-Type':'application/json;charset=utf-8',
             // },
             data: testData
+
           }).then(res => {
             this.loading = false;
             if (res.data.success) {
-              this.$alert("连接成功", "信息", {
-                confirmButtonText: "确定"
+              this.$alert('连接成功', '信息', {
+                confirmButtonText: '确定'
               });
             } else {
-              this.$alert("连接失败", "信息", {
-                confirmButtonText: "确定"
+              this.$alert('连接失败', '信息', {
+                confirmButtonText: '确定'
               });
             }
-          });
+
+          })
         } else {
-          console.log("error submit!!");
+          console.log('error submit!!');
           return false;
         }
       });
     }
   },
-  components: {},
+  components: {
+
+  },
   watch: {
     dialogVisible() {
       if (this.dialogVisible) {
@@ -1308,8 +1234,11 @@ export default {
         this._getSYBM();
       }
     }
+
   }
+
 };
+
 </script>
 <style lang="scss">
 @import "@/assets/css/base.scss";
@@ -1330,7 +1259,7 @@ export default {
   }
 }
 
-.el-radio + .el-radio {
+.el-radio+.el-radio {
   margin-left: 19px;
 }
 
@@ -1355,4 +1284,5 @@ export default {
 .icon-dai i {
   cursor: pointer;
 }
+
 </style>

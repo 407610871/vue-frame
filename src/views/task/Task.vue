@@ -33,6 +33,14 @@
             <span v-show="status.indexOf('3')>-1">失败<span @click="pop('3',status);"><i class="el-icon-error"></i></span></span>
             <span v-show="status.indexOf('4')>-1">完成<span @click="pop('4',status);"><i class="el-icon-error"></i></span></span>
           </div>
+        <div label="任务优先级:" v-show="priority.length>0" class="selected-task-type" style="display: inline-block;">
+            <span>任务状态:</span>
+            <span v-show="priority.indexOf('1')>-1">高<span @click="pop('1',priority);"><i class="el-icon-error"></i></span></span>
+            <span v-show="priority.indexOf('2')>-1">中<span @click="pop('2',priority);"><i class="el-icon-error"></i></span></span>
+            <span v-show="priority.indexOf('3')>-1">底<span @click="pop('3',priority);"><i class="el-icon-error"></i></span></span>
+            
+          </div>
+
           <div v-show="time!=null && time.length>0" class="selected-task-type">
             <span style="margin-right:10px;">任务开始时间:</span>
             <span>{{time==null?'':time[0]}} - {{time==null?'':time[1]}}<span @click="time=[]"><i class="el-icon-error"></i></span></span>
@@ -55,6 +63,14 @@
             <el-checkbox label="2" name="status">暂停</el-checkbox>
             <el-checkbox label="3" name="status">失败</el-checkbox>
             <el-checkbox label="4" name="status">完成</el-checkbox>
+          </el-checkbox-group>
+        </el-form-item>
+          <el-form-item label="任务优先级:">
+          <el-checkbox-group v-model="priority">
+            <el-checkbox label="1" name="priority">高</el-checkbox>
+            <el-checkbox label="2" name="priority">中</el-checkbox>
+            <el-checkbox label="3" name="priority">底</el-checkbox>
+           
           </el-checkbox-group>
         </el-form-item>
 
@@ -125,12 +141,12 @@
         <el-table-column label="操作" width="200">
           <template slot-scope="scope">
             <el-button v-if="scope.row.status==0||scope.row.status==2" type="text" size="small" @click="doRun(scope.$index, scope.row)">运行</el-button>
-            <el-button v-else-if="scope.row.status==3" type="text" size="small" @click="doRun(scope.$index, scope.row)">重启</el-button>
+            <!-- <el-button v-if="scope.row.status==3" type="text" size="small" @click="doRun(scope.$index, scope.row)">重启</el-button> -->
 
-            <el-button v-else-if="scope.row.status==1" type="text" size="small" @click="doRun(scope.$index, scope.row)">暂停</el-button>
-            <el-button v-else-if="scope.row.status==4" type="text" size="small" @click="doDel(scope.$index, scope.row)">处理完毕</el-button>
-            <el-button type="text" size="small" @click="doCheck(scope.$index, scope.row)">数据核验</el-button>
-            <el-button type="text" size="small" @click="doConverge(scope.$index, scope.row)">重新汇聚</el-button>
+            <el-button v-if="scope.row.status==1" type="text" size="small" @click="doRun(scope.$index, scope.row)">暂停</el-button>
+            <el-button v-if="scope.row.status!=1" type="text" size="small" @click="doDel(scope.$index, scope.row)">删除</el-button>
+            <el-button  v-if="scope.row.status==1||scope.row.status==2||scope.row.status==4" type="text" size="small" @click="doCheck(scope.$index, scope.row)">数据核验</el-button>
+            <el-button v-if="scope.row.status==2||scope.row.status==4||scope.row.status==3" type="text" size="small" @click="doConverge(scope.$index, scope.row)">重新汇聚</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -168,6 +184,7 @@ export default {
       status: [], //任务状态
       time: [],
       check: "",
+      priority: [],
       pageNum: 1,
       pageSize: 10,
       showTaskDetail: false,
@@ -210,7 +227,7 @@ export default {
     tableHeight: function() {
       return !this.moreSearch
         ? window.innerHeight - 300
-        : window.innerHeight - 436;
+        : window.innerHeight - 511;
     }
   },
   created() {
@@ -223,10 +240,10 @@ export default {
   },
 
   methods: {
-    pop:function(val,arr){
-      if(arr.indexOf(val)>-1){
+    pop: function(val, arr) {
+      if (arr.indexOf(val) > -1) {
         let ind = arr.indexOf(val);
-        arr.splice(ind,1);
+        arr.splice(ind, 1);
       }
     },
     //查询按钮
@@ -365,6 +382,7 @@ export default {
         taskPeriodType: this.taskPeriodType.join(","),
         createTime: this.time[0],
         endTime: this.time[1],
+        priority:this.priority.join(","),
         pageNum: this.pageNum,
         pageSize: this.pageSize,
         taskName: keyword,
@@ -410,7 +428,7 @@ export default {
     },
     //手动选择事件
     select(selection, row) {
-     this.allSecectData[this.pageNum] = selection;
+      this.allSecectData[this.pageNum] = selection;
     },
     //手动全选事件
     selectAll(selection) {
@@ -445,7 +463,7 @@ export default {
         //批量汇聚
         let errorData = [];
         for (let i = 0; i < row.length; i++) {
-          if (row[i].status == 1) {
+          if (row[i].status == 1||row[i].status == 0) {
             errorData.push(row[i]);
           }
         }
@@ -527,7 +545,7 @@ export default {
         //批量启动
         let errorData = [];
         for (let i = 0; i < row.length; i++) {
-          if (row[i].status == 1 || row[i].status == 4) {
+          if (row[i].status == 1 || row[i].status == 4|| row[i].status == 3) {
             errorData.push(row[i]);
           }
         }
@@ -597,7 +615,7 @@ export default {
         //批量停止
         let errorData = [];
         for (let i = 0; i < row.length; i++) {
-          if (row[i].status != 1) {
+          if (row[i].status == 1) {
             errorData.push(row[i]);
           }
         }
@@ -695,20 +713,18 @@ export default {
         callback: action => {}
       });
     }
-  },
-
+  }
 };
 </script>
 <style  rel="stylesheet/scss" lang="scss" scoped>
-
-.selected-task-type span{
+.selected-task-type span {
   margin-right: 10px;
   color: #425365;
 }
-.selected-task-type span:first-child{
+.selected-task-type span:first-child {
   font-weight: 600;
 }
-.selected-task-type span i{
+.selected-task-type span i {
   margin-left: 3px;
 }
 .count-container {

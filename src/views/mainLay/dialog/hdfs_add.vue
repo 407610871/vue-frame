@@ -201,7 +201,7 @@ export default {
     },
     //获取预设接口
     _getProData() {
-      // debugger;
+      debugger;
       console.log(this.GLOBAL);
       this.$ajax({
         method: "get",

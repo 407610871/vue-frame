@@ -60,7 +60,7 @@ export default {
       var map = {
         objectInfoId: this.tableId,
         pagNum: 1,
-        count: 100,
+        count: 20,
         term: ""
       }
       this.$ajax.post(this.GLOBAL.api.API_DACM + '/objDetail/dataList', map).then(function(res) {
@@ -109,7 +109,7 @@ export default {
     },
     _getType() {
       var _self = this;
- _self.TypeData = [];
+
       /*_self.TypeData = res.data[0].datas_mapping;*/
       let reData = [];
       for (let m = 0; m < columnJson.length; m++) {
