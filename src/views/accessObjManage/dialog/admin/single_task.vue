@@ -4,7 +4,7 @@
 		<el-tooltip class="item" effect="light" content="单表采集" placement="top">
 			<i class="enc-icon-danbiaocaiji" @click="dialogVisible = true"></i>
 		</el-tooltip>
-    <el-dialog title="单表采集任务向导" :visible.sync="dialogVisible" width="60%" :before-close="closeDialog">
+    <el-dialog title="单表采集任务向导" :visible.sync="dialogVisible" width="73%" :before-close="closeDialog">
       <div class="title-gra plr30">
         <span class="grab gra-l"></span>
         <span class="grab gra-r"></span>

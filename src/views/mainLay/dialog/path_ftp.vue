@@ -1,7 +1,7 @@
 <template>
   <div class="taskMDialog">
     <el-button  class="add-btn fr ml10" @click="dialogVisible = true">文件上传</el-button>
-    <el-dialog title="上传文件" :visible.sync="dialogVisible" width="60%" :before-close="closeDialog">
+    <el-dialog title="上传文件" :visible.sync="dialogVisible" width="73%" :before-close="closeDialog">
       <div class="title-gra">
         <span class="grab gra-l"></span>
         <span class="grab gra-r"></span>
