@@ -65,7 +65,7 @@
             </el-col>
           </el-col>
           <el-col :span="24">
-            <el-col :span="8" class="collbg">
+            <el-col :span="10" class="collbg">
               <el-form-item label="增量字段:" prop="increment">
                 <el-input v-model="ruleForm.increment" class="fl"></el-input>
                 <el-button type="primary" class="fl increbtn" @click="innerVisible = true">选择</el-button>

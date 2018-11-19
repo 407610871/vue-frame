@@ -1,6 +1,6 @@
 <template>
   <div class="taskMDialog" style="padding-bottom:15px;" >
-    <el-dialog :title="reqObj.taskName" :close-on-click-modal="false" :visible.sync="showInnerDialog" @closed="closeDia" class="task-Detail-dialog">
+    <el-dialog :title="reqObj.taskName" :close-on-click-modal="false" :visible.sync="showInnerDialog" @closed="closeDia" class="task-Detail-dialog" width="73%">
       <div class="title-gra">
         <span class="grab gra-l"></span>
         <span class="grab gra-r"></span>
