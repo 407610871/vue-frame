@@ -62,7 +62,8 @@
         </el-main>
         <el-footer>
             <div class="enc-pagination">
-                <el-pagination v-if="queryParamReady" style="float:right; margin:10px;" @current-change="goPage" background :page-size:sync="pageSize" :total="mainTableDataTotal" layout="prev, pager, next, jumper" :current-page.sync="currentPage">
+                               <el-pagination v-if="queryParamReady" style="float:right; margin:10px;" @current-change="goPage" background :page-size:sync="pageSize"   :page-count.sync="pageCount" layout="prev, pager, next, jumper" :current-page.sync="currentPage">
+
                 </el-pagination>
             </div>
         </el-footer>
@@ -89,7 +90,6 @@ export default {
             queryParamReady: true,
             currentPage: 1,
             mainTableData: [],
-            mainTableDataTotal: 1,
             countTotal: "",
             keyword: "",
             // highSeaech:true,
@@ -107,7 +107,8 @@ export default {
                 list: []
             },
             formFilterData: [],
-            pageSize: "20",
+            pageSize: 20,
+            pageCount:1,
         };
     },
     computed: {
@@ -164,6 +165,7 @@ export default {
         this.$root.eventHub.$emit("setActiveNav", 1);
         this.storeReady();
         this.setCount();
+           this.loadTable();
 
     },
     methods: {
@@ -258,7 +260,7 @@ export default {
         loadTable: function () {
             var _self = this;
             _self.loading = true;
-            this.pageSize = this.$store.state.pageSize;
+           _self.pageSize = this.$store.state.pageSize;
             var paramsObj = {
                 pageSize: this.$store.state.pageSize,
                 pageNum: this.tableParams.pageNum,
@@ -276,15 +278,13 @@ export default {
             this.$ajax
                 .post(window.ENV.API_DACM + "/caccess/query", paramsObj)
                 .then(function (res) {
-
-                    console.log("tableLoaded:dashboard");
                     if (res.data.code == "0000") {
                         _self.mainTableData = res.data.data.list;
-                        _self.mainTableDataTotal = res.data.data.total;
                         _self.currentPage = _self.tableParams.pageNum;
+                           _self.pageCount = res.data.data.pages;
                     } else if (res.data.code == "5000") {
                         _self.mainTableData = [];
-                        _self.mainTableDataTotal = 1;
+                        _self.pageCount =1;
                         _self.currentPage = 1;
                     } else {
                         _self.$alert("加载数据源数据失败", "提示", {
