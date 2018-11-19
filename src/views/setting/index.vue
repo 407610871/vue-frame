@@ -293,16 +293,19 @@ export default {
             value.name = this.sysParam.pageLimit + '';
             break;
           case '行政区域':
-            var position = [];
-            for (var value of this.provinceList) {
-              if (value.code == this.sysParam.province) {
-                position.push(value)
+                  //以下格式为了满足后端需求封装，循环是为了获取名称再塞入对象中
+            var position = [{"pro":"","proname":"","city":"","cityname":""}];
+            for (var valueList of this.provinceList) {
+              if (valueList.code == this.sysParam.province) {
+                position[0].pro = valueList.code;
+                position[0].proname = valueList.name;
                 break;
               }
             }
-            for (var value of this.cityList) {
-              if (value.code == this.sysParam.city) {
-                position.push(value)
+            for (var valueCity of this.cityList) {
+              if (valueCity.code == this.sysParam.city) {
+                   position[0].city = valueCity.code;
+                    position[0].cityname = valueCity.name;
                 break;
               }
             }

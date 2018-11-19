@@ -11,16 +11,16 @@
 
     <div class="checkDiv">
       <el-form-item class="isSelect" label="已筛选条件：">
-        <div class="look" v-show="formSeled.dataSourceName.length!=0">接入源类型：
+        <div class="look" v-show="formSeledShow.dataSourceName.length!=0">接入源类型：
           <span v-for="(dataSourceName,key,index) in formSeledShow.dataSourceName" :key="index"> {{dataSourceName.name}} <i class="el-icon-error" @click="delSelect(index,1)"></i>
           </span>
         </div>
-        <div class="look" v-show="formSeled.network.length!=0">接入数据来源：
+        <div class="look" v-show="formSeledShow.network.length!=0">接入数据来源：
          
                     <span v-for="(network,key,index) in formSeledShow.network" :key="index">{{network.name}} <i class="el-icon-error" @click="delSelect(index,2)"></i> </span>
 
         </div>
-        <div class="look" v-show="formSeled.platform.length!=0">对接平台：
+        <div class="look" v-show="formSeledShow.platform.length!=0">对接平台：
           <span v-for="(platform,key,index) in formSeledShow.platform" :key="index">{{platform.name}} <i class="el-icon-error" @click="delSelect(index,3)"></i> </span>
         </div>
       </el-form-item>
@@ -72,6 +72,8 @@ export default {
   computed: {},
   created() {
     this.storeReady();
+                console.log(this.dataObj)
+
   },
   mounted() {
     this.getFormSeled();
