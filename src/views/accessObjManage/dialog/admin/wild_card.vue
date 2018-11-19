@@ -27,7 +27,7 @@
                           <el-input class="fl" v-model="ruleForm.baseStart"></el-input>
                           <span class="fl ml10 mr10">开头,以</span>
                           <el-select class="fl" v-model="ruleForm.baseEnd" placeholder="请选择">
-                            <el-option v-for="item in regxData" :label="item.dateFormat" :value="item.dateRegex"></el-option>
+                            <el-option v-for="item in regxData" :label="item.dateFormat" :value="item.dateFormat"></el-option>
                           </el-select>
                           <span class="fl ml10">结尾</span>
                         </el-form-item>
@@ -93,6 +93,7 @@
 <script>
 import { mapState, mapMutations, mapActions } from 'vuex'
 import norelaWild from '@/views/mainLay/dialog/norela_wild'
+import columnJson from '@/static/json/columnType'
 export default {
   name: "userSurvey",
   data: function() {
@@ -134,10 +135,20 @@ export default {
       if (this.ruleForm.matchType == '0') {
         let reflag = true;
         let varegex;
+        let regend = '';
+        if (this.ruleForm.baseEnd.indexOf('-') != -1) {
+          regend =this.regxData[0].dateRegex;
+        }
+        if (this.ruleForm.baseEnd.indexOf('/') != -1) {
+          regend =this.regxData[1].dateRegex;
+        }
+        if (this.ruleForm.baseEnd.indexOf(':') != -1) {
+          regend =this.regxData[2].dateRegex;
+        }
         if (this.ruleForm.typeKind == '0') {
           let start = this.ruleForm.baseStart;
           let end = this.ruleForm.baseEnd;
-          varegex = new RegExp('^' + start + '.*' + end + '$');
+          varegex = new RegExp('^' + start + '.*' + regend + '$');
 
         } else {
           varegex = new RegExp(this.ruleForm.highMatch);
@@ -157,21 +168,21 @@ export default {
             if (this.ruleForm.baseEnd.indexOf('-') != -1) {
               var RegInfo = {
                 baseStart: this.ruleForm.baseStart,
-                baseEnd: `\/\/d{4}(-)\/\/d{1,2}\/\/1\/\/d{1,2}`,
+                baseEnd: this.ruleForm.baseEnd,
                 baseflag: false
               }
             }
             if (this.ruleForm.baseEnd.indexOf('/') != -1) {
               var RegInfo = {
                 baseStart: this.ruleForm.baseStart,
-                baseEnd: `\/\/d{4}(/)\/\/d{1,2}\/\/1\/\/d{1,2}`,
+                baseEnd: this.ruleForm.baseEnd,
                 baseflag: false
               }
             }
             if (this.ruleForm.baseEnd.indexOf(':') != -1) {
               var RegInfo = {
                 baseStart: this.ruleForm.baseStart,
-                baseEnd: `\/\/d{4}(:)\/\/d{1,2}\/\/1\/\/d{1,2}`,
+                baseEnd: this.ruleForm.baseEnd,
                 baseflag: false
               }
             }
@@ -240,18 +251,12 @@ export default {
     //得到字段类型
     _getType() {
       var _self = this;
-      this.$ajax.get('./getColumnType').then(function(res) {
-          debugger;
-          for (let m = 0; m < res.data.length; m++) {
-            if (_self.rowList[0].accessSys.accessSysDialect.name == res.data[m].type) {
-              _self.TypeData = res.data[m].datas;
+          for (let m = 0; m <columnJson.length; m++) {
+            if (_self.rowList[0].accessSys.accessSysDialect.name == columnJson[m].type) {
+              _self.TypeData = columnJson[m].datas;
             }
           }
-          //console.log(_self.TypeData);
-        })
-        .catch(function(err) {
-          console.log(err)
-        });
+       
 
     },
   },
@@ -267,14 +272,13 @@ export default {
   computed: {
 
   },
-  props: ['rowList', 'msg','jrtype'],
+  props: ['rowList', 'msg', 'jrtype'],
   watch: {
     msg() {
-      if (this.msg=="second") {
-        if(this.jrtype=='mysql' || this.jrtype=='oracle'|| this.jrtype=='postgresql' || this.jrtype=='sqlserver'){
+      if (this.msg == "second") {
+        if (this.jrtype == 'mysql' || this.jrtype == 'oracle' || this.jrtype == 'postgresql' || this.jrtype == 'sqlserver') {
           this.ruleForm.matchType = '0'
-        }
-        else{
+        } else {
           this.ruleForm.matchType = '1';
         }
         this._getRegexList();
