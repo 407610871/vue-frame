@@ -154,10 +154,26 @@ export default {
           return false;
         } else {
           if (this.ruleForm.typeKind == '0') {
-            var RegInfo = {
-              baseStart: this.ruleForm.baseStart,
-              baseEnd: this.ruleForm.baseEnd,
-              baseflag: false
+            if (this.ruleForm.baseEnd.indexOf('-') != -1) {
+              var RegInfo = {
+                baseStart: this.ruleForm.baseStart,
+                baseEnd: `\/\/d{4}(-)\/\/d{1,2}\/\/1\/\/d{1,2}`,
+                baseflag: false
+              }
+            }
+            if (this.ruleForm.baseEnd.indexOf('/') != -1) {
+              var RegInfo = {
+                baseStart: this.ruleForm.baseStart,
+                baseEnd: `\/\/d{4}(/)\/\/d{1,2}\/\/1\/\/d{1,2}`,
+                baseflag: false
+              }
+            }
+            if (this.ruleForm.baseEnd.indexOf(':') != -1) {
+              var RegInfo = {
+                baseStart: this.ruleForm.baseStart,
+                baseEnd: `\/\/d{4}(:)\/\/d{1,2}\/\/1\/\/d{1,2}`,
+                baseflag: false
+              }
             }
             this.setRegInfo(RegInfo);
           } else {
@@ -251,10 +267,10 @@ export default {
   computed: {
 
   },
-  props: ['rowList', 'msg','jrtype'],
+  props: ['rowList', 'msg', 'jrtype'],
   watch: {
     msg() {
-      if (this.msg=="second") {
+      if (this.msg == "second") {
         this._getRegexList();
         this._getType();
       }
