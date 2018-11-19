@@ -37,7 +37,7 @@
             <span>任务状态:</span>
             <span v-show="priority.indexOf('1')>-1">高<span @click="pop('1',priority);"><i class="el-icon-error"></i></span></span>
             <span v-show="priority.indexOf('2')>-1">中<span @click="pop('2',priority);"><i class="el-icon-error"></i></span></span>
-            <span v-show="priority.indexOf('3')>-1">底<span @click="pop('3',priority);"><i class="el-icon-error"></i></span></span>
+            <span v-show="priority.indexOf('3')>-1">低<span @click="pop('3',priority);"><i class="el-icon-error"></i></span></span>
             
           </div>
 
@@ -442,13 +442,17 @@ export default {
       let row = [];
 
       let row1 = Object.keys(this.allSecectData);
-      console.log(this.allSecectData);
-      if (row1.length == 0) {
+      console.log(this.allSecectData)
+      // debugger;
+     for(let i=0;i<row1.length;i++){
+      if (this.allSecectData[row1[i]].length == 0) {
         this.$alert("请选择相应的任务！", "提示", {
           dangerouslyUseHTMLString: true
         });
         return;
       }
+     }
+      
       for (let i = 0; i < row1.length; i++) {
         for (let j = 0; j < this.allSecectData[row1[i]].length; j++) {
           row.push(this.allSecectData[row1[i]][j]);
