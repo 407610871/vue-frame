@@ -198,12 +198,10 @@
         return this.tableParams.ACCESS_SYS_DIALECT_ID;
       },
       filters(){
-        /* for(let i=0;i<_self.searchForm.length;i++){
-              if(_self.searchForm[i].filterdata==undefined){
-                  _self.searchForm.splice(i,1);
-              }
-            } */
         return this.searchForm.filter(item => typeof(item.filterdata) != "undefined");
+      },
+      storeCount(){
+        return this.$store.state.pageSize;
       },
     },
     components: {
@@ -222,7 +220,10 @@
         this.setStore({
           tabPosition: newVal
         });
-      }
+      },
+      '$route' (to, from) {
+        this.getFiltercolumnList();
+      },
     },
     mounted() {
       var tableParams = this.$store.state.queryParams.accessObjInfo;
@@ -238,7 +239,7 @@
     created() {
       this.$root.eventHub.$on('search', (keyword) => {
         this.search(keyword);
-      })
+      });
       this.getFiltercolumnList();
     },
     methods: {
@@ -489,7 +490,7 @@
           return new Promise((resolve, reject) => {
             let count = 0;
             if(!_self.count){
-              count = _self.$store.state.pageSize;
+              count = _self.storeCount;
             }else{
               count = _self.count;
             }
