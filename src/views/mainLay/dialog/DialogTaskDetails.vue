@@ -428,10 +428,12 @@ export default {
           that.sourceBaseInfo = innerRes.data.data;
           that.sourceBaseInfo.dbType = res.data.data.dbType;
           let periodMap={
-            0:'实时性任务',
-            1:'一次性任务',
-            2:'周期任务',
-            3:'全量任务'        
+            0:'实时任务',
+            1:'周期实时增量任务',
+            2:'周期定时增量任务',
+            3:'一次性任务',
+            4:'周期实时全量任务',
+            5:'周期定时全量任务'        
           }
           //接入类型翻译
           that.sourceBaseInfo.periodDesc = periodMap[innerRes.data.data.period];

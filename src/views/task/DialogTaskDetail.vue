@@ -258,7 +258,7 @@
 .task-Detail-dialog .proInfo-box .el-form-item--medium .el-form-item__content{
   overflow: hidden;
   text-overflow: ellipsis;
-  width: 170px;
+  width: 120px;
   white-space: nowrap;
 }
 </style>
@@ -516,10 +516,12 @@ export default {
           that.sourceBaseInfo = innerRes.data.data;
           that.sourceBaseInfo.dbType = res.data.data.dbType;
           let periodMap={
-            0:'实时性任务',
-            1:'一次性任务',
-            2:'周期任务',
-            3:'全量任务'        
+            0:'实时',
+            1:'周期间隔增量',
+            2:'周期定时增量',
+            3:'一次性接入',
+            4:'周期间隔全量',
+            5:'周期定时全量'        
           }
           //接入类型翻译
           that.sourceBaseInfo.periodDesc = periodMap[innerRes.data.data.period];

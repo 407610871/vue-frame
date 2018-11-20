@@ -11,7 +11,7 @@
 
             <div class="count-container">
                 <div class="count-title">
-                    <label>数据元注册总数</label>
+                    <label>数据源注册总数</label>
                     <div class="all-number">{{countTotal}}</div>
                 </div>
                 <div class="line"></div>
@@ -102,7 +102,7 @@ export default {
                 list: []
             },
             count2Data: {
-                name: "实时统计",
+                name: "实时接入统计",
                 total: "",
                 list: []
             },

@@ -1,5 +1,5 @@
 <template>
-  <div class="taskMDialog userSurveyDialog diaicon">
+  <div class="taskMDialog userSurveyDialog diaicon datein">
     <!-- <el-button size="mini" class="diabtn incbtn" type="danger" @click="dialogVisible = true">数据核验</el-button> -->
     <el-tooltip class="item" effect="light" content="数据核验" placement="top">
       <i class="enc-icon-shujuheyan" @click="dialogVisible = true"></i>
@@ -355,7 +355,7 @@ export default {
       }
       request({
        /* url: 'http://10.19.160.59:8080/DACM/ccheckData/downloadCheckDataById?id=32&browser=fox&accessName=ww',*/
-        url: `${this.GLOBAL.api.API_DACM}/ccheckData/downloadCheckDataById?id=${item.id}&browser=${browser}&accessName=${this.$route.params.sourceName}`,
+        url: `${this.GLOBAL.api.API_DACM}/ccheckData/downloadCheckDataById?id=${item.id}&browser=${browser}&accessName=${this.pdata.name}`,
         method: "GET",
         responseType: "blob"
       }).then(res => {
@@ -536,5 +536,7 @@ li {
   cursor: pointer;
   font-size: 20px;
 }
-
+.datein span i{
+  font-size: 14px;
+}
 </style>
