@@ -55,19 +55,19 @@
     </div>
     <el-table :data="tableData" :height="tableHeight" class="table-data-list">
         <el-table-column label="序号" type="index" width="100"></el-table-column>
-        <el-table-column label="任务名称" prop="taskName" :show-overflow-tooltip='true'></el-table-column>
-        <el-table-column label="任务类型"  prop="taskType"></el-table-column>
-        <el-table-column label="任务开始时间" :show-overflow-tooltip='true'>
+        <el-table-column label="任务名称" prop="taskName" :show-overflow-tooltip='true' min-width="95"></el-table-column>
+        <el-table-column label="任务类型"  prop="taskType" min-width="95"></el-table-column>
+        <el-table-column label="任务开始时间" :show-overflow-tooltip='true' min-width="130">
             <template slot-scope="scope">
                 <span>{{scope.row.startTime | formatDateTime}}</span>
             </template>
         </el-table-column>
-        <el-table-column label="任务停止时间" :show-overflow-tooltip='true'>
+        <el-table-column label="任务停止时间" :show-overflow-tooltip='true' min-width="130">
             <template slot-scope="scope">
                 <span>{{scope.row.endTime | formatDateTime}}</span>
             </template>
         </el-table-column>
-        <el-table-column label="任务状态">
+        <el-table-column label="任务状态" min-width="95">
             <template slot-scope="scope">
                 <span v-if="scope.row.status == 'create'">新建</span>
                 <span v-if="scope.row.status == 'Running'">运行</span>
@@ -76,7 +76,7 @@
                 <span v-if="scope.row.status == 'Finished'">完成</span>
             </template>
         </el-table-column>
-        <el-table-column label="操作">
+        <el-table-column label="操作" min-width="90">
             <template slot-scope="scope">
                 <span v-if="scope.row.status == 'Running'" class="icon-span-disabled el-icon-remove-outline"></span>
                 <span v-else class="icon-span el-icon-caret-right" title="启动" @click="doStart(scope.row)"></span>
