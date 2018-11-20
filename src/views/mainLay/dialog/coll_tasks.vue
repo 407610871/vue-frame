@@ -423,7 +423,7 @@ export default {
     finish() {
       // debugger;
       //间隔执行
-      var pollIntervalMs;
+      var pollIntervalMs = "-1";
       var actech = this.ruleForm.actech;
       if (this.ruleForm.cycleSet == '0' && this.ruleForm.accessMode != "0" && this.ruleForm.accessMode != "2") {
         let jday = 0;;
