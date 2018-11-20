@@ -361,11 +361,12 @@
           })
       },
       closeImport() {
+         this.loadTable();//刷新页面
         this.importList = [];
         document.getElementById('file').value = "";
         document.getElementById('file').outerHtml = document.getElementById('file').outerHtml
         this.$refs.inputer.value = ''
-        this.$refs.inputer.files = [];
+        this.$refs.inputer.files = []; 
       },
       exportData() {
         request({
