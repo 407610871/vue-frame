@@ -160,13 +160,13 @@
             <el-col :span="18">
               <el-col :span="10">
                 <el-form-item label="IP地址/主机名:" prop="ipname" v-if="ruleForm.syskind!=''&&ruleForm.syskind!='10023'">
-                  <el-input v-model="ruleForm.ipname"></el-input>
+                  <el-input v-model="ruleForm.ipname" @change="changeContentInfo()"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="2" class="bank">bank</el-col>
               <el-col :span="10">
                 <el-form-item label="登录名:" prop="username" v-if="ruleForm.syskind!=''&&ruleForm.syskind!='10023'">
-                  <el-input v-model="ruleForm.username"></el-input>
+                  <el-input v-model="ruleForm.username" @change="changeContentInfo()"></el-input>
                 </el-form-item>
               </el-col>
               <!--               <el-col :span="2" class="bank">bank</el-col>
@@ -178,25 +178,25 @@
               <el-col :span="2" class="bank">bank</el-col>
               <el-col :span="10">
                 <el-form-item label="密码:" prop="password" v-if="ruleForm.syskind!=''&&ruleForm.syskind!='10023'">
-                  <el-input v-model="ruleForm.password"></el-input>
+                  <el-input v-model="ruleForm.password" @change="changeContentInfo()"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="2" class="bank">bank</el-col>
               <el-col :span="10">
                 <el-form-item label="端口号:" prop="iport" v-if="ruleForm.syskind!=''&&ruleForm.syskind!='10023'">
-                  <el-input v-model="ruleForm.iport"></el-input>
+                  <el-input v-model="ruleForm.iport" @change="changeContentInfo()"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="2" class="bank" v-if="ruleForm.syskind=='10001'||ruleForm.syskind=='10003'||ruleForm.syskind=='10002'||ruleForm.syskind=='10004'||ruleForm.syskind=='10020'">bank</el-col>
               <el-col :span="10">
                 <el-form-item label="实例/数据库名:" prop="instanceName" v-if="ruleForm.syskind=='10001'||ruleForm.syskind=='10003'||ruleForm.syskind=='10002'||ruleForm.syskind=='10004'||ruleForm.syskind=='10020'">
-                  <el-input v-model="ruleForm.instanceName"></el-input>
+                  <el-input v-model="ruleForm.instanceName" @change="changeContentInfo()"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="2" class="bank" v-if="ruleForm.syskind=='10002'||ruleForm.syskind=='10020'">bank</el-col>
               <el-col :span="10">
                 <el-form-item label="模式名/架构:" prop="model" v-if="ruleForm.syskind=='10002'||ruleForm.syskind=='10020'">
-                  <el-input v-model="ruleForm.model"></el-input>
+                  <el-input v-model="ruleForm.model" @change="changeContentInfo()"></el-input>
                 </el-form-item>
               </el-col>
               <!--  <el-col :span="10">
@@ -238,25 +238,25 @@
               <!-- hive专有 -->
               <el-col :span="10">
                 <el-form-item label="集群根目录" prop="hadoopDir" v-if="ruleForm.syskind!=''&& ruleForm.syskind=='vhost'">
-                  <el-input v-model="ruleForm.hadoopDir"></el-input>
+                  <el-input v-model="ruleForm.hadoopDir" @change="changeContentInfo()"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="2" class="bank" v-if="ruleForm.syskind!=''&& ruleForm.syskind=='vhost'">bank</el-col>
               <el-col :span="10">
                 <el-form-item label="集群目录" prop="hadoopHomes" v-if="ruleForm.syskind!=''&& ruleForm.syskind=='vhost'">
-                  <el-input v-model="ruleForm.hadoopHomes"></el-input>
+                  <el-input v-model="ruleForm.hadoopHomes" @change="changeContentInfo()"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="2" class="bank" v-if="ruleForm.syskind!=''&& ruleForm.syskind=='vhost'">bank</el-col>
               <el-col :span="10">
                 <el-form-item label="vhost" prop="vhost" v-if="ruleForm.syskind!=''&& ruleForm.syskind=='vhost'">
-                  <el-input v-model="ruleForm.vhost"></el-input>
+                  <el-input v-model="ruleForm.vhost" @change="changeContentInfo()"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="2" class="bank" v-if="ruleForm.syskind!=''&& ruleForm.syskind=='vhost'">bank</el-col>
               <el-col :span="10" v-if="ruleForm.syskind=='10010'||ruleForm.syskind=='10011'">
                 <el-form-item label="传输模式:" prop="transmode">
-                  <el-select v-model="ruleForm.transmode" placeholder="请选择">
+                  <el-select v-model="ruleForm.transmode" placeholder="请选择" @change="changeContentInfo('transmode')">
                     <el-option label="主动" value="true"></el-option>
                     <el-option label="被动" value="false"></el-option>
                   </el-select>
@@ -272,7 +272,8 @@
           <div class="daiInfo-box clearfix">
             <el-form-item>
               <el-col :span="24">
-                <el-button type="primary" size="small" @click="submitForm('ruleForm')">保存</el-button>
+                            <el-button  v-if="isDisableClassFlag" type="primary" size="small"  class="isDisable" disabled>保存</el-button>   
+                            <el-button  v-if="!isDisableClassFlag" type="primary" size="small" @click="submitForm('ruleForm')" :class="{ isDisable: isDisableClassFlag }">保存</el-button>
                 <el-button @click="closeForm()" size="small">关闭</el-button>
               </el-col>
             </el-form-item>
@@ -283,6 +284,7 @@
   </div>
 </template>
 <script>
+
 export default {
   name: "taskMDialog",
   data: function() {
@@ -347,6 +349,7 @@ export default {
       deIndex: 0,
       tableMsg: [],
       loading: false,
+      isDisableClassFlag:false,
       appId: '',
       ruleForm: {
         jrname: '',
@@ -845,7 +848,6 @@ export default {
     },
     //测试连接
     testForm(formName) {
-
       this.$refs[formName].validate((valid) => {
         if (valid) {
           this.fullscreenLoading = true;
@@ -871,10 +873,12 @@ export default {
           }).then(res => {
             this.fullscreenLoading = false;
             if (res.data.success) {
+               this.isDisableClassFlag = false;//控制保存按钮是否可点击
               this.$alert('连接成功', '信息', {
                 confirmButtonText: '确定'
               });
             } else {
+                  this.isDisableClassFlag = true;//控制保存按钮是否可点击
               this.$alert('连接失败', '信息', {
                 confirmButtonText: '确定'
               });
@@ -882,6 +886,7 @@ export default {
 
           })
         } else {
+           this.isDisableClassFlag = true;//控制保存按钮是否可点击
           console.log('error submit!!');
           return false;
         }
@@ -988,15 +993,21 @@ export default {
         console.log('error');
       })
     },
+      changeContentInfo(e){//参数留下做判断，如果用户返回初始数据是否需要判断
+      this.isDisableClassFlag =true;
+        }
   },
   components: {
 
   },
   props: ['acId'],
+
   watch: {
+
     dialogVisible() {
       if (this.dialogVisible) {
         this.appId = this.acId;
+        this.isDisableClassFlag =false; //保存按钮初始值设置
         //得到数据库方言
         this._getAccessDialect();
         //数据来源
@@ -1009,8 +1020,10 @@ export default {
         this._getSYBM();
         //初始数据
         this._getInit();
+        
       }
-    }
+    },
+   
 
   }
 
@@ -1065,5 +1078,10 @@ export default {
 i {
   cursor: pointer;
 }
-
+.el-table .cell .taskMDialog .isDisable{
+  cursor:not-allowed ;
+color:#fff; 
+background-color: #999;
+    border: 1px solid #dcdfe6;;
+}
 </style>
