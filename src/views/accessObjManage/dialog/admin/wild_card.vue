@@ -268,7 +268,7 @@ export default {
         }
       } else {
         for (let m = 0; m < jsonType.length; m++) {
-          if (_self.rowList[0].accessSys.accessSysDialect.name == jsonType[m].type) {
+          if (_self.$route.params.type == jsonType[m].type) {
             _self.TypeData = jsonType[m].datas;
           }
         }
