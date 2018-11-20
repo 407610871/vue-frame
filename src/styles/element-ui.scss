@@ -111,3 +111,16 @@
   background: #469bde;
   color: #fff!important;
 }
+
+
+@media screen and ( max-width: 1280px ) {
+  .enc-header {
+    height: 50px!important;
+    line-height: 50px!important;
+    .el-menu--horizontal>.el-submenu .el-submenu__title {
+      height: 50px;
+      line-height: 50px;
+      padding: 0 10px;
+    }
+  }
+}

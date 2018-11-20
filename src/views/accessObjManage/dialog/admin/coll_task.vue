@@ -23,7 +23,7 @@
           <el-col :span="24">
             <el-form-item label="接入方式:" prop="accessMode">
               <el-radio-group v-model="ruleForm.accessMode" :disabled="isdisable">
-               <el-radio label="1">增量接入</el-radio>
+                <el-radio label="1">增量接入</el-radio>
                 <el-radio label="3">全量接入</el-radio>
                 <el-radio label="0">实时接入</el-radio>
                 <el-radio label="2">一次性接入</el-radio>
@@ -310,6 +310,7 @@ export default {
       hourData: [],
       weekData: [],
       treeData: [],
+      editfalg: false,
       isregin: false,
       appId: '',
 
@@ -322,7 +323,7 @@ export default {
         startLocation: '', //接入起始点
         dLibrary: '', //接入目的库
         tablename: '', //建立的表名
-        accessMode: '0', //接入方式
+        accessMode: '1', //接入方式
         increment: '', //增量字段
         actech: 'JDBC', //采集技术
         cycleSet: '0', //周期设置
@@ -421,62 +422,62 @@ export default {
     pre() {
       this.$emit('pre');
     },
-    weekTrans(val){
-     if(val=='1'){
-      return 'MON';
-     }
-      if(val=='2'){
-      return 'TUE';
-     }
-      if(val=='3'){
-      return 'WED';
-     }
-      if(val=='4'){
-      return 'THU';
-     }
-      if(val=='5'){
-      return 'FRI';
-     }
-      if(val=='6'){
-      return 'SAT';
-     }
-      if(val=='7'){
-      return 'SUN';
-     }
+    weekTrans(val) {
+      if (val == '1') {
+        return 'MON';
+      }
+      if (val == '2') {
+        return 'TUE';
+      }
+      if (val == '3') {
+        return 'WED';
+      }
+      if (val == '4') {
+        return 'THU';
+      }
+      if (val == '5') {
+        return 'FRI';
+      }
+      if (val == '6') {
+        return 'SAT';
+      }
+      if (val == '7') {
+        return 'SUN';
+      }
     },
-    Unweek(val){
-      if(val=='MON'){
-      return 1;
-     }
-      if(val=='TUE'){
-      return 2;
-     }
-      if(val=='WED'){
-      return 3;
-     }
-      if(val=='THU'){
-      return 4;
-     }
-      if(val=='FRI'){
-      return 5;
-     }
-      if(val=='SAT'){
-      return 6;
-     }
-      if(val=='SUN'){
-      return 7;
-     }
+    Unweek(val) {
+      if (val == 'MON') {
+        return 1;
+      }
+      if (val == 'TUE') {
+        return 2;
+      }
+      if (val == 'WED') {
+        return 3;
+      }
+      if (val == 'THU') {
+        return 4;
+      }
+      if (val == 'FRI') {
+        return 5;
+      }
+      if (val == 'SAT') {
+        return 6;
+      }
+      if (val == 'SUN') {
+        return 7;
+      }
     },
     finish() {
       //间隔执行
       var pollIntervalMs = -1;
       var actech = 'JDBC';
-      if (this.ruleForm.cycleSet == '0'&&this.ruleForm.accessMode != "0" &&this.ruleForm.accessMode != "2") {
+      if (this.ruleForm.cycleSet == '0' && this.ruleForm.accessMode != "0" && this.ruleForm.accessMode != "2") {
         let jday = 0;;
         let jhour = 0;
         let jmin;
-        if(this.ruleForm.jmin==''){
-           this.$message.warning('请将间隔执行时间填写完整');
+        if (this.ruleForm.jmin == '') {
+          this.$message.warning('请将间隔执行时间填写完整');
           return false;
         }
         if (this.ruleForm.jday != '' && this.ruleForm.jday != undefined) {
@@ -490,7 +491,7 @@ export default {
         }
         var pollIntervalMs = this.formateTime(parseInt(jday), parseInt(jhour), parseInt(jmin));
         console.log(pollIntervalMs);
-      } else if (this.ruleForm.cycleSet == '1'&&this.ruleForm.accessMode != "0" &&this.ruleForm.accessMode != "2") {
+      } else if (this.ruleForm.cycleSet == '1' && this.ruleForm.accessMode != "0" && this.ruleForm.accessMode != "2") {
         if (this.radio == '') {
           this.$message.warning('请选择定时执行时间');
           return false;
@@ -500,9 +501,9 @@ export default {
           let dfmin;
           let dfhour;
           let dfmon;
-          if(this.ruleForm.dfmin==''||this.ruleForm.dfhour==''||this.ruleForm.dfmon==''){
-             this.$message.warning('请将定时执行时间填写完整');
-             return false;
+          if (this.ruleForm.dfmin == '' || this.ruleForm.dfhour == '' || this.ruleForm.dfmon == '') {
+            this.$message.warning('请将定时执行时间填写完整');
+            return false;
           }
           if (this.ruleForm.dfmin != '' && this.ruleForm.dfmin != undefined) {
             dfmin = this.ruleForm.dfmin;
@@ -521,9 +522,9 @@ export default {
           let dsmin;
           let dshour;
           let dsweek;
-          if(this.ruleForm.dsmin==''||this.ruleForm.dshour==''||this.ruleForm.dsweek==''){
-             this.$message.warning('请将定时执行时间填写完整');
-             return false;
+          if (this.ruleForm.dsmin == '' || this.ruleForm.dshour == '' || this.ruleForm.dsweek == '') {
+            this.$message.warning('请将定时执行时间填写完整');
+            return false;
           }
           if (this.ruleForm.dsmin != '' && this.ruleForm.dsmin != undefined) {
             dsmin = this.ruleForm.dsmin;
@@ -542,9 +543,9 @@ export default {
           //第三队列
           let dtmin;
           let dthour;
-          if(this.ruleForm.dtmin==''||this.ruleForm.dthour==''){
-             this.$message.warning('请将定时执行时间填写完整');
-             return false;
+          if (this.ruleForm.dtmin == '' || this.ruleForm.dthour == '') {
+            this.$message.warning('请将定时执行时间填写完整');
+            return false;
           }
           if (this.ruleForm.dtmin != '' && this.ruleForm.dtmin != undefined) {
             dtmin = this.ruleForm.dtmin;
@@ -652,7 +653,7 @@ export default {
             url: this.GLOBAL.api.API_DACM + '/dataTable/inputSurvey',
             data: this.$store.state.userList
           }).then(res => {
-            
+
             if (res.data.success) {
               this.$ajax({
                 method: "post",
@@ -746,7 +747,7 @@ export default {
             url: this.GLOBAL.api.API_DACM + '/dataTable/inputSurvey',
             data: this.$store.state.userList
           }).then(res => {
-           
+
             if (res.data.success) {
               this.$ajax({
                 method: "post",
@@ -790,7 +791,20 @@ export default {
       }
 
     },
-
+    _getAcmode() {
+      if (this.$store.state.modeStyle == '1') { //增量接入
+        this.ruleForm.accessMode = '1'
+      }
+      if (this.$store.state.modeStyle == '3') { //增量接入
+        this.ruleForm.accessMode = '3'
+      }
+      if (this.$store.state.modeStyle == '5') { //增量接入
+        this.ruleForm.accessMode = '0'
+      }
+      if (this.$store.state.modeStyle == '4') { //增量接入
+        this.ruleForm.accessMode = '2'
+      }
+    },
 
     formateTime(day, hour, min) {
       return parseInt(day * 86400000 + hour * 3600000 + min * 60000);
@@ -808,7 +822,6 @@ export default {
     },
     //获取修改内容
     _getInit() {
-     /* this.ruleForm.accessMode = this.$store.state.modeStyle;*/
       this.$ajax({
         method: 'POST',
         url: this.GLOBAL.api.API_DACM + '/task/getSourceConfig',
@@ -820,6 +833,7 @@ export default {
 
       }).then(res => {
         if (res.data.success) {
+          this.editfalg = true;
           var data = res.data.data;
           if (data != undefined) {
             this.ruleForm.accessPri = data.priority; //优先级
@@ -886,6 +900,20 @@ export default {
             this.ruleForm.xStreamServiceName = res.xStreamServiceName;
           }
 
+        } else {
+          this.editfalg = false;
+          if (this.$store.state.modeStyle == '1') { //增量接入
+            this.ruleForm.accessMode = '1'
+          }
+          if (this.$store.state.modeStyle == '3') { //增量接入
+            this.ruleForm.accessMode = '3'
+          }
+          if (this.$store.state.modeStyle == '5') { //增量接入
+            this.ruleForm.accessMode = '0'
+          }
+          if (this.$store.state.modeStyle == '4') { //增量接入
+            this.ruleForm.accessMode = '2'
+          }
         }
       })
     },
@@ -914,12 +942,22 @@ export default {
 
   },
   created() {
+    this._getAcmode();
+  },
+  watch: {
+    msg() {
+      if (this.editfalg == false) {
+        if (this.msg == "third") {
+          this._getAcmode();
+        }
+      }
 
+    }
   },
   computed: {
 
   },
-  props: ['pdata']
+  props: ['pdata', 'msg']
 
 };
 

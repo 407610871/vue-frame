@@ -23,10 +23,10 @@
           <el-col :span="24">
             <el-form-item label="接入方式:" prop="accessMode">
               <el-radio-group v-model="ruleForm.accessMode">
-                <el-radio label="0">实时</el-radio>
-                <el-radio label="1">增量</el-radio>
+                <el-radio label="1">增量接入</el-radio>
+                <el-radio label="3">全量接入</el-radio>
+                <el-radio label="0">实时接入</el-radio>
                 <el-radio label="2">一次性接入</el-radio>
-                <el-radio label="3">全量</el-radio>
               </el-radio-group>
             </el-form-item>
           </el-col>
@@ -425,7 +425,7 @@ export default {
       //间隔执行
       var pollIntervalMs;
       var actech = this.ruleForm.actech;
-     if (this.ruleForm.cycleSet == '0'&&this.ruleForm.accessMode != "0" &&this.ruleForm.accessMode != "2") {
+      if (this.ruleForm.cycleSet == '0' && this.ruleForm.accessMode != "0" && this.ruleForm.accessMode != "2") {
         let jday = 0;;
         let jhour = 0;
         let jmin;
@@ -444,7 +444,7 @@ export default {
         }
         var pollIntervalMs = this.formateTime(parseInt(jday), parseInt(jhour), parseInt(jmin));
         console.log(pollIntervalMs);
-      }else if (this.ruleForm.cycleSet == '1'&&this.ruleForm.accessMode != "0" &&this.ruleForm.accessMode != "2") {
+      } else if (this.ruleForm.cycleSet == '1' && this.ruleForm.accessMode != "0" && this.ruleForm.accessMode != "2") {
         if (this.radio == '') {
           this.$message.warning('请选择定时执行时间');
           return false;
@@ -496,7 +496,7 @@ export default {
           //第三队列
           let dtmin;
           let dthour;
-          if (this.ruleForm.dtmin == '' || this.ruleForm.dthour =='') {
+          if (this.ruleForm.dtmin == '' || this.ruleForm.dthour == '') {
             this.$message.warning('请将定时执行时间填写完整');
             return false;
           }
@@ -569,7 +569,7 @@ export default {
         this.$ajax({
           method: "post",
           url: this.GLOBAL.api.API_DACM + '/task/saveRegexHeliumTask',
-         /* url:'http://10.19.160.168:8080/DACM/task/saveRegexHeliumTask',*/
+          /* url:'http://10.19.160.168:8080/DACM/task/saveRegexHeliumTask',*/
           // headers:{
           //   'Content-Type':'application/json;charset=utf-8',
           // },
@@ -647,6 +647,20 @@ export default {
     formateTime(day, hour, min) {
       return parseInt(day * 86400000 + hour * 3600000 + min * 60000);
     },
+    _getAcmode() {
+      if (this.$store.state.modeStyle == '1') { //增量接入
+        this.ruleForm.accessMode = '1'
+      }
+      if (this.$store.state.modeStyle == '3') { //增量接入
+        this.ruleForm.accessMode = '3'
+      }
+      if (this.$store.state.modeStyle == '5') { //增量接入
+        this.ruleForm.accessMode = '0'
+      }
+      if (this.$store.state.modeStyle == '4') { //增量接入
+        this.ruleForm.accessMode = '2'
+      }
+    },
     //获取源树
     _getTree() {
       this.$ajax({
@@ -683,6 +697,7 @@ export default {
         } else {
           this.accId = this.rowList.id;
         }
+        this._getAcmode();
         this._monthData();
         this._minData();
         this._hourData();

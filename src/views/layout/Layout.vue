@@ -309,15 +309,18 @@ export default {
 
       &.user {
         background: #cacfd5;
+        vertical-align: top;
       }
       &.setting {
         background: #50609c;
+        vertical-align: top;
         i {
           color: #fff;
         }
       }
       &.document {
         background: #479bd9;
+        vertical-align: top;
         i {
           color: #fff;
         }
@@ -429,6 +432,22 @@ export default {
   line-height: 26px;
   i {
     margin-left: -3px
+  }
+}
+
+
+@media screen and ( max-width: 1280px ) {
+  .enc-logo {
+    line-height: 50px;
+  }
+
+  .el-header {
+    .right-menu {
+      .el-button {
+        width: 60px;
+        height: 50px;
+      }
+    }
   }
 }
 

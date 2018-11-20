@@ -104,6 +104,22 @@ export default {
   }
 }
 
+@media screen and ( max-width: 1280px ) {
+  .nav-menu {
+    padding-left: 30px;
+    .enc-nav-menu {
+      .el-submenu{
+        height: 50px;
+        line-height: 50px;
+      }
+      .el-menu-item {
+        padding: 0 10px;
+        height: 50px;
+        line-height: 50px;
+      }
+    }
+  }
+}
 </style>
 <style rel="stylesheet/scss" lang="scss">
 .owntmenu .el-submenu:hover,

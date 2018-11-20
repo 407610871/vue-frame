@@ -1,5 +1,5 @@
 <template>
-  <div class="taskMDialog userSurveyDialog diaicon">
+  <div class="taskMDialog userSurveyDialog diaicon datein">
     <!-- <el-button size="mini" class="diabtn incbtn" type="danger" @click="dialogVisible = true">数据核验</el-button> -->
     <el-tooltip class="item" effect="light" content="数据核验" placement="top">
       <i class="enc-icon-shujuheyan" @click="dialogVisible = true"></i>
@@ -536,5 +536,7 @@ li {
   cursor: pointer;
   font-size: 20px;
 }
-
+.datein span i{
+  font-size: 14px;
+}
 </style>

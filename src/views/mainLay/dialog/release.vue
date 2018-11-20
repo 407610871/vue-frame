@@ -10,7 +10,6 @@
       </div>
       <el-col :span="4">
         <el-tabs tab-position="left" style="height: 200px;" @tab-click="handleClick">
-       
           <el-tab-pane v-for="item in versionData" :label="item"></el-tab-pane>
           <!-- <el-tab-pane label="用户管理"></el-tab-pane>
           <el-tab-pane label="配置管理"></el-tab-pane>
@@ -288,5 +287,17 @@ export default {
 }
 .release .directory  ul li{
   display: inline-block !important;
+}
+
+
+@media screen and ( max-width: 1280px ) {
+  .taskMDialog {
+    vertical-align: top;
+  }
+  .release .el-button {
+    width: 60px;
+    height: 50px;
+    vertical-align: top;
+  }
 }
 </style>
