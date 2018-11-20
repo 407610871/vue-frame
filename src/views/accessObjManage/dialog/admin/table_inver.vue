@@ -14,7 +14,7 @@
       <div class="proInfo-box">
         <div class="comTable">
           <el-table :data="tableData" style="width: 100%" height="250" stripe>
-            <el-table-column prop="source_library" label="源表">
+            <el-table-column prop="source_tableName" label="源表">
             </el-table-column>
             <el-table-column prop="flag" label="状态">
               <template slot-scope="scope">
@@ -23,7 +23,7 @@
             </el-table-column>
             <el-table-column prop="source_tableNum" label="源数据量">
             </el-table-column>
-            <el-table-column prop="target_library" label="目标表">
+            <el-table-column prop="target_tableName" label="目标表">
             </el-table-column>
             <el-table-column prop="target_tableNum" label="数据量">
             </el-table-column>

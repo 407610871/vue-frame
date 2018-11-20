@@ -1,6 +1,6 @@
 <template>
   <div id="NewAisdeTree">
-    <div class="tree-tools">
+    <div class="tree-tools" :style="styleObj">
       <a href="javascript:void(0)" v-on:click="addNode"><i class="el-icon-plus"></i></a>
       <a href="javascript:void(0)" v-on:click="editNode"><i class="el-icon-edit"></i></a>
       <a href="javascript:void(0)" v-on:click="delNode"><i class="el-icon-close"></i></a>
@@ -49,6 +49,9 @@
             children: 'children',
             label: 'deptName'
           },
+					styleObj:{
+						display:''
+					},
           editingNode:null,
           editingData:{},
           itemTxt:'',
@@ -70,6 +73,17 @@
 				this.$root.eventHub.$on('selTreeNode', (ids)=>{
 					this.checkedDepts = ids;
 				});
+				let that = this;
+				let pathname = window.location.pathname;
+					that.styleObj = {
+						display:(window.location.pathname=="/task"||window.location.pathname=='/kettleTask')?'none':''
+					}
+				setInterval(() => {
+					let pathname = window.location.pathname;
+					that.styleObj = {
+						display:(window.location.pathname=="/task"||window.location.pathname=='/kettleTask')?'none':''
+					}
+				}, 1000);
 			},
       mounted(){
 				this.loadData();
