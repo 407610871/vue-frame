@@ -107,7 +107,7 @@ export default {
                 list: []
             },
             formFilterData: [],
-            pageSize:"20",
+            pageSize:20,
         };
     },
     computed: {
