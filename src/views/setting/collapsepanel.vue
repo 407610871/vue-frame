@@ -180,19 +180,20 @@ export default {
     },
       delectAjax(id) {
       var _self = this;
-      this.$ajax.get(window.ENV.API_DACM + 'caccesssysRelationWorkInfo/delete', {
+      this.$ajax.get(window.ENV.API_DACM + '/caccesssysRelationWorkInfo/delete', {
           params: {
+            pid:2,
             id: id,
           }
         }).then(function(res) {
-          if (res.data.result == 'succeed') {
+          if (res.data.result == 0) {//后端要求
             _self.$alert( '删除成功', '提示', {
               confirmButtonText: '确定'
             }).then(()=>{
              _self.refresh();
             })
           } else {
-            _self.$alert('删除失败', '提示', {
+            _self.$alert(res.data.message, '提示', {
               confirmButtonText: '确定'
             });
           }

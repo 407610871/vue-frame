@@ -262,13 +262,13 @@ export default {
       var _self = this;
       if (_self.$store.state.isParquet) {
         for (let m = 0; m < columnJson.length; m++) {
-          if (_self.rowList[0].accessSys.accessSysDialect.name == columnJson[m].type) {
+          if (_self.$route.params.type == columnJson[m].type) {
             _self.TypeData = columnJson[m].datas;
           }
         }
       } else {
         for (let m = 0; m < jsonType.length; m++) {
-          if (_self.rowList[0].accessSys.accessSysDialect.name == jsonType[m].type) {
+          if (_self.$route.params.type == jsonType[m].type) {
             _self.TypeData = jsonType[m].datas;
           }
         }

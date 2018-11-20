@@ -180,15 +180,23 @@ export default {
 
         if (flag) {
           let datalength = _self.tableData[i].length;
-          if (_self.tableData[i].datatype.toUpperCase() == 'NUMBER' && datalength.indexOf(',') == -1) {
-            _self.cloneData.push(
-              'BIGINT'
-            )
-          } else {
-            _self.cloneData.push(
-              _self.mapData.datas_mapping[temp]
-            )
+          if (_self.$store.state.isParquet) {
+            if (_self.tableData[i].datatype.toUpperCase() == 'NUMBER' && datalength.indexOf(',') == -1) {
+              _self.cloneData.push(
+                'BIGINT'
+              )
+            } else {
+              _self.cloneData.push(
+                _self.mapData.datas_mapping[temp]
+              )
+            }
           }
+          else{
+             _self.cloneData.push(
+                _self.mapData.datas_mapping[temp]
+              )
+          }
+
 
         } else {
           _self.cloneData.push(

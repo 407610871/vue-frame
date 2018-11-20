@@ -17,7 +17,7 @@
             @close="handleClose(item)">
             {{getStatusName(item)}}
         </el-tag> -->
-        <el-form label-width="110px" class="formGroupSelect" v-if="taskName.length || status.length || time.length">
+        <el-form label-width="110px" class="formGroupSelect" v-if="taskName.length || status.length || time.length" style="padding-left:27px;">
             <el-form-item label="已选查询条件:">
                 <div v-show="status.length>0" class="selected-task-type" style="display: inline-block;">
                     <span>任务状态:</span>
@@ -368,12 +368,11 @@ export default {
 }
 .doCearch{
     display:inline-block;
-    height:28px;
+    height:30px;
     margin-left:15px;
     margin-top:0;
     position:relative;
-    top:2px;
-    line-height:10px;
+    line-height:8px;
 }
 .el-checkbox-group{
     display:inline-block;

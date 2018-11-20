@@ -299,7 +299,7 @@ export default {
       ruleForm: {
         dLibrary: '', //接入目的库
         tablename: '', //建立的表名
-        accessMode: '0', //接入方式
+        accessMode: '1', //接入方式
         increment: '', //增量字段
         actech: 'JDBC', //采集技术
         cycleSet: '0', //周期设置
@@ -423,7 +423,7 @@ export default {
     finish() {
       // debugger;
       //间隔执行
-      var pollIntervalMs;
+      var pollIntervalMs = "-1";
       var actech = this.ruleForm.actech;
       if (this.ruleForm.cycleSet == '0' && this.ruleForm.accessMode != "0" && this.ruleForm.accessMode != "2") {
         let jday = 0;;
@@ -687,9 +687,7 @@ export default {
   },
   props: ['rowList', 'msg'],
   watch: {
-    rowList() {
-      console.log("4545645");
-    },
+    
     msg() {
       if (this.msg == "fourth") {
         if (this.rowList.length != undefined) {

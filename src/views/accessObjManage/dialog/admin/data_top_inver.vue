@@ -82,6 +82,12 @@ export default {
         });
         return;
       }
+      if(this.ruleForm.range==''||this.ruleForm.range==undefined){
+        this.$alert("请填写数据范围", "核验", {
+          confirmButtonText: "确定"
+        });
+        return false;
+      }
       this.$ajax({
         method: "get",
         url: `${this.GLOBAL.api.API_DACM}/ccheckData/tableCheck`,

@@ -1,6 +1,9 @@
 <template>
   <div class="taskMDialog userSurveyDialog">
-    <el-button class="diabtn tin-btn add-btn" @click="dialogVisible = true">核验报告</el-button>
+   <!--  <el-button class="diabtn tin-btn add-btn" @click="dialogVisible = true">核验报告</el-button> -->
+   <el-tooltip class="item" effect="light" content="核验报告" placement="top">
+   <span class="dialogo diabtn tin-btn add-btn" @click="dialogVisible = true"></span>
+   </el-tooltip>
     <!--  <i class="el-icon-info" @click="dialogVisible = true">用户调研</i> -->
     <el-dialog title="核验报告" :visible.sync="dialogVisible" width="73%" :before-close="closeDialog">
       <div class="title-gra plr30">
@@ -171,7 +174,7 @@ export default {
       }
       request({
         /*url: this.exportUrl,*/
-        url: `${this.GLOBAL.api.API_DACM}/ccheckData/downloadCheckDataById?id=${this.pdata.id}&browser=${browser}&accessName=${this.$route.params.sourceName}`,
+        url: `${this.GLOBAL.api.API_DACM}/ccheckData/download?accessSysId=${this.pdata.accessSysId}&browser=${browser}&accessName=${this.$route.params.sourceName}`,
         method: "GET",
         responseType: "blob"
       }).then(res => {
@@ -358,5 +361,7 @@ textarea {
 .el-table .cell {
   white-space: nowrap;
 }
-
+.dialogo {
+  width:30px;height: 30px; background: url('../../../../assets/images/dataReport.svg'); display: inline-block; cursor: pointer;
+}
 </style>

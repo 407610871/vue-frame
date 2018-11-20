@@ -289,7 +289,7 @@ export default {
     inverCheck() {
       if (this.ruleForm.setVer == "0") {
         this.startTime = ["", ""];
-        debugger;
+        
       } else if (this.ruleForm.setVer == "1" && this.ruleForm.startTime == null) {
         this.$alert("请填写开始与结束时间", "核验", {
           confirmButtonText: "确定"
@@ -300,6 +300,12 @@ export default {
           confirmButtonText: "确定"
         });
         return;
+      }
+      if(this.ruleForm.range==''||this.ruleForm.range==undefined){
+        this.$alert("请填写数据范围", "核验", {
+          confirmButtonText: "确定"
+        });
+        return false;
       }
       this.$ajax({
         method: "get",
@@ -355,7 +361,7 @@ export default {
       }
       request({
        /* url: 'http://10.19.160.59:8080/DACM/ccheckData/downloadCheckDataById?id=32&browser=fox&accessName=ww',*/
-        url: `${this.GLOBAL.api.API_DACM}/ccheckData/downloadCheckDataById?id=${item.id}&browser=${browser}&accessName=${this.$route.params.sourceName}`,
+        url: `${this.GLOBAL.api.API_DACM}/ccheckData/downloadCheckDataById?id=${item.id}&browser=${browser}&accessName=${this.pdata.name}`,
         method: "GET",
         responseType: "blob"
       }).then(res => {

@@ -71,9 +71,9 @@
     "BIGINT",
     "DOUBLE",
     "STRING",
-    "TIMESTAMP",
-    "TIMESTAMP",
-    "FLOAT"
+    "STRING",
+    "STRING",
+    "DOUBLE"
   ]
 },
 {
@@ -85,8 +85,8 @@
   ],
   "datas_mapping": [
     "STRING",
-    "INT",
-    "TIMESTAMP"
+    "BIGINT",
+    "STRING"
   ]
 },
 {
