@@ -299,7 +299,7 @@ export default {
       ruleForm: {
         dLibrary: '', //接入目的库
         tablename: '', //建立的表名
-        accessMode: '0', //接入方式
+        accessMode: '1', //接入方式
         increment: '', //增量字段
         actech: 'JDBC', //采集技术
         cycleSet: '0', //周期设置
