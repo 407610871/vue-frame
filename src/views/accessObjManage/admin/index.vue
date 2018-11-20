@@ -1,10 +1,14 @@
 <template>
   <div>
     <el-container style="height:100%;" class="dashboard-container" v-loading="loading">
-      <el-header class="filter-container" :height="headerHeight">
-        <a v-on:click="collapseExpand" class="right-btn collapse-btn"><i :class="{'el-icon-circle-plus':collapse,'el-icon-remove':!collapse}"></i></a>
-        <formFliter v-if="queryParamReady" v-bind:formCollapse="collapse" v-bind:dataObj="formFilterData" @formFilter="changeFormFilter" />
-      </el-header>
+      <!-- <el-header class="filter-container" > -->
+        <div class="moreSearch">
+
+      
+        <!-- <a v-on:click="collapseExpand" class="right-btn collapse-btn"><i :class="{'el-icon-circle-plus':collapse,'el-icon-remove':!collapse}"></i></a> -->
+        <formFliter v-if="queryParamReady"  @highMore="moreHeight"    @highSeaech="hightrue" v-bind:formCollapse="collapse" v-bind:dataObj="formFilterData" @doSearch="search" @formFilter="changeFormFilter" />
+      <!-- </el-header> -->
+        </div>
       <el-main class="main-container icon-dai">
         <div class="table-tools">
           <!-- <i title="数据更新" class="enc-icon-shujugengxin"  v-on:click="updataSource"><i> -->
@@ -159,18 +163,18 @@
   </div>
 </template>
 <script>
-import { mapState } from 'vuex'
-import formFliter from './../../../components/formFliter2'
-import userSurvey from '@/views/accessObjManage/dialog/admin/user_survey'
-import setTask from '@/views/accessObjManage/dialog/admin/set_task'
-import singleTask from '@/views/accessObjManage/dialog/admin/single_task'
-import tableInver from '@/views/accessObjManage/dialog/admin/table_inver'
-import dataInver from '@/views/accessObjManage/dialog/admin/data_inver'
-import pathFtp from '@/views/mainLay/dialog/path_ftp'
-import norelaColl from '@/views/mainLay/dialog/norela_coll'
-import DialogTaskDetail from '@/views/mainLay/dialog/DialogTaskDetails'
+import { mapState } from "vuex";
+import formFliter from "./../../../components/formFliter";
+import userSurvey from "@/views/accessObjManage/dialog/admin/user_survey";
+import setTask from "@/views/accessObjManage/dialog/admin/set_task";
+import singleTask from "@/views/accessObjManage/dialog/admin/single_task";
+import tableInver from "@/views/accessObjManage/dialog/admin/table_inver";
+import dataInver from "@/views/accessObjManage/dialog/admin/data_inver";
+import pathFtp from "@/views/mainLay/dialog/path_ftp";
+import norelaColl from "@/views/mainLay/dialog/norela_coll";
+import DialogTaskDetail from "@/views/mainLay/dialog/DialogTaskDetails";
 export default {
-  name: 'DashboardAdmin',
+  name: "DashboardAdmin",
   data() {
     return {
       reqObj: "",
@@ -183,11 +187,12 @@ export default {
       pageSize: 20,
       mainTableDataTotal: 1,
       dialogVisible: false,
-      showTaskDetail:false,
-      myDialogRouter: 'adminAdd',
-      dialogTitle: '新增',
+      showTaskDetail: false,
+      moreData: 0,
+      myDialogRouter: "adminAdd",
+      dialogTitle: "新增",
       alertVisible: false,
-      alertContent: '',
+      alertContent: "",
       pageShow: true,
       seledRows: [],
       collapse: true,
@@ -196,48 +201,59 @@ export default {
       tablePa: [],
       editingRow: {
         index: 0,
-        diyComments: ''
+        diyComments: ""
       },
-      jrtype: '',
-      objectType: [{
-        id: 1,
-        diyComments: ['TABLE'],
-        name: '表'
-      }, {
-        id: 2,
-        diyComments: ['v', 'VIEW'],
-        name: '视图'
-      }, {
-        id: 3,
-        diyComments: ['OTHER'],
-        name: '其他'
-      }],
-      dataRange: [{
-        id: 1,
-        name: '全市'
-      }, {
-        id: 2,
-        name: '全省'
-      }, {
-        id: 3,
-        name: '全国'
-      }, {
-        id: 4,
-        name: '其他'
-      }],
-      jrtype: '',
-      accId: ''
-    }
+      jrtype: "",
+      objectType: [
+        {
+          id: 1,
+          diyComments: ["TABLE"],
+          name: "表"
+        },
+        {
+          id: 2,
+          diyComments: ["v", "VIEW"],
+          name: "视图"
+        },
+        {
+          id: 3,
+          diyComments: ["OTHER"],
+          name: "其他"
+        }
+      ],
+      dataRange: [
+        {
+          id: 1,
+          name: "全市"
+        },
+        {
+          id: 2,
+          name: "全省"
+        },
+        {
+          id: 3,
+          name: "全国"
+        },
+        {
+          id: 4,
+          name: "其他"
+        }
+      ],
+      jrtype: "",
+      accId: ""
+    };
   },
   computed: {
     tableParams: function() {
       return this.$store.state.queryParams.accessObjManage;
     },
     tableHeight: function() {
-      return this.collapse ? window.innerHeight - 280 : window.innerHeight - 315;
+      return this.collapse
+        ? window.innerHeight - 280
+        : window.innerHeight - 315;
     },
     headerHeight: function() {
-      return this.collapse ? '50px' : '85px';
+      return this.collapse ? "50px" : "85px";
     },
     type: function() {
       return this.$route.params.type;
@@ -256,32 +272,50 @@ export default {
   },
   watch: {
     tableParams(newVal, oldVal) {
-      console.log(newVal);
-      console.log(oldVal);
+      // console.log(newVal);
+      // console.log(oldVal);
       if (JSON.stringify(newVal) != JSON.stringify(oldVal)) {
-        console.log('change');
-        this.loadTable();
+        // console.log('change');
+        // this.loadTable();
       }
-    },
+    }
   },
   mounted() {
-    this.$root.eventHub.$emit('setActiveNav', 1);
+    this.$root.eventHub.$emit("setActiveNav", 1);
     this.storeReady();
     this.setFliter();
   },
   created() {
-    this.$root.eventHub.$on('search', (keyword) => {
-      this.search(keyword);
-    })
+    // this.$root.eventHub.$on('search', (keyword) => {
+    //   this.search(keyword);
+    // })
+    this.loadTable();
   },
   methods: {
+    // search: function(keyword) {
+    //   this.setStore({
+    //     pageNum: 1,
+    //     condition: keyword,
+    //     timeFlag: new Date().getTime()
+    //   });
+    //   this.loadTable();
+    // },
+    moreHeight(data) {
+      this.moreData = data;
+    },
+    hightrue: function(a) {
+      this.collapse = a;
+      // console.log(a);
+    },
     tableRowClassName: function(scope, rowIndex) {
-      if (scope.row.isDeleted == 1) { //删除
-        return 'delete-row';
-      } else if (scope.row.isHistory == 2) { //新增
-        return 'add-row';
+      if (scope.row.isDeleted == 1) {
+        //删除
+        return "delete-row";
+      } else if (scope.row.isHistory == 2) {
+        //新增
+        return "add-row";
       }
-      return '';
+      return "";
     },
     collapseExpand: function() {
       this.collapse = !this.collapse;
@@ -293,24 +327,29 @@ export default {
 
       _self.loading = true;
       _self.pageSize = this.$store.state.pageSize;
-      var paramsObj = { //不要问我为什么，后台接口就是这2个参数名
+      var paramsObj = {
+        //不要问我为什么，后台接口就是这2个参数名
         pagNum: this.tableParams.pageNum,
         count: _self.pageSize
       };
-      paramsObj.condition = this.tableParams.condition ? this.tableParams.condition : "";
-      paramsObj.objectType = this.tableParams.objectType.join(',');
-      paramsObj.dataRange = this.tableParams.dataRange + '';
+      paramsObj.condition = this.tableParams.condition
+        ? this.tableParams.condition
+        : "";
+      paramsObj.objectType = this.tableParams.objectType.join(",");
+      console.log(this.tableParams)
+      paramsObj.dataRange = this.tableParams.dataRange.join(",");
       paramsObj.accessSysId = parseInt(this.$route.params.sourceId);
       this.$ajax({
-          // url: window.ENV.API_DACM+'ctables/datas',
-          url: window.ENV.API_DACM + '/ctables/datas',
-          /* url:'http://10.19.160.25:8080/DACM/ctables/datas',*/
-          method: 'post',
-          data: JSON.stringify(paramsObj),
-          headers: {
-            'Content-Type': 'application/json'
-          }
-        })
+        // url: window.ENV.API_DACM+'ctables/datas',
+        // url: window.ENV.API_DACM + "/ctables/datas",
+         url:'http://10.19.160.25:8080/DACM/ctables/datas',
+        
+        method: "post",
+        data: JSON.stringify(paramsObj),
+        headers: {
+          "Content-Type": "application/json"
+        }
+      })
         .then(res => {
           if (res.data.success) {
             var data = res.data.data.list;
@@ -318,19 +357,24 @@ export default {
               value.showEdit = false;
             }
             _self.mainTableData = data;
-            console.log("_self.mainTableData", JSON.stringify(_self.mainTableData[0]));
+            // console.log(
+            //   "_self.mainTableData",
+            //   JSON.stringify(_self.mainTableData[0])
+            // );
             _self.mainTableDataTotal = res.data.data.total;
             if (res.data.data.list.length > 0) {
               _self.tablePa = res.data.data.list[0];
-              this.$store.commit('setSeparator', res.data.data.list[0].extendParams.separator);
-
+              this.$store.commit(
+                "setSeparator",
+                res.data.data.list[0].extendParams.separator
+              );
             }
             _self.currentPage = _self.tableParams.pageNum;
             _self.pageShow = true;
           } else {
             console.log(res.code);
-            _self.$alert('加载接入对象列表失败', '提示', {
-              confirmButtonText: '确定'
+            _self.$alert("加载接入对象列表失败", "提示", {
+              confirmButtonText: "确定"
             });
             _self.pageShow = false;
             _self.mainTableData = [];
@@ -342,8 +386,8 @@ export default {
           _self.mainTableData = [];
           console.log(err);
           _self.loading = false;
-          _self.$alert('加载接入对象列表失败', '提示', {
-            confirmButtonText: '确定'
+          _self.$alert("加载接入对象列表失败", "提示", {
+            confirmButtonText: "确定"
           });
         });
     },
@@ -351,35 +395,39 @@ export default {
       var _self = this;
       this.loading = true;
       // this.$ajax.post('http://10.19.160.25:8080/DACM/ctables/diyComments',{
-      this.$ajax.post(window.ENV.API_DACM + '/ctables/diyComments', {
+      this.$ajax
+        .post(window.ENV.API_DACM + "/ctables/diyComments", {
           objInfoId: row.id,
           value: this.editingRow.diyComments
-        }).then(function(res) {
+        })
+        .then(function(res) {
           if (res.data.success) {
             row.diyComments = _self.editingRow.diyComments;
             row.showEdit = false;
           } else {
             console.log(res.data.code);
-            _self.$alert('字段中文名称修改失败', '提示', {
-              confirmButtonText: '确定'
+            _self.$alert("字段中文名称修改失败", "提示", {
+              confirmButtonText: "确定"
             });
           }
           _self.loading = false;
         })
         .catch(function(err) {
-          console.log(err)
+          console.log(err);
           _self.loading = false;
-          _self.$alert('字段中文名称修改失败', '提示', {
-            confirmButtonText: '确定'
+          _self.$alert("字段中文名称修改失败", "提示", {
+            confirmButtonText: "确定"
           });
         });
     },
     setStore: function(obj) {
-      let storeData = JSON.parse(JSON.stringify(this.$store.state.queryParams[this.$route.name]));
+      let storeData = JSON.parse(
+        JSON.stringify(this.$store.state.queryParams[this.$route.name])
+      );
       for (var i in obj) {
         storeData[i] = obj[i];
       }
-      this.$store.commit('setQueryParams', {
+      this.$store.commit("setQueryParams", {
         name: this.$route.name,
         data: storeData
       });
@@ -388,15 +436,17 @@ export default {
       this.setStore({
         pageNum: val
       });
+      this.loadTable();
     },
     goAccessObjInfo: function(row) {
-      this.$store.commit('resetQueryParam', {
-        resetData: 'accessObjInfo'
+      this.$store.commit("resetQueryParam", {
+        resetData: "accessObjInfo"
       });
-      this.$store.commit('setParamItem', {
-        name: 'accessObjInfo',
+      this.$store.commit("setParamItem", {
+        name: "accessObjInfo",
         data: {
-          ACCESS_SYS_DIALECT_ID: this.mainTableData[0].accessSys.accessSysDialectId,
+          ACCESS_SYS_DIALECT_ID: this.mainTableData[0].accessSys
+            .accessSysDialectId,
           accessSysId: this.mainTableData[0].accessSys.id,
           diyComments: row.diyComments
         }
@@ -415,65 +465,75 @@ export default {
     search: function(keyword) {
       this.setStore({
         pageNum: 1,
-        condition: keyword
+        condition: keyword,
+        timeFlag: new Date().getTime()
       });
+      this.loadTable();
     },
     updataSource: function() {
       var _self = this;
       self.loadTable = true;
-      this.$ajax.get(window.ENV.API_DACM + '/ctables/synchronize', {
-        params: {
-          accessSysId: this.$route.params.sourceId
-        }
-      }).then(function(res) {
-        if (res.data.success) {
-          _self.$alert('更新成功', '提示', {
-            confirmButtonText: '确定'
+      this.$ajax
+        .get(window.ENV.API_DACM + "/ctables/synchronize", {
+          params: {
+            accessSysId: this.$route.params.sourceId
+          }
+        })
+        .then(function(res) {
+          if (res.data.success) {
+            _self.$alert("更新成功", "提示", {
+              confirmButtonText: "确定"
+            });
+            _self.loadTable();
+          } else {
+            _self.$alert("更新失败", "提示", {
+              confirmButtonText: "确定"
+            });
+            // console.log(res.code)
+          }
+        })
+        .catch(function(err) {
+          console.log(err);
+          _self.$alert("更新失败", "提示", {
+            confirmButtonText: "确定"
           });
-          _self.loadTable();
-        } else {
-          _self.$alert('更新失败', '提示', {
-            confirmButtonText: '确定'
-          });
-          console.log(res.code)
-        }
-      }).catch(function(err) {
-        console.log(err)
-        _self.$alert('更新失败', '提示', {
-          confirmButtonText: '确定'
         });
-      });
     },
     updataSourceSingle: function(index, row) {
       var _self = this;
-      this.$ajax.get(window.ENV.API_DACM + '/ctables/refreshAmount', {
-        params: {
-          objectInfoId: row.id
-        }
-      }).then(function(res) {
-        if (res.data.success) {
-          _self.$alert('更新成功', '提示', {
-            confirmButtonText: '确定'
-          }).then(() => {
-            row.totalRows = res.data.data.totalRows;
+      this.$ajax
+        .get(window.ENV.API_DACM + "/ctables/refreshAmount", {
+          params: {
+            objectInfoId: row.id
+          }
+        })
+        .then(function(res) {
+          if (res.data.success) {
+            _self
+              .$alert("更新成功", "提示", {
+                confirmButtonText: "确定"
+              })
+              .then(() => {
+                row.totalRows = res.data.data.totalRows;
+              });
+          } else {
+            _self.$alert("更新失败", "提示", {
+              confirmButtonText: "确定"
+            });
+            // console.log(res.code)
+          }
+        })
+        .catch(function(err) {
+          console.log(err);
+          _self.$alert("更新失败", "提示", {
+            confirmButtonText: "确定"
           });
-        } else {
-          _self.$alert('更新失败', '提示', {
-            confirmButtonText: '确定'
-          });
-          console.log(res.code)
-        }
-      }).catch(function(err) {
-        console.log(err)
-        _self.$alert('更新失败', '提示', {
-          confirmButtonText: '确定'
         });
-      });
     },
     handleSelectionChange: function(val) {
       this.seledRows = val;
       this.rowList = val;
-      console.log(this.rowList);
+      // console.log(this.rowList);
     },
     changeFormFilter: function(fliterParams) {
       fliterParams.pageNum = 1;
@@ -491,49 +551,60 @@ export default {
       }
     },
     setFliter() {
-      this.formFilterData = [{
-        name: "接入对象类型：",
-        id: 'objectType',
-        type: 'checkbox',
-        checkData: this.objectType,
-        seledData: this.tableParams.objectType
-      }, {
-        name: "数据范围：",
-        id: 'dataRange',
-        type: 'radio',
-        checkData: this.dataRange,
-        seledData: this.tableParams.dataRange
-      }];
+
+
+       var queryParams = this.$store.state.queryParams[this.$route.name];
+       console.log(queryParams);
+       let objectType=queryParams.objectType?queryParams.objectType:[];
+              let dataRange=queryParams.dataRange?queryParams.dataRange:[];
+
+      this.formFilterData = [
+        {
+          name: "接入对象类型：",
+          id: "objectType",
+          type: "checkbox",
+          checkData: this.objectType,
+          seledData: objectType,
+          limit: 4
+        },
+        {
+          name: "数据范围：",
+          id: "dataRange",
+          type: "checkbox",
+          checkData: this.dataRange,
+          seledData: dataRange,
+          limit: 4
+        }
+      ];
       this.queryParamReady = true;
     },
     getObjType(id) {
       for (var value of this.formFilterData[0].checkData) {
         if (value.diyComments.indexOf(id) != -1) {
-          return value.name
+          return value.name;
         }
       }
-      return '未知类型'
+      return "未知类型";
     },
     getPeriod(row) {
       //表删了，暂时空着
-      return '';
+      return "";
     },
     getFileType(name) {
-      var list = name.split('.');
+      var list = name.split(".");
       return list[list.length - 1];
     },
     getDiyComment(row) {
-      var diyComments = (row.diyComments == null) ? "" : row.diyComments;
+      var diyComments = row.diyComments == null ? "" : row.diyComments;
       return diyComments;
     },
     //详情
     doDetail(index, row) {
       this.reqObj = row;
       this.showTaskDetail = true;
-    },
+    }
   }
-}
-
+};
 </script>
 <style lang="scss">
 .el-table .delete-row {
@@ -542,11 +613,12 @@ export default {
 
 .el-table .add-row {
   color: red;
-  
 }
-
 </style>
 <style rel="stylesheet/scss" lang="scss" scoped>
+.moreSearch{
+  padding-top:10px;
+}
 .dashboard-container {
   background: #fff;
   .filter-container {
@@ -605,5 +677,4 @@ export default {
 .cell i {
   cursor: pointer;
 }
-
 </style>
