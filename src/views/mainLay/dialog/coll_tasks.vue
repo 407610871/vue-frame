@@ -687,9 +687,7 @@ export default {
   },
   props: ['rowList', 'msg'],
   watch: {
-    rowList() {
-      console.log("4545645");
-    },
+    
     msg() {
       if (this.msg == "fourth") {
         if (this.rowList.length != undefined) {

@@ -154,7 +154,7 @@ export default {
     dialogVisible() {
       if (this.dialogVisible) {
         this.msg = true;
-        console.log(this.jrtype + "54546465454");
+        
       }
     }
   },

@@ -227,7 +227,10 @@ export default {
   props: ['rowList', 'msg', 'flag'],
   watch: {
     rowList() {
-      this.tableId = this.rowList[0].id;
+      if(this.rowList.length!=0){
+       this.tableId = this.rowList[0].id; 
+      }
+      
     },
     msg() {
       debugger;
