@@ -8,7 +8,10 @@
       <el-main class="main-container icon-dai">
         <div class="table-tools">
           <!-- <i title="数据更新" class="enc-icon-shujugengxin"  v-on:click="updataSource"><i> -->
-          <el-button v-on:click="updataSource" class="right-btn" style="margin-left:10px;">接入源更新</el-button>
+          <!--  <el-button v-on:click="updataSource" class="right-btn" style="margin-left:10px;">接入源更新</el-button> -->
+          <el-tooltip class="item" effect="light" content="接入源更新" placement="top">
+            <span class="updatelogo right-btn" v-on:click="updataSource" style="margin-left:10px; margin-right: 42px;"></span>
+          </el-tooltip>
           <table-inver v-if="type=='mysql'|| type=='oracle'|| type=='postgresql' || type=='sqlserver'" class="right-btn" :pdata="tablePa"></table-inver>
           <path-ftp class="right-btn" @refresh="loadTable" v-if="type=='ftp'"></path-ftp>
           <set-task v-if="type=='mysql'|| type=='oracle'|| type=='postgresql' || type=='sqlserver' || type=='file'" class="right-btn" :rowList="rowList" :jrtype="type" @fre="loadTable()"></set-task>
@@ -133,7 +136,7 @@
               <div class="survey">
                 <userSurvey v-if="type=='mysql'|| type=='oracle'|| type=='postgresql' || type=='sqlserver'" :pdata="scope.row" @fre="loadTable()"></userSurvey>
               </div>
-              <div class="survey" v-if="(type=='mysql'&&scope.row.accessConnectorSource!=undefined&&scope.row.accessConnectorSource.isPeriod!='0')|| (type=='oracle'&&scope.row.accessConnectorSource!=undefined&&scope.row.accessConnectorSource.isPeriod!='0')|| (type=='postgresql'&&scope.row.accessConnectorSource!=undefined&&scope.row.accessConnectorSource.isPeriod!='0')|| (type=='sqlserver'&&scope.row.accessConnectorSource!=undefined&&scope.row.accessConnectorSource.isPeriod!='0')" >
+              <div class="survey" v-if="(type=='mysql'&&scope.row.accessConnectorSource!=undefined&&scope.row.accessConnectorSource.isPeriod!='0')|| (type=='oracle'&&scope.row.accessConnectorSource!=undefined&&scope.row.accessConnectorSource.isPeriod!='0')|| (type=='postgresql'&&scope.row.accessConnectorSource!=undefined&&scope.row.accessConnectorSource.isPeriod!='0')|| (type=='sqlserver'&&scope.row.accessConnectorSource!=undefined&&scope.row.accessConnectorSource.isPeriod!='0')">
                 <data-inver :pdata="scope.row" @fre="loadTable()"></data-inver>
               </div>
               <div class="survey" v-if="type!='mysql' && type!='oracle' && type!='sqlserver' && type!='postgresql'">
@@ -542,7 +545,7 @@ export default {
 
         }
       }).then(res => {
-         console.log(res);
+        console.log(res);
       })
     }
   }
@@ -618,5 +621,7 @@ export default {
 .cell i {
   cursor: pointer;
 }
-
+.updatelogo {
+width:30px;height: 30px; background: url('../../../assets/images/dataupdate.svg'); display: inline-block; cursor: pointer;
+}
 </style>

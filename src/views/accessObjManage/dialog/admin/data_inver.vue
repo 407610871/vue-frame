@@ -289,7 +289,7 @@ export default {
     inverCheck() {
       if (this.ruleForm.setVer == "0") {
         this.startTime = ["", ""];
-        debugger;
+        
       } else if (this.ruleForm.setVer == "1" && this.ruleForm.startTime == null) {
         this.$alert("请填写开始与结束时间", "核验", {
           confirmButtonText: "确定"
@@ -300,6 +300,12 @@ export default {
           confirmButtonText: "确定"
         });
         return;
+      }
+      if(this.ruleForm.range==''||this.ruleForm.range==undefined){
+        this.$alert("请填写数据范围", "核验", {
+          confirmButtonText: "确定"
+        });
+        return false;
       }
       this.$ajax({
         method: "get",
