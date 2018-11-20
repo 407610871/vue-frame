@@ -69,7 +69,7 @@
   ],
   "datas_mapping": [
     "BIGINT",
-    "DOUBLE,BIGINT",
+    "DOUBLE",
     "STRING",
     "TIMESTAMP",
     "TIMESTAMP",
