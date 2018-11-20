@@ -35,6 +35,8 @@
 <script>
 import { mapState, mapMutations, mapActions } from 'vuex'
 import columnJson from '@/static/json/columnType'
+import jsonType
+from '@/static/json/jsonType'
 export default {
   name: "userSurvey",
   data: function() {
@@ -103,9 +105,17 @@ export default {
       _self.TypeData = [];
       /*_self.TypeData = res.data[0].datas_mapping;*/
       let reData = [];
-      for (let m = 0; m < columnJson.length; m++) {
-        if (_self.$route.params.type == columnJson[m].type) {
-          reData = columnJson[m].datas_mapping;
+      if (_self.$store.state.isParquet) {
+        for (let m = 0; m < columnJson.length; m++) {
+          if (_self.$route.params.type == columnJson[m].type) {
+            reData = columnJson[m].datas_mapping;
+          }
+        }
+      } else {
+        for (let m = 0; m < jsonType.length; m++) {
+          if (_self.$route.params.type == jsonType[m].type) {
+            reData = jsonType[m].datas_mapping;
+          }
         }
       }
       for (let i = 0; i < reData.length; i++) {
@@ -123,12 +133,20 @@ export default {
     },
     _getAllType() {
       var _self = this;
-
-      for (let m = 0; m < columnJson.length; m++) {
-        if (_self.$route.params.type == columnJson[m].type) {
-          _self.mapData = columnJson[m];
+      if (_self.$store.state.isParquet) {
+        for (let m = 0; m < columnJson.length; m++) {
+          if (_self.$route.params.type == columnJson[m].type) {
+            _self.mapData = columnJson[m];
+          }
+        }
+      } else {
+        for (let m = 0; m < jsonType.length; m++) {
+          if (_self.$route.params.type == jsonType[m].type) {
+            _self.mapData = jsonType[m];
+          }
         }
       }
+
       /**/
       for (let i = 0; i < _self.tableData.length; i++) {
         let flag = false;
@@ -152,15 +170,23 @@ export default {
 
         if (flag) {
           let datalength = _self.tableData[i].length;
-          if (_self.tableData[i].datatype.toUpperCase() == 'NUMBER' && datalength.indexOf(',') == -1) {
-            _self.cloneData.push(
-              'BIGINT'
-            )
-          } else {
-            _self.cloneData.push(
-              _self.mapData.datas_mapping[temp]
-            )
+          if (_self.$store.state.isParquet) {
+            if (_self.tableData[i].datatype.toUpperCase() == 'NUMBER' && datalength.indexOf(',') == -1) {
+              _self.cloneData.push(
+                'BIGINT'
+              )
+            } else {
+              _self.cloneData.push(
+                _self.mapData.datas_mapping[temp]
+              )
+            }
           }
+          else{
+             _self.cloneData.push(
+                _self.mapData.datas_mapping[temp]
+              )
+          }
+
         } else {
           _self.cloneData.push(
             _self.mapData.datas_mapping[0]
@@ -209,7 +235,10 @@ export default {
   props: ['rowList', 'msg', 'flag'],
   watch: {
     rowList() {
-      this.tableId = this.rowList[0].id;
+      if (this.rowList.length != 0) {
+        this.tableId = this.rowList[0].id;
+      }
+
     },
     msg() {
       debugger;

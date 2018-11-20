@@ -27,7 +27,7 @@
                 <span v-if="reqObj.status=='Finished'" style="float:right;color:red;font-weight:700;width:50px">完成</span>
               </div>
               <div>
-                  <span>输入：</span><span>{{taskBaseInfo.input}}</span>
+                  <span style="width:50px;">输入：</span><span style="width:300px;">{{taskBaseInfo.input}}</span>
               </div>
               <div style="height:78px">
                   <span style="vertical-align:top">处理步骤：</span>
@@ -36,7 +36,7 @@
                    </div>
               </div>
               <div>
-                  <span>输出：</span><span>{{taskBaseInfo.output}}</span>
+                  <span style="width:50px;">输出：</span><span style="width:300px;">{{taskBaseInfo.output}}</span>
               </div>
               <div>
                   <span>创建时间：</span><span>{{reqObj.createTime}}</span>
@@ -111,7 +111,7 @@
     .info-right>div span:last-child{
         color: #2f6ac5;
         cursor: pointer;
-        width: 300px;
+        width: 200px;
     }
     .daiInfo-tabs{
         border:1px solid blue;
@@ -124,7 +124,8 @@
         display: inline-block;
         height: 62px;
         overflow: auto;
-        width: 300px;
+        min-width: 200px;
+        max-width: 300px;
     }
 </style>
 <script>

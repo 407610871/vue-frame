@@ -14,8 +14,8 @@
 
       </div>
 
-      <el-form ref="form" label-width="110px" class="formGroup" v-if="moreSearch">
-        <el-form-item label="已选查询条件:">
+      <el-form ref="form" label-width="110px" class="formGroup task-query-form" v-if="moreSearch" style="padding-left: 27px;">
+        <el-form-item label="已选查询条件:" style="height: 60px;overflow: auto;" v-show="taskPeriodType.length>0||status.length>0||priority.length>0||(time!=null && time.length>0)">
           <div v-show="taskPeriodType.length>0" class="selected-task-type" style="display: inline-block;">
             <span>任务类型:</span>
             <span v-show="taskPeriodType.indexOf('0')>-1">实时<span @click="pop('0',taskPeriodType);"><i class="el-icon-error"></i></span></span>
@@ -25,7 +25,7 @@
             <span v-show="taskPeriodType.indexOf('4')>-1">周期间隔全量;<span @click="pop('4',taskPeriodType);"><i class="el-icon-error"></i></span></span>
             <span v-show="taskPeriodType.indexOf('5')>-1">周期定时全量<span @click="pop('5',taskPeriodType);"><i class="el-icon-error"></i></span></span>
           </div>
-          <div label="任务状态:" v-show="status.length>0" class="selected-task-type" style="display: inline-block;">
+          <div v-show="status.length>0" class="selected-task-type" style="display: inline-block;">
             <span>任务状态:</span>
             <span v-show="status.indexOf('0')>-1">新建<span @click="pop('0',status);"><i class="el-icon-error"></i></span></span>
             <span v-show="status.indexOf('1')>-1">运行<span @click="pop('1',status);"><i class="el-icon-error"></i></span></span>
@@ -33,15 +33,15 @@
             <span v-show="status.indexOf('3')>-1">失败<span @click="pop('3',status);"><i class="el-icon-error"></i></span></span>
             <span v-show="status.indexOf('4')>-1">完成<span @click="pop('4',status);"><i class="el-icon-error"></i></span></span>
           </div>
-        <div label="任务优先级:" v-show="priority.length>0" class="selected-task-type" style="display: inline-block;">
-            <span>任务状态:</span>
+        <div v-show="priority.length>0" class="selected-task-type" style="display: inline-block;">
+            <span>任务优先级:</span>
             <span v-show="priority.indexOf('1')>-1">高<span @click="pop('1',priority);"><i class="el-icon-error"></i></span></span>
             <span v-show="priority.indexOf('2')>-1">中<span @click="pop('2',priority);"><i class="el-icon-error"></i></span></span>
             <span v-show="priority.indexOf('3')>-1">低<span @click="pop('3',priority);"><i class="el-icon-error"></i></span></span>
             
           </div>
 
-          <div v-show="time!=null && time.length>0" class="selected-task-type">
+          <div v-show="time!=null && time.length>0" class="selected-task-type" style="display: inline-block;">
             <span style="margin-right:10px;">任务开始时间:</span>
             <span>{{time==null?'':time[0]}} - {{time==null?'':time[1]}}<span @click="time=[]"><i class="el-icon-error"></i></span></span>
           </div>
@@ -227,7 +227,7 @@ export default {
     tableHeight: function() {
       return !this.moreSearch
         ? window.innerHeight - 300
-        : window.innerHeight - 511;
+        : window.innerHeight - 545;
     }
   },
   created() {
@@ -844,12 +844,11 @@ if(row1.length==0){
 }
 .doCearch {
   display: inline-block;
-  height: 28px;
+  height: 30px;
   margin-left: 15px;
   margin-top: 0;
   position: relative;
-  top: 2px;
-  line-height: 10px;
+  line-height: 8px;
 }
 .el-form-item {
   margin-bottom: 10px;
@@ -883,6 +882,10 @@ if(row1.length==0){
   .el-message-box{
   max-height: 50%;
     overflow: auto;
+}
+.task-query-form .el-checkbox{
+  width:auto;
+  margin-left: 15px;
 }
 
 </style>

@@ -27,7 +27,8 @@
               <hdfs-edit :indexEq="index" :ownId="item.storageId" @refresh="refreshs(index)"></hdfs-edit>
             </div>
             <el-button type="primary" @click="setConnect" :id="item.storageId" :disabled="item.storageId == seledId">关联</el-button>
-            <el-button type="primary" @click="setDelete" :id="item.storageId" :disabled="item.storageId != seledId">删除</el-button>
+            <el-button type="primary" @click="setDelete" :id="item.storageId" :disabled="item.storageId != seledId">取消关联</el-button>
+              <el-button type="primary" @click="setDeleted" :id="item.storageId"  :disabled="item.storageId == seledId">删除</el-button>
           </div>
         </el-col>
       </el-row>
@@ -127,6 +128,16 @@ export default {
       this.editTxt = '取消关联';
       this.connectConfirm()
     },
+       setDeleted(event) {
+      var id = event.target.id ? parseInt(event.target.id) : parseInt(event.target.parentNode.id);
+     this.$confirm('确认要删除吗?', '提示', {
+        confirmButtonText: "确定",
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.delectAjax(id);
+      });
+    },
     connectConfirm() {
       this.$confirm('确认要' + this.editTxt + '吗?', '提示', {
         confirmButtonText: this.editTxt,
@@ -139,7 +150,6 @@ export default {
     connectAjax() {
       var _self = this;
       var storageId = _self.editTxt == '关联' ? this.editingId : 0;
-      console.log(storageId);
       this.$ajax.get(window.ENV.API_DACM + '/caccesssysRelationWorkInfo/operate', {
           params: {
             nodeId: 2,
@@ -164,6 +174,33 @@ export default {
         .catch(function(err) {
           console.log(err)
           _self.$alert(_self.editTxt + '失败', '提示', {
+            confirmButtonText: '确定'
+          });
+        });
+    },
+      delectAjax(id) {
+      var _self = this;
+      this.$ajax.get(window.ENV.API_DACM + '/caccesssysRelationWorkInfo/delete', {
+          params: {
+            pid:2,
+            id: id,
+          }
+        }).then(function(res) {
+          if (res.data.result == 0) {//后端要求
+            _self.$alert( '删除成功', '提示', {
+              confirmButtonText: '确定'
+            }).then(()=>{
+             _self.refresh();
+            })
+          } else {
+            _self.$alert(res.data.message, '提示', {
+              confirmButtonText: '确定'
+            });
+          }
+        })
+        .catch(function(err) {
+          console.log(err)
+          _self.$alert('删除失败', '提示', {
             confirmButtonText: '确定'
           });
         });

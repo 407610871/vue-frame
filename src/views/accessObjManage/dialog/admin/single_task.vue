@@ -38,7 +38,7 @@
                 <h2>设置采集任务</h2>
               </div>
             </div>
-            <coll-task :pdata="pdata" @pre="next('second')" @close="closeDialog()" @fresh="fresh()"></coll-task>
+            <coll-task :pdata="pdata" :msg="activeName" @pre="next('second')" @close="closeDialog()" @fresh="fresh()"></coll-task>
             <!-- <div class="btn tcenter mt30">
               <el-button type="primary" style="margin-top: 12px;" @click="next('second')">上一步</el-button>
               <el-button type="primary" style="margin-top: 12px;">完成</el-button>
@@ -69,6 +69,7 @@ export default {
     closeDialog() {
       this.dialogVisible = false;
       this.activeName = 'first';
+      this.$store.commit("setMode","");
       //this.$refs.survey._clearForm();
     },
     //步骤条
@@ -83,7 +84,9 @@ export default {
     fresh(){
       this.$emit('fre');
       this.activeName = 'first';
+      this.$store.commit("setMode","");
       this.dialogVisible = false;
+
     }
   },
   components: {

@@ -82,6 +82,12 @@ export default {
         });
         return;
       }
+      if(this.ruleForm.range==''||this.ruleForm.range==undefined){
+        this.$alert("请填写数据范围", "核验", {
+          confirmButtonText: "确定"
+        });
+        return false;
+      }
       this.$ajax({
         method: "get",
         url: `${this.GLOBAL.api.API_DACM}/ccheckData/tableCheck`,
@@ -94,7 +100,7 @@ export default {
         }
       }).then(res => {
         if (res.data.data.result == true || res.data.data.result == "true") {
-          this.$alert(res.data.message, "核验结果", {
+          this.$alert(res.data.data.message, "核验结果", {
             confirmButtonText: "确定",
             callback: action => {
               this.$emit('saveIncre');

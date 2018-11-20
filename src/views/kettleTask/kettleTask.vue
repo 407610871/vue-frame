@@ -17,7 +17,7 @@
             @close="handleClose(item)">
             {{getStatusName(item)}}
         </el-tag> -->
-        <el-form label-width="110px" class="formGroup">
+        <el-form label-width="110px" class="formGroupSelect" v-if="taskName.length || status.length || time.length" style="padding-left:27px;">
             <el-form-item label="已选查询条件:">
                 <div v-show="status.length>0" class="selected-task-type" style="display: inline-block;">
                     <span>任务状态:</span>
@@ -26,6 +26,10 @@
                     <span v-show="status.indexOf('Finished (with errors)')>-1">失败<span @click="pop('Finished (with errors)',status);"><i class="el-icon-error"></i></span></span>
                     <span v-show="status.indexOf('Running')>-1">运行<span @click="pop('Running',status);"><i class="el-icon-error"></i></span></span>
                     <span v-show="status.indexOf('Finished')>-1">完成<span @click="pop('Finished',status);"><i class="el-icon-error"></i></span></span>
+                </div>
+                <div v-show="taskName.length>0" class="selected-task-type" style="display: inline-block;">
+                    <span>任务名称:</span>
+                    <span>{{taskName}}<i class="el-icon-error" @click="taskName = ''"></i></span>
                 </div>
                 <div v-show="time!=null && time.length>0" class="selected-task-type">
                     <span style="margin-right:10px;">任务开始时间:</span>
@@ -55,19 +59,19 @@
     </div>
     <el-table :data="tableData" :height="tableHeight" class="table-data-list">
         <el-table-column label="序号" type="index" width="100"></el-table-column>
-        <el-table-column label="任务名称" prop="taskName" :show-overflow-tooltip='true'></el-table-column>
-        <el-table-column label="任务类型"  prop="taskType"></el-table-column>
-        <el-table-column label="任务开始时间" :show-overflow-tooltip='true'>
+        <el-table-column label="任务名称" prop="taskName" :show-overflow-tooltip='true' min-width="95"></el-table-column>
+        <el-table-column label="任务类型"  prop="taskType" min-width="95"></el-table-column>
+        <el-table-column label="任务开始时间" :show-overflow-tooltip='true' min-width="130">
             <template slot-scope="scope">
                 <span>{{scope.row.startTime | formatDateTime}}</span>
             </template>
         </el-table-column>
-        <el-table-column label="任务停止时间" :show-overflow-tooltip='true'>
+        <el-table-column label="任务停止时间" :show-overflow-tooltip='true' min-width="130">
             <template slot-scope="scope">
                 <span>{{scope.row.endTime | formatDateTime}}</span>
             </template>
         </el-table-column>
-        <el-table-column label="任务状态">
+        <el-table-column label="任务状态" min-width="95">
             <template slot-scope="scope">
                 <span v-if="scope.row.status == 'create'">新建</span>
                 <span v-if="scope.row.status == 'Running'">运行</span>
@@ -76,7 +80,7 @@
                 <span v-if="scope.row.status == 'Finished'">完成</span>
             </template>
         </el-table-column>
-        <el-table-column label="操作">
+        <el-table-column label="操作" min-width="90">
             <template slot-scope="scope">
                 <span v-if="scope.row.status == 'Running'" class="icon-span-disabled el-icon-remove-outline"></span>
                 <span v-else class="icon-span el-icon-caret-right" title="启动" @click="doStart(scope.row)"></span>
@@ -137,7 +141,7 @@ export default {
     },
     computed:{
         tableHeight() {
-            return  !this.moreSearch?   window.innerHeight - 340:window.innerHeight - 455;
+           return  !this.moreSearch?   window.innerHeight - 357:window.innerHeight - 480;
         },
         _checkStatus(){
             return this.checkStatus.map(item => item.label);
@@ -295,6 +299,10 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+.formGroupSelect{
+    max-height:82px;
+    overflow:auto;
+}
 .selected-task-type span{
   margin-right: 10px;
   color: #425365;
@@ -360,12 +368,11 @@ export default {
 }
 .doCearch{
     display:inline-block;
-    height:28px;
+    height:30px;
     margin-left:15px;
     margin-top:0;
     position:relative;
-    top:2px;
-    line-height:10px;
+    line-height:8px;
 }
 .el-checkbox-group{
     display:inline-block;
