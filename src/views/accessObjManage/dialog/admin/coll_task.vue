@@ -808,7 +808,7 @@ export default {
     },
     //获取修改内容
     _getInit() {
-      this.ruleForm.accessMode = this.$store.state.modeStyle;
+     /* this.ruleForm.accessMode = this.$store.state.modeStyle;*/
       this.$ajax({
         method: 'POST',
         url: this.GLOBAL.api.API_DACM + '/task/getSourceConfig',
