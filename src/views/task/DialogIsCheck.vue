@@ -16,7 +16,7 @@
           <div class="">
             <div class="range">
               <span style="color:rgb(96, 98, 102);">核验误差范围:&nbsp;&nbsp;</span>
-              <el-input-number v-model="range" controls-position="right" size="small" :min="-100" :max="100" :step="1" @change="checkNumber"></el-input-number>%
+              <el-input-number v-model="range" controls-position="right" size="small" :min="0" :max="100" :step="1" @change="checkNumber"></el-input-number>%
             </div>
             <div class="time" v-show="timeCheck">
               <el-date-picker size="small" :picker-options="pickerOptions" v-model="startTime" type="daterange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" value-format="yyyy-MM-dd">
