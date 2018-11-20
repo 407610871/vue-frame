@@ -341,8 +341,8 @@ export default {
       paramsObj.accessSysId = parseInt(this.$route.params.sourceId);
       this.$ajax({
         // url: window.ENV.API_DACM+'ctables/datas',
-        // url: window.ENV.API_DACM + "/ctables/datas",
-         url:'http://10.19.160.25:8080/DACM/ctables/datas',
+        url: window.ENV.API_DACM + "/ctables/datas",
+        //  url:'http://10.19.160.25:8080/DACM/ctables/datas',
         
         method: "post",
         data: JSON.stringify(paramsObj),
