@@ -265,6 +265,10 @@ export default {
     },
     // 开始核验按钮
     doCheck() {
+      if(this.msgCheck.networkStatus == 2){
+        this.$message.error('数据核验失败！');
+        return;
+      }
       if (this.radio == "0") {
         if (this.range == null || typeof(this.range) == "undefined" || isNaN(this.range)) {
           this.$alert("请填写误差范围", "核验", {
