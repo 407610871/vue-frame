@@ -109,7 +109,7 @@ export default {
     },
     _getType() {
       var _self = this;
-  _self.TypeData = [];
+      _self.TypeData = [];
       /*_self.TypeData = res.data[0].datas_mapping;*/
       let reData = [];
       for (let m = 0; m < columnJson.length; m++) {
@@ -142,11 +142,13 @@ export default {
       for (let i = 0; i < _self.tableData.length; i++) {
         let flag = false;
         let temp;
+        let numflag = false;
         for (let j = 0; j < _self.mapData.datas.length; j++) {
           if (_self.tableData[i].datatype.toUpperCase() == _self.mapData.datas[j]) {
 
             flag = true;
             temp = j;
+
             break;
             /*_self.cloneData.push({
               'mapping': _self.mapData.datas_mapping[j]
@@ -160,9 +162,17 @@ export default {
         }
 
         if (flag) {
-          _self.cloneData.push(
-            _self.mapData.datas_mapping[temp]
-          )
+          let datalength = _self.tableData[i].length;
+          if (_self.tableData[i].datatype.toUpperCase() == 'NUMBER' && datalength.indexOf(',') == -1) {
+            _self.cloneData.push(
+              'BIGINT'
+            )
+          } else {
+            _self.cloneData.push(
+              _self.mapData.datas_mapping[temp]
+            )
+          }
+
         } else {
           _self.cloneData.push(
             _self.mapData.datas_mapping[0]

@@ -569,6 +569,7 @@ export default {
         this.$ajax({
           method: "post",
           url: this.GLOBAL.api.API_DACM + '/task/saveRegexHeliumTask',
+         /* url:'http://10.19.160.168:8080/DACM/task/saveRegexHeliumTask',*/
           // headers:{
           //   'Content-Type':'application/json;charset=utf-8',
           // },
@@ -602,6 +603,7 @@ export default {
           if (res.data.success) {
             this.$ajax({
               method: "post",
+              /* url:'http://10.19.160.168:8080/DACM/task/saveRegexHeliumTask',*/
               url: this.GLOBAL.api.API_DACM + '/task/saveRegexHeliumTask',
               // headers:{
               //   'Content-Type':'application/json;charset=utf-8',

@@ -27,7 +27,7 @@
                           <el-input class="fl" v-model="ruleForm.baseStart"></el-input>
                           <span class="fl ml10 mr10">开头,以</span>
                           <el-select class="fl" v-model="ruleForm.baseEnd" placeholder="请选择">
-                            <el-option v-for="item in regxData" :label="item.dateFormat" :value="item.dateRegex"></el-option>
+                            <el-option v-for="item in regxData" :label="item.dateFormat" :value="item.dateFormat"></el-option>
                           </el-select>
                           <span class="fl ml10">结尾</span>
                         </el-form-item>
