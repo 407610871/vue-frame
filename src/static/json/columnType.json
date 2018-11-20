@@ -85,8 +85,8 @@
   ],
   "datas_mapping": [
     "STRING",
-    "INT",
-    "TIMESTAMP"
+    "BIGINT",
+    "STRING"
   ]
 },
 {
