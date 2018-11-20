@@ -377,7 +377,7 @@ export default {
                         if (res.data.success == true) {
                             _self.loadTable();
                         } else {
-                            _self.$alert(res.data.message, "提示", {
+                            _self.$alert("有采集任务正在执行，不可废止", "提示", {
                                 confirmButtonText: "确定"
                             });
                         }
