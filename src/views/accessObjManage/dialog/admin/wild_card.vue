@@ -94,6 +94,7 @@
 import { mapState, mapMutations, mapActions } from 'vuex'
 import norelaWild from '@/views/mainLay/dialog/norela_wild'
 import columnJson from '@/static/json/columnType'
+import jsonType from '@/static/json/jsonType'
 export default {
   name: "userSurvey",
   data: function() {
@@ -136,14 +137,15 @@ export default {
         let reflag = true;
         let varegex;
         let regend = '';
+        var RegInfo;
         if (this.ruleForm.baseEnd.indexOf('-') != -1) {
-          regend =this.regxData[0].dateRegex;
+          regend = this.regxData[0].dateRegex;
         }
         if (this.ruleForm.baseEnd.indexOf('/') != -1) {
-          regend =this.regxData[1].dateRegex;
+          regend = this.regxData[1].dateRegex;
         }
         if (this.ruleForm.baseEnd.indexOf(':') != -1) {
-          regend =this.regxData[2].dateRegex;
+          regend = this.regxData[2].dateRegex;
         }
         if (this.ruleForm.typeKind == '0') {
           let start = this.ruleForm.baseStart;
@@ -166,21 +168,28 @@ export default {
         } else {
           if (this.ruleForm.typeKind == '0') {
             if (this.ruleForm.baseEnd.indexOf('-') != -1) {
-              var RegInfo = {
+               RegInfo = {
                 baseStart: this.ruleForm.baseStart,
                 baseEnd: this.ruleForm.baseEnd,
                 baseflag: false
               }
             }
-            if (this.ruleForm.baseEnd.indexOf('/') != -1) {
-              var RegInfo = {
+            else if (this.ruleForm.baseEnd.indexOf('/') != -1) {
+               RegInfo = {
                 baseStart: this.ruleForm.baseStart,
                 baseEnd: this.ruleForm.baseEnd,
                 baseflag: false
               }
             }
-            if (this.ruleForm.baseEnd.indexOf(':') != -1) {
-              var RegInfo = {
+            else if (this.ruleForm.baseEnd.indexOf(':') != -1) {
+               RegInfo = {
+                baseStart: this.ruleForm.baseStart,
+                baseEnd: this.ruleForm.baseEnd,
+                baseflag: false
+              }
+            }
+            else{
+               RegInfo = {
                 baseStart: this.ruleForm.baseStart,
                 baseEnd: this.ruleForm.baseEnd,
                 baseflag: false
@@ -188,7 +197,7 @@ export default {
             }
             this.setRegInfo(RegInfo);
           } else {
-            var RegInfo = {
+             RegInfo = {
               baseStart: "",
               baseEnd: this.ruleForm.highMatch,
               baseflag: true
@@ -251,13 +260,19 @@ export default {
     //得到字段类型
     _getType() {
       var _self = this;
-          for (let m = 0; m <columnJson.length; m++) {
-            if (_self.rowList[0].accessSys.accessSysDialect.name == columnJson[m].type) {
-              _self.TypeData = columnJson[m].datas;
-            }
+      if (_self.$store.state.isParquet) {
+        for (let m = 0; m < columnJson.length; m++) {
+          if (_self.rowList[0].accessSys.accessSysDialect.name == columnJson[m].type) {
+            _self.TypeData = columnJson[m].datas;
           }
-       
-
+        }
+      } else {
+        for (let m = 0; m < jsonType.length; m++) {
+          if (_self.rowList[0].accessSys.accessSysDialect.name == jsonType[m].type) {
+            _self.TypeData = jsonType[m].datas;
+          }
+        }
+      }
     },
   },
   components: {
