@@ -23,10 +23,10 @@
           <el-col :span="24">
             <el-form-item label="接入方式:" prop="accessMode">
               <el-radio-group v-model="ruleForm.accessMode" :disabled="isdisable">
-                <el-radio label="0">实时</el-radio>
-                <el-radio label="1">增量</el-radio>
+               <el-radio label="1">增量接入</el-radio>
+                <el-radio label="3">全量接入</el-radio>
+                <el-radio label="0">实时接入</el-radio>
                 <el-radio label="2">一次性接入</el-radio>
-                <el-radio label="3">全量</el-radio>
               </el-radio-group>
             </el-form-item>
           </el-col>
@@ -808,6 +808,7 @@ export default {
     },
     //获取修改内容
     _getInit() {
+      this.ruleForm.accessMode = this.$store.state.modeStyle;
       this.$ajax({
         method: 'POST',
         url: this.GLOBAL.api.API_DACM + '/task/getSourceConfig',

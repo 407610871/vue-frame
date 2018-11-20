@@ -214,7 +214,7 @@ export default {
   methods: {
     //测试使用mapMutations的用法
     ...mapMutations([
-      'setUserList'
+      'setUserList','setParquet'
     ]),
     //关闭对话框
     closeDialog() {
@@ -489,6 +489,8 @@ export default {
       this.$refs['ruleForm'].resetFields();
     },
     pre(formName) {
+      this.setParquet(this.ruleForm.datamode);
+      console.log(this.$store.state.modeStyle);
       this.$refs[formName].validate((valid) => {
         if (valid) {
           this.tableids = '';

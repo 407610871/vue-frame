@@ -11,8 +11,7 @@
           <el-button v-on:click="updataSource" class="right-btn" style="margin-left:10px;">接入源更新</el-button>
           <table-inver v-if="type=='mysql'|| type=='oracle'|| type=='postgresql' || type=='sqlserver'" class="right-btn" :pdata="tablePa"></table-inver>
           <path-ftp class="right-btn" @refresh="loadTable" v-if="type=='ftp'"></path-ftp>
-         <set-task v-if="type=='mysql'|| type=='oracle'|| type=='postgresql' || type=='sqlserver' || type=='file'" class="right-btn" :rowList="rowList" :jrtype="type" @fre="loadTable()"></set-task>
-
+          <set-task v-if="type=='mysql'|| type=='oracle'|| type=='postgresql' || type=='sqlserver' || type=='file'" class="right-btn" :rowList="rowList" :jrtype="type" @fre="loadTable()"></set-task>
         </div>
         <el-table ref="multipleTable" :data="mainTableData" stripe :height="tableHeight" border style="width: 100%" tooltip-effect="light" :row-class-name="tableRowClassName" @selection-change="handleSelectionChange">
           <el-table-column type="selection">
@@ -183,7 +182,7 @@ export default {
       pageSize: 20,
       mainTableDataTotal: 1,
       dialogVisible: false,
-      showTaskDetail:false,
+      showTaskDetail: false,
       myDialogRouter: 'adminAdd',
       dialogTitle: '新增',
       alertVisible: false,
@@ -268,6 +267,7 @@ export default {
     this.$root.eventHub.$emit('setActiveNav', 1);
     this.storeReady();
     this.setFliter();
+    /*this.IsParquet();*/
   },
   created() {
     this.$root.eventHub.$on('search', (keyword) => {
@@ -531,6 +531,20 @@ export default {
       this.reqObj = row;
       this.showTaskDetail = true;
     },
+    //判断是否是parquet文件
+    IsParquet() {
+      let _self = this;
+      debugger;
+      _self.$ajax({
+        method: "get",
+        url: this.GLOBAL.api.API_DACM + '/task/getHdfsFormat',
+        params: {
+
+        }
+      }).then(res => {
+         console.log(res);
+      })
+    }
   }
 }
 
@@ -542,7 +556,6 @@ export default {
 
 .el-table .add-row {
   color: red;
-  
 }
 
 </style>
