@@ -28,7 +28,7 @@
             </div>
             <el-button type="primary" @click="setConnect" :id="item.storageId" :disabled="item.storageId == seledId">关联</el-button>
             <el-button type="primary" @click="setDelete" :id="item.storageId" :disabled="item.storageId != seledId">取消关联</el-button>
-              <el-button type="primary" @click="setDeleted" :id="item.storageId" >删除</el-button>
+              <el-button type="primary" @click="setDeleted" :id="item.storageId"  :disabled="item.storageId == seledId">删除</el-button>
           </div>
         </el-col>
       </el-row>
