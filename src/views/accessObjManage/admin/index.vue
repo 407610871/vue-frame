@@ -133,7 +133,7 @@
               <div class="survey">
                 <userSurvey v-if="type=='mysql'|| type=='oracle'|| type=='postgresql' || type=='sqlserver'" :pdata="scope.row" @fre="loadTable()"></userSurvey>
               </div>
-              <div class="survey" v-if="(type=='mysql'&&scope.row.accessConnectorSource!=undefined&&scope.row.accessConnectorSource.isPeriod!='0'&&scope.row.accessConnectorSource.isPeriod!='3')|| (type=='oracle'&&scope.row.accessConnectorSource!=undefined&&scope.row.accessConnectorSource.isPeriod!='0'&&scope.row.accessConnectorSource.isPeriod!='3')|| (type=='postgresql'&&scope.row.accessConnectorSource!=undefined&&scope.row.accessConnectorSource.isPeriod!='0'&&scope.row.accessConnectorSource.isPeriod!='3') || (type=='sqlserver'&&scope.row.accessConnectorSource!=undefined&&scope.row.accessConnectorSource.isPeriod!='0'&&scope.row.accessConnectorSource.isPeriod!='3')">
+              <div class="survey" v-if="(type=='mysql'&&scope.row.accessConnectorSource!=undefined&&scope.row.accessConnectorSource.isPeriod!='0')|| (type=='oracle'&&scope.row.accessConnectorSource!=undefined&&scope.row.accessConnectorSource.isPeriod!='0')|| (type=='postgresql'&&scope.row.accessConnectorSource!=undefined&&scope.row.accessConnectorSource.isPeriod!='0')|| (type=='sqlserver'&&scope.row.accessConnectorSource!=undefined&&scope.row.accessConnectorSource.isPeriod!='0')" >
                 <data-inver :pdata="scope.row" @fre="loadTable()"></data-inver>
               </div>
               <div class="survey" v-if="type!='mysql' && type!='oracle' && type!='sqlserver' && type!='postgresql'">
