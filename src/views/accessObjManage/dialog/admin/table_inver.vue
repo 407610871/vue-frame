@@ -23,7 +23,7 @@
             </el-table-column>
             <el-table-column prop="source_tableNum" label="源数据量">
             </el-table-column>
-            <el-table-column prop="target_tableName" label="目标表">
+            <el-table-column prop="target_tableName" label="目标表" width="180">
             </el-table-column>
             <el-table-column prop="target_tableNum" label="数据量">
             </el-table-column>
@@ -31,7 +31,7 @@
             </el-table-column>
             <el-table-column label="检验结果">
               <template slot-scope="scope">
-                <span>{{scope.row.testresults_result=="1"?'不一致':'一致'}}</span>
+                <span v-if="scope.row.testresults_result!=undefined">{{scope.row.testresults_result=="1"?'不一致':'一致'}}</span>
               </template>
             </el-table-column>
             <el-table-column label="操作" width="180" class="clearfix">
