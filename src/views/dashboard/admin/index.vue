@@ -102,7 +102,7 @@ export default {
                 list: []
             },
             count2Data: {
-                name: "实时统计",
+                name: "实时接入统计",
                 total: "",
                 list: []
             },
