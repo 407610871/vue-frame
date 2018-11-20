@@ -289,6 +289,7 @@ export default {
     // this.$root.eventHub.$on('search', (keyword) => {
     //   this.search(keyword);
     // })
+    // this.tableParams.condition="";
     this.loadTable();
   },
   methods: {

@@ -267,7 +267,7 @@ export default {
   margin-top: 0;
   position: relative;
   // top: 2px;
-  line-height: 10px;
+  line-height: 8px;
 }
 .el-form-item {
   margin-bottom: 10px;
