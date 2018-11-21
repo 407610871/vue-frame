@@ -164,25 +164,35 @@
 							});
             });
           }else{
-            this.$ajax.post(window.ENV.API_DACM+'/deptInfo/updateDeptInfo?id='+this.editingNode.id+'&deptName='+this.itemTxt).then(function(res){
-            // this.$ajax.post('./success').then(function(res){
-              console.log('editsuccess');
-              if(res.data.success){
-                _self.dialogVisible = false;
-                _self.editingNode.deptName = _self.itemTxt;
-              }else{
-                console.log(res.data.code)
+						_self.$confirm('确定修改此目录?', '提示', {
+							confirmButtonText: '确定',
+							cancelButtonText: '取消',
+							type: 'warning',
+							center: true
+						}).then(() => {
+							_self.$ajax.post(window.ENV.API_DACM+'/deptInfo/updateDeptInfo?id='+_self.editingNode.id+'&deptName='+_self.itemTxt).then(function(res){
+							// this.$ajax.post('./success').then(function(res){
+								console.log('editsuccess');
+								if(res.data.success){
+									_self.dialogVisible = false;
+									_self.editingNode.deptName = _self.itemTxt;
+								}else{
+									console.log(res.data.code)
+									_self.$alert('修改部门节点失败','提示', {
+										confirmButtonText: '确定'
+									});
+								}
+							})
+							.catch(function(err){
+								console.log(err)
 								_self.$alert('修改部门节点失败','提示', {
 									confirmButtonText: '确定'
 								});
-              }
-            })
-            .catch(function(err){
-              console.log(err)
-							_self.$alert('修改部门节点失败','提示', {
-								confirmButtonText: '确定'
 							});
-            });
+						}).catch(() => {
+							
+						});
+            
           }
         },
         delNode(){
