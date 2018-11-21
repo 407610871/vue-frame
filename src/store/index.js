@@ -148,8 +148,7 @@ const store = new Vuex.Store({
     setParquet(state, obj) { state.isParquet = false;
       state.isParquet = obj; },
     //设置用户标记的接入方式   
-    setMode(state, obj) { 
-      state.modeStyle = '';
+    setMode(state, obj) { state.modeStyle = '';
       state.modeStyle = obj; },
   },
   modules: {

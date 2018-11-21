@@ -74,7 +74,8 @@ export default {
               "newColumnType": '',
               "orgColumnName": _self.tableData[j].name,
               "orgColumnType": _self.tableData[j].datatype,
-              "orgColumnComment": _self.tableData[j].comments
+              "orgColumnComment": _self.tableData[j].comments,
+              "length": _self.tableData[j].length
             })
           }
           _self._getAllType();
@@ -179,22 +180,45 @@ export default {
         }
 
         if (flag) {
-          let datalength = _self.tableData[i].length;
+          //let datalength = _self.tableData[i].length;
+          //datalength = datalength.split(',')[1];
           if (_self.$store.state.isParquet) {
-            if (_self.tableData[i].datatype.toUpperCase() == 'NUMBER' && datalength.indexOf(',') == -1) {
-              _self.cloneData.push(
-                'BIGINT'
-              )
+            if (_self.tableData[i].datatype.toUpperCase() == 'NUMBER') {
+              let datalength = _self.tableData[i].length;
+              if (datalength.indexOf(',') != '-1') {
+                let fdata = datalength.split(',')[0];
+                let sdata = datalength.split(',')[1];
+                if (sdata != '0') {
+                  _self.cloneData.push(
+                    _self.mapData.datas_mapping[temp]
+                  )
+                } else {
+                  if (fdata == '0') {
+                    _self.cloneData.push(
+                      _self.mapData.datas_mapping[temp]
+                    )
+                  } else {
+                    _self.cloneData.push(
+                      'BIGINT'
+                    )
+                  }
+                }
+
+              } else {
+                _self.cloneData.push(
+                  _self.mapData.datas_mapping[temp]
+                )
+              }
+
             } else {
               _self.cloneData.push(
                 _self.mapData.datas_mapping[temp]
               )
             }
-          }
-          else{
-             _self.cloneData.push(
-                _self.mapData.datas_mapping[temp]
-              )
+          } else {
+            _self.cloneData.push(
+              _self.mapData.datas_mapping[temp]
+            )
           }
 
 
