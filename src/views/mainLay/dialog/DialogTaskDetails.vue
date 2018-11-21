@@ -26,7 +26,7 @@
           <div class="proInfo-box clearfix">
             <el-col :span="10">
               <el-form-item label="接入源名称:">
-                <span>{{sourceBaseInfo.resourceName}}</span>
+                <span>{{sourceBaseInfo.sourceSysName}}</span>
               </el-form-item>
             </el-col>
             <el-col :span="4" class="bank">bank</el-col>
@@ -427,6 +427,7 @@ export default {
 
           that.sourceBaseInfo = innerRes.data.data;
           that.sourceBaseInfo.dbType = res.data.data.dbType;
+          that.sourceBaseInfo.sourceSysName = res.data.data.sourceSysName;
           let periodMap={
             0:'实时任务',
             1:'周期实时增量任务',
