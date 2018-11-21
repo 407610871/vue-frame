@@ -90,7 +90,7 @@ export default {
       mainTableDataTotal: 1,
       countTotal: "",
       keyword: "",
-      moreData:0,
+      moreData: 0,
       // highSeaech:true,
       myDialogRouter: "adminAdd",
       dialogTitle: "新增",
@@ -115,11 +115,9 @@ export default {
     },
 
     tableHeight: function() {
-       
-
       return this.collapse
         ? window.innerHeight - 430
-        : window.innerHeight - 540-(40*this.moreData);
+        : window.innerHeight - 540 - 40 * this.moreData;
       // console.log(this.collapse)
     },
     headerHeight: function() {
@@ -155,7 +153,6 @@ export default {
       this.setCount();
       this.loadTable();
     });
-    
   },
   mounted() {
     this.$root.eventHub.$emit(
@@ -167,10 +164,8 @@ export default {
     this.setCount();
   },
   methods: {
-    moreHeight(data){
-        this.moreData=data;
-
-
+    moreHeight(data) {
+      this.moreData = data;
     },
 
     hightrue: function(a) {
@@ -216,13 +211,23 @@ export default {
         });
     },
     setFliter(data) {
+                // debugger;
+
       var queryParams = this.$store.state.queryParams[this.$route.name];
+
       var dataSourceName = queryParams.dataSourceName
         ? queryParams.dataSourceName
         : [];
       var network = queryParams.network ? queryParams.network : [];
       var platform = queryParams.platform ? queryParams.platform : [];
-      let radioData = data.network.data;
+      network == true ? [] : network;
+      platform == true ? [] : platform;
+      dataSourceName == true ? [] : dataSourceName;
+// console.log(network)
+// console.log(platform)
+// console.log(dataSourceName)
+
+      //   let radioData = data.network.data;
       //             if(data.network.data[data.network.data.length-1].name!="取消"){
       // radioData[data.network.data.length] = {
       //                 id: "",
@@ -275,9 +280,15 @@ export default {
       paramsObj.condition = this.tableParams.condition
         ? this.tableParams.condition
         : "";
-      paramsObj.network = this.tableParams.network?this.tableParams.network:[];
-      paramsObj.dataSourceName = this.tableParams.dataSourceName?this.tableParams.dataSourceName:[];
-      paramsObj.platform = this.tableParams.platform?this.tableParams.platform:[];
+      paramsObj.network = this.tableParams.network
+        ? this.tableParams.network
+        : [];
+      paramsObj.dataSourceName = this.tableParams.dataSourceName
+        ? this.tableParams.dataSourceName
+        : [];
+      paramsObj.platform = this.tableParams.platform
+        ? this.tableParams.platform
+        : [];
       paramsObj.deptIds = this.tableParams.deptId;
 
       this.$ajax
@@ -411,6 +422,7 @@ export default {
       this.setStore(fliterParams);
     },
     storeReady: function() {
+        // debugger;
       var fliterItemList = this.$store.state.fliterItemList;
       if (
         fliterItemList.network.ready &&

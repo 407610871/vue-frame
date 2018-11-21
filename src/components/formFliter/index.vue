@@ -12,13 +12,13 @@
     <div class="checkDiv">
       <el-form-item class="isSelect" label="已筛选条件：" v-show="keyword!=''||formSeledShow.dataSourceName.length!=0||formSeledShow.network.length!=0||formSeledShow.platform.length!=0||formSeledShow.objectType.length!=0||formSeledShow.dataRange.length!=0">
         <div class="look" v-show="keyword!=''">
-              查询条件：{{keyword}} <i class="el-icon-error" @click="keyword=''"></i>
+              查询条件：<span class="lookstyle">{{keyword}}</span> <i class="el-icon-error" @click="keyword=''"></i>
         </div>
-        <!-- <div class="look" v-show="formSeledShow[item.id].length!=0" v-for="(item,index1) in dataObj" :key="index1">{{item.name}}
-          <span v-for="(item1,index) in formSeledShow[item.id]" :key="index"> {{item1.name}} <i class="el-icon-error" @click="delSelect(index,index1)"></i>
+        <div class="look" v-show="formSeledShow[item.id].length!=0" v-for="(item,index1) in dataObj" :key="index1">{{item.name}}
+          <span   class="lookstyle" v-for="(item1,index) in formSeledShow[item.id]" :key="index"> {{item1.name}} <i class="el-icon-error" @click="delSelect(index,index1)"></i>
           </span>
-        </div> -->
-        <div class="look" v-show="formSeledShow.dataSourceName.length!=0">接入源类型：
+        </div>
+        <!-- <div class="look" v-show="formSeledShow.dataSourceName.length!=0">接入源类型：
           <span v-for="(dataSourceName,key,index) in formSeledShow.dataSourceName" :key="index">{{dataSourceName.name}} <i class="el-icon-error" @click="delSelect(index,0)"></i> </span>
         </div>
         <div class="look" v-show="formSeledShow.network.length!=0">接入数据来源：
@@ -33,11 +33,11 @@
         <div class="look" v-show="formSeledShow.dataRange.length!=0">数据范围：
           <span v-for="(dataRange,key,index) in formSeledShow.dataRange" :key="index">{{dataRange.name}} <i class="el-icon-error" @click="delSelect(index,1)"></i> </span>
         </div>
-        
+         -->
       </el-form-item>
       <el-form-item v-show="!collapse" v-for="(item,indexs) in dataObj" :label="item.name" :key="indexs" class="checkDivItem">
         <el-checkbox-group v-if="item.type=='checkbox'" v-model="formSeled[item.id]" @change="formFilter">
-          <el-checkbox v-for="(subItem,index) in item.checkData" v-show="index<=dataObj[indexs].limit" :label="subItem.id" :key="subItem.id">{{subItem.name}}</el-checkbox>
+          <el-checkbox v-for="(subItem,index) in item.checkData" v-show="index<=dataObj[indexs].limit" :label="subItem.id" :key="index">{{subItem.name}}</el-checkbox>
         </el-checkbox-group> 
 
         <!-- <el-radio  v-if="item.type=='radio'" v-for="(subItem) in item.checkData" v-model="formSeled[item.id]" :label="subItem.id" :key="subItem.id" @change="formFilter">{{subItem.name}}</el-radio> -->
@@ -50,7 +50,13 @@
 export default {
   data() {
     return {
-      formSeled: {},
+      formSeled: {
+         objectType:[],
+        dataRange:[],
+        platform:[],
+       network:[],
+       dataSourceName:[],
+      },
       formSeledShow: {
         objectType:[],
         dataRange:[],
@@ -91,11 +97,13 @@ export default {
      this.getFormSeled();
     // console.log(this.formSeled);
     this.getFormSeledShow();
+          console.log(this.formSeled);
+
   },
   mounted() {
-    // this.getFormSeled();
+    this.getFormSeled();
     // console.log(this.formSeled);
-    // this.getFormSeledShow();
+    this.getFormSeledShow();
   },
 
   methods: {
@@ -152,11 +160,12 @@ export default {
     },
 
     formFilter: function() {
+      console.log(this.formSeled);
 
       this.$emit("formFilter", this.formSeled);
-      this.$nextTick(() => {
+      // this.$nextTick(() => {
           this.getFormSeledShow();
-        });
+        // });
             
 
       console.log(this.formSeled);
@@ -194,7 +203,7 @@ export default {
       // for (var value of this.dataObj) {
       //   obj[value.id] = value.seledData;
       // }
-
+// debugger;
       for (let i = 0; i < this.dataObj.length; i++) {
         obj[this.dataObj[i].id] = this.dataObj[i].seledData;
       }
@@ -278,6 +287,8 @@ export default {
   margin: 0 auto;
   .isSelect {
     width: 100%;
+    max-height: 70px;
+    overflow-y: auto;
   }
   div {
     display: inline-block;
@@ -286,6 +297,11 @@ export default {
   }
   .look {
     width: auto;
+    color:#425365;
+    font-weight: 600;
+    .lookstyle{
+font-weight: normal
+    }
   }
   .checkDivItem {
     border-bottom: 1px solid #d9d9d957;
@@ -307,7 +323,7 @@ export default {
     display: inline-block;
     margin-left: 15px;
     i {
-      color: #747474;
+      // color: #747474;
       margin-left: 5px;
     }
   }
