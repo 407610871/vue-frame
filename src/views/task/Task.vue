@@ -190,7 +190,6 @@ export default {
       check: "",
       priority: [],
       pageNum: 1,
-      pageSize: 10,
       showTaskDetail: false,
       showTaskCheck: false,
       moreSearch: false,
@@ -232,7 +231,10 @@ export default {
       return !this.moreSearch
         ? window.innerHeight - 300
         : window.innerHeight - 545;
-    }
+    },
+    pageSize(){
+        return this.$store.state.pageSize;
+    },
   },
   created() {
     this.init(" ");
