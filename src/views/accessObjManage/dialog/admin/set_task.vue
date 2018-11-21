@@ -100,7 +100,7 @@ export default {
 
     },
     fresh() {
-      this.$emit('fre');
+      //this.$emit('fre');
       this.activeName = 'first';
       this.dialogVisible = false;
       this.setMatchType(this.clear);
