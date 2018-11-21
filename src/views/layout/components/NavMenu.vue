@@ -4,7 +4,7 @@
       <el-menu-item index="1"><i class="enc-icon-shujujieru"></i>数据接入</el-menu-item>
       <el-menu-item index="2"><i class="enc-icon-shujuchuli"></i>数据处理</el-menu-item>
       <!-- <el-menu-item index="3">  <i class="enc-icon-renwuzhongxin"></i>任务中心    </el-menu-item> -->
-      <el-submenu index="3" ref="index3" >
+      <el-submenu index="3">
         <template slot="title"><i class="enc-icon-renwuzhongxin"></i>任务中心</template>
         <el-menu-item index="3-1">汇聚任务</el-menu-item>
         <el-menu-item index="3-2">Kettle任务</el-menu-item>
@@ -24,7 +24,7 @@ export default {
     this.$root.eventHub.$on("setActiveNav", index => {
       this.activeIndex = index + "";
     });
-this.getRout();
+    this.getRout();
   },
   methods: {
     handleSelect(key, keyPath) {
@@ -62,12 +62,9 @@ this.getRout();
       switch(path){
           case "/task":
             this.activeIndex = "3-1";
-            // this.$refs.index3.class="index3";
             break;
              case "/kettleTask":
             this.activeIndex = "3-2";
-                        // this.$refs.index3.class="index3";
-
             break;
              case "/dashboard":
             this.activeIndex = "1";
@@ -82,10 +79,6 @@ this.getRout();
 </script>
 <style rel="stylesheet/scss" lang="scss" scoped>
 @import "src/styles/variables.scss";
-.index3{
-  border-bottom-color: rgb(73, 155, 215);
-    color: rgb(73, 155, 215);
-}
 .nav-menu {
   display: inline-block;
   padding-left: 0px;
