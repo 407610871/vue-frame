@@ -28,8 +28,10 @@ spec:
           value: 'DACM'
         - name: VUE_APP_CREDENTIALS_SECRET
           value: '352fb505-c5ea-4f0a-9b59-3643f06e144e'
+#web-dacm
         - name: API_DACM
           value: http://$(NODE_IP):31701/DACM
+web-domn
         - name: API_DOWN
           value: http://$(NODE_IP):32555/DOMN
         resources:
