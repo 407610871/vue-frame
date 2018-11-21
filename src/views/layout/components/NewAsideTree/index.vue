@@ -201,8 +201,8 @@
 				delNodeAjax(){
 					var _self = this;
 					const promise0 = new Promise((resolve, reject) => {
-						// this.$ajax.post(window.ENV.API_DACM+'/deptInfo/delDeptInfo?id='+this.editingNode.id).then(function(res){
-						this.$ajax.post('http://10.19.160.175:8080/DACM/deptInfo/queryDeptInfo?id='+_self.editingNode.id).then(function(res){
+						this.$ajax.post(window.ENV.API_DACM+'/deptInfo/delDeptInfo?id='+this.editingNode.id).then(function(res){
+						// this.$ajax.post('http://10.19.160.175:8080/DACM/deptInfo/queryDeptInfo?id='+_self.editingNode.id).then(function(res){
 							console.log(res);
 							if(res.data.success){
 								resolve();
