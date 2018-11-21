@@ -15,7 +15,11 @@
       </div>
 
       <el-form ref="form" label-width="110px" class="formGroup task-query-form" v-if="moreSearch" style="padding-left: 27px;">
-        <el-form-item label="已选查询条件:" style="height: 60px;overflow: auto;" v-show="taskPeriodType.length>0||status.length>0||priority.length>0||(time!=null && time.length>0)">
+        <el-form-item label="已选查询条件:" style="height: 60px;overflow: auto;" v-show="keyword!=''||taskPeriodType.length>0||status.length>0||priority.length>0||(time!=null && time.length>0)">
+          <div v-show="keyword!=''" class="selected-task-type" style="display: inline-block;">
+            <span>输入条件:</span>
+            <span >{{keyword}}<span @click="keyword='';"><i class="el-icon-error"></i></span></span>
+          </div>
           <div v-show="taskPeriodType.length>0" class="selected-task-type" style="display: inline-block;">
             <span>任务类型:</span>
             <span v-show="taskPeriodType.indexOf('0')>-1">实时<span @click="pop('0',taskPeriodType);"><i class="el-icon-error"></i></span></span>

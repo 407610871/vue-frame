@@ -114,7 +114,6 @@ export default {
         return {
             loading:false,
             pageNum: 1,
-            pageSize: 10,
             totalPage: 0,
             status:[],
             checkStatus:[{name:'暂停',label:'Paused'},{name:'新建',label:'create'},{name:'失败',label:'Finished (with errors)'},{name:'运行',label:'Running'},{name:'完成',label:'Finished'}],
@@ -145,6 +144,9 @@ export default {
         },
         _checkStatus(){
             return this.checkStatus.map(item => item.label);
+        },
+        pageSize(){
+            return this.$store.state.pageSize;
         },
     },
     methods: {

@@ -2,21 +2,18 @@
   <div>
     <el-container style="height:100%;" class="dashboard-container" v-loading="loading">
       <!-- <el-header class="filter-container" > -->
-        <div class="moreSearch">
-
-      
+      <div class="moreSearch">
         <!-- <a v-on:click="collapseExpand" class="right-btn collapse-btn"><i :class="{'el-icon-circle-plus':collapse,'el-icon-remove':!collapse}"></i></a> -->
-        <formFliter v-if="queryParamReady"  @highMore="moreHeight"    @highSeaech="hightrue" v-bind:formCollapse="collapse" v-bind:dataObj="formFilterData" @doSearch="search" @formFilter="changeFormFilter" />
-      <!-- </el-header> -->
-        </div>
+        <formFliter v-if="queryParamReady" @highMore="moreHeight" @highSeaech="hightrue" v-bind:formCollapse="collapse" v-bind:dataObj="formFilterData" @doSearch="search" @formFilter="changeFormFilter" />
+        <!-- </el-header> -->
+      </div>
       <el-main class="main-container icon-dai">
         <div class="table-tools">
           <!-- <i title="数据更新" class="enc-icon-shujugengxin"  v-on:click="updataSource"><i> -->
-          <el-button v-on:click="updataSource" class="right-btn" style="margin-left:10px;">接入源更新</el-button>
+          <el-tooltip class="item" effect="light" content="接入源更新" placement="top"> <span class="updatelogo right-btn" v-on:click="updataSource" style="margin-left:10px; margin-right: 42px;"></span> </el-tooltip>
           <table-inver v-if="type=='mysql'|| type=='oracle'|| type=='postgresql' || type=='sqlserver'" class="right-btn" :pdata="tablePa"></table-inver>
           <path-ftp class="right-btn" @refresh="loadTable" v-if="type=='ftp'"></path-ftp>
-         <set-task v-if="type=='mysql'|| type=='oracle'|| type=='postgresql' || type=='sqlserver' || type=='file'" class="right-btn" :rowList="rowList" :jrtype="type" @fre="loadTable()"></set-task>
-
+          <set-task v-if="type=='mysql'|| type=='oracle'|| type=='postgresql' || type=='sqlserver' || type=='file'" class="right-btn" :rowList="rowList" :jrtype="type" @fre="loadTable()"></set-task>
         </div>
         <el-table ref="multipleTable" :data="mainTableData" stripe :height="tableHeight" border style="width: 100%" tooltip-effect="light" :row-class-name="tableRowClassName" @selection-change="handleSelectionChange">
           <el-table-column type="selection">
@@ -138,7 +135,7 @@
               <div class="survey">
                 <userSurvey v-if="type=='mysql'|| type=='oracle'|| type=='postgresql' || type=='sqlserver'" :pdata="scope.row" @fre="loadTable()"></userSurvey>
               </div>
-              <div class="survey" v-if="(type=='mysql'&&scope.row.accessConnectorSource!=undefined&&scope.row.accessConnectorSource.isPeriod!='0'&&scope.row.accessConnectorSource.isPeriod!='3')|| (type=='oracle'&&scope.row.accessConnectorSource!=undefined&&scope.row.accessConnectorSource.isPeriod!='0'&&scope.row.accessConnectorSource.isPeriod!='3')|| (type=='postgresql'&&scope.row.accessConnectorSource!=undefined&&scope.row.accessConnectorSource.isPeriod!='0'&&scope.row.accessConnectorSource.isPeriod!='3') || (type=='sqlserver'&&scope.row.accessConnectorSource!=undefined&&scope.row.accessConnectorSource.isPeriod!='0'&&scope.row.accessConnectorSource.isPeriod!='3')">
+              <div class="survey" v-if="(type=='mysql'&&scope.row.accessConnectorSource!=undefined&&scope.row.accessConnectorSource.isPeriod!='0')|| (type=='oracle'&&scope.row.accessConnectorSource!=undefined&&scope.row.accessConnectorSource.isPeriod!='0')|| (type=='postgresql'&&scope.row.accessConnectorSource!=undefined&&scope.row.accessConnectorSource.isPeriod!='0') || (type=='sqlserver'&&scope.row.accessConnectorSource!=undefined&&scope.row.accessConnectorSource.isPeriod!='0')">
                 <data-inver :pdata="scope.row" @fre="loadTable()"></data-inver>
               </div>
               <div class="survey" v-if="type!='mysql' && type!='oracle' && type!='sqlserver' && type!='postgresql'">
@@ -204,8 +201,7 @@ export default {
         diyComments: ""
       },
       jrtype: "",
-      objectType: [
-        {
+      objectType: [{
           id: 1,
           diyComments: ["TABLE"],
           name: "表"
@@ -221,8 +217,7 @@ export default {
           name: "其他"
         }
       ],
-      dataRange: [
-        {
+      dataRange: [{
           id: 1,
           name: "全市"
         },
@@ -248,9 +243,9 @@ export default {
       return this.$store.state.queryParams.accessObjManage;
     },
     tableHeight: function() {
-      return this.collapse
-        ? window.innerHeight - 280
-        : window.innerHeight - 315;
+      return this.collapse ?
+        window.innerHeight - 280 :
+        window.innerHeight - 315;
     },
     headerHeight: function() {
       return this.collapse ? "50px" : "85px";
@@ -333,24 +328,24 @@ export default {
         pagNum: this.tableParams.pageNum,
         count: _self.pageSize
       };
-      paramsObj.condition = this.tableParams.condition
-        ? this.tableParams.condition
-        : "";
+      paramsObj.condition = this.tableParams.condition ?
+        this.tableParams.condition :
+        "";
       paramsObj.objectType = this.tableParams.objectType.join(",");
       console.log(this.tableParams)
       paramsObj.dataRange = this.tableParams.dataRange.join(",");
       paramsObj.accessSysId = parseInt(this.$route.params.sourceId);
       this.$ajax({
-        // url: window.ENV.API_DACM+'ctables/datas',
-        url: window.ENV.API_DACM + "/ctables/datas",
-        //  url:'http://10.19.160.25:8080/DACM/ctables/datas',
-        
-        method: "post",
-        data: JSON.stringify(paramsObj),
-        headers: {
-          "Content-Type": "application/json"
-        }
-      })
+          // url: window.ENV.API_DACM+'ctables/datas',
+          url: window.ENV.API_DACM + "/ctables/datas",
+          //  url:'http://10.19.160.25:8080/DACM/ctables/datas',
+
+          method: "post",
+          data: JSON.stringify(paramsObj),
+          headers: {
+            "Content-Type": "application/json"
+          }
+        })
         .then(res => {
           if (res.data.success) {
             var data = res.data.data.list;
@@ -554,13 +549,12 @@ export default {
     setFliter() {
 
 
-       var queryParams = this.$store.state.queryParams[this.$route.name];
-       console.log(queryParams);
-       let objectType=queryParams.objectType?queryParams.objectType:[];
-              let dataRange=queryParams.dataRange?queryParams.dataRange:[];
+      var queryParams = this.$store.state.queryParams[this.$route.name];
+      console.log(queryParams);
+      let objectType = queryParams.objectType ? queryParams.objectType : [];
+      let dataRange = queryParams.dataRange ? queryParams.dataRange : [];
 
-      this.formFilterData = [
-        {
+      this.formFilterData = [{
           name: "接入对象类型：",
           id: "objectType",
           type: "checkbox",
@@ -606,6 +600,7 @@ export default {
     }
   }
 };
+
 </script>
 <style lang="scss">
 .el-table .delete-row {
@@ -615,11 +610,13 @@ export default {
 .el-table .add-row {
   color: red;
 }
+
 </style>
 <style rel="stylesheet/scss" lang="scss" scoped>
-.moreSearch{
-  padding-top:10px;
+.moreSearch {
+  padding-top: 10px;
 }
+
 .dashboard-container {
   background: #fff;
   .filter-container {
@@ -678,4 +675,5 @@ export default {
 .cell i {
   cursor: pointer;
 }
+.updatelogo {width:30px;height: 30px; background: url('../../../assets/images/dataupdate.svg'); display: inline-block; cursor: pointer;}
 </style>

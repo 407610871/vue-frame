@@ -159,14 +159,17 @@
               <span class="curspan" @click="more(accdiaFlag)">{{accdiaName}}</span>
             </el-form-item>
             <el-col :span="18">
-              <el-col :span="10">
-                <el-form-item label="IP地址/主机名:" prop="ipname" v-if="ruleForm.syskind!=''&&ruleForm.syskind!='10023'">
+              <el-col :span="10" class="uncol">
+                <span class="fl" v-show="this.ruleForm.author=='true'&&ruleForm.syskind!=''&&ruleForm.syskind!='10023'">*</span>
+                <el-form-item class="fl unrequired" label="IP地址/主机名:" prop="ipname" v-if="ruleForm.syskind!=''&&ruleForm.syskind!='10023'">
+
                   <el-input v-model="ruleForm.ipname"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="2" class="bank">bank</el-col>
-              <el-col :span="10">
-                <el-form-item label="登录名:" prop="username" v-if="ruleForm.syskind!=''&&ruleForm.syskind!='10023'">
+              <el-col :span="10" class="uncol">
+              <span class="fl" v-show="this.ruleForm.author=='true'&&ruleForm.syskind!=''&&ruleForm.syskind!='10023'">*</span>
+                <el-form-item class="fl unrequired" label="登录名:" prop="username" v-if="ruleForm.syskind!=''&&ruleForm.syskind!='10023'">
                   <el-input v-model="ruleForm.username"></el-input>
                 </el-form-item>
               </el-col>
@@ -177,20 +180,23 @@
   </el-form-item>
 </el-col> -->
               <el-col :span="2" class="bank">bank</el-col>
-              <el-col :span="10">
-                <el-form-item label="密码:" prop="password" v-if="ruleForm.syskind!=''&&ruleForm.syskind!='10023'">
+              <el-col :span="10" class="uncol">
+              <span class="fl" v-show="this.ruleForm.author=='true'&&ruleForm.syskind!=''&&ruleForm.syskind!='10023'">*</span>
+                <el-form-item class="fl unrequired" label="密码:" prop="password" v-if="ruleForm.syskind!=''&&ruleForm.syskind!='10023'">
                   <el-input v-model="ruleForm.password"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="2" class="bank">bank</el-col>
-              <el-col :span="10">
-                <el-form-item label="端口号:" prop="iport" v-if="ruleForm.syskind!=''&&ruleForm.syskind!='10023'">
+              <el-col :span="10" class="uncol">
+              <span class="fl" v-show="this.ruleForm.author=='true'&&ruleForm.syskind!=''&&ruleForm.syskind!='10023'">*</span>
+                <el-form-item class="fl unrequired" label="端口号:" prop="iport" v-if="ruleForm.syskind!=''&&ruleForm.syskind!='10023'">
                   <el-input v-model="ruleForm.iport"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="2" class="bank" v-if="ruleForm.syskind=='10001'||ruleForm.syskind=='10003'||ruleForm.syskind=='10002'||ruleForm.syskind=='10004'||ruleForm.syskind=='10020'">bank</el-col>
-              <el-col :span="10">
-                <el-form-item label="实例/数据库名:" prop="instanceName" v-if="ruleForm.syskind=='10001'||ruleForm.syskind=='10003'||ruleForm.syskind=='10002'||ruleForm.syskind=='10004'||ruleForm.syskind=='10020'">
+              <el-col :span="10" class="uncol">
+              <span class="fl" v-show="this.ruleForm.author=='true'&&(ruleForm.syskind=='10001'||ruleForm.syskind=='10003'||ruleForm.syskind=='10002'||ruleForm.syskind=='10004'||ruleForm.syskind=='10020')">*</span>
+                <el-form-item class="fl unrequired" label="实例/数据库名:" prop="instanceName" v-if="ruleForm.syskind=='10001'||ruleForm.syskind=='10003'||ruleForm.syskind=='10002'||ruleForm.syskind=='10004'||ruleForm.syskind=='10020'">
                   <el-input v-model="ruleForm.instanceName"></el-input>
                 </el-form-item>
               </el-col>
@@ -237,20 +243,23 @@
 </el-col> 
               <el-col :span="2" class="bank">bank</el-col>-->
               <!-- hive专有 -->
-              <el-col :span="10">
-                <el-form-item label="集群根目录" prop="hadoopDir" v-if="ruleForm.syskind!=''&& ruleForm.syskind=='vhost'">
+              <el-col :span="10" class="uncol">
+              <span class="fl" v-show="this.ruleForm.author=='true'&&ruleForm.syskind!=''&& ruleForm.syskind=='vhost'">*</span>
+                <el-form-item class="fl unrequired" label="集群根目录" prop="hadoopDir" v-if="ruleForm.syskind!=''&& ruleForm.syskind=='vhost'">
                   <el-input v-model="ruleForm.hadoopDir"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="2" class="bank" v-if="ruleForm.syskind!=''&& ruleForm.syskind=='vhost'">bank</el-col>
-              <el-col :span="10">
-                <el-form-item label="集群目录" prop="hadoopHomes" v-if="ruleForm.syskind!=''&& ruleForm.syskind=='vhost'">
+              <el-col :span="10" class="uncol">
+              <span class="fl" v-show="this.ruleForm.author=='true'&&ruleForm.syskind!=''&& ruleForm.syskind=='vhost'">*</span>
+                <el-form-item class="fl unrequired" label="集群目录" prop="hadoopHomes" v-if="ruleForm.syskind!=''&& ruleForm.syskind=='vhost'">
                   <el-input v-model="ruleForm.hadoopHomes"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="2" class="bank" v-if="ruleForm.syskind!=''&& ruleForm.syskind=='vhost'">bank</el-col>
-              <el-col :span="10">
-                <el-form-item label="vhost" prop="vhost" v-if="ruleForm.syskind!=''&& ruleForm.syskind=='vhost'">
+              <el-col :span="10" class="uncol">
+              <span class="fl" v-show="this.ruleForm.author=='true'&&ruleForm.syskind!=''&& ruleForm.syskind=='vhost'">*</span>
+                <el-form-item class="fl unrequired" label="vhost" prop="vhost" v-if="ruleForm.syskind!=''&& ruleForm.syskind=='vhost'">
                   <el-input v-model="ruleForm.vhost"></el-input>
                 </el-form-item>
               </el-col>
@@ -403,31 +412,31 @@ export default {
           { required: true, message: '不能为空', validator: validateNull, trigger: "blur" }
         ],
         ipname: [
-          { required: true, message: '不能为空', validator: validateIp, trigger: "blur" }
+          { required: false, message: '不能为空', validator: validateIp, trigger: "blur" }
         ],
         username: [
-          { required: true, message: '不能为空', validator: validateSq, trigger: "blur" }
+          { required: false, message: '不能为空', validator: validateSq, trigger: "blur" }
         ],
         dockname: [
           { required: true, message: '不能为空', validator: validateNull, trigger: "blur" }
         ],
         password: [
-          { required: true, message: '不能为空', validator: validateSq, trigger: "blur" }
+          { required: false, message: '不能为空', validator: validateSq, trigger: "blur" }
         ],
         iport: [
-          { required: true, message: '请输入正确的端口号', validator: validatePort, trigger: "blur" }
+          { required: false, message: '请输入正确的端口号', validator: validatePort, trigger: "blur" }
         ],
         instanceName: [
-          { required: true, message: '不能为空', validator: validateSq, trigger: "blur" }
+          { required: false, message: '不能为空', validator: validateSq, trigger: "blur" }
         ],
         hadoopDir: [
-          { required: true, message: '不能为空', validator: validateSq, trigger: "blur" }
+          { required: false, message: '不能为空', validator: validateSq, trigger: "blur" }
         ],
         hadoopHomes: [
-          { required: true, message: '不能为空', validator: validateSq, trigger: "blur" }
+          { required: false, message: '不能为空', validator: validateSq, trigger: "blur" }
         ],
         vhost: [
-          { required: true, message: '不能为空', validator: validateSq, trigger: "blur" }
+          { required: false, message: '不能为空', validator: validateSq, trigger: "blur" }
         ],
         dockdata: [
           { required: true, message: '不能为空', validator: validateNull, trigger: "blur" }
@@ -1284,5 +1293,15 @@ export default {
 .icon-dai i {
   cursor: pointer;
 }
-
+.otherInfo .unrequired   .el-form-item__content{
+  width: 100%;
+}
+.uncol span {
+  color:red;
+  line-height: 30px;
+  margin-right: 6px;
+}
+.uncol label {
+  text-align: left;
+}
 </style>

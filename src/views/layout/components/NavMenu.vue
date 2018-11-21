@@ -19,35 +19,63 @@ export default {
       activeIndex: "1"
     };
   },
+  watch: {},
   created() {
     this.$root.eventHub.$on("setActiveNav", index => {
       this.activeIndex = index + "";
     });
+    this.getRout();
   },
   methods: {
     handleSelect(key, keyPath) {
+
+      // debugger;
       // this.$router.push({path:'/dashboard'});
       switch (key) {
         case "3-1":
           this.$router.push({ path: "/task" });
+          this.activeIndex = "3";
           break;
         case "3-2":
           this.$router.push({ path: "/kettleTask" });
+          this.activeIndex = "3";
+
           break;
         case "1":
-          let storeData = JSON.parse(JSON.stringify(this.$store.state.queryParams['dashboard']));
-          storeData.timeFlag = new Date().getTime()
-          this.$store.commit('setQueryParams', {
-            name: 'dashboard',
+          this.activeIndex = "1";
+
+          let storeData = JSON.parse(
+            JSON.stringify(this.$store.state.queryParams["dashboard"])
+          );
+          storeData.timeFlag = new Date().getTime();
+          this.$store.commit("setQueryParams", {
+            name: "dashboard",
             data: storeData
           });
           this.$router.push({ path: "/dashboard" });
           break;
       }
+    },
+
+    getRout() {
+      let path = this.$route.path;
+      switch(path){
+          case "/task":
+            this.activeIndex = "3-1";
+            break;
+             case "/kettleTask":
+            this.activeIndex = "3-2";
+            break;
+             case "/dashboard":
+            this.activeIndex = "1";
+            break;
+
+      }
+      console.log(this.activeIndex);
+
     }
   }
 };
-
 </script>
 <style rel="stylesheet/scss" lang="scss" scoped>
 @import "src/styles/variables.scss";
@@ -103,16 +131,15 @@ export default {
     }
   }
 }
-
 </style>
 <style rel="stylesheet/scss" lang="scss">
 .owntmenu .el-submenu:hover,
 .owntmenu .el-submenu:focus {
-    i {
-        color: #fff;
-    }
-    .el-submenu__title i {
-        color: #fff;
-    }
+  i {
+    color: #fff;
+  }
+  .el-submenu__title i {
+    color: #fff;
+  }
 }
 </style>

@@ -82,8 +82,8 @@ export default {
         });
         return;
       }
-      if(this.ruleForm.range==''||this.ruleForm.range==undefined){
-        this.$alert("请填写数据范围", "核验", {
+      if(this.ruleForm.range==undefined){
+        this.$alert("请填写数据核验范围", "核验", {
           confirmButtonText: "确定"
         });
         return false;
