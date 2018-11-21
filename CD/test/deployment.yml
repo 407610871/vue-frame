@@ -16,20 +16,22 @@ spec:
         image: 10.19.248.12:30100/library/gongan-test-web-dacm-front:latest
         imagePullPolicy: Always
         env:
+        - name: NODE_IP
+          value: '10.19.140.200'
         - name: API
-          value: http://10.19.248.200:31527
+          value: 'http://$(NODE_IP):31527'
         - name: VUE_APP_AUTH_SERVER_URL
-          value: http://10.19.248.200:32601/auth
+          value: 'http://$(NODE_IP):32601/auth'
         - name: VUE_APP_REALM
-          value: nanjing-jc-web
+          value: 'nanjing-jc-web'
         - name: VUE_APP_RESOURCE
-          value: DACM
+          value: 'DACM'
         - name: VUE_APP_CREDENTIALS_SECRET
-          value: 352fb505-c5ea-4f0a-9b59-3643f06e144e
+          value: '352fb505-c5ea-4f0a-9b59-3643f06e144e'
         - name: API_DACM
-          value: http://10.19.248.200:31701/DACM
+          value: http://$(NODE_IP):31701/DACM
         - name: API_DOWN
-          value: http://10.19.248.200:32555/DOMN
+          value: http://$(NODE_IP):32555/DOMN
         resources:
           limits:
             cpu: 300m
