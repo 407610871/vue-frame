@@ -271,7 +271,7 @@ export default {
       // console.log(oldVal);
       if (JSON.stringify(newVal) != JSON.stringify(oldVal)) {
         // console.log('change');
-        // this.loadTable();
+        this.loadTable();
       }
     }
   },
