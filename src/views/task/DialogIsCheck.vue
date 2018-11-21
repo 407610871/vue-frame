@@ -174,6 +174,7 @@ export default {
     },
     closeDiaChk() {
       this.$emit('closeDiaChk', );
+      this.closeDialog();
     },
     setTimer: function() {
       this.timer = setTimeout(() => {
@@ -195,7 +196,6 @@ export default {
       this.$ajax.get(baseUrl + '/ccheckData/tableNum', {
         params: {
           taskId: that.msgCheck.taskInfoId
-          // taskId:92066
         }
       }).then(res => {
         this.loading = false;
@@ -242,7 +242,6 @@ export default {
       this.$ajax.get(baseUrl + '/ccheckData/tableNumAllByTaskId', {
         params: {
           taskId: that.msgCheck.taskInfoId
-          // taskId:92066
         }
       }).then(res => {
         if (res.data.success) {
@@ -265,10 +264,6 @@ export default {
     },
     // 开始核验按钮
     doCheck() {
-      if(this.msgCheck.networkStatus == 2){
-        this.$message.error('数据核验失败！');
-        return;
-      }
       if (this.radio == "0") {
         if (this.range == null || typeof(this.range) == "undefined" || isNaN(this.range)) {
           this.$alert("请填写误差范围", "核验", {
@@ -293,7 +288,6 @@ export default {
       this.$ajax.get(baseUrl + `/ccheckData/tableCheck`, {
         params: {
           taskId: this.msgCheck.taskInfoId,
-          //taskId:92066,
           key: this.radio,
           range: this.range,
           startTime: this.startTime[0],
