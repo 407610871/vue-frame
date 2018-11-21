@@ -25,7 +25,7 @@
               <el-radio-group v-model="ruleForm.accessMode">
                 <el-radio label="1">增量接入</el-radio>
                 <el-radio label="3">全量接入</el-radio>
-                <el-radio label="0">实时接入</el-radio>
+                <!-- <el-radio label="0">实时接入</el-radio> -->
                 <el-radio label="2">一次性接入</el-radio>
               </el-radio-group>
             </el-form-item>
@@ -655,7 +655,7 @@ export default {
         this.ruleForm.accessMode = '3'
       }
       if (this.$store.state.modeStyle == '5') { //增量接入
-        this.ruleForm.accessMode = '0'
+        this.ruleForm.accessMode = '1'
       }
       if (this.$store.state.modeStyle == '4') { //增量接入
         this.ruleForm.accessMode = '2'
