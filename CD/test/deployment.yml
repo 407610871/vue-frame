@@ -31,7 +31,7 @@ spec:
 #web-dacm
         - name: API_DACM
           value: http://$(NODE_IP):31701/DACM
-web-domn
+#web-domn
         - name: API_DOWN
           value: http://$(NODE_IP):32555/DOMN
         resources:
