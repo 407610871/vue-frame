@@ -1,9 +1,9 @@
 <template>
   <div class="taskMDialog userSurveyDialog setTaskDia">
    <!--  <el-button @click="setTask()" class="add-btn fr">批量采集</el-button> -->
-   <el-tooltip class="item" effect="light" content="批量采集" placement="top">
+   <!-- <el-tooltip class="item" effect="light" content="批量采集" placement="top">
    <span class="talogo diabtn tin-btn add-btn" @click="setTask()"></span>
-   </el-tooltip>
+   </el-tooltip> -->
     <!--  <i class="el-icon-info" @click="dialogVisible = true">设置通配符</i> -->
     <el-dialog title="批量接入任务向导" :visible.sync="dialogVisible" width="73%" :before-close="closeDialog">
       <div class="title-gra plr30">
@@ -69,7 +69,7 @@ export default {
   data: function() {
     return {
       activeName: 'first',
-      dialogVisible: false,
+      dialogVisible: true,
       tabs: '',
       msg: false,
       event: '',
@@ -90,6 +90,7 @@ export default {
        this.setMatchType(this.clear);
        this.setRegInfo(this.regClear);
        this.setSchemaList(this.clear);
+       this.$emit('close');
       //this.$refs['ruleForm'].resetFields();
     },
     //步骤条
