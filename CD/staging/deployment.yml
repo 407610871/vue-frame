@@ -17,7 +17,7 @@ spec:
         imagePullPolicy: Always
         env:
         - name: NODE_IP
-          value: '10.19.140.200'
+          value: '10.19.248.200'
         - name: API
           value: 'http://$(NODE_IP):32442'
         - name: VUE_APP_AUTH_SERVER_URL
