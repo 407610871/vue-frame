@@ -53,7 +53,12 @@
 					</el-table-column>
 					<el-table-column
 						prop="comments"
-						label="描述">
+						label="描述" 
+						>
+						   <template slot-scope="scope">
+                    <span  v-if="scope.row.diyComments==''||scope.row.diyComments==scope.row.comments">{{scope.row.comments}}</span>
+										      <span v-else class="isRed">{{scope.row.comments}}</span>
+                </template>
 					</el-table-column>
 				</el-table>
 				<div style="margin:20px; text-align:right;">
@@ -69,7 +74,8 @@ export default {
   name: "dataImport",
   data: function() {
     return {
-      dialogVisible:true
+			dialogVisible:true,
+		
     };
   },
 	props: {
@@ -151,6 +157,7 @@ export default {
     }
     .el-form-item{
       margin-bottom:2px;
+			
     }
     .add-btn{
       float:right;
@@ -159,5 +166,8 @@ export default {
   .table-container {
     padding: 32px;
   }
+	.el-table .cell .isRed{
+		color: red;
+	}
 }
 </style>

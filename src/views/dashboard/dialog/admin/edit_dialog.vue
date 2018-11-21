@@ -273,6 +273,7 @@
             </el-col>
             <el-col :span="6">
               <el-button type="primary" v-if="ruleForm.syskind!=''&&ruleForm.syskind!='10023'" @click="testForm('ruleForm')" v-loading.fullscreen.lock="fullscreenLoading">测试连接</el-button>
+            <p v-if="isDisableClassFlag" class="isRed">*修改接入源设置需测试连接</p>
             </el-col>
           </div>
         </div>
@@ -1092,6 +1093,7 @@ color:#fff;
 background-color: #999;
     border: 1px solid #dcdfe6;;
 }
+<<<<<<< HEAD
 .uncol span {
   color:red;
   line-height: 30px;
@@ -1102,5 +1104,9 @@ background-color: #999;
 }
 .otherInfo .unrequired   .el-form-item__content{
   width: 100%;
+=======
+.isRed{
+  color: red;
+>>>>>>> c1e13cdf3154329c00b61acbb2d6185ccb01ad88
 }
 </style>
