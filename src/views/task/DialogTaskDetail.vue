@@ -492,7 +492,7 @@ export default {
         let sourceObjNameList = "";
         let len = res.data.data.sourceTableName.length;
         for(let i=0;i<len;i++){
-          sourceObjNameList = res.data.data.sourceTableName[i];
+          sourceObjNameList = sourceObjNameList + res.data.data.sourceTableName[i];
           sourceObjNameList = sourceObjNameList+(i==len-1?"":",");
         }
         let innerReqData = {
