@@ -1105,9 +1105,9 @@ background-color: #999;
 
 .otherInfo .unrequired   .el-form-item__content{
   width: 100%;
+}
 
 .isRed{
   color: red;
-
 }
 </style>
