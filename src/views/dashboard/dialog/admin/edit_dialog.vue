@@ -1093,7 +1093,7 @@ color:#fff;
 background-color: #999;
     border: 1px solid #dcdfe6;;
 }
-<<<<<<< HEAD
+
 .uncol span {
   color:red;
   line-height: 30px;
@@ -1102,11 +1102,12 @@ background-color: #999;
 .uncol label {
   text-align: left;
 }
+
 .otherInfo .unrequired   .el-form-item__content{
   width: 100%;
-=======
+
 .isRed{
   color: red;
->>>>>>> c1e13cdf3154329c00b61acbb2d6185ccb01ad88
+
 }
 </style>
