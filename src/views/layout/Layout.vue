@@ -9,6 +9,7 @@
         <el-popover placement="bottom-start" width="200" trigger="hover">
           <ul class="popup-menu">
             <li><a href="javascript:void(0)" v-on:click="goRoute('recyclingBins')">回收箱</a></li>
+            <li><a href="javascript:void(0)">告警中心</a></li>
           </ul>
           <el-button slot="reference" class="user" type="primary" icon="enc-icon-user"></el-button>
         </el-popover>
@@ -109,14 +110,14 @@ export default {
         console.log(err);
       });
     this.$ajax
-      .get(window.ENV.API_DACM + "/commonInter/getListStaticDataOrder.do",{
- params: {
+      .get(window.ENV.API_DACM + "/commonInter/getListStaticDataOrder.do", {
+        params: {
           dictCode: 'NetWork'
         }
 
       })
       .then(function(res) {
-//  console.log(res)
+        //  console.log(res)
         var list = [];
         if (res.data != undefined) {
           for (var value of res.data) {
@@ -436,7 +437,7 @@ export default {
 }
 
 
-@media screen and ( max-width: 1280px ) {
+@media screen and ( max-width: 1280px) {
   .enc-logo {
     line-height: 50px;
   }
