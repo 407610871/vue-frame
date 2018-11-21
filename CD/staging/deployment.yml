@@ -13,7 +13,7 @@ spec:
     spec:
       containers:
       - name: web-dacm-front
-        image: 10.19.248.12:30100/library/gongan-staging-web-dacm-front:latest
+        image: 10.19.248.12:30100/staging/gongan-staging-web-dacm-front:latest
         imagePullPolicy: Always
         env:
         - name: API
