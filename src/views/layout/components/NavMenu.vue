@@ -61,11 +61,11 @@ this.getRout();
       let path = this.$route.path;
       switch(path){
           case "/task":
-            this.activeIndex = "3";
+            this.activeIndex = "3-1";
             // this.$refs.index3.class="index3";
             break;
              case "/kettleTask":
-            this.activeIndex = "3";
+            this.activeIndex = "3-2";
                         // this.$refs.index3.class="index3";
 
             break;
