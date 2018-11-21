@@ -40,7 +40,7 @@
           <el-checkbox v-for="(subItem,index) in item.checkData" v-show="index<=dataObj[indexs].limit" :label="subItem.id" :key="index">{{subItem.name}}</el-checkbox>
         </el-checkbox-group> 
 
-        <!-- <el-radio  v-if="item.type=='radio'" v-for="(subItem) in item.checkData" v-model="formSeled[item.id]" :label="subItem.id" :key="subItem.id" @change="formFilter">{{subItem.name}}</el-radio> -->
+        <el-radio  v-if="item.type=='radio'" v-for="(subItem) in item.checkData" v-model="formSeled[item.id]" :label="subItem.id" :key="subItem.id" @change="formFilter">{{subItem.name}}</el-radio>
         <span v-if="item.checkData.length>dataObj[indexs].limit" class="moreSeclect" @click="domoreSeclect(indexs)"> {{doMoreArray[indexs]?"收起":" 更多 "}} <i :class="!doMoreArray[indexs]?'el-icon-caret-bottom':'el-icon-caret-top'"></i> </span>
       </el-form-item>
     </div>
@@ -93,6 +93,8 @@ export default {
       this.doMoreArray.push(false);
       this.doMore.push(false);
     }
+
+    
     //  console.log(this.doMoreArray)
      this.getFormSeled();
     // console.log(this.formSeled);
@@ -200,14 +202,18 @@ export default {
       // console.log('this.dataObj');
       // console.log(this.dataObj);
       let obj = {};
-      // for (var value of this.dataObj) {
-      //   obj[value.id] = value.seledData;
-      // }
-// debugger;
-      for (let i = 0; i < this.dataObj.length; i++) {
-        obj[this.dataObj[i].id] = this.dataObj[i].seledData;
+      for (var value of this.dataObj) {
+        // obj[value.id] = value.seledData;
+         this.$set(this.formSeled, value.id, value.seledData)
       }
-      this.formSeled = obj;
+// debugger;
+      // for (let i = 0; i < this.dataObj.length; i++) {
+      //   for (let key in this.queryData) {
+      //   this.$set(this.checked, key, [])
+      // }
+      //   obj[this.dataObj[i].id] = this.dataObj[i].seledData;
+      // }
+      // this.formSeled = obj;
 
       // console.log(this.formSeled);
     }
