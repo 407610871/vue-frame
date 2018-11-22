@@ -202,7 +202,9 @@
         return this.tableParams.ACCESS_SYS_DIALECT_ID;
       },
       filters(){
-        return this.searchForm.filter(item => typeof(item.filterdata) != "undefined");
+        return this.searchForm.filter(item => {
+          if(item.filterdata) return item;
+        });
       },
       storeCount(){
         return this.$store.state.pageSize;
@@ -272,7 +274,7 @@
       addCondition(){
         let len = this.searchForm.length;
         if(len > 4) return;
-        this.searchForm.push(this.searchFormCont);
+        this.searchForm.push(Object.assign({}, this.searchFormCont));
       },
       tableRowClassName:function(scope, rowIndex) {
         if (scope.row.isDeleted == 1) {//删除
