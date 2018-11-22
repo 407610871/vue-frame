@@ -12,7 +12,7 @@
     <div class="checkDiv">
       <el-form-item class="isSelect" label="已筛选条件：" v-show="keyword!=''||formSeledShow.dataSourceName.length!=0||formSeledShow.network.length!=0||formSeledShow.platform.length!=0||formSeledShow.objectType.length!=0||formSeledShow.dataRange.length!=0">
         <div class="look" v-show="keyword!=''">
-              查询条件：<span class="lookstyle">{{keyword}}</span> <i class="el-icon-error" @click="keyword=''"></i>
+              查询条件：<span class="lookstyle">{{keyword}}</span> <i style="margin-left: 5px;" class="el-icon-error" @click="keyword=''"></i>
         </div>
         <div class="look" v-show="formSeledShow[item.id].length!=0" v-for="(item,index1) in dataObj" :key="index1">{{item.name}}
           <span   class="lookstyle" v-for="(item1,index) in formSeledShow[item.id]" :key="index"> {{item1.name}} <i class="el-icon-error" @click="delSelect(index,index1)"></i>
@@ -166,7 +166,6 @@ export default {
       if (this.ObjManage) {
         //进入数据源展示搜索条件清空
         this.keyword="";
-        
       } else {
         for (var value of this.dataObj) {
           this.$set(this.formSeled, value.id, value.seledData);
