@@ -212,7 +212,7 @@ export default {
         this.$ajax.post(window.ENV.API_DACM + '/deptInfo/delDeptInfo?id=' + this.editingNode.id).then(function(res) {
             // this.$ajax.post('./success').then(function(res){
             // console.log('delsuccess');
-            if (res.data.success != "false") {
+            if (res.data.success != "false"&&res.data.success!=false) {
               const parent = _self.editingData.parent;
               const children = parent.data.children || parent.data;
               const index = children.findIndex(d => d.id === _self.editingNode.id);
