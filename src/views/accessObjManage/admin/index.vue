@@ -272,7 +272,8 @@ export default {
   watch: {
     tableParams(newVal, oldVal) {
       if (JSON.stringify(newVal) != JSON.stringify(oldVal)) {
-        // this.loadTable();
+          if(newVal.deptId ==oldVal.deptId )
+        this.loadTable();
       }
     }
   },
