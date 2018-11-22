@@ -14,8 +14,8 @@
 
       </div>
 
-      <el-form ref="form" label-width="110px" class="formGroup task-query-form" v-if="moreSearch" style="padding-left: 27px;">
-        <el-form-item label="已选查询条件:" style="height: 60px;overflow: auto;" v-show="keyword!=''||taskPeriodType.length>0||status.length>0||priority.length>0||(time!=null && time.length>0)">
+      <el-form ref="form" label-width="110px" class="formGroup task-query-form" v-if="keyword!=''||taskPeriodType.length>0||status.length>0||priority.length>0||(time!=null && time.length>0)" style="padding-left: 27px;">
+        <el-form-item label="已选查询条件:" style="max-height: 60px;overflow: auto;">
           <div v-show="keyword!=''" class="selected-task-type" style="display: inline-block;">
             <span>查询条件:</span>
             <span >{{keyword}}<span @click="keyword='';"><i class="el-icon-error"></i></span></span>
@@ -50,6 +50,8 @@
             <span>{{time==null?'':time[0]}} - {{time==null?'':time[1]}}<span @click="time=[]"><i class="el-icon-error"></i></span></span>
           </div>
         </el-form-item>
+      </el-form>
+      <el-form ref="form" label-width="110px" class="formGroup task-query-form" v-if="moreSearch" style="padding-left: 27px;">
         <el-form-item label="任务类型:">
           <el-checkbox-group v-model="taskPeriodType">
             <el-checkbox label="0" name="taskPeriodType">实时</el-checkbox>
