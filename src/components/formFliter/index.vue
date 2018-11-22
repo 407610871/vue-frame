@@ -1,9 +1,9 @@
 <template>
-  <el-form label-width="120px" class="form-fliter">
+  <el-form label-width="120px" class="form-fliter" @submit.native.prevent>
     <div class="searchDiv">
       <div class="dataSearch">
         <i class="el-icon-search"></i>
-        <input type="text" v-model="keyword" placeholder="请输入查询条件" />
+        <input type="text" v-model="keyword" placeholder="请输入查询条件" @keyup.13 = "search"/>
       </div>
       <span @click="doCollapse">高级搜索 <i :class="collapse?'el-icon-caret-bottom':'el-icon-caret-top'"></i> </span>
       <el-button type="primary" class="doCearch" @click="search">查询</el-button>

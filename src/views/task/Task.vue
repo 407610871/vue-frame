@@ -7,7 +7,7 @@
       <div class="searchDiv">
         <div class="dataSearch">
           <i class="el-icon-search"></i>
-          <input type="text" v-model="keyword" placeholder="请输入查询条件" />
+          <input type="text" v-model="keyword" placeholder="请输入查询条件" @keyup.13 = "search"/>
         </div>
         <span @click="doMoreSearch">高级搜索 <i :class="!moreSearch?'el-icon-caret-bottom':'el-icon-caret-top'"></i> </span>
         <el-button type="primary" class="doCearch" @click="search">查询</el-button>
@@ -17,7 +17,7 @@
       <el-form ref="form" label-width="110px" class="formGroup task-query-form" v-if="moreSearch" style="padding-left: 27px;">
         <el-form-item label="已选查询条件:" style="height: 60px;overflow: auto;" v-show="keyword!=''||taskPeriodType.length>0||status.length>0||priority.length>0||(time!=null && time.length>0)">
           <div v-show="keyword!=''" class="selected-task-type" style="display: inline-block;">
-            <span>输入条件:</span>
+            <span>查询条件:</span>
             <span >{{keyword}}<span @click="keyword='';"><i class="el-icon-error"></i></span></span>
           </div>
           <div v-show="taskPeriodType.length>0" class="selected-task-type" style="display: inline-block;">
@@ -740,7 +740,7 @@ if(row1.length==0){
         callback: action => {}
       });
     }
-  }
+  },
 };
 </script>
 <style  rel="stylesheet/scss" lang="scss" scoped>

@@ -4,7 +4,7 @@
         <div class="searchDiv">
             <div class="dataSearch">
                 <i class="el-icon-search"></i>
-                <input type="text" v-model="taskName" placeholder="请输入任务名称" />
+                <input type="text" v-model="taskName" placeholder="请输入任务名称" @keyup.13 = "search" />
             </div>
             <span  @click="doMoreSearch" >高级搜索 <i :class="!moreSearch?'el-icon-caret-bottom':'el-icon-caret-top'"></i>  </span>
             <el-button type="primary" class="doCearch" @click="search">查询</el-button> 
@@ -20,7 +20,7 @@
         <el-form label-width="110px" class="formGroupSelect" v-if="taskName!='' || status.length || time.length">
             <el-form-item label="已选查询条件:">
                 <div v-show="taskName!=''" class="selected-task-type">
-                    <span>输入条件:</span>
+                    <span>查询条件:</span>
                     <span>{{taskName}}<i class="el-icon-error" @click="taskName = ''"></i></span>
                 </div>
                 <div v-show="status.length>0" class="selected-task-type">
