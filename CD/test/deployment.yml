@@ -18,8 +18,6 @@ spec:
         env:
         - name: NODE_IP
           value: '10.19.248.200'
-        - name: API
-          value: 'http://$(NODE_IP):31527'
         - name: VUE_APP_AUTH_SERVER_URL
           value: 'http://$(NODE_IP):32601/auth'
         - name: VUE_APP_REALM
