@@ -36,23 +36,23 @@
               </el-table-column>
               <el-table-column prop="name" label="字段名" width="180">
               </el-table-column>
-              <el-table-column prop="datatype" label="字段类型">
+              <el-table-column prop="datatype" label="字段类型" min-width="160">
               </el-table-column>
-              <el-table-column prop="length" label="字段长度">
+              <el-table-column prop="length" label="字段长度" min-width="160">
               </el-table-column>
-              <el-table-column prop="isNull" label="是否为空">
+              <el-table-column prop="isNull" label="是否为空" min-width="160">
                 <template slot-scope="scope">
                   <span v-if="scope.row.isNull!='NO'">是</span>
                   <span v-if="scope.row.isNull=='NO'">否</span>
                 </template>
               </el-table-column>
-              <el-table-column label="是否为主键">
+              <el-table-column label="是否为主键" min-width="160">
                 <template slot-scope="scope">
                   <span v-if="scope.row.primaryKey">是</span>
                   <span v-if="!scope.row.primaryKey">否</span>
                 </template>
               </el-table-column>
-              <el-table-column label="是否为索引">
+              <el-table-column label="是否为索引" min-width="160">
                 <template slot-scope="scope">
                   <span v-if="scope.row.index">是</span>
                   <span v-if="!scope.row.index">否</span>
@@ -60,7 +60,7 @@
               </el-table-column>
               <el-table-column prop="comments" label="描述">
               </el-table-column>
-              <el-table-column label="是否为增量">
+              <el-table-column label="是否为增量" min-width="160">
                 <template slot-scope="scope">
                   <span v-if="scope.row.isIncremental == '1'">是</span>
                   <span v-if="scope.row.isIncremental == '0'">否</span>
@@ -202,7 +202,9 @@
         return this.tableParams.ACCESS_SYS_DIALECT_ID;
       },
       filters(){
-        return this.searchForm.filter(item => typeof(item.filterdata) != "undefined");
+        return this.searchForm.filter(item => {
+          if(item.filterdata) return item;
+        });
       },
       storeCount(){
         return this.$store.state.pageSize;
@@ -272,7 +274,7 @@
       addCondition(){
         let len = this.searchForm.length;
         if(len > 4) return;
-        this.searchForm.push(this.searchFormCont);
+        this.searchForm.push(Object.assign({}, this.searchFormCont));
       },
       tableRowClassName:function(scope, rowIndex) {
         if (scope.row.isDeleted == 1) {//删除

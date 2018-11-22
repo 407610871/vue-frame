@@ -7,9 +7,9 @@
       <nav-menu />
       <div class="right-menu">
         <el-popover placement="bottom-start" width="200" trigger="hover">
-          <ul class="popup-menu">
+          <ul class="popup-menu warn-menu">
             <li><a href="javascript:void(0)" v-on:click="goRoute('recyclingBins')">回收箱</a></li>
-            <li><a href="javascript:void(0)">告警中心</a></li>
+            <li><a :href="warnurl" target="_blank">告警中心</a></li>
           </ul>
           <el-button slot="reference" class="user" type="primary" icon="enc-icon-user"></el-button>
         </el-popover>
@@ -57,7 +57,8 @@ export default {
       logo: logo + '?' + +new Date(),
       keyword: '',
       breadcrumb: [],
-      sideBarWidth: 210
+      sideBarWidth: 210,
+      warnurl:''
     }
   },
   components: {
@@ -72,7 +73,7 @@ export default {
   },
   mounted() {
     var _self = this;
-
+    _self.warnurl = window.ENV.API_WARN+'#/alert/dashboard?platform=%E6%95%B0%E6%8D%AE%E5%B7%A5%E5%8E%82%E4%BA%A7%E5%93%81%E7%BA%BF';
     this.$ajax
       .get(window.ENV.API_DACM + "/caccesssysRelationWorkInfo/getSystemSet.do")
       .then(function(res) {
@@ -270,6 +271,13 @@ export default {
 <style rel="stylesheet/scss" lang="scss" scoped>
 @import 'src/styles/variables.scss';
 @import "src/styles/mixin.scss";
+.warn-menu a{
+  line-height: 30px;
+  
+}
+.warn-menu li:nth-child(1) a{
+  border-bottom:1px solid #c9cdd0;
+}
 .app-wrapper {
   @include clearfix;
   position: relative;

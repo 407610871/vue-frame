@@ -5,6 +5,7 @@
 var ENV = {
 	"API_DACM":"http://10.19.248.200:31701/DACM",
 	"API_DOWN":"http://10.19.248.200:32555/DOMN",
+    "API_WARN":"http://10.19.248.200:32220/",
   "VUE_APP_AUTH_SERVER_URL": "http://10.19.248.200:32601/auth",
   "VUE_APP_REALM": "nanjing-jc-web",
   "VUE_APP_RESOURCE": "DACM",
