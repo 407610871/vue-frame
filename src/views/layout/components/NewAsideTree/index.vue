@@ -143,11 +143,10 @@ export default {
             });
           });
       } else {
-        _self.$confirm('确定修改此目录?', '提示', {
+        _self.$confirm('确认要修改此部门节点吗?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
-          type: 'warning',
-          center: true
+          type: 'warning'
         }).then(() => {
           _self.$ajax.post(window.ENV.API_DACM + '/deptInfo/updateDeptInfo?id=' + _self.editingNode.id + '&deptName=' + _self.itemTxt).then(function(res) {
               // this.$ajax.post('./success').then(function(res){
