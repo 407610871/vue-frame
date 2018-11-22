@@ -273,12 +273,11 @@ export default {
   },
   watch: {
     tableParams(newVal, oldVal) {
-      // console.log(newVal);
-      // console.log(oldVal);
-      if (JSON.stringify(newVal) != JSON.stringify(oldVal)) {
-        // console.log('change');
-        this.loadTable();
-      }
+   if (JSON.stringify(newVal) != JSON.stringify(oldVal)) {
+                if (newVal.deptId == oldVal.deptId) {//部门没变动
+                    this.loadTable();
+                }
+            }
     }
   },
   mounted() {
