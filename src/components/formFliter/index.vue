@@ -3,10 +3,10 @@
     <div class="searchDiv">
       <div class="dataSearch">
         <i class="el-icon-search"></i>
-        <input type="text" v-model="keyword" placeholder="请输入查询条件" />
+        <input type="text" v-model="keyword" placeholder="请输入查询条件" @keyup.13="search"/>
       </div>
       <span @click="doCollapse">高级搜索 <i :class="collapse?'el-icon-caret-bottom':'el-icon-caret-top'"></i> </span>
-      <el-button type="primary" class="doCearch" @click="search">查询</el-button>
+      <el-button type="primary" class="doCearch" @click="search" >查询</el-button>
     </div>
 
     <div class="checkDiv">
@@ -88,12 +88,24 @@ export default {
       default: true
     }
   },
-  computed: {},
+  computed: {
+    
+  },
+  watch:{
+
+    ObjManage(){
+      if(newVal){
+        this.keyword="";
+      }
+      
+    }
+  },
   created() {
     for (let i = 0; i < this.dataObj.length; i++) {
       this.doMoreArray.push(false);
       this.doMore.push(false);
     }
+    
     this.getFormSeled();
     this.getFormSeledShow();
   },
