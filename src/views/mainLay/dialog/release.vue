@@ -18,7 +18,7 @@
         </el-tabs>
       </el-col>
       <el-col :span="20" class="release-box">
-        <div class="proInfo-box release-Info clearfix">
+        <div class="proInfo-box release-Info bornone clearfix">
           <ul class="directory">
             <li><a href="#txqd">特性清单</a></li>
             <li><a href="#zdbglb">重大变更列表</a></li>
@@ -59,9 +59,9 @@
               <li v-for="item in finishData">{{item.content}}</li>
             </ul>
           </div>
-          <div class="proInfo-box clearfix" id="yzwthxz">
+          <div class="proInfo-box bornone clearfix" id="yzwthxz">
             <h2>已知问题和限制</h2>
-            <div class="proInfo-box comTable clearfix">
+            <div class="proInfo-box comTable bornone clearfix">
               <el-table :data="knownData" stripe style="width: 100%">
                 <el-table-column label="编号" width="50">
                   <template slot-scope="scope">
