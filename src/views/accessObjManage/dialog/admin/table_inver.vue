@@ -175,7 +175,7 @@ export default {
       request({
         /*url: this.exportUrl,*/
         url: `${this.GLOBAL.api.API_DACM}/ccheckData/download?accessSysId=${this.pdata.accessSysId}&browser=${browser}&accessName=${this.$route.params.sourceName}`,
-        /*url:`http://10.19.160.59:8080/DACM/ccheckData/download?accessSysId=${this.pdata.accessSysId}&browser=${browser}&accessName=${this.$route.params.sourceName}`,*/
+       /* url:`http://10.19.160.59:8080/DACM/ccheckData/download?accessSysId=${this.pdata.accessSysId}&browser=${browser}&accessName=${this.$route.params.sourceName}`,*/
         method: "GET",
         responseType: "blob"
       }).then(res => {
@@ -186,7 +186,7 @@ export default {
         var href = window.URL.createObjectURL(blob); //创建下载的链接
         　　
         downloadElement.href = href;　　
-        downloadElement.download =  res.headers.filename; //下载后文件名
+        downloadElement.download =   unescape(res.headers.filename.replace(/\\u/g, '%u')); //下载后文件名
         　　
         document.body.appendChild(downloadElement);　　
         downloadElement.click(); //点击下载
