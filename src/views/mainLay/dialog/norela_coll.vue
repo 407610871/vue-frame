@@ -33,7 +33,7 @@
                 <h2>设置采集任务</h2>
               </div>
             </div>
-             <coll-task :rowList="pdata" :msg="activeName" @pre="next('third')" @fresh="fresh()"> </coll-task>
+             <coll-task :rowList="pdata" :msg="activeName" @pre="next('second')" @fresh="fresh()"> </coll-task>
            <!--  <div class="btn tcenter mt30">
              <el-button type="primary" style="margin-top: 12px;" @click="next('second')">上一步</el-button>
              <el-button type="primary" style="margin-top: 12px;">完成</el-button>
@@ -45,7 +45,7 @@
 </template>
 <script>
 import norelaWild from '@/views/mainLay/dialog/norela_wild' //设置通配符
-import typeMap from '@/views/mainLay/dialog/type_maps'//建立数据映射关系
+import typeMap from '@/views/mainLay/dialog/com_map'//建立数据映射关系
 import collTask from '@/views/mainLay/dialog/coll_com'//设置采集任务
 import { mapState, mapMutations, mapActions } from 'vuex'
 export default {
@@ -61,11 +61,20 @@ export default {
     };
   },
   methods: {
+    fresh(){
+      this.$emit('fre');
+      this.activeName = 'first';
+      //this.$store.commit("setMode","");
+      this.$store.commit('setSchemaList',this.clear);
+      this.dialogVisible = false;
+
+
+    },
     //关闭对话框
     closeDialog() {
       this.dialogVisible = false;
       this.msg = false;
-      this.setMatchType(clear);
+      //this.setMatchType(this.clear);
       this.activeName = 'first';
       //this.$refs.survey._clearForm();
     },
@@ -95,6 +104,7 @@ export default {
     dialogVisible(){
       if(this.dialogVisible){
          this.msg = true;
+         this.$store.commit('setSchemaList',this.clear);
       }
      
     }

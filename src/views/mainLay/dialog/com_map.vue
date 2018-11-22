@@ -2,16 +2,16 @@
   <div class="taskMDialog typeMapDia">
     <div class="comTable">
       <el-table :data="schemaMappingDTOList" stripe height="250">
-        <el-table-column prop="orgColumnName" label="数据源字段名称" width="180">
+        <el-table-column prop="orgColumnName" label="数据源字段名称">
         </el-table-column>
-        <el-table-column prop="orgColumnType" label="数据源字段类型" width="180">
+        <el-table-column prop="orgColumnType" label="数据源字段类型">
         </el-table-column>
-        <el-table-column prop="" label="目标字段名称">
+        <el-table-column prop="" label="目标字段名称" width="180">
           <template slot-scope="scope">
             <el-input v-model="scope.row.newColumnName"></el-input>
           </template>
         </el-table-column>
-        <el-table-column prop="toType" label="目标字段类型" width="180">
+        <el-table-column prop="toType" label="目标字段类型">
           <template slot-scope="scope">
             <el-select v-model="scope.row.newColumnType" placeholder="请选择">
               <el-option v-for="item in TypeData" :key="item" :label="item" :value="item">
@@ -34,6 +34,9 @@
 </template>
 <script>
 import { mapState, mapMutations, mapActions } from 'vuex'
+import columnJson from '@/static/json/columnType'
+import jsonType
+from '@/static/json/jsonType'
 export default {
   name: "userSurvey",
   data: function() {
@@ -51,114 +54,146 @@ export default {
   methods: {
     //测试使用mapMutations的用法
     ...mapMutations([
-      'setSchemaList'
+      'setSchemaList',
     ]),
-    //得到map的值
-    _getMap() {
+    _getMatch() {
       var _self = this;
-      var map = {
-        objectInfoId: this.rowList[0].id,
-        pagNum: 1,
-        count: 20,
-        term: ""
-      }
-      this.$ajax.post('http://10.19.160.171:8081/DEMO/objDetail/dataList', map).then(function(res) {
-        if (res.data.success) {
-          _self.tableData = res.data.data.list;
-          for (let j = 0; j < _self.tableData.length; j++) {
-            _self.schemaMappingDTOList.push({
-              "newColumnName": _self.tableData[j].name,
-              "newColumnType": '',
-              "orgColumnName": _self.tableData[j].name,
-              "orgColumnType": _self.tableData[j].datatype,
-              "orgColumnComment": _self.tableData[j].comments
-            })
-          }
-          _self._getAllType();
-        }
-      }).catch(function(err) {
-
-      })
-      /*this.$ajax.get('./getTypeMap').then(function(res) {
-          _self.tableData = res.data.page.list;
-          for (let j = 0; j < _self.tableData.length; j++) {
-            _self.schemaMappingDTOList.push({
-              "newColumnName": _self.tableData[j].name,
-              "newColumnType": '',
-              "orgColumnName": _self.tableData[j].name,
-              "orgColumnType": _self.tableData[j].datatype,
-              "orgColumnComment": _self.tableData[j].comments
-            })
-          }
-          _self._getAllType();
-
+      _self.schemaMappingDTOList = [];
+      _self.tableData = [];
+      _self.tableData = _self.$store.state.noreData;
+      for (let j = 0; j < _self.tableData.length; j++) {
+        _self.schemaMappingDTOList.push({
+          "newColumnName": _self.tableData[j].name,
+          "newColumnType": '',
+          "orgColumnName": _self.tableData[j].name,
+          "orgColumnType": _self.tableData[j].datatype,
+          "orgColumnComment": _self.tableData[j].comments,
+          "length": _self.tableData[j].length
         })
-        .catch(function(err) {
-          console.log(err)
-        });*/
-      /*this.$ajax({
-        methods: 'get',
-        url: '/api/ctablesDetail/datas',
-        params: {
-          id:'10203122'
-        }
-      }).then(res => {
-          console.log(res);
-      })*/
+      }
+      this._getAllType();
     },
     _getType() {
+      
       var _self = this;
-      this.$ajax.get('./getColumnType').then(function(res) {
-          _self.TypeData = res.data[0].datas_mapping;
-          //console.log(_self.TypeData);
-        })
-        .catch(function(err) {
-          console.log(err)
-        });
-
-    },
-    _getAllType() {
-      var _self = this;
-      this.$ajax.get('./getColumnType').then(function(res) {
-        for(let m =0; m<res.data.length;m++){
-          if(_self.rowList[0].accessSys.accessSysDialect.name == res.data[m].type){
-            _self.mapData = res.data[m];
+      _self.TypeData = [];
+      /*_self.TypeData = res.data[0].datas_mapping;*/
+      let reData = [];
+      if (_self.$store.state.isParquet) {
+        for (let m = 0; m < columnJson.length; m++) {
+          if (_self.$route.params.type == columnJson[m].type) {
+            reData = columnJson[m].datas_mapping;
           }
         }
-          /**/
-          for (let i = 0; i < _self.tableData.length; i++) {
-            let flag = false;
-            let temp;
-            for (let j = 0; j < _self.mapData.datas.length; j++) {
-              if (_self.tableData[i].datatype.toUpperCase() == _self.mapData.datas[j]) {
+      } else {
+        for (let m = 0; m < jsonType.length; m++) {
+          if (_self.$route.params.type == jsonType[m].type) {
+            reData = jsonType[m].datas_mapping;
+          }
+        }
+      }
+      for (let i = 0; i < reData.length; i++) {
+        for (let j = i + 1; j < reData.length; j++) {
+          if (reData[i] == reData[j]) {
+            j = ++i;
+          }
+        }
+        _self.TypeData.push(reData[i]);
+      }
+      console.log(_self.TypeData);
+    },
+    _getAllType() {
+      debugger;
+      var _self = this;
+      if (_self.$store.state.isParquet) {
+        for (let m = 0; m < columnJson.length; m++) {
+          if (_self.$route.params.type == columnJson[m].type) {
+            _self.mapData = columnJson[m];
+          }
+        }
+      } else {
+        for (let m = 0; m < jsonType.length; m++) {
+          if (_self.$route.params.type == jsonType[m].type) {
+            _self.mapData = jsonType[m];
+          }
+        }
+      }
 
-                flag = true;
-                temp = j;
-                /*_self.cloneData.push({
-                  'mapping': _self.mapData.datas_mapping[j]
-                })*/
-              }
+      /**/
+      for (let i = 0; i < _self.tableData.length; i++) {
+        let flag = false;
+        let temp;
+        for (let j = 0; j < _self.mapData.datas.length; j++) {
+          if (_self.tableData[i].datatype.toUpperCase() == _self.mapData.datas[j]) {
+
+            flag = true;
+            temp = j;
+            break;
+            /*_self.cloneData.push({
+              'mapping': _self.mapData.datas_mapping[j]
+            })*/
+          } else {
+            if (_self.tableData[i].datatype.toUpperCase().indexOf(_self.mapData.datas[j]) > -1) {
+              flag = true;
+              temp = j;
             }
+          }
+        }
 
-            if (flag) {
+        if (flag) {
+          let datalength = _self.tableData[i].length;
+          if (_self.$store.state.isParquet) {
+            if (_self.tableData[i].datatype.toUpperCase() == 'NUMBER') {
+              let datalength = _self.tableData[i].length;
+              if (datalength.indexOf(',') != '-1') {
+                let fdata = datalength.split(',')[0];
+                let sdata = datalength.split(',')[1];
+                if (sdata != '0') {
+                  _self.cloneData.push(
+                    _self.mapData.datas_mapping[temp]
+                  )
+                } else {
+                  if (fdata == '0') {
+                    _self.cloneData.push(
+                      _self.mapData.datas_mapping[temp]
+                    )
+                  } else {
+                    _self.cloneData.push(
+                      'BIGINT'
+                    )
+                  }
+                }
+
+              } else {
+                _self.cloneData.push(
+                  _self.mapData.datas_mapping[temp]
+                )
+              }
+
+            } else {
               _self.cloneData.push(
                 _self.mapData.datas_mapping[temp]
               )
-            } else {
-              _self.cloneData.push(
-                _self.mapData.datas_mapping[0]
-              )
             }
-            console.log(_self.cloneData);
+          } else {
+            _self.cloneData.push(
+              _self.mapData.datas_mapping[temp]
+            )
           }
-          for (let n = 0; n < _self.cloneData.length; n++) {
-            _self.schemaMappingDTOList[n].newColumnType = _self.cloneData[n];
-          }
-          console.log(_self.schemaMappingDTOList);
-        })
-        .catch(function(err) {
-          console.log(err)
-        });
+
+        } else {
+          _self.cloneData.push(
+            _self.mapData.datas_mapping[0]
+          )
+        }
+        console.log(_self.cloneData);
+      }
+      for (let n = 0; n < _self.cloneData.length; n++) {
+        _self.schemaMappingDTOList[n].newColumnType = _self.cloneData[n];
+      }
+      console.log(_self.schemaMappingDTOList);
+
+
 
     },
     //上一步
@@ -175,9 +210,7 @@ export default {
 
   },
   mounted() {
-
-    this._getMap()
-    this._getType()
+   
   },
   created() {
 
@@ -193,10 +226,19 @@ export default {
 
     }
   },
-  props: ['rowList'],
-  watch:{
-    rowList(){
-      this.tableId = this.rowList[0].id;
+  props: ['rowList', 'msg'],
+  watch: {
+    rowList() {
+
+      this.tableId = this.rowList.id;
+
+
+    },
+    msg() {
+      if (this.msg == "second") {
+        this._getMatch();
+        this._getType()
+      }
     }
   }
 
@@ -254,6 +296,10 @@ export default {
 .plr30 {
   padding-left: 30px;
   padding-right: 30px;
+}
+
+.typeMapDia {
+  width: 100%;
 }
 
 </style>
