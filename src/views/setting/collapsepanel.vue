@@ -24,7 +24,7 @@
         <el-col :span="9" class="collapsepanel-tools">
           <div class="grid-content">
             <div class="edithdd" style="display: inline-block; margin-left:10px; margin-right: 10px;">
-              <hdfs-edit :indexEq="index" :ownId="item.storageId" @refresh="refreshs(index)"></hdfs-edit>
+              <hdfs-edit :indexEq="index" :ownId="item.storageId" @refresh="refreshs(index)" ></hdfs-edit>
             </div>
             <el-button type="primary" @click="setConnect" :id="item.storageId" :disabled="item.storageId == seledId">关联</el-button>
             <el-button type="primary" @click="setDelete" :id="item.storageId" :disabled="item.storageId != seledId">取消关联</el-button>
@@ -57,7 +57,9 @@ export default {
       total: 1,
       pageReady: false,
       pageNum: 1,
-      pageSize: 5
+      pageSize: 5,
+      isEditIndex:-1,
+      isEditPage:-1,
     }
   },
   props: {
@@ -73,7 +75,11 @@ export default {
         this.settingList = newVal;
         console.log(this.settingList);
         console.log(oldVal);
-        this.seledId = this.settingList.seledId;
+         if(this.isEditIndex != -1){//如果当前修改过
+      this.seledId = this.isEditIndex;
+      this.currentPage =this.pageisEditPage;
+    }else{
+this.seledId = this.settingList.seledId;
         for (var i = 0; i < this.settingList.list.length; i++) {
           if (this.settingList.list[i].storageId == this.settingList.seledId) {
             this.activeIndex = i;
@@ -82,6 +88,7 @@ export default {
             break;
           }
         }
+    }   
         this.storageList = this.settingList.list;
         this.total = this.settingList.list.length;
         this.pageReady = true;
@@ -92,6 +99,7 @@ export default {
 
     console.log('111');
     console.log(this.settingList.list);
+   
     this.seledId = this.settingList.seledId;
     for (var i = 0; i < this.settingList.list.length; i++) {
       if (this.settingList.list[i].storageId == this.settingList.seledId) {
@@ -210,12 +218,13 @@ export default {
       this.$emit('refresh','');
     },
     refreshs(value){
-
-     this.$emit('refresh',value);
+     this.isEditIndex =value;//写入修改信息的地址
+     this.isEditPage =this.currentPage;//写入修改信息的地址
+     this.$emit('refresh',value); 
     },
     goPage: function(val) {
       this.pageNum = val;
-    }
+    },
   },
   components: {
     hdfsAdd,

@@ -60,17 +60,17 @@
 {
   "type": "oracle",
   "datas": [
-     "INT",
-    "NUMBER",
     "VARCHAR",
+    "INT",
+    "NUMBER",
     "TIMESTAMP",
     "DATE",
     "FLOAT"
   ],
   "datas_mapping": [
+    "STRING",
     "BIGINT",
     "DOUBLE",
-    "STRING",
     "STRING",
     "STRING",
     "DOUBLE"

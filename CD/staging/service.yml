@@ -12,5 +12,5 @@ spec:
   ports:
   - port: 3000
     targetPort: 3000
-    nodePort: 29021
+    nodePort: 29534
     name: tcpport
