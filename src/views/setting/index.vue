@@ -329,7 +329,7 @@ export default {
           data: paramsList,
           // headers: {'Content-Type': 'application/x-www-form-urlencoded'}
         }).then(function(res) {
-          if (parseInt(res.data) == 1) {
+          if (res.result == "succeed") {
             _self.$alert('设置成功', '提示', {
               confirmButtonText: '确定'
             }).then(() => {
