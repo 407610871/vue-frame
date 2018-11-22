@@ -93,19 +93,13 @@ export default {
   },
   watch:{
 
-    ObjManage(){
-      if(newVal){
-        this.keyword="";
-      }
-      
-    }
+    
   },
   created() {
     for (let i = 0; i < this.dataObj.length; i++) {
       this.doMoreArray.push(false);
       this.doMore.push(false);
     }
-    
     this.getFormSeled();
     this.getFormSeledShow();
   },
@@ -178,6 +172,10 @@ export default {
       if (this.ObjManage) {
         //进入数据源展示搜索条件清空
         this.keyword="";
+         this.formSeledShow.objectType= [];
+         this.formSeledShow.dataRange= [];
+         this.formSeled.objectType= [];
+         this.formSeled.dataRange= [];
       } else {
         for (var value of this.dataObj) {
           this.$set(this.formSeled, value.id, value.seledData);
