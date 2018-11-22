@@ -13,7 +13,8 @@
             <el-col :span="12" v-loading="loading1">
               <div style="height:323px;width:95%;border:1px solid blue" >
                   <a :href="taskBaseInfo.flowChartPath" target="_blank">
-                    <img :src="taskBaseInfo.flowChartPath">
+                    <img :src="src1">
+                    <textarea name="" id="flowChartPath" cols="30" rows="12" style="display:none" ></textarea>
                   </a>
               </div>
             </el-col>
@@ -135,6 +136,7 @@ export default {
   name: "taskMDialog",
   data: function() {
     return {
+      src1:'',
       //外层loading
       loading1:true,//接入基本信息的loading
       loading2:true,//日志查询的loading
@@ -198,7 +200,6 @@ export default {
             let hours = date.getHours();
             let minutes = date.getMinutes();
             let seconds = date.getSeconds();
-            debugger;
             month = month.toString().length==1?'0'+month:month;
             day = day.toString().length==1?'0'+day:day;
             hours = hours.toString().length==1?'0'+hours:hours;
@@ -225,6 +226,9 @@ export default {
                 that.doMsg('“manager/govern/getFlowChartPath”'+res.data.message,"error");
             }else{
                 that.taskBaseInfo.flowChartPath = res.data.data.path;
+				//图片url换行符需要被识别，所以在此经过textarea转换一下，解决方式有点low，有更好解决办法的欢迎更改
+                document.getElementById('flowChartPath').innerHTML = that.taskBaseInfo.flowChartPath;
+                that.src1 = "data:image/jpg;base64,"+document.getElementById('flowChartPath').innerHTML;
             }
             that.loading1 = false;
         }).catch(function(err){
