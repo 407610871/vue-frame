@@ -4,7 +4,7 @@
       <!-- <el-header class="filter-container" > -->
       <div class="moreSearch">
         <!-- <a v-on:click="collapseExpand" class="right-btn collapse-btn"><i :class="{'el-icon-circle-plus':collapse,'el-icon-remove':!collapse}"></i></a> -->
-        <formFliter  :ObjManage="ObjManage"  v-if="queryParamReady" @highMore="moreHeight" @highSeaech="hightrue" v-bind:formCollapse="collapse" v-bind:dataObj="formFilterData" @doSearch="search" @formFilter="changeFormFilter" />
+        <formFliter :ObjManage="ObjManage" v-if="queryParamReady" @highMore="moreHeight" @highSeaech="hightrue" v-bind:formCollapse="collapse" v-bind:dataObj="formFilterData" @doSearch="search" @formFilter="changeFormFilter" />
         <!-- </el-header> -->
       </div>
       <el-main class="main-container icon-dai">
@@ -13,7 +13,7 @@
           <el-tooltip class="item" effect="light" content="接入源更新" placement="top"> <span class="updatelogo right-btn" v-on:click="updataSource" style="margin-left:10px; margin-right: 42px;"></span> </el-tooltip>
           <table-inver v-if="type=='mysql'|| type=='oracle'|| type=='postgresql' || type=='sqlserver'" class="right-btn" :pdata="tablePa"></table-inver>
           <path-ftp class="right-btn" @refresh="loadTable" v-if="type=='ftp'"></path-ftp>
-          <set-task v-if="type=='mysql'|| type=='oracle'|| type=='postgresql' || type=='sqlserver' || type=='file'" class="right-btn" :rowList="rowList" :jrtype="type" @fre="loadTable()"></set-task>
+          <el-tooltip v-if="type=='mysql'|| type=='oracle'|| type=='postgresql' || type=='sqlserver' || type=='file'" class="item" effect="light" content="批量采集" placement="top"> <span class="setlogo right-btn" @click="showTask()"></span> </el-tooltip>
         </div>
         <el-table ref="multipleTable" :data="mainTableData" stripe :height="tableHeight" border style="width: 100%" tooltip-effect="light" :row-class-name="tableRowClassName" @selection-change="handleSelectionChange">
           <el-table-column type="selection">
@@ -84,7 +84,7 @@
           <el-table-column prop="extendParams.messagesEnqueued" label="注释" v-if="type=='file'" show-overflow-tooltip>
           </el-table-column>
           <!-- oracle，mysql，postgresql -->
-          <el-table-column  label="资源名称" width="180" show-overflow-tooltip v-if="type=='oracle' || type=='mysql' || type=='postgresql'" >
+          <el-table-column label="资源名称" width="180" show-overflow-tooltip v-if="type=='oracle' || type=='mysql' || type=='postgresql'">
             <template slot-scope="scope">
               <div>
                 <el-tooltip class="item" effect="light" content="修改" placement="top" show-overflow-tooltip>
@@ -111,7 +111,7 @@
           </el-table-column>
           <el-table-column prop="comments" label="描述" v-if="type=='oracle' || type=='mysql' || type=='postgresql'">
           </el-table-column>
-          <el-table-column prop="lastChangeTime" label="同步更新时间" v-if="type=='oracle' || type=='mysql' || type=='postgresql'"  min-width="160">
+          <el-table-column prop="lastChangeTime" label="同步更新时间" v-if="type=='oracle' || type=='mysql' || type=='postgresql'" min-width="160">
           </el-table-column>
           <el-table-column prop="dataRange" label="数据范围" v-if="type=='oracle' || type=='mysql' || type=='postgresql'">
           </el-table-column>
@@ -157,6 +157,8 @@
     </el-container>
     <!-- 任务详情 -->
     <dialogTaskDetail :reqObj="reqObj" v-if="showTaskDetail" v-on:closeDia="showTaskDetail=false"></dialogTaskDetail>
+    <!--  批量采集 -->
+    <set-task v-if="showSetTask" class="right-btn" :rowList="rowList" :jrtype="type" @close="closeTask()" @fre="loadTask()"></set-task>
   </div>
 </template>
 <script>
@@ -182,10 +184,11 @@ export default {
       mainTableData: [],
       currentPage: 1,
       pageSize: 20,
-      ObjManage:true,
+      ObjManage: true,
       mainTableDataTotal: 1,
       dialogVisible: false,
       showTaskDetail: false,
+      showSetTask: false,
       moreData: 0,
       myDialogRouter: "adminAdd",
       dialogTitle: "新增",
@@ -305,6 +308,36 @@ export default {
     collapseExpand: function() {
       this.collapse = !this.collapse;
     },
+    closeTask() {
+      this.showSetTask = false;
+    },
+    loadTask() {
+      this.showSetTask = false;
+      this.loadTable();
+    },
+    showTask() {
+      let flag = true;
+      if (this.rowList.length == 0) {
+        this.$message.warning('请选择批式采集的表');
+        return false;
+      } else {
+        if (this.rowList.length == 1) {
+          this.showSetTask = true;
+        } else {
+          for (let i = 1; i < this.rowList.length; i++) {
+            if (this.rowList[0].diyComments != this.rowList[i].diyComments) {
+              flag = false;
+            }
+          }
+          if (flag) {
+            this.showSetTask = true;
+          } else {
+            this.$message.warning('请选择资源名称相同的表');
+            return false;
+          }
+        }
+      }
+    },
     loadTable: function() {
       var _self = this;
 
@@ -341,7 +374,7 @@ export default {
               value.showEdit = false;
             }
             _self.mainTableData = data;
-           
+
             _self.mainTableDataTotal = res.data.data.total;
             if (res.data.data.list.length > 0) {
               _self.tablePa = res.data.data.list[0];
@@ -654,5 +687,21 @@ export default {
 .cell i {
   cursor: pointer;
 }
-.updatelogo {width:30px;height: 30px; background: url('../../../assets/images/dataupdate.svg'); display: inline-block; cursor: pointer;}
+
+.updatelogo {
+  width: 30px;
+  height: 30px;
+  background: url('../../../assets/images/dataupdate.svg');
+  display: inline-block;
+  cursor: pointer;
+}
+
+.setlogo {
+  width: 30px;
+  height: 30px;
+  background: url('../../../assets/images/tasklogo.svg');
+  display: inline-block;
+  cursor: pointer;
+}
+
 </style>
