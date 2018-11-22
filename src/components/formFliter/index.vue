@@ -51,18 +51,18 @@ export default {
   data() {
     return {
       formSeled: {
-         objectType:[],
-        dataRange:[],
-        platform:[],
-       network:[],
-       dataSourceName:[],
+        objectType: [],
+        dataRange: [],
+        platform: [],
+        network: [],
+        dataSourceName: []
       },
       formSeledShow: {
-        objectType:[],
-        dataRange:[],
-        platform:[],
-       network:[],
-       dataSourceName:[],
+        objectType: [],
+        dataRange: [],
+        platform: [],
+        network: [],
+        dataSourceName: []
       },
 
       collapse: true,
@@ -75,9 +75,12 @@ export default {
     };
   },
   props: {
+    ObjManage: {
+      type: Boolean
+    },
     dataObj: {
       type: Array,
-       required: true
+      required: true
     },
     formCollapse: {
       type: Boolean,
@@ -87,24 +90,15 @@ export default {
   },
   computed: {},
   created() {
-    // this.storeReady();
-    console.log(this.dataObj);
     for (let i = 0; i < this.dataObj.length; i++) {
       this.doMoreArray.push(false);
       this.doMore.push(false);
     }
-
-    
-    //  console.log(this.doMoreArray)
-     this.getFormSeled();
-    // console.log(this.formSeled);
+    this.getFormSeled();
     this.getFormSeledShow();
-          console.log(this.formSeled);
-
   },
   mounted() {
     this.getFormSeled();
-    // console.log(this.formSeled);
     this.getFormSeledShow();
   },
 
@@ -116,27 +110,8 @@ export default {
     },
     //搜索条件关闭
     delSelect(index, a) {
-      // debugger;
-
-      console.log(this.dataObj);
-      console.log(this.formSeledShow);
-      console.log(this.formSeled);
-
-      // for (let i = 0; i < this.dataObj.length; i++) {
       this.formSeledShow[this.dataObj[a].id].splice(index, 1);
       this.formSeled[this.dataObj[a].id].splice(index, 1);
-      // }
-      // if (a == 1) {
-      //   this.formSeledShow.dataSourceName.splice(index, 1);
-      //   this.formSeled.dataSourceName.splice(index, 1);
-      // } else if (a == 2) {
-      //   this.formSeledShow.network.splice(index, 1);
-      //   this.formSeled.network.splice(index, 1);
-      //   // this.formSeled.network = "";
-      // } else if (a == 3) {
-      //   this.formSeledShow.platform.splice(index, 1);
-      //   this.formSeled.platform.splice(index, 1);
-      // }
       this.$emit("formFilter", this.formSeled);
     },
     //更多收起功能
@@ -149,8 +124,6 @@ export default {
         }
       }
       this.$emit("highMore", heit);
-      // console.log(this.doMore);
-
       this.doMoreArray[index] = !this.doMoreArray[index];
       this.doMoreArray[index]
         ? (this.dataObj[index].limit = this.dataObj[index].checkData.length)
@@ -162,16 +135,8 @@ export default {
     },
 
     formFilter: function() {
-      console.log(this.formSeled);
-
       this.$emit("formFilter", this.formSeled);
-      // this.$nextTick(() => {
-          this.getFormSeledShow();
-        // });
-            
-
-      console.log(this.formSeled);
-      console.log(this.formSeledShow);
+      this.getFormSeledShow();
     },
 
     //存放数组展示用
@@ -184,14 +149,12 @@ export default {
               this.formSeled[this.dataObj[i].id][z] ==
               this.dataObj[i].checkData[x].id
             ) {
-// this.$nextTick(() => {
-         this.formSeledShow[this.dataObj[i].id].push({
+              // this.$nextTick(() => {
+              this.formSeledShow[this.dataObj[i].id].push({
                 id: this.dataObj[i].checkData[x].id,
                 name: this.dataObj[i].checkData[x].name
-              // });
-        });
-             
-
+                // });
+              });
             }
           }
         }
@@ -199,23 +162,16 @@ export default {
     },
 
     getFormSeled: function() {
-      // console.log('this.dataObj');
-      // console.log(this.dataObj);
-      let obj = {};
-      for (var value of this.dataObj) {
-        // obj[value.id] = value.seledData;
-         this.$set(this.formSeled, value.id, value.seledData)
+      console.log(this.ObjManage);
+      if (this.ObjManage) {
+        //进入数据源展示搜索条件清空
+        this.keyword="";
+        
+      } else {
+        for (var value of this.dataObj) {
+          this.$set(this.formSeled, value.id, value.seledData);
+        }
       }
-// debugger;
-      // for (let i = 0; i < this.dataObj.length; i++) {
-      //   for (let key in this.queryData) {
-      //   this.$set(this.checked, key, [])
-      // }
-      //   obj[this.dataObj[i].id] = this.dataObj[i].seledData;
-      // }
-      // this.formSeled = obj;
-
-      // console.log(this.formSeled);
     }
   }
 };
@@ -303,10 +259,10 @@ export default {
   }
   .look {
     width: auto;
-    color:#425365;
+    color: #425365;
     font-weight: 600;
-    .lookstyle{
-font-weight: normal
+    .lookstyle {
+      font-weight: normal;
     }
   }
   .checkDivItem {

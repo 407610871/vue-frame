@@ -4,7 +4,7 @@
       <!-- <el-header class="filter-container" > -->
       <div class="moreSearch">
         <!-- <a v-on:click="collapseExpand" class="right-btn collapse-btn"><i :class="{'el-icon-circle-plus':collapse,'el-icon-remove':!collapse}"></i></a> -->
-        <formFliter v-if="queryParamReady" @highMore="moreHeight" @highSeaech="hightrue" v-bind:formCollapse="collapse" v-bind:dataObj="formFilterData" @doSearch="search" @formFilter="changeFormFilter" />
+        <formFliter  :ObjManage="ObjManage"  v-if="queryParamReady" @highMore="moreHeight" @highSeaech="hightrue" v-bind:formCollapse="collapse" v-bind:dataObj="formFilterData" @doSearch="search" @formFilter="changeFormFilter" />
         <!-- </el-header> -->
       </div>
       <el-main class="main-container icon-dai">
@@ -19,75 +19,75 @@
           <el-table-column type="selection">
           </el-table-column>
           <!-- ftp -->
-          <el-table-column label="状态" v-if="type=='ftp'">
+          <el-table-column label="状态" v-if="type=='ftp'" show-overflow-tooltip>
             <template slot-scope="scope">
               <span>{{getPeriod(scope.row)}}</span>
             </template>
           </el-table-column>
-          <el-table-column prop="name" label="文件夹名" v-if="type=='ftp'">
+          <el-table-column prop="name" label="文件夹名" v-if="type=='ftp'" show-overflow-tooltip>
           </el-table-column>
-          <el-table-column prop="extendParams.filePath" label="路径" v-if="type=='ftp'">
+          <el-table-column prop="extendParams.filePath" label="路径" v-if="type=='ftp'" show-overflow-tooltip>
           </el-table-column>
-          <el-table-column label="是否删除文件" v-if="type=='ftp'">
+          <el-table-column label="是否删除文件" v-if="type=='ftp'" show-overflow-tooltip>
             <template slot-scope="scope">
               <span v-if="scope.row.isdelet">是</span>
               <span v-if="!scope.row.isdelet">否</span>
             </template>
           </el-table-column>
-          <el-table-column prop="extendParams.diyComments" label="自定义注释" v-if="type=='ftp'">
+          <el-table-column prop="extendParams.diyComments" label="自定义注释" v-if="type=='ftp'" show-overflow-tooltip>
           </el-table-column>
           <!-- RabbitMQ -->
-          <el-table-column prop="name" label="队列名称" v-if="type=='rabbitmq'">
+          <el-table-column prop="name" label="队列名称" v-if="type=='rabbitmq'" show-overflow-tooltip>
           </el-table-column>
-          <el-table-column prop="diyComments" label="队列描述" v-if="type=='rabbitmq'">
+          <el-table-column prop="diyComments" label="队列描述" v-if="type=='rabbitmq'" show-overflow-tooltip>
           </el-table-column>
           <!-- ActiveMQ -->
-          <el-table-column label="状态" v-if="type=='activemq'">
+          <el-table-column label="状态" v-if="type=='activemq'" show-overflow-tooltip>
             <template slot-scope="scope">
               <span>{{getPeriod(scope.row)}}</span>
             </template>
           </el-table-column>
-          <el-table-column prop="extendParams.objectType" label="类型" v-if="type=='activemq'">
+          <el-table-column prop="extendParams.objectType" label="类型" v-if="type=='activemq'" show-overflow-tooltip>
           </el-table-column>
-          <el-table-column prop="name" label="消息名称" v-if="type=='activemq'">
+          <el-table-column prop="name" label="消息名称" v-if="type=='activemq'" show-overflow-tooltip>
           </el-table-column>
-          <el-table-column prop="extendParams.messageSize" label="队列汇总剩余消息数" v-if="type=='activemq'">
+          <el-table-column prop="extendParams.messageSize" label="队列汇总剩余消息数" v-if="type=='activemq'" show-overflow-tooltip>
           </el-table-column>
-          <el-table-column prop="extendParams.consumers" label="消费者数量" v-if="type=='activemq'">
+          <el-table-column prop="extendParams.consumers" label="消费者数量" v-if="type=='activemq'" show-overflow-tooltip>
           </el-table-column>
-          <el-table-column prop="extendParams.messagesDequeued" label="进入队列消息数" v-if="type=='activemq'">
+          <el-table-column prop="extendParams.messagesDequeued" label="进入队列消息数" v-if="type=='activemq'" show-overflow-tooltip>
           </el-table-column>
-          <el-table-column prop="extendParams.messagesEnqueued" label="出队列消息数" v-if="type=='activemq'">
+          <el-table-column prop="extendParams.messagesEnqueued" label="出队列消息数" v-if="type=='activemq'" show-overflow-tooltip>
           </el-table-column>
           <!-- 本地文件 -->
-          <el-table-column label="状态" v-if="type=='file'">
+          <el-table-column label="状态" v-if="type=='file'" show-overflow-tooltip>
             <template slot-scope="scope">
               <span>{{getPeriod(scope.row)}}</span>
             </template>
           </el-table-column>
-          <el-table-column prop="name" label="文件名称" v-if="type=='file'">
+          <el-table-column prop="name" label="文件名称" v-if="type=='file'" show-overflow-tooltip>
           </el-table-column>
-          <el-table-column prop="name" label="文件类型" v-if="type=='file'">
+          <el-table-column prop="name" label="文件类型" v-if="type=='file'" show-overflow-tooltip>
             <template slot-scope="scope">
               <span>{{getFileType(scope.row.name)}}</span>
             </template>
           </el-table-column>
-          <el-table-column prop="lastChangeTime" label="最后修改时间" v-if="type=='file'">
+          <el-table-column prop="lastChangeTime" label="最后修改时间" v-if="type=='file'" show-overflow-tooltip>
           </el-table-column>
-          <el-table-column prop="extendParams.fileSize" label="文件大小" v-if="type=='file'">
+          <el-table-column prop="extendParams.fileSize" label="文件大小" v-if="type=='file'" show-overflow-tooltip>
           </el-table-column>
-          <el-table-column prop="extendParams.messagesDequeued" label="更新方式" v-if="type=='file'">
+          <el-table-column prop="extendParams.messagesDequeued" label="更新方式" v-if="type=='file'" show-overflow-tooltip>
             <template slot-scope="scope">
               <span>历史</span>
             </template>
           </el-table-column>
-          <el-table-column prop="extendParams.messagesEnqueued" label="注释" v-if="type=='file'">
+          <el-table-column prop="extendParams.messagesEnqueued" label="注释" v-if="type=='file'" show-overflow-tooltip>
           </el-table-column>
           <!-- oracle，mysql，postgresql -->
-          <el-table-column label="资源名称" width="180" show-overflow-tooltip v-if="type=='oracle' || type=='mysql' || type=='postgresql'">
+          <el-table-column  label="资源名称" width="180" show-overflow-tooltip v-if="type=='oracle' || type=='mysql' || type=='postgresql'" >
             <template slot-scope="scope">
               <div>
-                <el-tooltip class="item" effect="light" content="修改" placement="top">
+                <el-tooltip class="item" effect="light" content="修改" placement="top" show-overflow-tooltip>
                   <i @click="editingRow.index = scope.$index; editingRow.diyComments = scope.row.diyComments;scope.row.showEdit = !scope.row.showEdit" class="el-icon-edit-outline table-action-btn" v-show="!scope.row.showEdit" />
                 </el-tooltip>
                 <span v-show="!scope.row.showEdit">{{ scope.row.diyComments }}</span>
@@ -111,7 +111,7 @@
           </el-table-column>
           <el-table-column prop="comments" label="描述" v-if="type=='oracle' || type=='mysql' || type=='postgresql'">
           </el-table-column>
-          <el-table-column prop="lastChangeTime" label="同步更新时间" v-if="type=='oracle' || type=='mysql' || type=='postgresql'">
+          <el-table-column prop="lastChangeTime" label="同步更新时间" v-if="type=='oracle' || type=='mysql' || type=='postgresql'"  min-width="160">
           </el-table-column>
           <el-table-column prop="dataRange" label="数据范围" v-if="type=='oracle' || type=='mysql' || type=='postgresql'">
           </el-table-column>
@@ -182,6 +182,7 @@ export default {
       mainTableData: [],
       currentPage: 1,
       pageSize: 20,
+      ObjManage:true,
       mainTableDataTotal: 1,
       dialogVisible: false,
       showTaskDetail: false,
@@ -267,11 +268,8 @@ export default {
   },
   watch: {
     tableParams(newVal, oldVal) {
-      // console.log(newVal);
-      // console.log(oldVal);
       if (JSON.stringify(newVal) != JSON.stringify(oldVal)) {
-        // console.log('change');
-        this.loadTable();
+        // this.loadTable();
       }
     }
   },
@@ -288,20 +286,11 @@ export default {
     this.loadTable();
   },
   methods: {
-    // search: function(keyword) {
-    //   this.setStore({
-    //     pageNum: 1,
-    //     condition: keyword,
-    //     timeFlag: new Date().getTime()
-    //   });
-    //   this.loadTable();
-    // },
     moreHeight(data) {
       this.moreData = data;
     },
     hightrue: function(a) {
       this.collapse = a;
-      // console.log(a);
     },
     tableRowClassName: function(scope, rowIndex) {
       if (scope.row.isDeleted == 1) {
@@ -332,7 +321,6 @@ export default {
         this.tableParams.condition :
         "";
       paramsObj.objectType = this.tableParams.objectType.join(",");
-      console.log(this.tableParams)
       paramsObj.dataRange = this.tableParams.dataRange.join(",");
       paramsObj.accessSysId = parseInt(this.$route.params.sourceId);
       this.$ajax({
@@ -353,10 +341,7 @@ export default {
               value.showEdit = false;
             }
             _self.mainTableData = data;
-            // console.log(
-            //   "_self.mainTableData",
-            //   JSON.stringify(_self.mainTableData[0])
-            // );
+           
             _self.mainTableDataTotal = res.data.data.total;
             if (res.data.data.list.length > 0) {
               _self.tablePa = res.data.data.list[0];
@@ -368,7 +353,6 @@ export default {
             _self.currentPage = _self.tableParams.pageNum;
             _self.pageShow = true;
           } else {
-            console.log(res.code);
             _self.$alert("加载接入对象列表失败", "提示", {
               confirmButtonText: "确定"
             });
@@ -401,7 +385,6 @@ export default {
             row.diyComments = _self.editingRow.diyComments;
             row.showEdit = false;
           } else {
-            console.log(res.data.code);
             _self.$alert("字段中文名称修改失败", "提示", {
               confirmButtonText: "确定"
             });
@@ -485,7 +468,6 @@ export default {
             _self.$alert("更新失败", "提示", {
               confirmButtonText: "确定"
             });
-            // console.log(res.code)
           }
         })
         .catch(function(err) {
@@ -516,7 +498,6 @@ export default {
             _self.$alert("更新失败", "提示", {
               confirmButtonText: "确定"
             });
-            // console.log(res.code)
           }
         })
         .catch(function(err) {
@@ -529,7 +510,6 @@ export default {
     handleSelectionChange: function(val) {
       this.seledRows = val;
       this.rowList = val;
-      // console.log(this.rowList);
     },
     changeFormFilter: function(fliterParams) {
       fliterParams.pageNum = 1;
@@ -550,7 +530,6 @@ export default {
 
 
       var queryParams = this.$store.state.queryParams[this.$route.name];
-      console.log(queryParams);
       let objectType = queryParams.objectType ? queryParams.objectType : [];
       let dataRange = queryParams.dataRange ? queryParams.dataRange : [];
 
@@ -559,7 +538,7 @@ export default {
           id: "objectType",
           type: "checkbox",
           checkData: this.objectType,
-          seledData: objectType,
+          seledData: [],
           limit: 4
         },
         {
@@ -567,7 +546,7 @@ export default {
           id: "dataRange",
           type: "checkbox",
           checkData: this.dataRange,
-          seledData: dataRange,
+          seledData: [],
           limit: 4
         }
       ];
@@ -614,7 +593,7 @@ export default {
 </style>
 <style rel="stylesheet/scss" lang="scss" scoped>
 .moreSearch {
-  padding-top: 10px;
+  padding-top: 20px;
 }
 
 .dashboard-container {

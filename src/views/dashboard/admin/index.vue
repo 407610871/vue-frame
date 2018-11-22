@@ -7,7 +7,7 @@
                 <reg-dialog @refreshTable="loadTable"></reg-dialog>
             </div>
             <!-- <el-tooltip class="item" effect="light" content="收起/展开" placement="top">		<a v-on:click="collapseExpand" class="right-btn collapse-btn">		<i :class="{'el-icon-circle-plus':collapse,'el-icon-remove':!collapse}"></i>		</a>		</el-tooltip> -->
-            <formFliter v-if="queryParamReady"    @highMore="moreHeight"    @highSeaech="hightrue" v-bind:formCollapse="collapse" v-bind:dataObj="formFilterData" @doSearch="search" @formFilter="changeFormFilter" />
+            <formFliter style="padding-top: 20px" v-if="queryParamReady"    @highMore="moreHeight"    @highSeaech="hightrue" v-bind:formCollapse="collapse" v-bind:dataObj="formFilterData" @doSearch="search" @formFilter="changeFormFilter" />
 
             <div class="count-container">
                 <div class="count-title">
@@ -28,23 +28,23 @@
                         <a href="javascript:void(0)" v-on:click="goSubPage(scope.$index,scope.row.dataSourceName)">{{ scope.row.name }}</a>
                     </template>
                 </el-table-column>
-                <el-table-column prop="id" label="接入源ID" width="180">
+                <el-table-column prop="id" label="接入源ID" min-width="180">
                 </el-table-column>
-                <el-table-column prop="dataSourceName" label="接入源类型">
+                <el-table-column prop="dataSourceName" label="接入源类型" min-width="140">
                 </el-table-column>
-                <el-table-column label="对接平台">
+                <el-table-column label="对接平台" min-width="140">
                     <template slot-scope="scope">
                         {{getPlatfrom(scope.row.platform)}}
                     </template>
                 </el-table-column>
-                <el-table-column label="接入数据来源">
+                <el-table-column label="接入数据来源" min-width="140">
                     <template slot-scope="scope">
                         {{getNetwork(scope.row.network)}}
                     </template>
                 </el-table-column>
-                <el-table-column prop="createTime" label="注册时间">
+                <el-table-column prop="createTime" label="注册时间" min-width="160">
                 </el-table-column>
-                <el-table-column label="操作">
+                <el-table-column label="操作" min-width="140">
                     <template slot-scope="scope">
                         <div class="lofile">
                             <edit-dialog :acId="scope.row.id" @refreshTable="loadTable"></edit-dialog>
