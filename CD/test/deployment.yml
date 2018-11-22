@@ -32,7 +32,7 @@ spec:
 #web-domn
         - name: API_DOWN
           value: http://$(NODE_IP):32555/DOMN
-          - name: API_WARN
+        - name: API_WARN
           value: http://$(NODE_IP):32220
         resources:
           limits:
