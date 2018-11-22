@@ -1,9 +1,9 @@
 <template>
   <div id="NewAisdeTree">
-    <div class="tree-tools" :style="styleObj">
-      <a href="javascript:void(0)" v-on:click="addNode"><i class="el-icon-plus"></i></a>
-      <a href="javascript:void(0)" v-on:click="editNode"><i class="el-icon-edit"></i></a>
-      <a href="javascript:void(0)" v-on:click="delNode"><i class="el-icon-close"></i></a>
+    <div class="tree-tools" >
+      <a href="javascript:void(0)" v-on:click="addNode" :style="styleObj"><i class="el-icon-plus"></i></a>
+      <a href="javascript:void(0)" v-on:click="editNode" :style="styleObj"><i class="el-icon-edit"></i></a>
+      <a href="javascript:void(0)" v-on:click="delNode" :style="styleObj"><i class="el-icon-close"></i></a>
     </div>
 		<div class="treeContainer">
 			<el-tree
