@@ -17,19 +17,19 @@
             @close="handleClose(item)">
             {{getStatusName(item)}}
         </el-tag> -->
-        <el-form label-width="110px" class="formGroupSelect" v-if="taskName.length || status.length || time.length" style="padding-left:27px;">
+        <el-form label-width="110px" class="formGroupSelect" v-if="taskName!='' || status.length || time.length">
             <el-form-item label="已选查询条件:">
-                <div v-show="status.length>0" class="selected-task-type" style="display: inline-block;">
+                <div v-show="taskName!=''" class="selected-task-type">
+                    <span>输入条件:</span>
+                    <span>{{taskName}}<i class="el-icon-error" @click="taskName = ''"></i></span>
+                </div>
+                <div v-show="status.length>0" class="selected-task-type">
                     <span>任务状态:</span>
                     <span v-show="status.indexOf('Paused')>-1">暂停<span @click="pop('Paused',status);"><i class="el-icon-error"></i></span></span>
                     <span v-show="status.indexOf('create')>-1">新建<span @click="pop('create',status);"><i class="el-icon-error"></i></span></span>
                     <span v-show="status.indexOf('Finished (with errors)')>-1">失败<span @click="pop('Finished (with errors)',status);"><i class="el-icon-error"></i></span></span>
                     <span v-show="status.indexOf('Running')>-1">运行<span @click="pop('Running',status);"><i class="el-icon-error"></i></span></span>
                     <span v-show="status.indexOf('Finished')>-1">完成<span @click="pop('Finished',status);"><i class="el-icon-error"></i></span></span>
-                </div>
-                <div v-show="taskName.length>0" class="selected-task-type" style="display: inline-block;">
-                    <span>任务名称:</span>
-                    <span>{{taskName}}<i class="el-icon-error" @click="taskName = ''"></i></span>
                 </div>
                 <div v-show="time!=null && time.length>0" class="selected-task-type">
                     <span style="margin-right:10px;">任务开始时间:</span>
@@ -61,12 +61,12 @@
         <el-table-column label="序号" type="index" width="100"></el-table-column>
         <el-table-column label="任务名称" prop="taskName" :show-overflow-tooltip='true' min-width="95"></el-table-column>
         <el-table-column label="任务类型"  prop="taskType" min-width="95"></el-table-column>
-        <el-table-column label="任务开始时间" :show-overflow-tooltip='true' min-width="130">
+        <el-table-column label="任务开始时间" :show-overflow-tooltip='true' min-width="150">
             <template slot-scope="scope">
                 <span>{{scope.row.startTime | formatDateTime}}</span>
             </template>
         </el-table-column>
-        <el-table-column label="任务停止时间" :show-overflow-tooltip='true' min-width="130">
+        <el-table-column label="任务停止时间" :show-overflow-tooltip='true' min-width="150">
             <template slot-scope="scope">
                 <span>{{scope.row.endTime | formatDateTime}}</span>
             </template>
@@ -304,16 +304,23 @@ export default {
 .formGroupSelect{
     max-height:82px;
     overflow:auto;
+    padding-left:27px;
 }
-.selected-task-type span{
-  margin-right: 10px;
-  color: #425365;
+.formGroup{
+    padding-left:27px;
 }
-.selected-task-type span:first-child{
-  font-weight: 600;
-}
-.selected-task-type span i{
-  margin-left: 3px;
+.selected-task-type{
+    display:inline-block;
+    span{
+        margin-right: 10px;
+        color: #425365;
+        &first-child{
+            font-weight: 600;
+        }
+        i{
+            margin-left: 3px;
+        }
+    }
 }
 .count-container {
   background-color: #fff;
