@@ -30,15 +30,7 @@
               </el-radio-group>
             </el-form-item>
           </el-col>
-          <el-col :span="24">
-            <el-form-item label="接入优先级:" prop="accessPri">
-              <el-radio-group v-model="ruleForm.accessPri">
-                <el-radio label="1">高</el-radio>
-                <el-radio label="2">中</el-radio>
-                <el-radio label="3">低</el-radio>
-              </el-radio-group>
-            </el-form-item>
-          </el-col>
+         
           <el-col :span="24">
             <el-form-item label="任务提交方式:" prop="taskSubMode">
               <el-radio-group v-model="ruleForm.taskSubMode">
@@ -607,7 +599,7 @@ export default {
         var save = {
           "incrementColumn": this.increArr.name,
           "incrementColumnType": this.increArr.datatype,
-          "priority": this.ruleForm.accessPri,
+          
           "taskInfoId": this.taskInfoId,
           "pollIntervalMs": pollIntervalMs,
           "collectionTaskType": ctt,
@@ -700,7 +692,7 @@ export default {
         //注册
         var save = {
           "accessSysObjDetails": this.increArr,
-          "priority": this.ruleForm.accessPri,
+          
           "jobType": actech,
           "accessSysObjInfoId": this.rowList.id,
           "pollIntervalMs": pollIntervalMs,
@@ -824,7 +816,7 @@ export default {
           this.editfalg = true;
           var data = res.data.data;
           if (data != undefined) {
-            this.ruleForm.accessPri = data.priority; //优先级
+            
             this.yid = data.incrementColumnId; //增量字段的id
             //增量字段
             this.isdisable = true;

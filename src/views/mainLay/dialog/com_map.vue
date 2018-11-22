@@ -197,7 +197,7 @@ export default {
     },
     //上一步
     pre() {
-      //this.$emit('pre');
+     /* this.$emit('pre');*/
     },
     //下一步
     next() {
@@ -213,7 +213,7 @@ export default {
     this._getType()
   },
   watch: {
-    
+   
   },
   created() {
 
