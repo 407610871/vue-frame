@@ -345,7 +345,11 @@ export default {
     },
     loadTable: function() {
       var _self = this;
-
+      let urlIndex = _self.$route.path.indexOf('[');
+      let urlIds = '';
+      if(urlIndex!=-1){
+        urlIds = _self.$route.path.subString(urlIndex,_self.$route.path.length-1);
+      }
       _self.jrtype = this.$store.state.jrtype;
 
       _self.loading = true;
@@ -361,6 +365,7 @@ export default {
       paramsObj.objectType = this.tableParams.objectType.join(",");
       paramsObj.dataRange = this.tableParams.dataRange.join(",");
       paramsObj.accessSysId = parseInt(this.$route.params.sourceId);
+      paramsObj.objInfoId = urlIds;
       this.$ajax({
           // url: window.ENV.API_DACM+'ctables/datas',
           url: window.ENV.API_DACM + "/ctables/datas",
