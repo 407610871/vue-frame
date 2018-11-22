@@ -58,7 +58,6 @@ export default {
     ]),
     _getMatch() {
       var _self = this;
-      _self.schemaMappingDTOList = [];
       _self.tableData = [];
       _self.tableData = _self.$store.state.noreData;
       for (let j = 0; j < _self.tableData.length; j++) {
@@ -74,7 +73,7 @@ export default {
       this._getAllType();
     },
     _getType() {
-      
+      debugger;
       var _self = this;
       _self.TypeData = [];
       /*_self.TypeData = res.data[0].datas_mapping;*/
@@ -198,7 +197,7 @@ export default {
     },
     //上一步
     pre() {
-      this.$emit('pre');
+      //this.$emit('pre');
     },
     //下一步
     next() {
@@ -210,7 +209,11 @@ export default {
 
   },
   mounted() {
-   
+    this._getMatch();
+    this._getType()
+  },
+  watch: {
+    
   },
   created() {
 
@@ -236,8 +239,7 @@ export default {
     },
     msg() {
       if (this.msg == "second") {
-        this._getMatch();
-        this._getType()
+
       }
     }
   }

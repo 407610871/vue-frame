@@ -4,13 +4,13 @@
       <!-- <el-header class="filter-container" > -->
       <div class="moreSearch">
         <!-- <a v-on:click="collapseExpand" class="right-btn collapse-btn"><i :class="{'el-icon-circle-plus':collapse,'el-icon-remove':!collapse}"></i></a> -->
-        <formFliter   :ObjManage="ObjManage" v-if="cleanData" @highMore="moreHeight" @highSeaech="hightrue" v-bind:formCollapse="collapse" v-bind:dataObj="formFilterData" @doSearch="search" @formFilter="changeFormFilter" />
+        <formFliter :ObjManage="ObjManage" v-if="queryParamReady" @highMore="moreHeight" @highSeaech="hightrue" v-bind:formCollapse="collapse" v-bind:dataObj="formFilterData" @doSearch="search" @formFilter="changeFormFilter" />
         <!-- </el-header> -->
       </div>
       <el-main class="main-container icon-dai">
         <div class="table-tools">
           <!-- <i title="数据更新" class="enc-icon-shujugengxin"  v-on:click="updataSource"><i> -->
-          <el-tooltip class="item" effect="light" content="接入源更新" placement="top"> <span class="updatelogo right-btn" v-on:click="updataSource" style="margin-left:10px; margin-right: 42px;"></span> </el-tooltip>
+          <el-tooltip v-if="type=='mysql'|| type=='oracle'|| type=='postgresql' || type=='sqlserver' || type=='file'" class="item" effect="light" content="接入源更新" placement="top"> <span class="updatelogo right-btn" v-on:click="updataSource" style="margin-left:10px; margin-right: 42px;"></span> </el-tooltip>
           <table-inver v-if="type=='mysql'|| type=='oracle'|| type=='postgresql' || type=='sqlserver'" class="right-btn" :pdata="tablePa"></table-inver>
           <path-ftp class="right-btn" @refresh="loadTable" v-if="type=='ftp'"></path-ftp>
           <el-tooltip v-if="type=='mysql'|| type=='oracle'|| type=='postgresql' || type=='sqlserver' || type=='file'" class="item" effect="light" content="批量采集" placement="top"> <span class="setlogo right-btn" @click="showTask()"></span> </el-tooltip>
@@ -188,11 +188,6 @@ export default {
       mainTableDataTotal: 1,
       dialogVisible: false,
       showTaskDetail: false,
-      searchParams: {
-        condition: "",
-        objectType: [],
-        dataRange: []
-      },
       showSetTask: false,
       moreData: 0,
       myDialogRouter: "adminAdd",
@@ -201,8 +196,6 @@ export default {
       alertContent: "",
       pageShow: true,
       seledRows: [],
-      cleanData: true,
-
       collapse: true,
       formFilterData: [],
       rowList: [],
@@ -212,8 +205,7 @@ export default {
         diyComments: ""
       },
       jrtype: "",
-      objectType: [
-        {
+      objectType: [{
           id: 1,
           diyComments: ["TABLE"],
           name: "表"
@@ -229,8 +221,7 @@ export default {
           name: "其他"
         }
       ],
-      dataRange: [
-        {
+      dataRange: [{
           id: 1,
           name: "全市"
         },
@@ -256,9 +247,9 @@ export default {
       return this.$store.state.queryParams.accessObjManage;
     },
     tableHeight: function() {
-      return this.collapse
-        ? window.innerHeight - 280
-        : window.innerHeight - 315;
+      return this.collapse ?
+        window.innerHeight - 280 :
+        window.innerHeight - 315;
     },
     headerHeight: function() {
       return this.collapse ? "50px" : "85px";
@@ -279,27 +270,15 @@ export default {
     DialogTaskDetail
   },
   watch: {
-    tableParams(newVal, oldVal) {
+    tableParams(newVal, oldVal) {   
       if (JSON.stringify(newVal) != JSON.stringify(oldVal)) {
-        if (newVal.deptId == oldVal.deptId) {
-          //判断树的调度不会影响
-          // if (
-          //   newVal.dataRange.toString() == oldVal.dataRange.toString() &&
-          //   newVal.objectType.toString() == oldVal.objectType.toString()
-          // ) {
-          //判断高级搜索的词不会进入
-          this.loadTable();
-          // }
-        }
+          if(newVal.deptId ==oldVal.deptId ){//判断树的调度不会影响
+            if((newVal.dataRange.toString()  == oldVal.dataRange.toString())&&(newVal.objectType .toString()  == oldVal.objectType .toString())){//判断高级搜索的词不会进入
+                  this.loadTable();
+            }
+          }
+      
       }
-    },
-    $route(to, from) {
-      this.cleanData = false;
-      this.searchParams.condition = "";
-      this.searchParams.objectType = [];
-      this.searchParams.dataRange = [];
-            console.log(this.searchParams)
-
     }
   },
   mounted() {
@@ -344,7 +323,7 @@ export default {
     showTask() {
       let flag = true;
       if (this.rowList.length == 0) {
-        this.$message.warning("请选择批式采集的表");
+        this.$message.warning('请选择批式采集的表');
         return false;
       } else {
         if (this.rowList.length == 1) {
@@ -358,7 +337,7 @@ export default {
           if (flag) {
             this.showSetTask = true;
           } else {
-            this.$message.warning("请选择资源名称相同的表");
+            this.$message.warning('请选择资源名称相同的表');
             return false;
           }
         }
@@ -380,27 +359,25 @@ export default {
         pagNum: this.tableParams.pageNum,
         count: _self.pageSize
       };
-      paramsObj.condition = this.searchParams.condition
-        ? this.searchParams.condition
-        : "";
-      paramsObj.objectType = this.searchParams.objectType.join(",");
-      paramsObj.dataRange = this.searchParams.dataRange.join(",");
+      paramsObj.condition = this.tableParams.condition ?
+        this.tableParams.condition :
+        "";
+      paramsObj.objectType = this.tableParams.objectType.join(",");
+      paramsObj.dataRange = this.tableParams.dataRange.join(",");
       paramsObj.accessSysId = parseInt(this.$route.params.sourceId);
-      console.log(this.searchParams)
+      paramsObj.objInfoId = urlIds;
       this.$ajax({
-        // url: window.ENV.API_DACM+'ctables/datas',
-        url: window.ENV.API_DACM + "/ctables/datas",
-        //  url:'http://10.19.160.25:8080/DACM/ctables/datas',
+          // url: window.ENV.API_DACM+'ctables/datas',
+          url: window.ENV.API_DACM + "/ctables/datas",
+          //  url:'http://10.19.160.25:8080/DACM/ctables/datas',
 
-        method: "post",
-        data: JSON.stringify(paramsObj),
-        headers: {
-          "Content-Type": "application/json"
-        }
-      })
+          method: "post",
+          data: JSON.stringify(paramsObj),
+          headers: {
+            "Content-Type": "application/json"
+          }
+        })
         .then(res => {
-          _self.cleanData = true;
-
           if (res.data.success) {
             var data = res.data.data.list;
             for (var value of data) {
@@ -513,10 +490,8 @@ export default {
         condition: keyword,
         timeFlag: new Date().getTime()
       });
-
       this.loadTable();
     },
-
     updataSource: function() {
       var _self = this;
       self.loadTable = true;
@@ -580,11 +555,8 @@ export default {
       this.rowList = val;
     },
     changeFormFilter: function(fliterParams) {
-      this.searchParams = fliterParams;
       fliterParams.pageNum = 1;
-      // this.setStore(fliterParams);
-
-      fliterParams.keyword = "";
+      this.setStore(fliterParams);
     },
     storeReady() {
       // var queryParams = this.$store.state.queryParams.accessObjManage;
@@ -598,12 +570,13 @@ export default {
       }
     },
     setFliter() {
+
+
       var queryParams = this.$store.state.queryParams[this.$route.name];
       let objectType = queryParams.objectType ? queryParams.objectType : [];
       let dataRange = queryParams.dataRange ? queryParams.dataRange : [];
 
-      this.formFilterData = [
-        {
+      this.formFilterData = [{
           name: "接入对象类型：",
           id: "objectType",
           type: "checkbox",
@@ -649,6 +622,7 @@ export default {
     }
   }
 };
+
 </script>
 <style lang="scss">
 .el-table .delete-row {
@@ -658,6 +632,7 @@ export default {
 .el-table .add-row {
   color: red;
 }
+
 </style>
 <style rel="stylesheet/scss" lang="scss" scoped>
 .moreSearch {
@@ -726,7 +701,7 @@ export default {
 .updatelogo {
   width: 30px;
   height: 30px;
-  background: url("../../../assets/images/dataupdate.svg");
+  background: url('../../../assets/images/dataupdate.svg');
   display: inline-block;
   cursor: pointer;
 }
@@ -734,8 +709,9 @@ export default {
 .setlogo {
   width: 30px;
   height: 30px;
-  background: url("../../../assets/images/tasklogo.svg");
+  background: url('../../../assets/images/tasklogo.svg');
   display: inline-block;
   cursor: pointer;
 }
+
 </style>
