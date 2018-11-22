@@ -270,10 +270,14 @@ export default {
     DialogTaskDetail
   },
   watch: {
-    tableParams(newVal, oldVal) {
+    tableParams(newVal, oldVal) {   
       if (JSON.stringify(newVal) != JSON.stringify(oldVal)) {
-          if(newVal.deptId ==oldVal.deptId )
-        this.loadTable();
+          if(newVal.deptId ==oldVal.deptId ){//判断树的调度不会影响
+            if((newVal.dataRange.toString()  == oldVal.dataRange.toString())&&(newVal.objectType .toString()  == oldVal.objectType .toString())){//判断高级搜索的词不会进入
+                  this.loadTable();
+            }
+          }
+      
       }
     }
   },
