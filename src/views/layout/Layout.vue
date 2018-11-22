@@ -7,7 +7,7 @@
       <nav-menu />
       <div class="right-menu">
         <el-popover placement="bottom-start" width="200" trigger="hover">
-          <ul class="popup-menu">
+          <ul class="popup-menu warn-menu">
             <li><a href="javascript:void(0)" v-on:click="goRoute('recyclingBins')">回收箱</a></li>
             <li><a :href="warnurl" target="_blank">告警中心</a></li>
           </ul>
@@ -271,6 +271,13 @@ export default {
 <style rel="stylesheet/scss" lang="scss" scoped>
 @import 'src/styles/variables.scss';
 @import "src/styles/mixin.scss";
+.warn-menu a{
+  line-height: 30px;
+  
+}
+.warn-menu li:nth-child(1) a{
+  border-bottom:1px solid #c9cdd0;
+}
 .app-wrapper {
   @include clearfix;
   position: relative;
