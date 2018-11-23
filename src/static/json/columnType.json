@@ -104,11 +104,11 @@
   "type": "ftp",
   "datas": [
     "STRING",
-    "INT"
+    
   ],
   "datas_mapping": [
     "STRING",
-    "INT"
+    
   ]
 },
 {
