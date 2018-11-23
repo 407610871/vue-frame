@@ -210,9 +210,7 @@ export default {
 
       Promise.all([promise0]).then(() => {
         this.$ajax.post(window.ENV.API_DACM + '/deptInfo/delDeptInfo?id=' + this.editingNode.id).then(function(res) {
-            // this.$ajax.post('./success').then(function(res){
-            // console.log('delsuccess');
-            if (res.data.success != "false"&&res.data.success!=false) {
+            if (res.data.success  != "false"&&res.data.success!=false) {//后端传过来的flag有“”所以以防万一
               const parent = _self.editingData.parent;
               const children = parent.data.children || parent.data;
               const index = children.findIndex(d => d.id === _self.editingNode.id);
@@ -222,6 +220,10 @@ export default {
               _self.editingNode = null;
               //传空数组给监控页面，如果当前选择不是
               _self.$root.eventHub.$emit('selDept', []);
+              //跳转到dashboard路由锁在页面
+                if (_self.$route.name == "accessObjManage" || _self.$route.name == "accessObjInfo") {
+               _self.$router.push({ name: 'dashboard' });
+      }
             } else {
               console.log(res.data.code)
               _self.$alert('删除部门节点失败', '提示', {
