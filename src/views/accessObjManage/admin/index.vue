@@ -517,9 +517,9 @@ export default {
       this.setStore({
         pageNum: 1,
         condition: keyword,
-        timeFlag: new Date().getTime()
+        // timeFlag: new Date().getTime()
       });
-
+      this.searchParams.condition=keyword;
       this.loadTable();
     },
 
