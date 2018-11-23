@@ -42,7 +42,7 @@
             </el-col>
             <el-col :span="4" class="bank">bank</el-col>
             <el-col :span="10">
-              <el-form-item label="目标表:">
+              <el-form-item label="目标表:" :title="sourceBaseInfo.targetTableName">
                 <span>{{sourceBaseInfo.targetTableName}}</span>
               </el-form-item>
             </el-col>
@@ -258,7 +258,6 @@
 .task-Detail-dialog .proInfo-box .el-form-item--medium .el-form-item__content{
   overflow: hidden;
   text-overflow: ellipsis;
-  width: 120px;
   white-space: nowrap;
 }
 </style>
