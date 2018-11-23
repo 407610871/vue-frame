@@ -12,7 +12,7 @@
     <div class="checkDiv">
       <el-form-item class="isSelect" label="已筛选条件：" v-show="keyword!=''||formSeledShow.dataSourceName.length!=0||formSeledShow.network.length!=0||formSeledShow.platform.length!=0||formSeledShow.objectType.length!=0||formSeledShow.dataRange.length!=0">
         <div class="look" v-show="keyword!=''">
-              查询条件：<span class="lookstyle searchStyle">{{keyword}}</span> <i style="margin-left: 5px;" class="el-icon-error" @click="keyword=''"></i>
+              查询条件：<span class="lookstyle searchStyle">{{keyword}}</span> <i style="margin-left: 5px;cursor: pointer;" class="el-icon-error" @click="keyword=''"></i>
         </div>
         <div class="look" v-show="formSeledShow[item.id].length!=0" v-for="(item,index1) in dataObj" :key="index1">{{item.name}}
           <span   class="lookstyle" v-for="(item1,index) in formSeledShow[item.id]" :key="index"> {{item1.name}} <i  class="el-icon-error" @click="delSelect(index,index1)"></i>
@@ -305,6 +305,7 @@ export default {
     i {
       // color: #747474;
       margin-left: 5px;
+      cursor: pointer;
     }
   }
 }
