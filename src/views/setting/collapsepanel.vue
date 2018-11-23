@@ -60,6 +60,8 @@ export default {
       pageSize: 5,
       isEditIndex:-1,
       isEditPage:-1,
+      isDelPage:-1,
+      isAddFlag:-1,
     }
   },
   props: {
@@ -73,13 +75,23 @@ export default {
       deep: true,
       handler: function(newVal, oldVal) {
         this.settingList = newVal;
+          this.seledId = this.isEditIndex;
         console.log(this.settingList);
         console.log(oldVal);
-         if(this.isEditIndex != -1){//如果当前修改过
-      this.seledId = this.isEditIndex;
-      this.currentPage =this.pageisEditPage;
-    }else{
-this.seledId = this.settingList.seledId;
+        if(this.isDelPage !=-1){//删除之后跳转到操作页面并不展示内容
+          this.activeIndex =-1;
+          this.currentPage =isDelPage;
+          this.pageNum =isDelPage;
+        }else if(this.isAddFlag !=-1){//新增flag，新增之后跳到第一页第一个
+        this.activeIndex =0;
+        this.currentPage =1;
+        this.pageNum =1;
+        }else if(this.isEditIndex !=-1){//修改flag，修改之后跳转到当前页，当前项
+              this.activeIndex  = this.isEditIndex;
+         this.currentPage = this.isEditPage;
+         this.pageNum = this.isEditPage;
+        }else{
+       this.seledId = this.settingList.seledId;
         for (var i = 0; i < this.settingList.list.length; i++) {
           if (this.settingList.list[i].storageId == this.settingList.seledId) {
             this.activeIndex = i;
@@ -92,6 +104,10 @@ this.seledId = this.settingList.seledId;
         this.storageList = this.settingList.list;
         this.total = this.settingList.list.length;
         this.pageReady = true;
+        this.isDelPage =-1;//重置flag
+        this.isAddFlag =-1;
+        this.isEditIndex =-1;
+        this.isEditPage =-1;
       }
     }
   },
@@ -198,7 +214,8 @@ this.seledId = this.settingList.seledId;
             _self.$alert( '删除成功', '提示', {
               confirmButtonText: '确定'
             }).then(()=>{
-             _self.refresh();
+               _self.isDelPage =_self.currentPage; //删除flag
+             _self.$emit('refresh','');
             })
           } else {
             _self.$alert(res.data.message, '提示', {
@@ -215,6 +232,7 @@ this.seledId = this.settingList.seledId;
     },
     //新增成功刷新
     refresh() {
+      this.isAddFlag =1;
       this.$emit('refresh','');
     },
     refreshs(value){
