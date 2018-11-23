@@ -1,7 +1,7 @@
 <template>
   <div class="taskMDialog typeMapDia">
     <div class="comTable">
-      <el-table :data="schemaMappingDTOList" stripe height="250">
+      <el-table :data="schemaMappingDTOList" stripe height="250" v-loading="loading">
         <el-table-column prop="orgColumnName" label="数据源字段名称">
         </el-table-column>
         <el-table-column prop="orgColumnType" label="数据源字段类型">
@@ -47,6 +47,7 @@ export default {
       cloneData: [],
       mapData: [],
       smapData: [],
+      loading:false,
       schemaMappingDTOList: [],
 
     }
@@ -65,7 +66,9 @@ export default {
         count: 20,
         term: ""
       }
+      _self.loading = true;
       this.$ajax.post(this.GLOBAL.api.API_DACM + '/objDetail/dataList', map).then(function(res) {
+        _self.loading = false;
         if (res.data.success) {
           _self.tableData = [];
           _self.schemaMappingDTOList = [];
@@ -83,7 +86,7 @@ export default {
           _self._getAllType();
         }
       }).catch(function(err) {
-
+         _self.loading = false;
       })
     },
     _getMatch() {
