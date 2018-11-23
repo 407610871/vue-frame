@@ -123,14 +123,20 @@ export default {
             return;
         }
       if (this.actionFlag == 'add') {
-        
-        this.$ajax.post(window.ENV.API_DACM + '/deptInfo/insertDeptInfo?pid=' + this.editingNode.id + '&deptName=' + this.itemTxt + '&level=' + (this.editingNode.children ? this.editingNode.children.length : 0)).then(function(res) {
+        let len = _self.editingNode.children.length;
+        let level=0;
+        if(len==0){
+          level=0;
+        }else{
+          level = Number(_self.editingNode.children[len-1].level)+1;
+        }
+        this.$ajax.post(window.ENV.API_DACM + '/deptInfo/insertDeptInfo?pid=' + this.editingNode.id + '&deptName=' + this.itemTxt + '&level=' + level).then(function(res) {
             // this.$ajax.post('./addDept').then(function(res){
             console.log('addsuccess');
             console.log(res);
             if (res.data.success) {
               _self.dialogVisible = false;
-              const newChild = { id: res.data.id, deptName: _self.itemTxt, children: [] };
+              const newChild = { id: res.data.id, deptName: _self.itemTxt,level:level, children: [] };
               if (!_self.editingNode.children) {
                 _self.$set(_self.editingNode, 'children', []);
               }
