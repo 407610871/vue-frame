@@ -258,7 +258,6 @@
 .task-Detail-dialog .proInfo-box .el-form-item--medium .el-form-item__content{
   overflow: hidden;
   text-overflow: ellipsis;
-  // width: 120px;
   white-space: nowrap;
 }
 </style>
