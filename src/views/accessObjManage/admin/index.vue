@@ -21,7 +21,7 @@
           <!-- ftp -->
           <el-table-column label="状态" v-if="type=='ftp'" show-overflow-tooltip>
             <template slot-scope="scope">
-              <span>{{scope.row.collectName}}</span>
+              <span>{{getPeriod(scope.row)}}</span>
             </template>
           </el-table-column>
           <el-table-column prop="name" label="文件夹名" v-if="type=='ftp'" show-overflow-tooltip>
@@ -139,7 +139,7 @@
                 <data-inver :pdata="scope.row" @fre="loadTable()"></data-inver>
               </div>
               <div class="survey" v-if="type!='mysql' && type!='oracle' && type!='sqlserver' && type!='postgresql'">
-                <norela-coll :pdata="scope.row" @fre="loadTable()"></norela-coll>
+                <norela-coll :pdata="scope.row"></norela-coll>
               </div>
               <!--  <div class="survey" v-if="jrtype=='ftp'">
                <path-ftp></path-ftp>

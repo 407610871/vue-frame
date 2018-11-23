@@ -12,10 +12,10 @@
     <div class="checkDiv">
       <el-form-item class="isSelect" label="已筛选条件：" v-show="keyword!=''||formSeledShow.dataSourceName.length!=0||formSeledShow.network.length!=0||formSeledShow.platform.length!=0||formSeledShow.objectType.length!=0||formSeledShow.dataRange.length!=0">
         <div class="look" v-show="keyword!=''">
-              查询条件：<span class="lookstyle">{{keyword}}</span> <i style="margin-left: 5px;" class="el-icon-error" @click="keyword=''"></i>
+              查询条件：<span class="lookstyle searchStyle">{{keyword}}</span> <i style="margin-left: 5px;cursor: pointer;" class="el-icon-error" @click="keyword=''"></i>
         </div>
         <div class="look" v-show="formSeledShow[item.id].length!=0" v-for="(item,index1) in dataObj" :key="index1">{{item.name}}
-          <span   class="lookstyle" v-for="(item1,index) in formSeledShow[item.id]" :key="index"> {{item1.name}} <i class="el-icon-error" @click="delSelect(index,index1)"></i>
+          <span   class="lookstyle" v-for="(item1,index) in formSeledShow[item.id]" :key="index"> {{item1.name}} <i  class="el-icon-error" @click="delSelect(index,index1)"></i>
           </span>
         </div>
         <!-- <div class="look" v-show="formSeledShow.dataSourceName.length!=0">接入源类型：
@@ -88,13 +88,8 @@ export default {
       default: true
     }
   },
-  computed: {
-    
-  },
-  watch:{
-
-    
-  },
+  computed: {},
+  watch: {},
   created() {
     for (let i = 0; i < this.dataObj.length; i++) {
       this.doMoreArray.push(false);
@@ -171,11 +166,11 @@ export default {
       console.log(this.ObjManage);
       if (this.ObjManage) {
         //进入数据源展示搜索条件清空
-        this.keyword="";
-         this.formSeledShow.objectType= [];
-         this.formSeledShow.dataRange= [];
-         this.formSeled.objectType= [];
-         this.formSeled.dataRange= [];
+        this.keyword = "";
+        this.formSeledShow.objectType = [];
+        this.formSeledShow.dataRange = [];
+        this.formSeled.objectType = [];
+        this.formSeled.dataRange = [];
       } else {
         for (var value of this.dataObj) {
           this.$set(this.formSeled, value.id, value.seledData);
@@ -260,6 +255,8 @@ export default {
     width: 100%;
     max-height: 70px;
     overflow-y: auto;
+    // position: relative;
+    // top: -10px;
   }
   div {
     display: inline-block;
@@ -270,8 +267,20 @@ export default {
     width: auto;
     color: #425365;
     font-weight: 600;
+    overflow: hidden;
+
     .lookstyle {
       font-weight: normal;
+    }
+    .searchStyle {
+      max-width: 140px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: inline-block;
+      margin-top: -10px;
+      position: relative;
+      top: 9px;
     }
   }
   .checkDivItem {
@@ -296,6 +305,7 @@ export default {
     i {
       // color: #747474;
       margin-left: 5px;
+      cursor: pointer;
     }
   }
 }
