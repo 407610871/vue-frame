@@ -230,9 +230,18 @@ export default {
       // return 1;
     },
     tableHeight: function() {
-      return !this.moreSearch
+     /* return !this.moreSearch
         ? window.innerHeight - 300
-        : window.innerHeight - 545;
+        : window.innerHeight - 545;*/
+      if(!this.moreSearch){
+          if(!this.keyword){
+              return window.innerHeight - 290;
+          }else{
+              return window.innerHeight - 340;
+          }
+      }else{
+          return window.innerHeight - 550;
+      }
     },
     pageSize(){
         return this.$store.state.pageSize;
