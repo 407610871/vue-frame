@@ -259,8 +259,8 @@ export default {
     },
     tableHeight: function() {
       return this.collapse ?
-        window.innerHeight - 280 :
-        window.innerHeight - 315- 40 * this.moreData;
+        window.innerHeight - 330 :
+        window.innerHeight - 400- 40 * this.moreData;
     },
     headerHeight: function() {
       return this.collapse ? "50px" : "85px";
