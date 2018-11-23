@@ -77,8 +77,8 @@ export default {
         this.settingList = newVal;
         if(this.isDelPage !=-1){//删除之后跳转到操作页面并不展示内容
           this.activeIndex =-1;
-          this.currentPage =isDelPage;
-          this.pageNum =isDelPage;
+          this.currentPage =this.isDelPage;
+          this.pageNum =this.isDelPage;
         }else if(this.isAddFlag !=-1){//新增flag，新增之后跳到第一页第一个
         this.activeIndex =0;
         this.currentPage =1;
@@ -211,8 +211,8 @@ export default {
             _self.$alert( '删除成功', '提示', {
               confirmButtonText: '确定'
             }).then(()=>{
+              _self.$emit('refresh','');
                _self.isDelPage =_self.currentPage; //删除flag
-             _self.$emit('refresh','');
             })
           } else {
             _self.$alert(res.data.message, '提示', {
