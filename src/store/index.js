@@ -77,6 +77,8 @@ const store = new Vuex.Store({
     separator: '', //分隔符
     isParquet: true, //是否是parquet文件
     modeStyle: '', //用户选择的接入方式
+    noreData: [], //非关系型数据
+    delimiter: '', //非关系型分隔符
   },
   mutations: {
     setPageSize(state, pageSize) {
@@ -145,11 +147,25 @@ const store = new Vuex.Store({
       state.separator = obj;
     },
     //设置parquet文件
-    setParquet(state, obj) { state.isParquet = false;
-      state.isParquet = obj; },
+    setParquet(state, obj) {
+      state.isParquet = false;
+      state.isParquet = obj;
+    },
     //设置用户标记的接入方式   
-    setMode(state, obj) { state.modeStyle = '';
-      state.modeStyle = obj; },
+    setMode(state, obj) {
+      state.modeStyle = '';
+      state.modeStyle = obj;
+    },
+    //非关系型建立的表
+    setNoreData(state, obj) {
+      state.noreData = [];
+      state.noreData = obj;
+    },
+    //非关系型分隔符
+    setDelimiter(state, obj) {
+      state.delimiter = '';
+      state.delimiter = obj;
+    },
   },
   modules: {
     app,

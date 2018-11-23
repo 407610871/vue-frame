@@ -6,7 +6,7 @@
           <el-col :span="24">
             <el-col :span="6">
               <el-form-item label="接入目的库:" prop="dLibrary">
-                <el-select v-model="ruleForm.dLibrary" placeholder="请选择">
+                <el-select v-model="ruleForm.dLibrary" placeholder="请选择" :disabled="isdisable">
                   <!-- <el-option label="全国" value="0"></el-option>
                   <el-option label="全省" value="1"></el-option>
                   <el-option label="全市" value="2"></el-option>
@@ -17,27 +17,20 @@
             </el-col>
             <el-col :span="1" class="bank">bank</el-col>
             <el-col :span="6">
-              <el-input v-model="ruleForm.tablename"></el-input>
+              <!--  <el-input v-model="ruleForm.tablename"></el-input> -->
             </el-col>
           </el-col>
           <el-col :span="24">
             <el-form-item label="接入方式:" prop="accessMode">
-              <el-radio-group v-model="ruleForm.accessMode">
-                <el-radio label="0">实时</el-radio>
-                <el-radio label="1">增量</el-radio>
-                <el-radio label="2">一次性接入</el-radio>
-                <el-radio label="3">全量</el-radio>
+              <el-radio-group v-model="ruleForm.accessMode" :disabled="isdisable">
+                <el-radio label="1" v-if="this.$route.params.type=='oracle'">增量接入</el-radio>
+                <el-radio label="3" v-if="this.$route.params.type=='oracle'">全量接入</el-radio>
+                <el-radio label="0">实时接入</el-radio>
+                <el-radio label="2" v-if="this.$route.params.type=='oracle'">一次性接入</el-radio>
               </el-radio-group>
             </el-form-item>
           </el-col>
-          <el-col :span="24">
-            <el-form-item label="接入优先级:" prop="accessPri">
-              <el-radio-group v-model="ruleForm.accessPri">
-                <el-radio label="1">高</el-radio>
-                <el-radio label="3">低</el-radio>
-              </el-radio-group>
-            </el-form-item>
-          </el-col>
+         
           <el-col :span="24">
             <el-form-item label="任务提交方式:" prop="taskSubMode">
               <el-radio-group v-model="ruleForm.taskSubMode">
@@ -46,12 +39,29 @@
               </el-radio-group>
             </el-form-item>
           </el-col>
-          <el-col :span="24" v-show="ruleForm.accessMode=='1'||ruleForm.accessMode=='3'">
-            <el-col :span="8" class="collbg">
+          <el-col :span="24" v-show="ruleForm.accessMode=='1'">
+            <el-col :span="6">
+              <el-form-item label="接入起始点:">
+                <el-input v-model="ruleForm.startLocation" class="fl"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="18">
+              <span class="ml25 tasktips">tips:仅支持以下三种类型:(自增变量(整型),自增时间戳(long型),自增时间戳(字符型,varchar))</span>
+            </el-col>
+          </el-col>
+          <el-col :span="24" v-show="ruleForm.accessMode=='0'&&this.$route.params.type=='oracle'">
+            <el-col :span="6">
+              <el-form-item label="XStream服务名:">
+                <el-input v-model="ruleForm.xStreamServiceName" class="fl"></el-input>
+              </el-form-item>
+            </el-col>
+          </el-col>
+          <el-col :span="24">
+            <el-col :span="10" class="collbg" v-if="ruleForm.accessMode!='0'">
               <el-form-item label="增量字段:" prop="increment">
                 <el-input v-model="ruleForm.increment" class="fl"></el-input>
                 <el-button type="primary" class="fl increbtn" @click="innerVisible = true">选择</el-button>
-                <incre-map :msg='innerVisible' :incid="this.rowList[0].id" :alincre="this.increArr" @showIncre="showIncrement()" @saveIncre="saveIncrement($event)"></incre-map>
+                <incre-map :msg='innerVisible' :incid="rowList.id" :yid="yid" :alincre="this.increArr" @showIncre="showIncrement()" @saveIncre="saveIncrement($event)"></incre-map>
               </el-form-item>
             </el-col>
             <el-col :span="6">
@@ -287,24 +297,32 @@ export default {
       innerVisible: false,
       increArr: {},
       monthData: [],
+      isdisable: false,
       minData: [],
       hourData: [],
       weekData: [],
       treeData: [],
-      appId: '97304',
-      accId: '10528771',
+      editfalg: false,
+      isregin: false,
+      appId: '',
+
+      taskInfoId: '',
+      accId: '',
+      yid: '', //反写的增量字段id
       loading: false,
       radio: '',
       ruleForm: {
+        startLocation: '', //接入起始点
         dLibrary: '', //接入目的库
         tablename: '', //建立的表名
-        accessMode: '0', //接入方式
+        accessMode: '1', //接入方式
         increment: '', //增量字段
         actech: 'JDBC', //采集技术
         cycleSet: '0', //周期设置
         jday: '', //间隔执行天数
         jmin: '',
         jhour: '',
+        xStreamServiceName: '',
         dfmon: '', //定时执行月数
         dfmin: '',
         dsmin: '',
@@ -396,14 +414,64 @@ export default {
     pre() {
       this.$emit('pre');
     },
+    weekTrans(val) {
+      if (val == '1') {
+        return 'MON';
+      }
+      if (val == '2') {
+        return 'TUE';
+      }
+      if (val == '3') {
+        return 'WED';
+      }
+      if (val == '4') {
+        return 'THU';
+      }
+      if (val == '5') {
+        return 'FRI';
+      }
+      if (val == '6') {
+        return 'SAT';
+      }
+      if (val == '7') {
+        return 'SUN';
+      }
+    },
+    Unweek(val) {
+      if (val == 'MON') {
+        return 1;
+      }
+      if (val == 'TUE') {
+        return 2;
+      }
+      if (val == 'WED') {
+        return 3;
+      }
+      if (val == 'THU') {
+        return 4;
+      }
+      if (val == 'FRI') {
+        return 5;
+      }
+      if (val == 'SAT') {
+        return 6;
+      }
+      if (val == 'SUN') {
+        return 7;
+      }
+    },
     finish() {
-      debugger;
       //间隔执行
-      var pollIntervalMs;
-      if (this.ruleForm.cycleSet == '0') {
-        let jday = 0;
+      var pollIntervalMs = -1;
+      var actech = 'JDBC';
+      if (this.ruleForm.cycleSet == '0' && this.ruleForm.accessMode != "0" && this.ruleForm.accessMode != "2") {
+        let jday = 0;;
         let jhour = 0;
-        let jmin = 0;
+        let jmin;
+        if (this.ruleForm.jmin == '') {
+          this.$message.warning('请将间隔执行时间填写完整');
+          return false;
+        }
         if (this.ruleForm.jday != '' && this.ruleForm.jday != undefined) {
           jday = this.ruleForm.jday;
         }
@@ -415,16 +483,20 @@ export default {
         }
         var pollIntervalMs = this.formateTime(parseInt(jday), parseInt(jhour), parseInt(jmin));
         console.log(pollIntervalMs);
-      } else if (this.ruleForm.cycleSet == '1') {
+      } else if (this.ruleForm.cycleSet == '1' && this.ruleForm.accessMode != "0" && this.ruleForm.accessMode != "2") {
         if (this.radio == '') {
           this.$message.warning('请选择定时执行时间');
           return false;
         }
         if (this.radio == '2') {
           //第一队列
-          let dfmin = '?';
-          let dfhour = '?';
-          let dfmon = '?';
+          let dfmin;
+          let dfhour;
+          let dfmon;
+          if (this.ruleForm.dfmin == '' || this.ruleForm.dfhour == '' || this.ruleForm.dfmon == '') {
+            this.$message.warning('请将定时执行时间填写完整');
+            return false;
+          }
           if (this.ruleForm.dfmin != '' && this.ruleForm.dfmin != undefined) {
             dfmin = this.ruleForm.dfmin;
           }
@@ -434,14 +506,18 @@ export default {
           if (this.ruleForm.dfmon != '' && this.ruleForm.dfmon != undefined) {
             dfmon = this.ruleForm.dfmon;
           }
-          var pollIntervalMs = `0 ${dfmin} ${dfhour} ${dfmon} ? ? *`;
+          var pollIntervalMs = `0 ${dfmin} ${dfhour} ${dfmon} * ?`;
           console.log(pollIntervalMs);
         }
         if (this.radio == '3') {
           //第二队列
-          let dsmin = '?';
-          let dshour = '?';
-          let dsweek = '?';
+          let dsmin;
+          let dshour;
+          let dsweek;
+          if (this.ruleForm.dsmin == '' || this.ruleForm.dshour == '' || this.ruleForm.dsweek == '') {
+            this.$message.warning('请将定时执行时间填写完整');
+            return false;
+          }
           if (this.ruleForm.dsmin != '' && this.ruleForm.dsmin != undefined) {
             dsmin = this.ruleForm.dsmin;
           }
@@ -449,15 +525,20 @@ export default {
             dshour = this.ruleForm.dshour;
           }
           if (this.ruleForm.dsweek != '' && this.ruleForm.dsweek != undefined) {
-            dsweek = this.ruleForm.dsweek;
+
+            dsweek = this.weekTrans(this.ruleForm.dsweek);
           }
-          var pollIntervalMs = `0 ${dsmin} ${dshour} ? ? ${dsweek} *`;
+          var pollIntervalMs = `0 ${dsmin} ${dshour} ? * ${dsweek}`;
           console.log(pollIntervalMs);
         }
         if (this.radio == '4') {
           //第三队列
-          let dtmin = '?';
-          let dthour = '?';
+          let dtmin;
+          let dthour;
+          if (this.ruleForm.dtmin == '' || this.ruleForm.dthour == '') {
+            this.$message.warning('请将定时执行时间填写完整');
+            return false;
+          }
           if (this.ruleForm.dtmin != '' && this.ruleForm.dtmin != undefined) {
             dtmin = this.ruleForm.dtmin;
           }
@@ -465,138 +546,241 @@ export default {
             dthour = this.ruleForm.dthour;
           }
 
-          var pollIntervalMs = `0 ${dtmin} ${dthour} ? ? ? *`;
+          var pollIntervalMs = `0 ${dtmin} ${dthour} * * ? *`;
           console.log(pollIntervalMs);
         }
       }
       var ctt = '';
       if (this.ruleForm.accessMode == "0") { //实时
-        ctt = '0'
+        if (this.$route.params.type == 'oracle') {
+          if (this.ruleForm.xStreamServiceName == '') {
+            this.$message.warning('XStream服务名不能为空');
+            return false;
+          }
+        }
+        ctt = '0';
+        actech = this.$route.params.type;
       }
       if (this.ruleForm.accessMode == "2") { //实时
         ctt = '3'
       }
       if (this.ruleForm.accessMode == "1" && this.ruleForm.cycleSet == "0") { //间隔
-        ctt = '1';
         if (this.increArr.id == undefined) {
           this.$message.warning('请选择增量字段');
           return false;
         }
+        ctt = '1'
       }
       if (this.ruleForm.accessMode == "1" && this.ruleForm.cycleSet == "1") { //实时
-        ctt = '2';
         if (this.increArr.id == undefined) {
           this.$message.warning('请选择增量字段');
           return false;
         }
+        ctt = '2'
       }
       if (this.ruleForm.accessMode == "3" && this.ruleForm.cycleSet == "0") { //间隔
-        ctt = '4';
-        if (this.increArr.id == undefined) {
+        /*if (this.increArr.id == undefined) {
           this.$message.warning('请选择增量字段');
           return false;
-        }
+        }*/
+        ctt = '4'
       }
       if (this.ruleForm.accessMode == "3" && this.ruleForm.cycleSet == "1") { //实时
-        ctt = '5';
-        if (this.increArr.id == undefined) {
+        /*if (this.increArr.id == undefined) {
           this.$message.warning('请选择增量字段');
           return false;
+        }*/
+        ctt = '5'
+      }
+      if (this.ruleForm.accessMode == "2") {
+        pollIntervalMs = -1;
+      }
+      if (this.isregin) {
+        var save = {
+          "incrementColumn": this.increArr.name,
+          "incrementColumnType": this.increArr.datatype,
+          
+          "taskInfoId": this.taskInfoId,
+          "pollIntervalMs": pollIntervalMs,
+          "collectionTaskType": ctt,
+          "isStartOverTask": this.ruleForm.taskSubMode,
+          "timeType": this.radio,
+          "startLocation": this.ruleForm.startLocation,
+          "xStreamServiceName": this.ruleForm.xStreamServiceName
         }
-      }
-      var save = {
-        "accessSysObjDetails": this.increArr,
-        "priority": this.ruleForm.accessPri,
-        "jobType": this.ruleForm.actech,
-        "accessSysObjInfoId": this.accId,
-        "pollIntervalMs": pollIntervalMs,
-        "schemaMappingDTOList": this.$store.state.schemaList,
-        "separator": '',
-        "accessRelationWorkInfoId": this.ruleForm.dLibrary,
-        "collectionTaskType": ctt,
-        "isStartOverTask": this.ruleForm.taskSubMode,
-        "timeType": this.radio,
-        "regexInfo": this.$store.state.regInfo.baseEnd,
-        "isCustom": this.$store.state.regInfo.baseflag,
-        "tableCommonName": this.$store.state.regInfo.baseEnd,
-        "accessSysId": this.rowList[0].accessSys.id
-      }
-      this.loading = true;
-      if (JSON.stringify(this.$store.state.userList) == "{}") {
-        this.$ajax({
-          method: "post",
-          url: this.GLOBAL.api.API_DACM +'/task/saveRegexHeliumTask',
-          // headers:{
-          //   'Content-Type':'application/json;charset=utf-8',
-          // },
-          data: save
+        this.loading = true;
+        if (JSON.stringify(this.$store.state.userList) == "{}") {
+          this.$ajax({
+            method: "post",
+            url: this.GLOBAL.api.API_DACM + '/task/updateSourceConfig',
+            /* url: 'http://10.19.160.168:8080/DACM/task/updateSourceConfig',*/
 
-        }).then(res => {
-          this.loading = false;
-          if (res.data.success) {
-            this.$alert('采集任务启动成功！', '信息', {
-              confirmButtonText: '确定',
-              callback: action => {
-                this.$emit('fresh');
-              }
-            });
-          } else {
-            this.$alert('采集任务启动失败！', '信息', {
-              confirmButtonText: '确定',
-              callback: action => {
+            // headers:{
+            //   'Content-Type':'application/json;charset=utf-8',
+            // },
+            data: save
 
-              }
-            });
-          }
-        })
-      } else {
-        this.$ajax({
-          method: 'post',
-          url: this.GLOBAL.api.API_DACM +'/dataTable/inputSurvey',
-          data: this.$store.state.userList
-        }).then(res => {
-          this.loading = false;
-          if (res.data.success) {
-            this.$ajax({
-              method: "post",
-              url: this.GLOBAL.api.API_DACM +'/task/saveRegexHeliumTask',
-              // headers:{
-              //   'Content-Type':'application/json;charset=utf-8',
-              // },
-              data: save
+          }).then(res => {
+            this.loading = false;
+            if (res.data.success) {
+              this.$alert('采集任务启动成功！', '信息', {
+                confirmButtonText: '确定',
+                callback: action => {
+                  this.isregin = false;
+                  this.$emit('close');
+                }
+              });
+            } else {
+              this.$alert('采集任务启动失败！', '信息', {
+                confirmButtonText: '确定',
+                callback: action => {
 
-            }).then(res => {
+                }
+              });
+            }
+          })
+        } else {
+          this.$ajax({
+            method: 'post',
+            url: this.GLOBAL.api.API_DACM + '/dataTable/inputSurvey',
+            data: this.$store.state.userList
+          }).then(res => {
+
+            if (res.data.success) {
+              this.$ajax({
+                method: "post",
+                url: this.GLOBAL.api.API_DACM + '/task/updateSourceConfig',
+                /* url: 'http://10.19.160.168:8080/DACM/task/updateSourceConfig',*/
+                // headers:{
+                //   'Content-Type':'application/json;charset=utf-8',
+                // },
+                data: save
+
+              }).then(res => {
+                this.loading = false;
+                if (res.data.success) {
+                  this.$alert('采集任务启动成功！', '信息', {
+                    confirmButtonText: '确定',
+                    callback: action => {
+                      this.isregin = false;
+                      this.$emit('fresh');
+                    }
+                  });
+                } else {
+                  this.$alert('采集任务启动失败！', '信息', {
+                    confirmButtonText: '确定',
+                    callback: action => {
+
+                    }
+                  });
+                }
+              })
+            } else {
               this.loading = false;
-              if (res.data.success) {
-                this.$alert('采集任务启动成功！', '信息', {
-                  confirmButtonText: '确定',
-                  callback: action => {
-                    this.$emit('close');
-                  }
-                });
-              } else {
-                this.$alert('采集任务启动失败！', '信息', {
-                  confirmButtonText: '确定',
-                  callback: action => {
-
-                  }
-                });
-              }
-            })
-          } else {
+              this.$alert('数据标记失败', '信息', {
+                confirmButtonText: '确定'
+              });
+            }
+          }, (res) => {
             this.loading = false;
             this.$alert('数据标记失败', '信息', {
               confirmButtonText: '确定'
             });
-          }
-        }, (res) => {
-          this.loading = false;
-          this.$alert('数据标记失败', '信息', {
-            confirmButtonText: '确定'
-          });
-        })
-      }
+          })
+        }
+      } else {
+        //注册
+        var save = {
+          "accessSysObjDetails": this.increArr,
+          
+          "jobType": actech,
+          "accessSysObjInfoId": this.rowList.id,
+          "pollIntervalMs": pollIntervalMs,
+          "schemaMappingDTOList": this.$store.state.schemaList,
+          "separator": this.$store.state.delimiter,
+          "accessRelationWorkInfoId": this.ruleForm.dLibrary,
+          "collectionTaskType": ctt,
+          "isStartOverTask": this.ruleForm.taskSubMode,
+          "timeType": this.radio,
+          "startLocation": this.ruleForm.startLocation,
+          "xStreamServiceName": this.ruleForm.xStreamServiceName
+        }
+        this.loading = true;
+        if (JSON.stringify(this.$store.state.userList) == "{}") {
+          this.$ajax({
+            method: "post",
+            url: this.GLOBAL.api.API_DACM + '/task/saveHeliumTask',
+            // headers:{
+            //   'Content-Type':'application/json;charset=utf-8',
+            // },
+            data: save
 
+          }).then(res => {
+            this.loading = false;
+            if (res.data.success) {
+              this.$alert('采集任务启动成功！', '信息', {
+                confirmButtonText: '确定',
+                callback: action => {
+                  this.$emit('fresh');
+                }
+              });
+            } else {
+              this.$alert('采集任务启动失败！', '信息', {
+                confirmButtonText: '确定',
+                callback: action => {
+
+                }
+              });
+            }
+          })
+        } else {
+          this.$ajax({
+            method: 'post',
+            url: this.GLOBAL.api.API_DACM + '/dataTable/inputSurvey',
+            data: this.$store.state.userList
+          }).then(res => {
+
+            if (res.data.success) {
+              this.$ajax({
+                method: "post",
+                url: this.GLOBAL.api.API_DACM + '/task/saveHeliumTask',
+                // headers:{
+                //   'Content-Type':'application/json;charset=utf-8',
+                // },
+                data: save
+
+              }).then(res => {
+                this.loading = false;
+                if (res.data.success) {
+                  this.$alert('采集任务启动成功！', '信息', {
+                    confirmButtonText: '确定',
+                    callback: action => {
+                      this.$emit('fresh');
+                    }
+                  });
+                } else {
+                  this.$alert('采集任务启动失败！', '信息', {
+                    confirmButtonText: '确定',
+                    callback: action => {
+
+                    }
+                  });
+                }
+              })
+            } else {
+              this.loading = false;
+              this.$alert('数据标记失败', '信息', {
+                confirmButtonText: '确定'
+              });
+            }
+          }, (res) => {
+            this.loading = false;
+            this.$alert('数据标记失败', '信息', {
+              confirmButtonText: '确定'
+            });
+          })
+        }
+      }
 
     },
     formateTime(day, hour, min) {
@@ -606,41 +790,142 @@ export default {
     _getTree() {
       this.$ajax({
         method: 'get',
-        url: this.GLOBAL.api.API_DACM +'/caccesssysRelationWorkInfo/getDataAreaNode',
+        url: this.GLOBAL.api.API_DACM + '/caccesssysRelationWorkInfo/getDataAreaNode',
 
       }).then(res => {
         this.treeData = res.data;
         this.ruleForm.dLibrary = res.data[0].storageId
       })
+    },
+    //获取修改内容
+    _getInit() {
+      if(this.$route.params.type!='oracle'){
+        this.ruleForm.accessMode = '0';
+      }
+      this.$ajax({
+        method: 'POST',
+        url: this.GLOBAL.api.API_DACM + '/task/getSourceConfig',
+        /* url: 'http://10.19.160.168:8080/DACM/task/getSourceConfig',*/
+        params: {
+          accessSysObjInfoId: this.rowList.id,
+          /* accessSysObjInfoId: '10658915'*/
+        }
+
+      }).then(res => {
+        if (res.data.success) {
+          this.editfalg = true;
+          var data = res.data.data;
+          if (data != undefined) {
+            
+            this.yid = data.incrementColumnId; //增量字段的id
+            //增量字段
+            this.isdisable = true;
+            this.ruleForm.increment = data.incrementColumn;
+            this.increArr = {};
+            this.increArr.id = data.incrementColumnId;
+            this.increArr.name = data.incrementColumn;
+            this.increArr.datatype = data.incrementColumnDataType;
+            this.ruleForm.startLocation = data.start_location; //接入起始点
+            if (data.isPeriod == '1') {
+              this.ruleForm.accessMode = '1';
+              this.ruleForm.cycleSet == "0";
+            }
+            if (data.isPeriod == "2") {
+              this.ruleForm.accessMode = '1';
+              this.ruleForm.cycleSet = "1";
+            }
+            if (data.isPeriod == "4") {
+              this.ruleForm.accessMode = '3';
+              this.ruleForm.cycleSet = "0";
+            }
+            if (data.isPeriod == "5") {
+              this.ruleForm.accessMode = '3';
+              this.ruleForm.cycleSet = "1";
+            }
+            if (data.isPeriod == "0") {
+              this.ruleForm.accessMode = '0';
+            }
+            if (data.isPeriod == "3") {
+              this.ruleForm.accessMode = "2"
+            }
+            if (this.ruleForm.cycleSet == "0") {
+              this.formatDuring(data.interval_ms);
+            }
+            if (this.ruleForm.cycleSet == "1" && data.timeType == "2") {
+              this.radio = '2';
+              let pollMs = data.interval_ms.split(' ');
+              this.ruleForm.dfmin = pollMs[1];
+              this.ruleForm.dfhour = pollMs[2];
+              this.ruleForm.dfmon = pollMs[3];
+            }
+            if (this.ruleForm.cycleSet == '1' && data.timeType == '3') {
+              this.radio = '3';
+              let pollMs = data.interval_ms.split(' ');
+              this.ruleForm.dsmin = pollMs[1];
+              this.ruleForm.dshour = pollMs[2];
+              this.ruleForm.dsweek = this.Unweek(pollMs[5]);
+            }
+            if (this.ruleForm.cycleSet == '1' && data.timeType == '4') {
+              this.radio = '4';
+              let pollMs = data.interval_ms.split(' ');
+              this.ruleForm.dtmin = pollMs[1];
+              this.ruleForm.dthour = pollMs[2];
+            }
+
+
+            this.ruleForm.dLibrary = data.sinkId.toString();
+
+            this.taskInfoId = data.task_info_id;
+            this.isregin = true;
+            this.ruleForm.xStreamServiceName = res.xStreamServiceName;
+          }
+
+        } else {
+          this.editfalg = false;
+        }
+      })
+    },
+    //毫秒转为天时分
+    formatDuring(mss) {
+      var days = parseInt(mss / (1000 * 60 * 60 * 24));
+      var hours = parseInt((mss % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      var minutes = parseInt((mss % (1000 * 60 * 60)) / (1000 * 60));
+      this.ruleForm.jday = days;
+      this.ruleForm.jhour = hours;
+      this.ruleForm.jmin = minutes;
+
+
     }
   },
   components: {
     increMap
   },
   mounted() {
+    this._monthData();
+    this._minData();
+    this._hourData();
+    this._weekData();
+    this._getTree();
+    this._getInit();
 
   },
   created() {
+    
+  },
+  watch: {
+    msg() {
+      if (this.editfalg == false) {
+        if (this.msg == "third") {
+          
+        }
+      }
 
+    }
   },
   computed: {
 
   },
-  props: ['rowList', 'msg'],
-  watch: {
-    rowList() {
-      console.log("4545645");
-    },
-    msg() {
-      if (this.msg=="third") {
-        this._monthData();
-        this._minData();
-        this._hourData();
-        this._weekData();
-        this._getTree();
-      }
-    }
-  }
+  props: ['rowList', 'msg']
 
 };
 

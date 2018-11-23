@@ -146,13 +146,13 @@ export default {
     //   this.search(keyword);
     // });
     this.storeReady();
-    this.$root.eventHub.$on("selDept", ids => {
-      this.setStore({
-        deptId: ids
-      });
-      this.setCount();
-      this.loadTable();
-    });
+    // this.$root.eventHub.$on("selDept", ids => {
+    //   this.setStore({
+    //     deptId: ids
+    //   });
+    //   this.setCount();
+    //   this.loadTable();
+    // });
   },
   mounted() {
     this.$root.eventHub.$emit(
@@ -162,6 +162,14 @@ export default {
     this.$root.eventHub.$emit("setActiveNav", 1);
     this.storeReady();
     this.setCount();
+    //从create移过来
+      this.$root.eventHub.$on("selDept", ids => {
+      this.setStore({
+        deptId: ids
+      });
+      this.setCount(ids);
+      this.loadTable(ids);
+    });
   },
   methods: {
     moreHeight(data) {
@@ -172,13 +180,16 @@ export default {
       this.collapse = a;
       // console.log(a);
     },
-    setCount() {
+    setCount(id) {//此处vuex获取的值，比$root慢
+      var ids=[];
+      id?ids=id:ids=this.tableParams.deptId;
+
       var _self = this;
       // this.$ajax.post('http://10.19.160.29:8080/DACM/caccess/dataAccessStatistics',this.tableParams.deptId
       this.$ajax
         .post(
           window.ENV.API_DACM + "/caccess/dataAccessStatistics",
-          this.tableParams.deptId
+         ids
         )
         .then(function(res) {
           if (res.data.success) {
@@ -267,7 +278,9 @@ export default {
     collapseExpand: function() {
       this.collapse = !this.collapse;
     },
-    loadTable: function() {
+    loadTable: function(id) {//此处vuex获取的值，比$root慢
+     var ids=[];
+     id?ids=id:ids=this.tableParams.deptId;
       var _self = this;
       _self.loading = true;
       this.pageSize = this.$store.state.pageSize;
@@ -289,8 +302,7 @@ export default {
       paramsObj.platform = this.tableParams.platform
         ? this.tableParams.platform
         : [];
-      paramsObj.deptIds = this.tableParams.deptId;
-
+           paramsObj.deptIds =ids;
       this.$ajax
         .post(window.ENV.API_DACM + "/caccess/query", paramsObj)
         .then(function(res) {

@@ -140,7 +140,16 @@ export default {
     },
     computed:{
         tableHeight() {
-           return  !this.moreSearch?   window.innerHeight - 357:window.innerHeight - 480;
+          // return  !this.moreSearch?   window.innerHeight - 357:window.innerHeight - 480;
+           if(!this.moreSearch){
+               if(!this.taskName){
+                   return window.innerHeight - 260;
+               }else{
+                   return window.innerHeight - 312;
+               }
+           }else{
+               return window.innerHeight - 460;
+           }
         },
         _checkStatus(){
             return this.checkStatus.map(item => item.label);

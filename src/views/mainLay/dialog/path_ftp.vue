@@ -1,6 +1,9 @@
 <template>
   <div class="taskMDialog">
-    <el-button  class="add-btn fr ml10" @click="dialogVisible = true">文件上传</el-button>
+    <!--  <el-button  class="add-btn fr ml10" @click="dialogVisible = true">文件上传</el-button> -->
+    <el-tooltip class="item" effect="light" content="文件上传" placement="top">
+      <span class="upfilelogo diabtn tin-btn add-btn" @click="dialogVisible = true"></span>
+    </el-tooltip>
     <el-dialog title="上传文件" :visible.sync="dialogVisible" width="73%" :before-close="closeDialog">
       <div class="title-gra">
         <span class="grab gra-l"></span>
@@ -127,8 +130,8 @@ export default {
         }
         this.$ajax({
           method: "POST",
-          url: this.GLOBAL.api.API_DACM +'/ctables/addRecord',
-        /* url:'http://10.19.160.25:8080/DACM/ctables/addRecord',*/
+          url: this.GLOBAL.api.API_DACM + '/ctables/addRecord',
+          /* url:'http://10.19.160.25:8080/DACM/ctables/addRecord',*/
           // headers:{
           //   'Content-Type':'application/json;charset=utf-8',
           // },
@@ -151,11 +154,11 @@ export default {
             });
           }
           console.log(res);
-        },(res) =>{
-           this.loading = false;
-           this.$alert('保存路径失败', '信息', {
-              confirmButtonText: '确定'
-            });
+        }, (res) => {
+          this.loading = false;
+          this.$alert('保存路径失败', '信息', {
+            confirmButtonText: '确定'
+          });
         })
       }
     },
@@ -170,7 +173,7 @@ export default {
         }
         this.$ajax({
           method: "POST",
-          url: this.GLOBAL.api.API_DACM +'/ctables/getStructure',
+          url: this.GLOBAL.api.API_DACM + '/ctables/getStructure',
           // headers:{
           //   'Content-Type':'application/json;charset=utf-8',
           // },
@@ -198,7 +201,7 @@ export default {
         }
         this.$ajax({
           method: "POST",
-          url: this.GLOBAL.api.API_DACM +'/ctables/getStructure',
+          url: this.GLOBAL.api.API_DACM + '/ctables/getStructure',
           // headers:{
           //   'Content-Type':'application/json;charset=utf-8',
           // },
@@ -227,7 +230,7 @@ export default {
   watch: {
     dialogVisible() {
       if (this.dialogVisible) {
-      
+
       }
     }
   }
@@ -280,7 +283,7 @@ export default {
   border: 1px solid $border-color-dai;
   margin-left: 18px;
   height: 280px;
-    overflow: auto;
+  overflow: auto;
 }
 
 .ftp-tip {
@@ -303,9 +306,20 @@ export default {
 .ftpInfo {
   margin-top: 35px;
 }
-.path-box{
-  .el-tree > .el-tree-node{
+
+.path-box {
+  .el-tree>.el-tree-node {
     display: block !important;
   }
 }
+
+.upfilelogo {
+  width: 40px;
+  height: 33px;
+  background: url('../../../assets/images/upfile.svg');
+  display: inline-block;
+  cursor: pointer;
+  margin-right: 30px;
+}
+
 </style>

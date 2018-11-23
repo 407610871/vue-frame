@@ -2,19 +2,19 @@
   <div>
     <el-container style="height:100%;" class="dashboard-container" v-loading="loading">
       <!-- <el-header class="filter-container" > -->
-      <div class="moreSearch">
+      <div class="moreSearch" style="margin-bottom:10px;">
         <!-- <a v-on:click="collapseExpand" class="right-btn collapse-btn"><i :class="{'el-icon-circle-plus':collapse,'el-icon-remove':!collapse}"></i></a> -->
-        <formFliter   :ObjManage="ObjManage" v-if="cleanData" @highMore="moreHeight" @highSeaech="hightrue" v-bind:formCollapse="collapse" v-bind:dataObj="formFilterData" @doSearch="search" @formFilter="changeFormFilter" />
+        <formFliter :ObjManage="ObjManage" v-if="cleanData" @highMore="moreHeight" @highSeaech="hightrue" v-bind:formCollapse="collapse" v-bind:dataObj="formFilterData" @doSearch="search" @formFilter="changeFormFilter" />
         <!-- </el-header> -->
-      </div>
-      <el-main class="main-container icon-dai">
         <div class="table-tools">
           <!-- <i title="数据更新" class="enc-icon-shujugengxin"  v-on:click="updataSource"><i> -->
-          <el-tooltip class="item" effect="light" content="接入源更新" placement="top"> <span class="updatelogo right-btn" v-on:click="updataSource" style="margin-left:10px; margin-right: 42px;"></span> </el-tooltip>
+          <el-tooltip v-if="type=='mysql'|| type=='oracle'|| type=='postgresql' || type=='sqlserver'" class="item" effect="light" content="接入源更新" placement="top"> <span class="updatelogo right-btn" v-on:click="updataSource" style="margin-left:10px; margin-right: 79px;float:right"></span> </el-tooltip>
           <table-inver v-if="type=='mysql'|| type=='oracle'|| type=='postgresql' || type=='sqlserver'" class="right-btn" :pdata="tablePa"></table-inver>
           <path-ftp class="right-btn" @refresh="loadTable" v-if="type=='ftp'"></path-ftp>
-          <el-tooltip v-if="type=='mysql'|| type=='oracle'|| type=='postgresql' || type=='sqlserver' || type=='file'" class="item" effect="light" content="批量采集" placement="top"> <span class="setlogo right-btn" @click="showTask()"></span> </el-tooltip>
+          <el-tooltip v-if="type=='mysql'|| type=='oracle'|| type=='postgresql' || type=='sqlserver' || type=='file'" class="item" effect="light" content="批量采集" placement="top" style="float:right;"> <span class="setlogo right-btn" @click="showTask()"></span> </el-tooltip>
         </div>
+      </div>
+      <el-main class="main-container icon-dai">
         <el-table ref="multipleTable" :data="mainTableData" stripe :height="tableHeight" border style="width: 100%" tooltip-effect="light" :row-class-name="tableRowClassName" @selection-change="handleSelectionChange">
           <el-table-column type="selection">
           </el-table-column>
@@ -212,8 +212,7 @@ export default {
         diyComments: ""
       },
       jrtype: "",
-      objectType: [
-        {
+      objectType: [{
           id: 1,
           diyComments: ["TABLE"],
           name: "表"
@@ -229,8 +228,7 @@ export default {
           name: "其他"
         }
       ],
-      dataRange: [
-        {
+      dataRange: [{
           id: 1,
           name: "全市"
         },
@@ -256,9 +254,9 @@ export default {
       return this.$store.state.queryParams.accessObjManage;
     },
     tableHeight: function() {
-      return this.collapse
-        ? window.innerHeight - 280
-        : window.innerHeight - 315;
+      return this.collapse ?
+        window.innerHeight - 280 :
+        window.innerHeight - 315;
     },
     headerHeight: function() {
       return this.collapse ? "50px" : "85px";
@@ -298,7 +296,7 @@ export default {
       this.searchParams.condition = "";
       this.searchParams.objectType = [];
       this.searchParams.dataRange = [];
-            console.log(this.searchParams)
+      console.log(this.searchParams)
 
     }
   },
@@ -368,8 +366,8 @@ export default {
       var _self = this;
       let urlIndex = _self.$route.path.indexOf('[');
       let urlIds = '';
-      if(urlIndex!=-1){
-        urlIds = _self.$route.path.subString(urlIndex,_self.$route.path.length-1);
+      if (urlIndex != -1) {
+        urlIds = _self.$route.path.subString(urlIndex, _self.$route.path.length - 1);
       }
       _self.jrtype = this.$store.state.jrtype;
 
@@ -380,24 +378,24 @@ export default {
         pagNum: this.tableParams.pageNum,
         count: _self.pageSize
       };
-      paramsObj.condition = this.searchParams.condition
-        ? this.searchParams.condition
-        : "";
+      paramsObj.condition = this.searchParams.condition ?
+        this.searchParams.condition :
+        "";
       paramsObj.objectType = this.searchParams.objectType.join(",");
       paramsObj.dataRange = this.searchParams.dataRange.join(",");
       paramsObj.accessSysId = parseInt(this.$route.params.sourceId);
       console.log(this.searchParams)
       this.$ajax({
-        // url: window.ENV.API_DACM+'ctables/datas',
-        url: window.ENV.API_DACM + "/ctables/datas",
-        //  url:'http://10.19.160.25:8080/DACM/ctables/datas',
+          // url: window.ENV.API_DACM+'ctables/datas',
+          url: window.ENV.API_DACM + "/ctables/datas",
+          //  url:'http://10.19.160.25:8080/DACM/ctables/datas',
 
-        method: "post",
-        data: JSON.stringify(paramsObj),
-        headers: {
-          "Content-Type": "application/json"
-        }
-      })
+          method: "post",
+          data: JSON.stringify(paramsObj),
+          headers: {
+            "Content-Type": "application/json"
+          }
+        })
         .then(res => {
           _self.cleanData = true;
 
@@ -602,8 +600,7 @@ export default {
       let objectType = queryParams.objectType ? queryParams.objectType : [];
       let dataRange = queryParams.dataRange ? queryParams.dataRange : [];
 
-      this.formFilterData = [
-        {
+      this.formFilterData = [{
           name: "接入对象类型：",
           id: "objectType",
           type: "checkbox",
@@ -649,6 +646,7 @@ export default {
     }
   }
 };
+
 </script>
 <style lang="scss">
 .el-table .delete-row {
@@ -658,6 +656,7 @@ export default {
 .el-table .add-row {
   color: red;
 }
+
 </style>
 <style rel="stylesheet/scss" lang="scss" scoped>
 .moreSearch {
@@ -738,4 +737,5 @@ export default {
   display: inline-block;
   cursor: pointer;
 }
+
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <div class="taskMDialog userSurveyDialog">
+  <div class="taskMDialog userSurveyDialog noreDialog">
     <div class="delimiter-box"><span>分隔符:</span>
       <el-input v-model="delimiter"></el-input>
     </div>
@@ -33,6 +33,8 @@
 </template>
 <script>
 import { mapState, mapMutations, mapActions } from 'vuex'
+import columnJson from '@/static/json/columnType'
+import jsonType from '@/static/json/jsonType'
 export default {
   name: "norelaWild",
   data: function() {
@@ -45,8 +47,8 @@ export default {
     }
   },
   methods: {
-        ...mapMutations([
-      'setMatchType'
+    ...mapMutations([
+      'setNoreData','setDelimiter'
     ]),
     // 在渲染表头的时候,会调用此方法, h为createElement的缩写版, 也可以添加事件click、change等
     renderHeader(h, { column, $index }) {
@@ -74,14 +76,25 @@ export default {
     //得到字段类型
     _getType() {
       var _self = this;
-      this.$ajax.get('./getColumnType').then(function(res) {
-          _self.TypeData = res.data[0].datas;
-
-          //console.log(_self.TypeData);
-        })
-        .catch(function(err) {
-          console.log(err)
-        });
+      /*this.$ajax.get('./getColumnType').then(function(res) {*/
+      if (_self.$store.state.isParquet) {
+        for (let m = 0; m < columnJson.length; m++) {
+          if (_self.$route.params.type == columnJson[m].type) {
+            _self.TypeData = columnJson[m].datas;
+          }
+        }
+      } else {
+         for (let m = 0; m < jsonType.length; m++) {
+          if (_self.$route.params.type == jsonType[m].type) {
+            _self.TypeData = jsonType[m].datas;
+          }
+        }
+      }
+      //console.log(_self.TypeData);
+      /* })
+       .catch(function(err) {
+         console.log(err)
+       });*/
 
     },
     pre() {
@@ -95,7 +108,11 @@ export default {
           return false;
         }
       }
-      this.setMatchType(this.tableData);
+      debugger;
+      this.setNoreData(this.tableData);
+      this.setDelimiter(this.delimiter);
+      console.log(this.$store.state.noreData);
+      console.log(this.$store.state.delimiter);
       this.$emit('pre');
     },
     next() {
@@ -107,16 +124,16 @@ export default {
 
   },
   mounted() {
-  this._getType();
+    this._getType();
   },
   created() {
-   
+
   },
   computed: {
 
   },
-  watch:{
-   
+  watch: {
+
   },
 
 };
@@ -184,6 +201,10 @@ export default {
     width: 13%;
     margin-left: 20px;
   }
+}
+
+.noreDialog {
+  width: 100%;
 }
 
 </style>

@@ -33,7 +33,7 @@ spec:
         - name: API_DOWN
           value: 'http://$(NODE_IP):29023/DOMN'
         - name: API_WARN
-          value: 'http://$(NODE_IP):32220/'
+          value: 'http://$(NODE_IP):32220'
         resources:
           limits:
             cpu: 300m

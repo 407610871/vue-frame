@@ -103,12 +103,12 @@
 {
   "type": "ftp",
   "datas": [
-    "STRING",
-    "INT"
+    "STRING"
+    
   ],
   "datas_mapping": [
-    "STRING",
-    "INT"
+    "STRING"
+    
   ]
 },
 {

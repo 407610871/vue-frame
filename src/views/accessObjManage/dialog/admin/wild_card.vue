@@ -101,6 +101,7 @@ export default {
     return {
       dialogVisible: false,
       regxData: [],
+      accId: '',
       wildData: [],
       tableData: [],
       delimiter: '',
@@ -138,86 +139,125 @@ export default {
         let varegex;
         let regend = '';
         var RegInfo;
-        if (this.ruleForm.baseEnd.indexOf('-') != -1) {
-          regend = this.regxData[0].dateRegex;
-        }
-        if (this.ruleForm.baseEnd.indexOf('/') != -1) {
-          regend = this.regxData[1].dateRegex;
-        }
-        if (this.ruleForm.baseEnd.indexOf(':') != -1) {
-          regend = this.regxData[2].dateRegex;
-        }
+        var saveInfo = {};
+        //校验表结构
+        //基础匹配
         if (this.ruleForm.typeKind == '0') {
-          let start = this.ruleForm.baseStart;
-          let end = this.ruleForm.baseEnd;
-          varegex = new RegExp('^' + start + '.*' + regend + '$');
-
+          saveInfo = {
+            "regexInfo": this.ruleForm.baseEnd,
+            "isCustom": false,
+            "tableCommonName": this.ruleForm.baseStart,
+            "accessSysObjInfoId": this.accId
+          }
         } else {
-          varegex = new RegExp(this.ruleForm.highMatch);
-        }
-        for (let i = 0; i < this.rowList.length; i++) {
-          if (varegex.test(this.rowList[i].name)) {
-
-          } else {
-            reflag = false;
+          //高级匹配
+          saveInfo = {
+            "regexInfo": this.ruleForm.highMatch,
+            "isCustom": false,
+            "tableCommonName": this.ruleForm.baseStart,
+            "accessSysObjInfoId": this.accId
           }
         }
-        if (reflag == false) {
-          this.$message.warning('表中有不匹配的表名');
-          return false;
-        } else {
-          if (this.ruleForm.typeKind == '0') {
+        this.$ajax({
+          method: "post",
+          url: this.GLOBAL.api.API_DACM + '/task/saveRegexHeliumTask',
+          /* url:'http://10.19.160.168:8080/DACM/task/saveRegexHeliumTask',*/
+          // headers:{
+          //   'Content-Type':'application/json;charset=utf-8',
+          // },
+          data: saveInfo
+
+        }).then(res => {
+          if (res.data.success) {
             if (this.ruleForm.baseEnd.indexOf('-') != -1) {
-               RegInfo = {
-                baseStart: this.ruleForm.baseStart,
-                baseEnd: this.ruleForm.baseEnd,
-                baseflag: false
-              }
+              regend = this.regxData[0].dateRegex;
             }
-            else if (this.ruleForm.baseEnd.indexOf('/') != -1) {
-               RegInfo = {
-                baseStart: this.ruleForm.baseStart,
-                baseEnd: this.ruleForm.baseEnd,
-                baseflag: false
-              }
+            if (this.ruleForm.baseEnd.indexOf('/') != -1) {
+              regend = this.regxData[1].dateRegex;
             }
-            else if (this.ruleForm.baseEnd.indexOf(':') != -1) {
-               RegInfo = {
-                baseStart: this.ruleForm.baseStart,
-                baseEnd: this.ruleForm.baseEnd,
-                baseflag: false
-              }
+            if (this.ruleForm.baseEnd.indexOf(':') != -1) {
+              regend = this.regxData[2].dateRegex;
             }
-            else{
-               RegInfo = {
-                baseStart: this.ruleForm.baseStart,
-                baseEnd: this.ruleForm.baseEnd,
-                baseflag: false
-              }
-            }
-            this.setRegInfo(RegInfo);
-          } else {
-             RegInfo = {
-              baseStart: "",
-              baseEnd: this.ruleForm.highMatch,
-              baseflag: true
-            }
-            this.setRegInfo(RegInfo);
-          }
-          this.$emit('nre');
-        }
-      }
-      if (this.ruleForm.matchType == '1') {
+            if (this.ruleForm.typeKind == '0') {
+              let start = this.ruleForm.baseStart;
+              let end = this.ruleForm.baseEnd;
+              varegex = new RegExp('^' + start + '.*' + regend + '$');
 
-        for (let i = 0; i < this.tableData.length; i++) {
-          if (this.tableData[i].name == '' || this.tableData[i].datatype == '') {
-            this.$message.warning('不能为空');
-            return false;
+            } else {
+              varegex = new RegExp(this.ruleForm.highMatch);
+            }
+            for (let i = 0; i < this.rowList.length; i++) {
+              if (varegex.test(this.rowList[i].name)) {
+
+              } else {
+                reflag = false;
+              }
+            }
+            if (reflag == false) {
+              this.$message.warning('表中有不匹配的表名');
+              return false;
+            } else {
+              if (this.ruleForm.typeKind == '0') {
+                if (this.ruleForm.baseEnd.indexOf('-') != -1) {
+                  RegInfo = {
+                    baseStart: this.ruleForm.baseStart,
+                    baseEnd: this.ruleForm.baseEnd,
+                    baseflag: false
+                  }
+                } else if (this.ruleForm.baseEnd.indexOf('/') != -1) {
+                  RegInfo = {
+                    baseStart: this.ruleForm.baseStart,
+                    baseEnd: this.ruleForm.baseEnd,
+                    baseflag: false
+                  }
+                } else if (this.ruleForm.baseEnd.indexOf(':') != -1) {
+                  RegInfo = {
+                    baseStart: this.ruleForm.baseStart,
+                    baseEnd: this.ruleForm.baseEnd,
+                    baseflag: false
+                  }
+                } else {
+                  RegInfo = {
+                    baseStart: this.ruleForm.baseStart,
+                    baseEnd: this.ruleForm.baseEnd,
+                    baseflag: false
+                  }
+                }
+                this.setRegInfo(RegInfo);
+              } else {
+                RegInfo = {
+                  baseStart: "",
+                  baseEnd: this.ruleForm.highMatch,
+                  baseflag: true
+                }
+                this.setRegInfo(RegInfo);
+              }
+              this.$emit('nre');
+            }
+            if (this.ruleForm.matchType == '1') {
+
+              for (let i = 0; i < this.tableData.length; i++) {
+                if (this.tableData[i].name == '' || this.tableData[i].datatype == '') {
+                  this.$message.warning('不能为空');
+                  return false;
+                }
+              }
+              this.setMatchType(this.tableData);
+              console.log(this.tableData);
+              this.$emit('nre');
+            }
+          } else {
+            this.$alert(res.data.message, '信息', {
+              confirmButtonText: '确定',
+              callback: action => {
+                return false;
+              }
+            });
           }
-        }
-        this.setMatchType(this.tableData);
-        console.log(this.tableData);
-        this.$emit('nre');
+
+
+        })
+
       }
 
     },
@@ -295,6 +335,11 @@ export default {
           this.ruleForm.matchType = '0'
         } else {
           this.ruleForm.matchType = '1';
+        }
+        if (this.rowList.length != undefined) {
+          this.accId = this.rowList[0].id;
+        } else {
+          this.accId = this.rowList.id;
         }
         this._getRegexList();
         this._getType();
