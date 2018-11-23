@@ -1,9 +1,9 @@
 <template>
   <div class="taskMDialog userSurveyDialog setTaskDia diaicon">
     <!--  <el-button size="mini" class="diabtn incbtn" type="danger" @click="dialogVisible = true">设置通配符</el-button> -->
-    <el-tooltip class="item" effect="light" content="单表采集" placement="top">
-      <i class="enc-icon-danbiaocaiji" @click="singleTask()"></i>
-    </el-tooltip>
+		<el-tooltip class="item" effect="light" content="单表采集" placement="top">
+			<i class="enc-icon-danbiaocaiji" @click="dialogVisible = true"></i>
+		</el-tooltip>
     <el-dialog title="单表采集任务向导" :visible.sync="dialogVisible" width="73%" :before-close="closeDialog">
       <div class="title-gra plr30">
         <span class="grab gra-l"></span>
@@ -19,7 +19,7 @@
               </div>
             </div>
             <user-surveybak :info="this.pdata" @pre="next('second')" @closeuser="closeDialog()" ref="survey"></user-surveybak>
-            <!--  <div class="btn tcenter">
+           <!--  <div class="btn tcenter">
              <el-button type="primary" style="margin-top: 12px;" @click="next('second')">下一步</el-button>
              <el-button style="margin-top: 12px;" @click="closeDialog">取消</el-button>
            </div> -->
@@ -65,22 +65,11 @@ export default {
     };
   },
   methods: {
-    //单表采集
-    singleTask() {
-      this.$ajax({
-        method: "post",
-        url: this.GLOBAL.api.API_DACM + '/objDetail/dataList',
-        data: save
-
-      }).then(res => {
-
-      })
-    },
     //关闭对话框
     closeDialog() {
       this.dialogVisible = false;
       this.activeName = 'first';
-      this.$store.commit("setMode", "");
+      this.$store.commit("setMode","");
       //this.$refs.survey._clearForm();
     },
     //步骤条
@@ -92,10 +81,10 @@ export default {
     next(steps) {
       this.activeName = steps;
     },
-    fresh() {
+    fresh(){
       this.$emit('fre');
       this.activeName = 'first';
-      this.$store.commit("setMode", "");
+      this.$store.commit("setMode","");
       this.dialogVisible = false;
 
     }
@@ -212,10 +201,8 @@ export default {
 .setTaskDia .el-tabs__item.is-active {
   color: $color-background-tabs;
 }
-
-.diaicon i {
-  cursor: pointer;
-  font-size: 20px;
+.diaicon i{
+  cursor:pointer;
+  font-size:20px;
 }
-
 </style>

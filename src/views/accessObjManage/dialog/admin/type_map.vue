@@ -47,6 +47,7 @@ export default {
       cloneData: [],
       mapData: [],
       smapData: [],
+      mapflag: true,
       schemaMappingDTOList: [],
 
     }
@@ -79,6 +80,14 @@ export default {
             })
           }
           _self._getAllType();
+        } else {
+          this.$alert(res.data.message, '信息', {
+            confirmButtonText: '确定',
+            callback: action => {
+              this.mapflag = false;
+              return false;
+            }
+          });
         }
       }).catch(function(err) {
 
@@ -243,8 +252,11 @@ export default {
     },
     //下一步
     next() {
-      this.$emit('nre');
-      this.setSchemaList(this.schemaMappingDTOList);
+      if (this.mapflag) {
+        this.$emit('nre');
+        this.setSchemaList(this.schemaMappingDTOList);
+      }
+
     }
   },
   components: {
