@@ -160,7 +160,7 @@ export default {
         }
         this.$ajax({
           method: "post",
-          url: this.GLOBAL.api.API_DACM + '/task/saveRegexHeliumTask',
+          url: this.GLOBAL.api.API_DACM + '/task/checkTableStructureByRegex',
           /* url:'http://10.19.160.168:8080/DACM/task/saveRegexHeliumTask',*/
           // headers:{
           //   'Content-Type':'application/json;charset=utf-8',
