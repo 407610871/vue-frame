@@ -1,6 +1,6 @@
 <template>
   <div class="taskMDialog userSurveyDialog">
-    <el-form :model="ruleForm" ref="ruleForm" label-width="100px" class="demo-ruleForm" :rules="formRules">
+    <el-form :model="ruleForm" ref="ruleForm" label-width="100px" class="demo-ruleForm" :rules="formRules" v-loading="loading">
       <div class="daiInfo proInfo">
         <div class="proInfo-box clearfix">
           <el-col :span="24">
@@ -106,6 +106,7 @@ export default {
       tableData: [],
       delimiter: '',
       TypeData: [],
+      loading:false,
       ruleForm: {
         matchType: '0', //匹配类型
         typeKind: '0',
@@ -158,6 +159,7 @@ export default {
             "accessSysObjInfoId": this.accId
           }
         }
+        this.loading = true;
         this.$ajax({
           method: "post",
           url: this.GLOBAL.api.API_DACM + '/task/checkTableStructureByRegex',
@@ -168,6 +170,7 @@ export default {
           data: saveInfo
 
         }).then(res => {
+          this.loading = false;
           if (res.data.success) {
             if (this.ruleForm.baseEnd.indexOf('-') != -1) {
               regend = this.regxData[0].dateRegex;
