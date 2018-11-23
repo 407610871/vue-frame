@@ -128,6 +128,7 @@ export default {
         if(len==0){
           level=0;
         }else{
+          console.log("level-----",level);
           level = Number(_self.editingNode.children[len-1].level)+1;
         }
         this.$ajax.post(window.ENV.API_DACM + '/deptInfo/insertDeptInfo?pid=' + this.editingNode.id + '&deptName=' + this.itemTxt + '&level=' + level).then(function(res) {
