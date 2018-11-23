@@ -18,7 +18,7 @@
         <el-form-item label="已选查询条件:" style="max-height: 60px;overflow: auto;">
           <div v-show="keyword!=''" class="selected-task-type" style="display: inline-block;">
             <span>查询条件:</span>
-            <span >{{keyword}}<span @click="keyword='';"><i class="el-icon-error"></i></span></span>
+            <span ><em class="limtLength">{{keyword}}</em><span @click="keyword='';"><i class="el-icon-error"></i></span></span>
           </div>
           <div v-show="taskPeriodType.length>0" class="selected-task-type" style="display: inline-block;">
             <span>任务类型:</span>
@@ -755,6 +755,16 @@ if(row1.length==0){
 };
 </script>
 <style  rel="stylesheet/scss" lang="scss" scoped>
+.limtLength{
+    display:inline-block;
+    max-width:140px;
+    overflow: hidden;
+    text-overflow:ellipsis;
+    white-space: nowrap;
+    vertical-align: middle;
+    font-style: normal;
+    margin-top: -3px;
+}
 .selected-task-type span {
   margin-right: 10px;
   color: #425365;
@@ -764,6 +774,7 @@ if(row1.length==0){
 }
 .selected-task-type span i {
   margin-left: 3px;
+  cursor:pointer;
 }
 .count-container {
   // width: 95%;

@@ -21,7 +21,7 @@
             <el-form-item label="已选查询条件:">
                 <div v-show="taskName!=''" class="selected-task-type">
                     <span>查询条件:</span>
-                    <span>{{taskName}}<i class="el-icon-error" @click="taskName = ''"></i></span>
+                    <span><em class="limtLength">{{taskName}}</em><i class="el-icon-error" @click="taskName = ''"></i></span>
                 </div>
                 <div v-show="status.length>0" class="selected-task-type">
                     <span>任务状态:</span>
@@ -310,6 +310,16 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+.limtLength{
+    display:inline-block;
+    max-width:140px;
+    overflow: hidden;
+    text-overflow:ellipsis;
+    white-space: nowrap;
+    vertical-align: middle;
+    font-style: normal;
+    margin-top: -3px;
+}
 .formGroupSelect{
     max-height:82px;
     overflow:auto;
@@ -326,9 +336,10 @@ export default {
         &first-child{
             font-weight: 600;
         }
-        i{
-            margin-left: 3px;
-        }
+    }
+    i{
+        margin-left: 3px;
+        cursor:pointer;
     }
 }
 .count-container {
