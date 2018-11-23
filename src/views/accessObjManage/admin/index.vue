@@ -313,7 +313,7 @@ export default {
     //   this.search(keyword);
     // })
     // this.tableParams.condition="";
-    this.loadTable();
+    //this.loadTable();
   },
   methods: {
     moreHeight(data) {
