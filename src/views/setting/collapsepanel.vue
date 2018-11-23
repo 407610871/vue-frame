@@ -75,9 +75,6 @@ export default {
       deep: true,
       handler: function(newVal, oldVal) {
         this.settingList = newVal;
-          this.seledId = this.isEditIndex;
-        console.log(this.settingList);
-        console.log(oldVal);
         if(this.isDelPage !=-1){//删除之后跳转到操作页面并不展示内容
           this.activeIndex =-1;
           this.currentPage =isDelPage;
