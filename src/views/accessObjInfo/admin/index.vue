@@ -81,7 +81,7 @@
               <el-row :gutter="20">
                 <el-col :span="5">
                   <el-form-item label="设置查询条数:">
-                    <el-input v-model="count" placeholder="请输入次数" ></el-input>
+                    <el-input v-model="count" placeholder="请输入条数" ></el-input>
                   </el-form-item>
                 </el-col>
                 <el-col :span="5">
@@ -144,7 +144,7 @@
     name: 'DashboardAdmin',
     data() {
       return {
-        count:0,
+        count:'',
         searchForm:[{filtertype:'4',outrelate:'and'}],
         searchFormCont:{filtertype:'4',outrelate:'and'},
         filtercolumnList:[],
@@ -223,6 +223,7 @@
       },
       tabPosition(newVal, oldVal) {
         this.searchForm=[{filtertype:'4',outrelate:'and'}];
+        this.count='';
         this.setStore({
           tabPosition: newVal
         });
