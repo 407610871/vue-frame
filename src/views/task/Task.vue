@@ -110,14 +110,16 @@
           </template>
 
         </el-table-column>
-        <el-table-column prop="taskInfoId" fixed label="ID" width="100" :show-overflow-tooltip='true'></el-table-column>
-
-        <el-table-column fixed label="任务名称" width="200" :show-overflow-tooltip='true' @click="showTaskDetail=true">
-          <template slot-scope="scope">
-            <el-button @click="doDetail(scope.$index, scope.row)">{{scope.row.taskName}}</el-button>
+        <el-table-column prop="taskInfoId" fixed label="ID" width="100" :show-overflow-tooltip='true' @click="showTaskDetail=true">
+           <template slot-scope="scope">
+            <el-button @click="doDetail(scope.$index, scope.row)">{{scope.row.taskInfoId}}</el-button>
           </template>
-
         </el-table-column>
+
+        <!-- <el-table-column fixed label="任务名称" width="200" :show-overflow-tooltip='true' @click="showTaskDetail=true">
+         
+
+        </el-table-column> -->
         <el-table-column prop="sourceDBName" label="接入源名称" width="200" :show-overflow-tooltip='true'></el-table-column>
         <el-table-column prop="dataTableName" label="接入对象" width="200" :show-overflow-tooltip='true'></el-table-column>
         <el-table-column prop="targetDBName" label="目标库" width="200" :show-overflow-tooltip='true'> </el-table-column>
