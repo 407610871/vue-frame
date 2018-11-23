@@ -116,7 +116,7 @@
           </el-table-column>
           <el-table-column prop="lastChangeTime" label="同步更新时间" v-if="type=='oracle' || type=='mysql' || type=='postgresql'" min-width="160">
           </el-table-column>
-          <el-table-column prop="dataRange" label="数据范围" v-if="type=='oracle' || type=='mysql' || type=='postgresql'" min-width="160">
+          <el-table-column prop="dataRange" label="数据范围" v-if="type=='oracle' || type=='mysql' || type=='postgresql'" min-width="100">
           </el-table-column>
           <el-table-column prop="objectStatus" label="状态信息" v-if="type=='oracle' || type=='mysql' || type=='postgresql'" min-width="160">
             <template slot-scope="scope">

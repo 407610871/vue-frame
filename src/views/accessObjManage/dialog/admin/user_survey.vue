@@ -149,8 +149,8 @@
   </div>
 </template>
 <script>
-import {downLoadFile} from '@/api/test'
-import {fileDownload} from '@/utils/index'
+import { downLoadFile } from '@/api/test'
+import { fileDownload } from '@/utils/index'
 import request from "@/utils/request"
 export default {
   name: "userSurvey",
@@ -428,24 +428,27 @@ export default {
     },
     //资源目录下载
     downTxt() {
-     /* downLoadFile().then(
-        function(response) {
-          let disposition = response.headers['content-disposition'];
-          let filename = disposition ? decodeURI(disposition.match(/filename=(\S*)/)[1]) : "资源目录下载规范.docx";
-          fileDownload(response.data, filename);
-        }.bind(this)
-      ).catch(
-        function(error) {
-          console.log(error);
-        }.bind(this))*/
-        request({
-          url: this.GLOBAL.api.API_DACM +'/dataTable/downloadSpecification',
-          method: "GET",
-          responseType: "blob"
-        }).then(res => {
-          console.log(res);　
-          var blob = new Blob([res.data], { type: 'text/csv,charset=UTF-8' }); //application/vnd.openxmlformats-officedocument.spreadsheetml.sheet这里表示xlsx类型
-          　　
+      /* downLoadFile().then(
+         function(response) {
+           let disposition = response.headers['content-disposition'];
+           let filename = disposition ? decodeURI(disposition.match(/filename=(\S*)/)[1]) : "资源目录下载规范.docx";
+           fileDownload(response.data, filename);
+         }.bind(this)
+       ).catch(
+         function(error) {
+           console.log(error);
+         }.bind(this))*/
+      request({
+        url: this.GLOBAL.api.API_DACM + '/dataTable/downloadSpecification',
+        method: "GET",
+        responseType: "blob"
+      }).then(res => {
+        console.log(res);　
+        var blob = new Blob([res.data], { type: 'text/csv,charset=UTF-8' }); //application/vnd.openxmlformats-officedocument.spreadsheetml.sheet这里表示xlsx类型
+        if (window.navigator.msSaveBlob) {
+          window.navigator.msSaveBlob(blob, "资源目录规范.docx");
+        }　
+        else {
           var downloadElement = document.createElement('a');　　
           var href = window.URL.createObjectURL(blob); //创建下载的链接
           　　
@@ -458,7 +461,9 @@ export default {
           document.body.removeChild(downloadElement); //下载完成移除元素
           　　
           window.URL.revokeObjectURL(href); //释放掉blob对象 
-        })
+        }
+
+      })
     },
     //通过省查询市
     proChange() {

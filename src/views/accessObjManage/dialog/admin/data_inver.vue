@@ -289,7 +289,7 @@ export default {
     inverCheck() {
       if (this.ruleForm.setVer == "0") {
         this.startTime = ["", ""];
-        
+
       } else if (this.ruleForm.setVer == "1" && this.ruleForm.startTime == null) {
         this.$alert("请填写开始与结束时间", "核验", {
           confirmButtonText: "确定"
@@ -301,7 +301,7 @@ export default {
         });
         return;
       }
-      if(this.ruleForm.range==undefined){
+      if (this.ruleForm.range == undefined) {
         this.$alert("请填写数据核验范围", "核验", {
           confirmButtonText: "确定"
         });
@@ -360,7 +360,7 @@ export default {
         browser = 'IE'
       }
       request({
-       /* url: 'http://10.19.160.59:8080/DACM/ccheckData/downloadCheckDataById?id=32&browser=fox&accessName=ww',*/
+        /* url: 'http://10.19.160.59:8080/DACM/ccheckData/downloadCheckDataById?id=32&browser=fox&accessName=ww',*/
         url: `${this.GLOBAL.api.API_DACM}/ccheckData/downloadCheckDataById?id=${item.id}&browser=${browser}&accessName=${this.pdata.name}`,
         method: "GET",
         responseType: "blob"
@@ -368,18 +368,22 @@ export default {
         console.log(res);　
         var blob = new Blob([res.data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8' }); //application/vnd.openxmlformats-officedocument.spreadsheetml.sheet这里表示xlsx类型
         　　
-        var downloadElement = document.createElement('a');　　
-        var href = window.URL.createObjectURL(blob); //创建下载的链接
-        　　
-        downloadElement.href = href;　　
-        downloadElement.download = unescape(res.headers.filename.replace(/\\u/g, '%u')); //下载后文件名，unicode转码 //下载后文件名
-        　　
-        document.body.appendChild(downloadElement);　　
-        downloadElement.click(); //点击下载
-        　　
-        document.body.removeChild(downloadElement); //下载完成移除元素
-        　　
-        window.URL.revokeObjectURL(href); //释放掉blob对象 
+        if (window.navigator.msSaveBlob) {
+          window.navigator.msSaveBlob(blob, unescape(res.headers.filename.replace(/\\u/g, '%u')));
+        } else {
+          var downloadElement = document.createElement('a');　　
+          var href = window.URL.createObjectURL(blob); //创建下载的链接
+          　　
+          downloadElement.href = href;　　
+          downloadElement.download = unescape(res.headers.filename.replace(/\\u/g, '%u')); //下载后文件名
+          　　
+          document.body.appendChild(downloadElement);　　
+          downloadElement.click(); //点击下载
+          　　
+          document.body.removeChild(downloadElement); //下载完成移除元素
+          　　
+          window.URL.revokeObjectURL(href); //释放掉blob对象 
+        }　
       })
       /*window.location.href = `${this.GLOBAL.api.API_DACM}/ccheckData/downloadCheckDataById?id=${item.id}&browser=${browser}&accessName=${this.$route.params.sourceName}`*/
     }
@@ -542,7 +546,9 @@ li {
   cursor: pointer;
   font-size: 20px;
 }
-.datein span i{
+
+.datein span i {
   font-size: 14px;
 }
+
 </style>

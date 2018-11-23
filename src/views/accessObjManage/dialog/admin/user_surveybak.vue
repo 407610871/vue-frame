@@ -214,7 +214,7 @@ export default {
   methods: {
     //测试使用mapMutations的用法
     ...mapMutations([
-      'setUserList','setMode'
+      'setUserList', 'setMode'
     ]),
     //关闭对话框
     closeDialog() {
@@ -266,7 +266,7 @@ export default {
           }
           this.$ajax({
             method: 'post',
-            url: this.GLOBAL.api.API_DACM +'/dataTable/inputSurvey',
+            url: this.GLOBAL.api.API_DACM + '/dataTable/inputSurvey',
             data: saveInfo
           }).then(res => {
             this.loading = false;
@@ -298,7 +298,7 @@ export default {
     _getStaticDatas() {
       this.$ajax({
         methods: 'post',
-        url: this.GLOBAL.api.API_DACM +'/dataTable/queryDictionary',
+        url: this.GLOBAL.api.API_DACM + '/dataTable/queryDictionary',
         params: {
 
         }
@@ -375,11 +375,10 @@ export default {
               this.ruleForm.urban = xzqyData[2].urban;
             }
           }
-        }
-        else{
+        } else {
           //查询系统配置
-            this.areaFlag = true;
-            this._querySys();
+          this.areaFlag = true;
+          this._querySys();
         }
 
 
@@ -417,14 +416,18 @@ export default {
     //资源目录下载
     downTxt() {
       request({
-          /*url: this.exportUrl,*/
-           url: this.GLOBAL.api.API_DACM +'/dataTable/downloadSpecification',
-          method: "GET",
-          responseType: "blob"
-        }).then(res => {
-          console.log(res);　
-          var blob = new Blob([res.data], { type: 'text/csv,charset=UTF-8' }); //application/vnd.openxmlformats-officedocument.spreadsheetml.sheet这里表示xlsx类型
-          　　
+        /*url: this.exportUrl,*/
+        url: this.GLOBAL.api.API_DACM + '/dataTable/downloadSpecification',
+        method: "GET",
+        responseType: "blob"
+      }).then(res => {
+        console.log(res);　
+        var blob = new Blob([res.data], { type: 'text/csv,charset=UTF-8' }); //application/vnd.openxmlformats-officedocument.spreadsheetml.sheet这里表示xlsx类型
+        　　
+        if (window.navigator.msSaveBlob) {
+          window.navigator.msSaveBlob(blob, "资源目录规范.docx");
+        }　
+        else {
           var downloadElement = document.createElement('a');　　
           var href = window.URL.createObjectURL(blob); //创建下载的链接
           　　
@@ -437,7 +440,8 @@ export default {
           document.body.removeChild(downloadElement); //下载完成移除元素
           　　
           window.URL.revokeObjectURL(href); //释放掉blob对象 
-        })
+        }
+      })
     },
     //通过省查询市
     proChange() {
@@ -453,7 +457,7 @@ export default {
     _querySys() {
       this.$ajax({
         method: "get",
-        url: this.GLOBAL.api.API_DACM +'/caccesssysRelationWorkInfo/getSystemSet.do',
+        url: this.GLOBAL.api.API_DACM + '/caccesssysRelationWorkInfo/getSystemSet.do',
         // headers:{
         //   'Content-Type':'application/json;charset=utf-8',
         // },
@@ -527,7 +531,7 @@ export default {
           var saveInfo = {
             iD: "", //非必填
             tABLE_ID: this.tableids, //表id
-            rESOURCE_DIRECTORY_NUMBER: this.rnum + this.ruleForm.industry + '-' + this.ruleForm.znb + '-' + this.ruleForm.fcc + this.ruleForm.tlc + this.ruleForm.bdc + this.ruleForm.abc+this.ruleForm.randomId, // '资源目录编号',
+            rESOURCE_DIRECTORY_NUMBER: this.rnum + this.ruleForm.industry + '-' + this.ruleForm.znb + '-' + this.ruleForm.fcc + this.ruleForm.tlc + this.ruleForm.bdc + this.ruleForm.abc + this.ruleForm.randomId, // '资源目录编号',
             iNDUSTRY_CATEGORY: this.ruleForm.industry, // '行业类别',
             pOLICE_BUSINESS: this.ruleForm.znb, // '公安业务',
             fIRST_CLASS_CLASSIFICATION: this.ruleForm.fcc, //'一级分类',
@@ -592,10 +596,10 @@ export default {
       }
       this.ruleForm.tablename = this.info[0].name;
     }
-   // debugger;
+    // debugger;
     console.log(this.tableid);
     //debugger;
-     this._querySys(); 
+    this._querySys();
     this._getStaticDatas();
     this._queryCity('0', 'pro');
 
@@ -604,7 +608,7 @@ export default {
 
   },
   created() {
-    
+
 
 
   },
