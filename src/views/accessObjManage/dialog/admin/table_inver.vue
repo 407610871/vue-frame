@@ -1,9 +1,9 @@
 <template>
   <div class="taskMDialog userSurveyDialog">
-   <!--  <el-button class="diabtn tin-btn add-btn" @click="dialogVisible = true">核验报告</el-button> -->
-   <el-tooltip class="item" effect="light" content="核验报告" placement="top">
-   <span class="dialogo diabtn tin-btn add-btn" @click="dialogVisible = true"></span>
-   </el-tooltip>
+    <!--  <el-button class="diabtn tin-btn add-btn" @click="dialogVisible = true">核验报告</el-button> -->
+    <el-tooltip class="item" effect="light" content="核验报告" placement="top">
+      <span class="dialogo diabtn tin-btn add-btn" @click="dialogVisible = true"></span>
+    </el-tooltip>
     <!--  <i class="el-icon-info" @click="dialogVisible = true">用户调研</i> -->
     <el-dialog title="核验报告" :visible.sync="dialogVisible" width="73%" :before-close="closeDialog">
       <div class="title-gra plr30">
@@ -11,7 +11,7 @@
         <span class="grab gra-r"></span>
       </div>
       <div class="proInfo-box bornone clearfix">
-      <p style="text-align: center">{{name}}</p>
+        <p style="text-align: center">{{name}}</p>
         <el-button size="mini" type="info" @click="downTable()" class="dowBtn">导出报告</el-button>
       </div>
       <div class="proInfo-box">
@@ -69,7 +69,7 @@ export default {
       loading2: false,
       taskId: '',
       loginfo: '',
-      name:'',
+      name: '',
       textShow: false,
       result: '0',
       tableData: []
@@ -97,7 +97,7 @@ export default {
       console.log(this.cindex);
       this.$ajax({
         method: "GET",
-        url: this.GLOBAL.api.API_DACM +'/ccheckData/tableSourceNum',
+        url: this.GLOBAL.api.API_DACM + '/ccheckData/tableSourceNum',
         // headers:{
         //   'Content-Type':'application/json;charset=utf-8',
         // },
@@ -121,7 +121,7 @@ export default {
       this.loading2 = true;
       this.$ajax({
         method: "GET",
-        url: this.GLOBAL.api.API_DACM +'/ccheckData/checkLog',
+        url: this.GLOBAL.api.API_DACM + '/ccheckData/checkLog',
         // headers:{
         //   'Content-Type':'application/json;charset=utf-8',
         // },
@@ -132,7 +132,7 @@ export default {
       }).then(res => {
         this.loading2 = false;
         if (res.data.success == "true" || res.data.success == true) {
-         
+
           if (res.data.data.result == false) {
             this.textShow = false;
             this.$alert("查看日志失败", "查看日志", {
@@ -140,7 +140,7 @@ export default {
             });
             return false;
           }
-           this.textShow = true;
+          this.textShow = true;
           let logData = res.data.data.testresults_result == 0 ? "一致" : "不一致";
           this.loginfo = `源库：${res.data.data.source_library}\n
 源表：${res.data.data.source_tableName}\n
@@ -175,27 +175,32 @@ export default {
       request({
         /*url: this.exportUrl,*/
         url: `${this.GLOBAL.api.API_DACM}/ccheckData/download?accessSysId=${this.pdata.accessSysId}&browser=${browser}&accessName=${this.$route.params.sourceName}`,
-       /* url:`http://10.19.160.59:8080/DACM/ccheckData/download?accessSysId=${this.pdata.accessSysId}&browser=${browser}&accessName=${this.$route.params.sourceName}`,*/
+        /* url:`http://10.19.160.59:8080/DACM/ccheckData/download?accessSysId=${this.pdata.accessSysId}&browser=${browser}&accessName=${this.$route.params.sourceName}`,*/
         method: "GET",
         responseType: "blob"
       }).then(res => {
         console.log(res);　
         var blob = new Blob([res.data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8' }); //application/vnd.openxmlformats-officedocument.spreadsheetml.sheet这里表示xlsx类型
-        　　
-        var downloadElement = document.createElement('a');　　
-        var href = window.URL.createObjectURL(blob); //创建下载的链接
-        　　
-        downloadElement.href = href;　　
-        downloadElement.download =   unescape(res.headers.filename.replace(/\\u/g, '%u')); //下载后文件名
-        　　
-        document.body.appendChild(downloadElement);　　
-        downloadElement.click(); //点击下载
-        　　
-        document.body.removeChild(downloadElement); //下载完成移除元素
-        　　
-        window.URL.revokeObjectURL(href); //释放掉blob对象 
+        　
+        if (window.navigator.msSaveBlob) {
+          window.navigator.msSaveBlob(blob, unescape(res.headers.filename.replace(/\\u/g, '%u')));
+        } else {
+          var downloadElement = document.createElement('a');　　
+          var href = window.URL.createObjectURL(blob); //创建下载的链接
+          　　
+          downloadElement.href = href;　　
+          downloadElement.download = unescape(res.headers.filename.replace(/\\u/g, '%u')); //下载后文件名
+          　　
+          document.body.appendChild(downloadElement);　　
+          downloadElement.click(); //点击下载
+          　　
+          document.body.removeChild(downloadElement); //下载完成移除元素
+          　　
+          window.URL.revokeObjectURL(href); //释放掉blob对象 
+        }　
+
       })
-     /* window.location.href = `${this.GLOBAL.api.API_DACM}/ccheckData/downloadCheckDataById?id=${this.pdata.id}&browser=${browser}&accessName=${this.$route.params.sourceName}`*/
+      /* window.location.href = `${this.GLOBAL.api.API_DACM}/ccheckData/downloadCheckDataById?id=${this.pdata.id}&browser=${browser}&accessName=${this.$route.params.sourceName}`*/
     }
   },
   components: {
@@ -362,7 +367,13 @@ textarea {
 .el-table .cell {
   white-space: nowrap;
 }
+
 .dialogo {
-  width:30px;height: 30px; background: url('../../../../assets/images/dataReport.svg'); display: inline-block; cursor: pointer;
+  width: 30px;
+  height: 30px;
+  background: url('../../../../assets/images/dataReport.svg');
+  display: inline-block;
+  cursor: pointer;
 }
+
 </style>

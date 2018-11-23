@@ -627,7 +627,7 @@ export default {
                 confirmButtonText: '确定',
                 callback: action => {
                   this.isregin = false;
-                  this.$emit('close');
+                  this.$emit('fresh');
                 }
               });
             } else {

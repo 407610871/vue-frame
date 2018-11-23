@@ -48,7 +48,7 @@ export default {
   },
   methods: {
     ...mapMutations([
-      'setNoreData','setDelimiter'
+      'setNoreData', 'setDelimiter'
     ]),
     // 在渲染表头的时候,会调用此方法, h为createElement的缩写版, 也可以添加事件click、change等
     renderHeader(h, { column, $index }) {
@@ -84,7 +84,7 @@ export default {
           }
         }
       } else {
-         for (let m = 0; m < jsonType.length; m++) {
+        for (let m = 0; m < jsonType.length; m++) {
           if (_self.$route.params.type == jsonType[m].type) {
             _self.TypeData = jsonType[m].datas;
           }
@@ -98,6 +98,7 @@ export default {
 
     },
     pre() {
+      let vex = /^[a-zA-Z][a-zA-Z0-9_]*$/;
       if (this.tableData.length == 0) {
         this.$message.warning('不能为空');
         return false;
@@ -108,7 +109,12 @@ export default {
           return false;
         }
       }
-      debugger;
+      for (let i = 0; i < this.tableData.length; i++) {
+        if (vex.test(this.tableData[i].name)==false) {
+          this.$message.warning('表名请以字符开头,仅支持字母,数字,下划线');
+          return false;
+        }
+      }
       this.setNoreData(this.tableData);
       this.setDelimiter(this.delimiter);
       console.log(this.$store.state.noreData);
@@ -125,6 +131,7 @@ export default {
   },
   mounted() {
     this._getType();
+
   },
   created() {
 

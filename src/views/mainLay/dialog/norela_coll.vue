@@ -3,7 +3,7 @@
     <!-- <el-button size="mini" class="diabtn incbtn" type="danger" @click="dialogVisible = true">设置通配符</el-button> -->
     <!-- <i class="el-icon-info" @click="dialogVisible = true">设置通配符</i> -->
     <el-tooltip class="item" effect="light" content="设置通配符" placement="top">
-      <i class="enc-icon-danbiaocaiji" @click="dialogVisible = true"></i>
+      <i class="enc-icon-danbiaocaiji" @click="setVisible()"></i>
     </el-tooltip>
     <el-dialog title="设置通配符" :visible.sync="dialogVisible" width="60%" :before-close="closeDialog">
       <div class="title-gra plr30">
@@ -15,29 +15,29 @@
           <el-tab-pane name="first" disabled>
             <span slot="label"><i class="el-icon-circle">1</i>设置通配符</span>
             <norela-wild :msg="msg" @pre="next('second')" @clo="closeDialog"></norela-wild>
-            
           </el-tab-pane>
-         
           <el-tab-pane name="second" disabled><span slot="label"><i class="el-icon-circle">2</i> 建立数据映射关系</span>
             <div class="daiInfo proInfo">
               <div class="daiInfo-title proInfo-title">
                 <h2>字段类型映射</h2>
               </div>
             </div>
-            <type-map :flag="'1'" :rowList="pdata" @pre="next('first')" @next="next('third')" :msg="activeName"></type-map>
+            <type-map :flag="msg" :rowList="pdata" @pre="next('first')" @next="next('third')" :msg="activeName"></type-map>
             <div class="btn tcenter mt30">
             </div>
           </el-tab-pane>
-          <el-tab-pane name="third" disabled><span slot="label"><i class="el-icon-circle">3</i>设置接入信息</span><div class="daiInfo proInfo">
+          <el-tab-pane name="third" disabled><span slot="label"><i class="el-icon-circle">3</i>设置接入信息</span>
+            <div class="daiInfo proInfo">
               <div class="daiInfo-title proInfo-title">
                 <h2>设置采集任务</h2>
               </div>
             </div>
-             <coll-task :rowList="pdata" :msg="activeName" @pre="next('second')" @fresh="fresh()"> </coll-task>
-           <!--  <div class="btn tcenter mt30">
+            <coll-task :rowList="pdata" :msg="activeName" @pre="nexts('second')" @fresh="fresh()"> </coll-task>
+            <!--  <div class="btn tcenter mt30">
              <el-button type="primary" style="margin-top: 12px;" @click="next('second')">上一步</el-button>
              <el-button type="primary" style="margin-top: 12px;">完成</el-button>
-            </div> --></el-tab-pane>
+            </div> -->
+          </el-tab-pane>
         </el-tabs>
       </div>
     </el-dialog>
@@ -45,8 +45,8 @@
 </template>
 <script>
 import norelaWild from '@/views/mainLay/dialog/norela_wild' //设置通配符
-import typeMap from '@/views/mainLay/dialog/com_map'//建立数据映射关系
-import collTask from '@/views/mainLay/dialog/coll_com'//设置采集任务
+import typeMap from '@/views/mainLay/dialog/com_map' //建立数据映射关系
+import collTask from '@/views/mainLay/dialog/coll_com' //设置采集任务
 import { mapState, mapMutations, mapActions } from 'vuex'
 export default {
   name: "userSurvey",
@@ -57,15 +57,25 @@ export default {
       tabs: '',
       event: '',
       clear: [],
-      msg: false,
+      msg: true,
     };
   },
   methods: {
-    fresh(){
-      this.$emit('fre');
+    setVisible() {
+      if (this.pdata.exitTask) {
+        this.$message.warning('已设置过采集');
+        return false;
+      } else {
+        this.dialogVisible = true;
+      }
+    },
+    fresh() {
+     
       this.activeName = 'first';
       //this.$store.commit("setMode","");
-      this.$store.commit('setSchemaList',this.clear);
+      this.$store.commit('setSchemaList', this.clear);
+       this.$store.commit('setNoreData',this.clear);
+        this.$emit('fre');
       this.dialogVisible = false;
 
 
@@ -76,6 +86,8 @@ export default {
       this.msg = false;
       //this.setMatchType(this.clear);
       this.activeName = 'first';
+      this.$store.commit('setSchemaList', this.clear);
+        this.$store.commit('setNoreData',this.clear);
       //this.$refs.survey._clearForm();
     },
     //步骤条
@@ -85,8 +97,14 @@ export default {
 
     },
     next(steps) {
+
       this.activeName = steps;
       console.log(this.pdata);
+    },
+    nexts(steps){
+        this.activeName = steps;
+      console.log(this.pdata);
+      this.msg = false;
     }
   },
   components: {
@@ -100,19 +118,19 @@ export default {
   created() {
 
   },
-  watch:{
-    dialogVisible(){
-      if(this.dialogVisible){
-         this.msg = true;
-         this.$store.commit('setSchemaList',this.clear);
+  watch: {
+    dialogVisible() {
+      if (this.dialogVisible) {
+        this.msg = true;
+        this.$store.commit('setSchemaList', this.clear);
       }
-     
+
     }
   },
   computed: {
- 
+
   },
-  props:['pdata'],
+  props: ['pdata'],
 
 };
 
@@ -201,10 +219,13 @@ export default {
 .taskSteps .proInfo {
   margin-bottom: 30px;
 }
-.setTaskDia .el-tabs__item.is-disabled{
-  color:#303133;
+
+.setTaskDia .el-tabs__item.is-disabled {
+  color: #303133;
 }
-.setTaskDia .el-tabs__item.is-active{
-  color:$color-background-tabs;
+
+.setTaskDia .el-tabs__item.is-active {
+  color: $color-background-tabs;
 }
+
 </style>

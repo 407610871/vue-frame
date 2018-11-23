@@ -27,7 +27,7 @@
       </el-table>
     </div>
     <div class="btn tcenter mt30">
-      <el-button type="primary" style="margin-top: 12px;" @click="pre()">上一步</el-button>
+      <!--  <el-button type="primary" style="margin-top: 12px;" @click="pre()">上一步</el-button> -->
       <el-button type="primary" style="margin-top: 12px;" @click="next()">下一步</el-button>
     </div>
   </div>
@@ -59,22 +59,27 @@ export default {
     _getMatch() {
       var _self = this;
       _self.tableData = [];
-     // _self.schemaMappingDTOList = [];
-      _self.tableData = _self.$store.state.noreData;
-      for (let j = 0; j < _self.tableData.length; j++) {
-        _self.schemaMappingDTOList.push({
-          "newColumnName": _self.tableData[j].name,
-          "newColumnType": '',
-          "orgColumnName": _self.tableData[j].name,
-          "orgColumnType": _self.tableData[j].datatype,
-          "orgColumnComment": _self.tableData[j].comments,
-          "length": _self.tableData[j].length
-        })
+      _self.schemaMappingDTOList = [];
+      if (_self.$store.state.noreData.length == 0) {
+
+      } else {
+        _self.tableData = _self.$store.state.noreData;
+        for (let j = 0; j < _self.tableData.length; j++) {
+          _self.schemaMappingDTOList.push({
+            "newColumnName": _self.tableData[j].name,
+            "newColumnType": '',
+            "orgColumnName": _self.tableData[j].name,
+            "orgColumnType": _self.tableData[j].datatype,
+            "orgColumnComment": _self.tableData[j].comments,
+            "length": _self.tableData[j].length
+          })
+        }
+        this._getAllType();
       }
-      this._getAllType();
+
     },
     _getType() {
-      debugger;
+
       var _self = this;
       _self.TypeData = [];
       /*_self.TypeData = res.data[0].datas_mapping;*/
@@ -103,7 +108,7 @@ export default {
       console.log(_self.TypeData);
     },
     _getAllType() {
-      debugger;
+
       var _self = this;
       if (_self.$store.state.isParquet) {
         for (let m = 0; m < columnJson.length; m++) {
@@ -198,7 +203,7 @@ export default {
     },
     //上一步
     pre() {
-      this.$emit('pre');
+      /*this.$emit('pre');*/
     },
     //下一步
     next() {
@@ -210,8 +215,8 @@ export default {
 
   },
   mounted() {
-    /*this._getMatch();
-    this._getType()*/
+    this._getMatch();
+    this._getType()
   },
   watch: {
 
@@ -230,7 +235,7 @@ export default {
 
     }
   },
-  props: ['rowList', 'msg'],
+  props: ['rowList', 'msg','flag'],
   watch: {
     rowList() {
 
@@ -239,9 +244,12 @@ export default {
 
     },
     msg() {
-      if (this.msg == "second") {
-        this._getMatch();
+      if (this.msg == 'second') {
+        if(this.flag == true){
+          this._getMatch();
         this._getType()
+        }
+        
       }
     }
   }
