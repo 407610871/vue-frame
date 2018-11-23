@@ -2,19 +2,19 @@
   <div>
     <el-container style="height:100%;" class="dashboard-container" v-loading="loading">
       <!-- <el-header class="filter-container" > -->
-      <div class="moreSearch">
+      <div class="moreSearch" style="margin-bottom:10px;">
         <!-- <a v-on:click="collapseExpand" class="right-btn collapse-btn"><i :class="{'el-icon-circle-plus':collapse,'el-icon-remove':!collapse}"></i></a> -->
         <formFliter :ObjManage="ObjManage" v-if="cleanData" @highMore="moreHeight" @highSeaech="hightrue" v-bind:formCollapse="collapse" v-bind:dataObj="formFilterData" @doSearch="search" @formFilter="changeFormFilter" />
         <!-- </el-header> -->
-      </div>
-      <el-main class="main-container icon-dai">
         <div class="table-tools">
           <!-- <i title="数据更新" class="enc-icon-shujugengxin"  v-on:click="updataSource"><i> -->
-          <el-tooltip v-if="type=='mysql'|| type=='oracle'|| type=='postgresql' || type=='sqlserver'" class="item" effect="light" content="接入源更新" placement="top"> <span class="updatelogo right-btn" v-on:click="updataSource" style="margin-left:10px; margin-right: 42px;"></span> </el-tooltip>
+          <el-tooltip v-if="type=='mysql'|| type=='oracle'|| type=='postgresql' || type=='sqlserver'" class="item" effect="light" content="接入源更新" placement="top"> <span class="updatelogo right-btn" v-on:click="updataSource" style="margin-left:10px; margin-right: 79px;float:right"></span> </el-tooltip>
           <table-inver v-if="type=='mysql'|| type=='oracle'|| type=='postgresql' || type=='sqlserver'" class="right-btn" :pdata="tablePa"></table-inver>
           <path-ftp class="right-btn" @refresh="loadTable" v-if="type=='ftp'"></path-ftp>
-          <el-tooltip v-if="type=='mysql'|| type=='oracle'|| type=='postgresql' || type=='sqlserver' || type=='file'" class="item" effect="light" content="批量采集" placement="top"> <span class="setlogo right-btn" @click="showTask()"></span> </el-tooltip>
+          <el-tooltip v-if="type=='mysql'|| type=='oracle'|| type=='postgresql' || type=='sqlserver' || type=='file'" class="item" effect="light" content="批量采集" placement="top" style="float:right;"> <span class="setlogo right-btn" @click="showTask()"></span> </el-tooltip>
         </div>
+      </div>
+      <el-main class="main-container icon-dai">
         <el-table ref="multipleTable" :data="mainTableData" stripe :height="tableHeight" border style="width: 100%" tooltip-effect="light" :row-class-name="tableRowClassName" @selection-change="handleSelectionChange">
           <el-table-column type="selection">
           </el-table-column>
