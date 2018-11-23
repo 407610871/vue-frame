@@ -116,7 +116,14 @@ export default {
     },
     nodeAJax() {
       var _self = this;
+      if (_self.itemTxt==""){
+          _self.$alert('请输入部门节点名称', '提示', {
+              confirmButtonText: '确定'
+            });
+            return;
+        }
       if (this.actionFlag == 'add') {
+        
         this.$ajax.post(window.ENV.API_DACM + '/deptInfo/insertDeptInfo?pid=' + this.editingNode.id + '&deptName=' + this.itemTxt + '&level=' + (this.editingNode.children ? this.editingNode.children.length : 0)).then(function(res) {
             // this.$ajax.post('./addDept').then(function(res){
             console.log('addsuccess');

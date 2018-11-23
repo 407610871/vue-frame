@@ -255,6 +255,7 @@
         //console.log(this.searchForm);
       },
       getFiltercolumnList(){
+        this.filtercolumnList = [];
         this.$ajax.post(window.ENV.API_DACM + '/objDetail/dataList', {
           count:500,
           objectInfoId:this.$route.params.objId,
