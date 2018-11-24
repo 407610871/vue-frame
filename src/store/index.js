@@ -35,7 +35,7 @@ const queryParamsDefault = {
   },
   recyclingBins: {
     dataSourceName: [],
-    network: '',
+    network: [],
     platform: [],
     condition: '',
     pageNum: 1,
