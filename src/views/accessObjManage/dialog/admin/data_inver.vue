@@ -192,7 +192,7 @@ export default {
         // },
         params: {
           /*taskId: this.taskId*/
-          taskId:'68377'
+          taskId:'68612'
         }
 
       }).then(res => {
@@ -327,7 +327,7 @@ export default {
         /*url: `${this.GLOBAL.api.API_DACM}/ccheckData/tableCheck`,*/
         url:'http://10.19.160.25:8080/DACM/ccheckData/tableCheck',
         params: {
-          taskId: /*this.taskId*/'68377',
+          taskId: /*this.taskId*/'68612',
           key: this.ruleForm.setVer,
           range: this.ruleForm.range,
           startTime: this.ruleForm.startTime[0],

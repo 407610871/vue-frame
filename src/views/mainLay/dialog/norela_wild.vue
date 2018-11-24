@@ -1,6 +1,6 @@
 <template>
   <div class="taskMDialog userSurveyDialog noreDialog">
-    <div class="delimiter-box"><span>分隔符:</span>
+    <div class="delimiter-box" v-if="this.$route.params.type!='mongodb'"><span>分隔符:</span>
       <el-input v-model="delimiter"></el-input>
     </div>
     <div class="comTable">
@@ -17,7 +17,8 @@
         </el-table-column>
         <el-table-column prop="datatype" label="字段类型">
           <template slot-scope="scope">
-            <el-select v-model="scope.row.datatype==undefined?TypeData[0]:scope.row.datatype" placeholder="请选择">
+          
+            <el-select v-model="scope.row.datatype" placeholder="请选择">
               <el-option v-for="item in TypeData" :key="item" :label="item" :value="item">
               </el-option>
             </el-select>
@@ -61,7 +62,7 @@ export default {
               /*console.log(`${column.label}   ${$index}`)*/
               this.tableData.push({
                 name: '',
-                datatype: '',
+                datatype: this.TypeData[0],
                 mapdata: '',
                 comments: ''
               })
@@ -114,6 +115,9 @@ export default {
           this.$message.warning('表名请以字符开头,仅支持字母,数字,下划线');
           return false;
         }
+      }
+      if(this.$route.params.type="mongodb"){
+        this.delimiter = "\t";
       }
       this.setNoreData(this.tableData);
       this.setDelimiter(this.delimiter);
