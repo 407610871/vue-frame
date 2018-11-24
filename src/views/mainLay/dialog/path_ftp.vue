@@ -215,6 +215,8 @@ export default {
           data: params
 
         }).then(res => {
+          this.$refs.treeForm.setCheckedNodes([]);
+        this.$refs.treeForm.setCheckedKeys([]);
           console.log(res.data.data);
           let myList = [];
           res.data.data.forEach(e => {

@@ -5,7 +5,8 @@
         <i class="el-icon-search"></i>
         <input type="text" v-model="keyword" placeholder="请输入查询条件" @keyup.enter="search"/>
       </div>
-      <span @click="doCollapse">高级搜索 <i :class="collapse?'el-icon-caret-bottom':'el-icon-caret-top'"></i> </span>
+      <i v-if="this.$route.params.type=='ftp'||this.$route.params.type=='mongodb'"></i>
+      <span v-else @click="doCollapse">高级搜索 <i :class="collapse?'el-icon-caret-bottom':'el-icon-caret-top'"></i> </span>
       <el-button type="primary" class="doCearch" @click="search" >查询</el-button>
     </div>
 
