@@ -154,7 +154,9 @@
     "ARRAYS",
     "TIMESTAMP",
     "OBJECT",
-    "DATE"
+    "DATE",
+    "Int32",
+    "Int64"
   ],
   "datas_mapping": [
     "STRING",
@@ -164,7 +166,9 @@
     "STRING",
     "STRING",
     "STRING",
-    "STRING"
+    "STRING",
+    "BIGINT",
+    "BIGINT"
   ]
 },
 {
