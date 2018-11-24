@@ -70,7 +70,7 @@ export default {
       },
       formRules: {
         ftpurl: [
-          {/* required: true, validator: validateNull, trigger: "blur"*/ }
+          { /* required: true, validator: validateNull, trigger: "blur"*/ }
         ]
 
       },
@@ -215,10 +215,7 @@ export default {
           data: params
 
         }).then(res => {
-          this.$refs.treeForm.setCheckedNodes([]);
-          this.$refs.treeForm.setCheckedKeys([]);
-          this.ruleForm.ftpurl = '';
-          this.ruleForm.ftpId = '';
+         
           console.log(res.data.data);
           let myList = [];
           res.data.data.forEach(e => {
@@ -241,7 +238,10 @@ export default {
   watch: {
     dialogVisible() {
       if (this.dialogVisible) {
-
+        this.$refs.treeForm.setCheckedNodes([]);
+        this.$refs.treeForm.setCheckedKeys([]);
+        this.ruleForm.ftpurl = '';
+        this.ruleForm.ftpId = '';
       }
     }
   }
