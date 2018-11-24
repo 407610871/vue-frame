@@ -8,7 +8,7 @@
         <!-- </el-header> -->
         <div class="table-tools">
           <!-- <i title="数据更新" class="enc-icon-shujugengxin"  v-on:click="updataSource"><i> -->
-          <el-tooltip v-if="type=='mysql'|| type=='oracle'|| type=='postgresql' || type=='sqlserver'" class="item" effect="light" content="接入源更新" placement="top"> <span class="updatelogo right-btn" v-on:click="updataSource" style="margin-left:10px; margin-right: 79px;float:right"></span> </el-tooltip>
+          <el-tooltip v-if="type=='mysql'|| type=='oracle'|| type=='postgresql' || type=='sqlserver'||type=='mongodb'" class="item" effect="light" content="接入源更新" placement="top"> <span class="updatelogo right-btn" v-on:click="updataSource" style="margin-left:10px; margin-right: 79px;float:right"></span> </el-tooltip>
           <table-inver v-if="type=='mysql'|| type=='oracle'|| type=='postgresql' || type=='sqlserver'" class="right-btn" :pdata="tablePa" style="float:right"></table-inver>
           <path-ftp class="right-btn" @refresh="loadTable" v-if="type=='ftp'" style="float:right"></path-ftp>
           <el-tooltip v-if="type=='mysql'|| type=='oracle'|| type=='postgresql' || type=='sqlserver' || type=='file'" class="item" effect="light" content="批量采集" placement="top" style="float:right;"> <span class="setlogo right-btn" @click="showTask()"></span> </el-tooltip>
@@ -35,6 +35,15 @@
             </template>
           </el-table-column>
           <el-table-column prop="extendParams.diyComments" label="自定义注释" v-if="type=='ftp'" show-overflow-tooltip>
+            <template slot-scope="scope">
+              <div>
+                <el-tooltip class="item" effect="light" content="修改" placement="top" show-overflow-tooltip>
+                  <i @click="editingRow.index = scope.$index; editingRow.diyComments = scope.row.diyComments;scope.row.showEdit = !scope.row.showEdit" class="el-icon-edit-outline table-action-btn" v-show="!scope.row.showEdit" />
+                </el-tooltip>
+                <span v-show="!scope.row.showEdit">{{ scope.row.diyComments }}</span>
+                <input type="text" v-model="editingRow.diyComments" v-show="scope.row.showEdit" @blur="changeName(scope.$index, scope.row)" />
+              </div>
+            </template>
           </el-table-column>
           <!-- mangoDB -->
           <el-table-column prop="name" label="对象名" v-if="type=='mongodb'" show-overflow-tooltip>
@@ -135,10 +144,10 @@
           </el-table-column>
           <el-table-column prop="collectName" label="数据采集方式" v-if="type=='oracle' || type=='mysql' || type=='postgresql'" min-width="160">
           </el-table-column>
-          <el-table-column label="操作" min-width="160">
+          <el-table-column label="操作" width="160">
             <template slot-scope="scope">
               <!-- <el-button size="mini" v-on:click="updataSourceSingle(scope.$index, scope.row)" title="数据量更新">数据量更新</el-button> -->
-              <el-tooltip class="item" effect="light" content="数据量更新" placement="top" v-if="type=='mysql'|| type=='oracle'|| type=='postgresql' || type=='sqlserver' ||type=='mangodb'">
+              <el-tooltip class="item" effect="light" content="数据量更新" placement="top" v-if="type=='mysql'|| type=='oracle'|| type=='postgresql' || type=='sqlserver'">
                 <i class="enc-icon-shujugengxin" v-on:click="updataSourceSingle(scope.$index, scope.row)" title="数据量更新"></i>
               </el-tooltip>
               <div class="survey">
