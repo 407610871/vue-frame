@@ -13,7 +13,7 @@
         <div class="daiInfo ftpInfo clearfix">
           <el-col :span="24">
             <el-col :span="8">
-              <el-form-item label="路径:" prop="ftpurl" required>
+              <el-form-item label="路径:" prop="ftpurl">
                 <el-input v-model="ruleForm.ftpurl" readonly></el-input>
               </el-form-item>
             </el-col>
@@ -70,7 +70,7 @@ export default {
       },
       formRules: {
         ftpurl: [
-          { required: true, validator: validateNull, trigger: "blur" }
+          {/* required: true, validator: validateNull, trigger: "blur"*/ }
         ]
 
       },
@@ -89,8 +89,8 @@ export default {
     closeDialog() {
       this.dialogVisible = false;
       this.$refs['ruleForm'].resetFields();
-       this.$refs.treeForm.setCheckedNodes([]);
-       this.$refs.treeForm.setCheckedKeys([]);
+      this.$refs.treeForm.setCheckedNodes([]);
+      this.$refs.treeForm.setCheckedKeys([]);
     },
     //实现树的单选
     handleClick(data, checked, node) {
@@ -110,8 +110,8 @@ export default {
     closeForm() {
       this.dialogVisible = false;
       this.$refs['ruleForm'].resetFields();
-       this.$refs.treeForm.setCheckedNodes([]);
-        this.$refs.treeForm.setCheckedKeys([]);
+      this.$refs.treeForm.setCheckedNodes([]);
+      this.$refs.treeForm.setCheckedKeys([]);
     },
     save() {
       if (this.ruleForm.ftpurl == '') {
@@ -148,9 +148,9 @@ export default {
               confirmButtonText: '确定',
               callback: action => {
                 this.$emit('refresh');
-                 this.$refs['ruleForm'].resetFields();
-       this.$refs.treeForm.setCheckedNodes([]);
-        this.$refs.treeForm.setCheckedKeys([]);
+                this.$refs['ruleForm'].resetFields();
+                this.$refs.treeForm.setCheckedNodes([]);
+                this.$refs.treeForm.setCheckedKeys([]);
                 this.dialogVisible = false;
 
               }
@@ -216,7 +216,9 @@ export default {
 
         }).then(res => {
           this.$refs.treeForm.setCheckedNodes([]);
-        this.$refs.treeForm.setCheckedKeys([]);
+          this.$refs.treeForm.setCheckedKeys([]);
+          this.ruleForm.ftpurl = '';
+          this.ruleForm.ftpId = '';
           console.log(res.data.data);
           let myList = [];
           res.data.data.forEach(e => {
