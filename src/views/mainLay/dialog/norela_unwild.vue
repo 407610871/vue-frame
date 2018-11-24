@@ -33,13 +33,13 @@ export default {
       delimiter: '',
       tableData: [{
           name: 'line',
-          datatype: 'STRING',
+          datatype: 'BIGINT',
           mapdata: '',
           comments: ''
         },
         {
           name: 'value',
-          datatype: 'BIGINT',
+          datatype: 'STRING',
           mapdata: '',
           comments: ''
         }

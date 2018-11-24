@@ -1,5 +1,5 @@
 <template>
-  <div class="taskMDialog typeMapDia">
+  <div class="taskMDialog typeMapDia unnore">
     <div class="comTable">
       <el-table :data="schemaMappingDTOList" stripe height="250">
         <el-table-column prop="orgColumnName" label="数据源字段名称">
@@ -8,7 +8,7 @@
         </el-table-column>
         <el-table-column prop="" label="目标字段名称" width="180">
           <template slot-scope="scope">
-            <el-input v-model="scope.row.newColumnName"></el-input>
+            <el-input v-model="scope.row.newColumnName" :disabled="type=='ftp'&&parflag"></el-input>
           </template>
         </el-table-column>
         <el-table-column prop="toType" label="目标字段类型">
@@ -33,7 +33,7 @@
   </div>
 </template>
 <script>
-import { mapState, mapMutations, mapActions } from 'vuex'
+import { mapState, mapMutations, mapActions } from "vuex"
 import columnJson from '@/static/json/columnType'
 import jsonType
 from '@/static/json/jsonType'
@@ -46,6 +46,7 @@ export default {
       TypeData: [],
       cloneData: [],
       type:'',
+      parflag:true,
       mapData: [],
       smapData: [],
       schemaMappingDTOList: [],
@@ -226,6 +227,7 @@ export default {
   },
   mounted() {
     this.type = this.$route.params.type;
+    this.parflag = this.$store.state.isParquet;
     this._getMatch();
     this._getType()
   },
@@ -324,5 +326,10 @@ export default {
 .typeMapDia {
   width: 100%;
 }
-
+.unnore .el-input.is-disabled .el-input__inner {
+  background-color: #f0f3f6;
+  color: #4f609d;
+  border-radius: 0;
+  border: 1px solid #c9cdd0;
+}
 </style>
