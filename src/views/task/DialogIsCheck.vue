@@ -5,6 +5,7 @@
         <span class="grab gra-l"></span>
         <span class="grab gra-r"></span>
       </div>
+      <!-- loading -->
       <div v-loading="loading" element-loading-text="核验中，请稍等..." element-loading-spinner="el-icon-loading" element-loading-background="rgba(255, 251, 251, 0.77)">
         <div class="dialig_table" id="dialig_table">
         </div>
@@ -21,6 +22,18 @@
             <div class="time" v-show="timeCheck">
               <el-date-picker size="small" :picker-options="pickerOptions" v-model="startTime" type="daterange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" value-format="yyyy-MM-dd">
               </el-date-picker>
+              <div>
+                <span style="color:rgb(96, 98, 102);display:inline-block;width:30%;">核验时间字段:&nbsp;&nbsp;</span>
+                <el-select v-model="queryTargetColumn" placeholder="请选择" style="width:70%;margin-top:8px;">
+                  <el-option
+                    v-for="item in queryTargetColumnList"
+                    :key="item"
+                    :label="item"
+                    :value="item">
+                  </el-option>
+                </el-select>
+              </div>
+              
             </div>
           </div>
         </div>
@@ -131,6 +144,8 @@ export default {
   },
   data: function() {
     return {
+      queryTargetColumn:'',
+      queryTargetColumnList: [],
       baseUrl: baseUrl,
       showInnerDialog: true,
       dialogVisible: false,
@@ -194,11 +209,14 @@ export default {
       let that = this;
       this.loading = true;
       this.$ajax.get(baseUrl + '/ccheckData/tableNum', {
+      //this.$ajax.get('http://10.19.160.25:8080/DACM/ccheckData/tableNum', {
         params: {
-          taskId: that.msgCheck.taskInfoId
+          //taskId: that.msgCheck.taskInfoId
+          taskId: '68377'
         }
       }).then(res => {
         this.loading = false;
+        
         res = res.data;
         if (res.data.result == "false" || res.data.message == "还未核验暂无数据,请核验") {
           this.$alert(res.data.message, "核验结果", {
@@ -210,6 +228,8 @@ export default {
         }
         //this.resData = res.datas;
         this.resData = res.data;
+        //不知道这个的展示有没有什么限制，所以暂时先不作什么限制
+        that.queryTargetColumnList=res.data.listIncrementCon;
         if (res.data.status == "1") {
           this.textShow = false;
 
@@ -283,6 +303,11 @@ export default {
           confirmButtonText: "确定"
         });
         return;
+      } else if(this.radio == "1" && this.queryTargetColumn ==""){
+        this.$alert("请选择核验时间字段", "核验", {
+          confirmButtonText: "确定"
+        });
+        return;
       }
 
       this.$ajax.get(baseUrl + `/ccheckData/tableCheck`, {
@@ -291,7 +316,8 @@ export default {
           key: this.radio,
           range: this.range,
           startTime: this.startTime[0],
-          endTime: this.startTime[1]
+          endTime: this.startTime[1],
+          queryTargetColumn:this.queryTargetColumn
         }
       }).then(res => {
         res.data = res.data.data;
@@ -395,7 +421,7 @@ export default {
 
 .checkData {
   border-bottom: 1px solid #2f6ac5;
-  height: 85px;
+  height: 126px;
 }
 
 .checkBtn {
