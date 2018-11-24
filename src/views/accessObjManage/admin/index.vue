@@ -3,27 +3,23 @@
     <el-container style="height:100%;" class="dashboard-container" v-loading="loading">
       <!-- <el-header class="filter-container" > -->
       <div class="moreSearch" style="margin-bottom:10px;">
-
         <!-- <a v-on:click="collapseExpand" class="right-btn collapse-btn"><i :class="{'el-icon-circle-plus':collapse,'el-icon-remove':!collapse}"></i></a> -->
         <formFliter :ObjManage="ObjManage" v-if="cleanData" @highMore="moreHeight" @highSeaech="hightrue" v-bind:formCollapse="collapse" v-bind:dataObj="formFilterData" @doSearch="search" @formFilter="changeFormFilter" />
         <!-- </el-header> -->
         <div class="table-tools">
           <!-- <i title="数据更新" class="enc-icon-shujugengxin"  v-on:click="updataSource"><i> -->
-            <el-tooltip v-if="type=='mysql'|| type=='oracle'|| type=='postgresql' || type=='sqlserver'" class="item" effect="light" content="接入源更新" placement="top"> <span class="updatelogo right-btn" v-on:click="updataSource" style="margin-left:10px; margin-right: 79px;float:right"></span> </el-tooltip>
-
+          <el-tooltip v-if="type=='mysql'|| type=='oracle'|| type=='postgresql' || type=='sqlserver'" class="item" effect="light" content="接入源更新" placement="top"> <span class="updatelogo right-btn" v-on:click="updataSource" style="margin-left:10px; margin-right: 79px;float:right"></span> </el-tooltip>
           <table-inver v-if="type=='mysql'|| type=='oracle'|| type=='postgresql' || type=='sqlserver'" class="right-btn" :pdata="tablePa" style="float:right"></table-inver>
           <path-ftp class="right-btn" @refresh="loadTable" v-if="type=='ftp'" style="float:right"></path-ftp>
-           <el-tooltip v-if="type=='mysql'|| type=='oracle'|| type=='postgresql' || type=='sqlserver' || type=='file'" class="item" effect="light" content="批量采集" placement="top" style="float:right;"> <span class="setlogo right-btn" @click="showTask()"></span> </el-tooltip>
-
+          <el-tooltip v-if="type=='mysql'|| type=='oracle'|| type=='postgresql' || type=='sqlserver' || type=='file'" class="item" effect="light" content="批量采集" placement="top" style="float:right;"> <span class="setlogo right-btn" @click="showTask()"></span> </el-tooltip>
         </div>
       </div>
       <el-main class="main-container icon-dai">
-        
         <el-table ref="multipleTable" :data="mainTableData" stripe :height="tableHeight" border style="width: 100%" tooltip-effect="light" :row-class-name="tableRowClassName" @selection-change="handleSelectionChange">
           <el-table-column type="selection">
           </el-table-column>
           <!-- ftp -->
-          <el-table-column label="状态" v-if="type=='ftp'" show-overflow-tooltip>
+          <el-table-column label="状态" v-if="type=='ftp'||type=='mongodb'" show-overflow-tooltip>
             <template slot-scope="scope">
               <span>{{scope.row.collectName}}</span>
             </template>
@@ -34,11 +30,23 @@
           </el-table-column>
           <el-table-column label="是否删除文件" v-if="type=='ftp'" show-overflow-tooltip>
             <template slot-scope="scope">
-              <span v-if="scope.row.isdelet">是</span>
-              <span v-if="!scope.row.isdelet">否</span>
+              <span v-if="scope.row.extendParams.isdelet=='true'">是</span>
+              <span v-if="scope.row.extendParams.isdelet=='false'">否</span>
             </template>
           </el-table-column>
           <el-table-column prop="extendParams.diyComments" label="自定义注释" v-if="type=='ftp'" show-overflow-tooltip>
+          </el-table-column>
+          <!-- mangoDB -->
+          <el-table-column prop="name" label="对象名" v-if="type=='mongodb'" show-overflow-tooltip>
+          </el-table-column>
+          <el-table-column prop="totalRows" label="数据量" v-if="type=='mongodb'" show-overflow-tooltip>
+          </el-table-column>
+          <el-table-column prop="name" label="备注" v-if="type=='mongodb'" show-overflow-tooltip>
+            <template slot-scope="scope">
+              <span>{{scope.row.comments}}</span>
+            </template>
+          </el-table-column>
+          <el-table-column prop="lastChangeTime" label="最后更新时间" v-if="type=='mongodb'" show-overflow-tooltip>
           </el-table-column>
           <!-- RabbitMQ -->
           <el-table-column prop="name" label="队列名称" v-if="type=='rabbitmq'" show-overflow-tooltip>
@@ -130,7 +138,7 @@
           <el-table-column label="操作" min-width="160">
             <template slot-scope="scope">
               <!-- <el-button size="mini" v-on:click="updataSourceSingle(scope.$index, scope.row)" title="数据量更新">数据量更新</el-button> -->
-              <el-tooltip class="item" effect="light" content="数据量更新" placement="top" v-if="type=='mysql'|| type=='oracle'|| type=='postgresql' || type=='sqlserver'">
+              <el-tooltip class="item" effect="light" content="数据量更新" placement="top" v-if="type=='mysql'|| type=='oracle'|| type=='postgresql' || type=='sqlserver' ||type=='mongodb'">
                 <i class="enc-icon-shujugengxin" v-on:click="updataSourceSingle(scope.$index, scope.row)" title="数据量更新"></i>
               </el-tooltip>
               <div class="survey">
@@ -260,7 +268,7 @@ export default {
     tableHeight: function() {
       return this.collapse ?
         window.innerHeight - 330 :
-        window.innerHeight - 400- 40 * this.moreData;
+        window.innerHeight - 400 - 40 * this.moreData;
     },
     headerHeight: function() {
       return this.collapse ? "50px" : "85px";
@@ -519,7 +527,7 @@ export default {
         condition: keyword,
         // timeFlag: new Date().getTime()
       });
-      this.searchParams.condition=keyword;
+      this.searchParams.condition = keyword;
       this.loadTable();
     },
 

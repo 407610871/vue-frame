@@ -35,11 +35,19 @@
                 <el-input-number v-model="ruleForm.range" controls-position="right" size="small" :min="0" :max="100" :step="1"></el-input-number>%
               </el-form-item>
             </el-col>
-            <el-col :span="12">
+            <el-col :span="6">
               <div class="time" v-show="ruleForm.setVer=='1'">
                 <el-date-picker size="small" :picker-options="ruleForm.pickerOptions" v-model="ruleForm.startTime" type="daterange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" value-format="yyyy-MM-dd">
                 </el-date-picker>
               </div>
+            </el-col>
+            <el-col :span="4" v-show="ruleForm.setVer=='1'">
+            <el-form-item>
+              <el-select v-model="ruleForm.queryTargetColumn" placeholder="请选择">
+                <el-option v-for="item in columnData" :key="item" :label="item" :value="item">
+                </el-option>
+              </el-select>
+              </el-form-item>
             </el-col>
           </el-col>
         </div>
@@ -141,14 +149,17 @@ export default {
       loginfo: '',
       loading2: false,
       textShow: false,
+      
       status: '开始核验',
       result: '0',
       timer: null,
       loading: false,
+      columnData:[],
       logId: '',
       resData: {},
       tableData: [],
       ruleForm: {
+        queryTargetColumn:'',
         setVer: 0, //核验设置
         range: 0, //核验误差范围
         startTime: [],
@@ -174,19 +185,22 @@ export default {
     _queryInver() {
       this.$ajax({
         method: "GET",
-        url: this.GLOBAL.api.API_DACM + '/ccheckData/tableNum',
-        /* url:'http://10.19.160.59:8080/DACM/ccheckData/tableNum',*/
+       /* url: this.GLOBAL.api.API_DACM + '/ccheckData/tableNum',*/
+         url:'http://10.19.160.25:8080/DACM/ccheckData/tableNum',
         // headers:{
         //   'Content-Type':'application/json;charset=utf-8',
         // },
         params: {
-          taskId: this.taskId
+          /*taskId: this.taskId*/
+          taskId:'68377'
         }
 
       }).then(res => {
         if (res.data.success == "true" || res.data.success == true) {
           this.resData = res.data.data;
           this.logId = res.data.data.id;
+          this.columnData = res.data.data.listIncrementCon;
+          this.ruleForm.queryTargetColumn = this.columnData[0];
           if (res.data.data.status == "1") {
             this.textShow = false;
             window.clearInterval(this.timer);
@@ -201,6 +215,7 @@ export default {
               } else {
                 //时间范围
                 this.ruleForm.setVer = 1;
+                this.ruleForm.queryTargetColumn = res.data.data.queryTargetColumn;
                 this.ruleForm.startTime = [
                   res.data.data.config_startTime,
                   res.data.data.config_endTime
@@ -309,14 +324,15 @@ export default {
       }
       this.$ajax({
         method: "get",
-        url: `${this.GLOBAL.api.API_DACM}/ccheckData/tableCheck`,
-        /*url:'http://10.19.160.59:8080/DACM/ccheckData/tableCheck',*/
+        /*url: `${this.GLOBAL.api.API_DACM}/ccheckData/tableCheck`,*/
+        url:'http://10.19.160.25:8080/DACM/ccheckData/tableCheck',
         params: {
-          taskId: this.taskId,
+          taskId: /*this.taskId*/'68377',
           key: this.ruleForm.setVer,
           range: this.ruleForm.range,
           startTime: this.ruleForm.startTime[0],
-          endTime: this.ruleForm.startTime[1]
+          endTime: this.ruleForm.startTime[1],
+          queryTargetColumn:this.ruleForm.queryTargetColumn
         }
       }).then(res => {
         if (res.data.data.result == true || res.data.data.result == "true") {

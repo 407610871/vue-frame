@@ -89,6 +89,8 @@ export default {
     closeDialog() {
       this.dialogVisible = false;
       this.$refs['ruleForm'].resetFields();
+       this.$refs.treeForm.setCheckedNodes([]);
+       this.$refs.treeForm.setCheckedKeys([]);
     },
     //实现树的单选
     handleClick(data, checked, node) {
@@ -108,6 +110,8 @@ export default {
     closeForm() {
       this.dialogVisible = false;
       this.$refs['ruleForm'].resetFields();
+       this.$refs.treeForm.setCheckedNodes([]);
+        this.$refs.treeForm.setCheckedKeys([]);
     },
     save() {
       if (this.ruleForm.ftpurl == '') {
@@ -144,6 +148,9 @@ export default {
               confirmButtonText: '确定',
               callback: action => {
                 this.$emit('refresh');
+                 this.$refs['ruleForm'].resetFields();
+       this.$refs.treeForm.setCheckedNodes([]);
+        this.$refs.treeForm.setCheckedKeys([]);
                 this.dialogVisible = false;
 
               }

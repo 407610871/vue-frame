@@ -5,7 +5,7 @@
     <el-tooltip class="item" effect="light" content="设置通配符" placement="top">
       <i class="enc-icon-danbiaocaiji" @click="setVisible()"></i>
     </el-tooltip>
-    <el-dialog title="设置通配符" :visible.sync="dialogVisible" width="60%" :before-close="closeDialog">
+    <el-dialog title="设置通配符" :visible.sync="dialogVisible" width="73%" :before-close="closeDialog">
       <div class="title-gra plr30">
         <span class="grab gra-l"></span>
         <span class="grab gra-r"></span>
@@ -14,9 +14,10 @@
         <el-tabs v-model="activeName">
           <el-tab-pane name="first" disabled>
             <span slot="label"><i class="el-icon-circle">1</i>设置通配符</span>
-            <norela-wild v-if="isParquet==false" :msg="msg" @pre="next('second')" @clo="closeDialog"></norela-wild>
-            <norela-wild v-if="isParquet==false" :msg="msg" @pre="next('second')" @clo="closeDialog"></norela-wild>
-            <norela-unwild v-if="isParquet" :msg="msg" @pre="next('second')" @clo="closeDialog"></norela-unwild>
+           
+            
+            <norela-unwild v-if="isParquet&&this.$route.params.type=='ftp'" :msg="msg" @pre="next('second')" @clo="closeDialog"></norela-unwild>
+            <norela-wild v-else :msg="msg" @pre="next('second')" @clo="closeDialog"></norela-wild>
           </el-tab-pane>
           <el-tab-pane name="second" disabled><span slot="label"><i class="el-icon-circle">2</i> 建立数据映射关系</span>
             <div class="daiInfo proInfo">
