@@ -30,12 +30,20 @@
               <el-input-number v-model="ruleForm.range" controls-position="right" size="small" :min="0" :max="100" :step="1"></el-input-number>%
             </el-form-item>
           </el-col>
-          <el-col :span="12">
+          <el-col :span="6">
             <div class="time" v-show="ruleForm.setVer=='1'">
               <el-date-picker size="small" :picker-options="ruleForm.pickerOptions" v-model="ruleForm.startTime" type="daterange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" value-format="yyyy-MM-dd">
               </el-date-picker>
             </div>
           </el-col>
+          <el-col :span="6" v-show="ruleForm.setVer=='1'">
+              <el-form-item>
+                <el-select v-model="ruleForm.queryTargetColumn" placeholder="请选择">
+                  <el-option v-for="item in columnData" :key="item" :label="item" :value="item">
+                  </el-option>
+                </el-select>
+              </el-form-item>
+            </el-col>
         </el-col>
       </div>
     </el-form>
@@ -52,6 +60,7 @@ export default {
         setVer: 0, //核验设置
         range: 0, //核验误差范围
         startTime: [],
+        queryTargetColumn: 'TIME',
         pickerOptions: {
           disabledDate(time) {
             return time.getTime() > Date.now() - 8.64e7;
@@ -96,7 +105,8 @@ export default {
           key: this.ruleForm.setVer,
           range: this.ruleForm.range,
           startTime: this.ruleForm.startTime[0],
-          endTime: this.ruleForm.startTime[1]
+          endTime: this.ruleForm.startTime[1],
+          queryTargetColumn: this.ruleForm.queryTargetColumn
         }
       }).then(res => {
         if (res.data.data.result == true || res.data.data.result == "true") {

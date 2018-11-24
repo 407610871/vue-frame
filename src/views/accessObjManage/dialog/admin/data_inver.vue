@@ -185,14 +185,14 @@ export default {
     _queryInver() {
       this.$ajax({
         method: "GET",
-       /* url: this.GLOBAL.api.API_DACM + '/ccheckData/tableNum',*/
-         url:'http://10.19.160.25:8080/DACM/ccheckData/tableNum',
+        url: this.GLOBAL.api.API_DACM + '/ccheckData/tableNum',
+        /* url:'http://10.19.160.25:8080/DACM/ccheckData/tableNum',*/
         // headers:{
         //   'Content-Type':'application/json;charset=utf-8',
         // },
         params: {
-          /*taskId: this.taskId*/
-          taskId:'68612'
+          taskId: this.taskId
+          /*taskId:'68612'*/
         }
 
       }).then(res => {
@@ -324,10 +324,10 @@ export default {
       }
       this.$ajax({
         method: "get",
-        /*url: `${this.GLOBAL.api.API_DACM}/ccheckData/tableCheck`,*/
-        url:'http://10.19.160.25:8080/DACM/ccheckData/tableCheck',
+        url: `${this.GLOBAL.api.API_DACM}/ccheckData/tableCheck`,
+       /* url:'http://10.19.160.25:8080/DACM/ccheckData/tableCheck',*/
         params: {
-          taskId: /*this.taskId*/'68612',
+          taskId: this.taskId,
           key: this.ruleForm.setVer,
           range: this.ruleForm.range,
           startTime: this.ruleForm.startTime[0],
