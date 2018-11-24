@@ -119,7 +119,7 @@
   ],
   "datas_mapping": [
     "STRING",
-    "INT"
+    "BIGINT"
   ]
 },
 {
@@ -158,13 +158,13 @@
   ],
   "datas_mapping": [
     "STRING",
-    "INT",
+    "BIGINT",
     "BOOLEAN",
     "DOUBLE",
-    "ARRAYS",
-    "TIMESTAMP",
     "STRING",
-    "TIMESTAMP"
+    "STRING",
+    "STRING",
+    "STRING"
   ]
 },
 {
