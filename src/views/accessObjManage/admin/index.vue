@@ -138,7 +138,7 @@
           <el-table-column label="操作" min-width="160">
             <template slot-scope="scope">
               <!-- <el-button size="mini" v-on:click="updataSourceSingle(scope.$index, scope.row)" title="数据量更新">数据量更新</el-button> -->
-              <el-tooltip class="item" effect="light" content="数据量更新" placement="top" v-if="type=='mysql'|| type=='oracle'|| type=='postgresql' || type=='sqlserver' ||type=='mongodb'">
+              <el-tooltip class="item" effect="light" content="数据量更新" placement="top" v-if="type=='mysql'|| type=='oracle'|| type=='postgresql' || type=='sqlserver' ||type='mangodb'">
                 <i class="enc-icon-shujugengxin" v-on:click="updataSourceSingle(scope.$index, scope.row)" title="数据量更新"></i>
               </el-tooltip>
               <div class="survey">
