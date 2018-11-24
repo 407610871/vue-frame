@@ -56,6 +56,7 @@ export default {
     return {
       innerVisible: this.msg,
       result: '0',
+      columnData:[],
       ruleForm: {
         setVer: 0, //核验设置
         range: 0, //核验误差范围
