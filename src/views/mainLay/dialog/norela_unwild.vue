@@ -1,25 +1,15 @@
 <template>
-  <div class="taskMDialog userSurveyDialog noreDialog">
-    <div class="delimiter-box"><span>分隔符:</span>
-      <el-input v-model="delimiter"></el-input>
-    </div>
+  <div class="taskMDialog userSurveyDialog noreDialog unnore">
     <div class="comTable">
       <el-table stripe :data="tableData" height="250" style="width: 100%">
-        <el-table-column width="180" label="" :render-header="renderHeader">
-          <template slot-scope="scope">
-            <i class="el-icon-remove" @click="handleDelete(scope.$index, scope.row)"></i>
-          </template>
-        </el-table-column>
         <el-table-column label="字段名称">
           <template slot-scope="scope">
-            <el-input v-model="scope.row.name"></el-input>
+            <el-input v-model="scope.row.name" disabled></el-input>
           </template>
         </el-table-column>
         <el-table-column prop="datatype" label="字段类型">
           <template slot-scope="scope">
-            <el-select v-model="scope.row.datatype==undefined?TypeData[0]:scope.row.datatype" placeholder="请选择">
-              <el-option v-for="item in TypeData" :key="item" :label="item" :value="item">
-              </el-option>
+            <el-select v-model="scope.row.datatype" placeholder="请选择" disabled>
             </el-select>
           </template>
         </el-table-column>
@@ -41,61 +31,27 @@ export default {
     return {
       dialogVisible: false,
       delimiter: '',
-      tableData: [],
-      TypeData: [],
-
+      tableData: [{
+          name: 'line',
+          datatype: 'STRING',
+          mapdata: '',
+          comments: ''
+        },
+        {
+          name: 'value',
+          datatype: 'BIGINT',
+          mapdata: '',
+          comments: ''
+        }
+      ],
     }
   },
   methods: {
     ...mapMutations([
       'setNoreData', 'setDelimiter'
     ]),
-    // 在渲染表头的时候,会调用此方法, h为createElement的缩写版, 也可以添加事件click、change等
-    renderHeader(h, { column, $index }) {
-      return h('span', [
-        h('span', column.label),
-        h('span', {
-          class: 'el-icon-circle-plus',
-          on: {
-            click: () => {
-              /*console.log(`${column.label}   ${$index}`)*/
-              this.tableData.push({
-                name: '',
-                datatype: '',
-                mapdata: '',
-                comments: ''
-              })
-            }
-          }
-        })
-      ])
-    },
     handleDelete(index, row) {
       this.tableData.splice(index, 1);
-    },
-    //得到字段类型
-    _getType() {
-      var _self = this;
-      /*this.$ajax.get('./getColumnType').then(function(res) {*/
-      if (_self.$store.state.isParquet) {
-        for (let m = 0; m < columnJson.length; m++) {
-          if (_self.$route.params.type == columnJson[m].type) {
-            _self.TypeData = columnJson[m].datas;
-          }
-        }
-      } else {
-        for (let m = 0; m < jsonType.length; m++) {
-          if (_self.$route.params.type == jsonType[m].type) {
-            _self.TypeData = jsonType[m].datas;
-          }
-        }
-      }
-      //console.log(_self.TypeData);
-      /* })
-       .catch(function(err) {
-         console.log(err)
-       });*/
-
     },
     pre() {
       let vex = /^[a-zA-Z][a-zA-Z0-9_]*$/;
@@ -110,7 +66,7 @@ export default {
         }
       }
       for (let i = 0; i < this.tableData.length; i++) {
-        if (vex.test(this.tableData[i].name)==false) {
+        if (vex.test(this.tableData[i].name) == false) {
           this.$message.warning('表名请以字符开头,仅支持字母,数字,下划线');
           return false;
         }
@@ -130,7 +86,7 @@ export default {
 
   },
   mounted() {
-    this._getType();
+    //this._getType();
 
   },
   created() {
@@ -212,6 +168,13 @@ export default {
 
 .noreDialog {
   width: 100%;
+}
+
+.unnore .el-input.is-disabled .el-input__inner {
+  background-color: #f0f3f6;
+  color: #4f609d;
+  border-radius: 0;
+  border: 1px solid #c9cdd0;
 }
 
 </style>

@@ -14,7 +14,7 @@
         <el-table-column prop="toType" label="目标字段类型">
           <template slot-scope="scope">
             <el-select v-model="scope.row.newColumnType" placeholder="请选择">
-              <el-option v-for="item in TypeData" :key="item" :label="item" :value="item">
+              <el-option v-for="item in TypeData" :key="item" :label="item" :value="item" :disabled="type=='ftp'&&scope.row.newColumnType=='BIGINT'">
               </el-option>
             </el-select>
           </template>
@@ -45,6 +45,7 @@ export default {
       tableData: [],
       TypeData: [],
       cloneData: [],
+      type:'',
       mapData: [],
       smapData: [],
       schemaMappingDTOList: [],
@@ -187,9 +188,18 @@ export default {
           }
 
         } else {
-          _self.cloneData.push(
-            _self.mapData.datas_mapping[0]
-          )
+          if (_self.$store.state.isParquet && this.$route.params.type == 'ftp') {
+            if (_self.tableData[i].datatype.toUpperCase() == 'BIGINT') {
+              _self.cloneData.push(
+                'BIGINT'
+              )
+            }
+          } else {
+            _self.cloneData.push(
+              _self.mapData.datas_mapping[0]
+            )
+          }
+
         }
         console.log(_self.cloneData);
       }
@@ -215,6 +225,7 @@ export default {
 
   },
   mounted() {
+    this.type = this.$route.params.type;
     this._getMatch();
     this._getType()
   },
@@ -235,7 +246,7 @@ export default {
 
     }
   },
-  props: ['rowList', 'msg','flag'],
+  props: ['rowList', 'msg', 'flag'],
   watch: {
     rowList() {
 
@@ -245,11 +256,11 @@ export default {
     },
     msg() {
       if (this.msg == 'second') {
-        if(this.flag == true){
+        if (this.flag == true) {
           this._getMatch();
-        this._getType()
+          this._getType()
         }
-        
+
       }
     }
   }

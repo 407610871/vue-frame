@@ -14,7 +14,9 @@
         <el-tabs v-model="activeName">
           <el-tab-pane name="first" disabled>
             <span slot="label"><i class="el-icon-circle">1</i>设置通配符</span>
-            <norela-wild :msg="msg" @pre="next('second')" @clo="closeDialog"></norela-wild>
+            <norela-wild v-if="isParquet==false" :msg="msg" @pre="next('second')" @clo="closeDialog"></norela-wild>
+            <norela-wild v-if="isParquet==false" :msg="msg" @pre="next('second')" @clo="closeDialog"></norela-wild>
+            <norela-unwild v-if="isParquet" :msg="msg" @pre="next('second')" @clo="closeDialog"></norela-unwild>
           </el-tab-pane>
           <el-tab-pane name="second" disabled><span slot="label"><i class="el-icon-circle">2</i> 建立数据映射关系</span>
             <div class="daiInfo proInfo">
@@ -45,6 +47,7 @@
 </template>
 <script>
 import norelaWild from '@/views/mainLay/dialog/norela_wild' //设置通配符
+import norelaUnwild from '@/views/mainLay/dialog/norela_unwild' //设置通配符
 import typeMap from '@/views/mainLay/dialog/com_map' //建立数据映射关系
 import collTask from '@/views/mainLay/dialog/coll_com' //设置采集任务
 import { mapState, mapMutations, mapActions } from 'vuex'
@@ -70,12 +73,12 @@ export default {
       }
     },
     fresh() {
-     
+
       this.activeName = 'first';
       //this.$store.commit("setMode","");
       this.$store.commit('setSchemaList', this.clear);
-       this.$store.commit('setNoreData',this.clear);
-        this.$emit('fre');
+      this.$store.commit('setNoreData', this.clear);
+      this.$emit('fre');
       this.dialogVisible = false;
 
 
@@ -87,7 +90,7 @@ export default {
       //this.setMatchType(this.clear);
       this.activeName = 'first';
       this.$store.commit('setSchemaList', this.clear);
-        this.$store.commit('setNoreData',this.clear);
+      this.$store.commit('setNoreData', this.clear);
       //this.$refs.survey._clearForm();
     },
     //步骤条
@@ -101,13 +104,14 @@ export default {
       this.activeName = steps;
       console.log(this.pdata);
     },
-    nexts(steps){
-        this.activeName = steps;
+    nexts(steps) {
+      this.activeName = steps;
       console.log(this.pdata);
       this.msg = false;
     }
   },
   components: {
+    norelaUnwild,
     norelaWild,
     typeMap,
     collTask
@@ -128,7 +132,9 @@ export default {
     }
   },
   computed: {
-
+    isParquet() {
+      return this.$store.state.isParquet;
+    }
   },
   props: ['pdata'],
 
