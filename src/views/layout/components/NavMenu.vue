@@ -71,7 +71,7 @@ export default {
             break;
 
       }
-      console.log(this.activeIndex);
+      // console.log(this.activeIndex);
 
     }
   }

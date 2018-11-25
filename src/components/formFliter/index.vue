@@ -38,11 +38,13 @@
       </el-form-item>
       <el-form-item v-show="!collapse" v-for="(item,indexs) in dataObj" :label="item.name" :key="indexs" class="checkDivItem">
         <el-checkbox-group v-if="item.type=='checkbox'" v-model="formSeled[item.id]" @change="formFilter">
-          <el-checkbox v-for="(subItem,index) in item.checkData" v-show="index<=dataObj[indexs].limit" :label="subItem.id" :key="index">{{subItem.name}}</el-checkbox>
+          <el-checkbox v-for="(subItem,index) in item.checkData" v-show="index<(dataObj[indexs].limit+1)" :label="subItem.id" :key="index">{{subItem.name}}</el-checkbox>
         </el-checkbox-group> 
 
         <el-radio  v-if="item.type=='radio'" v-for="(subItem) in item.checkData" v-model="formSeled[item.id]" :label="subItem.id" :key="subItem.id" @change="formFilter">{{subItem.name}}</el-radio>
-        <span v-if="item.checkData.length>dataObj[indexs].limit" class="moreSeclect" @click="domoreSeclect(indexs)"> {{doMoreArray[indexs]?"收起":" 更多 "}} <i :class="!doMoreArray[indexs]?'el-icon-caret-bottom':'el-icon-caret-top'"></i> </span>
+        <span v-if="item.checkData.length>dataObj[indexs].limit" class="moreSeclect" @click="domoreSeclect(indexs)">  更多  <i :class="!doMoreArray[indexs]?'el-icon-caret-bottom':'el-icon-caret-top'"></i> </span>
+        <span v-else-if="item.checkData.length<=dataObj[indexs].limit&&item.checkData.length>5" class="moreSeclect" @click="domoreSeclect(indexs)"> 收起 <i :class="!doMoreArray[indexs]?'el-icon-caret-bottom':'el-icon-caret-top'"></i> </span>
+        <!-- <span v-else-if=""></span> -->
       </el-form-item>
     </div>
   </el-form>
@@ -119,6 +121,14 @@ export default {
     //更多收起功能
     domoreSeclect(index) {
       this.doMore[index] = !this.doMore[index];
+       this.doMoreArray[index] = !this.doMoreArray[index];
+      this.doMoreArray[index]
+        ? (this.dataObj[index].limit = this.dataObj[index].checkData.length)
+        : (this.dataObj[index].limit = 4);
+              console.log(this.doMoreArray)
+                            console.log( this.dataObj)
+
+
       let heit = 0;
       for (let i = 0; i < this.doMore.length; i++) {
         if (this.doMore[i]) {
@@ -126,10 +136,7 @@ export default {
         }
       }
       this.$emit("highMore", heit);
-      this.doMoreArray[index] = !this.doMoreArray[index];
-      this.doMoreArray[index]
-        ? (this.dataObj[index].limit = this.dataObj[index].checkData.length)
-        : (this.dataObj[index].limit = 4);
+     
     },
     //查询按钮
     search() {

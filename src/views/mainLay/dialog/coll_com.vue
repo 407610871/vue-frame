@@ -4,7 +4,7 @@
       <div class="daiInfo proInfo">
         <div class="proInfo-box clearfix">
           <el-col :span="24">
-            <el-col :span="6">
+            <el-col :span="10">
               <el-form-item label="接入目的库:" prop="dLibrary">
                 <el-select v-model="ruleForm.dLibrary" placeholder="请选择" :disabled="isdisable">
                   <!-- <el-option label="全国" value="0"></el-option>

@@ -66,6 +66,7 @@ export default {
 
       } else {
         _self.tableData = _self.$store.state.noreData;
+
         for (let j = 0; j < _self.tableData.length; j++) {
           _self.schemaMappingDTOList.push({
             "newColumnName": _self.tableData[j].name,
@@ -76,6 +77,7 @@ export default {
             "length": _self.tableData[j].length
           })
         }
+        // console.log( _self.tableData)
         this._getAllType();
       }
 
@@ -202,13 +204,12 @@ export default {
           }
 
         }
-        console.log(_self.cloneData);
       }
       for (let n = 0; n < _self.cloneData.length; n++) {
         _self.schemaMappingDTOList[n].newColumnType = _self.cloneData[n];
       }
       console.log(_self.schemaMappingDTOList);
-
+console.log(_self.cloneData);
 
 
     },
