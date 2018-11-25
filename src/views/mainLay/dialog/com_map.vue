@@ -45,8 +45,8 @@ export default {
       tableData: [],
       TypeData: [],
       cloneData: [],
-      type:'',
-      parflag:true,
+      type: '',
+      parflag: true,
       mapData: [],
       smapData: [],
       schemaMappingDTOList: [],
@@ -149,7 +149,7 @@ export default {
             }
           }
         }
-          // debugger;
+        // debugger;
 
         if (flag) {
           let datalength = _self.tableData[i].length;
@@ -200,9 +200,16 @@ export default {
               )
             }
           } else {
-            _self.cloneData.push(
-              _self.mapData.datas_mapping[0]
-            )
+            if (_self.tableData[i].datatype.toUpperCase().indexOf('INT')!=-1) {
+              _self.cloneData.push(
+                'BIGINT'
+              )
+            } else {
+              _self.cloneData.push(
+                _self.mapData.datas_mapping[0]
+              )
+            }
+
           }
 
         }
@@ -211,7 +218,7 @@ export default {
         _self.schemaMappingDTOList[n].newColumnType = _self.cloneData[n];
       }
       console.log(_self.schemaMappingDTOList);
-console.log(_self.cloneData);
+      console.log(_self.cloneData);
 
 
     },
@@ -329,10 +336,12 @@ console.log(_self.cloneData);
 .typeMapDia {
   width: 100%;
 }
+
 .unnore .el-input.is-disabled .el-input__inner {
   background-color: #f0f3f6;
   color: #4f609d;
   border-radius: 0;
   border: 1px solid #c9cdd0;
 }
+
 </style>

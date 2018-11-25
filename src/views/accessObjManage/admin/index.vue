@@ -409,6 +409,7 @@ export default {
       paramsObj.objectType = this.searchParams.objectType.join(",");
       paramsObj.dataRange = this.searchParams.dataRange.join(",");
       paramsObj.accessSysId = parseInt(this.$route.params.sourceId);
+      paramsObj.objInfoId  = urlIds;
       console.log(this.searchParams)
       this.$ajax({
           // url: window.ENV.API_DACM+'ctables/datas',
