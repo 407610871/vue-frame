@@ -132,6 +132,7 @@ export default {
       for (let i = 0; i < _self.tableData.length; i++) {
         let flag = false;
         let temp;
+        console.log(_self.mapData)
         for (let j = 0; j < _self.mapData.datas.length; j++) {
           if (_self.tableData[i].datatype.toUpperCase() == _self.mapData.datas[j]) {
 
@@ -148,6 +149,7 @@ export default {
             }
           }
         }
+          // debugger;
 
         if (flag) {
           let datalength = _self.tableData[i].length;

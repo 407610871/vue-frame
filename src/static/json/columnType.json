@@ -148,7 +148,6 @@
   "type": "mongodb",
   "datas": [
     "STRING",
-    "INTEGER",
     "BOOLEAN",
     "DOUBLE",
     "ARRAYS",
@@ -160,7 +159,6 @@
   ],
   "datas_mapping": [
     "STRING",
-    "BIGINT",
     "BOOLEAN",
     "DOUBLE",
     "STRING",
