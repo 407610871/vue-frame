@@ -45,8 +45,8 @@ export default {
       tableData: [],
       TypeData: [],
       cloneData: [],
-      type: '',
-      parflag: true,
+      type:'',
+      parflag:true,
       mapData: [],
       smapData: [],
       schemaMappingDTOList: [],
@@ -160,7 +160,6 @@ export default {
       for (let i = 0; i < _self.tableData.length; i++) {
         let flag = false;
         let temp;
-        console.log(_self.mapData)
         for (let j = 0; j < _self.mapData.datas.length; j++) {
           if (_self.tableData[i].datatype.toUpperCase() == _self.mapData.datas[j]) {
 
@@ -177,7 +176,6 @@ export default {
             }
           }
         }
-        // debugger;
 
         if (flag) {
           let datalength = _self.tableData[i].length;
@@ -241,6 +239,7 @@ export default {
           }
 
         }
+        console.log(_self.cloneData);
       }
       for (let n = 0; n < _self.cloneData.length; n++) {
        if(_self.schemaMappingDTOList[n].newColumnType==''){
@@ -249,7 +248,7 @@ export default {
        
       }
       console.log(_self.schemaMappingDTOList);
-      console.log(_self.cloneData);
+
 
 
     },
@@ -369,12 +368,10 @@ export default {
 .typeMapDia {
   width: 100%;
 }
-
 .unnore .el-input.is-disabled .el-input__inner {
   background-color: #f0f3f6;
   color: #4f609d;
   border-radius: 0;
   border: 1px solid #c9cdd0;
 }
-
 </style>
