@@ -45,8 +45,8 @@ export default {
       tableData: [],
       TypeData: [],
       cloneData: [],
-      type: '',
-      parflag: true,
+      type:'',
+      parflag:true,
       mapData: [],
       smapData: [],
       schemaMappingDTOList: [],
@@ -66,7 +66,6 @@ export default {
 
       } else {
         _self.tableData = _self.$store.state.noreData;
-
         for (let j = 0; j < _self.tableData.length; j++) {
           _self.schemaMappingDTOList.push({
             "newColumnName": _self.tableData[j].name,
@@ -77,7 +76,6 @@ export default {
             "length": _self.tableData[j].length
           })
         }
-        // console.log( _self.tableData)
         this._getAllType();
       }
 
@@ -132,7 +130,6 @@ export default {
       for (let i = 0; i < _self.tableData.length; i++) {
         let flag = false;
         let temp;
-        console.log(_self.mapData)
         for (let j = 0; j < _self.mapData.datas.length; j++) {
           if (_self.tableData[i].datatype.toUpperCase() == _self.mapData.datas[j]) {
 
@@ -149,7 +146,6 @@ export default {
             }
           }
         }
-        // debugger;
 
         if (flag) {
           let datalength = _self.tableData[i].length;
@@ -200,25 +196,19 @@ export default {
               )
             }
           } else {
-            if (_self.tableData[i].datatype.toUpperCase().indexOf('INT')!=-1) {
-              _self.cloneData.push(
-                'BIGINT'
-              )
-            } else {
-              _self.cloneData.push(
-                _self.mapData.datas_mapping[0]
-              )
-            }
-
+            _self.cloneData.push(
+              _self.mapData.datas_mapping[0]
+            )
           }
 
         }
+        console.log(_self.cloneData);
       }
       for (let n = 0; n < _self.cloneData.length; n++) {
         _self.schemaMappingDTOList[n].newColumnType = _self.cloneData[n];
       }
       console.log(_self.schemaMappingDTOList);
-      console.log(_self.cloneData);
+
 
 
     },
@@ -336,12 +326,10 @@ export default {
 .typeMapDia {
   width: 100%;
 }
-
 .unnore .el-input.is-disabled .el-input__inner {
   background-color: #f0f3f6;
   color: #4f609d;
   border-radius: 0;
   border: 1px solid #c9cdd0;
 }
-
 </style>
