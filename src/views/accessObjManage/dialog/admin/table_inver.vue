@@ -220,7 +220,7 @@ export default {
       if (this.dialogVisible) {
         this.accessSysId = this.pdata.accessSysId;
         this._getTableNum();
-        debugger;
+         this.textShow = false;
         this.name = decodeURI(this.$route.params.sourceName);
       }
     }
