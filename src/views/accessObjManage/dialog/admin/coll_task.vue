@@ -946,6 +946,9 @@ export default {
   },
   watch: {
     msg() {
+      if(this.msg=="third"){
+         this._getInit();
+      }
       if (this.editfalg == false) {
         if (this.msg == "third") {
           this._getAcmode();

@@ -389,10 +389,14 @@ export default {
     },
     loadTable: function() {
       var _self = this;
-      let urlIndex = _self.$route.path.indexOf('[');
+      debugger;
+      let objInfoIds = '';
+      let urlIndex =decodeURI( _self.$route.query.objInfoIds).indexOf('[');
+      debugger;
       let urlIds = '';
       if (urlIndex != -1) {
-        urlIds = _self.$route.path.subString(urlIndex, _self.$route.path.length - 1);
+        objInfoIds = decodeURI( _self.$route.query.objInfoIds);
+        urlIds = objInfoIds.substring(urlIndex+1, objInfoIds.length - 1);
       }
       _self.jrtype = this.$store.state.jrtype;
 
