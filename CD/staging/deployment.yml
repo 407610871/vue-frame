@@ -34,7 +34,7 @@ spec:
           value: 'http://$(NODE_IP):29023/DOMN'
 #amc-apiserver
         - name: API_WARN
-          value: 'http://$(NODE_IP):29532'
+          value: 'http://$(NODE_IP):29533'
         resources:
           limits:
             cpu: 300m
