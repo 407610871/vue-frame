@@ -42,7 +42,7 @@
         </el-checkbox-group> 
 
         <el-radio  v-if="item.type=='radio'" v-for="(subItem) in item.checkData" v-model="formSeled[item.id]" :label="subItem.id" :key="subItem.id" @change="formFilter">{{subItem.name}}</el-radio>
-        <span v-if="item.checkData.length>dataObj[indexs].limit" class="moreSeclect" @click="domoreSeclect(indexs)">  更多  <i :class="!doMoreArray[indexs]?'el-icon-caret-bottom':'el-icon-caret-top'"></i> </span>
+        <span v-if="item.checkData.length>dataObj[indexs].limit&&item.checkData.length>5" class="moreSeclect" @click="domoreSeclect(indexs)">  更多  <i :class="!doMoreArray[indexs]?'el-icon-caret-bottom':'el-icon-caret-top'"></i> </span>
         <span v-else-if="item.checkData.length<=dataObj[indexs].limit&&item.checkData.length>5" class="moreSeclect" @click="domoreSeclect(indexs)"> 收起 <i :class="!doMoreArray[indexs]?'el-icon-caret-bottom':'el-icon-caret-top'"></i> </span>
         <!-- <span v-else-if=""></span> -->
       </el-form-item>
@@ -298,7 +298,7 @@ export default {
     display: inline-block;
     max-height: 70px;
     overflow-y: auto;
-    width: 580px;
+    width: 60%;
     float: left;
   }
   .moreSeclect {
