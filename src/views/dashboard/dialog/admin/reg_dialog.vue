@@ -162,13 +162,12 @@
               <el-col :span="10" class="uncol">
                 <span class="fl" v-show="this.ruleForm.author=='true'&&ruleForm.syskind!=''&&ruleForm.syskind!='10023'">*</span>
                 <el-form-item class="fl unrequired" label="IP地址/主机名:" prop="ipname" v-if="ruleForm.syskind!=''&&ruleForm.syskind!='10023'">
-
                   <el-input v-model="ruleForm.ipname"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="2" class="bank">bank</el-col>
               <el-col :span="10" class="uncol">
-              <span class="fl" v-show="this.ruleForm.author=='true'&&ruleForm.syskind!=''&&ruleForm.syskind!='10023'">*</span>
+                <span class="fl" v-show="this.ruleForm.author=='true'&&ruleForm.syskind!=''&&ruleForm.syskind!='10023'">*</span>
                 <el-form-item class="fl unrequired" label="登录名:" prop="username" v-if="ruleForm.syskind!=''&&ruleForm.syskind!='10023'">
                   <el-input v-model="ruleForm.username"></el-input>
                 </el-form-item>
@@ -181,21 +180,21 @@
 </el-col> -->
               <el-col :span="2" class="bank">bank</el-col>
               <el-col :span="10" class="uncol">
-              <span class="fl" v-show="this.ruleForm.author=='true'&&ruleForm.syskind!=''&&ruleForm.syskind!='10023'">*</span>
+                <span class="fl" v-show="this.ruleForm.author=='true'&&ruleForm.syskind!=''&&ruleForm.syskind!='10023'">*</span>
                 <el-form-item class="fl unrequired" label="密码:" prop="password" v-if="ruleForm.syskind!=''&&ruleForm.syskind!='10023'">
                   <el-input v-model="ruleForm.password"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="2" class="bank">bank</el-col>
               <el-col :span="10" class="uncol">
-              <span class="fl" v-show="this.ruleForm.author=='true'&&ruleForm.syskind!=''&&ruleForm.syskind!='10023'">*</span>
+                <span class="fl" v-show="this.ruleForm.author=='true'&&ruleForm.syskind!=''&&ruleForm.syskind!='10023'">*</span>
                 <el-form-item class="fl unrequired" label="端口号:" prop="iport" v-if="ruleForm.syskind!=''&&ruleForm.syskind!='10023'">
                   <el-input v-model="ruleForm.iport"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="2" class="bank" v-if="ruleForm.syskind=='10001'||ruleForm.syskind=='10003'||ruleForm.syskind=='10002'||ruleForm.syskind=='10004'||ruleForm.syskind=='10020'">bank</el-col>
               <el-col :span="10" class="uncol">
-              <span class="fl" v-show="this.ruleForm.author=='true'&&(ruleForm.syskind=='10001'||ruleForm.syskind=='10003'||ruleForm.syskind=='10002'||ruleForm.syskind=='10004'||ruleForm.syskind=='10020')">*</span>
+                <span class="fl" v-show="this.ruleForm.author=='true'&&(ruleForm.syskind=='10001'||ruleForm.syskind=='10003'||ruleForm.syskind=='10002'||ruleForm.syskind=='10004'||ruleForm.syskind=='10020')">*</span>
                 <el-form-item class="fl unrequired" label="实例/数据库名:" prop="instanceName" v-if="ruleForm.syskind=='10001'||ruleForm.syskind=='10003'||ruleForm.syskind=='10002'||ruleForm.syskind=='10004'||ruleForm.syskind=='10020'">
                   <el-input v-model="ruleForm.instanceName"></el-input>
                 </el-form-item>
@@ -244,21 +243,21 @@
               <el-col :span="2" class="bank">bank</el-col>-->
               <!-- hive专有 -->
               <el-col :span="10" class="uncol">
-              <span class="fl" v-show="this.ruleForm.author=='true'&&ruleForm.syskind!=''&& ruleForm.syskind=='vhost'">*</span>
+                <span class="fl" v-show="this.ruleForm.author=='true'&&ruleForm.syskind!=''&& ruleForm.syskind=='vhost'">*</span>
                 <el-form-item class="fl unrequired" label="集群根目录" prop="hadoopDir" v-if="ruleForm.syskind!=''&& ruleForm.syskind=='vhost'">
                   <el-input v-model="ruleForm.hadoopDir"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="2" class="bank" v-if="ruleForm.syskind!=''&& ruleForm.syskind=='vhost'">bank</el-col>
               <el-col :span="10" class="uncol">
-              <span class="fl" v-show="this.ruleForm.author=='true'&&ruleForm.syskind!=''&& ruleForm.syskind=='vhost'">*</span>
+                <span class="fl" v-show="this.ruleForm.author=='true'&&ruleForm.syskind!=''&& ruleForm.syskind=='vhost'">*</span>
                 <el-form-item class="fl unrequired" label="集群目录" prop="hadoopHomes" v-if="ruleForm.syskind!=''&& ruleForm.syskind=='vhost'">
                   <el-input v-model="ruleForm.hadoopHomes"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="2" class="bank" v-if="ruleForm.syskind!=''&& ruleForm.syskind=='vhost'">bank</el-col>
               <el-col :span="10" class="uncol">
-              <span class="fl" v-show="this.ruleForm.author=='true'&&ruleForm.syskind!=''&& ruleForm.syskind=='vhost'">*</span>
+                <span class="fl" v-show="this.ruleForm.author=='true'&&ruleForm.syskind!=''&& ruleForm.syskind=='vhost'">*</span>
                 <el-form-item class="fl unrequired" label="vhost" prop="vhost" v-if="ruleForm.syskind!=''&& ruleForm.syskind=='vhost'">
                   <el-input v-model="ruleForm.vhost"></el-input>
                 </el-form-item>
@@ -306,14 +305,46 @@ import { validateEmail } from '@/utils/validate.js'
 export default {
   name: "taskMDialog",
   data: function() {
-    //判断是否必选项为空
-    const validateNull = (rule, value, callback) => {
-
-      if (value == "") {
-        callback(new Error("不能为空"));
-      } else {
-
+    const _self = this;
+    const validatePhone = (rule, value, callback) => {
+      if (_self.testflag && rule.field == "dockphone") {
         callback();
+      } else {
+        const isPhone = /^([0-9]{3,4}-)?[0-9]{7,8}$/;
+        const isMob = /^((\+?86)|(\(\+86\)))?(13[012356789][0-9]{8}|15[012356789][0-9]{8}|18[02356789][0-9]{8}|17[02356789][0-9]{8}|147[0-9]{8}|1349[0-9]{7})$/;
+        if (rule.required) {
+          if (value == "") {
+            callback(new Error("请输入正确的号码"));
+          } else {
+            if (isPhone.test(value) || isMob.test(value)) {
+              callback();
+            } else {
+              callback(new Error("请输入正确的号码"));
+            }
+          }
+        }
+        if (value != "") {
+          if (isPhone.test(value) || isMob.test(value)) {
+            callback();
+          } else {
+            callback(new Error("请输入正确的号码"));
+          }
+        } else {
+          callback();
+        }
+      }
+    };
+    //判断是否必选项为空
+
+    const validateNull = (rule, value, callback) => {
+      if (_self.testflag && rule.field == "dockname") {
+        callback();
+      } else {
+        if (value == "") {
+          callback(new Error("不能为空"));
+        } else {
+          callback();
+        }
       }
     };
     const validateSq = (rule, value, callback) => {
@@ -366,6 +397,7 @@ export default {
       fileList: [], //上传的文件列表
       tableMsg: [],
       deptData: [],
+      testflag: false,
       accdiaName: '更多',
       accdiaFlag: false,
       deIndex: 0,
@@ -451,7 +483,7 @@ export default {
           { validator: this.GLOBAL.validatePhone, trigger: 'blur' }
         ],
         dockphone: [
-          { required: true, message: '输入正确的号码', validator: this.GLOBAL.validatePhone, trigger: 'blur' }
+          { required: true, message: '输入正确的号码', validator: validatePhone, trigger: 'blur' }
         ]
       },
       treedata: [],
@@ -630,6 +662,7 @@ export default {
     },
     //保存信息
     submitForm(formName) {
+       this.testflag = false;
       console.log(this.ruleForm.syskind);
       var _self = this;
       this.$refs[formName].validate((valid) => {
@@ -1181,7 +1214,7 @@ export default {
     },
     //测试连接
     testForm(formName) {
-
+      this.testflag = true;
       this.$refs[formName].validate((valid) => {
         if (valid) {
           this.loading = true
@@ -1293,15 +1326,19 @@ export default {
 .icon-dai i {
   cursor: pointer;
 }
-.otherInfo .unrequired   .el-form-item__content{
+
+.otherInfo .unrequired .el-form-item__content {
   width: 100%;
 }
+
 .uncol span {
-  color:red;
+  color: red;
   line-height: 30px;
   margin-right: 6px;
 }
+
 .uncol label {
   text-align: left;
 }
+
 </style>
