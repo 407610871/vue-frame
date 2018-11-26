@@ -153,7 +153,7 @@
 
             <el-button v-if="scope.row.status==1" type="text" size="small" @click="doRun(scope.$index, scope.row)">暂停</el-button>
             <el-button v-if="scope.row.status!=1" type="text" size="small" @click="doDel(scope.$index, scope.row)">删除</el-button>
-            <el-button  v-if="scope.row.status==1||scope.row.status==2||scope.row.status==4" type="text" size="small" @click="doCheck(scope.$index, scope.row)">数据核验</el-button>
+            <el-button  v-if="(scope.row.status==1||scope.row.status==2||scope.row.status==4)&&scope.row.isPeriod!=0" type="text" size="small" @click="doCheck(scope.$index, scope.row)">数据核验</el-button>
             <el-button v-if="scope.row.status==2||(scope.row.status==4&&scope.row.isPeriod!=3)||scope.row.status==3" type="text" size="small" @click="doConverge(scope.$index, scope.row)">重新汇聚</el-button>
           </template>
         </el-table-column>
