@@ -14,7 +14,7 @@
           </el-tooltip>
         </div>
         <input type="file" id="file" name="inputFile" ref="inputer" v-on:change="importAjax" style="display:none" />
-        <el-radio-group v-model="tabPosition" style="margin-bottom: 30px;">
+        <el-radio-group v-model="tabPosition" style="margin-bottom: 30px;" @change="listAjax">
           <el-radio-button label="metadataManage">元数据管理</el-radio-button>
           <el-radio-button label="dataPreview">数据预览</el-radio-button>
         </el-radio-group>
@@ -228,9 +228,9 @@
           tabPosition: newVal
         });
       },
-      '$route' (to, from) {
+     /*  '$route' (to, from) {
         this.getFiltercolumnList();
-      },
+      }, */
     },
     mounted() {
       var tableParams = this.$store.state.queryParams.accessObjInfo;
@@ -247,11 +247,11 @@
       this.$root.eventHub.$on('search', (keyword) => {
         this.search(keyword);
       });
-      this.getFiltercolumnList();
+     // this.getFiltercolumnList();
     },
     methods: {
       searchAll(){
-        this.loadTable();
+        this.dataPreviewContentAjax();
         //console.log(this.searchForm);
       },
       getFiltercolumnList(){
@@ -397,10 +397,16 @@
         })
         /*window.open(this.exportUrl);*/
       },
-      loadTable: function(flag) {
+      listAjax(val){
+        if(val == 'dataPreview'){
+          this.getFiltercolumnList();
+          this.dataPreviewContentAjax();
+        }
+      },
+
+      metadataManageAjax(){
         var _self = this;
-        function promist0(){
-          return new Promise((resolve, reject) => {
+        return new Promise((resolve, reject) => {
             _self.loading = true;
             _self.pageSize = _self.$store.state.pageSize;
             var paramsObj = {
@@ -443,60 +449,10 @@
                 });
               });
           });
-        }
-        /* var _self = this;
-        this.loading = true;
-				_self.pageSize = this.$store.state.pageSize;
-        var paramsObj = {
-          pagNum: this.tableParams.pageNum1,
-          count: _self.pageSize,
-          objectInfoId: this.$route.params.objId,
-          ACCESS_SYS_DIALECT_ID: this.tableParams.ACCESS_SYS_DIALECT_ID,
-          accessSysId: this.tableParams.accessSysId
-        }
-        const promist0 = new Promise((resolve, reject) => {
-          this.$ajax.post(window.ENV.API_DACM + '/objDetail/dataList', paramsObj).then(function(res) {
-              console.log('tableLoaded:metadataManage');
-              if (res.data.success) {
-                var data = res.data.data.list;
-                for (var value of data) {
-                  value.showEdit = false;
-                }
-                _self.mainTableData1 = data;
-                _self.mainTableDataTotal1 = res.data.data.total;
-                //这里是异步的，存在延迟，所以没问题,如果是同步的话可能存在问题
-                _self.currentPage1 = _self.tableParams.pageNum1;
-                _self.pageShow = true;
-                resolve(res);
-              } else {
-                console.log(res.data.code);
-                _self.mainTableData1 = [];
-                _self.pageShow = false;
-                reject(res);
-                _self.$alert('获取表信息失败', '提示', {
-                  confirmButtonText: '确定'
-                });
-              }
-              if (_self.tabPosition == 'metadataManage') {
-                _self.loading = false;
-              }
-            })
-            .catch(function(err) {
-              _self.mainTableData1 = [];
-              _self.pageShow = false;
-              console.log(err)
-              if (_self.tabPosition == 'metadataManage') {
-                _self.loading = false;
-              }
-              reject(err);
-              _self.$alert('获取表信息失败', '提示', {
-                confirmButtonText: '确定'
-              });
-            });
-        });
- */
-        function promist1(){
-          return new Promise((resolve, reject) => {
+      },
+      dataPreviewAjax(){
+        var _self = this;
+        return new Promise((resolve, reject) => {
             let count = 0;
             if(!_self.count){
               count = _self.storeCount;
@@ -533,93 +489,27 @@
                 _self.loading = false;
               });
           });
-        }
-        /* const promist1 = new Promise((resolve, reject) => {
-          let count = 0;
-          if(!this.count){
-            count = this.$store.state.pageSize;
-          }else{
-            count = this.count;
-          }
-
-          for(let i=0;i<this.searchForm.length;i++){
-            if(this.searchForm[i].filterdata==undefined){
-                this.searchForm.splice(i,1);
-            }
-          }
-          console.log(this.searchForm)
-
-          var paramsObj = {
-            count: count,
-            objInfoId: this.$route.params.objId,
-            ACCESS_SYS_DIALECT_ID: this.tableParams.ACCESS_SYS_DIALECT_ID,
-            accessSysId: this.tableParams.accessSysId,
-            filter: this.searchForm
-          }
-
-
-          this.$ajax.post(window.ENV.API_DACM + '/objDetail/previewData', paramsObj).then(function(res) {
-              console.log('tableLoaded:dataPreview');
-              if (res.data.success) {
-                resolve(res);
-              } else {
-                _self.mainTableData2 = [];
-                console.log(res.data.code);
-                reject(res);
-                _self.$alert('获取预览信息失败', '提示', {
-                  confirmButtonText: '确定'
-                });
-              }
-              if (_self.tabPosition != 'metadataManage') {
-                _self.loading = false;
-              }
-            })
-            .catch(function(err) {
-              console.log(err)
-              _self.mainTableData2 = [];
-              reject(err);
-              _self.$alert('获取预览信息失败', '提示', {
-                confirmButtonText: '确定'
-              });
-              if (_self.tabPosition != 'metadataManage') {
-                _self.loading = false;
-              }
-            });
-        }); */
-        promist0().then(promist1).then((resultList) => {
+      },
+      dataPreviewContentAjax(){
+        this.dataPreviewAjax().then((resultList) => {
           if (resultList.data.datas.length > 0) {
-            _self.data2Columns = resultList.data.datas[0];
-						_self.mainTableTitle = resultList.data.titles;
+            this.data2Columns = resultList.data.datas[0];
+            this.mainTableTitle = resultList.data.titles;
             var len = 0;
-            for (var i in _self.data2Columns) {
+            for (var i in this.data2Columns) {
               len++;
               if (len == 6) {
                 break;
               }
             }
             var tableW = document.getElementById("mainTable2").offsetWidth;
-            _self.width = len == 6 ? tableW / (len + 1) + '%' : tableW / len + '%'
+            this.width = len == 6 ? tableW / (len + 1) + '%' : tableW / len + '%'
           }
-          _self.mainTableData2 = resultList.data.datas;
-        });
-        /* Promise.all([promist0, promist1]).then((resultList) => {
-          if (resultList[1].data.datas.length > 0) {
-            _self.data2Columns = resultList[1].data.datas[0];
-            console.log(_self.data2Columns)
-						_self.mainTableTitle = resultList[1].data.titles;
-            var len = 0;
-            for (var i in _self.data2Columns) {
-              len++;
-              if (len == 6) {
-                break;
-              }
-            }
-            var tableW = document.getElementById("mainTable2").offsetWidth;
-            _self.width = len == 6 ? tableW / (len + 1) + '%' : tableW / len + '%'
-          }
-          _self.mainTableData2 = resultList[1].data.datas;
-        }); */
-
+          this.mainTableData2 = resultList.data.datas;
+        }); 
+      },
+      loadTable: function(flag) {
+        this.metadataManageAjax();
       },
 			getLabel(key){
 				console.log(key);
