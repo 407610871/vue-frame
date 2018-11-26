@@ -310,6 +310,8 @@ export default {
               _self.loading = false;
               if (res.data.success) {
                 _self.doMsg("重新汇聚成功", "success");
+                                _self.init();
+
               } else {
                 _self.doMsg(res.data.message, "error");
               }
@@ -551,6 +553,8 @@ if(row1.length==0){
                         dangerouslyUseHTMLString: true
                       }
                     );
+                                    _self.init();
+
                   } else {
                     this.$alert("重新汇聚失败", "重新汇聚", {
                       dangerouslyUseHTMLString: true
