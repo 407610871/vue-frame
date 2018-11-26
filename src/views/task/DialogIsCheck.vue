@@ -211,8 +211,8 @@ export default {
       this.$ajax.get(baseUrl + '/ccheckData/tableNum', {
       //this.$ajax.get('http://10.19.160.25:8080/DACM/ccheckData/tableNum', {
         params: {
-          //taskId: that.msgCheck.taskInfoId
-          taskId: '68377'
+          taskId: that.msgCheck.taskInfoId
+          //taskId: '68377'
         }
       }).then(res => {
         this.loading = false;
