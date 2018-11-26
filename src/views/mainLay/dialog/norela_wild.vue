@@ -44,12 +44,14 @@ export default {
       delimiter: '',
       tableData: [],
       TypeData: [],
+      schemas:[],
+      i:0,
 
     }
   },
   methods: {
     ...mapMutations([
-      'setNoreData', 'setDelimiter'
+      'setNoreData', 'setDelimiter','setSchemaList'
     ]),
     // 在渲染表头的时候,会调用此方法, h为createElement的缩写版, 也可以添加事件click、change等
     renderHeader(h, { column, $index }) {
@@ -59,20 +61,30 @@ export default {
           class: 'el-icon-circle-plus',
           on: {
             click: () => {
-              /*console.log(`${column.label}   ${$index}`)*/
+              debugger;
+              
+              console.log(`${column.label}   ${$index}*********`);
               this.tableData.push({
                 name: '',
                 datatype: this.TypeData[0],
-                mapdata: '',
+                id: this.i,
                 comments: ''
               })
+              this.i++;
             }
           }
         })
       ])
     },
     handleDelete(index, row) {
-      this.tableData.splice(index, 1);
+     
+       this.schemas = this.$store.state.schemaList;
+      for(let i=0; i<this.schemas.length;i++){
+        if(this.schemas[i].length==this.tableData[index].id){
+           this.schemas.splice(i,1);
+        }
+      }
+       this.tableData.splice(index, 1);
     },
     //得到字段类型
     _getType() {
@@ -112,17 +124,35 @@ export default {
       }
       for (let i = 0; i < this.tableData.length; i++) {
         if (vex.test(this.tableData[i].name)==false) {
-          this.$message.warning('表名请以字符开头,仅支持字母,数字,下划线');
+          this.$message.warning('字段名请以字符开头,仅支持字母,数字,下划线');
           return false;
         }
       }
       if(this.$route.params.type="mongodb"){
         this.delimiter = "\t";
       }
+      if(this.schemas.length!=0){
+        this.setSchemaList(this.schemas);
+      }
+      for(let i =0; i<this.tableData.length;i++){
+        for(let j =0 ;j<this.$store.state.schemaList.length;j++){
+          if(this.tableData[i].id==this.$store.state.schemaList[j].length){
+            if(this.tableData[i].name!=this.$store.state.schemaList[j].orgColumnName){
+               this.$set(this.$store.state.schemaList[j],'newColumnName',this.tableData[i].name);
+               this.$set(this.$store.state.schemaList[j],'orgColumnName',this.tableData[i].name);
+            }
+            if(this.tableData[i].datatype!=this.$store.state.schemaList[j].orgColumnType){
+              this.$set(this.$store.state.schemaList[j],'newColumnType','');
+            }
+          }
+        }
+      }
+      this.setSchemaList(this.$store.state.schemaList);
       this.setNoreData(this.tableData);
       this.setDelimiter(this.delimiter);
       console.log(this.$store.state.noreData);
       console.log(this.$store.state.delimiter);
+
       this.$emit('pre');
     },
     next() {

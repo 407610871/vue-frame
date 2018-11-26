@@ -73,7 +73,7 @@ export default {
   },
   mounted() {
     var _self = this;
-    _self.warnurl = window.ENV.API_WARN+'/#/alert/dashboard?platform=%E6%95%B0%E6%8D%AE%E5%B7%A5%E5%8E%82%E4%BA%A7%E5%93%81%E7%BA%BF';
+    _self.warnurl = encodeURI(window.ENV.API_WARN+'/#/alert/dashboard?platform=告警中心');
     this.$ajax
       .get(window.ENV.API_DACM + "/caccesssysRelationWorkInfo/getSystemSet.do")
       .then(function(res) {
