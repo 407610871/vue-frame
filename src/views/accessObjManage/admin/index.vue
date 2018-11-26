@@ -160,7 +160,7 @@
                 <data-inver :pdata="scope.row" @fre="loadTable()"></data-inver>
               </div>
               <div class="survey" v-if="type!='mysql' && type!='oracle' && type!='sqlserver' && type!='postgresql'">
-                <norela-coll :pdata="scope.row" @fre="loadTable()"></norela-coll>
+                <norela-coll :pdata="scope.row" :type="type" @fre="loadTable()"></norela-coll>
               </div>
               <!--  <div class="survey" v-if="jrtype=='ftp'">
                <path-ftp></path-ftp>

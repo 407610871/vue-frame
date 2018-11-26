@@ -101,7 +101,7 @@ export default {
         list: []
       },
       count2Data: {
-        name: "实时统计",
+        name: "流式接入统计",
         total: "",
         list: []
       },

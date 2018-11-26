@@ -2,10 +2,10 @@
   <div class="taskMDialog userSurveyDialog setTaskDia diaicon">
     <!-- <el-button size="mini" class="diabtn incbtn" type="danger" @click="dialogVisible = true">设置通配符</el-button> -->
     <!-- <i class="el-icon-info" @click="dialogVisible = true">设置通配符</i> -->
-    <el-tooltip class="item" effect="light" content="设置通配符" placement="top">
+    <el-tooltip class="item" effect="light" :content="titleContent" placement="top">
       <i class="enc-icon-danbiaocaiji" @click="setVisible()"></i>
     </el-tooltip>
-    <el-dialog title="设置通配符" :visible.sync="dialogVisible" width="73%" :before-close="closeDialog">
+    <el-dialog :title="titleContent" :visible.sync="dialogVisible" width="73%" :before-close="closeDialog">
       <div class="title-gra plr30">
         <span class="grab gra-l"></span>
         <span class="grab gra-r"></span>
@@ -13,7 +13,7 @@
       <div class="taskSteps plr30">
         <el-tabs v-model="activeName">
           <el-tab-pane name="first" disabled>
-            <span slot="label"><i class="el-icon-circle">1</i>设置通配符</span>
+            <span slot="label"><i class="el-icon-circle">1</i>{{titleContent}}</span>
            
             
             <norela-unwild v-if="isParquet&&this.$route.params.type=='ftp'" :msg="msg" @pre="next('second')" @clo="closeDialog"></norela-unwild>
@@ -62,6 +62,7 @@ export default {
       event: '',
       clear: [],
       msg: true,
+      titleContent:'设置通配符'
     };
   },
   methods: {
@@ -121,7 +122,13 @@ export default {
 
   },
   created() {
-
+    if(this.type=="ftp"){
+      this.titleContent="单目录采集";
+    }else if(this.type=="mongodb"){
+      this.titleContent="单表采集";
+    }else{
+      this.titleContent="设置通配符";
+    }
   },
   watch: {
     dialogVisible() {
@@ -137,7 +144,7 @@ export default {
       return this.$store.state.isParquet;
     }
   },
-  props: ['pdata'],
+  props: ['pdata','type'],
 
 };
 
