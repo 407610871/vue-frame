@@ -107,20 +107,13 @@
               </el-row>
             </el-form>
             <el-table :data="mainTableData2" stripe  border style="width: 100%" tooltip-effect="light">
-              <el-table-column v-for="(val, key, index) in data2Columns" v-if="index<6" :prop="key" :label="getLabel(key)" width="width">
+              <el-table-column v-for="(val, key, index) in data2Columns" v-if="index<6" :prop="key" :label="getLabel(key)" width="width" :key="index">
               </el-table-column>
-              
 							<el-table-column label="描述">
-
-
-<!-- hjhhhkjhjkjkjlkjk -->
-                
-
-
 								<template slot-scope="scope">
 									<el-popover placement="left-start" width="400" trigger="hover">
 										<ul class="popup-menu">
-											<li v-for="(val, key, index) in data2Columns">{{key}}：{{scope.row[key]}}</li>
+											<li v-for="(val, key, index) in data2Columns" :key="index">{{key}}：{{scope.row[key]}}</li>
 										</ul>
 										<a slot="reference" href="javascript:void(0)">更多详情<i class="el-icon-caret-bottom"></i></a> 
 									</el-popover>
@@ -192,8 +185,6 @@
          diybank = this.tableParams.diyComments;
         }
         return window.ENV.API_DACM + '/objDetail/exportTemplateFile?objInfoId=' + this.$route.params.objId + '&tableName=' + this.$route.params.objName + '&diyComments=' + diybank + '&accessSysDialectId=' + this.tableParams.ACCESS_SYS_DIALECT_ID + '&browser=' + 'chrome';
-        /*return 'http://10.19.160.171:8080/DACM/objDetail/exportTemplateFile?objInfoId=' + this.$route.params.objId + '&tableName=' + this.$route.params.objName + '&diyComments=' + this.tableParams.diyComments + '&accessSysDialectId=' + this.tableParams.ACCESS_SYS_DIALECT_ID + '&browser=' + 'chrome';*/
-       /* return 'http://10.19.160.171:8080/DACM/objDetail/exportTemplateFile?objInfoId=10053886&tableName=aaaa&diyComments=VIEW&accessSysDialectId=10001&browser=chrome';*/
       },
       tableName: function() {
         return this.$route.params.objName;
@@ -228,9 +219,6 @@
           tabPosition: newVal
         });
       },
-     /*  '$route' (to, from) {
-        this.getFiltercolumnList();
-      }, */
     },
     mounted() {
       var tableParams = this.$store.state.queryParams.accessObjInfo;
@@ -247,12 +235,10 @@
       this.$root.eventHub.$on('search', (keyword) => {
         this.search(keyword);
       });
-     // this.getFiltercolumnList();
     },
     methods: {
       searchAll(){
         this.dataPreviewContentAjax();
-        //console.log(this.searchForm);
       },
       getFiltercolumnList(){
         this.filtercolumnList = [];
@@ -294,11 +280,9 @@
               id: this.$route.params.objId
             }
           }).then(function(res) {
-            console.log(res.data.success);
             if (res.data.success) {
               _self.loadTable();
             } else {
-              console.log(res.data.code);
               _self.$alert('刷新失败', '提示', {
                 confirmButtonText: '确定'
               });
@@ -379,7 +363,6 @@
       exportData() {
         request({
           url: this.exportUrl,
-        //  url: 'http://10.19.160.171:8080/DACM/objDetail/exportTemplateFile?objInfoId=10665724&tableName=impalakw3&diyComments=%E4%BD%A0%E5%A5%BD%E5%95%8A&accessSysDialectId=10002&browser=chrome',
           method: "GET",
           responseType: "blob"
         }).then(res => {
@@ -429,7 +412,6 @@
                   _self.pageShow = true;
                   resolve(res);
                 } else {
-                  console.log(res.data.code);
                   _self.mainTableData1 = [];
                   _self.pageShow = false;
                   reject(res);
@@ -512,7 +494,6 @@
         this.metadataManageAjax();
       },
 			getLabel(key){
-				console.log(key);
 				for(var value of this.mainTableTitle){
 					if(key == value.key){
 						return value.name;
@@ -545,7 +526,6 @@
               row.diyComments = _self.editingRow.diyComments;
               row.showEdit = false;
             } else {
-              console.log(res.data.code);
               _self.$alert('字段中文名称修改失败', '提示', {
                 confirmButtonText: '确定'
               });
