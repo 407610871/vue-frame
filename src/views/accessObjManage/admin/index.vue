@@ -144,7 +144,7 @@
           </el-table-column>
           <el-table-column prop="collectName" label="数据采集方式" v-if="type=='oracle' || type=='mysql' || type=='postgresql'" min-width="160" show-overflow-tooltip>
           </el-table-column>
-          <el-table-column label="操作" width="160" show-overflow-tooltip>
+          <el-table-column label="操作" width="160">
             <template slot-scope="scope">
               <!-- <el-button size="mini" v-on:click="updataSourceSingle(scope.$index, scope.row)" title="数据量更新">数据量更新</el-button> -->
               <el-tooltip class="item" effect="light" content="数据量更新" placement="top" v-if="type=='mysql'|| type=='oracle'|| type=='postgresql' || type=='sqlserver'">
