@@ -281,6 +281,7 @@ export default {
       window.clearTimeout(this.timer);
       this.resData = {};
       this.textShow = false;
+      this.queryTargetColumn = "";
     },
     // 开始核验按钮
     doCheck() {
