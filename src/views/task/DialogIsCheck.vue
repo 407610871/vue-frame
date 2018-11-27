@@ -250,6 +250,7 @@ export default {
           }
 
           this.range = res.data.config_range;
+          this.queryTargetColumn = res.data.queryTargetColumn;
           //  let loadingInstance = Loading.service({text:"核验中，请稍等...",target:document.getElementsByName("el-dialog")});
         } else if (res.data.status == "0") {
           this.loading = true;
