@@ -33,7 +33,7 @@
                 </el-col>
                 <el-col :span="2" style="text-align:center;" class="col-inside">-</el-col>
                 <el-col :span="11" class="col-inside">
-                  <el-select v-model="sysParam.city" placeholder="请先选择省" @change="changeSet">
+                  <el-select v-model="sysParam.city" placeholder="请选择城市" @change="changeSet">
                     <el-option :label="item.name" :value="item.code" v-for="(item,index) in cityList" :key="index"></el-option>
                   </el-select>
                 </el-col>
