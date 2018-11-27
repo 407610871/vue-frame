@@ -13,7 +13,7 @@
             <a href="javascript:void(0)" v-on:click="refresh"><i class="enc-icon-shuaxin"></i></a>
           </el-tooltip>
         </div>
-        <input type="file" id="file" name="inputFile" ref="inputer" v-on:change="importAjax" style="display:none" />
+        <input type="file" id="file" name="inputFile" ref="inputer" v-on:change="importAjax" style="display:none"/>
         <el-radio-group v-model="tabPosition" style="margin-bottom: 30px;" @change="listAjax">
           <el-radio-button label="metadataManage">元数据管理</el-radio-button>
           <el-radio-button label="dataPreview">数据预览</el-radio-button>
@@ -301,6 +301,7 @@
         document.getElementById('file').click();
       },
       importAjax() {
+        this.loading = true;
         let inputDOM = this.$refs.inputer;
         // 通过DOM取文件数据
         this.file = inputDOM.files[0];
@@ -328,6 +329,7 @@
                   // _self.importList.filePath = document.getElementById('file').value;
                    _self.importList.filePath =res.data.data.filePath
                   _self.importList.ready = true;
+                  _self.loading = false;
                 } else {
                   _self.$alert('导入列表为空', '提示', {
                     confirmButtonText: '确定'
@@ -354,11 +356,19 @@
       },
       closeImport() {
          this.loadTable();//刷新页面
-        this.importList = [];
+         this.importList = {
+          ready: false,
+          data: [],
+          tableName: '',
+          objInfoId: '',
+          accessSysDialectId: '',
+          filePath: ''
+        }
         document.getElementById('file').value = "";
-        document.getElementById('file').outerHtml = document.getElementById('file').outerHtml
-        this.$refs.inputer.value = ''
-        this.$refs.inputer.files = []; 
+        // document.getElementById('file').outerHtml = document.getElementById('file').outerHtml
+        //this.$refs.inputer.value = ''
+        // this.$refs.inputer.files = []; 
+        
       },
       exportData() {
         request({
