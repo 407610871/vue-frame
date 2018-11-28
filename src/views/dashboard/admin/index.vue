@@ -4,7 +4,7 @@
         <div class="filter-container">
 
             <div class="regbtn fr">
-                <reg-dialog @refreshTable="loadTable"></reg-dialog>
+                <reg-dialog @refreshTable="loadTable" @refreshCount="countTotal++"></reg-dialog>
             </div>
             <!-- <el-tooltip class="item" effect="light" content="收起/展开" placement="top">		<a v-on:click="collapseExpand" class="right-btn collapse-btn">		<i :class="{'el-icon-circle-plus':collapse,'el-icon-remove':!collapse}"></i>		</a>		</el-tooltip> -->
             <formFliter style="padding-top: 20px" v-if="queryParamReady"    @highMore="moreHeight"    @highSeaech="hightrue" v-bind:formCollapse="collapse" v-bind:dataObj="formFilterData" @doSearch="search" @formFilter="changeFormFilter" />
@@ -407,6 +407,8 @@ export default {
           .then(function(res) {
             if (res.data.success == true) {
               _self.loadTable();
+               _self.countTotal--;
+
             } else {
               _self.$alert("有采集任务正在执行，不可废止", "提示", {
                 confirmButtonText: "确定"

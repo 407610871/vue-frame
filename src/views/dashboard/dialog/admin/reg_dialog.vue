@@ -1043,6 +1043,8 @@ export default {
                             this.$refs["ruleForm"].resetFields();
                             this.dialogVisible = false;
                             this.$emit("refreshTable");
+                                                        this.$emit("refreshCount");
+
                           }
                         });
                       } else {
