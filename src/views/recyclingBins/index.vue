@@ -1,10 +1,10 @@
 <template>
   <div>
     <el-container style="height:100%;" class="dashboard-container" v-loading="loading">
-      <el-header class="filter-container" :height="headerHeight">
+      <div class="filter-container" :height="headerHeight">
         <a v-on:click="collapseExpand" class="right-btn collapse-btn"><i :class="{'el-icon-circle-plus':collapse,'el-icon-remove':!collapse}"></i></a>
         <formFliter v-if="queryParamReady" v-bind:formCollapse="collapse" v-bind:dataObj="formFilterData" @formFilter="changeFormFilter" />
-      </el-header>
+      </div>
       <el-main style="padding-bottom:0; padding-top:0;">
         <el-table
           :data="mainTableData"
@@ -121,7 +121,7 @@ export default {
       return this.collapse?window.innerHeight - 226:window.innerHeight - 305;
     },
     headerHeight:function(){
-      return this.collapse?'50px':'130px';
+      // return this.collapse?'50px':'130px';
     }
   },
   watch: {
