@@ -464,15 +464,16 @@ export default {
       let row = [];
 
       let row1 = Object.keys(this.allSecectData);
-      // console.log(this.allSecectData)
+      console.log(this.allSecectData)
             // console.log(row1)
+            // return;
             // console.log(row1.length)
 if(row1.length==0){
    this.$alert("请选择相应的任务！", "提示", {
      height:50,
           dangerouslyUseHTMLString: true
         });
-        return;
+        // return;
 }
      for(let i=0;i<row1.length;i++){
       if (this.allSecectData[row1[i]].length == 0||row1.length==0) {
@@ -488,6 +489,8 @@ if(row1.length==0){
           row.push(this.allSecectData[row1[i]][j]);
         }
       }
+
+      tableParams=[];
       for (let i = 0; i < row.length; i++) {
         tableParams.push(row[i].taskInfoId);
       }
@@ -495,7 +498,14 @@ if(row1.length==0){
       let params = {
         taskInfoIds: tableParams.join(",")
       };
+// console.log(row);
+// console.log(row1);
+// console.log(this.allSecectData);
+ let rowNew =new Set(row)
+// console.log(row);
+// console.log(rowNew);
 
+// return;
       //  <span v-if="scope.row.status==0">新建</span>
       //       <span v-if="scope.row.status==1">运行</span>
       //       <span v-else-if="scope.row.status==2">暂停</span>
@@ -504,10 +514,10 @@ if(row1.length==0){
       if (a == 1) {
         //批量汇聚
         let errorData = [];
-        for (let i = 0; i < row.length; i++) {
-          console.log(row[i].status,row[i].isPeriod)
-          if (row[i].status == 1||row[i].status == 0||(row[i].status==4&&row[i].isPeriod==3)) {
-            errorData.push(row[i]);
+        for (let i = 0; i < rowNew.length; i++) {
+          // console.log(row[i].status,row[i].isPeriod)
+          if (rowNew[i].status == 1||rowNew[i].status == 0||(rowNew[i].status==4&&rowNew[i].isPeriod==3)) {
+            errorData.push(rowNew[i]);
           }
         }
         if (errorData.length == 0) {
@@ -556,7 +566,7 @@ if(row1.length==0){
                                     _self.init();
 
                   } else {
-                    this.$alert("重新汇聚失败", "重新汇聚", {
+                    _self.$alert("重新汇聚失败", "重新汇聚", {
                       dangerouslyUseHTMLString: true
                     });
                   }
@@ -588,10 +598,11 @@ if(row1.length==0){
         }
       } else if (a == 2) {
         //批量启动
+        // debugger;
         let errorData = [];
-        for (let i = 0; i < row.length; i++) {
-          if (row[i].status == 1 || row[i].status == 4|| row[i].status == 3) {
-            errorData.push(row[i]);
+        for (let i = 0; i < rowNew.length; i++) {
+          if (rowNew[i].status == 1 || rowNew[i].status == 4|| rowNew[i].status == 3) {
+            errorData.push(rowNew[i]);
           }
         }
         if (errorData.length == 0) {
@@ -628,7 +639,7 @@ if(row1.length==0){
                 );
                 _self.init();
               } else {
-                this.$alert("批量启动失败", "批量启动", {
+                _self.$alert("批量启动失败", "批量启动", {
                   dangerouslyUseHTMLString: true
                 });
               }
@@ -659,9 +670,9 @@ if(row1.length==0){
       } else if (a == 3) {
         //批量停止
         let errorData = [];
-        for (let i = 0; i < row.length; i++) {
-          if (row[i].status != 1) {
-            errorData.push(row[i]);
+        for (let i = 0; i < rowNew.length; i++) {
+          if (rowNew[i].status != 1) {
+            errorData.push(rowNew[i]);
           }
         }
         if (errorData.length == 0) {
@@ -698,7 +709,7 @@ if(row1.length==0){
                 );
                 _self.init();
               } else {
-                this.$alert("批量停止失败", "批量停止", {
+                _self.$alert("批量停止失败", "批量停止", {
                   dangerouslyUseHTMLString: true
                 });
               }
