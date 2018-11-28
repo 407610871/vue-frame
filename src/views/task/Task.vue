@@ -243,6 +243,16 @@ export default {
     time(){
         this.getSearchArea();
     },
+
+
+    $route(to,from){
+
+      if(to.path=="/task"){
+        this.init(this.keyword);
+      }
+
+
+    },
   },
   computed: {
     departmentId: function() {
@@ -526,7 +536,7 @@ if(row1.length==0){
 // console.log(row);
 // console.log(row1);
 // console.log(this.allSecectData);
- let rowNew =new Set(row)
+ let rowNew = Array.from(row);
 // console.log(row);
 // console.log(rowNew);
 
@@ -626,7 +636,7 @@ if(row1.length==0){
         // debugger;
         let errorData = [];
         for (let i = 0; i < rowNew.length; i++) {
-          if (rowNew[i].status == 1 || rowNew[i].status == 4|| rowNew[i].status == 3) {
+          if (rowNew[i].status == 1 || rowNew[i].status == 4|| rowNew[i].status == 3|| rowNew[i].status == 0) {
             errorData.push(rowNew[i]);
           }
         }
@@ -694,6 +704,10 @@ if(row1.length==0){
         }
       } else if (a == 3) {
         //批量停止
+        // debugger;
+        // alert( rowNew);
+        console.log(rowNew)
+        // return;
         let errorData = [];
         for (let i = 0; i < rowNew.length; i++) {
           if (rowNew[i].status != 1) {
