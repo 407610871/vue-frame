@@ -86,7 +86,7 @@ export const constantRouterMap = [
       {
         path: "kettleTask",
         component: () => import("@/views/kettleTask/kettleTask"),
-        name: "task",
+        name: "kettleTask",
         meta: {
           title: "kettle任务",
           icon: "kettleTask",

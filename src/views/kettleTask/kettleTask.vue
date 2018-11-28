@@ -173,6 +173,9 @@ export default {
         time(){
             this.getSearchArea();
         },
+        $route(to,form){
+            if(to.name == "kettleTask") this.init();
+        },
     },
     methods: {
         getSearchArea(){
