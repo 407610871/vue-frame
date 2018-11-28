@@ -1,7 +1,7 @@
 <template>
-  <div class="taskMDialog userSurveyDialog" style="min-width:1000px;">
+  <div class="taskMDialog userSurveyDialog">
     <!--  <i class="el-icon-info" @click="dialogVisible = true">用户调研</i> -->
-    <el-form :model="ruleForm" ref="ruleForm" label-width="100px" class="demo-ruleForm" :rules="formRules" v-loading="loading">
+    <el-form :model="ruleForm" ref="ruleForm" label-width="90px" class="demo-ruleForm" :rules="formRules" v-loading="loading">
       <div class="daiInfo proInfo">
         <div class="proInfo-box bornone clearfix">
           <el-col :span="24" class="plr30">
@@ -671,12 +671,14 @@ export default {
 
 .surveybg {
   background: #f0f3f6;
-  padding-top: 20px;
+  padding:20px 20px 0;
 }
 
 .plr30 {
   padding-left: 30px;
   padding-right: 30px;
 }
-
+.demo-ruleForm{
+  padding:0;
+}
 </style>
