@@ -9,7 +9,9 @@
         <el-popover placement="bottom-start" width="200" trigger="hover">
           <ul class="popup-menu warn-menu">
             <li><a href="javascript:void(0)" v-on:click="goRoute('recyclingBins')">回收箱</a></li>
+           
             <li><a :href="warnurl" target="_blank">告警中心</a></li>
+             <li><a href="javascript:void(0)" v-on:click="loginOut()">退出登录</a></li>
           </ul>
           <el-button slot="reference" class="user" type="primary" icon="enc-icon-user"></el-button>
         </el-popover>
@@ -192,6 +194,9 @@ export default {
     changeSideBar() {
       this.sideBarWidth = this.sideBarWidth == 0 ? 210 : 0;
     },
+    loginOut(){
+      this.$keycloak.logout();
+    },
     goRoute: function(name) {
       if (this.$store.state.queryParams[name]) {
         var obj = {
@@ -275,7 +280,7 @@ export default {
   line-height: 30px;
   
 }
-.warn-menu li:nth-child(1) a{
+.warn-menu li:nth-child(1) a , .warn-menu li:nth-child(2) a{
   border-bottom:1px solid #c9cdd0;
 }
 .app-wrapper {
