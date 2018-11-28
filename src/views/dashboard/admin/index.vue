@@ -1,6 +1,6 @@
 <template>
 <div>
-    <el-container  class="dashboard-container" v-loading="loading">
+    <el-container style="height:100%" class="dashboard-container" v-loading="loading">
         <div class="filter-container">
 
             <div class="regbtn fr">
