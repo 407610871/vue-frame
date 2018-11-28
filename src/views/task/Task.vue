@@ -309,8 +309,8 @@ export default {
     //高级搜索
     doMoreSearch() {
       this.moreSearch = !this.moreSearch;
-      this.taskPeriodType = [];
-      this.status = [];
+    //  this.taskPeriodType = [];
+     // this.status = [];
     },
     //详情
     doDetail(index, row) {
