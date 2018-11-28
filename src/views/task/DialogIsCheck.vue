@@ -22,17 +22,14 @@
             <div class="time" v-show="timeCheck">
               <el-date-picker size="small" :picker-options="pickerOptions" v-model="startTime" type="daterange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" value-format="yyyy-MM-dd">
               </el-date-picker>
-              <div>
-                <span style="color:rgb(96, 98, 102);display:inline-block;width:30%;">核验时间字段:&nbsp;&nbsp;</span>
-                <el-select v-model="queryTargetColumn" placeholder="请选择" style="width:70%;margin-top:8px;">
-                  <el-option
-                    v-for="item in queryTargetColumnList"
-                    :key="item"
-                    :label="item"
-                    :value="item">
-                  </el-option>
-                </el-select>
-              </div>
+              <el-select v-model="queryTargetColumn" placeholder="选择核验时间" style="width:140px;margin-left:5px;">
+                <el-option
+                  v-for="item in queryTargetColumnList"
+                  :key="item"
+                  :label="item"
+                  :value="item">
+                </el-option>
+              </el-select>
               
             </div>
           </div>
@@ -546,7 +543,7 @@ h5 {
 <style lang="scss">
 .check-data-dialog {
   .el-dialog {
-    min-width: 810px;
+    min-width: 860px;
     max-height: calc(100% - 50px);
     overflow: auto;
     height: 100%;
