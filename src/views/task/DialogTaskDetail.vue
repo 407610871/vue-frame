@@ -6,7 +6,7 @@
         <span class="grab gra-r"></span>
       </div>
       <el-form label-width="150px" class="demo-ruleForm">
-        <span style="float:right">当前状态:
+        <span v-show="taskBaseInfo.status==1||taskBaseInfo.status==2" style="float:right;">当前状态:
           <el-select v-model="flagDesc" :disabled="loading3" placeholder="请选择" @change="changeStatus" class="select">
             <el-option
               v-for="item in operateList"
@@ -351,7 +351,7 @@ export default {
         endTime: "",  
         networkStatus: "",
         startTime: "",
-        status: "1" ,
+        status: "0" ,
         creater:''
       },
       //接入基本信息
