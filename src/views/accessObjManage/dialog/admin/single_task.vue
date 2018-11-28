@@ -4,7 +4,7 @@
 		<el-tooltip class="item" effect="light" content="单表采集" placement="top">
 			<i class="enc-icon-danbiaocaiji" @click="dialogVisible = true"></i>
 		</el-tooltip>
-    <el-dialog title="单表采集任务向导" :visible.sync="dialogVisible" width="73%" :before-close="closeDialog">
+    <el-dialog title="单表采集任务向导" :visible.sync="dialogVisible" width="73%" :before-close="closeDialog" class="single-task-dialog">
       <div class="title-gra plr30">
         <span class="grab gra-l"></span>
         <span class="grab gra-r"></span>
@@ -157,7 +157,7 @@ export default {
 
 .surveybg {
   background: #f0f3f6;
-  padding-top: 20px;
+  padding:20px 20px 0;
 }
 
 .plr30 {
@@ -204,5 +204,10 @@ export default {
 .diaicon i{
   cursor:pointer;
   font-size:20px;
+}
+.single-task-dialog{
+  .el-dialog{
+    min-width:990px;
+  }
 }
 </style>
