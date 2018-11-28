@@ -437,6 +437,7 @@ export default {
 .userSurveyDialog .el-dialog__body {
   padding-left: 0px;
   padding-right: 0px;
+  min-width: 1000px;
 }
 
 .el-select {

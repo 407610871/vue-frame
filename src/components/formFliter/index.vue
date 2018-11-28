@@ -268,7 +268,7 @@ export default {
   }
   div {
     display: inline-block;
-    margin-left: 20px;
+    //margin-left: 15px;
     width: 100%;
   }
   .look {
@@ -300,6 +300,9 @@ export default {
     overflow-y: auto;
     width: 60%;
     float: left;
+    .el-checkbox+.el-checkbox{
+      margin-left:15px;
+    }
   }
   .moreSeclect {
     cursor: pointer;

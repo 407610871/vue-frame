@@ -142,7 +142,7 @@ export default {
   methods:{
   	setFliter(data){
       var queryParams = this.$store.state.queryParams[this.$route.name];
-      var network = queryParams.network?queryParams.network:'';
+      var network = queryParams.network?queryParams.network:[];
       var dataSourceName = queryParams.dataSourceName?queryParams.dataSourceName:[];
       var platform = queryParams.platform?queryParams.platform:[];
       this.formFilterData = [{

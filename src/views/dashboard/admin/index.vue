@@ -1,6 +1,6 @@
 <template>
 <div>
-    <el-container style="height:100%;" class="dashboard-container" v-loading="loading">
+    <el-container style="height:100%" class="dashboard-container" v-loading="loading">
         <div class="filter-container">
 
             <div class="regbtn fr">
@@ -22,7 +22,7 @@
         </div>
         <el-main style="padding-bottom:0;">
             <router-view />
-            <el-table :data="mainTableData" stripe :height="tableHeight" border style="width: 100%" tooltip-effect="light">
+            <el-table :data="mainTableData" stripe :height="tableHeight" border style="width: 100%;min-height:300px;" tooltip-effect="light">
                 <el-table-column label="接入源名称" width="250" show-overflow-tooltip>
                     <template slot-scope="scope">
                         <a href="javascript:void(0)" v-on:click="goSubPage(scope.$index,scope.row.dataSourceName)">{{ scope.row.name }}</a>

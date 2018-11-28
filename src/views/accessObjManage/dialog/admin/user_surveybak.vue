@@ -1,5 +1,5 @@
 <template>
-  <div class="taskMDialog userSurveyDialog">
+  <div class="taskMDialog userSurveyDialog" style="min-width:1000px;">
     <!--  <i class="el-icon-info" @click="dialogVisible = true">用户调研</i> -->
     <el-form :model="ruleForm" ref="ruleForm" label-width="100px" class="demo-ruleForm" :rules="formRules" v-loading="loading">
       <div class="daiInfo proInfo">
@@ -623,6 +623,9 @@ export default {
 <style lang="scss">
 @import "@/assets/css/base.scss";
 @import "@/assets/css/dialog.scss";
+.userSurveyDialog .el-tabs__content{
+  overflow:auto;
+}
 .userSurveyDialog .el-dialog__body {
   padding-left: 0px;
   padding-right: 0px;

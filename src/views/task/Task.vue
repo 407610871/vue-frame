@@ -99,7 +99,7 @@
 
     <!-- 表格数据 -->
     <div class="mainTable zcTable">
-      <el-table ref="multipleTable" :data="tableData" tooltip-effect="dark" :height="tableHeight" style="width: 100%" @select-all="selectAll" @select="select" @selection-change="handleSelectionChange">
+      <el-table ref="multipleTable" :data="tableData" tooltip-effect="dark" :height="tableHeight" style="width: 100%;min-height:300px;" @select-all="selectAll" @select="select" @selection-change="handleSelectionChange">
         <el-table-column fixed type="selection" width="55"></el-table-column>
         <el-table-column fixed label="接入指示" width="100">
           <template slot-scope="scope">
@@ -239,10 +239,10 @@ export default {
           if(!this.keyword){
               return window.innerHeight - 290;
           }else{
-              return window.innerHeight - 340;
+              return window.innerHeight - 350;
           }
       }else{
-          return window.innerHeight - 550;
+          return window.innerHeight - 560;
       }
     },
     pageSize(){

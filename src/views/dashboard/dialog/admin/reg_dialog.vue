@@ -8,7 +8,7 @@
         style="margin-right:15px; font-size:30px;"
       ></i>
     </el-tooltip>
-    <el-dialog title="接入数据源" :visible.sync="dialogVisible" width="72%" :before-close="closeDialog">
+    <el-dialog title="接入数据源" :visible.sync="dialogVisible" width="72%" :before-close="closeDialog" class="reg-dialog">
       <div class="title-gra">
         <span class="grab gra-l"></span>
         <span class="grab gra-r"></span>
@@ -212,7 +212,17 @@
               </el-radio-group>
               <span class="curspan" @click="more(accdiaFlag)">{{accdiaName}}</span>
             </el-form-item>
-            <el-col :span="18">
+            <el-row>
+               <el-col style="text-align:right;margin-bottom:10px;">
+                  <el-button
+                    type="primary"
+                    v-if="ruleForm.syskind!=''&&ruleForm.syskind!='10023'"
+                    @click="testForm('ruleForm')"
+                    v-loading.fullscreen.lock="fullscreenLoading"
+                  >测试连接</el-button>
+              </el-col>
+            </el-row>
+            <el-col>
               <el-col :span="10" class="uncol">
                 <span
                   class="fl"
@@ -431,14 +441,6 @@
                   </el-upload>
                 </el-form-item>
               </el-col>
-            </el-col>
-            <el-col :span="6">
-              <el-button
-                type="primary"
-                v-if="ruleForm.syskind!=''&&ruleForm.syskind!='10023'"
-                @click="testForm('ruleForm')"
-                v-loading.fullscreen.lock="fullscreenLoading"
-              >测试连接</el-button>
             </el-col>
           </div>
         </div>
@@ -1533,6 +1535,11 @@ export default {
 }
 
 .uncol label {
-  text-align: left;
+  text-align:left;
+}
+.reg-dialog{
+  .el-dialog{
+    min-width:920px;
+  }
 }
 </style>
