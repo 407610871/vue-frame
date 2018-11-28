@@ -23,7 +23,7 @@
         </el-col>
         <el-col :span="9" class="collapsepanel-tools">
           <div class="grid-content">
-            <div class="edithdd" style="display: inline-block; margin-left:10px; margin-right: 10px;">
+            <div class="edithdd" style="display: inline-block; margin-left:10px; margin-right: 10px;line-height: 2;margin-bottom: 12px;">
               <hdfs-edit :indexEq="index" :ownId="item.storageId" @refresh="refreshs(index)" ></hdfs-edit>
             </div>
             <el-button type="primary" @click="setConnect" :id="item.storageId" :disabled="item.storageId == seledId">关联</el-button>
