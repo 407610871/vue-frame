@@ -1,6 +1,6 @@
 <template>
 <div v-loading="loading">
-    <div class="count-container">
+    <div class="count-container" ref="searchArea">
         <div class="searchDiv">
             <div class="dataSearch">
                 <i class="el-icon-search"></i>
@@ -129,7 +129,8 @@ export default {
                 }
             },
             reqObj:{},
-            showTaskView:false
+            showTaskView:false,
+            searchHeight:71
         }
     },
     created(){
@@ -141,7 +142,7 @@ export default {
     computed:{
         tableHeight() {
           // return  !this.moreSearch?   window.innerHeight - 357:window.innerHeight - 480;
-           if(!this.moreSearch){
+           /* if(!this.moreSearch){
                if(!this.taskName){
                    return window.innerHeight - 260;
                }else{
@@ -149,7 +150,8 @@ export default {
                }
            }else{
                return window.innerHeight - 460;
-           }
+           } */
+           return window.innerHeight - this.searchHeight - 194;
         },
         _checkStatus(){
             return this.checkStatus.map(item => item.label);
@@ -158,7 +160,26 @@ export default {
             return this.$store.state.pageSize;
         },
     },
+    watch:{
+        taskName(){
+            this.getSearchArea();
+        },
+        status(){
+            this.getSearchArea();
+        },
+        moreSearch(){
+            this.getSearchArea();
+        },
+        time(){
+            this.getSearchArea();
+        },
+    },
     methods: {
+        getSearchArea(){
+            this.$nextTick(()=>{
+                this.searchHeight = this.$refs.searchArea.clientHeight;
+            });
+        },
         pop:function(val,arr){
             if(arr.indexOf(val)>-1){
                 let ind = arr.indexOf(val);
