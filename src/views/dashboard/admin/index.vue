@@ -47,7 +47,7 @@
                 <el-table-column label="操作" min-width="140">
                     <template slot-scope="scope">
                         <div class="lofile">
-                            <edit-dialog :acId="scope.row.id" @refreshTable="loadTable"  @refreshCount="setCount"></edit-dialog>
+                            <edit-dialog :acId="scope.row.id" @refreshTable="loadTable"></edit-dialog>
 
                             <el-tooltip class="item" effect="light" content="复制" placement="top" v-if="scope.row.dataSourceName!='本地文件'">
                                 <i @click="handleCopy(scope.$index, scope.row)" class="enc-icon-fuzhi table-action-btn"></i>
@@ -407,7 +407,6 @@ export default {
           .then(function(res) {
             if (res.data.success == true) {
               _self.loadTable();
-               _self.setCount();
             } else {
               _self.$alert("有采集任务正在执行，不可废止", "提示", {
                 confirmButtonText: "确定"

@@ -154,7 +154,7 @@ export default {
       },{
         name:"接入数据来源：",
         id:'network',
-        type:'radio',
+        type:'checkbox',
         checkData:data.network.data,
         seledData:network
       },{
