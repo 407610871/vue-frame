@@ -5,6 +5,7 @@ Vue.use(Router);
 
 /* Layout */
 import Layout from "@/views/layout/Layout";
+import NoLeftLayout from "@/views/layout/NoLeftLayout";
 
 export const constantRouterMap = [
   {
@@ -114,6 +115,22 @@ export const constantRouterMap = [
       //     }
       //   ]
       // }
+    ]
+  },
+  {
+    path: "",
+    component: NoLeftLayout,
+    children: [
+      {
+        path: "data-processing",
+        component: () => import("@/views/dataProcessing/index"),
+        name: "dataProcessing",
+        meta: {
+          title: "数据处理",
+          icon: "dashboard",
+          noCache: true
+        }
+      }
     ]
   }
 ];

@@ -329,7 +329,7 @@
                   // _self.importList.filePath = document.getElementById('file').value;
                    _self.importList.filePath =res.data.data.filePath
                   _self.importList.ready = true;
-                  _self.loading = false;
+                  
                 } else {
                   _self.$alert('导入列表为空', '提示', {
                     confirmButtonText: '确定'
@@ -346,12 +346,14 @@
               });
               console.log(res);
             }
+            _self.loading = false;
           })
           .catch(function(err) {
             _self.$alert('未知错误', {
               confirmButtonText: '确定'
             });
             console.log(err);
+            _self.loading = false;
           })
       },
       closeImport() {
