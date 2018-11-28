@@ -1,7 +1,7 @@
 <template>
   <div v-loading="loading">
     <!-- 搜索栏 -->
-    <div class="count-container">
+    <div class="count-container" ref="searchArea">
 
       <!-- 查询按钮 -->
       <div class="searchDiv">
@@ -209,7 +209,8 @@ export default {
         disabledDate(time) {
           return time.getTime() > Date.now();
         }
-      }
+      },
+      searchHeight:71
     };
   },
 
@@ -223,7 +224,25 @@ export default {
     departmentId(newVal, oldVal) {
       //do something
       this.init("");
-    }
+    },
+    keyword(){
+        this.getSearchArea();
+    },
+    taskPeriodType(){
+        this.getSearchArea();
+    },
+    status(){
+        this.getSearchArea();
+    },
+    priority(){
+        this.getSearchArea();
+    },
+    moreSearch(){
+        this.getSearchArea();
+    },
+    time(){
+        this.getSearchArea();
+    },
   },
   computed: {
     departmentId: function() {
@@ -235,7 +254,7 @@ export default {
      /* return !this.moreSearch
         ? window.innerHeight - 300
         : window.innerHeight - 545;*/
-      if(!this.moreSearch){
+      /* if(!this.moreSearch){
           if(!this.keyword){
               return window.innerHeight - 290;
           }else{
@@ -243,7 +262,8 @@ export default {
           }
       }else{
           return window.innerHeight - 560;
-      }
+      } */
+      return window.innerHeight - this.searchHeight - 224;
     },
     pageSize(){
         return this.$store.state.pageSize;
@@ -259,6 +279,11 @@ export default {
   },
 
   methods: {
+    getSearchArea(){
+        this.$nextTick(()=>{
+            this.searchHeight = this.$refs.searchArea.clientHeight;
+        });
+    },
     pop: function(val, arr) {
       if (arr.indexOf(val) > -1) {
         let ind = arr.indexOf(val);
