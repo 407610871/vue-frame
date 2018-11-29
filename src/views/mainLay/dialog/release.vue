@@ -97,7 +97,7 @@ export default {
       versionDate: '',
       loading:false,
       versionData: [
-        '当前','1.1.2', '1.2.1', '1.2.2'
+        '当前','1.0.0'
       ],
       tableData: [],
       changeData: [],
@@ -114,7 +114,7 @@ export default {
     handleClick(tab, event){
       /* console.log(tab, event);*/
       if(tab.label=='当前'){
-        this._getVersion('1.2.2');
+        this._getVersion('1.0.0');
       }
       else{
         this._getVersion(tab.label);
@@ -156,7 +156,7 @@ export default {
   watch: {
     dialogVisible() {
       if (this.dialogVisible) {
-        this._getVersion('1.2.2');
+        this._getVersion('1.0.0');
 
       }
     }
