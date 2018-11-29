@@ -12,7 +12,7 @@
         <div class="checkData">
           校验设置：
           <el-radio v-model="radio" label="0" @change="checkChange" style="color:rgb(96, 98, 102);">全量核验</el-radio>
-          <el-radio v-model="radio" label="1" @change="checkChange" style="color:rgb(96, 98, 102);">根据时间范围核验</el-radio>
+          <el-radio v-model="radio" label="1" @change="checkChange" style="color:rgb(96, 98, 102);" :disabled="!this.queryTargetColumnList.length">根据时间范围核验</el-radio>
           <el-button type="" size="small" class="checkBtn" @click="doCheck" v-model="status">{{status}}</el-button>
           <div class="">
             <div class="range">
@@ -22,7 +22,7 @@
             <div class="time" v-show="timeCheck">
               <el-date-picker size="small" :picker-options="pickerOptions" v-model="startTime" type="daterange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" value-format="yyyy-MM-dd">
               </el-date-picker>
-              <el-select v-model="queryTargetColumn" placeholder="选择核验时间" style="width:140px;margin-left:5px;">
+              <el-select v-model="queryTargetColumn" placeholder="选择核验时间字段" style="width:160px;margin-left:5px;">
                 <el-option
                   v-for="item in queryTargetColumnList"
                   :key="item"
@@ -308,7 +308,7 @@ export default {
         });
         return;
       }
-
+      this.loading = true;
       this.$ajax.get(baseUrl + `/ccheckData/tableCheck`, {
         params: {
           taskId: this.msgCheck.taskInfoId,
@@ -319,6 +319,7 @@ export default {
           queryTargetColumn:this.queryTargetColumn
         }
       }).then(res => {
+        this.loading = false;
         res.data = res.data.data;
         if (res.data.result) {
           this.$alert(res.data.message, "核验结果", {
@@ -409,7 +410,7 @@ export default {
 <style lang="scss" scoped>
 .time {
   display: inline-block;
-  margin-left: 50px;
+  margin-left: 10px;
   margin-top: 15px;
 }
 
