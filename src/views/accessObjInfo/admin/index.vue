@@ -58,7 +58,7 @@
                   <span v-if="!scope.row.index">否</span>
                 </template>
               </el-table-column>
-              <el-table-column prop="comments" label="描述">
+              <el-table-column prop="comments" label="描述" show-overflow-tooltip>
               </el-table-column>
               <el-table-column label="是否为增量" min-width="160">
                 <template slot-scope="scope">

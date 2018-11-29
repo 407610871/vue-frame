@@ -54,6 +54,7 @@
 					<el-table-column
 						prop="comments"
 						label="描述" 
+						show-overflow-tooltip
 						>
 						   <template slot-scope="scope">
                     <span  v-if="scope.row.diyComments==''||scope.row.diyComments==scope.row.comments">{{scope.row.comments}}</span>
