@@ -116,7 +116,7 @@ export default {
     },
     nodeAJax() {
       var _self = this;
-      if (_self.itemTxt==""){
+      if (_self.itemTxt.replace(/^\s+|\s+$/g,"")==""){
           _self.$alert('请输入部门节点名称', '提示', {
               confirmButtonText: '确定'
             });
