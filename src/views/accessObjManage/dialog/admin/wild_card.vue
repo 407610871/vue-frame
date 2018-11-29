@@ -40,15 +40,24 @@
                     </el-col>
                   </el-col>
                 </el-col>
-                <el-col :span="24" class="mt25 wildbg">
+                <el-col :span="24" class="mt25 wildbg highbg">
                   <el-col :span="2">
                     <el-radio label="1">高级匹配
                     </el-radio>
                   </el-col>
                   <el-col :span="22">
+                   <el-col :span="5">
                     <el-form-item>
                       <el-input v-model="ruleForm.highMatch"></el-input>
                     </el-form-item>
+                    </el-col>
+                    <el-col :span="17" class='hightips'>
+                      <span>请参考以下规则进行填写:</span>
+                      <span>(^xx.*)以xx为前缀</span>
+                      <span>(.*xx$)以xx为后缀</span>
+                      <span>(.*xx.*)包含xx</span>
+                      <span>(^xx.*yy$)以xx开头,yy结尾</span>
+                    </el-col>
                   </el-col>
                 </el-col>
               </el-radio-group>
@@ -106,7 +115,7 @@ export default {
       tableData: [],
       delimiter: '',
       TypeData: [],
-      loading:false,
+      loading: false,
       ruleForm: {
         matchType: '0', //匹配类型
         typeKind: '0',
@@ -187,6 +196,27 @@ export default {
               varegex = new RegExp('^' + start + '.*' + regend + '$');
 
             } else {
+              //高级匹配
+              if (this.ruleForm.highMatch == '') {
+                this.$message.warning('请填写正则表达式');
+                return false;
+              }
+              if (this.ruleForm.highMatch.startsWith('^') && this.ruleForm.highMatch.endsWith('.*')) {
+
+              } else if (this.ruleForm.highMatch.startsWith('.*') && this.ruleForm.highMatch.endsWith('$')) {
+
+              } else if (this.ruleForm.highMatch.startsWith('.*') && this.ruleForm.highMatch.endsWith('.*')) {
+
+              } else if (this.ruleForm.highMatch.startsWith('^') && this.ruleForm.highMatch.endsWith('$')) {
+                if (this.ruleForm.highMatch.indexOf('.*') == -1) {
+                  this.$message.warning('请填写符合规则的正则表达式');
+                  return false;
+                }
+
+              } else {
+                this.$message.warning('请填写符合规则的正则表达式');
+                return false;
+              }
               varegex = new RegExp(this.ruleForm.highMatch);
             }
             for (let i = 0; i < this.rowList.length; i++) {
@@ -443,5 +473,13 @@ export default {
     line-height: 30px;
   }
 }
-
+.hightips span {
+  font-size:14px;
+  display: inline-block;
+  line-height: 30px;
+  margin-left: 10px;
+}
+.highbg .el-input{
+  width:90%;
+}
 </style>

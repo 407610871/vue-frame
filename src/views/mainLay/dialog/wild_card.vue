@@ -141,6 +141,27 @@ export default {
           varegex = new RegExp('^' + start + '.*' + end + '$');
 
         } else {
+          //高级匹配
+          if (this.ruleForm.highMatch == '') {
+            this.$message.warning('请填写正则表达式');
+            return false;
+          }
+          if (this.ruleForm.highMatch.starstWith('^') && this.ruleForm.highMatch.endsWith('.*')) {
+
+          } else if (this.ruleForm.highMatch.starstWith('.*') && this.ruleForm.highMatch.endsWith('$')) {
+
+          } else if (this.ruleForm.highMatch.starstWith('.*') && this.ruleForm.highMatch.endsWith('.*')) {
+
+          } else if (this.ruleForm.highMatch.starstWith('^') && this.ruleForm.highMatch.endsWith('$')) {
+            if (this.ruleForm.highMatch.indexOf('.*') == -1) {
+              this.$message.warning('请填写符合规则的正则表达式');
+              return false;
+            }
+
+          } else {
+            this.$message.warning('请填写符合规则的正则表达式');
+            return false;
+          }
           varegex = new RegExp(this.ruleForm.highMatch);
         }
         for (let i = 0; i < this.rowList.length; i++) {
@@ -178,6 +199,7 @@ export default {
             }
             this.setRegInfo(RegInfo);
           } else {
+
             var RegInfo = {
               baseStart: "",
               baseEnd: this.ruleForm.highMatch,
@@ -241,7 +263,7 @@ export default {
     //得到字段类型
     _getType() {
       var _self = this;
-       for (let m = 0; m < columnJson.length; m++) {
+      for (let m = 0; m < columnJson.length; m++) {
         if (this.$route.params.type == columnJson[m].type) {
           _self.TypeData = columnJson[m].datas;
         }
