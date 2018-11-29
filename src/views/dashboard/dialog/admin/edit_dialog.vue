@@ -206,7 +206,7 @@
               </el-col>
               <el-col :span="2" class="bank" v-if="ruleForm.syskind=='10002'||ruleForm.syskind=='10020'">bank</el-col>
               <el-col :span="10" class="uncol">
-                <span class="fl" v-show="this.ruleForm.author=='true'&&(ruleForm.syskind=='10002'||ruleForm.syskind=='10020')">*</span>
+                <span class="fl" v-show="this.ruleForm.author=='true'&&(ruleForm.syskind=='10002')">*</span>
                 <el-form-item class="fl unrequired" label="模式名/架构:" prop="model" v-if="ruleForm.syskind=='10002'||ruleForm.syskind=='10020'">
                   <el-input v-model="ruleForm.model" @change="changeContentInfo()"></el-input>
                 </el-form-item>

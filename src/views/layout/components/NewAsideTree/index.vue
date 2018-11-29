@@ -135,7 +135,7 @@ export default {
             // this.$ajax.post('./addDept').then(function(res){
             console.log('addsuccess');
             console.log(res);
-            if (res.data.success) {
+            if (res.data.success=="true") {
               _self.dialogVisible = false;
               const newChild = { id: res.data.id, deptName: _self.itemTxt,level:level, children: [] };
               if (!_self.editingNode.children) {
@@ -144,8 +144,8 @@ export default {
               _self.editingNode.children.push(newChild);
 
             } else {
-              console.log(res.data.code)
-              _self.$alert('添加部门节点失败', '提示', {
+              console.log(res.data.message)
+              _self.$alert(res.data.message, '提示', {
                 confirmButtonText: '确定'
               });
             }
@@ -165,12 +165,12 @@ export default {
           _self.$ajax.post(window.ENV.API_DACM + '/deptInfo/updateDeptInfo?id=' + _self.editingNode.id + '&deptName=' + _self.itemTxt).then(function(res) {
               // this.$ajax.post('./success').then(function(res){
               console.log('editsuccess');
-              if (res.data.success) {
+              if (res.data.success=="true") {
                 _self.dialogVisible = false;
                 _self.editingNode.deptName = _self.itemTxt;
               } else {
                 console.log(res.data.code)
-                _self.$alert('修改部门节点失败', '提示', {
+                _self.$alert(res.data.message, '提示', {
                   confirmButtonText: '确定'
                 });
               }
