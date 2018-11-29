@@ -2,25 +2,14 @@
   <div class="taskMDialog icon-dai">
     <!-- <el-button @click="dialogVisible = true" class="add-btn">注册</el-button> -->
     <el-tooltip class="item" effect="light" content="注册" placement="top">
-      <i
-        @click="dialogVisible = true"
-        class="enc-icon-zhuce table-action-btn"
-        style="margin-right:15px; font-size:30px;"
-      ></i>
+      <i @click="dialogVisible = true" class="enc-icon-zhuce table-action-btn" style="margin-right:15px; font-size:30px;"></i>
     </el-tooltip>
     <el-dialog title="接入数据源" :visible.sync="dialogVisible" width="72%" :before-close="closeDialog" class="reg-dialog">
       <div class="title-gra">
         <span class="grab gra-l"></span>
         <span class="grab gra-r"></span>
       </div>
-      <el-form
-        :model="ruleForm"
-        ref="ruleForm"
-        label-width="100px"
-        class="demo-ruleForm"
-        :rules="formRules"
-        v-loading="loading"
-      >
+      <el-form :model="ruleForm" ref="ruleForm" label-width="100px" class="demo-ruleForm" :rules="formRules" v-loading="loading">
         <div class="daiInfo proInfo">
           <div class="daiInfo-title proInfo-title">
             <h2>提供方信息</h2>
@@ -45,12 +34,7 @@
                  <el-radio label="委办网"></el-radio>
                 </el-radio-group>-->
                 <el-select v-model="ruleForm.resource" placeholder="请选择">
-                  <el-option
-                    :label="item.sTATIC_NAME"
-                    :value="item.sTATIC_CODE"
-                    :key="item.sTATIC_CODE"
-                    v-for="item in SJLY"
-                  ></el-option>
+                  <el-option :label="item.sTATIC_NAME" :value="item.sTATIC_CODE" :key="item.sTATIC_CODE" v-for="item in SJLY"></el-option>
                 </el-select>
               </el-form-item>
             </el-col>
@@ -91,28 +75,8 @@
             <el-col :span="10">
               <el-form-item label="数据所属部门:">
                 <el-popover placement="right" width="400" trigger="click">
-                  <el-tree
-                    :data="treedata"
-                    show-checkbox
-                    node-key="id"
-                    :check-strictly="true"
-                    :props="defaultProps"
-                    accordion
-                    @check-change="handleClick"
-                    @check="nodeClick"
-                    :default-checked-keys="[ruleForm.dockid]"
-                    :default-expanded-keys="[deIndex]"
-                    ref="treeForm"
-                    class="treeAuto"
-                  ></el-tree>
-                  <el-input
-                    v-model="ruleForm.dockdata"
-                    disabled
-                    placeholder
-                    prop="dockdata"
-                    slot="reference"
-                    class="disele"
-                  ></el-input>
+                  <el-tree :data="treedata" show-checkbox node-key="id" :check-strictly="true" :props="defaultProps" accordion @check-change="handleClick" @check="nodeClick" :default-checked-keys="[ruleForm.dockid]" :default-expanded-keys="[deIndex]" ref="treeForm" class="treeAuto"></el-tree>
+                  <el-input v-model="ruleForm.dockdata" disabled placeholder prop="dockdata" slot="reference" class="disele"></el-input>
                 </el-popover>
               </el-form-item>
             </el-col>
@@ -125,12 +89,7 @@
             <el-col :span="10">
               <el-form-item label="对接部门:" prop="dockpart">
                 <el-select v-model="ruleForm.dockpart" placeholder="请选择">
-                  <el-option
-                    :label="item.name"
-                    :value="item.id"
-                    :key="item.id"
-                    v-for="item in DJBM"
-                  ></el-option>
+                  <el-option :label="item.name" :value="item.id" :key="item.id" v-for="item in DJBM"></el-option>
                 </el-select>
               </el-form-item>
             </el-col>
@@ -138,12 +97,7 @@
             <el-col :span="10">
               <el-form-item label="对接平台:" prop="dockPlat">
                 <el-select v-model="ruleForm.dockPlat" placeholder="请选择">
-                  <el-option
-                    :label="item.sTATIC_NAME"
-                    :value="item.sTATIC_CODE"
-                    :key="item.sTATIC_CODE"
-                    v-for="item in DJPT"
-                  ></el-option>
+                  <el-option :label="item.sTATIC_NAME" :value="item.sTATIC_CODE" :key="item.sTATIC_CODE" v-for="item in DJPT"></el-option>
                 </el-select>
               </el-form-item>
             </el-col>
@@ -152,12 +106,7 @@
                 <el-col :span="24">
                   <el-form-item prop="authorf">
                     <el-select v-model="ruleForm.authorf" placeholder="请选择">
-                      <el-option
-                        :label="item.sTATIC_NAME"
-                        :value="item.sTATIC_CODE"
-                        :key="item.sTATIC_CODE"
-                        v-for="item in SSJZ"
-                      ></el-option>
+                      <el-option :label="item.sTATIC_NAME" :value="item.sTATIC_CODE" :key="item.sTATIC_CODE" v-for="item in SSJZ"></el-option>
                     </el-select>
                   </el-form-item>
                 </el-col>
@@ -193,12 +142,7 @@
           <div class="daiInfo-box clearfix">
             <el-form-item label="接入源类型:" prop="syskind">
               <el-radio-group v-model="ruleForm.syskind">
-                <el-radio
-                  v-for="(item,index) in syskindList"
-                  :label="item.id"
-                  :key="item.id"
-                  v-if="index<5||accdiaFlag"
-                >{{item.name}}</el-radio>
+                <el-radio v-for="(item,index) in syskindList" :label="item.id" :key="item.id" v-if="index<5||accdiaFlag">{{item.name}}</el-radio>
                 <!--  <el-radio label="mysql"></el-radio>
                <el-radio label="oracle"></el-radio>
                <el-radio label="activemq"></el-radio>
@@ -213,42 +157,21 @@
               <span class="curspan" @click="more(accdiaFlag)">{{accdiaName}}</span>
             </el-form-item>
             <el-row>
-               <el-col style="text-align:right;margin-bottom:10px;">
-                  <el-button
-                    type="primary"
-                    v-if="ruleForm.syskind!=''&&ruleForm.syskind!='10023'"
-                    @click="testForm('ruleForm')"
-                    v-loading.fullscreen.lock="fullscreenLoading"
-                  >测试连接</el-button>
+              <el-col style="text-align:right;margin-bottom:10px;">
+                <el-button type="primary" v-if="ruleForm.syskind!=''&&ruleForm.syskind!='10023'" @click="testForm('ruleForm')" v-loading.fullscreen.lock="fullscreenLoading">测试连接</el-button>
               </el-col>
             </el-row>
             <el-col>
               <el-col :span="10" class="uncol">
-                <span
-                  class="fl"
-                  v-show="this.ruleForm.author=='true'&&ruleForm.syskind!=''&&ruleForm.syskind!='10023'"
-                >*</span>
-                <el-form-item
-                  class="fl unrequired"
-                  label="IP地址/主机名:"
-                  prop="ipname"
-                  v-if="ruleForm.syskind!=''&&ruleForm.syskind!='10023'"
-                >
+                <span class="fl" v-show="this.ruleForm.author=='true'&&ruleForm.syskind!=''&&ruleForm.syskind!='10023'">*</span>
+                <el-form-item class="fl unrequired" label="IP地址/主机名:" prop="ipname" v-if="ruleForm.syskind!=''&&ruleForm.syskind!='10023'">
                   <el-input v-model="ruleForm.ipname"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="2" class="bank">bank</el-col>
               <el-col :span="10" class="uncol">
-                <span
-                  class="fl"
-                  v-show="this.ruleForm.author=='true'&&ruleForm.syskind!=''&&ruleForm.syskind!='10023'"
-                >*</span>
-                <el-form-item
-                  class="fl unrequired"
-                  label="登录名:"
-                  prop="username"
-                  v-if="ruleForm.syskind!=''&&ruleForm.syskind!='10023'"
-                >
+                <span class="fl" v-show="this.ruleForm.author=='true'&&ruleForm.syskind!=''&&ruleForm.syskind!='10023'">*</span>
+                <el-form-item class="fl unrequired" label="登录名:" prop="username" v-if="ruleForm.syskind!=''&&ruleForm.syskind!='10023'">
                   <el-input v-model="ruleForm.username"></el-input>
                 </el-form-item>
               </el-col>
@@ -260,64 +183,29 @@
               </el-col>-->
               <el-col :span="2" class="bank">bank</el-col>
               <el-col :span="10" class="uncol">
-                <span
-                  class="fl"
-                  v-show="this.ruleForm.author=='true'&&ruleForm.syskind!=''&&ruleForm.syskind!='10023'"
-                >*</span>
-                <el-form-item
-                  class="fl unrequired"
-                  label="密码:"
-                  prop="password"
-                  v-if="ruleForm.syskind!=''&&ruleForm.syskind!='10023'"
-                >
+                <span class="fl" v-show="this.ruleForm.author=='true'&&ruleForm.syskind!=''&&ruleForm.syskind!='10023'">*</span>
+                <el-form-item class="fl unrequired" label="密码:" prop="password" v-if="ruleForm.syskind!=''&&ruleForm.syskind!='10023'">
                   <el-input v-model="ruleForm.password"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="2" class="bank">bank</el-col>
               <el-col :span="10" class="uncol">
-                <span
-                  class="fl"
-                  v-show="this.ruleForm.author=='true'&&ruleForm.syskind!=''&&ruleForm.syskind!='10023'"
-                >*</span>
-                <el-form-item
-                  class="fl unrequired"
-                  label="端口号:"
-                  prop="iport"
-                  v-if="ruleForm.syskind!=''&&ruleForm.syskind!='10023'"
-                >
+                <span class="fl" v-show="this.ruleForm.author=='true'&&ruleForm.syskind!=''&&ruleForm.syskind!='10023'">*</span>
+                <el-form-item class="fl unrequired" label="端口号:" prop="iport" v-if="ruleForm.syskind!=''&&ruleForm.syskind!='10023'">
                   <el-input v-model="ruleForm.iport"></el-input>
                 </el-form-item>
               </el-col>
-              <el-col
-                :span="2"
-                class="bank"
-                v-if="ruleForm.syskind=='10001'||ruleForm.syskind=='10003'||ruleForm.syskind=='10002'||ruleForm.syskind=='10004'||ruleForm.syskind=='10020'"
-              >bank</el-col>
+              <el-col :span="2" class="bank" v-if="ruleForm.syskind=='10001'||ruleForm.syskind=='10003'||ruleForm.syskind=='10002'||ruleForm.syskind=='10004'||ruleForm.syskind=='10020'">bank</el-col>
               <el-col :span="10" class="uncol">
-                <span
-                  class="fl"
-                  v-show="this.ruleForm.author=='true'&&(ruleForm.syskind=='10001'||ruleForm.syskind=='10003'||ruleForm.syskind=='10002'||ruleForm.syskind=='10004'||ruleForm.syskind=='10020')"
-                >*</span>
-                <el-form-item
-                  class="fl unrequired"
-                  label="实例/数据库名:"
-                  prop="instanceName"
-                  v-if="ruleForm.syskind=='10001'||ruleForm.syskind=='10003'||ruleForm.syskind=='10002'||ruleForm.syskind=='10004'||ruleForm.syskind=='10020'"
-                >
+                <span class="fl" v-show="this.ruleForm.author=='true'&&(ruleForm.syskind=='10001'||ruleForm.syskind=='10003'||ruleForm.syskind=='10002'||ruleForm.syskind=='10004'||ruleForm.syskind=='10020')">*</span>
+                <el-form-item class="fl unrequired" label="实例/数据库名:" prop="instanceName" v-if="ruleForm.syskind=='10001'||ruleForm.syskind=='10003'||ruleForm.syskind=='10002'||ruleForm.syskind=='10004'||ruleForm.syskind=='10020'">
                   <el-input v-model="ruleForm.instanceName"></el-input>
                 </el-form-item>
               </el-col>
-              <el-col
-                :span="2"
-                class="bank"
-                v-if="ruleForm.syskind=='10002'||ruleForm.syskind=='10020'"
-              >bank</el-col>
-              <el-col :span="10">
-                <el-form-item
-                  label="模式名/架构:"
-                  prop="model"
-                  v-if="ruleForm.syskind=='10002'||ruleForm.syskind=='10020'"
-                >
+              <el-col :span="2" class="bank" v-if="ruleForm.syskind=='10002'||ruleForm.syskind=='10020'">bank</el-col>
+              <el-col :span="10" class="uncol">
+              <span class="fl" v-show="this.ruleForm.author=='true'&&(ruleForm.syskind=='10002'||ruleForm.syskind=='10020')">*</span>
+                <el-form-item class="fl unrequired" label="模式名/架构:" prop="model" v-if="ruleForm.syskind=='10002'||ruleForm.syskind=='10020'">
                   <el-input v-model="ruleForm.model"></el-input>
                 </el-form-item>
               </el-col>
@@ -359,62 +247,26 @@
               <el-col :span="2" class="bank">bank</el-col>-->
               <!-- hive专有 -->
               <el-col :span="10" class="uncol">
-                <span
-                  class="fl"
-                  v-show="this.ruleForm.author=='true'&&ruleForm.syskind!=''&& ruleForm.syskind=='vhost'"
-                >*</span>
-                <el-form-item
-                  class="fl unrequired"
-                  label="集群根目录"
-                  prop="hadoopDir"
-                  v-if="ruleForm.syskind!=''&& ruleForm.syskind=='vhost'"
-                >
+                <span class="fl" v-show="this.ruleForm.author=='true'&&ruleForm.syskind!=''&& ruleForm.syskind=='vhost'">*</span>
+                <el-form-item class="fl unrequired" label="集群根目录" prop="hadoopDir" v-if="ruleForm.syskind!=''&& ruleForm.syskind=='vhost'">
                   <el-input v-model="ruleForm.hadoopDir"></el-input>
                 </el-form-item>
               </el-col>
-              <el-col
-                :span="2"
-                class="bank"
-                v-if="ruleForm.syskind!=''&& ruleForm.syskind=='vhost'"
-              >bank</el-col>
+              <el-col :span="2" class="bank" v-if="ruleForm.syskind!=''&& ruleForm.syskind=='vhost'">bank</el-col>
               <el-col :span="10" class="uncol">
-                <span
-                  class="fl"
-                  v-show="this.ruleForm.author=='true'&&ruleForm.syskind!=''&& ruleForm.syskind=='vhost'"
-                >*</span>
-                <el-form-item
-                  class="fl unrequired"
-                  label="集群目录"
-                  prop="hadoopHomes"
-                  v-if="ruleForm.syskind!=''&& ruleForm.syskind=='vhost'"
-                >
+                <span class="fl" v-show="this.ruleForm.author=='true'&&ruleForm.syskind!=''&& ruleForm.syskind=='vhost'">*</span>
+                <el-form-item class="fl unrequired" label="集群目录" prop="hadoopHomes" v-if="ruleForm.syskind!=''&& ruleForm.syskind=='vhost'">
                   <el-input v-model="ruleForm.hadoopHomes"></el-input>
                 </el-form-item>
               </el-col>
-              <el-col
-                :span="2"
-                class="bank"
-                v-if="ruleForm.syskind!=''&& ruleForm.syskind=='vhost'"
-              >bank</el-col>
+              <el-col :span="2" class="bank" v-if="ruleForm.syskind!=''&& ruleForm.syskind=='vhost'">bank</el-col>
               <el-col :span="10" class="uncol">
-                <span
-                  class="fl"
-                  v-show="this.ruleForm.author=='true'&&ruleForm.syskind!=''&& ruleForm.syskind=='vhost'"
-                >*</span>
-                <el-form-item
-                  class="fl unrequired"
-                  label="vhost"
-                  prop="vhost"
-                  v-if="ruleForm.syskind!=''&& ruleForm.syskind=='vhost'"
-                >
+                <span class="fl" v-show="this.ruleForm.author=='true'&&ruleForm.syskind!=''&& ruleForm.syskind=='vhost'">*</span>
+                <el-form-item class="fl unrequired" label="vhost" prop="vhost" v-if="ruleForm.syskind!=''&& ruleForm.syskind=='vhost'">
                   <el-input v-model="ruleForm.vhost"></el-input>
                 </el-form-item>
               </el-col>
-              <el-col
-                :span="2"
-                class="bank"
-                v-if="ruleForm.syskind!=''&& ruleForm.syskind=='vhost'"
-              >bank</el-col>
+              <el-col :span="2" class="bank" v-if="ruleForm.syskind!=''&& ruleForm.syskind=='vhost'">bank</el-col>
               <el-col :span="10" v-if="ruleForm.syskind=='10010'||ruleForm.syskind=='10011'">
                 <el-form-item label="传输模式:" prop="transmode">
                   <el-select v-model="ruleForm.transmode" placeholder="请选择">
@@ -425,16 +277,7 @@
               </el-col>
               <el-col :span="24" v-if="ruleForm.syskind=='10023'" class="fileItem">
                 <el-form-item label="选择本地文件(仅支持txt,excel,csv文件):" prop="upfile">
-                  <el-upload
-                    class="upload-demo"
-                    name="files"
-                    ref="upload"
-                    action
-                    :on-preview="handlePreview"
-                    :on-remove="handleRemove"
-                    :file-list="fileList"
-                    :auto-upload="false"
-                  >
+                  <el-upload class="upload-demo" name="files" ref="upload" action :on-preview="handlePreview" :on-remove="handleRemove" :file-list="fileList" :auto-upload="false">
                     <el-button slot="trigger" size="small" type="primary">选择文件</el-button>
                     <!-- <el-button style="margin-left: 10px;" size="small" type="success" @click="submitUpload">上传到服务器</el-button> -->
                     <!--  <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div> -->
@@ -594,105 +437,87 @@ export default {
         upfile: ""
       },
       formRules: {
-        jrname: [
-          {
-            required: true,
-            message: "不能为空",
-            validator: validateNull,
-            trigger: "blur"
-          }
-        ],
-        ipname: [
-          {
-            required: false,
-            message: "不能为空",
-            validator: validateIp,
-            trigger: "blur"
-          }
-        ],
-        username: [
-          {
-            required: false,
-            message: "不能为空",
-            validator: validateSq,
-            trigger: "blur"
-          }
-        ],
-        dockname: [
-          {
-            required: true,
-            message: "不能为空",
-            validator: validateNull,
-            trigger: "blur"
-          }
-        ],
-        password: [
-          {
-            required: false,
-            message: "不能为空",
-            validator: validateSq,
-            trigger: "blur"
-          }
-        ],
-        iport: [
-          {
-            required: false,
-            message: "请输入正确的端口号",
-            validator: validatePort,
-            trigger: "blur"
-          }
-        ],
-        instanceName: [
-          {
-            required: false,
-            message: "不能为空",
-            validator: validateSq,
-            trigger: "blur"
-          }
-        ],
-        hadoopDir: [
-          {
-            required: false,
-            message: "不能为空",
-            validator: validateSq,
-            trigger: "blur"
-          }
-        ],
-        hadoopHomes: [
-          {
-            required: false,
-            message: "不能为空",
-            validator: validateSq,
-            trigger: "blur"
-          }
-        ],
-        vhost: [
-          {
-            required: false,
-            message: "不能为空",
-            validator: validateSq,
-            trigger: "blur"
-          }
-        ],
-        dockdata: [
-          {
-            required: true,
-            message: "不能为空",
-            validator: validateNull,
-            trigger: "blur"
-          }
-        ],
+        jrname: [{
+          required: true,
+          message: "不能为空",
+          validator: validateNull,
+          trigger: "blur"
+        }],
+        ipname: [{
+          required: false,
+          message: "不能为空",
+          validator: validateIp,
+          trigger: "blur"
+        }],
+        username: [{
+          required: false,
+          message: "不能为空",
+          validator: validateSq,
+          trigger: "blur"
+        }],
+        dockname: [{
+          required: true,
+          message: "不能为空",
+          validator: validateNull,
+          trigger: "blur"
+        }],
+        password: [{
+          required: false,
+          message: "不能为空",
+          validator: validateSq,
+          trigger: "blur"
+        }],
+        iport: [{
+          required: false,
+          message: "请输入正确的端口号",
+          validator: validatePort,
+          trigger: "blur"
+        }],
+        instanceName: [{
+          required: false,
+          message: "不能为空",
+          validator: validateSq,
+          trigger: "blur"
+        }],
+        model: [{
+          required: false,
+          message: "不能为空",
+          validator: validateSq,
+          trigger: "blur"
+        }],
+        hadoopDir: [{
+          required: false,
+          message: "不能为空",
+          validator: validateSq,
+          trigger: "blur"
+        }],
+        hadoopHomes: [{
+          required: false,
+          message: "不能为空",
+          validator: validateSq,
+          trigger: "blur"
+        }],
+        vhost: [{
+          required: false,
+          message: "不能为空",
+          validator: validateSq,
+          trigger: "blur"
+        }],
+        dockdata: [{
+          required: true,
+          message: "不能为空",
+          validator: validateNull,
+          trigger: "blur"
+        }],
         proemail: [{ validator: this.GLOBAL.validateEmail, trigger: "blur" }],
         proqq: [{ validator: this.GLOBAL.validateNumber, trigger: "blur" }],
         prophone: [{ validator: this.GLOBAL.validatePhone, trigger: "blur" }],
-        dockphone: [
-          {
-            required: true,
-            message: "输入正确的号码",
-            validator: validatePhone,
-            trigger: "blur"
-          }
-        ]
+        dockphone: [{
+          required: true,
+          message: "输入正确的号码",
+          validator: validatePhone,
+          trigger: "blur"
+        }]
       },
       treedata: [],
       defaultProps: {
@@ -885,8 +710,7 @@ export default {
               contactsPhone: _self.ruleForm.prophone, //数据提供人电话
               contactsEmail: _self.ruleForm.proemail, //数据提供人 邮箱
               accessSysDeptInfoId: _self.ruleForm.dockid, //所属部门
-              attr: [
-                {
+              attr: [{
                   //数据提供人姓名
                   key: "sourceQQ",
                   value: _self.ruleForm.proqq
@@ -1017,19 +841,17 @@ export default {
                   return false;
                 }
                 this.$confirm(
-                  "已经存在同IP地址同用户的数据源，确定保存?",
-                  "信息",
-                  {
-                    confirmButtonText: "确定",
-                    cancelButtonText: "取消"
-                  }
-                )
+                    "已经存在同IP地址同用户的数据源，确定保存?",
+                    "信息", {
+                      confirmButtonText: "确定",
+                      cancelButtonText: "取消"
+                    }
+                  )
                   .then(() => {
                     this.loading = true;
                     this.$ajax({
                       method: "POST",
-                      url:
-                        this.GLOBAL.api.API_DACM + "/register/dataSourceInsert",
+                      url: this.GLOBAL.api.API_DACM + "/register/dataSourceInsert",
                       // headers:{
                       //   'Content-Type':'application/json;charset=utf-8',
                       // },
@@ -1043,7 +865,7 @@ export default {
                             this.$refs["ruleForm"].resetFields();
                             this.dialogVisible = false;
                             this.$emit("refreshTable");
-                                                        this.$emit("refreshCount");
+                            this.$emit("refreshCount");
 
                           }
                         });
@@ -1102,8 +924,7 @@ export default {
                 contactsPhone: _self.ruleForm.prophone, //数据提供人电话
                 contactsEmail: _self.ruleForm.proemail, //数据提供人 邮箱
                 accessSysDeptInfoId: _self.ruleForm.dockid, //所属部门
-                attr: [
-                  {
+                attr: [{
                     //数据提供人姓名
                     key: "sourceQQ",
                     value: _self.ruleForm.proqq
@@ -1268,8 +1089,7 @@ export default {
               contactsPhone: _self.ruleForm.prophone, //数据提供人电话
               contactsEmail: _self.ruleForm.proemail, //数据提供人 邮箱
               accessSysDeptInfoId: _self.ruleForm.dockid, //所属部门
-              attr: [
-                {
+              attr: [{
                   //数据提供人姓名
                   key: "sourceQQ",
                   value: _self.ruleForm.proqq
@@ -1480,6 +1300,7 @@ export default {
     }
   }
 };
+
 </script>
 <style lang="scss">
 @import "@/assets/css/base.scss";
@@ -1500,7 +1321,7 @@ export default {
   }
 }
 
-.el-radio + .el-radio {
+.el-radio+.el-radio {
   margin-left: 19px;
 }
 
@@ -1537,11 +1358,13 @@ export default {
 }
 
 .uncol label {
-  text-align:left;
+  text-align: left;
 }
-.reg-dialog{
-  .el-dialog{
-    min-width:920px;
+
+.reg-dialog {
+  .el-dialog {
+    min-width: 920px;
   }
 }
+
 </style>

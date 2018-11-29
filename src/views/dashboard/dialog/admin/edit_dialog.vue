@@ -199,8 +199,9 @@
                 </el-form-item>
               </el-col>
               <el-col :span="2" class="bank" v-if="ruleForm.syskind=='10002'||ruleForm.syskind=='10020'">bank</el-col>
-              <el-col :span="10">
-                <el-form-item label="模式名/架构:" prop="model" v-if="ruleForm.syskind=='10002'||ruleForm.syskind=='10020'">
+              <el-col :span="10" class="uncol">
+                <span class="fl" v-show="this.ruleForm.author=='true'&&(ruleForm.syskind=='10002'||ruleForm.syskind=='10020')">*</span>
+                <el-form-item class="fl unrequired" label="模式名/架构:" prop="model" v-if="ruleForm.syskind=='10002'||ruleForm.syskind=='10020'">
                   <el-input v-model="ruleForm.model" @change="changeContentInfo()"></el-input>
                 </el-form-item>
               </el-col>
@@ -448,6 +449,9 @@ export default {
           { required: false, message: '请输入正确的端口号', validator: validatePort, trigger: "blur" }
         ],
         instanceName: [
+          { required: false, message: '不能为空', validator: validateSq, trigger: "blur" }
+        ],
+         model: [
           { required: false, message: '不能为空', validator: validateSq, trigger: "blur" }
         ],
         hadoopDir: [
