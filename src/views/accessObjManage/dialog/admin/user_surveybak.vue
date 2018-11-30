@@ -153,9 +153,9 @@ export default {
     };
     //判断初始数据量
     const validateNum = (rule, value, callback) => {
-      if (value != "") {
-      //   callback(new Error("不能为空"));
-      // } else {
+      if (value == "") {
+        callback(new Error("不能为空"));
+      } else {
         let types = "^[0-9]*[1-9][0-9]*$";
         let rs = new RegExp(types);
         let rflag = rs.test(value);
@@ -205,7 +205,7 @@ export default {
       },
       formRules: {
         datanum: [
-          { required: false, validator: validateNum, trigger: "blur" }
+          { required: true, validator: validateNum, trigger: "blur" }
         ]
       },
       // msgId:this.dialogMsg?this.dialogMsg[1]:''
