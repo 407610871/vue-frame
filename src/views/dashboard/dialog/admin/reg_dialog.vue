@@ -202,10 +202,10 @@
                   <el-input v-model="ruleForm.instanceName"></el-input>
                 </el-form-item>
               </el-col>
-              <el-col :span="2" class="bank" v-if="ruleForm.syskind=='10002'||ruleForm.syskind=='10020'">bank</el-col>
+              <el-col :span="2" class="bank" v-if="ruleForm.syskind=='10002'">bank</el-col>
               <el-col :span="10" class="uncol">
               <span class="fl" v-show="this.ruleForm.author=='true'&&(ruleForm.syskind=='10002')">*</span>
-                <el-form-item class="fl unrequired" label="模式名/架构:" prop="model" v-if="ruleForm.syskind=='10002'||ruleForm.syskind=='10020'">
+                <el-form-item class="fl unrequired" label="模式名/架构:" prop="model" v-if="ruleForm.syskind=='10002'">
                   <el-input v-model="ruleForm.model"></el-input>
                 </el-form-item>
               </el-col>
@@ -267,7 +267,7 @@
                 </el-form-item>
               </el-col>
               <el-col :span="2" class="bank" v-if="ruleForm.syskind!=''&& ruleForm.syskind=='vhost'">bank</el-col>
-              <el-col :span="10" v-if="ruleForm.syskind=='10010'||ruleForm.syskind=='10011'">
+              <el-col :span="10" v-if="ruleForm.syskind=='10010'||ruleForm.syskind=='10011'" class="uncolls">
                 <el-form-item label="传输模式:" prop="transmode">
                   <el-select v-model="ruleForm.transmode" placeholder="请选择">
                     <el-option label="主动" value="true"></el-option>
@@ -1366,5 +1366,14 @@ export default {
     min-width: 920px;
   }
 }
-
+.otherInfo .uncolls .el-form-item--medium .el-form-item__content{
+  margin-left: 115px !important;
+}
+ .uncolls .el-form-item__label
+ {
+   text-align: left;
+}
+.uncolls .el-input{
+   width:67%;
+}
 </style>

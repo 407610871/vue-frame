@@ -46,18 +46,21 @@
                     </el-radio>
                   </el-col>
                   <el-col :span="22">
-                   <el-col :span="5">
-                    <el-form-item>
-                      <el-input v-model="ruleForm.highMatch"></el-input>
-                    </el-form-item>
+                    <el-col :span="5">
+                      <el-form-item>
+                        <el-input v-model="ruleForm.highMatch"></el-input>
+                      </el-form-item>
                     </el-col>
-                    <el-col :span="17" class='hightips'>
-                      <span>请参考以下规则进行填写:</span>
-                      <span>(^xx.*)以xx为前缀</span>
-                      <span>(.*xx$)以xx为后缀</span>
-                      <span>(.*xx.*)包含xx</span>
-                      <span>(^xx.*yy$)以xx开头,yy结尾</span>
-                    </el-col>
+                  </el-col>
+                </el-col>
+                <el-col :span="24" class="highbg">
+                  <el-col :span="4" class="bank">blank</el-col>
+                  <el-col :span="17" class='hightips'>
+                    <span>请参考以下规则进行填写:</span>
+                    <span>(^xx.*)以xx为前缀</span>
+                    <span>(.*xx$)以xx为后缀</span>
+                    <span>(.*xx.*)包含xx</span>
+                    <span>(^xx.*yy$)以xx开头,yy结尾</span>
                   </el-col>
                 </el-col>
               </el-radio-group>
@@ -473,13 +476,16 @@ export default {
     line-height: 30px;
   }
 }
+
 .hightips span {
-  font-size:14px;
+  font-size: 14px;
   display: inline-block;
   line-height: 30px;
   margin-left: 10px;
 }
-.highbg .el-input{
-  width:90%;
+
+.highbg .el-input {
+  width: 90%;
 }
+
 </style>

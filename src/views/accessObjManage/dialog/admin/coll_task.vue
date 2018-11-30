@@ -476,9 +476,11 @@ export default {
         let jday = 0;;
         let jhour = 0;
         let jmin;
-        if (this.ruleForm.jmin == '') {
-          this.$message.warning('请将间隔执行时间填写完整');
-          return false;
+        if (this.ruleForm.jmin == ''||this.ruleForm.jmin==undefined) {
+          if (this.ruleForm.jhour == '' && this.ruleForm.jday == '') {
+            this.$message.warning('请将间隔执行时间填写完整');
+            return false;
+          }
         }
         if (this.ruleForm.jday != '' && this.ruleForm.jday != undefined) {
           jday = this.ruleForm.jday;
@@ -946,8 +948,8 @@ export default {
   },
   watch: {
     msg() {
-      if(this.msg=="third"){
-         this._getInit();
+      if (this.msg == "third") {
+        this._getInit();
       }
       if (this.editfalg == false) {
         if (this.msg == "third") {
