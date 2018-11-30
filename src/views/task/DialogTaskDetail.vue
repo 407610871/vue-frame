@@ -260,6 +260,9 @@
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+.task-Detail-dialog .select input{
+  height:31px!important;
+}
 </style>
 
 <style lang="scss" scoped>
