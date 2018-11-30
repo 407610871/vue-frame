@@ -347,6 +347,43 @@ export default {
     };
   },
   methods: {
+    //清空非选中项
+    cleanData(){
+      if(this.ruleForm.cycleSet == '0'){
+        this.ruleForm.dfmon = "";
+        this.ruleForm.dfhour = "";
+        this.ruleForm.dfmin = "";
+        this.ruleForm.dsweek = "";
+        this.ruleForm.dshour = "";
+        this.ruleForm.dsmin = "";
+        this.ruleForm.dthour = "";
+        this.ruleForm.dtmin = "";
+      }else if(this.ruleForm.cycleSet == '1'){
+        this.ruleForm.jday = "";
+        this.ruleForm.jhour = "";
+        this.ruleForm.jmin = "";
+        if(this.radio == "2"){
+          this.ruleForm.dsweek = "";
+          this.ruleForm.dshour = "";
+          this.ruleForm.dsmin = "";
+          this.ruleForm.dthour = "";
+          this.ruleForm.dtmin = "";
+        }else if(this.radio == "3"){
+          this.ruleForm.dfmon = "";
+          this.ruleForm.dfhour = "";
+          this.ruleForm.dfmin = "";
+          this.ruleForm.dthour = "";
+          this.ruleForm.dtmin = "";
+        }else if(this.radio == "4"){
+          this.ruleForm.dfmon = "";
+          this.ruleForm.dfhour = "";
+          this.ruleForm.dfmin = "";
+          this.ruleForm.dsweek = "";
+          this.ruleForm.dshour = "";
+          this.ruleForm.dsmin = "";
+        }
+      }
+    },
     //关闭对话框
     closeDialog() {
       this.dialogVisible = false;
@@ -472,6 +509,7 @@ export default {
       //间隔执行
       var pollIntervalMs = -1;
       var actech = 'JDBC';
+      this.cleanData();
       if (this.ruleForm.cycleSet == '0' && this.ruleForm.accessMode != "0" && this.ruleForm.accessMode != "2") {
         let jday = 0;;
         let jhour = 0;
