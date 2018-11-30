@@ -385,6 +385,8 @@ export default {
               timeFlag: new Date().getTime()
             });
             _self.loadTable();
+                        _self.countTotal++;
+
           })
           .catch(function(err) {
             console.log(err);
