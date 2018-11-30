@@ -426,7 +426,7 @@ export default {
       var pollIntervalMs = "-1";
       var actech = this.ruleForm.actech;
       if (this.ruleForm.cycleSet == '0' && this.ruleForm.accessMode != "0" && this.ruleForm.accessMode != "2") {
-        let jday = 0;;
+        let jday = 0;
         let jhour = 0;
         let jmin;
         if (this.ruleForm.jmin == '') {
