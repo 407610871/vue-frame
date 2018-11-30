@@ -358,7 +358,6 @@ export default {
           taskId: this.taskId
         }
       }).then(res => {
-        debugger;
         if (res.data.success) {
           this.tableData = res.data.data.data;
           console.log(this.tableData);

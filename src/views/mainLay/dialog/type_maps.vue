@@ -268,7 +268,6 @@ export default {
 
     },
     msg() {
-      debugger;
       if (this.msg == 'third') {
         if (this.flag == '0') {
           if (this.$store.state.matchflag == '0') {

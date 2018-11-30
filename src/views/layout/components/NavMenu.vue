@@ -41,7 +41,6 @@ export default {
   },
   methods: {
     handleSelect(key, keyPath) {
-      // debugger;
       // this.$router.push({path:'/dashboard'});
       switch (key) {
         case "3-1":

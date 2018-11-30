@@ -596,9 +596,7 @@ export default {
       }
       this.ruleForm.tablename = this.info[0].name;
     }
-    // debugger;
     console.log(this.tableid);
-    //debugger;
     this._querySys();
     this._getStaticDatas();
     this._queryCity('0', 'pro');

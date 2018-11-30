@@ -389,10 +389,8 @@ export default {
     },
     loadTable: function() {
       var _self = this;
-      debugger;
       let objInfoIds = '';
       let urlIndex =decodeURI( _self.$route.query.objInfoIds).indexOf('[');
-      debugger;
       let urlIds = '';
       if (urlIndex != -1) {
         objInfoIds = decodeURI( _self.$route.query.objInfoIds);
