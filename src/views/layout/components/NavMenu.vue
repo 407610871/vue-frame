@@ -66,7 +66,7 @@ export default {
           break;
         case "2":
           this.activeIndex = "2";
-          this.$router.push({ path: "/data-processing" });
+          // this.$router.push({ path: "/data-processing" });
           break;
       }
     },
