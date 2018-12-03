@@ -28,7 +28,7 @@
           <div class="daiInfo-title proInfo-title" id="txqd">
             <h2>特性清单</h2>
           </div>
-          <div class="proInfo-box comTable clearfix">
+          <div class="proInfo-box comTable retable clearfix">
             <el-table :data="tableData" stripe style="width: 100%">
               <el-table-column label="编号" width="50">
                 <template slot-scope="scope">
@@ -61,7 +61,7 @@
           </div>
           <div class="proInfo-box bornone clearfix" id="yzwthxz">
             <h2>已知问题和限制</h2>
-            <div class="proInfo-box comTable bornone clearfix">
+            <div class="proInfo-box comTable retable bornone clearfix">
               <el-table :data="knownData" stripe style="width: 100%">
                 <el-table-column label="编号" width="50">
                   <template slot-scope="scope">
@@ -299,5 +299,11 @@ export default {
     height: 50px;
     vertical-align: top;
   }
+}
+.retable .el-table .cell:nth-child(1){
+  text-align: center;
+}
+.retable .el-table .cell{
+  text-align: left
 }
 </style>
