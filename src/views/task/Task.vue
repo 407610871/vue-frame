@@ -635,7 +635,7 @@ if(row1.length==0){
         //批量启动
         let errorData = [];
         for (let i = 0; i < rowNew.length; i++) {
-          if (rowNew[i].status == 1 || rowNew[i].status == 4|| rowNew[i].status == 3|| rowNew[i].status == 0) {
+          if (rowNew[i].status == 1 || rowNew[i].status == 4|| rowNew[i].status == 3) {
             errorData.push(rowNew[i]);
           }
         }
