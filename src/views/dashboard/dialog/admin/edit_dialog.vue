@@ -1127,7 +1127,7 @@ i {
   cursor: pointer;
 }
 
-.el-table .cell .taskMDialog .isDisable {
+.el-table .cell .taskMDialog .el-form .isDisable {
   cursor: not-allowed;
   color: #fff;
   background-color: #999;
@@ -1150,6 +1150,7 @@ i {
 }
 
 .isRed {
+  margin: 0;
   color: red;
 }
 .edit-dialog {
