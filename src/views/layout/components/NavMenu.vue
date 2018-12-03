@@ -41,7 +41,6 @@ export default {
   },
   methods: {
     handleSelect(key, keyPath) {
-      // debugger;
       // this.$router.push({path:'/dashboard'});
       switch (key) {
         case "3-1":
@@ -67,7 +66,7 @@ export default {
           break;
         case "2":
           this.activeIndex = "2";
-          this.$router.push({ path: "/data-processing" });
+          // this.$router.push({ path: "/data-processing" });
           break;
       }
     },

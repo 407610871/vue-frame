@@ -61,7 +61,6 @@ export default {
           class: 'el-icon-circle-plus',
           on: {
             click: () => {
-              debugger;
               
               console.log(`${column.label}   ${$index}*********`);
               this.tableData.push({

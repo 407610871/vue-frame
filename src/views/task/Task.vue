@@ -633,7 +633,6 @@ if(row1.length==0){
         }
       } else if (a == 2) {
         //批量启动
-        // debugger;
         let errorData = [];
         for (let i = 0; i < rowNew.length; i++) {
           if (rowNew[i].status == 1 || rowNew[i].status == 4|| rowNew[i].status == 3|| rowNew[i].status == 0) {
@@ -704,7 +703,6 @@ if(row1.length==0){
         }
       } else if (a == 3) {
         //批量停止
-        // debugger;
         // alert( rowNew);
         console.log(rowNew)
         // return;

@@ -556,7 +556,6 @@ export default {
     //保存信息
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
-        debugger;
         if (valid) {
           alert('submit!');
         } else {
@@ -573,7 +572,6 @@ export default {
     //测试连接
     testForm(formName) {
       this.$refs[formName].validate((valid) => {
-        debugger;
         if (valid) {
           alert('submit!');
         } else {

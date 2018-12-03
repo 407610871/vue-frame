@@ -222,7 +222,6 @@ export default {
         });
     },
     setFliter(data) {
-                // debugger;
 
       var queryParams = this.$store.state.queryParams[this.$route.name];
 
@@ -386,6 +385,8 @@ export default {
               timeFlag: new Date().getTime()
             });
             _self.loadTable();
+                        _self.countTotal++;
+
           })
           .catch(function(err) {
             console.log(err);
@@ -436,7 +437,6 @@ export default {
       this.setStore(fliterParams);
     },
     storeReady: function() {
-        // debugger;
       var fliterItemList = this.$store.state.fliterItemList;
       if (
         fliterItemList.network.ready &&
