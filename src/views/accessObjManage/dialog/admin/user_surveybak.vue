@@ -154,8 +154,8 @@ export default {
     //判断初始数据量
     const validateNum = (rule, value, callback) => {
       if (value == "") {
-       // callback(new Error("不能为空"));
-       callback();
+        // callback(new Error("不能为空"));
+        callback();
       } else {
         let types = "^[0-9]*[1-9][0-9]*$";
         let rs = new RegExp(types);
@@ -498,57 +498,64 @@ export default {
       console.log(this.$store.state.modeStyle);
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          this.tableids = '';
-          var areaData = [];
-          if (this.ruleForm.datarange == "3") //全国
-          {
-            areaData = [];
-          }
-          if (this.ruleForm.datarange == "2") { //全省
-            areaData = [{ "pro": this.ruleForm.pro }]
-          }
-          if (this.ruleForm.datarange == "1") { //全市
-            areaData = [{ "pro": this.ruleForm.pro }, { "city": this.ruleForm.city }]
-          }
-          if (this.ruleForm.datarange == "0") { //行政区
-            areaData = [{ "pro": this.ruleForm.pro }, { "city": this.ruleForm.city }, { "urban": this.ruleForm.urban }]
-          }
-          if (this.info.length == undefined) {
-            this.tableid = this.info.id;
-            this.tableids = this.info.id;
+          if (this.ruleForm.datanum == '') {
+            var saveInfo = {};
+            this.setUserList(saveInfo);
+            console.log(this.$store.state.userList);
+            this.$emit('pre');
           } else {
-            for (let i = 0; i < this.info.length; i++) {
-              if (i != this.info.length - 1) {
-                this.tableids += this.info[i].id + ','
-              } else {
-                this.tableids += this.info[i].id
-              }
-
+            this.tableids = '';
+            var areaData = [];
+            if (this.ruleForm.datarange == "3") //全国
+            {
+              areaData = [];
             }
-            this.tableid = this.info[0].id
+            if (this.ruleForm.datarange == "2") { //全省
+              areaData = [{ "pro": this.ruleForm.pro }]
+            }
+            if (this.ruleForm.datarange == "1") { //全市
+              areaData = [{ "pro": this.ruleForm.pro }, { "city": this.ruleForm.city }]
+            }
+            if (this.ruleForm.datarange == "0") { //行政区
+              areaData = [{ "pro": this.ruleForm.pro }, { "city": this.ruleForm.city }, { "urban": this.ruleForm.urban }]
+            }
+            if (this.info.length == undefined) {
+              this.tableid = this.info.id;
+              this.tableids = this.info.id;
+            } else {
+              for (let i = 0; i < this.info.length; i++) {
+                if (i != this.info.length - 1) {
+                  this.tableids += this.info[i].id + ','
+                } else {
+                  this.tableids += this.info[i].id
+                }
+
+              }
+              this.tableid = this.info[0].id
+            }
+            console.log(this.tableids);
+            console.log(this.tableid);
+            var saveInfo = {
+              iD: "", //非必填
+              tABLE_ID: this.tableids, //表id
+              rESOURCE_DIRECTORY_NUMBER: this.rnum + this.ruleForm.industry + '-' + this.ruleForm.znb + '-' + this.ruleForm.fcc + this.ruleForm.tlc + this.ruleForm.bdc + this.ruleForm.abc + this.ruleForm.randomId, // '资源目录编号',
+              iNDUSTRY_CATEGORY: this.ruleForm.industry, // '行业类别',
+              pOLICE_BUSINESS: this.ruleForm.znb, // '公安业务',
+              fIRST_CLASS_CLASSIFICATION: this.ruleForm.fcc, //'一级分类',
+              tWO_LEVEL_CLASSIFICATION: this.ruleForm.tlc, // '二级分类',
+              tAXONOMY: this.ruleForm.bdc, //'细目分类',
+              aTTRIBUTE_CLASSIFICATION: this.ruleForm.abc, // '属性分类',
+              dATA_TIMELINESS: "", // '数据时效性',
+              dATA_UPDATE_MODE: this.ruleForm.datamode, // '数据更新方式',
+              iNITIAL_DATA_VOLUME: this.ruleForm.datanum, // '初始数据量',
+              dATA_RANGE: this.ruleForm.datarange, //'数据范围',
+              xzqy: areaData, //行政区域
+              remarks: "" //备注，非必填
+            }
+            this.setUserList(saveInfo);
+            console.log(this.$store.state.userList);
+            this.$emit('pre');
           }
-          console.log(this.tableids);
-          console.log(this.tableid);
-          var saveInfo = {
-            iD: "", //非必填
-            tABLE_ID: this.tableids, //表id
-            rESOURCE_DIRECTORY_NUMBER: this.rnum + this.ruleForm.industry + '-' + this.ruleForm.znb + '-' + this.ruleForm.fcc + this.ruleForm.tlc + this.ruleForm.bdc + this.ruleForm.abc + this.ruleForm.randomId, // '资源目录编号',
-            iNDUSTRY_CATEGORY: this.ruleForm.industry, // '行业类别',
-            pOLICE_BUSINESS: this.ruleForm.znb, // '公安业务',
-            fIRST_CLASS_CLASSIFICATION: this.ruleForm.fcc, //'一级分类',
-            tWO_LEVEL_CLASSIFICATION: this.ruleForm.tlc, // '二级分类',
-            tAXONOMY: this.ruleForm.bdc, //'细目分类',
-            aTTRIBUTE_CLASSIFICATION: this.ruleForm.abc, // '属性分类',
-            dATA_TIMELINESS: "", // '数据时效性',
-            dATA_UPDATE_MODE: this.ruleForm.datamode, // '数据更新方式',
-            iNITIAL_DATA_VOLUME: this.ruleForm.datanum, // '初始数据量',
-            dATA_RANGE: this.ruleForm.datarange, //'数据范围',
-            xzqy: areaData, //行政区域
-            remarks: "" //备注，非必填
-          }
-          this.setUserList(saveInfo);
-          console.log(this.$store.state.userList);
-          this.$emit('pre');
         } else {
           var saveInfo = {};
           this.setUserList(saveInfo);
@@ -622,9 +629,10 @@ export default {
 <style lang="scss">
 @import "@/assets/css/base.scss";
 @import "@/assets/css/dialog.scss";
-.userSurveyDialog .el-tabs__content{
-  overflow:auto;
+.userSurveyDialog .el-tabs__content {
+  overflow: auto;
 }
+
 .userSurveyDialog .el-dialog__body {
   padding-left: 0px;
   padding-right: 0px;
@@ -670,14 +678,16 @@ export default {
 
 .surveybg {
   background: #f0f3f6;
-  padding:20px 20px 0;
+  padding: 20px 20px 0;
 }
 
 .plr30 {
   padding-left: 30px;
   padding-right: 30px;
 }
-.demo-ruleForm{
-  padding:0;
+
+.demo-ruleForm {
+  padding: 0;
 }
+
 </style>

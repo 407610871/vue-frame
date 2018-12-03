@@ -18,7 +18,7 @@
                 <h2>提供方信息</h2>
               </div>
             </div>
-            <user-surveybak :info="this.pdata" @pre="next('second')" @closeuser="closeDialog()" ref="survey"></user-surveybak>
+            <user-surveybak :msg="dialogVisible" :info="this.pdata" @pre="next('second')" @closeuser="closeDialog()" ref="survey"></user-surveybak>
            <!--  <div class="btn tcenter">
              <el-button type="primary" style="margin-top: 12px;" @click="next('second')">下一步</el-button>
              <el-button style="margin-top: 12px;" @click="closeDialog">取消</el-button>
