@@ -63,12 +63,12 @@
                 <el-input v-model="ruleForm.xStreamServiceName" class="fl"></el-input>
               </el-form-item>
             </el-col>
-            <el-col :span="6" v-show="showflag">
+            <el-col :span="6">
               <el-form-item label="用户名:" prop="userName">
                 <el-input v-model="ruleForm.userName" class="fl"></el-input>
               </el-form-item>
             </el-col>
-            <el-col :span="6" v-show="showflag">
+            <el-col :span="6">
               <el-form-item label="密码:" prop="password">
                 <el-input v-model="ruleForm.password" class="fl"></el-input>
               </el-form-item>
@@ -656,14 +656,14 @@ export default {
             this.$message.warning('XStream服务名不能为空');
             return false;
           }
-          /* if (this.ruleForm.userName == '') {
+           if (this.ruleForm.userName == '') {
             this.$message.warning('用户名不能为空');
             return false;
           }
            if (this.ruleForm.password == '') {
             this.$message.warning('密码不能为空');
             return false;
-          }*/
+          }
         }
         ctt = '0';
         actech = this.$route.params.type;
@@ -715,8 +715,8 @@ export default {
           "timeType": this.radio,
           "startLocation": this.ruleForm.startLocation,
           "xStreamServiceName": this.ruleForm.xStreamServiceName,
-          /*"xStreamUsername":this.ruleForm.userName,
-          "xStreamPassword":this.ruleForm.password*/
+          "xStreamUsername":this.ruleForm.userName,
+          "xStreamPassword":this.ruleForm.password
         }
         this.loading = true;
         if (JSON.stringify(this.$store.state.userList) == "{}") {
@@ -814,8 +814,8 @@ export default {
           "timeType": this.radio,
           "startLocation": this.ruleForm.startLocation,
           "xStreamServiceName": this.ruleForm.xStreamServiceName,
-          /* "xStreamUsername":this.ruleForm.userName,
-          "xStreamPassword":this.ruleForm.password*/
+           "xStreamUsername":this.ruleForm.userName,
+          "xStreamPassword":this.ruleForm.password
         }
         this.loading = true;
         if (JSON.stringify(this.$store.state.userList) == "{}") {
@@ -1001,8 +1001,8 @@ export default {
             this.taskInfoId = data.task_info_id;
             this.isregin = true;
             this.ruleForm.xStreamServiceName = res.xStreamServiceName;
-            /*this.ruleForm.userName = res.xStreamUsername;
-            this.ruleForm.password = res.xStreamPassword;*/
+            this.ruleForm.userName = res.xStreamUsername;
+            this.ruleForm.password = res.xStreamPassword;
           }
 
         } else {
