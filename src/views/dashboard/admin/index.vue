@@ -139,7 +139,10 @@ export default {
       ) {
         // this.loadTable();
       }
-    }
+    },
+    $route(to,form){
+        if(to.name == "dashboard") this.setCount();
+    },
   },
   created() {
     // this.$root.eventHub.$on("search", keyword => {
