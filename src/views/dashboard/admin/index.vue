@@ -409,12 +409,15 @@ export default {
         this.$ajax
           .post(window.ENV.API_DACM + "/caccess/delete?ids=" + row.id)
           .then(function(res) {
-            if (res.data.success == true) {
+            if(res.data.code=="0000"&&res.data.data.success == true) {
               _self.loadTable();
                _self.countTotal--;
-
-            } else {
-              _self.$alert("有采集任务正在执行，不可废止", "提示", {
+            } else if(res.data.code=="0000") {
+              _self.$alert(res.data.data.message, "提示", {
+                confirmButtonText: "确定"
+              });
+            }else{
+              _self.$alert("废止失败", "提示", {
                 confirmButtonText: "确定"
               });
             }
