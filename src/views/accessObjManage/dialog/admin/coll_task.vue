@@ -377,14 +377,22 @@ export default {
       console.log(this.monthData);
     },
     _minData() {
-      for (let i = 1; i < 60; i++) {
+      for (let i = 0; i < 60; i++) {
         this.$set(this.minData, i, i);
       }
+      this.ruleForm.jmin = 0;
+      this.ruleForm.dfmin =0;
+      this.ruleForm.dsmin =0;
+      this.ruleForm.dtmin = 0;
     },
     _hourData() {
-      for (let i = 1; i < 24; i++) {
+      for (let i = 0; i < 24; i++) {
         this.$set(this.hourData, i, i);
       }
+      this.ruleForm.jhour = 0;
+      this.ruleForm.dfhour = 0;
+      this.ruleForm.dshour = 0;
+      this.ruleForm.dthour =0;
     },
     _weekData() {
       for (let i = 1; i < 8; i++) {
