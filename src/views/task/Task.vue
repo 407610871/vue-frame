@@ -500,7 +500,7 @@ export default {
 
       let row1 = Object.keys(this.allSecectData);
       console.log(this.allSecectData)
-            // console.log(row1)
+            console.log(row1)
             // return;
             // console.log(row1.length)
 if(row1.length==0){
@@ -508,7 +508,7 @@ if(row1.length==0){
      height:50,
           dangerouslyUseHTMLString: true
         });
-        // return;
+        return;
 }
      for(let i=0;i<row1.length;i++){
       if (this.allSecectData[row1[i]].length == 0||row1.length==0) {
