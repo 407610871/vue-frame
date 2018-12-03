@@ -1,9 +1,9 @@
 <template>
   <div class="taskMDialog userSurveyDialog setTaskDia diaicon">
     <!--  <el-button size="mini" class="diabtn incbtn" type="danger" @click="dialogVisible = true">设置通配符</el-button> -->
-		<el-tooltip class="item" effect="light" content="单表采集" placement="top">
-			<i class="enc-icon-danbiaocaiji" @click="dialogVisible = true"></i>
-		</el-tooltip>
+    <el-tooltip class="item" effect="light" content="单表采集" placement="top">
+      <i class="enc-icon-danbiaocaiji" @click="dialogVisible = true"></i>
+    </el-tooltip>
     <el-dialog title="单表采集任务向导" :visible.sync="dialogVisible" width="73%" :before-close="closeDialog" class="single-task-dialog">
       <div class="title-gra plr30">
         <span class="grab gra-l"></span>
@@ -18,8 +18,8 @@
                 <h2>提供方信息</h2>
               </div>
             </div>
-            <user-surveybak :msg="dialogVisible" :info="this.pdata" @pre="next('second')" @closeuser="closeDialog()" ref="survey"></user-surveybak>
-           <!--  <div class="btn tcenter">
+            <user-surveybak :msg="this.num" :info="this.pdata" @pre="next('second')" @closeuser="closeDialog()" ref="survey"></user-surveybak>
+            <!--  <div class="btn tcenter">
              <el-button type="primary" style="margin-top: 12px;" @click="next('second')">下一步</el-button>
              <el-button style="margin-top: 12px;" @click="closeDialog">取消</el-button>
            </div> -->
@@ -62,6 +62,7 @@ export default {
       dialogVisible: false,
       tabs: '',
       event: '',
+      num: 0
     };
   },
   methods: {
@@ -69,7 +70,7 @@ export default {
     closeDialog() {
       this.dialogVisible = false;
       this.activeName = 'first';
-      this.$store.commit("setMode","");
+      this.$store.commit("setMode", "");
       //this.$refs.survey._clearForm();
     },
     //步骤条
@@ -81,10 +82,10 @@ export default {
     next(steps) {
       this.activeName = steps;
     },
-    fresh(){
+    fresh() {
       this.$emit('fre');
       this.activeName = 'first';
-      this.$store.commit("setMode","");
+      this.$store.commit("setMode", "");
       this.dialogVisible = false;
 
     }
@@ -105,6 +106,13 @@ export default {
 
   },
   props: ['pdata'],
+  watch: {
+    dialogVisible() {
+      if (this.dialogVisible) {
+        this.num++;
+      }
+    }
+  }
 
 };
 
@@ -157,7 +165,7 @@ export default {
 
 .surveybg {
   background: #f0f3f6;
-  padding:20px 20px 0;
+  padding: 20px 20px 0;
 }
 
 .plr30 {
@@ -201,13 +209,16 @@ export default {
 .setTaskDia .el-tabs__item.is-active {
   color: $color-background-tabs;
 }
-.diaicon i{
-  cursor:pointer;
-  font-size:20px;
+
+.diaicon i {
+  cursor: pointer;
+  font-size: 20px;
 }
-.single-task-dialog{
-  .el-dialog{
-    min-width:990px;
+
+.single-task-dialog {
+  .el-dialog {
+    min-width: 990px;
   }
 }
+
 </style>

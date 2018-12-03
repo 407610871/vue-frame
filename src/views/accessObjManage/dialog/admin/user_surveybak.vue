@@ -573,10 +573,10 @@ export default {
   components: {
 
   },
+
   mounted() {
     //清空form的值
     this._clearForm();
-
     if (this.info.id != undefined) {
       this.tableid = this.info.id;
       this.tableids = this.info.id;
@@ -611,7 +611,9 @@ export default {
 
   },
   watch: {
-
+   msg(){
+    this._getStaticDatas();
+   }
   },
   created() {
 

@@ -57,15 +57,15 @@
               <span class="ml25 tasktips">tips:仅支持以下三种类型:(自增变量(整型),自增时间戳(long型),自增时间戳(字符型,varchar))</span>
             </el-col>
           </el-col>
-          <el-col :span="24" v-show="ruleForm.accessMode=='0'&&this.$route.params.type=='oracle'">
+          <!-- <el-col :span="24" v-show="ruleForm.accessMode=='0'&&this.$route.params.type=='oracle'">
             <el-col :span="6">
               <el-form-item label="XStream服务名:">
                 <el-input v-model="ruleForm.xStreamServiceName" class="fl"></el-input>
               </el-form-item>
             </el-col>
-          </el-col>
+          </el-col> -->
           <el-col :span="24">
-            <el-col :span="10" class="collbg">
+            <el-col :span="10" class="collbg" v-if="this.ruleForm.accessMode=='1'">
               <el-form-item label="增量字段:" prop="increment">
                 <el-input v-model="ruleForm.increment" class="fl"></el-input>
                 <el-button type="primary" class="fl increbtn" @click="innerVisible = true">选择</el-button>
@@ -417,19 +417,19 @@ export default {
       for (let i = 0; i < 60; i++) {
         this.$set(this.minData, i, i);
       }
-      this.ruleForm.jmin = 0;
-      this.ruleForm.dfmin = 0;
-      this.ruleForm.dsmin = 0;
-      this.ruleForm.dtmin = 0;
+      /*       this.ruleForm.jmin = 0;
+           this.ruleForm.dfmin = 0;
+            this.ruleForm.dsmin = 0;
+            this.ruleForm.dtmin = 0;*/
     },
     _hourData() {
       for (let i = 0; i < 24; i++) {
         this.$set(this.hourData, i, i);
       }
-      this.ruleForm.jhour = 0;
-      this.ruleForm.dfhour = 1;
-      this.ruleForm.dshour = 1;
-      this.ruleForm.dthour = 1;
+      /*      this.ruleForm.jhour = 0;
+            this.ruleForm.dfhour = 1;
+            this.ruleForm.dshour = 1;
+            this.ruleForm.dthour = 1;*/
     },
     _weekData() {
       for (let i = 1; i < 8; i++) {
@@ -521,10 +521,13 @@ export default {
       if (this.ruleForm.cycleSet == '0' && this.ruleForm.accessMode != "0" && this.ruleForm.accessMode != "2") {
         let jday = 0;;
         let jhour = 0;
-        let jmin = 0;
-        if (this.ruleForm.jmin == '' || this.ruleForm.jmin == undefined) {
+        let jmin;
+        if (this.ruleForm.jmin === '' || this.ruleForm.jmin == undefined) {
+          this.$message.warning('请将间隔执行时间填写完整');
+          return false;
+        } else if (this.ruleForm.jmin == 0) {
           if (this.ruleForm.jhour == '' && this.ruleForm.jday == '') {
-            this.$message.warning('请将间隔执行时间填写完整');
+            this.$message.warning('请输入正确的间隔时间');
             return false;
           }
         }
@@ -546,10 +549,10 @@ export default {
         }
         if (this.radio == '2') {
           //第一队列
-          let dfmin = 0;
+          let dfmin;
           let dfhour;
           let dfmon;
-          if (this.ruleForm.dfhour == '' || this.ruleForm.dfmon == '') {
+          if (this.ruleForm.dfmin === '' || this.ruleForm.dfhour == '' || this.ruleForm.dfmon == '' || this.ruleForm.dfmon == undefined) {
             this.$message.warning('请将定时执行时间填写完整');
             return false;
           }
@@ -570,7 +573,7 @@ export default {
           let dsmin = 0;
           let dshour;
           let dsweek;
-          if (this.ruleForm.dshour == '' || this.ruleForm.dsweek == '') {
+          if (this.ruleForm.dsmin === '' || this.ruleForm.dshour == '' || this.ruleForm.dsweek == '' || this.ruleForm.dsweek == undefined) {
             this.$message.warning('请将定时执行时间填写完整');
             return false;
           }
@@ -591,7 +594,7 @@ export default {
           //第三队列
           let dtmin = 0;
           let dthour;
-          if (this.ruleForm.dthour == '') {
+          if (this.ruleForm.dtmin === '' || this.ruleForm.dthour == '') {
             this.$message.warning('请将定时执行时间填写完整');
             return false;
           }
@@ -608,12 +611,12 @@ export default {
       }
       var ctt = '';
       if (this.ruleForm.accessMode == "0") { //实时
-        if (this.$route.params.type == 'oracle') {
+        /*if (this.$route.params.type == 'oracle') {
           if (this.ruleForm.xStreamServiceName == '') {
             this.$message.warning('XStream服务名不能为空');
             return false;
           }
-        }
+        }*/
         ctt = '0';
         actech = this.$route.params.type;
       }
@@ -663,7 +666,7 @@ export default {
           "isStartOverTask": this.ruleForm.taskSubMode,
           "timeType": this.radio,
           "startLocation": this.ruleForm.startLocation,
-          "xStreamServiceName": this.ruleForm.xStreamServiceName
+          /* "xStreamServiceName": this.ruleForm.xStreamServiceName*/
         }
         this.loading = true;
         if (JSON.stringify(this.$store.state.userList) == "{}") {
@@ -760,7 +763,7 @@ export default {
           "isStartOverTask": this.ruleForm.taskSubMode,
           "timeType": this.radio,
           "startLocation": this.ruleForm.startLocation,
-          "xStreamServiceName": this.ruleForm.xStreamServiceName
+          /*"xStreamServiceName": this.ruleForm.xStreamServiceName*/
         }
         this.loading = true;
         if (JSON.stringify(this.$store.state.userList) == "{}") {
@@ -945,7 +948,7 @@ export default {
 
             this.taskInfoId = data.task_info_id;
             this.isregin = true;
-            this.ruleForm.xStreamServiceName = res.xStreamServiceName;
+            /* this.ruleForm.xStreamServiceName = res.xStreamServiceName;*/
           }
 
         } else {

@@ -141,7 +141,10 @@ export default {
       }
     },
     $route(to,form){
-        if(to.name == "dashboard") this.setCount();
+        if(to.name == "dashboard"){
+          this.setCount();
+          this.loadTable();
+        }
     },
   },
   created() {

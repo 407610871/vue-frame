@@ -1,5 +1,5 @@
 <template>
-  <div class="taskMDialog icon-dai">
+  <div class="taskMDialog icon-dai regcon">
     <!-- <el-button @click="dialogVisible = true" class="add-btn">注册</el-button> -->
     <el-tooltip class="item" effect="light" content="注册" placement="top">
       <i @click="dialogVisible = true" class="enc-icon-zhuce table-action-btn" style="margin-right:15px; font-size:30px;"></i>
@@ -204,7 +204,7 @@
               </el-col>
               <el-col :span="2" class="bank" v-if="ruleForm.syskind=='10002'">bank</el-col>
               <el-col :span="10" class="uncol">
-              <span class="fl" v-show="this.ruleForm.author=='true'&&(ruleForm.syskind=='10002')">*</span>
+                <span class="fl" v-show="this.ruleForm.author=='true'&&(ruleForm.syskind=='10002')">*</span>
                 <el-form-item class="fl unrequired" label="模式名/架构/Schema:" prop="model" v-if="ruleForm.syskind=='10002'">
                   <el-input v-model="ruleForm.model"></el-input>
                 </el-form-item>
@@ -1331,15 +1331,15 @@ export default {
   margin-top: 30px;
 }
 
-.el-dialog .otherInfo .el-form-item__label {
-  width: 103px !important;
+.regcon .el-dialog .otherInfo .el-form-item__label {
+  width: 140px !important;
 }
 
-.otherInfo .el-form-item--medium .el-form-item__content {
-  margin-left: 103px !important;
+.regcon .otherInfo .el-form-item--medium .el-form-item__content {
+  margin-left: 140px !important;
 }
 
-.el-dialog .otherInfo .fileItem .el-form-item__label {
+ .el-dialog .otherInfo .fileItem .el-form-item__label {
   width: 235px !important;
 }
 
@@ -1366,14 +1366,23 @@ export default {
     min-width: 920px;
   }
 }
-.otherInfo .uncolls .el-form-item--medium .el-form-item__content{
+
+.otherInfo .uncolls .el-form-item--medium .el-form-item__content {
   margin-left: 115px !important;
 }
- .uncolls .el-form-item__label
- {
-   text-align: left;
+
+.uncolls .el-form-item__label {
+  text-align: left;
 }
-.uncolls .el-input{
-   width:67%;
+
+.uncolls .el-input {
+  width: 67%;
 }
+
+@media screen and ( max-width: 1580px) {
+  .regcon .otherInfo .unrequired .el-form-item__content {
+    width: 70%;
+  }
+}
+
 </style>

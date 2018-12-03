@@ -149,7 +149,7 @@
                         <el-col :span="4">
                           <el-form-item>
                             <el-select v-model="ruleForm.dfhour" placeholder="请选择">
-                              <el-option v-for="item in hourData" :key="item" :label="item" :value="item">
+                              <el-option v-for="item in hourData" :key="item" :disabled="item=='0'" :label="item" :value="item">
                               </el-option>
                             </el-select>
                           </el-form-item>
@@ -200,7 +200,7 @@
                         <el-col :span="4">
                           <el-form-item>
                             <el-select v-model="ruleForm.dshour" placeholder="请选择">
-                              <el-option v-for="item in hourData" :key="item" :label="item" :value="item">
+                              <el-option v-for="item in hourData" :key="item" :disabled="item=='0'" :label="item" :value="item">
                               </el-option>
                             </el-select>
                           </el-form-item>
@@ -238,7 +238,7 @@
                         <el-col :span="4">
                           <el-form-item>
                             <el-select v-model="ruleForm.dthour" placeholder="请选择">
-                              <el-option v-for="item in hourData" :key="item" :label="item" :value="item">
+                              <el-option v-for="item in hourData" :key="item" :label="item" :disabled="item=='0'" :value="item">
                               </el-option>
                             </el-select>
                           </el-form-item>
@@ -352,12 +352,12 @@ export default {
       console.log(this.monthData);
     },
     _minData() {
-      for (let i = 1; i < 60; i++) {
+      for (let i = 0; i < 60; i++) {
         this.$set(this.minData, i, i);
       }
     },
     _hourData() {
-      for (let i = 1; i < 24; i++) {
+      for (let i = 0; i < 24; i++) {
         this.$set(this.hourData, i, i);
       }
     },
@@ -429,9 +429,15 @@ export default {
         let jday = 0;;
         let jhour = 0;
         let jmin;
-        if (this.ruleForm.jmin == '') {
+        if (this.ruleForm.jmin === '') {
           this.$message.warning('请将间隔执行时间填写完整');
           return false;
+        }
+        else if (this.ruleForm.jmin == 0) {
+          if (this.ruleForm.jhour == '' && this.ruleForm.jday == '') {
+            this.$message.warning('请输入正确的间隔时间');
+            return false;
+          }
         }
         if (this.ruleForm.jday != '' && this.ruleForm.jday != undefined) {
           jday = this.ruleForm.jday;
@@ -455,7 +461,7 @@ export default {
           let dfmin;
           let dfhour;
           let dfmon;
-          if (this.ruleForm.dfmin == '' || this.ruleForm.dfhour == '' || this.ruleForm.dfmon == '') {
+          if (this.ruleForm.dfmin === '' || this.ruleForm.dfhour == '' || this.ruleForm.dfmon == '' || this.ruleForm.dfmon == undefined) {
             this.$message.warning('请将定时执行时间填写完整');
             return false;
           }
@@ -476,7 +482,7 @@ export default {
           let dsmin;
           let dshour;
           let dsweek;
-          if (this.ruleForm.dsmin == '' || this.ruleForm.dshour == '' || this.ruleForm.dsweek == '') {
+           if (this.ruleForm.dsmin === '' || this.ruleForm.dshour == '' || this.ruleForm.dsweek == '' || this.ruleForm.dsweek == undefined) {
             this.$message.warning('请将定时执行时间填写完整');
             return false;
           }
@@ -496,7 +502,7 @@ export default {
           //第三队列
           let dtmin;
           let dthour;
-          if (this.ruleForm.dtmin == '' || this.ruleForm.dthour == '') {
+          if (this.ruleForm.dtmin === '' || this.ruleForm.dthour == '') {
             this.$message.warning('请将定时执行时间填写完整');
             return false;
           }

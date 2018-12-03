@@ -64,14 +64,14 @@
             </el-col>
             <el-col :span="4" class="bank">bank</el-col>
             <el-col :span="10">
-              <el-form-item label="增量字段:">
+              <el-form-item label="增量字段:" v-show="sourceBaseInfo.period==1||sourceBaseInfo.period==2">
                 <span>{{sourceBaseInfo.incrementColumn}}</span>
               </el-form-item>
             </el-col>
             <el-col :span="10" class="bank">bank</el-col>
             <el-col :span="4" class="bank">bank</el-col>
             <el-col :span="10">
-              <el-form-item label="增量字段类型:">
+              <el-form-item label="增量字段类型:" v-show="sourceBaseInfo.period==1||sourceBaseInfo.period==2">
                 <span>{{sourceBaseInfo.columnType}}</span>
               </el-form-item>
             </el-col>
@@ -526,6 +526,7 @@ export default {
             5:'周期定时全量'        
           }
           //接入类型翻译
+          that.sourceBaseInfo.period = innerRes.data.data.period;
           that.sourceBaseInfo.periodDesc = periodMap[innerRes.data.data.period];
           //接入对象展示集合
           that.sourceBaseInfo.sourceObjNameList = sourceObjNameList;

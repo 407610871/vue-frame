@@ -1,5 +1,5 @@
 <template>
-  <div class="taskMDialog">
+  <div class="taskMDialog regcon">
     <!-- <el-button class="diabtn incbtn" size="mini" @click="dialogVisible = true">编辑</el-button> -->
     <el-tooltip class="item" effect="light" content="编辑" placement="top">
       <i @click="dialogVisible = true" class="enc-icon-bianji table-action-btn"></i>
@@ -391,7 +391,7 @@ export default {
       deIndex: 0,
       tableMsg: [],
       loading: false,
-       testflag: false,
+      testflag: false,
       isDisableClassFlag: false,
       appId: '',
       ruleForm: {
@@ -453,7 +453,7 @@ export default {
         instanceName: [
           { required: false, message: '不能为空', validator: validateSq, trigger: "blur" }
         ],
-         model: [
+        model: [
           { required: false, message: '不能为空', validator: validateSq, trigger: "blur" }
         ],
         hadoopDir: [
@@ -898,7 +898,7 @@ export default {
       this.testflag = true;
       this.$refs[formName].validate((valid) => {
         if (valid) {
-         this.loading = true
+          this.loading = true
           let testData = {};
           testData = {
             "ip": this.ruleForm.ipname,
@@ -1111,12 +1111,12 @@ export default {
   margin-top: 30px;
 }
 
-.el-dialog .otherInfo .el-form-item__label {
-  width: 103px !important;
+.regcon .el-dialog .otherInfo .el-form-item__label {
+  width: 140px !important;
 }
 
-.otherInfo .el-form-item--medium .el-form-item__content {
-  margin-left: 103px !important;
+.regcon .otherInfo .el-form-item--medium .el-form-item__content {
+  margin-left: 140px !important;
 }
 
 .el-dialog .otherInfo .fileItem .el-form-item__label {
@@ -1153,19 +1153,29 @@ i {
   margin: 0;
   color: red;
 }
+
 .edit-dialog {
   .el-dialog {
     min-width: 920px;
   }
 }
-.otherInfo .uncolls .el-form-item--medium .el-form-item__content{
+
+.otherInfo .uncolls .el-form-item--medium .el-form-item__content {
   margin-left: 115px !important;
 }
- .uncolls .el-form-item__label
- {
-   text-align: left;
+
+.uncolls .el-form-item__label {
+  text-align: left;
 }
-.uncolls .el-input{
-   width:67%;
+
+.uncolls .el-input {
+  width: 67%;
 }
+
+@media screen and ( max-width: 1580px) {
+  .regcon .otherInfo .unrequired .el-form-item__content {
+    width: 70%;
+  }
+}
+
 </style>
