@@ -116,8 +116,7 @@
           </el-table-column>
           <el-table-column label="核验报告">
             <template slot-scope="scope">
-              <!--  <a :href='baseUrl+"/ccheckData/downloadCheckDataById?browser=fox&accessName=ww&id="+scope.row.id'>导出</a> -->
-              <a href="javascript:void(0)" @click="downTxt(scope.row.id)">导出</a>
+              <el-button @click="downTxt(scope.row.id)" class="export-btn" size="mini">导出</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -337,6 +336,7 @@ export default {
     },
     //查看日志按钮
     doDetail() {
+      this.textShow = !this.textShow;
       this.loading2 = true;
       let that = this;
       this.$ajax.get(baseUrl + '/ccheckData/checkLog', {
@@ -347,13 +347,13 @@ export default {
         this.loading2 = false;
         res = res.data;
         if (res.result == "false") {
-          this.textShow = false;
+          //this.textShow = false;
 
           this.$alert("查看日志失败", "查看日志", {
             confirmButtonText: "确定"
           });
         } else {
-          this.textShow = true;
+         // this.textShow = true;
 
           let result = res.data.testresults_result == 0 ? "成功" : "失败";
           this.loginfo = `源库：${res.data.source_library}\n
@@ -539,7 +539,9 @@ h5 {
   font-size: 14px;
   margin-bottom: 10px;
 }
-
+.export-btn.el-button{
+  border:1px solid #edcddd;
+}
 </style>
 <style lang="scss">
 .check-data-dialog {
