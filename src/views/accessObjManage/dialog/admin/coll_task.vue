@@ -57,13 +57,23 @@
               <span class="ml25 tasktips">tips:仅支持以下三种类型:(自增变量(整型),自增时间戳(long型),自增时间戳(字符型,varchar))</span>
             </el-col>
           </el-col>
-          <!-- <el-col :span="24" v-show="ruleForm.accessMode=='0'&&this.$route.params.type=='oracle'">
+          <el-col :span="24" v-show="ruleForm.accessMode=='0'&&this.$route.params.type=='oracle'">
             <el-col :span="6">
-              <el-form-item label="XStream服务名:">
+              <el-form-item label="XStream服务名:" prop="xStreamServiceName">
                 <el-input v-model="ruleForm.xStreamServiceName" class="fl"></el-input>
               </el-form-item>
             </el-col>
-          </el-col> -->
+            <el-col :span="6" v-show="showflag">
+              <el-form-item label="用户名:" prop="userName">
+                <el-input v-model="ruleForm.userName" class="fl"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="6" v-show="showflag">
+              <el-form-item label="密码:" prop="password">
+                <el-input v-model="ruleForm.password" class="fl"></el-input>
+              </el-form-item>
+            </el-col>
+          </el-col>
           <el-col :span="24">
             <el-col :span="10" class="collbg" v-if="this.ruleForm.accessMode=='1'">
               <el-form-item label="增量字段:" prop="increment">
@@ -72,13 +82,13 @@
                 <incre-map :msg='innerVisible' :incid="pdata.id" :yid="yid" :alincre="this.increArr" @showIncre="showIncrement()" @saveIncre="saveIncrement($event)"></incre-map>
               </el-form-item>
             </el-col>
-            <el-col :span="6">
-              <el-form-item label="采集技术:" prop="actech">
-                <el-select v-model="ruleForm.actech" placeholder="请选择" disabled>
-                  <el-option label="JDBC" value="JDBC"></el-option>
-                </el-select>
-              </el-form-item>
-            </el-col>
+           <!--  <el-col :span="6">
+             <el-form-item label="采集技术:" prop="actech">
+               <el-select v-model="ruleForm.actech" placeholder="请选择" disabled>
+                 <el-option label="JDBC" value="JDBC"></el-option>
+               </el-select>
+             </el-form-item>
+           </el-col> -->
           </el-col>
           <el-col :span="24" v-show="ruleForm.accessMode=='1'||ruleForm.accessMode=='3'">
             <el-form-item label="周期设置:" prop="cycleSet">
@@ -300,9 +310,18 @@ import increMap from '@/views/mainLay/dialog/incre_map' //增量字段
 export default {
   name: "userSurvey",
   data: function() {
+    const _self = this;
+    const validateNull = (rule, value, callback) => {
+      if (value === "") {
+        callback(new Error("不能为空"));
+      } else {
+        callback();
+      }
+    };
     return {
       dialogVisible: false,
       innerVisible: false,
+      showflag:false,
       increArr: {},
       monthData: [],
       isdisable: false,
@@ -331,6 +350,8 @@ export default {
         jmin: '',
         jhour: '',
         xStreamServiceName: '',
+        userName:'',
+        password:'',
         dfmon: '', //定时执行月数
         dfmin: '',
         dsmin: '',
@@ -342,7 +363,26 @@ export default {
         accessPri: '1', //优先级
         taskSubMode: 'true' //提交方式
       },
-      formRules: {},
+      formRules: {
+        xStreamServiceName: [{
+          required: true,
+          message: '不能为空',
+          trigger: "blur",
+          validator: validateNull
+        }],
+        userName: [{
+          required: true,
+          message: '不能为空',
+          trigger: "blur",
+          validator: validateNull
+        }],
+        password: [{
+          required: true,
+          message: '不能为空',
+          trigger: "blur",
+          validator: validateNull
+        }]
+      },
       value2: new Date(2016, 9, 10, 18, 40)
     };
   },
@@ -611,12 +651,20 @@ export default {
       }
       var ctt = '';
       if (this.ruleForm.accessMode == "0") { //实时
-        /*if (this.$route.params.type == 'oracle') {
+        if (this.$route.params.type == 'oracle') {
           if (this.ruleForm.xStreamServiceName == '') {
             this.$message.warning('XStream服务名不能为空');
             return false;
           }
-        }*/
+          /* if (this.ruleForm.userName == '') {
+            this.$message.warning('用户名不能为空');
+            return false;
+          }
+           if (this.ruleForm.password == '') {
+            this.$message.warning('密码不能为空');
+            return false;
+          }*/
+        }
         ctt = '0';
         actech = this.$route.params.type;
       }
@@ -666,7 +714,9 @@ export default {
           "isStartOverTask": this.ruleForm.taskSubMode,
           "timeType": this.radio,
           "startLocation": this.ruleForm.startLocation,
-          /* "xStreamServiceName": this.ruleForm.xStreamServiceName*/
+          "xStreamServiceName": this.ruleForm.xStreamServiceName,
+          /*"xStreamUsername":this.ruleForm.userName,
+          "xStreamPassword":this.ruleForm.password*/
         }
         this.loading = true;
         if (JSON.stringify(this.$store.state.userList) == "{}") {
@@ -763,7 +813,9 @@ export default {
           "isStartOverTask": this.ruleForm.taskSubMode,
           "timeType": this.radio,
           "startLocation": this.ruleForm.startLocation,
-          /*"xStreamServiceName": this.ruleForm.xStreamServiceName*/
+          "xStreamServiceName": this.ruleForm.xStreamServiceName,
+          /* "xStreamUsername":this.ruleForm.userName,
+          "xStreamPassword":this.ruleForm.password*/
         }
         this.loading = true;
         if (JSON.stringify(this.$store.state.userList) == "{}") {
@@ -948,7 +1000,9 @@ export default {
 
             this.taskInfoId = data.task_info_id;
             this.isregin = true;
-            /* this.ruleForm.xStreamServiceName = res.xStreamServiceName;*/
+            this.ruleForm.xStreamServiceName = res.xStreamServiceName;
+            /*this.ruleForm.userName = res.xStreamUsername;
+            this.ruleForm.password = res.xStreamPassword;*/
           }
 
         } else {

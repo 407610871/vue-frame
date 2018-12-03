@@ -6,6 +6,12 @@
       </div>
       <nav-menu />
       <div class="right-menu">
+        
+        <!--  <el-button class="document" type="primary" icon="enc-icon-documents"></el-button> -->
+        <el-tooltip class="item" effect="light" content="系统设置" placement="bottom">
+          <el-button class="setting" type="primary" icon="enc-icon-setting" v-on:click="goRoute('setting')"></el-button>
+        </el-tooltip>
+        <release></release>
         <el-popover placement="bottom-start" width="200" trigger="hover">
           <ul class="popup-menu warn-menu">
             <li><a href="javascript:void(0)" v-on:click="goRoute('recyclingBins')">回收箱</a></li>
@@ -15,11 +21,6 @@
           </ul>
           <el-button slot="reference" class="user" type="primary" icon="enc-icon-user"></el-button>
         </el-popover>
-        <!--  <el-button class="document" type="primary" icon="enc-icon-documents"></el-button> -->
-        <el-tooltip class="item" effect="light" content="系统设置" placement="bottom">
-          <el-button class="setting" type="primary" icon="enc-icon-setting" v-on:click="goRoute('setting')"></el-button>
-        </el-tooltip>
-        <release></release>
       </div>
     </el-header>
     <el-container>

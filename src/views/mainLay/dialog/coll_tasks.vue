@@ -55,13 +55,13 @@
                 <incre-map :msg='innerVisible' :incid="this.rowList[0].id" :alincre="this.increArr" @showIncre="showIncrement()" @saveIncre="saveIncrement($event)"></incre-map>
               </el-form-item>
             </el-col>
-            <el-col :span="6">
+            <!-- <el-col :span="6">
               <el-form-item label="采集技术:" prop="actech">
                 <el-select v-model="ruleForm.actech" placeholder="请选择" disabled>
                   <el-option label="JDBC" value="JDBC"></el-option>
                 </el-select>
               </el-form-item>
-            </el-col>
+            </el-col> -->
           </el-col>
           <el-col :span="24" v-show="ruleForm.accessMode=='1'||ruleForm.accessMode=='3'">
             <el-form-item label="周期设置:" prop="cycleSet">
