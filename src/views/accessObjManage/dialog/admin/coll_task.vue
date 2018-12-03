@@ -57,15 +57,15 @@
               <span class="ml25 tasktips">tips:仅支持以下三种类型:(自增变量(整型),自增时间戳(long型),自增时间戳(字符型,varchar))</span>
             </el-col>
           </el-col>
-          <el-col :span="24" v-show="ruleForm.accessMode=='0'&&this.$route.params.type=='oracle'">
+          <!-- <el-col :span="24" v-show="ruleForm.accessMode=='0'&&this.$route.params.type=='oracle'">
             <el-col :span="6">
               <el-form-item label="XStream服务名:">
                 <el-input v-model="ruleForm.xStreamServiceName" class="fl"></el-input>
               </el-form-item>
             </el-col>
-          </el-col>
+          </el-col> -->
           <el-col :span="24">
-            <el-col :span="10" class="collbg">
+            <el-col :span="10" class="collbg" v-if="this.ruleForm.accessMode=='1'">
               <el-form-item label="增量字段:" prop="increment">
                 <el-input v-model="ruleForm.increment" class="fl"></el-input>
                 <el-button type="primary" class="fl increbtn" @click="innerVisible = true">选择</el-button>
@@ -608,12 +608,12 @@ export default {
       }
       var ctt = '';
       if (this.ruleForm.accessMode == "0") { //实时
-        if (this.$route.params.type == 'oracle') {
+        /*if (this.$route.params.type == 'oracle') {
           if (this.ruleForm.xStreamServiceName == '') {
             this.$message.warning('XStream服务名不能为空');
             return false;
           }
-        }
+        }*/
         ctt = '0';
         actech = this.$route.params.type;
       }
@@ -663,7 +663,7 @@ export default {
           "isStartOverTask": this.ruleForm.taskSubMode,
           "timeType": this.radio,
           "startLocation": this.ruleForm.startLocation,
-          "xStreamServiceName": this.ruleForm.xStreamServiceName
+         /* "xStreamServiceName": this.ruleForm.xStreamServiceName*/
         }
         this.loading = true;
         if (JSON.stringify(this.$store.state.userList) == "{}") {
@@ -760,7 +760,7 @@ export default {
           "isStartOverTask": this.ruleForm.taskSubMode,
           "timeType": this.radio,
           "startLocation": this.ruleForm.startLocation,
-          "xStreamServiceName": this.ruleForm.xStreamServiceName
+          /*"xStreamServiceName": this.ruleForm.xStreamServiceName*/
         }
         this.loading = true;
         if (JSON.stringify(this.$store.state.userList) == "{}") {
@@ -945,7 +945,7 @@ export default {
 
             this.taskInfoId = data.task_info_id;
             this.isregin = true;
-            this.ruleForm.xStreamServiceName = res.xStreamServiceName;
+           /* this.ruleForm.xStreamServiceName = res.xStreamServiceName;*/
           }
 
         } else {
