@@ -325,6 +325,7 @@ export default {
     this.$root.eventHub.$emit("setActiveNav", 1);
     this.storeReady();
     this.setFliter();
+    this.isParquet();
   },
   created() {
     // this.$root.eventHub.$on('search', (keyword) => {
@@ -338,6 +339,25 @@ export default {
 
   },
   methods: {
+    //判断hdfs
+    isParquet(){
+     let _self = this;
+      _self
+        .$ajax({
+          methods: "get",
+          url: this.GLOBAL.api.API_DACM + "/task/getHdfsFormat",
+          params: {}
+        })
+        .then(res => {
+          if(res.data.hdfsFormat=='parquet'){
+            _self.$store.state.commit('setParquet',true);
+          }
+          else if(res.data.hdfsFormat=='json'){
+            _self.$store.state.commit('setParquet',false);
+          }
+          console.log(_self.$store.state.isParquet);
+        })
+    },
     moreHeight(data) {
       this.moreData = data;
     },
