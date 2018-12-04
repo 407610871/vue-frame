@@ -300,7 +300,7 @@ export default {
     vertical-align: top;
   }
 }
-.retable .el-table .cell:nth-child(1){
+.retable .el-table td:nth-child(1) .cell{
   text-align: center;
 }
 .retable .el-table .cell{
