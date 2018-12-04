@@ -82,7 +82,7 @@
                 <incre-map :msg='innerVisible' :incid="pdata.id" :yid="yid" :alincre="this.increArr" @showIncre="showIncrement()" @saveIncre="saveIncrement($event)"></incre-map>
               </el-form-item>
             </el-col>
-           <!--  <el-col :span="6">
+            <!--  <el-col :span="6">
              <el-form-item label="采集技术:" prop="actech">
                <el-select v-model="ruleForm.actech" placeholder="请选择" disabled>
                  <el-option label="JDBC" value="JDBC"></el-option>
@@ -176,7 +176,7 @@
                         <el-col :span="4">
                           <el-form-item>
                             <el-select v-model="ruleForm.dfhour" placeholder="请选择">
-                              <el-option v-for="item in hourData" :key="item" :label="item" :value="item" :disabled="item=='0'">
+                              <el-option v-for="item in hourData" :key="item" :label="item" :value="item">
                               </el-option>
                             </el-select>
                           </el-form-item>
@@ -227,7 +227,7 @@
                         <el-col :span="4">
                           <el-form-item>
                             <el-select v-model="ruleForm.dshour" placeholder="请选择">
-                              <el-option v-for="item in hourData" :key="item" :disabled="item=='0'" :label="item" :value="item">
+                              <el-option v-for="item in hourData" :key="item" :label="item" :value="item">
                               </el-option>
                             </el-select>
                           </el-form-item>
@@ -265,7 +265,7 @@
                         <el-col :span="4">
                           <el-form-item>
                             <el-select v-model="ruleForm.dthour" placeholder="请选择">
-                              <el-option v-for="item in hourData" :key="item" :disabled="item=='0'" :label="item" :value="item">
+                              <el-option v-for="item in hourData" :key="item" :label="item" :value="item">
                               </el-option>
                             </el-select>
                           </el-form-item>
@@ -321,7 +321,7 @@ export default {
     return {
       dialogVisible: false,
       innerVisible: false,
-      showflag:false,
+      showflag: false,
       increArr: {},
       monthData: [],
       isdisable: false,
@@ -350,8 +350,8 @@ export default {
         jmin: '',
         jhour: '',
         xStreamServiceName: '',
-        userName:'',
-        password:'',
+        userName: '',
+        password: '',
         dfmon: '', //定时执行月数
         dfmin: '',
         dsmin: '',
@@ -381,6 +381,10 @@ export default {
           message: '不能为空',
           trigger: "blur",
           validator: validateNull
+        }],
+        increment: [{
+          required: true,
+          message: '请选择增量字段',
         }]
       },
       value2: new Date(2016, 9, 10, 18, 40)
@@ -388,8 +392,8 @@ export default {
   },
   methods: {
     //清空非选中项
-    cleanData() {
-      if (this.ruleForm.cycleSet == '0') {
+    cleanData(val) {
+      if (val == '0') {
         this.ruleForm.dfmon = "";
         this.ruleForm.dfhour = "";
         this.ruleForm.dfmin = "";
@@ -398,30 +402,37 @@ export default {
         this.ruleForm.dsmin = "";
         this.ruleForm.dthour = "";
         this.ruleForm.dtmin = "";
-      } else if (this.ruleForm.cycleSet == '1') {
+      }
+      if (val == '2') {
         this.ruleForm.jday = "";
-        this.ruleForm.jhour = "";
         this.ruleForm.jmin = "";
-        if (this.radio == "2") {
-          this.ruleForm.dsweek = "";
-          this.ruleForm.dshour = "";
-          this.ruleForm.dsmin = "";
-          this.ruleForm.dthour = "";
-          this.ruleForm.dtmin = "";
-        } else if (this.radio == "3") {
-          this.ruleForm.dfmon = "";
-          this.ruleForm.dfhour = "";
-          this.ruleForm.dfmin = "";
-          this.ruleForm.dthour = "";
-          this.ruleForm.dtmin = "";
-        } else if (this.radio == "4") {
-          this.ruleForm.dfmon = "";
-          this.ruleForm.dfhour = "";
-          this.ruleForm.dfmin = "";
-          this.ruleForm.dsweek = "";
-          this.ruleForm.dshour = "";
-          this.ruleForm.dsmin = "";
-        }
+        this.ruleForm.jhour = "";
+        this.ruleForm.dsweek = "";
+        this.ruleForm.dshour = "";
+        this.ruleForm.dsmin = "";
+        this.ruleForm.dthour = "";
+        this.ruleForm.dtmin = "";
+      }
+      if (val == '3') {
+        this.ruleForm.jday = "";
+        this.ruleForm.jmin = "";
+        this.ruleForm.jhour = "";
+        this.ruleForm.dfmon = "";
+        this.ruleForm.dfhour = "";
+        this.ruleForm.dfmin = "";
+        this.ruleForm.dthour = "";
+        this.ruleForm.dtmin = "";
+      }
+      if (val == '4') {
+        this.ruleForm.jday = "";
+        this.ruleForm.jmin = "";
+        this.ruleForm.jhour = "";
+        this.ruleForm.dfmon = "";
+        this.ruleForm.dfhour = "";
+        this.ruleForm.dfmin = "";
+        this.ruleForm.dsweek = "";
+        this.ruleForm.dshour = "";
+        this.ruleForm.dsmin = "";
       }
     },
     //关闭对话框
@@ -571,13 +582,13 @@ export default {
             return false;
           }
         }
-        if (this.ruleForm.jday != '' && this.ruleForm.jday != undefined) {
+        if (this.ruleForm.jday !== '' && this.ruleForm.jday !== undefined) {
           jday = this.ruleForm.jday;
         }
-        if (this.ruleForm.jhour != '' && this.ruleForm.jhour != undefined) {
+        if (this.ruleForm.jhour !== '' && this.ruleForm.jhour !== undefined) {
           jhour = this.ruleForm.jhour;
         }
-        if (this.ruleForm.jmin != '' && this.ruleForm.jmin != undefined) {
+        if (this.ruleForm.jmin !== '' && this.ruleForm.jmin !== undefined) {
           jmin = this.ruleForm.jmin;
         }
         var pollIntervalMs = this.formateTime(parseInt(jday), parseInt(jhour), parseInt(jmin));
@@ -592,17 +603,17 @@ export default {
           let dfmin;
           let dfhour;
           let dfmon;
-          if (this.ruleForm.dfmin === '' || this.ruleForm.dfhour == '' || this.ruleForm.dfmon == '' || this.ruleForm.dfmon == undefined) {
+          if (this.ruleForm.dfmin === '' || this.ruleForm.dfhour === '' || this.ruleForm.dfmon == '' || this.ruleForm.dfmon == undefined) {
             this.$message.warning('请将定时执行时间填写完整');
             return false;
           }
-          if (this.ruleForm.dfmin != '' && this.ruleForm.dfmin != undefined) {
+          if (this.ruleForm.dfmin !== '' && this.ruleForm.dfmin != undefined) {
             dfmin = this.ruleForm.dfmin;
           }
-          if (this.ruleForm.dfhour != '' && this.ruleForm.dfhour != undefined) {
+          if (this.ruleForm.dfhour !== '' && this.ruleForm.dfhour != undefined) {
             dfhour = this.ruleForm.dfhour;
           }
-          if (this.ruleForm.dfmon != '' && this.ruleForm.dfmon != undefined) {
+          if (this.ruleForm.dfmon !== '' && this.ruleForm.dfmon != undefined) {
             dfmon = this.ruleForm.dfmon;
           }
           var pollIntervalMs = `0 ${dfmin} ${dfhour} ${dfmon} * ?`;
@@ -613,17 +624,17 @@ export default {
           let dsmin = 0;
           let dshour;
           let dsweek;
-          if (this.ruleForm.dsmin === '' || this.ruleForm.dshour == '' || this.ruleForm.dsweek == '' || this.ruleForm.dsweek == undefined) {
+          if (this.ruleForm.dsmin === '' || this.ruleForm.dshour === '' || this.ruleForm.dsweek == '' || this.ruleForm.dsweek == undefined) {
             this.$message.warning('请将定时执行时间填写完整');
             return false;
           }
-          if (this.ruleForm.dsmin != '' && this.ruleForm.dsmin != undefined) {
+          if (this.ruleForm.dsmin !== '' && this.ruleForm.dsmin != undefined) {
             dsmin = this.ruleForm.dsmin;
           }
-          if (this.ruleForm.dshour != '' && this.ruleForm.dshour != undefined) {
+          if (this.ruleForm.dshour !== '' && this.ruleForm.dshour != undefined) {
             dshour = this.ruleForm.dshour;
           }
-          if (this.ruleForm.dsweek != '' && this.ruleForm.dsweek != undefined) {
+          if (this.ruleForm.dsweek !== '' && this.ruleForm.dsweek != undefined) {
 
             dsweek = this.weekTrans(this.ruleForm.dsweek);
           }
@@ -634,14 +645,14 @@ export default {
           //第三队列
           let dtmin = 0;
           let dthour;
-          if (this.ruleForm.dtmin === '' || this.ruleForm.dthour == '') {
+          if (this.ruleForm.dtmin === '' || this.ruleForm.dthour === '') {
             this.$message.warning('请将定时执行时间填写完整');
             return false;
           }
-          if (this.ruleForm.dtmin != '' && this.ruleForm.dtmin != undefined) {
+          if (this.ruleForm.dtmin !== '' && this.ruleForm.dtmin != undefined) {
             dtmin = this.ruleForm.dtmin;
           }
-          if (this.ruleForm.dthour != '' && this.ruleForm.dthour != undefined) {
+          if (this.ruleForm.dthour !== '' && this.ruleForm.dthour != undefined) {
             dthour = this.ruleForm.dthour;
           }
 
@@ -656,11 +667,11 @@ export default {
             this.$message.warning('XStream服务名不能为空');
             return false;
           }
-           if (this.ruleForm.userName == '') {
+          if (this.ruleForm.userName == '') {
             this.$message.warning('用户名不能为空');
             return false;
           }
-           if (this.ruleForm.password == '') {
+          if (this.ruleForm.password == '') {
             this.$message.warning('密码不能为空');
             return false;
           }
@@ -715,8 +726,8 @@ export default {
           "timeType": this.radio,
           "startLocation": this.ruleForm.startLocation,
           "xStreamServiceName": this.ruleForm.xStreamServiceName,
-          "xStreamUsername":this.ruleForm.userName,
-          "xStreamPassword":this.ruleForm.password
+          "xStreamUsername": this.ruleForm.userName,
+          "xStreamPassword": this.ruleForm.password
         }
         this.loading = true;
         if (JSON.stringify(this.$store.state.userList) == "{}") {
@@ -814,8 +825,8 @@ export default {
           "timeType": this.radio,
           "startLocation": this.ruleForm.startLocation,
           "xStreamServiceName": this.ruleForm.xStreamServiceName,
-           "xStreamUsername":this.ruleForm.userName,
-          "xStreamPassword":this.ruleForm.password
+          "xStreamUsername": this.ruleForm.userName,
+          "xStreamPassword": this.ruleForm.password
         }
         this.loading = true;
         if (JSON.stringify(this.$store.state.userList) == "{}") {
@@ -973,6 +984,7 @@ export default {
             }
             if (this.ruleForm.cycleSet == "0") {
               this.formatDuring(data.interval_ms);
+              this.cleanData('0');
             }
             if (this.ruleForm.cycleSet == "1" && data.timeType == "2") {
               this.radio = '2';
@@ -980,6 +992,7 @@ export default {
               this.ruleForm.dfmin = pollMs[1];
               this.ruleForm.dfhour = pollMs[2];
               this.ruleForm.dfmon = pollMs[3];
+               this.cleanData('2');
             }
             if (this.ruleForm.cycleSet == '1' && data.timeType == '3') {
               this.radio = '3';
@@ -987,12 +1000,14 @@ export default {
               this.ruleForm.dsmin = pollMs[1];
               this.ruleForm.dshour = pollMs[2];
               this.ruleForm.dsweek = this.Unweek(pollMs[5]);
+               this.cleanData('3');
             }
             if (this.ruleForm.cycleSet == '1' && data.timeType == '4') {
               this.radio = '4';
               let pollMs = data.interval_ms.split(' ');
               this.ruleForm.dtmin = pollMs[1];
               this.ruleForm.dthour = pollMs[2];
+               this.cleanData('4');
             }
 
 

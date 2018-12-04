@@ -149,7 +149,7 @@
                         <el-col :span="4">
                           <el-form-item>
                             <el-select v-model="ruleForm.dfhour" placeholder="请选择">
-                              <el-option v-for="item in hourData" :key="item" :disabled="item=='0'" :label="item" :value="item">
+                              <el-option v-for="item in hourData" :key="item"  :label="item" :value="item">
                               </el-option>
                             </el-select>
                           </el-form-item>
@@ -200,7 +200,7 @@
                         <el-col :span="4">
                           <el-form-item>
                             <el-select v-model="ruleForm.dshour" placeholder="请选择">
-                              <el-option v-for="item in hourData" :key="item" :disabled="item=='0'" :label="item" :value="item">
+                              <el-option v-for="item in hourData" :key="item"  :label="item" :value="item">
                               </el-option>
                             </el-select>
                           </el-form-item>
@@ -238,7 +238,7 @@
                         <el-col :span="4">
                           <el-form-item>
                             <el-select v-model="ruleForm.dthour" placeholder="请选择">
-                              <el-option v-for="item in hourData" :key="item" :label="item" :disabled="item=='0'" :value="item">
+                              <el-option v-for="item in hourData" :key="item" :label="item"  :value="item">
                               </el-option>
                             </el-select>
                           </el-form-item>
@@ -317,7 +317,12 @@ export default {
         accessPri: '1', //优先级
         taskSubMode: 'true' //提交方式
       },
-      formRules: {},
+      formRules: {
+         increment:[{
+          required: true,
+          message: '请选择增量字段',
+        }]
+      },
       value2: new Date(2016, 9, 10, 18, 40)
     };
   },
@@ -439,13 +444,13 @@ export default {
             return false;
           }
         }
-        if (this.ruleForm.jday != '' && this.ruleForm.jday != undefined) {
+        if (this.ruleForm.jday !== '' && this.ruleForm.jday != undefined) {
           jday = this.ruleForm.jday;
         }
-        if (this.ruleForm.jhour != '' && this.ruleForm.jhour != undefined) {
+        if (this.ruleForm.jhour !== '' && this.ruleForm.jhour != undefined) {
           jhour = this.ruleForm.jhour;
         }
-        if (this.ruleForm.jmin != '' && this.ruleForm.jmin != undefined) {
+        if (this.ruleForm.jmin !== '' && this.ruleForm.jmin != undefined) {
           jmin = this.ruleForm.jmin;
         }
         var pollIntervalMs = this.formateTime(parseInt(jday), parseInt(jhour), parseInt(jmin));
@@ -461,17 +466,17 @@ export default {
           let dfmin;
           let dfhour;
           let dfmon;
-          if (this.ruleForm.dfmin === '' || this.ruleForm.dfhour == '' || this.ruleForm.dfmon == '' || this.ruleForm.dfmon == undefined) {
+          if (this.ruleForm.dfmin === '' || this.ruleForm.dfhour === '' || this.ruleForm.dfmon == '' || this.ruleForm.dfmon == undefined) {
             this.$message.warning('请将定时执行时间填写完整');
             return false;
           }
-          if (this.ruleForm.dfmin != '' && this.ruleForm.dfmin != undefined) {
+          if (this.ruleForm.dfmin !== '' && this.ruleForm.dfmin != undefined) {
             dfmin = this.ruleForm.dfmin;
           }
-          if (this.ruleForm.dfhour != '' && this.ruleForm.dfhour != undefined) {
+          if (this.ruleForm.dfhour !== '' && this.ruleForm.dfhour != undefined) {
             dfhour = this.ruleForm.dfhour;
           }
-          if (this.ruleForm.dfmon != '' && this.ruleForm.dfmon != undefined) {
+          if (this.ruleForm.dfmon !== '' && this.ruleForm.dfmon != undefined) {
             dfmon = this.ruleForm.dfmon;
           }
           var pollIntervalMs = `0 ${dfmin} ${dfhour} ${dfmon} * ?`;
@@ -482,17 +487,17 @@ export default {
           let dsmin;
           let dshour;
           let dsweek;
-           if (this.ruleForm.dsmin === '' || this.ruleForm.dshour == '' || this.ruleForm.dsweek == '' || this.ruleForm.dsweek == undefined) {
+           if (this.ruleForm.dsmin === '' || this.ruleForm.dshour === '' || this.ruleForm.dsweek == '' || this.ruleForm.dsweek == undefined) {
             this.$message.warning('请将定时执行时间填写完整');
             return false;
           }
-          if (this.ruleForm.dsmin != '' && this.ruleForm.dsmin != undefined) {
+          if (this.ruleForm.dsmin !== '' && this.ruleForm.dsmin != undefined) {
             dsmin = this.ruleForm.dsmin;
           }
-          if (this.ruleForm.dshour != '' && this.ruleForm.dshour != undefined) {
+          if (this.ruleForm.dshour !== '' && this.ruleForm.dshour != undefined) {
             dshour = this.ruleForm.dshour;
           }
-          if (this.ruleForm.dsweek != '' && this.ruleForm.dsweek != undefined) {
+          if (this.ruleForm.dsweek !== '' && this.ruleForm.dsweek != undefined) {
             dsweek = this.weekTrans(this.ruleForm.dsweek);
           }
           var pollIntervalMs = `0 ${dsmin} ${dshour} ? * ${dsweek}`;
@@ -502,14 +507,14 @@ export default {
           //第三队列
           let dtmin;
           let dthour;
-          if (this.ruleForm.dtmin === '' || this.ruleForm.dthour == '') {
+          if (this.ruleForm.dtmin === '' || this.ruleForm.dthour === '') {
             this.$message.warning('请将定时执行时间填写完整');
             return false;
           }
-          if (this.ruleForm.dtmin != '' && this.ruleForm.dtmin != undefined) {
+          if (this.ruleForm.dtmin !== '' && this.ruleForm.dtmin != undefined) {
             dtmin = this.ruleForm.dtmin;
           }
-          if (this.ruleForm.dthour != '' && this.ruleForm.dthour != undefined) {
+          if (this.ruleForm.dthour !== '' && this.ruleForm.dthour != undefined) {
             dthour = this.ruleForm.dthour;
           }
 
