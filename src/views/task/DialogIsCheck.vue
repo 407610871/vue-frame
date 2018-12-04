@@ -106,7 +106,11 @@
               <span v-if="scope.row.config_key == '1'">时间范围</span>
             </template>
           </el-table-column>
-          <el-table-column prop="config_range" label="核验误差">
+          <el-table-column  label="核验误差">
+              <template slot-scope="scope">
+                <span v-if="scope.row.config_range == '0.0'">{{scope.row.config_range}}</span>
+                <span v-else>{{scope.row.config_range}}</span>%
+              </template>
           </el-table-column>
           <el-table-column label="核验结果">
             <template slot-scope="scope">
