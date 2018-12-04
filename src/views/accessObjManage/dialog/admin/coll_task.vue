@@ -1015,9 +1015,9 @@ export default {
 
             this.taskInfoId = data.task_info_id;
             this.isregin = true;
-            this.ruleForm.xStreamServiceName = res.xStreamServiceName;
-            this.ruleForm.userName = res.xStreamUsername;
-            this.ruleForm.password = res.xStreamPassword;
+            this.ruleForm.xStreamServiceName = data.xStreamServiceName;
+            this.ruleForm.userName = data.xStreamUsername;
+            this.ruleForm.password = data.xStreamPassword;
           }
 
         } else {
