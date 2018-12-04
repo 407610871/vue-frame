@@ -205,8 +205,8 @@
               <el-col :span="2" class="bank" v-if="ruleForm.syskind=='10002'">bank</el-col>
               <el-col :span="10" class="uncol">
                 <span class="fl" v-show="this.ruleForm.author=='true'&&(ruleForm.syskind=='10002')">*</span>
-                <el-form-item class="fl unrequired" label="模式名/架构/Schema:" prop="username" v-if="ruleForm.syskind=='10002'">
-                  <el-input v-model="ruleForm.username" disabled></el-input>
+                <el-form-item class="fl unrequired" label="模式名/架构/Schema:" prop="model" v-if="ruleForm.syskind=='10002'">
+                  <el-input v-model="ruleForm.model"></el-input>
                 </el-form-item>
               </el-col>
               <!--  <el-col :span="10">
@@ -789,7 +789,7 @@ export default {
                 },
                 {
                   key: "model",
-                  value: _self.ruleForm.username
+                  value: _self.ruleForm.model
                 },
                 {
                   key: "linkman",
@@ -1003,7 +1003,7 @@ export default {
                   },
                   {
                     key: "model",
-                    value: _self.ruleForm.username
+                    value: _self.ruleForm.model
                   },
                   {
                     key: "linkman",
@@ -1168,7 +1168,7 @@ export default {
                 },
                 {
                   key: "model",
-                  value: _self.ruleForm.username
+                  value: _self.ruleForm.model
                 },
                 {
                   key: "linkman",
@@ -1249,7 +1249,7 @@ export default {
             ip: this.ruleForm.ipname,
             port: this.ruleForm.iport,
             instanceName: this.ruleForm.instanceName,
-            model: this.ruleForm.username,
+            model: this.ruleForm.model,
             username: this.ruleForm.username,
             password: this.ruleForm.password,
             url: this.ruleForm.url,
