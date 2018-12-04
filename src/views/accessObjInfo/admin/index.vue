@@ -42,8 +42,8 @@
               </el-table-column>
               <el-table-column prop="isNull" label="是否为空" min-width="160">
                 <template slot-scope="scope">
-                  <span v-if="scope.row.isNull!='NO'">是</span>
-                  <span v-if="scope.row.isNull=='NO'">否</span>
+                  <span v-if="scope.row.isNull!='N'">是</span>
+                  <span v-if="scope.row.isNull=='N'">否</span>
                 </template>
               </el-table-column>
               <el-table-column label="是否为主键" min-width="160">
