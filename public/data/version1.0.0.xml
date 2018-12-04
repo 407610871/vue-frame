@@ -43,7 +43,7 @@
 			<Introduction>原有功能集成</Introduction>
 			<content>Kettle任务管控 - 对已有kettle任务进行集中管理</content>
 			<sysName>数据汇聚</sysName>
-			<remark>在数据运维中查看</remark>
+			<remark></remark>
 		</item>
 	</specialityList>
 	<changeList>

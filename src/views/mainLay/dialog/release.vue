@@ -306,4 +306,7 @@ export default {
 .retable .el-table .cell{
   text-align: left
 }
+.retable .el-table th>.cell{
+  text-align: center
+}
 </style>
