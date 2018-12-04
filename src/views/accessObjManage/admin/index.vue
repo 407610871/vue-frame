@@ -355,7 +355,7 @@ export default {
           else if(res.data.hdfsFormat=='json'){
             _self.$store.state.commit('setParquet',false);
           }
-          console.log(_self.$store.state.isParquet);
+          //console.log(_self.$store.state.isParquet);
         })
     },
     moreHeight(data) {
