@@ -108,8 +108,7 @@
           </el-table-column>
           <el-table-column  label="核验误差">
               <template slot-scope="scope">
-                <span v-if="scope.row.config_range == '0.0'">{{scope.row.config_range}}</span>
-                <span v-else>{{scope.row.config_range}}</span>%
+                <span>{{scope.row.config_range | percentFormat}}</span>
               </template>
           </el-table-column>
           <el-table-column label="核验结果">
@@ -406,6 +405,15 @@ export default {
       })
       /*window.location.href = `${this.GLOBAL.api.API_DACM}/ccheckData/downloadCheckDataById?id=${item.id}&browser=${browser}&accessName=${this.$route.params.sourceName}`*/
     }
+  },
+  filters:{
+    percentFormat(val){
+      if(val == 0){
+        return 0;
+      }else{
+        return val+'%';
+      }
+    },
   },
   components: {}
 };
