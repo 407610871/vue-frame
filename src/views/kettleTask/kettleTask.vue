@@ -57,7 +57,7 @@
             </el-form-item>
         </el-form>
     </div>
-    <el-table :data="tableData" :height="tableHeight" class="table-data-list">
+    <el-table :data="tableData" :height="tableHeight" stripe class="table-data-list">
         <el-table-column label="序号" type="index" width="100"></el-table-column>
         <el-table-column label="任务名称" prop="taskName" :show-overflow-tooltip='true' min-width="95"></el-table-column>
         <el-table-column label="任务类型"  prop="taskType" min-width="95"></el-table-column>

@@ -98,8 +98,8 @@
     </div>
 
     <!-- 表格数据 -->
-    <div class="mainTable zcTable">
-      <el-table ref="multipleTable" :data="tableData" tooltip-effect="dark" :height="tableHeight" style="width: 100%;min-height:300px;" @select-all="selectAll" @select="select" @selection-change="handleSelectionChange">
+    <div class="mainTable">
+      <el-table ref="multipleTable" :data="tableData" tooltip-effect="light" :height="tableHeight" style="width: 100%;min-height:300px;" @select-all="selectAll" @select="select" @selection-change="handleSelectionChange">
         <el-table-column fixed type="selection" width="55"></el-table-column>
         <el-table-column fixed label="接入指示" width="100">
           <template slot-scope="scope">
@@ -956,6 +956,16 @@ if(row1.length==0){
 }
 .zcTable .el-table__body-wrapper {
   background-color: #fff;
+}
+.el-table__body tbody tr:nth-child(2n){
+  background-color: #e6e8ed;
+}
+.el-table__body tbody tr:nth-child(2n+1){
+  background-color: #eff3f6;
+}
+.el-table__body tr.hover-row>td{
+  background-color: #95a1b3 !important;
+  color:#fff;
 }
 .el-message-box{
   max-height: 50%;
