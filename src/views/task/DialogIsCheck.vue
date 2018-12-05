@@ -54,7 +54,7 @@
             <ul>
               <li>目标库</li>
               <li>目标表：</li>
-              <li>平台数据量：</li>
+              <li>目标数据量：</li>
             </ul>
             <ul>
               <li :title="resData.target_library">{{resData.target_library||"无"}}</li>
