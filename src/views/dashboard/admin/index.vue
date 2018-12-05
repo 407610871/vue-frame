@@ -20,7 +20,7 @@
                 <dataCount v-bind:dataObj="count2Data" class="countData" />
             </div>
         </div>
-        <el-main style="padding-bottom:0;">
+        <el-main style="padding-bottom:0;" class="overhidden">
             <router-view />
             <el-table :data="mainTableData" stripe :height="tableHeight" border style="width: 100%;min-height:300px;" tooltip-effect="light">
                 <el-table-column label="接入源名称" width="250" show-overflow-tooltip>
@@ -580,5 +580,8 @@ export default {
   width: 70px;
   text-align: left;
   margin: 0 auto;
+}
+.overhidden{
+  overflow: hidden;
 }
 </style>
