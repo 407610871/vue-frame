@@ -74,7 +74,7 @@
               <ul>
                 <li>目标库</li>
                 <li>目标表：</li>
-                <li>平台数据量：</li>
+                <li>目标表数据量：</li>
               </ul>
             </el-col>
             <el-col :span="14">
