@@ -20,10 +20,10 @@
       <el-col :span="20" class="release-box">
         <div class="proInfo-box release-Info bornone clearfix">
           <ul class="directory">
-            <li><a href="#txqd">特性清单</a></li>
-            <li><a href="#zdbglb">重大变更列表</a></li>
-            <li><a href="#wtjjqd">解决问题清单</a></li>
-            <li><a href="#yzwthxz">已知问题和限制</a></li>
+            <li><a href="javascript:void(0)" @click="goAnchor('txqd')">特性清单</a></li>
+            <li><a href="javascript:void(0)" @click="goAnchor('zdbglb')">重大变更列表</a></li>
+            <li><a href="javascript:void(0)" @click="goAnchor('wtjjqd')">解决问题清单</a></li>
+            <li><a href="javascript:void(0)" @click="goAnchor('yzwthxz')">已知问题和限制</a></li>
           </ul>
           <div class="daiInfo-title proInfo-title" id="txqd">
             <h2>特性清单</h2>
@@ -120,6 +120,10 @@ export default {
         this._getVersion(tab.label);
       }
       
+    },
+     //版本信息滚动
+    goAnchor(selector) {
+       document.getElementById(selector).scrollIntoView();
     },
     //滚动
     godToId(ID) {
