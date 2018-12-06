@@ -41,7 +41,7 @@
           </el-col>
           <el-col :span="24">
             <el-form-item label="任务提交方式:" prop="taskSubMode">
-              <el-radio-group v-model="ruleForm.taskSubMode">
+              <el-radio-group v-model="ruleForm.taskSubMode" :disabled="taskStatus">
                 <el-radio label="true">自动提交</el-radio>
                 <el-radio label="false">手工提交</el-radio>
               </el-radio-group>
@@ -331,6 +331,7 @@ export default {
       treeData: [],
       editfalg: false,
       isregin: false,
+      taskStatus:false,
       appId: '',
 
       taskInfoId: '',
@@ -956,6 +957,14 @@ export default {
             this.isdisable = true;
             this.ruleForm.increment = data.incrementColumn;
             this.increArr = {};
+            if(data.taskStatus=='0'){
+              this.ruleForm.taskSubMode="false";
+              this.taskStatus=false;
+            }
+            else{
+              this.ruleForm.taskSubMode = 'true';
+              this.taskStatus = true;
+            }
             this.increArr.id = data.incrementColumnId;
             this.increArr.name = data.incrementColumn;
             this.increArr.datatype = data.incrementColumnDataType;
