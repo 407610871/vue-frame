@@ -316,7 +316,7 @@ export default {
 
         }
       }).then(res => {
-        this.loading = false;
+        //this.loading = false;
         //得到Industry
         this.sIndustry = res.data.data.staticDatas.INDUSTRY;
         this.ruleForm.industry = this.sIndustry[0].sTATIC_CODE;
@@ -361,7 +361,7 @@ export default {
         }
 
       }).then(res => {
-        _self.loading = false;
+        //_self.loading = false;
         if (res.data.success) {
 
           _self.ruleForm.industry = res.data.data.iNDUSTRY_CATEGORY;
@@ -414,6 +414,7 @@ export default {
         }
 
       }).then(res => {
+        this.loading = false;
         if (flag == 'pro') {
           this.proArr = res.data.data;
         }
