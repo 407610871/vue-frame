@@ -336,12 +336,12 @@
                   });
                 }
               } else {
-                _self.$alert('上传错误', {
+                _self.$alert('元数据模版不正确，建议先导出元数据模版', {
                   confirmButtonText: '确定'
                 });
               }
             } else {
-              _self.$alert('上传错误', {
+              _self.$alert('元数据模版不正确，建议先导出元数据模版', {
                 confirmButtonText: '确定'
               });
               console.log(res);
