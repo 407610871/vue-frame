@@ -1,13 +1,6 @@
 <template>
   <div class="nav-menu owntmenu">
-    <el-menu
-      :default-active="activeIndex"
-      class="enc-nav-menu"
-      mode="horizontal"
-      @select="handleSelect"
-      text-color="#425365"
-      active-text-color="#499bd7"
-    >
+    <el-menu :default-active="activeIndex" class="enc-nav-menu" mode="horizontal" @select="handleSelect" text-color="#425365" active-text-color="#499bd7">
       <el-menu-item index="1">
         <i class="enc-icon-shujujieru"></i>数据接入
       </el-menu-item>
@@ -91,6 +84,7 @@ export default {
     }
   }
 };
+
 </script>
 <style rel="stylesheet/scss" lang="scss" scoped>
 @import "src/styles/variables.scss";
@@ -146,6 +140,25 @@ export default {
     }
   }
 }
+
+@media screen and ( max-width: 1280px) {
+  .nav-menu {
+    .enc-nav-menu {
+      .el-menu-item {
+        height: $enc-nav-header-mini-height;
+        line-height: $enc-nav-header-mini-height;
+      }
+    }
+  }
+  .nav-menu .enc-nav-menu .el-submenu {
+    height: $enc-nav-header-mini-height;
+    line-height: $enc-nav-header-mini-height;
+  }
+  .enc-sub-header{
+    margin-top:0px;
+  }
+}
+
 </style>
 <style rel="stylesheet/scss" lang="scss">
 .owntmenu .el-submenu:hover,
@@ -157,4 +170,5 @@ export default {
     color: #fff;
   }
 }
+
 </style>

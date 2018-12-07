@@ -357,7 +357,7 @@ export default {
 
 .enc-sub-header {
   text-indent: 30px;
-  margin-top: 3px; // margin-right:300px;
+  margin-top: 0px; // margin-right:300px;
   padding-left: 20px;
   height: $enc-nav-sub-header-height;
   line-height: $enc-nav-sub-header-height;
@@ -365,7 +365,11 @@ export default {
   font-size: 18px;
   background: #eff3f6;
 }
-
+@media screen and ( max-width: 1280px) {
+  .enc-sub-header{
+    margin-top:0px;
+  }
+}
 .el-breadcrumb {
   line-height: $enc-nav-sub-header-height;
   text-indent: 0;
