@@ -232,11 +232,13 @@ export default {
     closeDialog() {
       this.dialogVisible = false;
       this.$refs['ruleForm'].resetFields();
+      this.loading = true;
     },
     //关闭
     closeForm() {
       this.dialogVisible = false;
       this.$refs['ruleForm'].resetFields();
+      this.loading = true;
     },
 
     //保存信息
@@ -382,11 +384,11 @@ export default {
             xzqyData = JSON.parse(res.data.data.xzqy);
             _self.ruleForm.pro = xzqyData[0].pro;
             _self._queryCity(_self.ruleForm.pro, 'city');
-            if (xzqyData[1].city != ''&&xzqyData[1].city!=undefined) {
+            if (xzqyData[1].city != '' && xzqyData[1].city != undefined) {
               _self.ruleForm.city = xzqyData[1].city;
               _self._queryCity(_self.ruleForm.city, 'urban');
             }
-            if (xzqyData[2].urban != ''&&xzqyData[2].urban!=undefined) {
+            if (xzqyData[2].urban != '' && xzqyData[2].urban != undefined) {
               _self.ruleForm.urban = xzqyData[2].urban;
             }
           }
@@ -395,7 +397,7 @@ export default {
           _self._querySys();
         }
 
-
+        _self.loading = false;
       }, res => {
         this.loading = false;
         console.log("error");
@@ -415,7 +417,7 @@ export default {
         }
 
       }).then(res => {
-        _self.loading = false;
+
         if (flag == 'pro') {
           _self.proArr = res.data.data;
         }
