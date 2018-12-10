@@ -269,7 +269,7 @@
                 </el-form-item>
               </el-col>
               <el-col :span="2" class="bank" v-if="ruleForm.syskind!=''&& ruleForm.syskind=='vhost'">bank</el-col>
-              <el-col :span="10" v-if="ruleForm.syskind=='10010'||ruleForm.syskind=='10011'" class="uncolls">
+              <el-col :span="10" v-if="ruleForm.syskind=='10010'||ruleForm.syskind=='10011'" class="uncolls ftptype">
                 <el-form-item label="传输模式:" prop="transmode">
                   <el-select v-model="ruleForm.transmode" placeholder="请选择" @change="changeContentInfo('transmode')">
                     <el-option label="主动" value="true"></el-option>
@@ -1177,5 +1177,7 @@ i {
     width: 70%;
   }
 }
-
+.regcon .otherInfo .ftptype .el-form-item--medium .el-form-item__content {
+  margin-left: 151px !important;
+}
 </style>
