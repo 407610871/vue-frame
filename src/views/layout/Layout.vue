@@ -76,6 +76,9 @@ export default {
   },
   mounted() {
     var _self = this;
+    if(window.localStorage.getItem('data-theme')!=undefined){
+       window.document.documentElement.setAttribute('data-theme',window.localStorage.getItem('data-theme'));
+    }
     _self.warnurl = encodeURI(window.ENV.API_WARN+'/#/alert/dashboard?platform=数据工厂产品线');
     this.$ajax
       .get(window.ENV.API_DACM + "/caccesssysRelationWorkInfo/getSystemSet.do")
@@ -196,6 +199,7 @@ export default {
       this.sideBarWidth = this.sideBarWidth == 0 ? 210 : 0;
     },
     loginOut(){
+      window.localStorage.removeItem('data-theme');
       this.$keycloak.logout();
     },
     goRoute: function(name) {
@@ -346,7 +350,7 @@ export default {
 
 .enc-aside {
   width: 210px;
-  background: #494f5b;
+  @include aside-bg-color($enc-aside-background-theme);
   /*padding:20px;*/
   overflow: hidden;
 }

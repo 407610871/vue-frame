@@ -258,7 +258,9 @@ export default {
         confirmButtonText: '确定'
       });
     },
-    selDept(node, nodeStatus) {
+    selDept(node, nodeStatus) { 
+      window.localStorage.setItem('data-theme','theme1');
+      window.document.documentElement.setAttribute('data-theme','theme1')
       var list = this.$refs.tree.getCheckedNodes();
       var deptIds = this.$refs.tree.getCheckedKeys();
       var factorial;
@@ -380,12 +382,15 @@ export default {
 
 </script>
 <style rel="stylesheet/scss" lang="scss">
+@import 'src/styles/variables.scss';
+@import "src/styles/mixin.scss";
 .tree-tools {
   width: 210px;
   height: 40px;
   line-height: 40px;
   padding-left: 10px;
-  background-color: #5F6676;
+  /* background-color: #5F6676; */
+  @include tree-tools-bg-color($tree-tools-background-theme);
   border-bottom: 1px solid #414650;
   text-align: right;
   a {

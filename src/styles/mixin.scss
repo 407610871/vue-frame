@@ -58,3 +58,21 @@
     border-bottom: $transparent-border-style;
   }
 }
+@mixin aside-bg-color($color){
+ background: $color;
+ [data-theme = 'theme1'] & {
+   background: $enc-aside-background-theme1;
+ }
+}
+@mixin tree-tools-bg-color($color){
+ background: $color;
+ [data-theme = 'theme1'] & {
+   background: $tree-tools-background-theme1;
+ }
+}
+@mixin table-thead-bg-color($color){
+ background: $color;
+ [data-theme = 'theme1'] & {
+   background: $el-table-thead-background-theme1;
+ }
+}

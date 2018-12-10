@@ -1,3 +1,5 @@
+@import './variables.scss';
+@import './mixin.scss';
 .el-table {
   color: #566170;
 }
@@ -8,7 +10,8 @@
 
 .el-table thead {
   color: #fff;
-  background: #425365;
+  @include table-thead-bg-color($el-table-thead-background-theme);
+ /*  background: #425365; */
   font-weight: 500;
 }
 
