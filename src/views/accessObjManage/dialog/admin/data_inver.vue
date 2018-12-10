@@ -10,7 +10,7 @@
         <span class="grab gra-r"></span>
       </div>
       <el-form :model="ruleForm" ref="ruleForm" label-width="100px" class="demo-ruleForm">
-        <div class="proInfo-box clearfix">
+        <div class="proInfo-box jytop clearfix">
           <el-col :span="24">
             <el-form-item label="核验设置:" class="radiow100">
               <el-radio-group v-model="ruleForm.setVer">
@@ -104,7 +104,7 @@
           <textarea name="" id="" disabled="disabled" v-show="textShow">{{loginfo}}</textarea>
         </div>
         <div class="proInfo-box clearfix ptb20 hisInver">
-          <span>核验历史记录:</span>
+          <span style="padding-left:30px;">核验历史记录:</span>
           <div class="comTable">
             <el-table :data="tableData" style="width: 100%" height="250" stripe>
               <el-table-column prop="accessCheckTime" label="核验时间">
@@ -566,5 +566,13 @@ li {
 .datein span i {
   font-size: 14px;
 }
-
+.jytop{
+  padding-left: 30px;
+  .el-form-item__label {
+    text-align:left;
+  }
+  .el-radio__input {
+     line-height: 35px;
+  }
+}
 </style>
