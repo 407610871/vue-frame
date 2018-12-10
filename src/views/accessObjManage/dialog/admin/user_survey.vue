@@ -382,11 +382,11 @@ export default {
             xzqyData = JSON.parse(res.data.data.xzqy);
             _self.ruleForm.pro = xzqyData[0].pro;
             _self._queryCity(_self.ruleForm.pro, 'city');
-            if (_self.ruleForm.city != '') {
+            if (xzqyData[1].city != ''&&xzqyData[1].city!=undefined) {
               _self.ruleForm.city = xzqyData[1].city;
               _self._queryCity(_self.ruleForm.city, 'urban');
             }
-            if (_self.ruleForm.urban != '') {
+            if (xzqyData[2].urban != ''&&xzqyData[2].urban!=undefined) {
               _self.ruleForm.urban = xzqyData[2].urban;
             }
           }
@@ -403,6 +403,7 @@ export default {
     },
     //查询全省市
     _queryCity(value, flag) {
+      let _self = this;
       this.$ajax({
         method: "get",
         url: this.GLOBAL.api.API_DACM + '/commonInter/getAreas?parentid=' + value,
@@ -414,15 +415,15 @@ export default {
         }
 
       }).then(res => {
-        this.loading = false;
+        _self.loading = false;
         if (flag == 'pro') {
-          this.proArr = res.data.data;
+          _self.proArr = res.data.data;
         }
         if (flag == 'city') {
-          this.cityArr = res.data.data;
+          _self.cityArr = res.data.data;
         }
         if (flag == 'urban') {
-          this.urbanArr = res.data.data;
+          _self.urbanArr = res.data.data;
         }
 
       })

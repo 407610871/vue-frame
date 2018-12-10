@@ -368,11 +368,11 @@ export default {
             xzqyData = JSON.parse(res.data.data.xzqy);
             this.ruleForm.pro = xzqyData[0].pro;
             this._queryCity(this.ruleForm.pro, 'city');
-            if (this.ruleForm.city != '') {
+            if (xzqyData[1].city != ''&&xzqyData[1].city!=undefined) {
               this.ruleForm.city = xzqyData[1].city;
               this._queryCity(this.ruleForm.city, 'urban');
             }
-            if (this.ruleForm.urban != '') {
+            if (xzqyData[2].urban != ''&&xzqyData[2].urban!=undefined) {
               this.ruleForm.urban = xzqyData[2].urban;
             }
           }

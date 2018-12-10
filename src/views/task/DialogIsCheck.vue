@@ -505,6 +505,7 @@ export default {
 
 .checkResultData ul li {
   margin-top: 30px;
+  padding-left: 0!important;
 }
 
 .checkResult ul {
@@ -537,6 +538,7 @@ export default {
   height: 16px;
   display: inline-block;
   background-size: 100% 100%;
+  margin-left: 0;
 }
 
 .resultIcon .wrong {
@@ -545,6 +547,7 @@ export default {
   height: 16px;
   display: inline-block;
   background-size: 100% 100%;
+  margin-left: 10px;
 }
 
 h5 {
