@@ -126,7 +126,7 @@
               </el-table-column>
               <el-table-column prop="source_library" label="核验报告">
                 <template slot-scope="scope">
-                  <el-button size="mini" type="info" class="" @click="download(scope.row)">导出</el-button>
+                  <el-button size="mini" type="primary" class="" @click="download(scope.row)">导出</el-button>
                 </template>
               </el-table-column>
             </el-table>

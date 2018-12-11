@@ -12,7 +12,7 @@
       </div>
       <div class="proInfo-box bornone clearfix">
         <p style="text-align: center">{{name}}</p>
-        <el-button size="mini" type="info" @click="downTable()" class="dowBtn">导出报告</el-button>
+        <el-button size="mini" type="primary" @click="downTable()" class="dowBtn">导出报告</el-button>
       </div>
       <div class="proInfo-box">
         <div class="comTable">
