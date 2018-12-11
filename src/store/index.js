@@ -37,6 +37,7 @@ const queryParamsDefault = {
     dataSourceName: [],
     network: [],
     platform: [],
+    deptId: [],
     condition: '',
     pageNum: 1,
     timeFlag: 0

@@ -96,10 +96,10 @@
           <el-col :span="6">
             <span>数据量差值: {{resData.testresults_dvalue}}</span>
           </el-col>
-          <el-col :span="6">
+          <el-col :span="6" v-show="jflag">
             <span class="mr10">纠错:</span>
-            <el-radio v-model="ruleForm.jiucuo" label="1">合格</el-radio>
-            <el-radio v-model="ruleForm.jiucuo" label="2">不合格</el-radio>
+            <el-radio v-model="ruleForm.jiucuo" label="0" @change="error()">合格</el-radio>
+            <el-radio v-model="ruleForm.jiucuo" label="1" @change="error()">不合格</el-radio>
           </el-col>
           <el-col :span="6">
             <el-button type="primary" size="small" @click="checkLog()">查看日志</el-button>
@@ -154,7 +154,7 @@ export default {
       loginfo: '',
       loading2: false,
       textShow: false,
-
+      jflag: false,
       status: '开始核验',
       result: '0',
       timer: null,
@@ -165,7 +165,7 @@ export default {
       tableData: [],
       ruleForm: {
         queryTargetColumn: '',
-        jiucuo:'1',
+        jiucuo: '0',
         setVer: 0, //核验设置
         range: 0, //核验误差范围
         startTime: [],
@@ -188,6 +188,31 @@ export default {
         this._queryInver();
       }, 5000);
     },
+    //纠错功能
+    error() {
+      this.loading = true;
+      this.$ajax({
+        method: "POST",
+        url: this.GLOBAL.api.API_DACM + '/ccheckData/modifyCheckResult',
+        /*url:'http://10.19.160.93:8080/DACM/ccheckData/modifyCheckResult',*/
+        // headers:{
+        //   'Content-Type':'application/json;charset=utf-8',
+        // },
+        data: {
+          "id": this.logId,
+          "manual_check_result": this.ruleForm.jiucuo
+          /*taskId:'68612'*/
+        }
+
+      }).then(res => {
+        this.loading = false;
+        if (res.data.success) {
+          this.$alert("纠错成功");
+        } else {
+          this.$alert("纠错失败");
+        }
+      })
+    },
     _queryInver() {
       this.$ajax({
         method: "GET",
@@ -203,14 +228,15 @@ export default {
 
       }).then(res => {
         if (res.data.success == "true" || res.data.success == true) {
+          this.jflag = true;
           this.resData = res.data.data;
           this.logId = res.data.data.id;
           this.columnData = res.data.data.listIncrementCon;
           this.ruleForm.queryTargetColumn = this.columnData[0];
-          if(res.data.data.testresults_manual_check_result!=null&&res.data.data.testresults_manual_check_result!=undefined&&res.data.data.testresults_manual_check_result!=''){
-             this.ruleForm.jiucuo = res.data.data.testresults_manual_check_result;
+          if (res.data.data.testresults_manual_check_result != null && res.data.data.testresults_manual_check_result != undefined && res.data.data.testresults_manual_check_result != '') {
+            this.ruleForm.jiucuo = res.data.data.testresults_manual_check_result;
           }
-         
+
           if (res.data.data.status == "1") {
             this.textShow = false;
             window.clearInterval(this.timer);
