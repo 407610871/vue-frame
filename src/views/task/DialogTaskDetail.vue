@@ -57,13 +57,47 @@
                 <span>{{sourceBaseInfo.periodDesc}}</span>
               </el-form-item>
             </el-col>
-            <el-col :span="10">
-              <el-form-item label="接入对象:" :title="sourceBaseInfo.sourceObjNameList">
-              <span>{{sourceBaseInfo.sourceObjNameList}}</span>
+            <el-col :span="24">
+              <el-col :span="12">
+                <el-col :span="20">
+                  <el-form-item label="接入对象:">
+                    <div style="height:80px;width:100%;overflow:auto;">
+                      <span style="display:block" v-for="item in sourceBaseInfo.sourceObjNameList" :key="item.tableName"
+                      v-show="item.type=='TABLE'||item.type=='VIEW'"
+                      >{{item.type=="TABLE"?'表':'视图'}}:{{item.tableName}}</span>
+                    </div>
+                  <!-- <span>{{sourceBaseInfo.sourceObjNameList}}</span> -->
+                  </el-form-item>
+                </el-col>
+                <el-col :span="4" class="bank">bank</el-col>
+              </el-col>
+              <el-col :span="12">
+                <el-col :span="4" class="bank">bank</el-col>
+                <el-col :span="20">
+                  <el-form-item label="增量字段:" v-show="sourceBaseInfo.period==1||sourceBaseInfo.period==2">
+                    <span>{{sourceBaseInfo.incrementColumn}}</span>
+                  </el-form-item>
+                </el-col> 
+                <el-col :span="4" class="bank">bank</el-col>
+                <el-col :span="10">
+                  <el-form-item label="增量字段类型:" v-show="sourceBaseInfo.period==1||sourceBaseInfo.period==2">
+                    <span>{{sourceBaseInfo.columnType}}</span>
+                  </el-form-item>
+                </el-col>
+
+              </el-col>
+            </el-col>
+            <!-- <el-col :span="10">
+              <el-form-item label="接入对象:">
+                <div style="height:50px;width:100%;overflow:auto;">
+                  <span style="display:block" v-for="item in sourceBaseInfo.sourceObjNameList" :key="item.tableName"
+                  v-show="item.type=='TABLE'||item.type=='VIEW'"
+                  >{{item.type=="TABLE"?'表':'视图'}}:{{item.tableName}}</span>
+                </div>
               </el-form-item>
             </el-col>
-            <el-col :span="4" class="bank">bank</el-col>
-            <el-col :span="10">
+            <el-col :span="4" class="bank">bank</el-col> -->
+            <!-- <el-col :span="10">
               <el-form-item label="增量字段:" v-show="sourceBaseInfo.period==1||sourceBaseInfo.period==2">
                 <span>{{sourceBaseInfo.incrementColumn}}</span>
               </el-form-item>
@@ -74,7 +108,7 @@
               <el-form-item label="增量字段类型:" v-show="sourceBaseInfo.period==1||sourceBaseInfo.period==2">
                 <span>{{sourceBaseInfo.columnType}}</span>
               </el-form-item>
-            </el-col>
+            </el-col> -->
           </div>
         </div>
         <!-- 接入基本信息 模块结束 -->
@@ -139,6 +173,11 @@
             <el-col :span="4">
               <el-button type="primary" size="small" @click="testConnect()">测试连接</el-button>
             </el-col>
+            <el-col :span="24" v-show="reqObj.isPeriod!=0 && reqObj.isPeriod!=3">
+              <el-form-item label="任务周期设置:">
+                <span>{{taskBaseInfo.periodSet}}</span>
+              </el-form-item>
+            </el-col>
             <el-col :span="12">
               <el-form-item label="最近一次任务开始时间:">
                 <span>{{taskBaseInfo.startTime}}</span>
@@ -152,7 +191,7 @@
               </el-form-item>
             </el-col>
             <el-col :span="12">
-              <el-form-item label="最近一次任务结束时间:" >
+              <el-form-item label="最近任务成功结束时间:" >
                 <span>{{taskBaseInfo.endTime}}</span>
               </el-form-item>
             </el-col>
@@ -224,7 +263,7 @@
                   <div class="table-body">
                     <div class="table-tr" v-for="item in dataViewsList" :key="item[keyList[0]]">
                       <div class=table-tr-context>
-                        <span v-for="keyitem in keyList" :key="keyitem">{{item[keyitem]}}</span>
+                        <span v-for="keyitem in keyList" :key="keyitem" :title="item[keyitem]">{{item[keyitem]}}</span>
                       </div>
                       <div class=table-tr-line></div>
                     </div>
@@ -282,14 +321,18 @@
   overflow: auto;
 }
 .dataViews-table span{
-  display:inline-block;
-  width:20%;
+  display:table-cell;
+  min-width: 140px;
+  width:100%;
   text-align: center;
   vertical-align: middle;
   height: 30px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  border-bottom: 1px solid #e4e7ed;
 }
 .dataViews-table .table-tr-line{
-  border-bottom: 1px solid #e4e7ed;
   margin-bottom: 10px;
 }
 .dataCheck-tab{
@@ -355,7 +398,8 @@ export default {
         networkStatus: "",
         startTime: "",
         status: "0" ,
-        creater:''
+        creater:'',
+        periodSet:''//周期设置
       },
       //接入基本信息
       sourceBaseInfo:{
@@ -470,6 +514,64 @@ export default {
         })
       }
     },
+    //将毫秒转换成周期
+    translatePeriodFromMS(ms){
+      //一天的毫秒数
+      let dayMS = 86400000;
+      //一小时的毫秒数
+      let hourMS = 3600000;
+      //一分钟的毫秒数
+      let minineMS = 60000;
+      //一秒钟的毫秒数
+      let secondMS = 1000;
+      let day=0;
+      let hour=0;
+      let minine=0;
+      let second=0;
+      let mod=0;
+      let str = "每隔";
+      day = Math.floor(ms/dayMS);//天数
+      mod = ms%dayMS;//天的余数
+      hour = Math.floor(mod/hourMS);//小时数
+      mod = mod%hourMS;//小时的余数
+      minine = Math.floor(mod/minineMS);//分钟数
+      mod = mod%minineMS;//分钟的余数
+      second = mod/secondMS;//秒数，此时不会有余数，因为毫秒数最小也是1000，即1秒钟
+      str = str+(day==0?"":day+"天");
+      str = str+(hour==0?"":hour+"小时");
+      str = str+(minine==0?"":minine+"分钟");
+      return str;
+    },
+    //将corn表达式转换成周期
+    translatePeriodFromCorn(str,timeType){
+      // str="0,5 5 15 ? ? 2 ";
+      var result = str.split(' ').join('')
+      var nArr = str.split(' ')
+      if(timeType==2){//月
+        let day = result[3]>9?result[3]:'0'+result[3];
+        let hour = result[2]>9?result[2]:'0'+result[2];
+        let min = result[1]>9?result[1]:'0'+result[1];
+        return "每月"+day+"号"+hour+"时"+min+"分";
+      }else if(timeType==3){//周
+        var en2cnMap = {
+          1: '周天',
+          2: '周一',
+          3: '周二',
+          4: '周三',
+          5: '周四',
+          6: '周五',
+          7: '周六'
+        }
+        let day = en2cnMap[result[5]];
+        let hour = result[2]>9?result[2]:'0'+result[2];
+        let min = result[1]>9?result[1]:'0'+result[1];
+        return "每"+day+"号"+hour+"时"+min+"分";
+      }else if(timeType==4){//天
+        let hour = result[2]>9?result[2]:'0'+result[2];
+        let min = result[1]>9?result[1]:'0'+result[1];
+        return "每天"+hour+"时"+min+"分";
+      }
+    },
     //查询接入基本信息
     getSourceInfo(){
       let that = this;
@@ -491,12 +593,13 @@ export default {
           that.loading1 = false;
           return;
         }
-        let sourceObjNameList = "";
-        let len = res.data.data.sourceTableName.length;
-        for(let i=0;i<len;i++){
-          sourceObjNameList = sourceObjNameList + res.data.data.sourceTableName[i];
-          sourceObjNameList = sourceObjNameList+(i==len-1?"":",");
-        }
+        let sourceObjNameList = res.data.data.sourceTableName;
+        // let sourceObjNameList = "";
+        // let len = res.data.data.sourceTableName.length;
+        // for(let i=0;i<len;i++){
+        //   sourceObjNameList = sourceObjNameList + res.data.data.sourceTableName[i];
+        //   sourceObjNameList = sourceObjNameList+(i==len-1?"":",");
+        // }
         let innerReqData = {
           params:{
             taskInfoDetailId:that.reqObj.taskInfoDetailId,
@@ -581,6 +684,28 @@ export default {
             }else{
               that.operateList[1].disabled=true;
               that.operateList[0].disabled=false;
+            }
+            //获取周期设置信息 periodSet
+            if(that.reqObj.isPeriod==0||that.reqObj.isPeriod==3){
+              //如果任务类型为一次性任务或实时任务，则页面不展示周期设置，所以在此不需要获取，无需操作
+
+            }else{
+              //如果任务类型为全量或增量，需要对接口返回的周期任务做转换，显示成可读数据，展示在页面
+              /**
+               * 周期任务返回规则：(但是interval_ms字段并没有用到，根据入参即可判断任务周期类型)
+               * 如果interval_ms为-1即为一次性任务
+               * 如果interval_ms不为-1且timeType不等于2、3、4即为间隔执行单位为ms
+               * 如果interval_ms不为-1且timeType等于2、3、4即为定时执行执行，interval_ms为corn表达式
+               */
+              let timeType = that.taskBaseInfo.timeType
+              let intervalMs = that.taskBaseInfo.intervalMs
+              if(timeType!=2&&timeType!=3&&timeType!=4){
+                //timeType不等于2、3、4即为间隔执行单位为ms
+                that.taskBaseInfo.periodSet=that.translatePeriodFromMS(intervalMs);
+              }else if(timeType==2||timeType==3||timeType==4){
+                //timeType等于2、3、4即为定时执行执行，interval_ms为corn表达式
+                that.taskBaseInfo.periodSet=that.translatePeriodFromCorn(intervalMs,timeType);
+              }
             }
             that.loading3 = false;
           }
