@@ -1,6 +1,6 @@
 <template>
   <div class="taskMDialog" style="padding-bottom:15px;">
-    <el-dialog width="60%" :title="title" top="25px" :visible.sync="showInnerDialog" class="check-data-dialog" @closed="closeDiaChk" :close-on-click-modal="false">
+    <el-dialog width="60%" :title="title" :visible.sync="showInnerDialog" class="check-data-dialog" @closed="closeDiaChk" :close-on-click-modal="false">
       <div class="title-gra">
         <span class="grab gra-l"></span>
         <span class="grab gra-r"></span>
@@ -93,8 +93,8 @@
             </ul>
           </div>
         </div>
-        <div class="checkDetail" style="height:261px;" v-loading="loading2">
-          <textarea name="" id="" disabled="disabled" v-show="textShow" v-model="loginfo"></textarea>
+        <div class="checkDetail" style="height:261px;" v-loading="loading2" v-show="textShow">
+          <textarea name="" id="" disabled="disabled" v-model="loginfo"></textarea>
         </div>
         <h5>核验历史记录：</h5>
         <el-table :data="resDataHistory" class="check-history-table">
@@ -119,7 +119,7 @@
           </el-table-column>
           <el-table-column label="核验报告">
             <template slot-scope="scope">
-              <el-button @click="downTxt(scope.row.id)" class="export-btn" size="mini">导出</el-button>
+              <el-button  @click="downTxt(scope.row.id)" class="export-btn" size="mini">导出</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -555,16 +555,17 @@ h5 {
   margin-bottom: 10px;
 }
 .export-btn.el-button{
-  border:1px solid #edcddd;
+  color: white;
+  background-color: #2f6ac5;
 }
 </style>
 <style lang="scss">
 .check-data-dialog {
   .el-dialog {
     min-width: 860px;
-    max-height: calc(100% - 50px);
+    max-height: calc(100% - 30vh);
     overflow: auto;
-    height: 100%;
+  //  height: 100%;
   }
 }
 
