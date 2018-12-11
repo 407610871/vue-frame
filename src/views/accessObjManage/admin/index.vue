@@ -262,8 +262,12 @@ export default {
           name: "全国"
         },
         {
-          id: 4,
+          id: 99,
           name: "其他"
+        },
+         {
+          id: 4,
+          name: "行政区"
         }
       ],
       jrtype: "",
