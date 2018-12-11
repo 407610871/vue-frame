@@ -184,7 +184,7 @@
     <!--  批量采集 -->
     <set-task v-if="showSetTask" class="right-btn" :rowList="rowList" :jrtype="type" @close="closeTask()" @fre="loadTask()"></set-task>
     <!-- 数据核验 -->
-    <DialogIsCheck v-if="dialogVisible" :msgCheck="msgCheck" title = "数据核验"></DialogIsCheck>
+    <DialogIsCheck v-if="dialogVisible" :msgCheck="msgCheck" @closeDiaChk="dialogVisible=false" title = "数据核验"></DialogIsCheck>
   </div>
 </template>
 <script>
