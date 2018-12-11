@@ -85,9 +85,11 @@
             </ul>
             <ul>
               <li class="manual_check_result">
-                <el-radio v-if="this.resData.testresults_manual_check_result==='0'">合格</el-radio>
-                <el-radio v-else-if="this.resData.testresults_manual_check_result==='1'">不合格</el-radio>
-                <span v-else-if="this.resData.testresults_manual_check_result==null" style="color:#606266">无</span>
+                <span v-if="this.resData.testresults_manual_check_result==null" style="color:#606266">无</span>
+                <template v-else>
+                  <el-radio v-model="resData.testresults_manual_check_result" label="0" @change="error()">合格</el-radio>
+                  <el-radio v-model="resData.testresults_manual_check_result" label="1" @change="error()">不合格</el-radio>
+                </template>
               </li>
               <li style="opacity:0">h</li>
             </ul>
@@ -175,6 +177,26 @@ export default {
 
   },
   methods: {
+    //纠错功能
+    error() {
+      this.loading = true;
+      this.$ajax({
+        method: "POST",
+        url: baseUrl + '/ccheckData/modifyCheckResult',
+        data: {
+          "id": this.resData.id,
+          "manual_check_result": this.resData.testresults_manual_check_result
+        }
+
+      }).then(res => {
+        this.loading = false;
+        if (res.data.success) {
+          this.$alert("纠错成功");
+        } else {
+          this.$alert("纠错失败");
+        }
+      })
+    },
     checkNumber(val) {
       let reg = /^-?\d+$/;
       if (!reg.test(val)) {
