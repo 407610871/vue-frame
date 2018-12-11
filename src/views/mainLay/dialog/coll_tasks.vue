@@ -605,10 +605,15 @@ export default {
           }
         })
       } else {
+        let saves = this.$store.state.userList;
+        saves.isCustom = this.$store.state.regInfo.baseflag;
+        saves.isBatch = true;
+        saves.regexInfo = this.$store.state.regInfo.baseEnd;
+        saves.tableCommonName = this.$store.state.regInfo.baseStart;
         this.$ajax({
           method: 'post',
           url: this.GLOBAL.api.API_DACM + '/dataTable/inputSurvey',
-          data: this.$store.state.userList
+          data:saves
         }).then(res => {
 
           if (res.data.success) {
