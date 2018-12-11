@@ -261,13 +261,14 @@ export default {
           id: 3,
           name: "全国"
         },
-        {
-          id: 99,
-          name: "其他"
-        },
+        
          {
           id: 4,
           name: "行政区"
+        },
+        {
+          id: 99,
+          name: "其他"
         }
       ],
       jrtype: "",
