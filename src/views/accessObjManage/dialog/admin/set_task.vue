@@ -5,7 +5,7 @@
    <span class="talogo diabtn tin-btn add-btn" @click="setTask()"></span>
    </el-tooltip> -->
     <!--  <i class="el-icon-info" @click="dialogVisible = true">设置通配符</i> -->
-    <el-dialog title="批量接入任务向导" :visible.sync="dialogVisible" width="73%" :before-close="closeDialog">
+    <el-dialog title="批量接入任务向导" :visible.sync="dialogVisible" width="73%" :before-close="closeDialog" :close-on-click-modal="false">
       <div class="title-gra plr30">
         <span class="grab gra-l"></span>
         <span class="grab gra-r"></span>
@@ -13,7 +13,7 @@
       <div class="taskSteps plr30">
         <el-tabs v-model="activeName">
           <el-tab-pane name="first" disabled>
-            <span slot="label"><i class="el-icon-circle">1</i> 数据调研</span>
+            <span slot="label"><i class="el-icon-circle">1</i>用户标记</span>
             <div class="daiInfo proInfo">
               <div class="daiInfo-title proInfo-title">
                 <h2>提供方信息</h2>

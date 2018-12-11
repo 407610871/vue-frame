@@ -576,7 +576,7 @@ export default {
         "accessSysId": this.rowList[0].accessSys.id
       }
       this.loading = true;
-      if (JSON.stringify(this.$store.state.userList) == "{}") {
+      if (this.$store.state.isSign=="false"||this.$store.state.isSign==false) {
         this.$ajax({
           method: "post",
           url: this.GLOBAL.api.API_DACM + '/task/saveRegexHeliumTask',

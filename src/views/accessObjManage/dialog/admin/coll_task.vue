@@ -731,7 +731,7 @@ export default {
           "xStreamPassword": this.ruleForm.password
         }
         this.loading = true;
-        if (JSON.stringify(this.$store.state.userList) == "{}") {
+        if (this.$store.state.isSign=="false"||this.$store.state.isSign==false) {
           this.$ajax({
             method: "post",
             url: this.GLOBAL.api.API_DACM + '/task/updateSourceConfig',
@@ -830,7 +830,7 @@ export default {
           "xStreamPassword": this.ruleForm.password
         }
         this.loading = true;
-        if (JSON.stringify(this.$store.state.userList) == "{}") {
+        if (this.$store.state.isSign=="false"||this.$store.state.isSign==false) {
           this.$ajax({
             method: "post",
             url: this.GLOBAL.api.API_DACM + '/task/saveHeliumTask',
