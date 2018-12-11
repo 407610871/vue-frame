@@ -42,11 +42,11 @@
               </div>
             </el-col>
             <el-col :span="4" v-show="ruleForm.setVer=='1'">
-            <el-form-item>
-              <el-select v-model="ruleForm.queryTargetColumn" placeholder="请选择">
-                <el-option v-for="item in columnData" :key="item" :label="item" :value="item">
-                </el-option>
-              </el-select>
+              <el-form-item>
+                <el-select v-model="ruleForm.queryTargetColumn" placeholder="请选择">
+                  <el-option v-for="item in columnData" :key="item" :label="item" :value="item">
+                  </el-option>
+                </el-select>
               </el-form-item>
             </el-col>
           </el-col>
@@ -87,16 +87,21 @@
           </el-col>
         </div>
         <div class="proInfo-box clearfix ptb20 resultIcon">
-          <el-col :span="8">
+          <el-col :span="6">
             <span>核验结果:</span>
             <span class="yes" v-if="resData.testresults_result=='0'"></span>
             <span class="wrong" v-else-if="resData.testresults_result=='1'"></span>
             <span v-else-if="resData.testresults_result=='null'" style="color:#606266">无</span>
           </el-col>
-          <el-col :span="8">
+          <el-col :span="6">
             <span>数据量差值: {{resData.testresults_dvalue}}</span>
           </el-col>
-          <el-col :span="8">
+          <el-col :span="6">
+            <span class="mr10">纠错:</span>
+            <el-radio v-model="ruleForm.jiucuo" label="1">合格</el-radio>
+            <el-radio v-model="ruleForm.jiucuo" label="2">不合格</el-radio>
+          </el-col>
+          <el-col :span="6">
             <el-button type="primary" size="small" @click="checkLog()">查看日志</el-button>
           </el-col>
         </div>
@@ -149,17 +154,18 @@ export default {
       loginfo: '',
       loading2: false,
       textShow: false,
-      
+
       status: '开始核验',
       result: '0',
       timer: null,
       loading: false,
-      columnData:[],
+      columnData: [],
       logId: '',
       resData: {},
       tableData: [],
       ruleForm: {
-        queryTargetColumn:'',
+        queryTargetColumn: '',
+        jiucuo:'1',
         setVer: 0, //核验设置
         range: 0, //核验误差范围
         startTime: [],
@@ -201,6 +207,10 @@ export default {
           this.logId = res.data.data.id;
           this.columnData = res.data.data.listIncrementCon;
           this.ruleForm.queryTargetColumn = this.columnData[0];
+          if(res.data.data.testresults_manual_check_result!=null&&res.data.data.testresults_manual_check_result!=undefined&&res.data.data.testresults_manual_check_result!=''){
+             this.ruleForm.jiucuo = res.data.data.testresults_manual_check_result;
+          }
+         
           if (res.data.data.status == "1") {
             this.textShow = false;
             window.clearInterval(this.timer);
@@ -325,14 +335,14 @@ export default {
       this.$ajax({
         method: "get",
         url: `${this.GLOBAL.api.API_DACM}/ccheckData/tableCheck`,
-       /* url:'http://10.19.160.25:8080/DACM/ccheckData/tableCheck',*/
+        /* url:'http://10.19.160.25:8080/DACM/ccheckData/tableCheck',*/
         params: {
           taskId: this.taskId,
           key: this.ruleForm.setVer,
           range: this.ruleForm.range,
           startTime: this.ruleForm.startTime[0],
           endTime: this.ruleForm.startTime[1],
-          queryTargetColumn:this.ruleForm.queryTargetColumn
+          queryTargetColumn: this.ruleForm.queryTargetColumn
         }
       }).then(res => {
         if (res.data.data.result == true || res.data.data.result == "true") {
@@ -566,13 +576,15 @@ li {
 .datein span i {
   font-size: 14px;
 }
-.jytop{
+
+.jytop {
   padding-left: 30px;
   .el-form-item__label {
-    text-align:left;
+    text-align: left;
   }
   .el-radio__input {
-     line-height: 35px;
+    line-height: 35px;
   }
 }
+
 </style>
