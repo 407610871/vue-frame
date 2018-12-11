@@ -157,7 +157,10 @@
                 <userSurvey v-if="type=='mysql'|| type=='oracle'|| type=='postgresql' || type=='sqlserver'" :pdata="scope.row" @fre="loadTable()"></userSurvey>
               </div>
               <div class="survey" v-if="(type=='mysql'&&scope.row.accessConnectorSource!=undefined&&scope.row.accessConnectorSource.isPeriod!='0')|| (type=='oracle'&&scope.row.accessConnectorSource!=undefined&&scope.row.accessConnectorSource.isPeriod!='0')|| (type=='postgresql'&&scope.row.accessConnectorSource!=undefined&&scope.row.accessConnectorSource.isPeriod!='0') || (type=='sqlserver'&&scope.row.accessConnectorSource!=undefined&&scope.row.accessConnectorSource.isPeriod!='0')">
-                <data-inver :pdata="scope.row" @fre="loadTable()"></data-inver>
+                <!-- <data-inver :pdata="scope.row" @fre="loadTable()"></data-inver> -->
+                <el-tooltip class="item" effect="light" content="数据核验" placement="top">
+                  <i class="enc-icon-shujuheyan" @click="dataInverCheck(scope.row)"></i>
+                </el-tooltip>
               </div>
               <div class="survey" v-if="type!='mysql' && type!='oracle' && type!='sqlserver' && type!='postgresql'">
                 <norela-coll :pdata="scope.row" :type="type" @fre="loadTable()"></norela-coll>
@@ -180,6 +183,8 @@
     <dialogTaskDetail :reqObj="reqObj" v-if="showTaskDetail" v-on:closeDia="showTaskDetail=false"></dialogTaskDetail>
     <!--  批量采集 -->
     <set-task v-if="showSetTask" class="right-btn" :rowList="rowList" :jrtype="type" @close="closeTask()" @fre="loadTask()"></set-task>
+    <!-- 数据核验 -->
+    <DialogIsCheck v-if="dialogVisible" :msgCheck="msgCheck" title = "数据核验"></DialogIsCheck>
   </div>
 </template>
 <script>
@@ -189,14 +194,15 @@ import userSurvey from "@/views/accessObjManage/dialog/admin/user_survey";
 import setTask from "@/views/accessObjManage/dialog/admin/set_task";
 import singleTask from "@/views/accessObjManage/dialog/admin/single_task";
 import tableInver from "@/views/accessObjManage/dialog/admin/table_inver";
-import dataInver from "@/views/accessObjManage/dialog/admin/data_inver";
 import pathFtp from "@/views/mainLay/dialog/path_ftp";
 import norelaColl from "@/views/mainLay/dialog/norela_coll";
 import DialogTaskDetail from "@/views/mainLay/dialog/DialogTaskDetails";
+import DialogIsCheck from "@/views/task/DialogIsCheck";
 export default {
   name: "DashboardAdmin",
   data() {
     return {
+      msgCheck:{},
       reqObj: "",
       loading: false,
       queryParamReady: false,
@@ -297,10 +303,10 @@ export default {
     setTask,
     singleTask,
     tableInver,
-    dataInver,
     pathFtp,
     norelaColl,
-    DialogTaskDetail
+    DialogTaskDetail,
+    DialogIsCheck
   },
   watch: {
     tableParams(newVal, oldVal) {
@@ -344,6 +350,12 @@ export default {
 
   },
   methods: {
+    //数据核验
+    dataInverCheck(row){
+      this.dialogVisible = true;
+      this.msgCheck.taskInfoId= row.accessConnectorSource.taskInfoId;
+      this.msgCheck.targetTableName = row.name;
+    },
     //判断hdfs
     isParquet(){
      let _self = this;
