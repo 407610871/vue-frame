@@ -2,7 +2,7 @@
   <div class="taskMDialog" style="padding-bottom:15px;">
     <el-dialog width="60%" :title="title" :visible.sync="showInnerDialog" class="check-data-dialog" @closed="closeDiaChk" :close-on-click-modal="false">
       <div slot="title">
-        {{title}}
+        <span class="el-dialog__title">{{title}}</span>
         <div class="title-gra">
           <span class="grab gra-l"></span>
           <span class="grab gra-r"></span>
@@ -592,7 +592,7 @@ h5 {
     max-height: calc(100% - 30vh);
   }
   .el-dialog__body{
-    max-height: calc(100% - 76px);
+    max-height: calc(100% - 82px);
     overflow: auto;
     position: relative;
   }
