@@ -189,6 +189,7 @@
     <!-- 表格数据 -->
     <div class="mainTable">
       <el-table
+        border
         ref="multipleTable"
         :data="tableData"
         tooltip-effect="light"

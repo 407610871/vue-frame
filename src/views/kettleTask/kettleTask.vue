@@ -37,7 +37,6 @@
                 </div>
             </el-form-item>
         </el-form>
-        <transition name="fade-transform" mode="out-in">
         <el-form ref="form"  label-width="110px" class="formGroup" v-if="moreSearch">
             <el-form-item label="任务状态:">
                 <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>
@@ -57,7 +56,6 @@
                 </el-date-picker>
             </el-form-item>
         </el-form>
-        </transition>
     </div>
     <el-table :data="tableData" :height="tableHeight" stripe border class="table-data-list" tooltip-effect="light">
         <el-table-column label="序号" type="index" width="100"></el-table-column>
