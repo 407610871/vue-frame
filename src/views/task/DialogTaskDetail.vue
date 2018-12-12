@@ -208,7 +208,7 @@
             <el-tabs type="border-card" style="height:265px;">
               <el-tab-pane label="汇聚任务日志信息">
                 <div class="dataCheck-tab" v-loading="loading4">
-                  <textarea v-show="taskLog!=''" name="" id="" cols="30" rows="12" disabled="disabled" style="resize:none;width: 100%; height: 180px;border:none;background:inherit" >{{taskLog}}</textarea>
+                  <textarea v-show="taskLog!=''" name="" id="" cols="30" rows="12" disabled="disabled" style="resize:none;width: 100%; height: 180px;border:none;background:inherit" v-model="taskLog"></textarea>
                   <div class="tips-none" v-show="taskLog==''">暂无数据</div>
                 </div>
               </el-tab-pane>

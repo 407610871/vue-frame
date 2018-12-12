@@ -10,13 +10,11 @@
       </div>
       <!-- loading -->
       <div v-loading="loading" element-loading-text="核验中，请稍等..." element-loading-spinner="el-icon-loading" element-loading-background="rgba(255, 251, 251, 0.77)">
-        <div class="dialig_table" id="dialig_table">
-        </div>
         <div class="checkData">
           校验设置：
           <el-radio v-model="radio" label="0" @change="checkChange" style="color:rgb(96, 98, 102);">全量核验</el-radio>
           <el-radio v-model="radio" label="1" @change="checkChange" style="color:rgb(96, 98, 102);" :disabled="!this.queryTargetColumnList.length">根据时间范围核验</el-radio>
-          <el-button type="" size="small" class="checkBtn" @click="doCheck" v-model="status">{{status}}</el-button>
+          <el-button type="" size="small" class="checkBtn" @click="doCheck">{{status}}</el-button>
           <div class="">
             <div class="range">
               <span style="color:rgb(96, 98, 102);">核验误差范围:&nbsp;&nbsp;</span>
@@ -460,6 +458,7 @@ export default {
 .checkData {
   border-bottom: 1px solid #2f6ac5;
   height: 126px;
+  position: relative;
 }
 
 .checkBtn {
@@ -594,7 +593,6 @@ h5 {
   .el-dialog__body{
     max-height: calc(100% - 82px);
     overflow: auto;
-    position: relative;
   }
 }
 

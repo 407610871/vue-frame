@@ -1073,12 +1073,6 @@ export default {
   margin: 0 auto;
   padding-top: 20px;
 }
-
-.formGroup {
-  // width: 60%;
-  // max-width: 680px;
-  // float: left;
-}
 .timeSearch {
   // width: 40%;
   float: left;
