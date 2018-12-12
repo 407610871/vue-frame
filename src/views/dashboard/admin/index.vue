@@ -200,7 +200,7 @@ export default {
         .then(function(res) {
           if (res.data.success) {
             if (!res.data.data.data) {
-              _self.countTotal = res.data.data.total;
+              // _self.countTotal = res.data.data.total;
               _self.count1Data.total = res.data.data.dPercentage;
               _self.count1Data.list = res.data.data.discontinuousPercentage;
               _self.count2Data.total = res.data.data.cPercentage;
@@ -316,6 +316,7 @@ export default {
             _self.mainTableData = res.data.data.list;
             _self.mainTableDataTotal = res.data.data.total;
             _self.currentPage = _self.tableParams.pageNum;
+            _self.countTotal = res.data.data.total;
           } else if (res.data.code == "5000") {
             _self.mainTableData = [];
             _self.mainTableDataTotal = 1;

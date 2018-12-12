@@ -189,6 +189,7 @@
     <!-- 表格数据 -->
     <div class="mainTable">
       <el-table
+       :row-class-name="tableRowClassName"
         ref="multipleTable"
         :data="tableData"
         tooltip-effect="light"
@@ -350,6 +351,7 @@ import DialogTaskDetail from "./DialogTaskDetail";
 const httpUrl = window.ENV.API_DOWN + "/";
 //websocket地址
 const wsUrl=`ws${httpUrl.substring(4,httpUrl.length-1)}/websocket`
+// const wsUrl="ws://10.19.160.213:8080/DOMN/websocket";
 // alert(wsUrl)
 //本地调试地址
 // const httpUrl="http://10.19.160.67:8081/DOMN/";
@@ -464,6 +466,15 @@ export default {
   },
 
   methods: {
+    //新增人物高亮
+    tableRowClassName({row,rowIndex}){
+       if (row.zc === 1) {
+          return 'success-row';
+        } 
+        return '';
+
+
+    },
     getSearchArea() {
       this.$nextTick(() => {
         this.searchHeight = this.$refs.searchArea.clientHeight;
@@ -494,6 +505,15 @@ export default {
             const redata = e.data;
 
       console.log(redata);
+        this.$message({
+          message:`实时播报：新增一条任务${redata}`,
+          type: 'success'
+        });
+        var tableZC2={};
+      tableZC2.zc=1;
+      tableZC2.taskInfoId=redata;
+       this.tableData.unshift(tableZC2);
+       console.log(this.tableData)
     },
     websocketclose(e) {
       //关闭
@@ -510,11 +530,10 @@ export default {
       let keyword = this.keyword;
       // this.websock.send(123);
 
-      // this.websocketsend();
       // this.tableData.unshift(tableZC);
       // console.log(this.$refs.multipleTable);
 
-      return;
+      // return;
       this.allSecectData = {};
       this.init(keyword);
     },
@@ -1186,6 +1205,9 @@ export default {
   max-height: 50%;
   overflow: auto;
 }
+ .mainTable .el-table .success-row {
+    background: #d9f9c8;
+  }
 .el-message-box__wrapper .el-message-box {
   max-height: 50%;
   overflow: auto;
