@@ -133,7 +133,7 @@
             </el-col>
             <el-col :span="10" class="plr30">
               <el-form-item label="初始数据量:" prop="datanum">
-                <el-input v-model="ruleForm.datanum" required></el-input>
+                <el-input v-model="ruleForm.datanum"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="24" class="tcenter mt30 sursavebtn">
@@ -166,7 +166,7 @@ export default {
     //判断初始数据量
     const validateNum = (rule, value, callback) => {
       if (value == "") {
-        callback(new Error("不能为空"));
+        callback();
       } else {
         let types = "^[0-9]*[1-9][0-9]*$";
         let rs = new RegExp(types);
@@ -218,7 +218,7 @@ export default {
       },
       formRules: {
         datanum: [
-          { required: true, validator: validateNum, trigger: "blur" }
+          { required: false, validator: validateNum, trigger: "blur" }
         ]
       },
 
@@ -384,13 +384,18 @@ export default {
             xzqyData = JSON.parse(res.data.data.xzqy);
             _self.ruleForm.pro = xzqyData[0].pro;
             _self._queryCity(_self.ruleForm.pro, 'city');
-            if (xzqyData[1].city != '' && xzqyData[1].city != undefined) {
-              _self.ruleForm.city = xzqyData[1].city;
-              _self._queryCity(_self.ruleForm.city, 'urban');
+            if (xzqyData.length == 2) {
+              if (xzqyData[1].city != '' && xzqyData[1].city != undefined) {
+                _self.ruleForm.city = xzqyData[1].city;
+                _self._queryCity(_self.ruleForm.city, 'urban');
+              }
             }
-            if (xzqyData[2].urban != '' && xzqyData[2].urban != undefined) {
-              _self.ruleForm.urban = xzqyData[2].urban;
+            if (xzqyData.length == 3) {
+              if (xzqyData[2].urban != '' && xzqyData[2].urban != undefined) {
+                _self.ruleForm.urban = xzqyData[2].urban;
+              }
             }
+
           }
         } else {
           _self.areaFlag = true;

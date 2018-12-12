@@ -393,6 +393,7 @@ export default {
       loading: false,
       testflag: false,
       isDisableClassFlag: false,
+      modyData:[],
       appId: '',
       ruleForm: {
         jrname: '',
@@ -655,6 +656,11 @@ export default {
       this.testflag = false;
       console.log(this.ruleForm.syskind);
       var _self = this;
+      var modifyFlag ='';
+      console.log(this.modyData['ipname']);
+      if(_self.ruleForm.ipname!=this.modyData[0].ipname||_self.ruleForm.username!=this.modyData[3].username||_self.ruleForm.password!=this.modyData[4].password||_self.ruleForm.iport!=this.modyData[1].iport||_self.ruleForm.instanceName!=this.modyData[2].instanceName||_self.ruleForm.model!=this.modyData[5].model){
+         modifyFlag = '1';
+      }
       this.$refs[formName].validate((valid) => {
         if (valid) {
           let save = {};
@@ -667,16 +673,13 @@ export default {
             "contactsPhone": _self.ruleForm.prophone, //数据提供人电话
             "contactsEmail": _self.ruleForm.proemail, //数据提供人 邮箱
             "accessSysDeptInfoId": _self.ruleForm.dockid, //所属部门
+            "modifyFlag":modifyFlag,
             "attr": [{
                 //数据提供人姓名
                 "key": "sourceQQ",
                 "value": _self.ruleForm.proqq
               },
-              {
-                //是否修改用户名和密码
-                "key": "modifyFlag",
-                "value": "1"
-              },
+              
               {
                 //数据提供人电话
                 "key": "sourceEmail",
@@ -961,6 +964,7 @@ export default {
           this.ruleForm.prophone = data.contactsPhone;
           this.ruleForm.proemail = data.contactsEmail;
           this.ruleForm.dockid = data.accessSysDeptInfoId;
+
           //属性
           for (let i = 0; i < data.attr.length; i++) {
             if (data.attr[i].key == 'sourceQQ') {
@@ -989,24 +993,42 @@ export default {
             }
             if (data.attr[i].key == 'ip') {
               this.ruleForm.ipname = data.attr[i].value;
+              this.modyData.push({
+                'ipname':data.attr[i].value
+              })
             }
             if (data.attr[i].key == 'port') {
               this.ruleForm.iport = data.attr[i].value;
+               this.modyData.push({
+                'iport':data.attr[i].value
+              })
             }
             if (data.attr[i].key == 'url') {
               this.ruleForm.url = data.attr[i].value;
             }
             if (data.attr[i].key == 'databasename') {
               this.ruleForm.instanceName = data.attr[i].value;
+              this.modyData.push({
+                'instanceName':data.attr[i].value
+              })
             }
             if (data.attr[i].key == 'username') {
               this.ruleForm.username = data.attr[i].value;
+               this.modyData.push({
+                'username':data.attr[i].value
+              })
             }
             if (data.attr[i].key == 'password') {
               this.ruleForm.password = data.attr[i].value;
+              this.modyData.push({
+                'password':data.attr[i].value
+              })
             }
             if (data.attr[i].key == 'model') {
               this.ruleForm.model = data.attr[i].value;
+              this.modyData.push({
+                'model':data.attr[i].value
+              })
             }
             if (data.attr[i].key == 'linkman') {
               this.ruleForm.proname = data.attr[i].value;
@@ -1016,6 +1038,9 @@ export default {
             }
             if (data.attr[i].key == 'transmode') {
               this.ruleForm.transmode = data.attr[i].value;
+               this.modyData.push({
+                'transmode':data.attr[i].value
+              })
             }
             if (data.attr[i].key == 'fromPath') {
               this.ruleForm.fromPath = data.attr[i].value;

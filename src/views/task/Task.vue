@@ -340,7 +340,7 @@
     <!-- 任务详情 -->
     <dialogTaskDetail :reqObj="reqObj" v-if="showTaskDetail" v-on:closeDia="showTaskDetail=false"></dialogTaskDetail>
 
-    <DialogIsCheck v-if="showTaskCheck" v-on:closeDiaChk="showTaskCheck=false" :msgCheck="check"></DialogIsCheck>
+    <DialogIsCheck v-if="showTaskCheck" v-on:closeDiaChk="showTaskCheck=false" :msgCheck="check" :title="dialogIsCheckTitile"></DialogIsCheck>
   </div>
 </template>
 <script>
@@ -426,6 +426,9 @@ export default {
     }
   },
   computed: {
+    dialogIsCheckTitile(){
+      return `表${this.check.taskName}数据核验`;
+    },
     departmentId: function() {
       return this.$store.state.deptId;
 

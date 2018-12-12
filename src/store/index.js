@@ -37,6 +37,7 @@ const queryParamsDefault = {
     dataSourceName: [],
     network: [],
     platform: [],
+    deptId: [],
     condition: '',
     pageNum: 1,
     timeFlag: 0
@@ -79,6 +80,7 @@ const store = new Vuex.Store({
     modeStyle: '', //用户选择的接入方式
     noreData: [], //非关系型数据
     delimiter: '', //非关系型分隔符
+    isSign:false //采集中的数据标记是否保存
   },
   mutations: {
     setPageSize(state, pageSize) {
@@ -166,6 +168,11 @@ const store = new Vuex.Store({
       state.delimiter = '';
       state.delimiter = obj;
     },
+    //是否保存采集的用户标记
+    setIsSign(state,obj){
+      state.isSign = true;
+      state.isSign = obj;
+    }
   },
   modules: {
     app,

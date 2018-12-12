@@ -85,9 +85,11 @@
             </ul>
             <ul>
               <li class="manual_check_result">
-                <el-radio v-if="this.resData.testresults_manual_check_result==='0'">合格</el-radio>
-                <el-radio v-else-if="this.resData.testresults_manual_check_result==='1'">不合格</el-radio>
-                <span v-else-if="this.resData.testresults_manual_check_result==null" style="color:#606266">无</span>
+                <span v-if="this.resData.testresults_manual_check_result==null" style="color:#606266">无</span>
+                <template v-else>
+                  <el-radio v-model="resData.testresults_manual_check_result" label="0" @change="error()">合格</el-radio>
+                  <el-radio v-model="resData.testresults_manual_check_result" label="1" @change="error()">不合格</el-radio>
+                </template>
               </li>
               <li style="opacity:0">h</li>
             </ul>
@@ -97,7 +99,7 @@
           <textarea name="" id="" disabled="disabled" v-model="loginfo"></textarea>
         </div>
         <h5>核验历史记录：</h5>
-        <el-table :data="resDataHistory" class="check-history-table">
+        <el-table :data="resDataHistory" class="check-history-table" stripe>
           <el-table-column prop="accessCheckTime" label="核验时间">
           </el-table-column>
           <el-table-column label="核验方式">
@@ -137,9 +139,10 @@ export default {
   beforeCreate() {
     window.dialogIsCheck = this;
   },
-  props: ["msgCheck"],
+  props: ["msgCheck","title"],
   created() {
     this.init();
+    console.log(this.msgCheck,111)
   },
   data: function() {
     return {
@@ -171,11 +174,29 @@ export default {
     };
   },
   computed: {
-    title() {
-      return `表 ${this.msgCheck.taskName}数据核验`;
-    },
+
   },
   methods: {
+    //纠错功能
+    error() {
+      this.loading = true;
+      this.$ajax({
+        method: "POST",
+        url: baseUrl + '/ccheckData/modifyCheckResult',
+        data: {
+          "id": this.resData.id,
+          "manual_check_result": this.resData.testresults_manual_check_result
+        }
+
+      }).then(res => {
+        this.loading = false;
+        if (res.data.success) {
+          this.$alert("纠错成功");
+        } else {
+          this.$alert("纠错失败");
+        }
+      })
+    },
     checkNumber(val) {
       let reg = /^-?\d+$/;
       if (!reg.test(val)) {
@@ -555,8 +576,8 @@ h5 {
   margin-bottom: 10px;
 }
 .export-btn.el-button{
-  color: white;
-  background-color: #2f6ac5;
+  color: white!important;
+  background-color: #2f6ac5!important;
 }
 </style>
 <style lang="scss">
@@ -590,8 +611,8 @@ h5 {
     font-size: 12px;
   }
   thead {
-    color: #333;
-    background-color: #FFF;
+    //color: #333;
+    //background-color: #FFF;
   }
   th.is-leaf {
     border-bottom: 1px solid #dcdddd;
