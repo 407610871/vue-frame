@@ -127,7 +127,7 @@ export default {
 };
 
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 @import "@/assets/css/base.scss";
 @import "@/assets/css/dialog.scss";
 .userSurveyDialog .el-dialog__body {
