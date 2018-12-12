@@ -1,9 +1,12 @@
 <template>
   <div class="taskMDialog" style="padding-bottom:15px;">
     <el-dialog width="60%" :title="title" :visible.sync="showInnerDialog" class="check-data-dialog" @closed="closeDiaChk" :close-on-click-modal="false">
-      <div class="title-gra">
-        <span class="grab gra-l"></span>
-        <span class="grab gra-r"></span>
+      <div slot="title">
+        <span class="el-dialog__title">{{title}}</span>
+        <div class="title-gra">
+          <span class="grab gra-l"></span>
+          <span class="grab gra-r"></span>
+        </div>
       </div>
       <!-- loading -->
       <div v-loading="loading" element-loading-text="核验中，请稍等..." element-loading-spinner="el-icon-loading" element-loading-background="rgba(255, 251, 251, 0.77)">
@@ -95,11 +98,13 @@
             </ul>
           </div>
         </div>
-        <div class="checkDetail" style="height:261px;" v-loading="loading2" v-show="textShow">
-          <textarea name="" id="" disabled="disabled" v-model="loginfo"></textarea>
-        </div>
+        <transition name="fade-transform" mode="out-in">
+          <div class="checkDetail" style="height:261px;" v-loading="loading2" v-show="textShow">
+            <textarea name="" id="" disabled="disabled" v-model="loginfo"></textarea>
+          </div>
+        </transition>
         <h5>核验历史记录：</h5>
-        <el-table :data="resDataHistory" class="check-history-table" stripe>
+        <el-table :data="resDataHistory" class="check-history-table" stripe border>
           <el-table-column prop="accessCheckTime" label="核验时间">
           </el-table-column>
           <el-table-column label="核验方式">
@@ -585,8 +590,11 @@ h5 {
   .el-dialog {
     min-width: 860px;
     max-height: calc(100% - 30vh);
+  }
+  .el-dialog__body{
+    max-height: calc(100% - 82px);
     overflow: auto;
-  //  height: 100%;
+    position: relative;
   }
 }
 
