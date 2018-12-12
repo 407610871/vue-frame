@@ -188,18 +188,43 @@ export default {
     },
     setCount(id) {//此处vuex获取的值，比$root慢
       var ids=[];
-      id?ids=id:ids=this.tableParams.deptId;
+     id?ids=id:ids=this.tableParams.deptId;
+      var _self = this;
+      _self.loading = true;
+      // this.pageSize = this.$store.state.pageSize;
+      var paramsObj = {
+        // pageSize: this.$store.state.pageSize,
+        // pageNum: this.tableParams.pageNum,
+        domain: "0",
+        _: new Date().getTime()
+      };
+      paramsObj.condition = this.tableParams.condition
+        ? this.tableParams.condition
+        : "";
+      paramsObj.network = this.tableParams.network
+        ? this.tableParams.network
+        : [];
+      paramsObj.dataSourceName = this.tableParams.dataSourceName
+        ? this.tableParams.dataSourceName
+        : [];
+      paramsObj.platform = this.tableParams.platform
+        ? this.tableParams.platform
+        : [];
+           paramsObj.deptIds =ids;
 
       var _self = this;
       // this.$ajax.post('http://10.19.160.29:8080/DACM/caccess/dataAccessStatistics',this.tableParams.deptId
       this.$ajax
         .post(
-          window.ENV.API_DACM + "/caccess/dataAccessStatistics",
-         ids
+          // window.ENV.API_DACM + "/caccess/dataAccessStatistics",
+          "http://10.19.160.67:8083/DACM/caccess/dataAccessStatistics",
+         paramsObj
         )
         .then(function(res) {
+         console.log(res);
           if (res.data.success) {
-            if (!res.data.data.data) {
+            
+            if (res.data.data.discontinuousPercentage) {
               // _self.countTotal = res.data.data.total;
               _self.count1Data.total = res.data.data.dPercentage;
               _self.count1Data.list = res.data.data.discontinuousPercentage;
@@ -441,6 +466,7 @@ export default {
         timeFlag: new Date().getTime()
       });
       this.loadTable();
+      this.setCount();
     },
     changeFormFilter: function(fliterParams) {
       // console.log(fliterParams)
