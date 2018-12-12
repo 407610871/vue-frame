@@ -802,6 +802,9 @@ export default {
             that.doMsg("/manager/taskOperate/taskLogInfo/"+res.data.data.message,'error');
           }else{
             that.taskLog = res.data.data.logInfo==""?"":`\t${res.data.data.logInfo}`;
+            if(that.taskLog.indexOf("暂无日志信息！")!=-1){
+              that.taskLog="数据汇聚成功";
+            }
             // that.taskLog = `java.lang.IndexOutOfBoundsException: Index: 0, Size: 0 \n\t at java.util.ArrayList.rangeCheck(ArrayList.java:653)\n\tat java.util.ArrayList.get(ArrayList.java:429)\n\tat cn.enn.com.jdbc.source.JdbcSourceTask.poll(JdbcSourceTask.java:284)\n\tat org.apache.kafka.connect.runtime.WorkerSourceTask.execute(WorkerSourceTask.java:204)\n\tat org.apache.kafka.connect.runtime.WorkerTask.doRun(WorkerTask.java:170)\n\tat org.apache.kafka.connect.runtime.WorkerTask.run(WorkerTask.java:214)\n\tat java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)\n\tat java.util.concurrent.FutureTask.run(FutureTask.java:266)\n\tat java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)\n\tat java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)\n\tat java.lang.Thread.run(Thread.java:745)\n`;
           }
           that.loading4 = false;
