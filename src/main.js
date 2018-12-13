@@ -9,6 +9,7 @@ import "element-ui/lib/theme-chalk/index.css";
 import "./assets/icon/iconfont.css";
 
 import "@/styles/index.scss"; // global css
+import "@/styles/index.scss"; // global css
 
 import App from "./App.vue";
 import router from "./router";
@@ -45,7 +46,7 @@ Vue.prototype.$ajax.interceptors.request.use(
     Promise.reject(error);
   }
 );
-
+require('animate.css/animate.min.css');
 import Authen from "./Authen.js";
 import VJstree from "vue-jstree";
 import Viser from "viser-vue";

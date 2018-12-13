@@ -1,5 +1,5 @@
 // this is vue config
-/* eslint-disable */
+// /* eslint-disable */
 module.exports = {
   pwa: {
     iconPaths: {

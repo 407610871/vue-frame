@@ -216,8 +216,8 @@ export default {
       // this.$ajax.post('http://10.19.160.29:8080/DACM/caccess/dataAccessStatistics',this.tableParams.deptId
       this.$ajax
         .post(
-          // window.ENV.API_DACM + "/caccess/dataAccessStatistics",
-          "http://10.19.160.67:8083/DACM/caccess/dataAccessStatistics",
+          window.ENV.API_DACM + "/caccess/dataAccessStatistics",
+          // "http://10.19.160.67:8083/DACM/caccess/dataAccessStatistics",
          paramsObj
         )
         .then(function(res) {
