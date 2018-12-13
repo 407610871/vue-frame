@@ -102,16 +102,33 @@ export default {
   watch: {
     tableParams(newVal, oldVal) {
       if (this.queryParamReady) {
-        this.loadTable();
+         this.loadTable(this.$store.state.deptId);
       }
     }
   },
   created() {
     this.$root.eventHub.$on('search', (keyword) => {
       this.search(keyword);
-    })
+    });
+    //console.log(this.$store.state.queryParams.recyclingBins);
   },
   mounted() {
+    this.$root.eventHub.$emit(
+      "selTreeNode",
+      this.$store.state.queryParams[this.$route.name].deptId
+    );
+    this.$root.eventHub.$emit("setActiveNav", 1);
+    
+    //this.setCount();
+    //从create移过来
+    this.$root.eventHub.$on("selDept", ids => {
+      console.log("545454");
+      this.setStore({
+        deptId: ids
+      });
+      //this.setCount(ids);
+      //this.loadTable(ids);
+    });
     this.storeReady();
   },
   methods: {
@@ -144,7 +161,9 @@ export default {
     collapseExpand: function() {
       this.collapse = !this.collapse;
     },
-    loadTable: function() {
+    loadTable: function(id) {
+      var ids=[];
+     id?ids=id:ids=this.tableParams.deptId;
       var _self = this;
       _self.loading = true;
       _self.pageSize = this.$store.state.pageSize;
@@ -157,7 +176,7 @@ export default {
       paramsObj.network = this.tableParams.network;
       paramsObj.dataSourceName = this.tableParams.dataSourceName;
       paramsObj.platform = this.tableParams.platform;
-      paramsObj.deptIds = this.tableParams.deptId;
+      paramsObj.deptIds = ids;
       this.$ajax.post(window.ENV.API_DACM + '/caccess/query', paramsObj).then(function(res) {
           // console.log('tableLoaded:dashboard');
           if (res.data.success) {
@@ -252,6 +271,8 @@ export default {
       });
     },
     setStore: function(obj) {
+      console.log("1213212");
+      console.log(JSON.parse(JSON.stringify(obj)))
       let storeData = JSON.parse(JSON.stringify(this.$store.state.queryParams[this.$route.name]));
       for (var i in obj) {
         storeData[i] = obj[i];
@@ -280,7 +301,7 @@ export default {
       var fliterItemList = this.$store.state.fliterItemList
       if (fliterItemList.network.ready && fliterItemList.dataSourceName.ready && fliterItemList.platform.ready && this.$store.state.pageReady) {
         this.setFliter(fliterItemList);
-        this.loadTable();
+        this.loadTable(this.$store.state.deptId);
       } else {
         var _self = this;
         setTimeout(function() {

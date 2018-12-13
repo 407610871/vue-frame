@@ -1,5 +1,5 @@
 <template>
-  <div v-loading="loading">
+  <div v-loading="loading" class="task-template">
     <!-- 搜索栏 -->
     <div class="count-container" ref="searchArea">
       <!-- 查询按钮 -->
@@ -189,6 +189,7 @@
     <!-- 表格数据 -->
     <div class="mainTable">
       <el-table
+        border
        :row-class-name="tableRowClassName"
         ref="multipleTable"
         :data="tableData"
@@ -466,14 +467,21 @@ export default {
   },
 
   methods: {
+    removeCla(){
+      this.tableData.forEach(item=>{
+        if(item.zc == 1) item.zc = 0;
+      });
+    },
     //新增人物高亮
     tableRowClassName({row,rowIndex}){
-       if (row.zc === 1) {
-          return 'success-row';
-        } 
-        return '';
-
-
+      if (row.zc === 1&&rowIndex == 0) {
+         // return 'success-row';
+         return 'animated slideInLeft success-row';
+      }else if(row.zc === 0){
+        return 'success-row';
+      }else{
+          return '';
+      }
     },
     getSearchArea() {
       this.$nextTick(() => {
@@ -502,18 +510,16 @@ export default {
       //数据接收
     websocketonmessage(e) {
       // const redata = JSON.parse(e.data);
-            const redata = e.data;
-
-      console.log(redata);
-        this.$message({
-          message:`实时播报：新增一条任务${redata}`,
-          type: 'success'
-        });
-        var tableZC2={};
-      tableZC2.zc=1;
-      tableZC2.taskInfoId=redata;
-       this.tableData.unshift(tableZC2);
-       console.log(this.tableData)
+      const redata = e.data;
+        this.removeCla();
+      let tim = setTimeout(()=>{
+          this.$message({
+            message:`实时播报：新增一条任务${redata}`,
+            type: 'success'
+          });
+          this.tableData.unshift({zc:1,taskInfoId:redata});
+          clearTimeout(tim);
+        },0);  
     },
     websocketclose(e) {
       //关闭
@@ -1175,41 +1181,44 @@ export default {
   }
 }
 </style>
-<style>
-.el-picker-panel__icon-btn {
-  color: #303133 !important;
-}
-.zcTable .el-table__fixed {
-  background-color: #fff;
-}
-.zcTable .el-table__body-wrapper {
-  background-color: #fff;
-}
-.el-table__body tbody tr:nth-child(2n) {
-  background-color: #e6e8ed;
-}
-.el-table__body tbody tr:nth-child(2n + 1) {
-  background-color: #eff3f6;
-}
-.el-table__body tr.hover-row > td {
-  background-color: #95a1b3 !important;
-  color: #fff;
-}
-.el-message-box {
-  max-height: 50%;
-  overflow: auto;
-}
- .mainTable .el-table .success-row {
-    background: #d9f9c8;
+<style rel="stylesheet/scss" lang="scss">
+.task-template{
+  .el-picker-panel__icon-btn {
+    color: #303133 !important;
   }
-.el-message-box__wrapper .el-message-box {
-  max-height: 50%;
-  overflow: auto;
+  .zcTable .el-table__fixed {
+    background-color: #fff;
+  }
+  .zcTable .el-table__body-wrapper {
+    background-color: #fff;
+  }
+  .el-table__body tbody tr:nth-child(2n) {
+    background-color: #e6e8ed;
+  }
+  .el-table__body tbody tr:nth-child(2n + 1) {
+    background-color: #eff3f6;
+  }
+  .el-table__body tr.hover-row > td {
+    background-color: #95a1b3 !important;
+    color: #fff;
+  }
+  .el-message-box {
+    max-height: 50%;
+    overflow: auto;
+  }
+  .mainTable .el-table .success-row {
+      background: #d9f9c8;
+    }
+  .el-message-box__wrapper .el-message-box {
+    max-height: 50%;
+    overflow: auto;
+  }
+  .task-query-form .el-checkbox {
+    width: auto;
+    margin-left: 15px;
+  }
 }
-.task-query-form .el-checkbox {
-  width: auto;
-  margin-left: 15px;
-}
+
 </style>
 
 

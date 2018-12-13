@@ -98,6 +98,7 @@ export default {
     .el-menu-item {
       height: $enc-nav-header-height;
       line-height: $enc-nav-header-height;
+      font-size:15px;
       i {
         margin-right: 10px;
         font-size: 36px;
