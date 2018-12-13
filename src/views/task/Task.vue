@@ -1,7 +1,7 @@
 <template>
-  <div v-loading="loading">
+  <div v-loading="loading" class="task-template">
     <!-- 搜索栏 -->
-    <div class="count-container task-template" ref="searchArea">
+    <div class="count-container" ref="searchArea">
       <!-- 查询按钮 -->
       <div class="searchDiv">
         <div class="dataSearch">
@@ -348,7 +348,6 @@
 <script>
 import DialogIsCheck from "./DialogIsCheck";
 import DialogTaskDetail from "./DialogTaskDetail";
-import { setTimeout, clearTimeout } from 'timers';
 //盐城环境地址
 const httpUrl = window.ENV.API_DOWN + "/";
 //websocket地址
