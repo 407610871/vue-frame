@@ -63,7 +63,7 @@ export default {
       var map = {
         objectInfoId: this.rowList[0].id,
         pagNum: 1,
-        count: 20,
+        count: 200,
         term: ""
       }
       _self.loading = true;
