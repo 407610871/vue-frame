@@ -221,7 +221,7 @@ export default {
   methods: {
     //测试使用mapMutations的用法
     ...mapMutations([
-      'setUserList', 'setMode','setIsSign'
+      'setUserList', 'setMode', 'setIsSign'
     ]),
     //关闭对话框
     closeDialog() {
@@ -506,6 +506,7 @@ export default {
     },
     pre(formName) {
       this.setMode(this.ruleForm.datamode);
+
       console.log(this.$store.state.modeStyle);
       this.$refs[formName].validate((valid) => {
         if (valid) {
@@ -516,13 +517,16 @@ export default {
             console.log(this.$store.state.userList);
             if (this.ruleForm.rename != this.info.comments && this.ruleForm.rename != this.info.diyComments) {
               let _self = this;
+              _self.loading = true;
               _self.$ajax
                 .post(window.ENV.API_DACM + "/ctables/diyComments", {
                   objInfoId: _self.tableid,
                   value: _self.ruleForm.rename
                 })
                 .then(function(res) {
+                  _self.loading = false;
                   if (res.data.success) {
+
                     /* row.diyComments = _self.editingRow.diyComments;
                      row.showEdit = false;*/
                     _self.$emit('pre');
@@ -533,6 +537,7 @@ export default {
                   }
                 })
                 .catch(function(err) {
+                  _self.loading = false;
                   console.log(err);
 
                   _self.$alert("资源名称修改失败", "提示", {
@@ -542,7 +547,6 @@ export default {
             } else {
               this.$emit('pre');
             }
-
 
           } else {
             this.tableids = '';
@@ -596,14 +600,77 @@ export default {
             this.setUserList(saveInfo);
             console.log(this.$store.state.userList);
             this.setIsSign(this.userflag);
-            this.$emit('pre');
+            if (this.ruleForm.rename != this.info.comments && this.ruleForm.rename != this.info.diyComments) {
+              let _self = this;
+              _self.loading = true;
+              _self.$ajax
+                .post(window.ENV.API_DACM + "/ctables/diyComments", {
+                  objInfoId: _self.tableid,
+                  value: _self.ruleForm.rename
+                })
+                .then(function(res) {
+                  _self.loading = false;
+                  if (res.data.success) {
+
+                    /* row.diyComments = _self.editingRow.diyComments;
+                     row.showEdit = false;*/
+                    _self.$emit('pre');
+                  } else {
+                    _self.$alert("资源名称修改失败", "提示", {
+                      confirmButtonText: "确定"
+                    });
+                  }
+                })
+                .catch(function(err) {
+                  _self.loading = false;
+                  console.log(err);
+
+                  _self.$alert("资源名称修改失败", "提示", {
+                    confirmButtonText: "确定"
+                  });
+                });
+            } else {
+              this.$emit('pre');
+            }
           }
         } else {
           var saveInfo = {};
           this.setUserList(saveInfo);
           this.setIsSign(false);
           console.log(this.$store.state.userList);
-          this.$emit('pre');
+
+          if (this.ruleForm.rename != this.info.comments && this.ruleForm.rename != this.info.diyComments) {
+            let _self = this;
+            _self.loading = true;
+            _self.$ajax
+              .post(window.ENV.API_DACM + "/ctables/diyComments", {
+                objInfoId: _self.tableid,
+                value: _self.ruleForm.rename
+              })
+              .then(function(res) {
+                _self.loading = false;
+                if (res.data.success) {
+
+                  /* row.diyComments = _self.editingRow.diyComments;
+                   row.showEdit = false;*/
+                  _self.$emit('pre');
+                } else {
+                  _self.$alert("资源名称修改失败", "提示", {
+                    confirmButtonText: "确定"
+                  });
+                }
+              })
+              .catch(function(err) {
+                _self.loading = false;
+                console.log(err);
+
+                _self.$alert("资源名称修改失败", "提示", {
+                  confirmButtonText: "确定"
+                });
+              });
+          } else {
+            this.$emit('pre');
+          }
         }
       });
 
