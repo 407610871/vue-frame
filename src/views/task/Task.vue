@@ -1,7 +1,7 @@
 <template>
   <div v-loading="loading">
     <!-- 搜索栏 -->
-    <div class="count-container" ref="searchArea">
+    <div class="count-container task-template" ref="searchArea">
       <!-- 查询按钮 -->
       <div class="searchDiv">
         <div class="dataSearch">
@@ -1175,41 +1175,44 @@ export default {
   }
 }
 </style>
-<style>
-.el-picker-panel__icon-btn {
-  color: #303133 !important;
-}
-.zcTable .el-table__fixed {
-  background-color: #fff;
-}
-.zcTable .el-table__body-wrapper {
-  background-color: #fff;
-}
-.el-table__body tbody tr:nth-child(2n) {
-  background-color: #e6e8ed;
-}
-.el-table__body tbody tr:nth-child(2n + 1) {
-  background-color: #eff3f6;
-}
-.el-table__body tr.hover-row > td {
-  background-color: #95a1b3 !important;
-  color: #fff;
-}
-.el-message-box {
-  max-height: 50%;
-  overflow: auto;
-}
- .mainTable .el-table .success-row {
-    background: #d9f9c8;
+<style rel="stylesheet/scss" lang="scss">
+.task-template{
+  .el-picker-panel__icon-btn {
+    color: #303133 !important;
   }
-.el-message-box__wrapper .el-message-box {
-  max-height: 50%;
-  overflow: auto;
+  .zcTable .el-table__fixed {
+    background-color: #fff;
+  }
+  .zcTable .el-table__body-wrapper {
+    background-color: #fff;
+  }
+  .el-table__body tbody tr:nth-child(2n) {
+    background-color: #e6e8ed;
+  }
+  .el-table__body tbody tr:nth-child(2n + 1) {
+    background-color: #eff3f6;
+  }
+  .el-table__body tr.hover-row > td {
+    background-color: #95a1b3 !important;
+    color: #fff;
+  }
+  .el-message-box {
+    max-height: 50%;
+    overflow: auto;
+  }
+  .mainTable .el-table .success-row {
+      background: #d9f9c8;
+    }
+  .el-message-box__wrapper .el-message-box {
+    max-height: 50%;
+    overflow: auto;
+  }
+  .task-query-form .el-checkbox {
+    width: auto;
+    margin-left: 15px;
+  }
 }
-.task-query-form .el-checkbox {
-  width: auto;
-  margin-left: 15px;
-}
+
 </style>
 
 
