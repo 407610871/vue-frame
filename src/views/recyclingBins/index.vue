@@ -109,10 +109,12 @@ export default {
   created() {
     this.$root.eventHub.$on('search', (keyword) => {
       this.search(keyword);
-    })
+    });
+    console.log(this.$store.state.queryParams.recyclingBins);
   },
   mounted() {
     this.storeReady();
+    console.log(this.$store.state.queryParams.recyclingBins);
   },
   methods: {
     setFliter(data) {
