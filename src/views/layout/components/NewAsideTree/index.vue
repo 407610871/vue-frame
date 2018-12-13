@@ -1,12 +1,12 @@
 <template>
   <div id="NewAisdeTree">
-    <div class="tree-tools" >
+    <div class="tree-tools">
       <a href="javascript:void(0)" v-on:click="addNode" :style="styleObj"><i class="el-icon-plus"></i></a>
       <a href="javascript:void(0)" v-on:click="editNode" :style="styleObj"><i class="el-icon-edit"></i></a>
       <a href="javascript:void(0)" v-on:click="delNode" :style="styleObj"><i class="el-icon-close"></i></a>
     </div>
     <div class="treeContainer">
-      <el-tree v-if="dataReady" :data="data" v-bind:style="{'height':treeHeight+'px'}" node-key="id" show-checkbox default-expand-all highlight-current draggable :props="defaultProps" check-strictly :default-checked-keys="checkedDepts" @node-click="handleNodeClick" @check="selDept" @node-drop="dragDept" ref="tree">
+      <el-tree v-if="dataReady" :data="data" v-bind:style="{'height':treeHeight+'px'}" node-key="id" show-checkbox default-expand-all highlight-current draggable :props="defaultProps" check-strictly :default-checked-keys="checkedDepts" @node-click="handleNodeClick" @check="selDept" @node-drop="dragDept" ref="tree" :allow-drop="allowDrop">
       </el-tree>
     </div>
     <el-dialog title="请输入部门节点名称" :visible.sync="dialogVisible" width="30%" class="input-dialog">
@@ -114,30 +114,39 @@ export default {
         this.selDeptFirst();
       }
     },
+    allowDrop(draggingNode, dropNode, type) {
+      debugger;
+      console.log(dropNode.data.id)
+      if (dropNode.data.id == '1') {
+        return false;
+      } else {
+        return true;
+      }
+    },
     nodeAJax() {
       var _self = this;
-      if (_self.itemTxt.replace(/^\s+|\s+$/g,"")==""){
-          _self.$alert('请输入部门节点名称', '提示', {
-              confirmButtonText: '确定'
-            });
-            return;
-        }
+      if (_self.itemTxt.replace(/^\s+|\s+$/g, "") == "") {
+        _self.$alert('请输入部门节点名称', '提示', {
+          confirmButtonText: '确定'
+        });
+        return;
+      }
       if (this.actionFlag == 'add') {
         let len = _self.editingNode.children.length;
-        let level=0;
-        if(len==0){
-          level=0;
-        }else{
-          console.log("level-----",level);
-          level = Number(_self.editingNode.children[len-1].level)+1;
+        let level = 0;
+        if (len == 0) {
+          level = 0;
+        } else {
+          console.log("level-----", level);
+          level = Number(_self.editingNode.children[len - 1].level) + 1;
         }
         this.$ajax.post(window.ENV.API_DACM + '/deptInfo/insertDeptInfo?pid=' + this.editingNode.id + '&deptName=' + this.itemTxt + '&level=' + level).then(function(res) {
             // this.$ajax.post('./addDept').then(function(res){
             console.log('addsuccess');
             console.log(res);
-            if (res.data.success=="true") {
+            if (res.data.success == "true") {
               _self.dialogVisible = false;
-              const newChild = { id: res.data.id, deptName: _self.itemTxt,level:level, children: [] };
+              const newChild = { id: res.data.id, deptName: _self.itemTxt, level: level, children: [] };
               if (!_self.editingNode.children) {
                 _self.$set(_self.editingNode, 'children', []);
               }
@@ -165,7 +174,7 @@ export default {
           _self.$ajax.post(window.ENV.API_DACM + '/deptInfo/updateDeptInfo?id=' + _self.editingNode.id + '&deptName=' + _self.itemTxt).then(function(res) {
               // this.$ajax.post('./success').then(function(res){
               console.log('editsuccess');
-              if (res.data.success=="true") {
+              if (res.data.success == "true") {
                 _self.dialogVisible = false;
                 _self.editingNode.deptName = _self.itemTxt;
               } else {
@@ -203,8 +212,8 @@ export default {
     delNodeAjax() {
       var _self = this;
       const promise0 = new Promise((resolve, reject) => {
-       /* this.$ajax.post(window.ENV.API_DACM + '/deptInfo/delDeptInfo?id=' + this.editingNode.id).then(function(res) {*/
-           this.$ajax.post(window.ENV.API_DACM + '/deptInfo/queryDeptInfo?id='+_self.editingNode.id).then(function(res){
+        /* this.$ajax.post(window.ENV.API_DACM + '/deptInfo/delDeptInfo?id=' + this.editingNode.id).then(function(res) {*/
+        this.$ajax.post(window.ENV.API_DACM + '/deptInfo/queryDeptInfo?id=' + _self.editingNode.id).then(function(res) {
           console.log(res);
           if (res.data.success) {
             resolve();
@@ -224,7 +233,7 @@ export default {
 
       Promise.all([promise0]).then(() => {
         this.$ajax.post(window.ENV.API_DACM + '/deptInfo/delDeptInfo?id=' + this.editingNode.id).then(function(res) {
-            if (res.data.success  != "false"&&res.data.success!=false) {//后端传过来的flag有“”所以以防万一
+            if (res.data.success != "false" && res.data.success != false) { //后端传过来的flag有“”所以以防万一
               const parent = _self.editingData.parent;
               const children = parent.data.children || parent.data;
               const index = children.findIndex(d => d.id === _self.editingNode.id);
@@ -235,9 +244,9 @@ export default {
               //传空数组给监控页面，如果当前选择不是
               _self.$root.eventHub.$emit('selDept', []);
               //跳转到dashboard路由锁在页面
-                if (_self.$route.name == "accessObjManage" || _self.$route.name == "accessObjInfo") {
-               _self.$router.push({ name: 'dashboard' });
-      }
+              if (_self.$route.name == "accessObjManage" || _self.$route.name == "accessObjInfo") {
+                _self.$router.push({ name: 'dashboard' });
+              }
             } else {
               console.log(res.data.code)
               _self.$alert('删除部门节点失败', '提示', {
@@ -258,9 +267,9 @@ export default {
         confirmButtonText: '确定'
       });
     },
-    selDept(node, nodeStatus) { 
-      window.localStorage.setItem('data-theme','theme1');
-      window.document.documentElement.setAttribute('data-theme','theme1')
+    selDept(node, nodeStatus) {
+      window.localStorage.setItem('data-theme', 'theme1');
+      window.document.documentElement.setAttribute('data-theme', 'theme1')
       var list = this.$refs.tree.getCheckedNodes();
       var deptIds = this.$refs.tree.getCheckedKeys();
       var factorial;
