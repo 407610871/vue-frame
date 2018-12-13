@@ -189,6 +189,7 @@
     <!-- 表格数据 -->
     <div class="mainTable">
       <el-table
+        border
        :row-class-name="tableRowClassName"
         ref="multipleTable"
         :data="tableData"
@@ -347,6 +348,7 @@
 <script>
 import DialogIsCheck from "./DialogIsCheck";
 import DialogTaskDetail from "./DialogTaskDetail";
+import { setTimeout, clearTimeout } from 'timers';
 //盐城环境地址
 const httpUrl = window.ENV.API_DOWN + "/";
 //websocket地址
@@ -466,14 +468,21 @@ export default {
   },
 
   methods: {
+    removeCla(){
+      this.tableData.forEach(item=>{
+        if(item.zc == 1) item.zc = 0;
+      });
+    },
     //新增人物高亮
     tableRowClassName({row,rowIndex}){
-       if (row.zc === 1) {
-          return 'success-row';
-        } 
-        return '';
-
-
+      if (row.zc === 1&&rowIndex == 0) {
+         // return 'success-row';
+         return 'animated slideInLeft success-row';
+      }else if(row.zc === 0){
+        return 'success-row';
+      }else{
+          return '';
+      }
     },
     getSearchArea() {
       this.$nextTick(() => {
@@ -502,18 +511,16 @@ export default {
       //数据接收
     websocketonmessage(e) {
       // const redata = JSON.parse(e.data);
-            const redata = e.data;
-
-      console.log(redata);
-        this.$message({
-          message:`实时播报：新增一条任务${redata}`,
-          type: 'success'
-        });
-        var tableZC2={};
-      tableZC2.zc=1;
-      tableZC2.taskInfoId=redata;
-       this.tableData.unshift(tableZC2);
-       console.log(this.tableData)
+      const redata = e.data;
+        this.removeCla();
+      let tim = setTimeout(()=>{
+          this.$message({
+            message:`实时播报：新增一条任务${redata}`,
+            type: 'success'
+          });
+          this.tableData.unshift({zc:1,taskInfoId:redata});
+          clearTimeout(tim);
+        },0);  
     },
     websocketclose(e) {
       //关闭

@@ -9,6 +9,7 @@ import "element-ui/lib/theme-chalk/index.css";
 import "./assets/icon/iconfont.css";
 
 import "@/styles/index.scss"; // global css
+import "@/styles/animate.min.css";
 
 import App from "./App.vue";
 import router from "./router";
