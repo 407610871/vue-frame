@@ -142,8 +142,9 @@ export default {
     },
     $route(to,form){
         if(to.name == "dashboard"){
-          this.setCount();
-          this.loadTable();
+          console.log("route");
+          this.setCount(this.$store.state.deptId);
+          this.loadTable(this.$store.state.deptId);
         }
     },
   },
@@ -167,12 +168,13 @@ export default {
     );
     this.$root.eventHub.$emit("setActiveNav", 1);
     this.storeReady();
-    this.setCount();
+    this.setCount(this.$store.state.deptId);
     //从create移过来
       this.$root.eventHub.$on("selDept", ids => {
       this.setStore({
         deptId: ids
       });
+      console.log("555");
       this.setCount(ids);
       this.loadTable(ids);
     });
@@ -187,7 +189,10 @@ export default {
       // console.log(a);
     },
     setCount(id) {//此处vuex获取的值，比$root慢
+      console.log("setCount");
+      console.log(id);
       var ids=[];
+      debugger;
      id?ids=id:ids=this.tableParams.deptId;
       var _self = this;
       _self.loading = true;
@@ -473,6 +478,8 @@ export default {
       this.setStore(fliterParams);
     },
     storeReady: function() {
+      console.log("111");
+      console.log(this.$store.state.deptId);
       var fliterItemList = this.$store.state.fliterItemList;
       if (
         fliterItemList.network.ready &&
@@ -482,7 +489,7 @@ export default {
       ) {
         // console.log(fliterItemList);
         this.setFliter(fliterItemList);
-        this.loadTable();
+        this.loadTable(this.$store.state.deptId);
       } else {
         var _self = this;
         setTimeout(function() {

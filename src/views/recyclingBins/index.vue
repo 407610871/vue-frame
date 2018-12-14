@@ -113,6 +113,7 @@ export default {
     //console.log(this.$store.state.queryParams.recyclingBins);
   },
   mounted() {
+    console.log(this.$store.state.queryParams[this.$route.name].deptId);
     this.$root.eventHub.$emit(
       "selTreeNode",
       this.$store.state.queryParams[this.$route.name].deptId
