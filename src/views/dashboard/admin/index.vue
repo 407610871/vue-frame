@@ -230,15 +230,17 @@ export default {
           if (res.data.success) {
             
             if (res.data.data.discontinuousPercentage) {
-              // _self.countTotal = res.data.data.total;
               _self.count1Data.total = res.data.data.dPercentage;
               _self.count1Data.list = res.data.data.discontinuousPercentage;
+              
+            }else{
+              _self.count1Data.total = "未查询到数据";
+              _self.count1Data.list = [];
+            }
+            if(res.data.data.constantlyPercentage){
               _self.count2Data.total = res.data.data.cPercentage;
               _self.count2Data.list = res.data.data.constantlyPercentage;
             } else {
-              _self.countTotal = 0;
-              _self.count1Data.total = "未查询到数据";
-              _self.count1Data.list = [];
               _self.count2Data.total = "未查询到数据";
               _self.count2Data.list = [];
             }
