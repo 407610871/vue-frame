@@ -88,7 +88,8 @@ export default {
         if(this.tableParams.ACCESS_SYS_DIALECT_ID == '10001'){
           return datatype == "timestamp";
         }else if(this.tableParams.ACCESS_SYS_DIALECT_ID == '10002'){
-          return datatype == "TIMESTAMP(0)";
+          //return datatype == "TIMESTAMP(0)";
+          return datatype.indexOf('TIMESTAMP') > -1;
         }else{
           return false;
         }
