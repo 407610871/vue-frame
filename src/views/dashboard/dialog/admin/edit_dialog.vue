@@ -14,7 +14,7 @@
           <div class="daiInfo-title proInfo-title">
             <h2>提供方信息</h2>
           </div>
-          <div class="proInfo-box clearfix">
+          <div class="proInfo-box bornone clearfix">
             <el-col :span="10">
               <el-form-item label="接入源名称:" prop="jrname">
                 <el-input v-model="ruleForm.jrname"></el-input>
@@ -159,6 +159,9 @@
             </el-form-item>
             <el-row>
               <el-col style="text-align:right;margin-bottom:10px;">
+                <el-col :span="15" class="tleft">
+                  <span class="tleft cred">tips:数据源链接更新仅适用于数据源用户信息变更或数据源无变更迁移</span>
+                </el-col>
                 <el-button type="primary" v-if="ruleForm.syskind!=''&&ruleForm.syskind!='10023'" @click="testForm('ruleForm')" v-loading.fullscreen.lock="fullscreenLoading">测试连接</el-button>
                 <p v-if="isDisableClassFlag" class="isRed">*修改接入源设置需测试连接</p>
               </el-col>
@@ -1109,7 +1112,9 @@ export default {
 .taskMDialog {
   display: inline-block;
 }
-
+.cred{
+  color: red;
+}
 .el-select {
   width: 100%;
 }
