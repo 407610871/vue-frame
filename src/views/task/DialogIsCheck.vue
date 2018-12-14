@@ -230,7 +230,7 @@ export default {
     },
     init() {
       let that = this;
-      this.loading = true;
+     // this.loading = true;
       this.$ajax.get(baseUrl + '/ccheckData/tableNum', {
       //this.$ajax.get('http://10.19.160.25:8080/DACM/ccheckData/tableNum', {
         params: {
@@ -238,7 +238,7 @@ export default {
           //taskId: '68377'
         }
       }).then(res => {
-        this.loading = false;
+      //  this.loading = false;
         
         res = res.data;
         if (res.data.result == "false" || res.data.message == "还未核验暂无数据,请核验") {
@@ -259,7 +259,7 @@ export default {
           window.clearTimeout(this.timer);
           this.timer = null;
           this.loading = false;
-          this.status = "开始核验";
+         // this.status = "开始核验";
           this.radio = res.data.config_key;
           this.radio == 1 ? (this.timeCheck = true) : (this.timeCheck = false);
 
@@ -276,7 +276,7 @@ export default {
           this.queryTargetColumn = res.data.queryTargetColumn;
           //  let loadingInstance = Loading.service({text:"核验中，请稍等...",target:document.getElementsByName("el-dialog")});
         } else if (res.data.status == "0") {
-          this.loading = true;
+       //   this.loading = true;
           this.setTimer();
           this.status = "核验中";
         }
@@ -334,7 +334,7 @@ export default {
         });
         return;
       }
-      this.loading = true;
+      //this.loading = true;
       this.$ajax.get(baseUrl + `/ccheckData/tableCheck`, {
         params: {
           taskId: this.msgCheck.taskInfoId,
@@ -345,7 +345,7 @@ export default {
           queryTargetColumn:this.queryTargetColumn
         }
       }).then(res => {
-        this.loading = false;
+       // this.loading = false;
         res.data = res.data.data;
         if (res.data.result) {
           this.$alert(res.data.message, "核验结果", {
