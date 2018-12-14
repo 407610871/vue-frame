@@ -1,6 +1,6 @@
 <template>
-  <div class="taskMDialog collTaskDia">
-    <el-form :model="ruleForm" ref="ruleForm" label-width="100px" class="demo-ruleForm" :rules="formRules" v-loading="loading">
+  <div class="taskMDialog collTaskDia" v-loading="loading">
+    <el-form :model="ruleForm" ref="ruleForm" label-width="100px" class="demo-ruleForm" :rules="formRules" >
       <div class="daiInfo proInfo">
         <div class="proInfo-box clearfix">
           <el-col :span="24">
