@@ -106,6 +106,9 @@ export default {
       knownData: []
     };
   },
+  mounted(){
+   this._getVersion('1.0.0');
+  },
   methods: {
     //关闭对话框
     closeDialog() {
@@ -160,13 +163,7 @@ export default {
    
   },
   watch: {
-    dialogVisible() {
-      if (this.dialogVisible) {
-        this._getVersion('1.0.0');
-
-      }
-    }
-
+  
   }
 
 };
