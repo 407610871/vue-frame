@@ -198,9 +198,13 @@
   border: none !important;
 }
 
-
+.bornone{
+  border:none !important;
+}
 /* treeStyle */
-
+.tleft{
+  text-align: left;
+}
 .treeAuto {
   height: 300px;
   overflow: auto;

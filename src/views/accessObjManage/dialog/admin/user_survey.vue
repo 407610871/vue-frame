@@ -285,7 +285,7 @@ export default {
           }).then(res => {
             this.loading = false;
             if (res.data.success) {
-              this.$alert('数据标记成功', '信息', {
+              this.$alert('用户标记成功', '信息', {
                 confirmButtonText: '确定',
                 callback: action => {
                   this.dialogVisible = false;
@@ -293,13 +293,13 @@ export default {
                 }
               });
             } else {
-              this.$alert('数据标记失败', '信息', {
+              this.$alert('用户标记失败', '信息', {
                 confirmButtonText: '确定'
               });
             }
           }, (res) => {
             this.loading = false;
-            this.$alert('数据标记失败', '信息', {
+            this.$alert('用户标记失败', '信息', {
               confirmButtonText: '确定'
             });
           })
@@ -391,8 +391,12 @@ export default {
               }
             }
             if (xzqyData.length == 3) {
+              if (xzqyData[1].city != '' && xzqyData[1].city != undefined) {
+                this.ruleForm.city = xzqyData[1].city;
+                this._queryCity(this.ruleForm.city, 'urban');
+              }
               if (xzqyData[2].urban != '' && xzqyData[2].urban != undefined) {
-                _self.ruleForm.urban = xzqyData[2].urban;
+                this.ruleForm.urban = xzqyData[2].urban;
               }
             }
 

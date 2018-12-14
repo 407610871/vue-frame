@@ -49,8 +49,13 @@ export default {
     }
   },
   created() {
+    console.log("setTree");
+    console.log(this.$store.state.deptId);
     this.$root.eventHub.$on('selTreeNode', (ids) => {
-      this.checkedDepts = ids;
+      console.log("tree");
+      this.checkedDepts = this.$store.state.deptId;
+      console.log(this.checkedDepts);
+      console.log("node");
     });
     let that = this;
     let pathname = window.location.pathname;

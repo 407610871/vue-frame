@@ -77,35 +77,10 @@
         </el-container>
         <el-container style="height:100%;" class="dashboard-container" v-show="tabPosition != 'metadataManage'">
           <el-main style="padding-bottom:0;">
-            <el-form :model="searchForm[0]" label-width="100px" class="search-form">
-              <el-row :gutter="20">
-                <el-col :span="5">
-                  <el-form-item label="设置查询条数:">
-                    <el-input v-model="count" placeholder="请输入条数" ></el-input>
-                  </el-form-item>
-                </el-col>
-                <el-col :span="5">
-                  <el-select v-model="searchForm[0].filtercolumn" placeholder="查询项">
-                    <el-option v-for="(item,index) in filtercolumnList" :key="index" :value="item" :label="item"></el-option>
-                  </el-select>
-                </el-col>
-                <el-col :span="5">
-                  <el-select v-model="searchForm[0].filtertype"  placeholder="">
-                    <el-option v-for="(item,index) in filtertypeList" :key="index" :value="item.value" :label="item.name"></el-option>
-                  </el-select>
-                </el-col>
-                <el-col :span="5">
-                  <el-input v-model="searchForm[0].filterdata" placeholder="请输入查询的条件"></el-input>
-                </el-col>
-                <el-col :span="4">
-                  <el-button type="primary" size="mini" @click="searchAll">查询</el-button>
-                </el-col>
-              </el-row>
-              <search-condition :filtercolumnList = "filtercolumnList" :searchForm = "searchForm"></search-condition>
-              <el-row>
+              <search-condition :filtercolumnList = "filtercolumnList" :searchFormItem = "item" :NOIndex="index" :searchForm="searchForm" v-for="(item,index) in searchForm" :key="index" @searchAll="searchAll" ref="searchForm"></search-condition>
+              <el-row class="btn-area">
                 <el-col><el-button type="primary" size="mini" @click="addCondition">增加搜索条件</el-button></el-col>
               </el-row>
-            </el-form>
             <el-table :data="mainTableData2" stripe  border style="width: 100%" tooltip-effect="light">
               <el-table-column v-for="(val, key, index) in data2Columns" v-if="index<6" :prop="key" :label="getLabel(key)" width="width" :key="index">
               </el-table-column>
@@ -141,7 +116,6 @@
         searchForm:[{filtertype:'4',outrelate:'and'}],
         searchFormCont:{filtertype:'4',outrelate:'and'},
         filtercolumnList:[],
-        filtertypeList:[{name:'模糊查询',value:'4'},{name:'等于',value:'0'}],
         loading: false,
         queryParamReady: true,
         currentPage1: 1,
@@ -236,9 +210,22 @@
         this.search(keyword);
       });
     },
-    methods: {
-      searchAll(){
-        this.dataPreviewContentAjax();
+    methods: {    
+      searchAll(count){
+        let checkArr = [];
+        this.count = count;
+        this.$refs.searchForm.forEach(item =>{
+          checkArr.push(item.checkForm());
+        });
+        Promise.all(checkArr).then(valid =>{
+          let flag = true;
+          valid.forEach(item=>{
+            flag = flag&&item;
+          })
+          if(flag){
+            this.dataPreviewContentAjax();
+          }
+        });
       },
       getFiltercolumnList(){
         this.filtercolumnList = [];
@@ -252,7 +239,9 @@
           if(res.success){
             let list = res.data.list;
 
-            this.filtercolumnList = list.map(item => item.name);
+            this.filtercolumnList = list.map(item => {
+              return {'name':item.name,'datatype':item.datatype};
+            });
           }
         }).catch(()=>{
 
@@ -446,6 +435,7 @@
       },
       dataPreviewAjax(){
         var _self = this;
+         _self.loading = true;
         return new Promise((resolve, reject) => {
             let count = 0;
             if(!_self.count){
@@ -462,7 +452,9 @@
               filter: _self.filters
             }
 
+            //_self.$ajax.post('http://10.19.160.171:8080/DACM/objDetail/previewData', paramsObj).then(function(res) {
             _self.$ajax.post(window.ENV.API_DACM + '/objDetail/previewData', paramsObj).then(function(res) {
+               _self.loading = false;
                 if (res.data.success) {
                   resolve(res);
                 } else {
@@ -575,6 +567,11 @@
   .el-table .add-row {
     color:red;
   }
+  .filterdata-form-item{
+    .el-form-item__content{
+      margin-left:0!important;
+    }
+  }
 </style>
   <style rel="stylesheet/scss" lang="scss" scoped>
   .dashboard-container {
@@ -629,7 +626,7 @@
     word-break: break-all;
     word-wrap: break-word;
   }
-.search-form{
-  margin-bottom:20px;
-}
+  .btn-area{
+    margin-bottom:20px;
+  }
   </style>

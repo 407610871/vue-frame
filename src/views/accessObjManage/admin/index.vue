@@ -582,6 +582,7 @@ export default {
     updataSource: function() {
       var _self = this;
       self.loadTable = true;
+      _self.loading = true;
       this.$ajax
         .get(window.ENV.API_DACM + "/ctables/synchronize", {
           params: {
@@ -589,6 +590,7 @@ export default {
           }
         })
         .then(function(res) {
+          _self.loading = false;
           if (res.data.success) {
             _self.$alert("更新成功", "提示", {
               confirmButtonText: "确定"

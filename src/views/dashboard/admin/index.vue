@@ -142,8 +142,9 @@ export default {
     },
     $route(to,form){
         if(to.name == "dashboard"){
-          this.setCount();
-          this.loadTable();
+          console.log("route");
+          this.setCount(this.$store.state.deptId);
+          this.loadTable(this.$store.state.deptId);
         }
     },
   },
@@ -167,12 +168,13 @@ export default {
     );
     this.$root.eventHub.$emit("setActiveNav", 1);
     this.storeReady();
-    this.setCount();
+    this.setCount(this.$store.state.deptId);
     //从create移过来
       this.$root.eventHub.$on("selDept", ids => {
       this.setStore({
         deptId: ids
       });
+      console.log("555");
       this.setCount(ids);
       this.loadTable(ids);
     });
@@ -187,7 +189,10 @@ export default {
       // console.log(a);
     },
     setCount(id) {//此处vuex获取的值，比$root慢
+      console.log("setCount");
+      console.log(id);
       var ids=[];
+      //debugger;
      id?ids=id:ids=this.tableParams.deptId;
       var _self = this;
       _self.loading = true;
@@ -225,16 +230,18 @@ export default {
           if (res.data.success) {
             
             if (res.data.data.discontinuousPercentage) {
-              
               // _self.countTotal = res.data.data.total;
               _self.count1Data.total = res.data.data.dPercentage;
               _self.count1Data.list = res.data.data.discontinuousPercentage;
+              
+            }else{
+              _self.count1Data.total = "未查询到数据";
+              _self.count1Data.list = [];
+            }
+            if(res.data.data.constantlyPercentage){
               _self.count2Data.total = res.data.data.cPercentage;
               _self.count2Data.list = res.data.data.constantlyPercentage;
             } else {
-              _self.countTotal = 0;
-              _self.count1Data.total = "未查询到数据";
-              _self.count1Data.list = [];
               _self.count2Data.total = "未查询到数据";
               _self.count2Data.list = [];
             }
@@ -560,6 +567,8 @@ this.updataFliterItemList();
       this.setStore(fliterParams);
     },
     storeReady: function() {
+      console.log("111");
+      console.log(this.$store.state.deptId);
       var fliterItemList = this.$store.state.fliterItemList;
       if (
         fliterItemList.network.ready &&
@@ -569,7 +578,7 @@ this.updataFliterItemList();
       ) {
          console.log(fliterItemList);
         this.setFliter(fliterItemList);
-        this.loadTable();
+        this.loadTable(this.$store.state.deptId);
       } else {
         var _self = this;
         setTimeout(function() {

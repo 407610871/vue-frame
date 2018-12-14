@@ -14,7 +14,7 @@
           <div class="daiInfo-title proInfo-title">
             <h2>提供方信息</h2>
           </div>
-          <div class="proInfo-box clearfix">
+          <div class="proInfo-box bornone clearfix">
             <el-col :span="10">
               <el-form-item label="接入源名称:" prop="jrname">
                 <el-input v-model="ruleForm.jrname"></el-input>
@@ -72,15 +72,20 @@
             <h2>对接方信息</h2>
           </div>
           <div class="daiInfo-box clearfix">
-            <el-col :span="10">
-              <el-form-item label="数据所属部门:">
+           <el-col :span="10">
+              <el-col :span="16">
+                <el-form-item label="数据所属部门:">
+                  <el-input v-model="ruleForm.dockdata" disabled placeholder prop="dockdata" class="disele"></el-input>
+                  
+                </el-form-item>
+              </el-col>
+            
+              <el-col :span="7">
                 <el-popover placement="right" width="400" trigger="click">
-                  <el-tree :data="treedata" show-checkbox node-key="id" :check-strictly="true" :props="defaultProps" accordion @check-change="handleClick" @check="nodeClick" :default-checked-keys="[ruleForm.dockid]" ref="treeForm" :default-expanded-keys="[deIndex]" class="treeAuto">
-                  </el-tree>
-                  <el-select v-model="ruleForm.dockdata" disabled placeholder="" prop="dockdata" slot="reference" class="disele">
-                  </el-select>
+                  <el-tree :data="treedata" show-checkbox node-key="id" :check-strictly="true" :props="defaultProps" accordion @check-change="handleClick" @check="nodeClick" :default-checked-keys="[ruleForm.dockid]" :default-expanded-keys="[deIndex]" ref="treeForm" class="treeAuto"></el-tree>
+                  <span class="deicon" slot="reference"></span>
                 </el-popover>
-              </el-form-item>
+              </el-col>
             </el-col>
             <el-col :span="4" class="bank">bank</el-col>
             <el-col :span="10">
@@ -159,6 +164,9 @@
             </el-form-item>
             <el-row>
               <el-col style="text-align:right;margin-bottom:10px;">
+                <el-col :span="15" class="tleft">
+                  <span class="tleft cred">tips:数据源链接更新仅适用于数据源用户信息变更或数据源无变更迁移</span>
+                </el-col>
                 <el-button type="primary" v-if="ruleForm.syskind!=''&&ruleForm.syskind!='10023'" @click="testForm('ruleForm')" v-loading.fullscreen.lock="fullscreenLoading">测试连接</el-button>
                 <p v-if="isDisableClassFlag" class="isRed">*修改接入源设置需测试连接</p>
               </el-col>
@@ -1044,7 +1052,7 @@ export default {
             if (data.attr[i].key == 'vhost') {
               this.ruleForm.vhost = data.attr[i].value;
             }
-            if (data.attr[i].key == 'transmode') {
+            if (data.attr[i].key == 'isActive') {
               this.ruleForm.transmode = data.attr[i].value;
                this.modyData.push({
                 'transmode':data.attr[i].value
@@ -1117,11 +1125,25 @@ export default {
 .taskMDialog {
   display: inline-block;
 }
-
+.cred{
+  color: red;
+}
 .el-select {
   width: 100%;
 }
-
+.deicon {
+  background: url("../../../../assets/images/tree.svg");
+  width: 42px;
+  height: 34px;
+  display: inline-block;
+  /* float: left; */
+  vertical-align: top;
+  margin-top: -3px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  margin-left: 10px;
+  cursor: pointer;
+}
 .otherInfo .el-radio {
   margin-bottom: 12px;
   margin-top: 8px;

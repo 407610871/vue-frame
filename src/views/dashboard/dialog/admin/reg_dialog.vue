@@ -73,12 +73,19 @@
           </div>
           <div class="daiInfo-box clearfix">
             <el-col :span="10">
-              <el-form-item label="数据所属部门:">
+              <el-col :span="16">
+                <el-form-item label="数据所属部门:">
+                  <el-input v-model="ruleForm.dockdata" disabled placeholder prop="dockdata" class="disele"></el-input>
+                
+                </el-form-item>
+              </el-col>
+             
+              <el-col :span="7">
                 <el-popover placement="right" width="400" trigger="click">
                   <el-tree :data="treedata" show-checkbox node-key="id" :check-strictly="true" :props="defaultProps" accordion @check-change="handleClick" @check="nodeClick" :default-checked-keys="[ruleForm.dockid]" :default-expanded-keys="[deIndex]" ref="treeForm" class="treeAuto"></el-tree>
-                  <el-input v-model="ruleForm.dockdata" disabled placeholder prop="dockdata" slot="reference" class="disele"></el-input>
+                  <span class="deicon" slot="reference"></span>
                 </el-popover>
-              </el-form-item>
+              </el-col>
             </el-col>
             <el-col :span="4" class="bank">bank</el-col>
             <el-col :span="10">
@@ -1321,6 +1328,20 @@ export default {
   }
 }
 
+.deicon {
+  background: url("../../../../assets/images/tree.svg");
+  width: 42px;
+  height: 34px;
+  display: inline-block;
+  /* float: left; */
+  vertical-align: top;
+  margin-top: -3px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  margin-left: 10px;
+  cursor: pointer;
+}
+
 .el-radio+.el-radio {
   margin-left: 19px;
 }
@@ -1339,7 +1360,7 @@ export default {
   margin-left: 140px !important;
 }
 
- .el-dialog .otherInfo .fileItem .el-form-item__label {
+.el-dialog .otherInfo .fileItem .el-form-item__label {
   width: 235px !important;
 }
 
@@ -1384,7 +1405,9 @@ export default {
     width: 70%;
   }
 }
+
 .regcon .otherInfo .ftptype .el-form-item--medium .el-form-item__content {
   margin-left: 151px !important;
 }
+
 </style>
