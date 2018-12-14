@@ -603,7 +603,7 @@ export default {
         let innerReqData = {
           params:{
             taskInfoDetailId:that.reqObj.taskInfoDetailId,
-            sourceTableName:res.data.data.sourceTableName[0]
+            sourceTableName:res.data.data.sourceTableName[0].tableName
           }
         }
         axios.get(that.httpUrl+'manager/task/detail/target',innerReqData).then(function(innerRes){
