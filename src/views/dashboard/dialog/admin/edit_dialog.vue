@@ -829,6 +829,9 @@ export default {
                         this.$refs['ruleForm'].resetFields();
                         this.dialogVisible = false;
                         this.$emit('refreshTable');
+
+                        this.$root.eventHub.$emit('updataFliterItemList');
+  this.$emit('storeReady');
                       }
                     });
 
@@ -869,6 +872,11 @@ export default {
                         this.$refs['ruleForm'].resetFields();
                         this.dialogVisible = false;
                         this.$emit('refreshTable');
+                                               
+
+                        
+                        this.$root.eventHub.$emit('updataFliterItemList');
+                         this.$emit('storeReady');
                       }
                     });
 

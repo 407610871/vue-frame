@@ -4,7 +4,7 @@
         <div class="filter-container">
 
             <div class="regbtn fr">
-                <reg-dialog @refreshTable="loadTable" @refreshCount="countTotal++"></reg-dialog>
+                <reg-dialog @refreshTable="loadTable"   @storeReady="storeReady"  @refreshCount="countTotal++"></reg-dialog>
             </div>
             <!-- <el-tooltip class="item" effect="light" content="收起/展开" placement="top">		<a v-on:click="collapseExpand" class="right-btn collapse-btn">		<i :class="{'el-icon-circle-plus':collapse,'el-icon-remove':!collapse}"></i>		</a>		</el-tooltip> -->
             <formFliter style="padding-top: 20px" v-if="queryParamReady"    @highMore="moreHeight"    @highSeaech="hightrue" v-bind:formCollapse="collapse" v-bind:dataObj="formFilterData" @doSearch="search" @formFilter="changeFormFilter" />
@@ -47,7 +47,7 @@
                 <el-table-column label="操作" min-width="140">
                     <template slot-scope="scope">
                         <div class="lofile">
-                            <edit-dialog :acId="scope.row.id" @refreshTable="loadTable"></edit-dialog>
+                            <edit-dialog :acId="scope.row.id" @refreshTable="loadTable"  @storeReady="storeReady"></edit-dialog>
 
                             <el-tooltip class="item" effect="light" content="复制" placement="top" v-if="scope.row.dataSourceName!='本地文件'">
                                 <i @click="handleCopy(scope.$index, scope.row)" class="enc-icon-fuzhi table-action-btn"></i>
@@ -221,10 +221,11 @@ export default {
          paramsObj
         )
         .then(function(res) {
-         console.log(res);
+        //  console.log(res);
           if (res.data.success) {
             
             if (res.data.data.discontinuousPercentage) {
+              
               // _self.countTotal = res.data.data.total;
               _self.count1Data.total = res.data.data.dPercentage;
               _self.count1Data.list = res.data.data.discontinuousPercentage;
@@ -281,7 +282,7 @@ export default {
           name: "接入源类型：",
           id: "dataSourceName",
           type: "checkbox",
-          checkData: data.dataSourceName.data,
+          checkData: this.$store.state.fliterItemList.dataSourceName.data,
           seledData: dataSourceName,
           limit: 4
         },
@@ -289,7 +290,7 @@ export default {
           name: "接入数据来源：",
           id: "network",
           type: "checkbox",
-          checkData: data.network.data,
+          checkData: this.$store.state.fliterItemList.network.data,
           seledData: network,
           limit: 4
         },
@@ -297,7 +298,7 @@ export default {
           name: "对接平台：",
           id: "platform",
           type: "checkbox",
-          checkData: data.platform.data,
+          checkData: this.$store.state.fliterItemList.platform.data,
           seledData: platform,
           limit: 4
         }
@@ -307,6 +308,85 @@ export default {
     },
     collapseExpand: function() {
       this.collapse = !this.collapse;
+    },
+     updataFliterItemList() {
+      var _self = this;
+      this.$ajax
+        .get(window.ENV.API_DACM + "/caccess/sysdialect", {
+          params: {
+            type: 0
+          }
+        })
+        .then(function(res) {
+          if (res.data.success) {
+            _self.$store.commit("setFilterItmeList", {
+              name: "dataSourceName",
+              data: res.data.data
+            });
+             _self.formFilterData[0].checkData=list
+          }
+        })
+        .catch(function(err) {
+          console.log(err);
+        });
+      this.$ajax
+        .get(window.ENV.API_DACM + "/commonInter/getListStaticDataOrder.do", {
+          params: {
+            dictCode: "NetWork"
+          }
+        })
+        .then(function(res) {
+          //  console.log(res)
+          var list = [];
+          if (res.data != undefined) {
+            for (var value of res.data) {
+              list.push({
+                id: value.sTATIC_CODE,
+                name: value.sTATIC_NAME
+              });
+            }
+            _self.$store.commit("setFilterItmeList", {
+              name: "network",
+              data: list
+            });
+             _self.formFilterData[1].checkData=list
+          }
+          console.log(list);
+        })
+        .catch(function(err) {
+          console.log(err);
+        });
+      this.$ajax
+        .get(window.ENV.API_DACM + "/commonInter/getListStaticDataOrder.do", {
+          params: {
+            dictCode: "ButtPlatForm"
+          }
+        })
+        .then(function(res) {
+          //  console.log(res)
+
+          var list = [];
+          for (var value of res.data) {
+            list.push({
+              id: value.sTATIC_CODE,
+              name: value.sTATIC_NAME
+            });
+          }
+          // console.log(list)
+
+          _self.$store.commit("setFilterItmeList", {
+            name: "platform",
+            data: list
+          });
+ _self.formFilterData[2].checkData=list
+ console.log(_self.formFilterData);
+  console.log(res.data);
+
+
+        })
+        .catch(function(err) {
+          console.log(err);
+        });
     },
     loadTable: function(id) {//此处vuex获取的值，比$root慢
      var ids=[];
@@ -333,6 +413,13 @@ export default {
         ? this.tableParams.platform
         : [];
            paramsObj.deptIds =ids;
+
+
+this.updataFliterItemList();
+//  this.$root.eventHub.$emit('updataFliterItemList');
+
+
+
       this.$ajax
         .post(window.ENV.API_DACM + "/caccess/query", paramsObj)
         .then(function(res) {
@@ -480,7 +567,7 @@ export default {
         fliterItemList.platform.ready &&
         this.$store.state.pageReady
       ) {
-        // console.log(fliterItemList);
+         console.log(fliterItemList);
         this.setFliter(fliterItemList);
         this.loadTable();
       } else {
