@@ -255,7 +255,11 @@ export default {
           name: "其他"
         }
       ],
-      dataRange: [{
+      dataRange: [
+         {
+          id: 4,
+          name: "行政区"
+        },{
           id: 1,
           name: "全市"
         },
@@ -266,11 +270,6 @@ export default {
         {
           id: 3,
           name: "全国"
-        },
-        
-         {
-          id: 4,
-          name: "行政区"
         },
         {
           id: 99,
