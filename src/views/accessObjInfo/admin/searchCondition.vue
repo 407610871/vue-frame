@@ -19,10 +19,12 @@
     </el-select>
   </el-col>
   <el-col :span="4" v-if="isTimestamp(searchFormItem.filtercolumn)">
+    <el-form-item prop="timestamp" :rules="{required: true, message:'请选择时间格式',trigger:'change'}" class="timestamp-form-item">
     <el-select v-model="searchFormItem.timestamp" placeholder="时间格式">
       <el-option v-if="tableParams.ACCESS_SYS_DIALECT_ID == '10002'" v-for="(item,index) in dateFormat1" :key="index" :value="item.value" :label="item.name"></el-option>
       <el-option v-if="tableParams.ACCESS_SYS_DIALECT_ID == '10001'" v-for="(item,index) in dateFormat2" :key="index" :value="item.value" :label="item.name"></el-option>
     </el-select>
+    </el-form-item>
   </el-col>
   <el-col :span="4">
     <el-select v-model="searchFormItem.filtertype" placeholder="">
@@ -76,7 +78,6 @@ export default {
           searchObj.columnType = "TIMESTAMP";
         }else{
           searchObj.columnType = null;
-          searchObj.timestamp = null;
         }
       },
       isTimestamp(name){
@@ -128,12 +129,9 @@ export default {
 <style lang="scss" scoped>
 </style>
 <style lang="scss">
+.timestamp-form-item,
+.filterdata-form-item,
 .outrelate-form-item{
-    .el-form-item__content{
-      margin-left:0!important;
-    }
-  }
-  .filterdata-form-item{
     .el-form-item__content{
       margin-left:0!important;
     }

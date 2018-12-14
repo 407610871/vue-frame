@@ -77,43 +77,10 @@
         </el-container>
         <el-container style="height:100%;" class="dashboard-container" v-show="tabPosition != 'metadataManage'">
           <el-main style="padding-bottom:0;">
-            <!-- <el-form :model="searchForm[0]" label-width="100px" class="search-form" :rules="rules" ref="searchForm"> -->
-             <!--  <el-row :gutter="20">
-                <el-col :span="4">
-                  <el-form-item label="设置查询条数:">
-                    <el-input v-model="count" placeholder="请输入条数" ></el-input>
-                  </el-form-item>
-                </el-col>
-                <el-col :span="4">
-                  <el-select v-model="searchForm[0].filtercolumn" placeholder="查询项" @change="changeFiltercolumn(searchForm[0])">
-                    <el-option v-for="(item,index) in filtercolumnList" :key="index" :value="item.name" :label="item.name"></el-option>
-                  </el-select>
-                </el-col>
-                <el-col :span="4" v-if="isTimestamp(searchForm[0].filtercolumn)">
-                  <el-select v-model="searchForm[0].timestamp" placeholder="时间格式">
-                    <el-option v-if="tableParams.ACCESS_SYS_DIALECT_ID == '10002'" v-for="(item,index) in dateFormat1" :key="index" :value="item" :label="item"></el-option>
-                    <el-option v-if="tableParams.ACCESS_SYS_DIALECT_ID == '10001'" v-for="(item,index) in dateFormat2" :key="index" :value="item" :label="item"></el-option>
-                  </el-select>
-                </el-col>
-                <el-col :span="4">
-                  <el-select v-model="searchForm[0].filtertype"  placeholder="">
-                    <el-option v-for="(item,index) in filtertypeList" :key="index" :value="item.value" :label="item.name"></el-option>
-                  </el-select>
-                </el-col>
-                <el-col :span="4">
-                  <el-form-item prop="filterdata" class="filterdata-form-item">
-                  <el-input v-model="searchForm[0].filterdata" placeholder="请输入查询的条件"></el-input>
-                  </el-form-item>
-                </el-col>
-                <el-col :span="4">
-                  <el-button type="primary" size="mini" @click="searchAll">查询</el-button>
-                </el-col>
-              </el-row> -->
               <search-condition :filtercolumnList = "filtercolumnList" :searchFormItem = "item" :NOIndex="index" :searchForm="searchForm" v-for="(item,index) in searchForm" :key="index" @searchAll="searchAll" ref="searchForm"></search-condition>
-              <el-row>
+              <el-row class="btn-area">
                 <el-col><el-button type="primary" size="mini" @click="addCondition">增加搜索条件</el-button></el-col>
               </el-row>
-            <!-- </el-form> -->
             <el-table :data="mainTableData2" stripe  border style="width: 100%" tooltip-effect="light">
               <el-table-column v-for="(val, key, index) in data2Columns" v-if="index<6" :prop="key" :label="getLabel(key)" width="width" :key="index">
               </el-table-column>
@@ -144,25 +111,11 @@
   export default {
     name: 'DashboardAdmin',
     data() {
-      const validateFilterdata = (rule, value, callback) => {
-        let reg1 = /^[1-9]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/;//2014-01-01
-        let reg2 = /^[1-9]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])\s+(20|21|22|23|[0-1]\d):$/;//2014-01-01 12
-        let reg3 = /^[1-9]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])\s+(20|21|22|23|[0-1]\d):[0-5]\d$/;//2014-01-01 12:00
-        let reg4 = /^[1-9]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])\s+(20|21|22|23|[0-1]\d):[0-5]\d:[0-5]\d$/;//2014-01-01 12:00:00
-        if (reg1.test(value)){
-          callback();
-        }else{
-          callback(new Error("请输入正确时间格式"));
-        }
-      };
       return {
         count:'',
-        searchForm:[{filtertype:'4',outrelate:'and',columnType:'TIMESTAMP'}],
-        searchFormCont:{filtertype:'4',outrelate:'and',columnType:'TIMESTAMP'},
+        searchForm:[{filtertype:'4',outrelate:'and'}],
+        searchFormCont:{filtertype:'4',outrelate:'and'},
         filtercolumnList:[],
-        /* filtertypeList:[{name:'模糊查询',value:'4'},{name:'等于',value:'0'}],
-        dateFormat1:['yyyy-mm-dd','yyyy-mm-dd hh24','yyyy-mm-dd hh24:mi','yyyy-mm-dd hh24:mi:ss'],
-        dateFormat2:['%Y-%m-%d','%Y-%m-%d %H','%Y-%m-%d %H:%i','%Y-%m-%d %H:%i:%s'], */
         loading: false,
         queryParamReady: true,
         currentPage1: 1,
@@ -193,12 +146,7 @@
           accessSysDialectId: '',
           filePath: ''
         },
-        flagInterval: null,
-        rules:{
-          filterdata:[
-            {validator: validateFilterdata,trigger: "blur"}
-          ]
-        }
+        flagInterval: null
       }
     },
     computed: {
@@ -239,7 +187,7 @@
         this.tabPosition = newVal.tabPosition;
       },
       tabPosition(newVal, oldVal) {
-        this.searchForm=[{filtertype:'4',outrelate:'and',columnType:'TIMESTAMP'}];
+        this.searchForm=[{filtertype:'4',outrelate:'and'}];
         this.count='';
         this.setStore({
           tabPosition: newVal
@@ -262,28 +210,7 @@
         this.search(keyword);
       });
     },
-    methods: {
-      /* changeFiltercolumn(searchObj){
-        if(this.isTimestamp(searchObj.filtercolumn)){
-          searchObj.columnType = "TIMESTAMP";
-        }else{
-          searchObj.columnType = null;
-          searchObj.timestamp = null;
-        }
-      },
-      isTimestamp(name){
-        let datatypeArr =  this.filtercolumnList.find(item=>item.name == name);
-        if(!datatypeArr) return false;
-        let datatype = datatypeArr.datatype;
-        if(this.tableParams.ACCESS_SYS_DIALECT_ID == '10001'){
-          return datatype == "timestamp";
-        }else if(this.tableParams.ACCESS_SYS_DIALECT_ID == '10002'){
-          return datatype == "TIMESTAMP(0)";
-        }else{
-          return false;
-        }
-      }, */
-      
+    methods: {    
       searchAll(count){
         let checkArr = [];
         this.count = count;
@@ -699,7 +626,7 @@
     word-break: break-all;
     word-wrap: break-word;
   }
-.search-form{
-  margin-bottom:20px;
-}
+  .btn-area{
+    margin-bottom:20px;
+  }
   </style>
