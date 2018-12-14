@@ -391,8 +391,12 @@ export default {
               }
             }
             if (xzqyData.length == 3) {
+              if (xzqyData[1].city != '' && xzqyData[1].city != undefined) {
+                this.ruleForm.city = xzqyData[1].city;
+                this._queryCity(this.ruleForm.city, 'urban');
+              }
               if (xzqyData[2].urban != '' && xzqyData[2].urban != undefined) {
-                _self.ruleForm.urban = xzqyData[2].urban;
+                this.ruleForm.urban = xzqyData[2].urban;
               }
             }
 
