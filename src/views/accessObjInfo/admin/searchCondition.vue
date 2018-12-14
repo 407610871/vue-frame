@@ -3,7 +3,7 @@
 <el-row :gutter="20">
   <el-col :span="4" v-if="NOIndex == 0">
     <el-form-item label="设置查询条数:">
-      <el-input v-model="count" placeholder="请输入条数" ></el-input>
+      <el-input v-model.trim ="count" placeholder="请输入条数" ></el-input>
     </el-form-item>
   </el-col>
   <el-col :span="4" v-else>
@@ -14,7 +14,7 @@
     </el-form-item>
   </el-col>
   <el-col :span="4">
-    <el-select v-model="searchFormItem.filtercolumn" placeholder="查询项" @change="changeFiltercolumn(searchFormItem)">
+    <el-select v-model="searchFormItem.filtercolumn" placeholder="查询项" @change="changeFiltercolumn">
       <el-option v-for="(item,index) in filtercolumnList" :key="index" :value="item.name" :label="item.name"></el-option>
     </el-select>
   </el-col>
@@ -33,7 +33,7 @@
   </el-col>
   <el-col :span="4">
     <el-form-item prop="filterdata" class="filterdata-form-item" :rules="{validator: validateFilterdata,trigger: 'blur'}">
-    <el-input v-model="searchFormItem.filterdata" placeholder="请输入查询的条件"></el-input>
+    <el-input v-model.trim ="searchFormItem.filterdata" placeholder="请输入查询的条件"></el-input>
     </el-form-item>
   </el-col>
   <el-col :span="4" v-if="NOIndex == 0">
@@ -73,11 +73,12 @@ export default {
       delCondition(index ){
         this.searchForm.splice(index,1);
       },
-      changeFiltercolumn(searchObj){
-        if(this.isTimestamp(searchObj.filtercolumn)){
-          searchObj.columnType = "TIMESTAMP";
+      changeFiltercolumn(){
+        if(this.isTimestamp(this.searchFormItem.filtercolumn)){
+          this.searchFormItem.columnType = "TIMESTAMP";
         }else{
-          searchObj.columnType = null;
+          delete this.searchFormItem.columnType;
+          delete this.searchFormItem.timestamp;
         }
       },
       isTimestamp(name){
