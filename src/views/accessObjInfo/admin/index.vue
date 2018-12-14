@@ -508,6 +508,7 @@
       },
       dataPreviewAjax(){
         var _self = this;
+         _self.loading = true;
         return new Promise((resolve, reject) => {
             let count = 0;
             if(!_self.count){
@@ -526,6 +527,7 @@
 
           //  _self.$ajax.post('http://10.19.160.171:8080/DACM/objDetail/previewData', paramsObj).then(function(res) {
             _self.$ajax.post(window.ENV.API_DACM + '/objDetail/previewData', paramsObj).then(function(res) {
+               _self.loading = false;
                 if (res.data.success) {
                   resolve(res);
                 } else {
