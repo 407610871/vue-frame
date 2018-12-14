@@ -5,19 +5,29 @@
         <img :src="logo" alt="">
       </div>
       <nav-menu />
-      <div class="right-menu">
-        
+      <div class="right-menu clearfix">
         <!--  <el-button class="document" type="primary" icon="enc-icon-documents"></el-button> -->
+        
         <el-tooltip class="item" effect="light" content="系统设置" placement="bottom">
           <el-button class="setting" type="primary" icon="enc-icon-setting" v-on:click="goRoute('setting')"></el-button>
         </el-tooltip>
-        <release></release>
+
         <el-popover placement="bottom-start" width="200" trigger="hover">
           <ul class="popup-menu warn-menu">
             <li><a href="javascript:void(0)" v-on:click="goRoute('recyclingBins')">回收箱</a></li>
-           
-            <li><a :href="warnurl" target="_blank">告警中心</a></li>
-             <li><a href="javascript:void(0)" v-on:click="loginOut()">退出登录</a></li>
+            <li><a href="javascript:void(0)" @click="_release()">版本信息</a></li>
+          </ul>
+          <el-button slot="reference" class="document" type="primary" icon="enc-icon-documents"></el-button>
+        </el-popover>
+        <el-tooltip class="item" effect="light" content="告警中心" placement="bottom">
+          <el-button class="warncon" v-on:click="_goWarn()"></el-button>
+        </el-tooltip>
+        <release v-if="releaseflag" v-on:closeDia="releaseflag=false"></release>
+        <el-popover placement="bottom-start" width="200" trigger="hover">
+          <ul class="popup-menu warn-menu">
+            <!--  <li><a href="javascript:void(0)" v-on:click="goRoute('recyclingBins')">回收箱</a></li>
+           <li><a :href="warnurl" target="_blank">告警中心</a></li> -->
+            <li><a href="javascript:void(0)" v-on:click="loginOut()">退出登录</a></li>
           </ul>
           <el-button slot="reference" class="user" type="primary" icon="enc-icon-user"></el-button>
         </el-popover>
@@ -59,9 +69,10 @@ export default {
     return {
       logo: logo + '?' + +new Date(),
       keyword: '',
+      releaseflag: false,
       breadcrumb: [],
       sideBarWidth: 210,
-      warnurl:''
+      warnurl: ''
     }
   },
   components: {
@@ -76,10 +87,10 @@ export default {
   },
   mounted() {
     var _self = this;
-    if(window.localStorage.getItem('data-theme')!=undefined){
-       window.document.documentElement.setAttribute('data-theme',window.localStorage.getItem('data-theme'));
+    if (window.localStorage.getItem('data-theme') != undefined) {
+      window.document.documentElement.setAttribute('data-theme', window.localStorage.getItem('data-theme'));
     }
-    _self.warnurl = encodeURI(window.ENV.API_WARN+'/#/alert/dashboard?platform=数据工厂产品线');
+    _self.warnurl = encodeURI(window.ENV.API_WARN + '/#/alert/dashboard?platform=数据工厂产品线');
     this.$ajax
       .get(window.ENV.API_DACM + "/caccesssysRelationWorkInfo/getSystemSet.do")
       .then(function(res) {
@@ -195,10 +206,16 @@ export default {
     }
   },
   methods: {
+    _goWarn(){
+      window.open(this.warnurl);
+    },
+    _release() {
+      this.releaseflag = true;
+    },
     changeSideBar() {
       this.sideBarWidth = this.sideBarWidth == 0 ? 210 : 0;
     },
-    loginOut(){
+    loginOut() {
       window.localStorage.removeItem('data-theme');
       this.$keycloak.logout();
     },
@@ -281,13 +298,22 @@ export default {
 <style rel="stylesheet/scss" lang="scss" scoped>
 @import 'src/styles/variables.scss';
 @import "src/styles/mixin.scss";
-.warn-menu a{
+.warn-menu a {
   line-height: 30px;
-  
 }
-.warn-menu li:nth-child(1) a , .warn-menu li:nth-child(2) a{
-  border-bottom:1px solid #c9cdd0;
+.warncon{
+  width:66px;
+  height: 66px;
+  background: url("../../assets/images/warnicon.png");
+  background-repeat: no-repeat;
+  background-size:contain;
+  float: left
 }
+.warn-menu li:nth-child(1) a,
+.warn-menu li:nth-child(2) a {
+  border-bottom: 1px solid #c9cdd0;
+}
+
 .app-wrapper {
   @include clearfix;
   position: relative;
@@ -308,7 +334,10 @@ export default {
     vertical-align: middle;
   }
 }
-
+.clearfix {
+  float: none;
+  clear:both;
+}
 .enc-header {
   padding: 0;
   height: $enc-nav-header-height;
@@ -319,12 +348,13 @@ export default {
     float: right;
     height: 100%;
     .el-button {
-      width: 88px;
+      width: 66px;
       height: 100%;
       margin: 0;
       border-radius: 0;
       border: 0;
       padding: 0;
+      float: left;
 
       &.user {
         background: #cacfd5;
@@ -369,11 +399,13 @@ export default {
   font-size: 18px;
   background: #eff3f6;
 }
+
 @media screen and ( max-width: 1280px) {
-  .enc-sub-header{
-    margin-top:0px;
+  .enc-sub-header {
+    margin-top: 0px;
   }
 }
+
 .el-breadcrumb {
   line-height: $enc-nav-sub-header-height;
   text-indent: 0;
@@ -468,7 +500,7 @@ export default {
     .right-menu {
       .el-button {
         width: 60px;
-        height: 50px;
+        height: 60px;
       }
     }
   }

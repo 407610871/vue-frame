@@ -192,7 +192,7 @@ export default {
       console.log("setCount");
       console.log(id);
       var ids=[];
-      debugger;
+      //debugger;
      id?ids=id:ids=this.tableParams.deptId;
       var _self = this;
       _self.loading = true;

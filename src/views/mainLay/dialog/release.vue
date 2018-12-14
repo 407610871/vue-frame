@@ -1,8 +1,9 @@
 <template>
   <div class="taskMDialog release">
-		<el-tooltip class="item" effect="light" content="版本信息" placement="bottom">
-			<el-button @click="dialogVisible = true" class="document" icon="enc-icon-documents"></el-button>
-		</el-tooltip>
+		<!-- <el-tooltip class="item" effect="light" content="版本信息" placement="bottom">
+      <el-button @click="dialogVisible = true" class="document" icon="enc-icon-documents"></el-button>
+    </el-tooltip> -->
+   <!--  <a href="javascript:void(0)" @click="dialogVisible = true" >版本信息</a> -->
     <el-dialog :title="versionDes + '  '+ versionDate" :visible.sync="dialogVisible" width="73%" :before-close="closeDialog">
       <div class="title-gra">
         <span class="grab gra-l"></span>
@@ -92,7 +93,7 @@ export default {
   name: "taskMDialog",
   data: function() {
     return {
-      dialogVisible: false,
+      dialogVisible: true,
       versionDes: '',
       versionDate: '',
       loading:false,
@@ -108,6 +109,7 @@ export default {
   methods: {
     //关闭对话框
     closeDialog() {
+      this.$emit('closeDia',);
       this.dialogVisible = false;
 
     },

@@ -72,15 +72,20 @@
             <h2>对接方信息</h2>
           </div>
           <div class="daiInfo-box clearfix">
-            <el-col :span="10">
-              <el-form-item label="数据所属部门:">
+           <el-col :span="10">
+              <el-col :span="16">
+                <el-form-item label="数据所属部门:">
+                  <el-input v-model="ruleForm.dockdata" disabled placeholder prop="dockdata" class="disele"></el-input>
+                  
+                </el-form-item>
+              </el-col>
+            
+              <el-col :span="7">
                 <el-popover placement="right" width="400" trigger="click">
-                  <el-tree :data="treedata" show-checkbox node-key="id" :check-strictly="true" :props="defaultProps" accordion @check-change="handleClick" @check="nodeClick" :default-checked-keys="[ruleForm.dockid]" ref="treeForm" :default-expanded-keys="[deIndex]" class="treeAuto">
-                  </el-tree>
-                  <el-select v-model="ruleForm.dockdata" disabled placeholder="" prop="dockdata" slot="reference" class="disele">
-                  </el-select>
+                  <el-tree :data="treedata" show-checkbox node-key="id" :check-strictly="true" :props="defaultProps" accordion @check-change="handleClick" @check="nodeClick" :default-checked-keys="[ruleForm.dockid]" :default-expanded-keys="[deIndex]" ref="treeForm" class="treeAuto"></el-tree>
+                  <span class="deicon" slot="reference"></span>
                 </el-popover>
-              </el-form-item>
+              </el-col>
             </el-col>
             <el-col :span="4" class="bank">bank</el-col>
             <el-col :span="10">
@@ -1118,7 +1123,19 @@ export default {
 .el-select {
   width: 100%;
 }
-
+.deicon {
+  background: url("../../../../assets/images/tree.svg");
+  width: 42px;
+  height: 34px;
+  display: inline-block;
+  /* float: left; */
+  vertical-align: top;
+  margin-top: -3px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  margin-left: 10px;
+  cursor: pointer;
+}
 .otherInfo .el-radio {
   margin-bottom: 12px;
   margin-top: 8px;
