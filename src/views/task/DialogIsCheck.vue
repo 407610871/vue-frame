@@ -195,6 +195,7 @@ export default {
         this.loading = false;
         if (res.data.success) {
           this.$alert("纠错成功");
+          this.init();
         } else {
           this.$alert("纠错失败");
         }
