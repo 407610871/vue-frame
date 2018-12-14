@@ -206,8 +206,11 @@ export default {
 
       }).then(res => {
         this.loading = false;
+        let _self = this;
         if (res.data.success) {
-          this.$alert("纠错成功");
+          _self.$alert("纠错成功");
+          _self._queryInver();
+          _self._queryHis();
         } else {
           this.$alert("纠错失败");
         }

@@ -722,7 +722,36 @@ export default {
   },
   watch: {
     msg() {
+       if (this.info.id != undefined) {
+      this.tableid = this.info.id;
+      this.tableids = this.info.id;
+      if (this.info.comments == '' || this.info.comments == null) {
+        this.ruleForm.rename = this.info.diyComments
+      } else {
+        this.ruleForm.rename = this.info.comments;
+      }
+      this.ruleForm.tablename = this.info.name;
+
+    } else {
+      for (let i = 0; i < this.info.length; i++) {
+        if (i != this.info.length - 1) {
+          this.tableids += this.info[i].id + ','
+        } else {
+          this.tableids += this.info[i].id
+        }
+
+      }
+      this.tableid = this.info[0].id
+      if (this.info[0].comments == '' || this.info[0].comments == null) {
+        this.ruleForm.rename = this.info[0].diyComments
+      } else {
+        this.ruleForm.rename = this.info[0].comments;
+      }
+      this.ruleForm.tablename = this.info[0].name;
+    }
+    console.log(this.tableid);
       this._getStaticDatas();
+
     }
   },
   created() {
