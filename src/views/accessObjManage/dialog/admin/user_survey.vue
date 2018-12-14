@@ -285,7 +285,7 @@ export default {
           }).then(res => {
             this.loading = false;
             if (res.data.success) {
-              this.$alert('数据标记成功', '信息', {
+              this.$alert('用户标记成功', '信息', {
                 confirmButtonText: '确定',
                 callback: action => {
                   this.dialogVisible = false;
@@ -293,13 +293,13 @@ export default {
                 }
               });
             } else {
-              this.$alert('数据标记失败', '信息', {
+              this.$alert('用户标记失败', '信息', {
                 confirmButtonText: '确定'
               });
             }
           }, (res) => {
             this.loading = false;
-            this.$alert('数据标记失败', '信息', {
+            this.$alert('用户标记失败', '信息', {
               confirmButtonText: '确定'
             });
           })

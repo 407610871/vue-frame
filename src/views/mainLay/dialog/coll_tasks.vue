@@ -646,13 +646,13 @@ export default {
             })
           } else {
             this.loading = false;
-            this.$alert('数据标记失败', '信息', {
+            this.$alert('用户标记失败', '信息', {
               confirmButtonText: '确定'
             });
           }
         }, (res) => {
           this.loading = false;
-          this.$alert('数据标记失败', '信息', {
+          this.$alert('用户标记失败', '信息', {
             confirmButtonText: '确定'
           });
         })

@@ -1036,7 +1036,7 @@ export default {
             if (data.attr[i].key == 'vhost') {
               this.ruleForm.vhost = data.attr[i].value;
             }
-            if (data.attr[i].key == 'transmode') {
+            if (data.attr[i].key == 'isActive') {
               this.ruleForm.transmode = data.attr[i].value;
                this.modyData.push({
                 'transmode':data.attr[i].value
