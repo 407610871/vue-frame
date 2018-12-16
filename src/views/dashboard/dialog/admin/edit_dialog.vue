@@ -72,14 +72,12 @@
             <h2>对接方信息</h2>
           </div>
           <div class="daiInfo-box clearfix">
-           <el-col :span="10">
+            <el-col :span="10">
               <el-col :span="16">
                 <el-form-item label="数据所属部门:">
                   <el-input v-model="ruleForm.dockdata" disabled placeholder prop="dockdata" class="disele"></el-input>
-                  
                 </el-form-item>
               </el-col>
-            
               <el-col :span="7">
                 <el-popover placement="right" width="400" trigger="click">
                   <el-tree :data="treedata" show-checkbox node-key="id" :check-strictly="true" :props="defaultProps" accordion @check-change="handleClick" @check="nodeClick" :default-checked-keys="[ruleForm.dockid]" :default-expanded-keys="[deIndex]" ref="treeForm" class="treeAuto"></el-tree>
@@ -401,7 +399,7 @@ export default {
       loading: false,
       testflag: false,
       isDisableClassFlag: false,
-      modyData:[],
+      modyData: [],
       appId: '',
       ruleForm: {
         jrname: '',
@@ -619,31 +617,42 @@ export default {
       }).then(res => {
         console.log(res);
         _self.treedata = res.data.datas;
-        if (_self.$store.state.deptId.length == 0) {
-          _self.ruleForm.dockid = _self.treedata[0].id;
-          _self.ruleForm.dockdata = _self.treedata[0].deptName
-
-        } else {
-          let depIds = _self.$store.state.deptId;
-          console.log(depIds);
-          for (let i = 0; i < _self.treedata.length; i++) {
-            _self.deptData.push({
-              id: _self.treedata[i].id,
-              name: _self.treedata[i].deptName,
-              pid: _self.treedata[i].pid
-            })
-            if (_self.treedata[i].children.length != 0 && _self.treedata[i].children.length != undefined) {
-              this._getDepId(_self.treedata[i].children);
-            }
-          }
-          for (let m = 0; m < _self.deptData.length; m++) {
-            if (_self.deptData[m].id == depIds[0]) {
-              _self.ruleForm.dockid = _self.deptData[m].id;
-              _self.ruleForm.dockdata = _self.deptData[m].name;
-              _self.deIndex = _self.deptData[m].pid
-            }
+        for (let i = 0; i < _self.treedata.length; i++) {
+          _self.deptData.push({
+            id: _self.treedata[i].id,
+            name: _self.treedata[i].deptName,
+            pid: _self.treedata[i].pid
+          })
+          if (_self.treedata[i].children.length != 0 && _self.treedata[i].children.length != undefined) {
+            this._getDepId(_self.treedata[i].children);
           }
         }
+        console.log(_self.deptData);
+        /*  _self.ruleForm.dockid = _self.treedata[0].id;
+          _self.ruleForm.dockdata = _self.treedata[0].deptName*/
+
+
+        /*else {
+                 let depIds = _self.$store.state.deptId;
+                 console.log(depIds);
+                 for (let i = 0; i < _self.treedata.length; i++) {
+                   _self.deptData.push({
+                     id: _self.treedata[i].id,
+                     name: _self.treedata[i].deptName,
+                     pid: _self.treedata[i].pid
+                   })
+                   if (_self.treedata[i].children.length != 0 && _self.treedata[i].children.length != undefined) {
+                     this._getDepId(_self.treedata[i].children);
+                   }
+                 }
+                 for (let m = 0; m < _self.deptData.length; m++) {
+                   if (_self.deptData[m].id == depIds[0]) {
+                     _self.ruleForm.dockid = _self.deptData[m].id;
+                     _self.ruleForm.dockdata = _self.deptData[m].name;
+                     _self.deIndex = _self.deptData[m].pid
+                   }
+                 }
+               }*/
       })
     },
     //找到id的index值
@@ -664,10 +673,10 @@ export default {
       this.testflag = false;
       console.log(this.ruleForm.syskind);
       var _self = this;
-      var modifyFlag ='';
+      var modifyFlag = '';
       console.log(this.modyData['ipname']);
-      if(_self.ruleForm.ipname!=this.modyData[0].ipname||_self.ruleForm.username!=this.modyData[3].username||_self.ruleForm.password!=this.modyData[4].password||_self.ruleForm.iport!=this.modyData[1].iport||_self.ruleForm.instanceName!=this.modyData[2].instanceName||_self.ruleForm.model!=this.modyData[5].model){
-         modifyFlag = '1';
+      if (_self.ruleForm.ipname != this.modyData[0].ipname || _self.ruleForm.username != this.modyData[3].username || _self.ruleForm.password != this.modyData[4].password || _self.ruleForm.iport != this.modyData[1].iport || _self.ruleForm.instanceName != this.modyData[2].instanceName || _self.ruleForm.model != this.modyData[5].model) {
+        modifyFlag = '1';
       }
       this.$refs[formName].validate((valid) => {
         if (valid) {
@@ -681,13 +690,13 @@ export default {
             "contactsPhone": _self.ruleForm.prophone, //数据提供人电话
             "contactsEmail": _self.ruleForm.proemail, //数据提供人 邮箱
             "accessSysDeptInfoId": _self.ruleForm.dockid, //所属部门
-            "modifyFlag":modifyFlag,
+            "modifyFlag": modifyFlag,
             "attr": [{
                 //数据提供人姓名
                 "key": "sourceQQ",
                 "value": _self.ruleForm.proqq
               },
-              
+
               {
                 //数据提供人电话
                 "key": "sourceEmail",
@@ -839,7 +848,7 @@ export default {
                         this.$emit('refreshTable');
 
                         // this.$root.eventHub.$emit('updataFliterItemList');
-  this.$emit('storeReady');
+                        this.$emit('storeReady');
                       }
                     });
 
@@ -880,11 +889,11 @@ export default {
                         this.$refs['ruleForm'].resetFields();
                         this.dialogVisible = false;
                         this.$emit('refreshTable');
-                                               
 
-                        
+
+
                         // this.$root.eventHub.$emit('updataFliterItemList');
-                         this.$emit('storeReady');
+                        this.$emit('storeReady');
                       }
                     });
 
@@ -973,99 +982,109 @@ export default {
         this.loading = false;
         if (res.data.success) {
           var data = res.data.data;
-          this.ruleForm.jrname = data.name;
-          this.ruleForm.syskind = parseInt(data.accessSysDialectId);
-          this.ruleForm.dockname = data.registerName;
-          this.ruleForm.dockphone = data.registerPhone;
-          this.ruleForm.prophone = data.contactsPhone;
-          this.ruleForm.proemail = data.contactsEmail;
-          this.ruleForm.dockid = data.accessSysDeptInfoId;
+          let _self = this;
+          _self.ruleForm.jrname = data.name;
+          _self.ruleForm.syskind = parseInt(data.accessSysDialectId);
+          _self.ruleForm.dockname = data.registerName;
+          _self.ruleForm.dockphone = data.registerPhone;
+          _self.ruleForm.prophone = data.contactsPhone;
+          _self.ruleForm.proemail = data.contactsEmail;
+          _self.ruleForm.dockid = data.accessSysDeptInfoId;
+
+          for (let m = 0; m < _self.deptData.length; m++) {
+            if (_self.deptData[m].id == data.accessSysDeptInfoId) {
+              _self.ruleForm.dockid = _self.deptData[m].id;
+              _self.ruleForm.dockdata = _self.deptData[m].name;
+              _self.deIndex = _self.deptData[m].pid
+            }
+          }
 
           //属性
           for (let i = 0; i < data.attr.length; i++) {
             if (data.attr[i].key == 'sourceQQ') {
-              this.ruleForm.proqq = data.attr[i].value;
+              _self.ruleForm.proqq = data.attr[i].value;
             }
             if (data.attr[i].key == 'network') {
-              this.ruleForm.resource = data.attr[i].value;
+              _self.ruleForm.resource = data.attr[i].value;
             }
             if (data.attr[i].key == 'accredit') {
-              this.ruleForm.author = data.attr[i].value;
+              _self.ruleForm.author = data.attr[i].value;
             }
             if (data.attr[i].key == 'abutment') {
-              this.ruleForm.dockpart = parseInt(data.attr[i].value);
+              _self.ruleForm.dockpart = parseInt(data.attr[i].value);
             }
             if (data.attr[i].key == 'department') {
-              this.ruleForm.dockdata = data.attr[i].value;
+              _self.ruleForm.dockdata = data.attr[i].value;
             }
             if (data.attr[i].key == 'depId') {
-              this.ruleForm.dockid = data.attr[i].value;
+              _self.ruleForm.dockid = data.attr[i].value;
+
             }
             if (data.attr[i].key == 'rcategory') {
-              this.ruleForm.authorf = data.attr[i].value;
+              _self.ruleForm.authorf = data.attr[i].value;
             }
             if (data.attr[i].key == 'platform') {
-              this.ruleForm.dockPlat = data.attr[i].value;
+              _self.ruleForm.dockPlat = data.attr[i].value;
             }
             if (data.attr[i].key == 'ip') {
-              this.ruleForm.ipname = data.attr[i].value;
-              this.modyData.push({
-                'ipname':data.attr[i].value
+              _self.ruleForm.ipname = data.attr[i].value;
+              _self.modyData.push({
+                'ipname': data.attr[i].value
               })
             }
             if (data.attr[i].key == 'port') {
-              this.ruleForm.iport = data.attr[i].value;
-               this.modyData.push({
-                'iport':data.attr[i].value
+              _self.ruleForm.iport = data.attr[i].value;
+              _self.modyData.push({
+                'iport': data.attr[i].value
               })
             }
             if (data.attr[i].key == 'url') {
-              this.ruleForm.url = data.attr[i].value;
+              _self.ruleForm.url = data.attr[i].value;
             }
             if (data.attr[i].key == 'databasename') {
-              this.ruleForm.instanceName = data.attr[i].value;
-              this.modyData.push({
-                'instanceName':data.attr[i].value
+              _self.ruleForm.instanceName = data.attr[i].value;
+              _self.modyData.push({
+                'instanceName': data.attr[i].value
               })
             }
             if (data.attr[i].key == 'username') {
-              this.ruleForm.username = data.attr[i].value;
-               this.modyData.push({
-                'username':data.attr[i].value
+              _self.ruleForm.username = data.attr[i].value;
+              _self.modyData.push({
+                'username': data.attr[i].value
               })
             }
             if (data.attr[i].key == 'password') {
-              this.ruleForm.password = data.attr[i].value;
-              this.modyData.push({
-                'password':data.attr[i].value
+              _self.ruleForm.password = data.attr[i].value;
+              _self.modyData.push({
+                'password': data.attr[i].value
               })
             }
             if (data.attr[i].key == 'model') {
-              this.ruleForm.model = data.attr[i].value;
-              this.modyData.push({
-                'model':data.attr[i].value
+              _self.ruleForm.model = data.attr[i].value;
+              _self.modyData.push({
+                'model': data.attr[i].value
               })
             }
             if (data.attr[i].key == 'linkman') {
-              this.ruleForm.proname = data.attr[i].value;
+              _self.ruleForm.proname = data.attr[i].value;
             }
             if (data.attr[i].key == 'vhost') {
-              this.ruleForm.vhost = data.attr[i].value;
+              _self.ruleForm.vhost = data.attr[i].value;
             }
             if (data.attr[i].key == 'isActive') {
-              this.ruleForm.transmode = data.attr[i].value;
-               this.modyData.push({
-                'transmode':data.attr[i].value
+              _self.ruleForm.transmode = data.attr[i].value;
+              _self.modyData.push({
+                'transmode': data.attr[i].value
               })
             }
             if (data.attr[i].key == 'fromPath') {
-              this.ruleForm.fromPath = data.attr[i].value;
+              _self.ruleForm.fromPath = data.attr[i].value;
             }
             if (data.attr[i].key == 'toPath') {
-              this.ruleForm.toPath = data.attr[i].value;
+              _self.ruleForm.toPath = data.attr[i].value;
             }
             if (data.attr[i].key == 'tableStructure') {
-              this.ruleForm.tableStructure = data.attr[i].value;
+              _self.ruleForm.tableStructure = data.attr[i].value;
             }
           }
 
@@ -1125,12 +1144,15 @@ export default {
 .taskMDialog {
   display: inline-block;
 }
-.cred{
+
+.cred {
   color: red;
 }
+
 .el-select {
   width: 100%;
 }
+
 .deicon {
   background: url("../../../../assets/images/tree.svg");
   width: 42px;
@@ -1144,6 +1166,7 @@ export default {
   margin-left: 10px;
   cursor: pointer;
 }
+
 .otherInfo .el-radio {
   margin-bottom: 12px;
   margin-top: 8px;
@@ -1232,7 +1255,9 @@ i {
     width: 70%;
   }
 }
+
 .regcon .otherInfo .ftptype .el-form-item--medium .el-form-item__content {
   margin-left: 151px !important;
 }
+
 </style>

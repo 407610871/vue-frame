@@ -48,7 +48,7 @@
           </el-table>
         </div>
       </div>
-      <div class="proInfo-box log-box clearfix ptb20" v-show="textShow">
+      <div class="proInfo-box log-box clearfix ptb20 bornone" v-show="textShow">
         <textarea name="" id="" disabled="disabled" >{{loginfo}}</textarea>
       </div>
     </el-dialog>
