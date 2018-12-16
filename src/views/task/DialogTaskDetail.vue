@@ -87,28 +87,6 @@
 
               </el-col>
             </el-col>
-            <!-- <el-col :span="10">
-              <el-form-item label="接入对象:">
-                <div style="height:50px;width:100%;overflow:auto;">
-                  <span style="display:block" v-for="item in sourceBaseInfo.sourceObjNameList" :key="item.tableName"
-                  v-show="item.type=='TABLE'||item.type=='VIEW'"
-                  >{{item.type=="TABLE"?'表':'视图'}}:{{item.tableName}}</span>
-                </div>
-              </el-form-item>
-            </el-col>
-            <el-col :span="4" class="bank">bank</el-col> -->
-            <!-- <el-col :span="10">
-              <el-form-item label="增量字段:" v-show="sourceBaseInfo.period==1||sourceBaseInfo.period==2">
-                <span>{{sourceBaseInfo.incrementColumn}}</span>
-              </el-form-item>
-            </el-col>
-            <el-col :span="10" class="bank">bank</el-col>
-            <el-col :span="4" class="bank">bank</el-col>
-            <el-col :span="10">
-              <el-form-item label="增量字段类型:" v-show="sourceBaseInfo.period==1||sourceBaseInfo.period==2">
-                <span>{{sourceBaseInfo.columnType}}</span>
-              </el-form-item>
-            </el-col> -->
           </div>
         </div>
         <!-- 接入基本信息 模块结束 -->
@@ -206,7 +184,7 @@
           <!-- 四个日志tab 开始 -->
           <div class="daiInfo-tabs">
             <el-tabs type="border-card" style="height:265px;">
-              <el-tab-pane label="汇聚任务日志信息">
+              <el-tab-pane label="汇聚任务日志信息" v-if="taskLog!=''">
                 <div class="dataCheck-tab" v-loading="loading4">
                   <textarea v-show="taskLog!=''" name="" id="" cols="30" rows="12" disabled="disabled" style="resize:none;width: 100%; height: 180px;border:none;background:inherit" v-model="taskLog"></textarea>
                   <div class="tips-none" v-show="taskLog==''">暂无数据</div>
@@ -254,7 +232,20 @@
                 <!-- 数据预览 表格开始 -->
                 <!-- 数据预览表头不确定，根据接口返回的list集合对象里的key值来确定，所以采用如下写法实现 -->
                 <div class="dataViews-table" v-loading="loading6">
-                  <div class="table-header">
+                  <!-- <el-table :data="dataViewsList" style="width: 100%">
+                    <el-table-column v-for="keyitem in keyList" :key="keyitem" :prop="keyitem" :label="keyitem"> </el-table-column>
+                  </el-table> -->
+                  <table style="width:100%;">
+                    <thead>
+                      <th v-for="keyitem in keyList" :key="keyitem">{{keyitem}}</th>
+                    </thead>
+                    <tbody>
+                      <tr v-for="item in dataViewsList" :key="item[keyList[0]]">
+                        <td v-for="keyitem in keyList" :key="keyitem" :title="item[keyitem]">{{item[keyitem]}}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <!-- <div class="table-header">
                     <div class="table-th">
                       <span v-for="keyitem in keyList" :key="keyitem">{{keyitem}}</span>
                     </div>
@@ -267,7 +258,7 @@
                       </div>
                       <div class=table-tr-line></div>
                     </div>
-                  </div>
+                  </div> -->
                   <div class="tips-none" v-show="keyList.length==0">暂无数据</div>
                 </div>
                 <!-- 数据预览 表格结束 -->
@@ -320,10 +311,7 @@
   height: 200px;
   overflow: auto;
 }
-.dataViews-table span{
-  display:table-cell;
-  min-width: 140px;
-  width:100%;
+.dataViews-table th,td{
   text-align: center;
   vertical-align: middle;
   height: 30px;
@@ -805,11 +793,7 @@ export default {
           if(res.data.code!="200"&&res.data.code!="0000"){
             that.doMsg("/manager/taskOperate/taskLogInfo/"+res.data.data.message,'error');
           }else{
-            that.taskLog = res.data.data.logInfo==""?"":`\t${res.data.data.logInfo}`;
-            if(that.taskLog=="暂无日志信息！"){
-              that.taskLog="数据汇聚成功";
-            }
-            // that.taskLog = `java.lang.IndexOutOfBoundsException: Index: 0, Size: 0 \n\t at java.util.ArrayList.rangeCheck(ArrayList.java:653)\n\tat java.util.ArrayList.get(ArrayList.java:429)\n\tat cn.enn.com.jdbc.source.JdbcSourceTask.poll(JdbcSourceTask.java:284)\n\tat org.apache.kafka.connect.runtime.WorkerSourceTask.execute(WorkerSourceTask.java:204)\n\tat org.apache.kafka.connect.runtime.WorkerTask.doRun(WorkerTask.java:170)\n\tat org.apache.kafka.connect.runtime.WorkerTask.run(WorkerTask.java:214)\n\tat java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)\n\tat java.util.concurrent.FutureTask.run(FutureTask.java:266)\n\tat java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)\n\tat java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)\n\tat java.lang.Thread.run(Thread.java:745)\n`;
+            that.taskLog = (res.data.data.logInfo||"")==""?"":`\t${res.data.data.logInfo}`;
           }
           that.loading4 = false;
         }
@@ -856,6 +840,7 @@ export default {
           if(res.data.code!="200"&&res.data.code!="0000"){
             that.doMsg("/manager/taskOperate/dataPreview："+res.data.message,'error');
           }else{
+            debugger;
             that.dataViewsList = res.data.data;
             that.keyList = [];
             for (var p in that.dataViewsList[0]){
