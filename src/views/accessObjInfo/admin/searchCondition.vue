@@ -77,9 +77,13 @@ export default {
         if(this.isTimestamp(this.searchFormItem.filtercolumn)){
           this.searchFormItem.columnType = "TIMESTAMP";
         }else{
-          delete this.searchFormItem.columnType;
+          this.searchFormItem.columnType =this.test(this.searchFormItem.filtercolumn);
           delete this.searchFormItem.timestamp;
         }
+      },
+      test(name){
+        let datatypeArr =  this.filtercolumnList.find(item=>item.name == name);
+        return datatypeArr.datatype;
       },
       isTimestamp(name){
         let datatypeArr =  this.filtercolumnList.find(item=>item.name == name);

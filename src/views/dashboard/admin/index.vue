@@ -230,7 +230,6 @@ export default {
           if (res.data.success) {
             
             if (res.data.data.discontinuousPercentage) {
-              // _self.countTotal = res.data.data.total;
               _self.count1Data.total = res.data.data.dPercentage;
               _self.count1Data.list = res.data.data.discontinuousPercentage;
               
@@ -422,7 +421,7 @@ export default {
            paramsObj.deptIds =ids;
 
 
-this.updataFliterItemList();
+_self.updataFliterItemList();
 //  this.$root.eventHub.$emit('updataFliterItemList');
 
 

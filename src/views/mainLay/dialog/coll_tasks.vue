@@ -587,7 +587,10 @@ export default {
 
         }).then(res => {
           this.loading = false;
+          
           if (res.data.success) {
+
+ this.websock.send(JSON.stringify(res.data.data));
             let ctips = '采集任务启动成功！';
             if (this.ruleForm.taskSubMode == "false") {
               ctips = '采集任务创建成功成功！';

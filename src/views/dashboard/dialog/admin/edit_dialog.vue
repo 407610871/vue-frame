@@ -838,7 +838,7 @@ export default {
                         this.dialogVisible = false;
                         this.$emit('refreshTable');
 
-                        this.$root.eventHub.$emit('updataFliterItemList');
+                        // this.$root.eventHub.$emit('updataFliterItemList');
   this.$emit('storeReady');
                       }
                     });
@@ -883,7 +883,7 @@ export default {
                                                
 
                         
-                        this.$root.eventHub.$emit('updataFliterItemList');
+                        // this.$root.eventHub.$emit('updataFliterItemList');
                          this.$emit('storeReady');
                       }
                     });
