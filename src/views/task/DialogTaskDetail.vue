@@ -65,8 +65,8 @@
                       <span style="display:block" v-for="item in sourceBaseInfo.sourceObjNameList" :key="item.tableName"
                       v-show="item.type=='TABLE'||item.type=='VIEW'"
                       >{{item.type=="TABLE"?'表':'视图'}}:{{item.tableName}}</span>
+                      <span v-show="sourceBaseInfo.sourceObjNameStr!=''">{{sourceBaseInfo.sourceObjNameStr}}</span>
                     </div>
-                  <!-- <span>{{sourceBaseInfo.sourceObjNameList}}</span> -->
                   </el-form-item>
                 </el-col>
                 <el-col :span="4" class="bank">bank</el-col>
@@ -412,7 +412,8 @@ export default {
         sourceObjName :"",
         incrementColumn :"",
         columnType :"",
-        sourceObjNameList:""
+        sourceObjNameList:"",
+        sourceObjNameStr:""
       },
       //接入数据更新信息
       sourceDataInfo:{
@@ -594,12 +595,14 @@ export default {
           return;
         }
         let sourceObjNameList = res.data.data.sourceTableName;
-        // let sourceObjNameList = "";
-        // let len = res.data.data.sourceTableName.length;
-        // for(let i=0;i<len;i++){
-        //   sourceObjNameList = sourceObjNameList + res.data.data.sourceTableName[i];
-        //   sourceObjNameList = sourceObjNameList+(i==len-1?"":",");
-        // }
+        let sourceObjNameStr = "";
+        let len = res.data.data.sourceTableName.length;
+        for(let i=0;i<len;i++){
+          if(res.data.data.sourceTableName[i].type!="VIEW"&&res.data.data.sourceTableName[i].type!="TABLE"){
+            sourceObjNameStr = sourceObjNameStr + res.data.data.sourceTableName[i].tableName;
+            sourceObjNameStr = sourceObjNameStr+(i==len-1?"":",");
+          }
+        }
         let innerReqData = {
           params:{
             taskInfoDetailId:that.reqObj.taskInfoDetailId,
@@ -633,6 +636,7 @@ export default {
           that.sourceBaseInfo.periodDesc = periodMap[innerRes.data.data.period];
           //接入对象展示集合
           that.sourceBaseInfo.sourceObjNameList = sourceObjNameList;
+          that.sourceBaseInfo.sourceObjNameStr = sourceObjNameStr;
           //接入源名称
           that.sourceBaseInfo.resourceName = res.data.data.sourceSysName;
           that.loading1 = false;
