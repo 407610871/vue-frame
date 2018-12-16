@@ -214,7 +214,7 @@
               <el-col :span="10" class="uncol">
                 <span class="fl" v-show="this.ruleForm.author=='true'&&(ruleForm.syskind=='10002')">*</span>
                 <el-form-item class="fl unrequired" label="模式名/架构/Schema:" prop="model" v-if="ruleForm.syskind=='10002'">
-                  <el-input v-model="ruleForm.model" disabled @change="changeContentInfo()"></el-input>
+                  <el-input v-model="ruleForm.model"  @change="changeContentInfo()"></el-input>
                 </el-form-item>
               </el-col>
               <!--  <el-col :span="10">
