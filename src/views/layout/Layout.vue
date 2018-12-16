@@ -2,14 +2,19 @@
   <el-container>
     <el-header height="66px" class="enc-header">
       <div class="enc-logo">
-        <img :src="logo" alt="">
+        <img :src="logo" alt>
       </div>
       <nav-menu />
       <div class="right-menu clearfix">
         <!--  <el-button class="document" type="primary" icon="enc-icon-documents"></el-button> -->
         
         <el-tooltip class="item" effect="light" content="系统设置" placement="bottom">
-          <el-button class="setting" type="primary" icon="enc-icon-setting" v-on:click="goRoute('setting')"></el-button>
+          <el-button
+            class="setting"
+            type="primary"
+            icon="enc-icon-setting"
+            v-on:click="goRoute('setting')"
+          ></el-button>
         </el-tooltip>
 
         <el-popover placement="bottom-start" width="200" trigger="hover">
@@ -38,7 +43,11 @@
         <!-- <aside-tree></aside-tree> -->
         <new-aside-tree></new-aside-tree>
       </el-aside>
-      <div class="sidebar-control-btn" v-bind:style="{'left':sideBarWidth+'px'}" v-on:click="changeSideBar">
+      <div
+        class="sidebar-control-btn"
+        v-bind:style="{'left':sideBarWidth+'px'}"
+        v-on:click="changeSideBar"
+      >
         <i class="el-icon-caret-left" v-if="sideBarWidth==210"></i>
         <i class="el-icon-caret-right" v-if="sideBarWidth==0"></i>
       </div>
@@ -46,25 +55,30 @@
         <!-- <div class="enc-search">
           <input type="text" v-model="keyword" placeholder="输入查询..." />
           <a href="javascript:void(0)" v-on:click="search"><i class="el-icon-search"></i></a>
-        </div> -->
+        </div>-->
         <div class="enc-sub-header">
           <el-breadcrumb separator="/">
-            <el-breadcrumb-item v-for="(item,index) in breadcrumb" :key="index"><a href="javascript:void(0)" v-on:click="breadcrumbChange(index,item)">{{item.breadcrumbName}}</a></el-breadcrumb-item>
+            <el-breadcrumb-item v-for="(item,index) in breadcrumb" :key="index">
+              <a
+                href="javascript:void(0)"
+                v-on:click="breadcrumbChange(index,item)"
+              >{{item.breadcrumbName}}</a>
+            </el-breadcrumb-item>
           </el-breadcrumb>
           <!-- <span v-for="item in breadcrumb"> / <a href="javascript:void(0)" v-on:click="goToPage(item.path)">{{item.name}}</a></span> -->
         </div>
-        <app-main ref="mainTable" />
+        <app-main ref="mainTable"/>
       </el-main>
     </el-container>
   </el-container>
 </template>
 <script>
-import { AppMain, AsideTree, NavMenu, NewAsideTree } from './components'
-import logo from '@/assets/images/enc-logo.png'
-import release from '@/views/mainLay/dialog/release'
+import { AppMain, AsideTree, NavMenu, NewAsideTree } from "./components";
+import logo from "@/assets/images/enc-logo.png";
+import release from "@/views/mainLay/dialog/release";
 
 export default {
-  name: 'Layout',
+  name: "Layout",
   data() {
     return {
       logo: logo + '?' + +new Date(),
@@ -82,9 +96,7 @@ export default {
     release,
     NewAsideTree
   },
-  computed: {
-
-  },
+  computed: {},
   mounted() {
     var _self = this;
     if (window.localStorage.getItem('data-theme') != undefined) {
@@ -94,10 +106,10 @@ export default {
     this.$ajax
       .get(window.ENV.API_DACM + "/caccesssysRelationWorkInfo/getSystemSet.do")
       .then(function(res) {
-        if (res.data.result == 'success') {
+        if (res.data.result == "success") {
           var configs = JSON.parse(res.data.message);
           for (var value of configs) {
-            if (value.key.trim() == '每页展示条数') {
+            if (value.key.trim() == "每页展示条数") {
               _self.$store.commit("setPageSize", parseInt(value.name));
               break;
             }
@@ -109,92 +121,25 @@ export default {
         console.log(err);
         _self.$store.commit("setPageReady");
       });
-
-    this.$ajax
-      .get(window.ENV.API_DACM + "/caccess/sysdialect", {
-        params: {
-          type: 0
-        }
-      })
-      .then(function(res) {
-        if (res.data.success) {
-          _self.$store.commit("setFilterItmeList", {
-            name: "dataSourceName",
-            data: res.data.data
-          });
-        }
-      })
-      .catch(function(err) {
-        console.log(err);
-      });
-    this.$ajax
-      .get(window.ENV.API_DACM + "/commonInter/getListStaticDataOrder.do", {
-        params: {
-          dictCode: 'NetWork'
-        }
-
-      })
-      .then(function(res) {
-        //  console.log(res)
-        var list = [];
-        if (res.data != undefined) {
-          for (var value of res.data) {
-            list.push({
-              id: value.sTATIC_CODE,
-              name: value.sTATIC_NAME
-            });
-          }
-          _self.$store.commit("setFilterItmeList", {
-            name: "network",
-            data: list
-          });
-        }
-        console.log(list)
-
-      })
-      .catch(function(err) {
-        console.log(err);
-      });
-    this.$ajax
-      .get(window.ENV.API_DACM + "/commonInter/getListStaticDataOrder.do", {
-        params: {
-          dictCode: 'ButtPlatForm'
-        }
-      })
-      .then(function(res) {
-        //  console.log(res)
-
-        var list = [];
-        for (var value of res.data) {
-          list.push({
-            id: value.sTATIC_CODE,
-            name: value.sTATIC_NAME
-          });
-        }
-        // console.log(list)
-
-        _self.$store.commit("setFilterItmeList", {
-          name: "platform",
-          data: list
-        });
-      })
-      .catch(function(err) {
-        console.log(err);
-      });
+    _self.updataFliterItemList();
   },
   created() {
     if (sessionStorage.getItem("store")) {
       var oldStore = JSON.parse(sessionStorage.getItem("store"));
       oldStore.app.token = this.$store.getters.token;
-      this.$store.replaceState(Object.assign({}, this.$store.state, oldStore))
+      this.$store.replaceState(Object.assign({}, this.$store.state, oldStore));
     }
     window.addEventListener("beforeunload", () => {
       sessionStorage.setItem("store", JSON.stringify(this.$store.state));
     });
-    this.$root.eventHub.$on('setKeyword', (keyword) => {
+    this.$root.eventHub.$on("setKeyword", keyword => {
       this.keyword = keyword;
     });
     this.getBreadcrumb();
+
+    // this.$root.eventHub.$on("updataFliterItemList", () => {
+    //   this.updataFliterItemList();
+    // });
   },
   watch: {
     $route(to, from) {
@@ -206,6 +151,86 @@ export default {
     }
   },
   methods: {
+
+       updataFliterItemList() {
+      var _self = this;
+      this.$ajax
+        .get(window.ENV.API_DACM + "/caccess/sysdialect", {
+          params: {
+            type: 0
+          }
+        })
+        .then(function(res) {
+          if (res.data.success) {
+            _self.$store.commit("setFilterItmeList", {
+              name: "dataSourceName",
+              data: res.data.data
+            });
+             _self.formFilterData[0].checkData=list
+          }
+        })
+        .catch(function(err) {
+          console.log(err);
+        });
+      this.$ajax
+        .get(window.ENV.API_DACM + "/commonInter/getListStaticDataOrder.do", {
+          params: {
+            dictCode: "NetWork"
+          }
+        })
+        .then(function(res) {
+          //  console.log(res)
+          var list = [];
+          if (res.data != undefined) {
+            for (var value of res.data) {
+              list.push({
+                id: value.sTATIC_CODE,
+                name: value.sTATIC_NAME
+              });
+            }
+            _self.$store.commit("setFilterItmeList", {
+              name: "network",
+              data: list
+            });
+             _self.formFilterData[1].checkData=list
+          }
+          console.log(list);
+        })
+        .catch(function(err) {
+          console.log(err);
+        });
+      this.$ajax
+        .get(window.ENV.API_DACM + "/commonInter/getListStaticDataOrder.do", {
+          params: {
+            dictCode: "ButtPlatForm"
+          }
+        })
+        .then(function(res) {
+          //  console.log(res)
+
+          var list = [];
+          for (var value of res.data) {
+            list.push({
+              id: value.sTATIC_CODE,
+              name: value.sTATIC_NAME
+            });
+          }
+          // console.log(list)
+
+          _self.$store.commit("setFilterItmeList", {
+            name: "platform",
+            data: list
+          });
+ _self.formFilterData[2].checkData=list
+ console.log(_self.formFilterData);
+  console.log(res.data);
+
+
+        })
+        .catch(function(err) {
+          console.log(err);
+        });
+    },
     _goWarn(){
       window.open(this.warnurl);
     },
@@ -223,13 +248,13 @@ export default {
       if (this.$store.state.queryParams[name]) {
         var obj = {
           resetData: name
-        }
-        this.$store.commit('resetQueryParam', obj);
+        };
+        this.$store.commit("resetQueryParam", obj);
       }
       this.$router.push({ name: name });
     },
     search: function() {
-      this.$root.eventHub.$emit('search', this.keyword);
+      this.$root.eventHub.$emit("search", this.keyword);
     },
     breadcrumbChange: function(index, item) {
       if (index != this.breadcrumb.length - 1) {
@@ -240,33 +265,43 @@ export default {
         // obj.resetData.push(this.breadcrumb[i].name)
         // }
         // this.$store.commit('resetQueryParam', obj);
-        this.$router.push({ name: item.name, params: item.params, query: item.query });
+        this.$router.push({
+          name: item.name,
+          params: item.params,
+          query: item.query
+        });
       }
     },
     getBreadcrumb() {
       var routeName = this.$route.name;
-      if (routeName == 'dashboard' || routeName == 'accessObjManage' || routeName == 'accessObjInfo') {
-        this.breadcrumb = [{
-          name: 'dashboard',
-          breadcrumbName: '数据接入',
-          params: {},
-          query: this.$store.state.queryParams['dashboard']
-        }]
+      if (
+        routeName == "dashboard" ||
+        routeName == "accessObjManage" ||
+        routeName == "accessObjInfo"
+      ) {
+        this.breadcrumb = [
+          {
+            name: "dashboard",
+            breadcrumbName: "数据接入",
+            params: {},
+            query: this.$store.state.queryParams["dashboard"]
+          }
+        ];
         if (this.$route.params.sourceId && this.$route.params.sourceName) {
           this.breadcrumb.push({
-            name: 'accessObjManage',
+            name: "accessObjManage",
             breadcrumbName: decodeURI(this.$route.params.sourceName),
             params: {
               sourceId: this.$route.params.sourceId,
               sourceName: decodeURI(this.$route.params.sourceName),
               type: this.$route.params.type
             },
-            query: this.$store.state.queryParams['accessObjManage']
+            query: this.$store.state.queryParams["accessObjManage"]
           });
         }
         if (this.$route.params.objId && this.$route.params.objName) {
           this.breadcrumb.push({
-            name: 'accessObjInfo',
+            name: "accessObjInfo",
             breadcrumbName: decodeURI(this.$route.params.objName),
             params: {
               sourceId: this.$route.params.sourceId,
@@ -280,23 +315,22 @@ export default {
       } else {
         var list = [];
         this.$route.matched.forEach((item, index) => {
-          if (item.path != '') {
+          if (item.path != "") {
             list.push({
               name: this.$route.name,
-              breadcrumbName: this.$route.meta.title,
-            })
+              breadcrumbName: this.$route.meta.title
+            });
           }
         });
-        this.$set(this.$data, 'breadcrumb', list);
+        this.$set(this.$data, "breadcrumb", list);
       }
       //end of getBreadcrumb
     }
   }
-}
-
+};
 </script>
 <style rel="stylesheet/scss" lang="scss" scoped>
-@import 'src/styles/variables.scss';
+@import "src/styles/variables.scss";
 @import "src/styles/mixin.scss";
 .warn-menu a {
   line-height: 30px;
@@ -411,14 +445,13 @@ export default {
   text-indent: 0;
 }
 
-
 .enc-search {
   float: right;
   margin-top: 3px;
   height: $enc-nav-sub-header-height;
   width: 300px;
   line-height: $enc-nav-sub-header-height;
-  background-color: #E2E4E7;
+  background-color: #e2e4e7;
   border-left: 3px solid #fff;
   input {
     margin-left: 5px;
@@ -427,29 +460,29 @@ export default {
     border: 0 none;
     outline: 0 none;
   }
-   ::-webkit-input-placeholder {
+  ::-webkit-input-placeholder {
     color: #999;
   } ///* 使用webkit内核的浏览器 */
-   :-moz-placeholder {
+  :-moz-placeholder {
     color: #999;
   } ///* Firefox版本4-18 */
-   ::-moz-placeholder {
+  ::-moz-placeholder {
     color: #999;
   } ///* Firefox版本19+ */
-   :-ms-input-placeholder {
+  :-ms-input-placeholder {
     color: #999;
   } ///* IE浏览器 */
   a {
     display: inline-block;
     margin-left: 10px;
     font-size: 18px;
-     :link,
-     :visited {
-      color: #EFF2F5;
+    :link,
+    :visited {
+      color: #eff2f5;
     }
-     :hover,
-     :active {
-      color: #479AD8;
+    :hover,
+    :active {
+      color: #479ad8;
     }
   }
 }
@@ -486,12 +519,11 @@ export default {
   font-size: 12px;
   line-height: 26px;
   i {
-    margin-left: -3px
+    margin-left: -3px;
   }
 }
 
-
-@media screen and ( max-width: 1280px) {
+@media screen and (max-width: 1280px) {
   .enc-logo {
     line-height: 50px;
   }
@@ -505,7 +537,6 @@ export default {
     }
   }
 }
-
 </style>
 <style rel="stylesheet/scss" lang="scss">
 .enc-header {
@@ -532,5 +563,4 @@ export default {
     }
   }
 }
-
 </style>
