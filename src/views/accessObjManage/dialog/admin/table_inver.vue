@@ -14,7 +14,7 @@
         <p style="text-align: center">{{name}}</p>
         <el-button size="mini" type="primary" @click="downTable()" class="dowBtn">导出报告</el-button>
       </div>
-      <div class="proInfo-box">
+      <div class="proInfo-box" v-loading="loading2">
         <div class="comTable">
           <el-table :data="tableData" style="width: 100%" height="250" stripe>
             <el-table-column prop="source_tableName" label="源表">
@@ -48,8 +48,8 @@
           </el-table>
         </div>
       </div>
-      <div class="proInfo-box log-box clearfix ptb20">
-        <textarea name="" id="" disabled="disabled" v-show="textShow">{{loginfo}}</textarea>
+      <div class="proInfo-box log-box clearfix ptb20" v-show="textShow">
+        <textarea name="" id="" disabled="disabled" >{{loginfo}}</textarea>
       </div>
     </el-dialog>
   </div>
@@ -94,6 +94,7 @@ export default {
     },
     //数据表核验
     _getTableNum() {
+      this.loading2 =true;
       console.log(this.cindex);
       this.$ajax({
         method: "GET",
@@ -106,6 +107,7 @@ export default {
         }
 
       }).then(res => {
+        this.loading2 = false;
         this.tableData = res.data.data;
       })
     },

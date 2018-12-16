@@ -303,6 +303,7 @@ export default {
       this.timeCheck = false;
       this.loginfo = "";
       this.range = 0;
+      debugger;
       window.clearTimeout(this.timer);
       this.resData = {};
       this.textShow = false;
