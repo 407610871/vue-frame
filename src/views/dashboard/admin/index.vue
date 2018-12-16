@@ -25,7 +25,7 @@
             <el-table :data="mainTableData" stripe :height="tableHeight" border style="width: 100%;min-height:300px;" tooltip-effect="light">
                 <el-table-column label="接入源名称" width="250" show-overflow-tooltip>
                     <template slot-scope="scope">
-                        <a href="javascript:void(0)" v-on:click="goSubPage(scope.$index,scope.row.dataSourceName)">{{ scope.row.name }}</a>
+                        <a class="underdone" href="javascript:void(0)" v-on:click="goSubPage(scope.$index,scope.row.dataSourceName)">{{ scope.row.name }}</a>
                     </template>
                 </el-table-column>
                 <el-table-column prop="id" label="接入源ID" min-width="180">
@@ -702,5 +702,8 @@ _self.updataFliterItemList();
   width: 70px;
   text-align: left;
   margin: 0 auto;
+}
+.underdone, .underdone:focus, .underdone:hover{
+  text-decoration: underline;
 }
 </style>
