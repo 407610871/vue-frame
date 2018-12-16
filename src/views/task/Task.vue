@@ -509,15 +509,20 @@ export default {
     },
       //数据接收
     websocketonmessage(e) {
-      // const redata = JSON.parse(e.data);
-      const redata = e.data;
+      let redata = JSON.parse(e.data);
+      // let redata = e.data;
+            console.log(redata);
+            redata.zc=1;
+                        console.log(e);
+
+
         this.removeCla();
       let tim = setTimeout(()=>{
-          this.$message({
-            message:`实时播报：新增一条任务${redata}`,
-            type: 'success'
-          });
-          this.tableData.unshift({zc:1,taskInfoId:redata});
+          // this.$message({
+          //   message:`实时播报：新增一条 ID为：${redata.taskInfoId}的任务`,
+          //   type: 'success'
+          // });
+          this.tableData.unshift(redata);
           clearTimeout(tim);
         },0);  
     },

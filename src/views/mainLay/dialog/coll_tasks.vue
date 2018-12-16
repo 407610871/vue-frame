@@ -588,7 +588,11 @@ export default {
 
         }).then(res => {
           this.loading = false;
+          
           if (res.data.success) {
+
+                        this.websock.send(JSON.stringify(res.data.data));
+
             this.$alert('采集任务启动成功！', '信息', {
               confirmButtonText: '确定',
               callback: action => {
