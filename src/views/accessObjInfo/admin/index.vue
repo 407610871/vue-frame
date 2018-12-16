@@ -81,7 +81,7 @@
               <el-row class="btn-area">
                 <el-col><el-button type="primary" size="mini" @click="addCondition">增加搜索条件</el-button></el-col>
               </el-row>
-            <el-table :data="mainTableData2" stripe  border style="width: 100%" tooltip-effect="light">
+            <el-table :data="mainTableData2" stripe  :height="tableHeight" border style="width: 100%" tooltip-effect="light">
               <el-table-column v-for="(val, key, index) in data2Columns" v-if="index<6" :prop="key" :label="getLabel(key)" width="width" :key="index">
               </el-table-column>
 							<el-table-column label="描述">
