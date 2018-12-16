@@ -305,6 +305,11 @@
   </div>
 </template>
 <script>
+
+//盐城环境地址
+const httpUrl = window.ENV.API_DOWN + "/";
+//websocket地址
+const wsUrl=`ws${httpUrl.substring(4,httpUrl.length-1)}/websocket`
 import increMap from '@/views/mainLay/dialog/incre_map' //增量字段
 
 export default {
@@ -392,6 +397,29 @@ export default {
     };
   },
   methods: {
+
+    initWebSocket() {
+      //初始化weosocket
+      //ws地址
+      // const wsuri = "ws://10.19.160.160:8080/";
+            const wsuri =wsUrl;
+
+      this.websock = new WebSocket(wsuri);
+      console.log(this.websock);
+            this.websock.onopen = this.websocketonopen;
+      // this.websock.send = this.websocketsend;
+      // this.websock.onmessage = this.websocketonmessage;
+      this.websock.onclose = this.websocketclose;
+    },
+    websocketclose(e) {
+      //关闭
+      console.log( "websocket连接已断开");
+    },
+    //连接成功回调方法
+    websocketonopen(){
+      console.log("websocket连接成功！")
+    },
+    
     //清空非选中项
     cleanData(val) {
       if (val == '0') {
@@ -744,6 +772,7 @@ export default {
 
           }).then(res => {
             this.loading = false;
+           
             if (res.data.success) {
               this.$alert('采集任务启动成功！', '信息', {
                 confirmButtonText: '确定',
@@ -841,7 +870,11 @@ export default {
 
           }).then(res => {
             this.loading = false;
+            
             if (res.data.success) {
+
+
+            this.websock.send(JSON.stringify(res.data.data));
               this.$alert('采集任务启动成功！', '信息', {
                 confirmButtonText: '确定',
                 callback: action => {
@@ -876,6 +909,8 @@ export default {
               }).then(res => {
                 this.loading = false;
                 if (res.data.success) {
+                    
+            this.websock.send(JSON.stringify(res.data.data));
                   this.$alert('采集任务启动成功！', '信息', {
                     confirmButtonText: '确定',
                     callback: action => {
@@ -1072,6 +1107,7 @@ export default {
   },
   created() {
     this._getAcmode();
+    this.initWebSocket();
   },
   watch: {
     msg() {

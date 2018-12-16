@@ -421,7 +421,7 @@ export default {
            paramsObj.deptIds =ids;
 
 
-this.updataFliterItemList();
+_self.updataFliterItemList();
 //  this.$root.eventHub.$emit('updataFliterItemList');
 
 
