@@ -1,6 +1,6 @@
 <template>
   <div class="taskMDialog collTaskDia" v-loading="loading">
-    <el-form :model="ruleForm" ref="ruleForm" label-width="100px" class="demo-ruleForm" :rules="formRules" >
+    <el-form :model="ruleForm" ref="ruleForm" label-width="100px" class="demo-ruleForm" :rules="formRules">
       <div class="daiInfo proInfo">
         <div class="proInfo-box clearfix">
           <el-col :span="24">
@@ -331,7 +331,7 @@ export default {
       treeData: [],
       editfalg: false,
       isregin: false,
-      taskStatus:false,
+      taskStatus: false,
       appId: '',
 
       taskInfoId: '',
@@ -731,7 +731,7 @@ export default {
           "xStreamPassword": this.ruleForm.password
         }
         this.loading = true;
-        if (this.$store.state.isSign=="false"||this.$store.state.isSign==false) {
+        if (this.$store.state.isSign == "false" || this.$store.state.isSign == false) {
           this.$ajax({
             method: "post",
             url: this.GLOBAL.api.API_DACM + '/task/updateSourceConfig',
@@ -745,7 +745,11 @@ export default {
           }).then(res => {
             this.loading = false;
             if (res.data.success) {
-              this.$alert('采集任务启动成功！', '信息', {
+              let ctips = '采集任务启动成功！';
+              if (this.ruleForm.taskSubMode == "false") {
+                ctips = '采集任务创建成功成功！';
+              }
+              this.$alert(ctips, '信息', {
                 confirmButtonText: '确定',
                 callback: action => {
                   this.isregin = false;
@@ -781,7 +785,11 @@ export default {
               }).then(res => {
                 this.loading = false;
                 if (res.data.success) {
-                  this.$alert('采集任务启动成功！', '信息', {
+                  let ctips = '采集任务启动成功！';
+                  if (this.ruleForm.taskSubMode == "false") {
+                    ctips = '采集任务创建成功成功！';
+                  }
+                  this.$alert(ctips, '信息', {
                     confirmButtonText: '确定',
                     callback: action => {
                       this.isregin = false;
@@ -830,7 +838,7 @@ export default {
           "xStreamPassword": this.ruleForm.password
         }
         this.loading = true;
-        if (this.$store.state.isSign=="false"||this.$store.state.isSign==false) {
+        if (this.$store.state.isSign == "false" || this.$store.state.isSign == false) {
           this.$ajax({
             method: "post",
             url: this.GLOBAL.api.API_DACM + '/task/saveHeliumTask',
@@ -842,7 +850,11 @@ export default {
           }).then(res => {
             this.loading = false;
             if (res.data.success) {
-              this.$alert('采集任务启动成功！', '信息', {
+              let ctips = '采集任务启动成功！';
+              if (this.ruleForm.taskSubMode == "false") {
+                ctips = '采集任务创建成功成功！';
+              }
+              this.$alert(ctips, '信息', {
                 confirmButtonText: '确定',
                 callback: action => {
                   this.$emit('fresh');
@@ -876,7 +888,11 @@ export default {
               }).then(res => {
                 this.loading = false;
                 if (res.data.success) {
-                  this.$alert('采集任务启动成功！', '信息', {
+                  let ctips = '采集任务启动成功！';
+                  if (this.ruleForm.taskSubMode == "false") {
+                    ctips = '采集任务创建成功成功！';
+                  }
+                  this.$alert(ctips, '信息', {
                     confirmButtonText: '确定',
                     callback: action => {
                       this.$emit('fresh');
@@ -957,11 +973,10 @@ export default {
             this.isdisable = true;
             this.ruleForm.increment = data.incrementColumn;
             this.increArr = {};
-            if(data.taskStatus=='0'){
-              this.ruleForm.taskSubMode="false";
-              this.taskStatus=false;
-            }
-            else{
+            if (data.taskStatus == '0') {
+              this.ruleForm.taskSubMode = "false";
+              this.taskStatus = false;
+            } else {
               this.ruleForm.taskSubMode = 'true';
               this.taskStatus = true;
             }
@@ -1001,7 +1016,7 @@ export default {
               this.ruleForm.dfmin = pollMs[1];
               this.ruleForm.dfhour = pollMs[2];
               this.ruleForm.dfmon = pollMs[3];
-               this.cleanData('2');
+              this.cleanData('2');
             }
             if (this.ruleForm.cycleSet == '1' && data.timeType == '3') {
               this.radio = '3';
@@ -1009,14 +1024,14 @@ export default {
               this.ruleForm.dsmin = pollMs[1];
               this.ruleForm.dshour = pollMs[2];
               this.ruleForm.dsweek = this.Unweek(pollMs[5]);
-               this.cleanData('3');
+              this.cleanData('3');
             }
             if (this.ruleForm.cycleSet == '1' && data.timeType == '4') {
               this.radio = '4';
               let pollMs = data.interval_ms.split(' ');
               this.ruleForm.dtmin = pollMs[1];
               this.ruleForm.dthour = pollMs[2];
-               this.cleanData('4');
+              this.cleanData('4');
             }
 
 

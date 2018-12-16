@@ -353,6 +353,7 @@ export default {
 
 textarea {
   width: 80%;
+  height: 230px;
 }
 
 .tin-btn {

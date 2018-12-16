@@ -194,5 +194,7 @@ export default {
   line-height: 10px !important;
   margin-right: 10px !important;
 }
-
+.el-radio{
+  line-height: 30px;
+}
 </style>

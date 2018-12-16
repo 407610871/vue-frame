@@ -1,6 +1,6 @@
 <template>
   <div class="taskMDialog collTaskDia" v-loading="loading">
-    <el-form :model="ruleForm" ref="ruleForm" label-width="100px" class="demo-ruleForm" :rules="formRules" >
+    <el-form :model="ruleForm" ref="ruleForm" label-width="100px" class="demo-ruleForm" :rules="formRules">
       <div class="daiInfo proInfo">
         <div class="proInfo-box clearfix">
           <el-col :span="24">
@@ -149,7 +149,7 @@
                         <el-col :span="4">
                           <el-form-item>
                             <el-select v-model="ruleForm.dfhour" placeholder="请选择">
-                              <el-option v-for="item in hourData" :key="item"  :label="item" :value="item">
+                              <el-option v-for="item in hourData" :key="item" :label="item" :value="item">
                               </el-option>
                             </el-select>
                           </el-form-item>
@@ -200,7 +200,7 @@
                         <el-col :span="4">
                           <el-form-item>
                             <el-select v-model="ruleForm.dshour" placeholder="请选择">
-                              <el-option v-for="item in hourData" :key="item"  :label="item" :value="item">
+                              <el-option v-for="item in hourData" :key="item" :label="item" :value="item">
                               </el-option>
                             </el-select>
                           </el-form-item>
@@ -238,7 +238,7 @@
                         <el-col :span="4">
                           <el-form-item>
                             <el-select v-model="ruleForm.dthour" placeholder="请选择">
-                              <el-option v-for="item in hourData" :key="item" :label="item"  :value="item">
+                              <el-option v-for="item in hourData" :key="item" :label="item" :value="item">
                               </el-option>
                             </el-select>
                           </el-form-item>
@@ -318,7 +318,7 @@ export default {
         taskSubMode: 'true' //提交方式
       },
       formRules: {
-         increment:[{
+        increment: [{
           required: true,
           message: '请选择增量字段',
         }]
@@ -437,8 +437,7 @@ export default {
         if (this.ruleForm.jmin === '') {
           this.$message.warning('请将间隔执行时间填写完整');
           return false;
-        }
-        else if (this.ruleForm.jmin == 0) {
+        } else if (this.ruleForm.jmin == 0) {
           if (this.ruleForm.jhour == '' && this.ruleForm.jday == '') {
             this.$message.warning('请输入正确的间隔时间');
             return false;
@@ -487,7 +486,7 @@ export default {
           let dsmin;
           let dshour;
           let dsweek;
-           if (this.ruleForm.dsmin === '' || this.ruleForm.dshour === '' || this.ruleForm.dsweek == '' || this.ruleForm.dsweek == undefined) {
+          if (this.ruleForm.dsmin === '' || this.ruleForm.dshour === '' || this.ruleForm.dsweek == '' || this.ruleForm.dsweek == undefined) {
             this.$message.warning('请将定时执行时间填写完整');
             return false;
           }
@@ -576,7 +575,7 @@ export default {
         "accessSysId": this.rowList[0].accessSys.id
       }
       this.loading = true;
-      if (this.$store.state.isSign=="false"||this.$store.state.isSign==false) {
+      if (this.$store.state.isSign == "false" || this.$store.state.isSign == false) {
         this.$ajax({
           method: "post",
           url: this.GLOBAL.api.API_DACM + '/task/saveRegexHeliumTask',
@@ -589,7 +588,11 @@ export default {
         }).then(res => {
           this.loading = false;
           if (res.data.success) {
-            this.$alert('采集任务启动成功！', '信息', {
+            let ctips = '采集任务启动成功！';
+            if (this.ruleForm.taskSubMode == "false") {
+              ctips = '采集任务创建成功成功！';
+            }
+            this.$alert(ctips, '信息', {
               confirmButtonText: '确定',
               callback: action => {
                 this.$emit('fresh');
@@ -613,7 +616,7 @@ export default {
         this.$ajax({
           method: 'post',
           url: this.GLOBAL.api.API_DACM + '/dataTable/inputSurvey',
-          data:saves
+          data: saves
         }).then(res => {
 
           if (res.data.success) {
@@ -629,7 +632,11 @@ export default {
             }).then(res => {
               this.loading = false;
               if (res.data.success) {
-                this.$alert('采集任务启动成功！', '信息', {
+                let ctips = '采集任务启动成功！';
+                if (this.ruleForm.taskSubMode == "false") {
+                  ctips = '采集任务创建成功成功！';
+                }
+                this.$alert(ctips, '信息', {
                   confirmButtonText: '确定',
                   callback: action => {
                     this.$emit('fresh');
@@ -703,7 +710,7 @@ export default {
   },
   props: ['rowList', 'msg'],
   watch: {
-    
+
     msg() {
       if (this.msg == "fourth") {
         if (this.rowList.length != undefined) {
