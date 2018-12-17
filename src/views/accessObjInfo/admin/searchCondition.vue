@@ -90,10 +90,10 @@ export default {
         if(!datatypeArr) return false;
         let datatype = datatypeArr.datatype;
         if(this.tableParams.ACCESS_SYS_DIALECT_ID == '10001'){
-          return datatype == "timestamp";
+          return datatype == "timestamp"||datatype == "datetime";
         }else if(this.tableParams.ACCESS_SYS_DIALECT_ID == '10002'){
           //return datatype == "TIMESTAMP(0)";
-          return datatype.indexOf('TIMESTAMP') > -1;
+          return datatype.indexOf('TIMESTAMP') > -1||datatype.toUpperCase().indexOf('DATE') > -1;
         }else{
           return false;
         }

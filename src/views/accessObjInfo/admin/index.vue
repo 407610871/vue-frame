@@ -452,7 +452,7 @@
               filter: _self.filters
             }
 
-            //_self.$ajax.post('http://10.19.160.171:8080/DACM/objDetail/previewData', paramsObj).then(function(res) {
+           // _self.$ajax.post('http://10.19.160.171:8080/DACM/objDetail/previewData', paramsObj).then(function(res) {
             _self.$ajax.post(window.ENV.API_DACM + '/objDetail/previewData', paramsObj).then(function(res) {
                _self.loading = false;
                 if (res.data.success) {
