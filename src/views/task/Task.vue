@@ -553,7 +553,7 @@ let redata = JSON.parse(e.data);
 
       // this.tableData.unshift(tableZC);
       // console.log(this.$refs.multipleTable);
-
+this.pageNum=1;
       // return;
       this.allSecectData = {};
       this.init(keyword);
