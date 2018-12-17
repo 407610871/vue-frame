@@ -26,7 +26,7 @@
                 <el-radio label="1" v-if="this.$route.params.type=='oracle'||this.$route.params.type == 'mongodb'||this.$route.params.type == 'ftp'">增量接入</el-radio>
                 <el-radio label="3" v-if="this.$route.params.type=='oracle'">全量接入</el-radio>
                 <el-radio label="0" v-if="this.$route.params.type != 'ftp'">实时接入</el-radio>
-                <el-radio label="2" v-if="this.$route.params.type=='oracle'">一次性接入</el-radio>
+                <el-radio label="2" v-if="this.$route.params.type=='oracle'||this.$route.params.type=='ftp'">一次性接入</el-radio>
               </el-radio-group>
             </el-form-item>
           </el-col>
