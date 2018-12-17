@@ -145,7 +145,7 @@
             <h2>接入源设置</h2>
           </div>
           <div class="daiInfo-box clearfix">
-            <el-form-item label="接入源类型:" prop="syskind">
+            <el-form-item class="my_form_item" label="接入源类型:" prop="syskind">
               <el-radio-group v-model="ruleForm.syskind">
                 <el-radio v-for="item in syskindList" :label="item.id" :key="item.id" disabled>{{item.name}}</el-radio>
                 <!--  <el-radio label="mysql"></el-radio>
@@ -160,12 +160,13 @@
                <el-radio label="其他"></el-radio> -->
               </el-radio-group>
             </el-form-item>
+            <el-button type="primary" v-if="ruleForm.syskind!=''&&ruleForm.syskind!='10023'" @click="testForm('ruleForm')" v-loading.fullscreen.lock="fullscreenLoading">测试连接</el-button>
             <el-row>
               <el-col style="text-align:right;margin-bottom:10px;">
                 <el-col :span="15" class="tleft">
                   <span class="tleft cred">tips:数据源链接更新仅适用于数据源用户信息变更或数据源无变更迁移</span>
                 </el-col>
-                <el-button type="primary" v-if="ruleForm.syskind!=''&&ruleForm.syskind!='10023'" @click="testForm('ruleForm')" v-loading.fullscreen.lock="fullscreenLoading">测试连接</el-button>
+                <!-- <el-button type="primary" v-if="ruleForm.syskind!=''&&ruleForm.syskind!='10023'" @click="testForm('ruleForm')" v-loading.fullscreen.lock="fullscreenLoading">测试连接</el-button> -->
                 <p v-if="isDisableClassFlag" class="isRed">*修改接入源设置需测试连接</p>
               </el-col>
             </el-row>
@@ -1144,6 +1145,13 @@ export default {
 .edit_dialog2{
   .el-form-item{
     height:30px!important;
+  }
+  .my_form_item{
+    width: 80%;
+    display: inline-block;
+    label{
+      text-align: left;
+    }
   }
 }
 .taskMDialog {
