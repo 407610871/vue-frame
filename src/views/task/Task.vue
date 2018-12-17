@@ -15,7 +15,7 @@
 
           <div class="right-tools" >
           <el-tooltip class="item" effect="light" content="刷新" placement="top">
-            <a href="javascript:void(0)" v-on:click="search"><i class="enc-icon-shuaxin"></i></a>
+            <a href="javascript:void(0)" v-on:click="refresh"><i class="enc-icon-shuaxin"></i></a>
           </el-tooltip>
         </div>
       </div>
@@ -546,6 +546,13 @@ let redata = JSON.parse(e.data);
       console.log("websocket连接成功！")
     },
     //webcocket发送方法
+
+  // 刷新按钮
+  refresh(){
+      let keyword = this.keyword;
+      this.init(keyword);
+
+  },
     //查询按钮
     search() {
       let keyword = this.keyword;
