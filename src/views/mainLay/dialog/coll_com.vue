@@ -23,23 +23,31 @@
           <el-col :span="24">
             <el-form-item label="接入方式:" prop="accessMode">
               <el-radio-group v-model="ruleForm.accessMode" :disabled="isdisable">
-                <el-radio label="1" v-if="this.$route.params.type=='oracle'">增量接入</el-radio>
+                <el-radio label="1" v-if="this.$route.params.type=='oracle'||this.$route.params.type == 'mongodb'">增量接入</el-radio>
                 <el-radio label="3" v-if="this.$route.params.type=='oracle'">全量接入</el-radio>
                 <el-radio label="0">实时接入</el-radio>
                 <el-radio label="2" v-if="this.$route.params.type=='oracle'">一次性接入</el-radio>
               </el-radio-group>
             </el-form-item>
           </el-col>
-         
+          <el-col :span="24">
+            <el-form-item label="接入优先级:" prop="priority">
+              <el-radio-group v-model="ruleForm.priority" :disabled = "this.$route.params.type == 'mongodb' && this.ruleForm.accessMode == 1">
+                <el-radio label="1">高</el-radio>
+                <el-radio label="2">中</el-radio>
+                <el-radio label="3">低</el-radio>
+              </el-radio-group>
+            </el-form-item>
+          </el-col>
           <el-col :span="24">
             <el-form-item label="任务提交方式:" prop="taskSubMode">
-              <el-radio-group v-model="ruleForm.taskSubMode">
+              <el-radio-group v-model="ruleForm.taskSubMode" :disabled = "this.$route.params.type == 'mongodb' && this.ruleForm.accessMode == 1">
                 <el-radio label="true">自动提交</el-radio>
                 <el-radio label="false">手工提交</el-radio>
               </el-radio-group>
             </el-form-item>
           </el-col>
-          <el-col :span="24" v-show="ruleForm.accessMode=='1'">
+          <el-col :span="24" v-show="ruleForm.accessMode=='1'&&this.$route.params.type != 'mongodb'">
             <el-col :span="6">
               <el-form-item label="接入起始点:">
                 <el-input v-model="ruleForm.startLocation" class="fl"></el-input>
@@ -57,7 +65,7 @@
             </el-col>
           </el-col>
           <el-col :span="24">
-            <el-col :span="10" class="collbg" v-if="ruleForm.accessMode!='0'">
+            <el-col :span="10" class="collbg" v-if="ruleForm.accessMode!='0'&&this.$route.params.type != 'mongodb'">
               <el-form-item label="增量字段:" prop="increment">
                 <el-input v-model="ruleForm.increment" class="fl"></el-input>
                 <el-button type="primary" class="fl increbtn" @click="innerVisible = true">选择</el-button>
@@ -125,7 +133,7 @@
                     </el-col>
                   </el-col>
                 </el-col>
-                <el-col :span="24">
+                <el-col :span="24" v-if="this.$route.params.type != 'mongodb'">
                   <el-col :span="1" class="bank">bank</el-col>
                   <el-col :span="4" class="line40">
                     <el-radio label="1" v-model="ruleForm.cycleSet">定时执行
@@ -332,7 +340,8 @@ export default {
         dthour: '',
         dtmin: '',
         accessPri: '1', //优先级
-        taskSubMode: 'true' //提交方式
+        taskSubMode: 'true', //提交方式
+        priority:'1'
       },
       formRules: {},
       value2: new Date(2016, 9, 10, 18, 40)
@@ -561,10 +570,13 @@ export default {
         ctt = '0';
         actech = this.$route.params.type;
       }
+      if(this.ruleForm.accessMode == "1" && this.$route.params.type == 'mongodb'){//mongodb 增量接入
+        actech = "mongodb_cycle";
+      }
       if (this.ruleForm.accessMode == "2") { //实时
         ctt = '3'
       }
-      if (this.ruleForm.accessMode == "1" && this.ruleForm.cycleSet == "0") { //间隔
+      if (this.ruleForm.accessMode == "1" && this.ruleForm.cycleSet == "0"&& this.$route.params.type != 'mongodb') { //间隔
         if (this.increArr.id == undefined) {
           this.$message.warning('请选择增量字段');
           return false;
@@ -703,7 +715,8 @@ export default {
           "isStartOverTask": this.ruleForm.taskSubMode,
           "timeType": this.radio,
           "startLocation": this.ruleForm.startLocation,
-          "xStreamServiceName": this.ruleForm.xStreamServiceName
+          "xStreamServiceName": this.ruleForm.xStreamServiceName,
+          "priority":this.ruleForm.priority
         }
         this.loading = true;
         if (JSON.stringify(this.$store.state.userList) == "{}") {
@@ -910,7 +923,7 @@ export default {
 
   },
   created() {
-    
+
   },
   watch: {
     msg() {
