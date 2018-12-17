@@ -12,6 +12,12 @@
           <i :class="!moreSearch?'el-icon-caret-bottom':'el-icon-caret-top'"></i>
         </span>
         <el-button type="primary" class="doCearch" @click="search">查询</el-button>
+
+          <div class="right-tools" >
+          <el-tooltip class="item" effect="light" content="刷新" placement="top">
+            <a href="javascript:void(0)" v-on:click="search"><i class="enc-icon-shuaxin"></i></a>
+          </el-tooltip>
+        </div>
       </div>
 
       <el-form
@@ -504,27 +510,32 @@ export default {
       console.log(this.websock);
             this.websock.onopen = this.websocketonopen;
       // this.websock.send = this.websocketsend;
-      this.websock.onmessage = this.websocketonmessage;
+            if(this.$route.path=='/task'){
+                    this.websock.onmessage = this.websocketonmessage;
+
+            }
       this.websock.onclose = this.websocketclose;
     },
       //数据接收
     websocketonmessage(e) {
-      let redata = JSON.parse(e.data);
+
+let redata = JSON.parse(e.data);
       // let redata = e.data;
             console.log(redata);
             redata.zc=1;
-                        console.log(e);
-
-
         this.removeCla();
       let tim = setTimeout(()=>{
-          // this.$message({
-          //   message:`实时播报：新增一条 ID为：${redata.taskInfoId}的任务`,
-          //   type: 'success'
-          // });
+          this.$message({
+            message:`实时播报：新增一条 ID为：${redata.taskInfoId}的任务`,
+            type: 'success'
+          });
           this.tableData.unshift(redata);
           clearTimeout(tim);
-        },0);  
+        },0);
+      // }else{
+      //   return;
+      // }
+        
     },
     websocketclose(e) {
       //关闭
@@ -535,7 +546,6 @@ export default {
       console.log("websocket连接成功！")
     },
     //webcocket发送方法
-   
     //查询按钮
     search() {
       let keyword = this.keyword;
@@ -1148,6 +1158,7 @@ export default {
   } ///* IE浏览器 */
 }
 .searchDiv {
+  width: 95%;
   margin-left: 2.5%;
   margin-bottom: 20px;
   span {
@@ -1185,6 +1196,21 @@ export default {
     overflow: auto;
   }
 }
+ .right-tools {
+        float: right;
+        margin-right: 10px;
+        a {
+          font-size: 26px;
+          color: #479ad8;
+           :hover,
+           :active {
+            color: #f93;
+          }
+          i {
+            font-size: 32px;
+          }
+        }
+      }
 </style>
 <style rel="stylesheet/scss" lang="scss">
 .task-template{
