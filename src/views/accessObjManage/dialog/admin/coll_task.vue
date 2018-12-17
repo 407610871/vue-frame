@@ -775,7 +775,7 @@ export default {
             if (res.data.success) {
               let ctips = '采集任务启动成功！';
               if (this.ruleForm.taskSubMode == "false") {
-                ctips = '采集任务创建成功成功！';
+                ctips = '采集任务创建成功！';
               }
               this.$alert(ctips, '信息', {
                 confirmButtonText: '确定',
@@ -815,7 +815,7 @@ export default {
                 if (res.data.success) {
                   let ctips = '采集任务启动成功！';
                   if (this.ruleForm.taskSubMode == "false") {
-                    ctips = '采集任务创建成功成功！';
+                    ctips = '采集任务创建成功！';
                   }
                   this.$alert(ctips, '信息', {
                     confirmButtonText: '确定',
@@ -882,7 +882,7 @@ export default {
               this.websock.send(JSON.stringify(res.data.data));
               let ctips = '采集任务启动成功！';
               if (this.ruleForm.taskSubMode == "false") {
-                ctips = '采集任务创建成功成功！';
+                ctips = '采集任务创建成功！';
               }
               this.$alert(ctips, '信息', {
                 confirmButtonText: '确定',
@@ -922,7 +922,7 @@ export default {
                   this.websock.send(JSON.stringify(res.data.data));
                   let ctips = '采集任务启动成功！';
                   if (this.ruleForm.taskSubMode == "false") {
-                    ctips = '采集任务创建成功成功！';
+                    ctips = '采集任务创建成功！';
                   }
                   this.$alert(ctips, '信息', {
                     confirmButtonText: '确定',
