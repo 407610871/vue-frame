@@ -1,5 +1,5 @@
 <template>
-  <div class="taskMDialog icon-dai regcon">
+  <div class="taskMDialog icon-dai regcon reg_dialog1">
     <!-- <el-button @click="dialogVisible = true" class="add-btn">注册</el-button> -->
     <el-tooltip class="item" effect="light" content="注册" placement="top">
       <i @click="dialogVisible = true" class="enc-icon-zhuce table-action-btn" style="margin-right:15px; font-size:30px;"></i>
@@ -54,7 +54,7 @@
             </el-col>
             <el-col :span="4" class="bank">bank</el-col>
             <el-col :span="10">
-              <el-form-item label="数据提供人邮箱:" prop="proemail">
+              <el-form-item style="height:30px;" label="数据提供人邮箱:" prop="proemail">
                 <el-input v-model="ruleForm.proemail"></el-input>
               </el-form-item>
             </el-col>
@@ -1312,6 +1312,11 @@ export default {
 <style lang="scss">
 @import "@/assets/css/base.scss";
 @import "@/assets/css/dialog.scss";
+.reg_dialog1{
+  .el-form-item{
+    height:30px!important;
+  }
+}
 .el-select {
   width: 100%;
 }

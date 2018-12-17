@@ -1,5 +1,5 @@
 <template>
-  <div class="taskMDialog regcon">
+  <div class="taskMDialog regcon edit_dialog2">
     <!-- <el-button class="diabtn incbtn" size="mini" @click="dialogVisible = true">编辑</el-button> -->
     <el-tooltip class="item" effect="light" content="编辑" placement="top">
       <i @click="dialogVisible = true" class="enc-icon-bianji table-action-btn"></i>
@@ -1141,6 +1141,11 @@ export default {
 <style lang="scss">
 @import "@/assets/css/base.scss";
 @import "@/assets/css/dialog.scss";
+.edit_dialog2{
+  .el-form-item{
+    height:30px!important;
+  }
+}
 .taskMDialog {
   display: inline-block;
 }

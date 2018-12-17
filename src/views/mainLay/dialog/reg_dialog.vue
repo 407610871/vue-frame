@@ -1,5 +1,5 @@
 <template>
-  <div class="taskMDialog">
+  <div class="taskMDialog reg_dialog2">
     <el-form :model="ruleForm" ref="ruleForm" label-width="100px" class="demo-ruleForm" :rules="formRules">
       <div class="daiInfo proInfo">
         <div class="daiInfo-title proInfo-title">
@@ -590,6 +590,11 @@ export default {
 <style lang="scss">
 @import "@/assets/css/base.scss";
 @import "@/assets/css/dialog.scss";
+.reg_dialog2{
+  .el-form-item{
+    height:30px!important;
+  }
+}
 .el-select {
   width: 100%;
 }

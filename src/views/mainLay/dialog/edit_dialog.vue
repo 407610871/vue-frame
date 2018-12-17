@@ -1,5 +1,5 @@
 <template>
-  <div class="taskMDialog">
+  <div class="taskMDialog edit_dialog1">
     <i class="el-icon-info" @click="dialogVisible = true">修改</i>
     <el-dialog title="接入数据源" :visible.sync="dialogVisible" width="60%" :before-close="closeDialog">
       <div class="title-gra">
@@ -603,6 +603,11 @@ export default {
 <style lang="scss">
 @import "@/assets/css/base.scss";
 @import "@/assets/css/dialog.scss";
+.edit_dialog1{
+  .el-form-item{
+    height:30px!important;
+  }
+}
 .el-select {
   width: 100%;
 }
