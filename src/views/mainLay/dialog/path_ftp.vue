@@ -22,7 +22,7 @@
             <el-col :span="2" class="bank">bank</el-col>
             <el-col :span="8">
               <div class="path-box">
-                <el-tree show-checkbox node-key="id" :check-strictly="true" :props="defaultProps" accordion @check-change="handleClick" @check="nodeClick" ref="treeForm" :load="loadNode1" lazy>
+                <el-tree show-checkbox node-key="id" :check-strictly="true" :props="defaultProps" accordion @check-change="handleClick" @check="nodeClick" ref="treeForm" :load="loadNode1" lazy :default-checked-keys="checkData">
                 </el-tree>
               </div>
             </el-col>
@@ -30,10 +30,16 @@
           <el-col :span="24" class="tip-box">
             <el-col :span="2" class="bank">bank</el-col>
             <el-col :span="6">
-              <el-checkbox v-model="ruleForm.delete">备选项</el-checkbox>采集后源文件是否需要删除</el-radio>
+              <el-checkbox v-model="ruleForm.delete">备选项</el-checkbox>采集后源文件是否需要删除
             </el-col>
             <el-col :span="8">
               <span class="ftp-tip">*暂不支持中文路径采集</span>
+            </el-col>
+          </el-col>
+          <el-col :span="24" class="tip-box">
+            <el-col :span="2" class="bank">bank</el-col>
+            <el-col :span="6">
+              <el-checkbox v-model="ruleForm.subDele">备选项</el-checkbox>包含子目录
             </el-col>
           </el-col>
           <el-col :span="24" class="mt30 tcenter ftpbtn">
@@ -63,9 +69,11 @@ export default {
       i: 0, //树节点只允许单选
       dialogVisible: false,
       loading: true,
+      checkData:[],
       ruleForm: {
         ftpurl: '',
-        delete: true,
+        delete: false,
+        subDele:false,
         ftpId: '',
       },
       formRules: {
@@ -78,7 +86,8 @@ export default {
       defaultProps: {
         children: 'children',
         label: 'label',
-        isLeaf: 'leaf'
+        isLeaf: 'leaf',
+        disabled:'chkDisabled'
       },
 
       // msgId:this.dialogMsg?this.dialogMsg[1]:''
@@ -130,7 +139,7 @@ export default {
           accessSysId: this.$route.params.sourceId,
           isdelete: this.ruleForm.delete.toString(),
           shecmas: "",
-          subdirectory: "true",
+          subdirectory: this.ruleForm.subDele.toString()
         }
         this.$ajax({
           method: "POST",
@@ -192,6 +201,12 @@ export default {
           let treeData = [];
           res.data.data.forEach(e => {
             treeData.push(e)
+          });
+          treeData.forEach(e=>{
+            if(e.checked){
+              this.checkData.push(e.id);
+            }
+            
           })
           resolve(treeData)
         }).catch(res => {
@@ -221,12 +236,18 @@ export default {
           res.data.data.forEach(e => {
             myList.push(e)
           })
+          myList.forEach(e=>{
+            if(e.checked){
+               this.checkData.push(e.id);
+            }
+           
+          })
           resolve(myList)
         }).catch(res => {
           resolve([]);
         })
       }
-    }
+    },
 
   },
   components: {
