@@ -11,7 +11,7 @@
                   <el-option label="全省" value="1"></el-option>
                   <el-option label="全市" value="2"></el-option>
                   <el-option label="行政区" value="3"></el-option> -->
-                  <el-option v-for="item in treeData" :label="item.label" :value="item.storageId"></el-option>
+                  <el-option v-for="item in treeData" :label="item.label" :value="item.storageId" :key="item.storageId"></el-option>
                 </el-select>
               </el-form-item>
             </el-col>
@@ -209,7 +209,7 @@
                         <el-col :span="4">
                           <el-form-item>
                             <el-select v-model="ruleForm.dsweek" placeholder="请选择">
-                              <el-option v-for="item in weekData" :label="item.name" :value="item.val">
+                              <el-option v-for="item in weekData" :label="item.name" :value="item.val" :key="item.name">
                               </el-option>
                             </el-select>
                           </el-form-item>
