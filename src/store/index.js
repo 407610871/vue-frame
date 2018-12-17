@@ -80,7 +80,8 @@ const store = new Vuex.Store({
     modeStyle: '', //用户选择的接入方式
     noreData: [], //非关系型数据
     delimiter: '', //非关系型分隔符
-    isSign:false //采集中的数据标记是否保存
+    isSign:false, //采集中的数据标记是否保存
+    jrstyle:'' //用户标记的接入方式
   },
   mutations: {
     setPageSize(state, pageSize) {
@@ -172,6 +173,11 @@ const store = new Vuex.Store({
     setIsSign(state,obj){
       state.isSign = true;
       state.isSign = obj;
+    },
+    //用户标记的接入方式
+    setJrStyle(state,obj){
+     state.jrstyle = '';
+     state.jrstyle = obj;
     }
   },
   modules: {

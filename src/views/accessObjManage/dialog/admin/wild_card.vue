@@ -166,7 +166,7 @@ export default {
           //高级匹配
           saveInfo = {
             "regexInfo": this.ruleForm.highMatch,
-            "isCustom": false,
+            "isCustom": true,
             "tableCommonName": this.ruleForm.baseStart,
             "accessSysObjInfoId": this.accId
           }

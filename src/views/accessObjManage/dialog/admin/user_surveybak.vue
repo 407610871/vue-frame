@@ -356,41 +356,47 @@ export default {
       }).then(res => {
         this.loading = false;
         if (res.data.success) {
-          this.userflag = true;
-          this.ruleForm.industry = res.data.data.iNDUSTRY_CATEGORY;
-          this.ruleForm.znb = res.data.data.pOLICE_BUSINESS;
-          this.ruleForm.fcc = res.data.data.fIRST_CLASS_CLASSIFICATION;
-          this.ruleForm.tlc = res.data.data.tWO_LEVEL_CLASSIFICATION;
-          this.ruleForm.bdc = res.data.data.tAXONOMY;
-          this.ruleForm.abc = res.data.data.aTTRIBUTE_CLASSIFICATION;
-          this.ruleForm.datamode = res.data.data.dATA_UPDATE_MODE;
-          this.ruleForm.datanum = res.data.data.iNITIAL_DATA_VOLUME;
-          this.ruleForm.datarange = res.data.data.dATA_RANGE;
-          let xzqyData = JSON.parse(res.data.data.xzqy);
-          if (xzqyData == "") {
-            //查询系统配置
-            this.areaFlag = true;
-            this._querySys();
+          this.userflag = false;
+          if (res.data.data.iNDUSTRY_CATEGORY == undefined) {
+            this.ruleForm.datamode = res.data.data.dATA_UPDATE_MODE;
           } else {
-            xzqyData = JSON.parse(res.data.data.xzqy);
-            this.ruleForm.pro = xzqyData[0].pro;
-            this._queryCity(this.ruleForm.pro, 'city');
-            if (xzqyData.length == 2) {
-              if (xzqyData[1].city != '' && xzqyData[1].city != undefined) {
-                this.ruleForm.city = xzqyData[1].city;
-                this._queryCity(this.ruleForm.city, 'urban');
+            this.userflag = true;
+            this.ruleForm.industry = res.data.data.iNDUSTRY_CATEGORY;
+            this.ruleForm.znb = res.data.data.pOLICE_BUSINESS;
+            this.ruleForm.fcc = res.data.data.fIRST_CLASS_CLASSIFICATION;
+            this.ruleForm.tlc = res.data.data.tWO_LEVEL_CLASSIFICATION;
+            this.ruleForm.bdc = res.data.data.tAXONOMY;
+            this.ruleForm.abc = res.data.data.aTTRIBUTE_CLASSIFICATION;
+            this.ruleForm.datamode = res.data.data.dATA_UPDATE_MODE;
+            this.ruleForm.datanum = res.data.data.iNITIAL_DATA_VOLUME;
+            this.ruleForm.datarange = res.data.data.dATA_RANGE;
+            let xzqyData = JSON.parse(res.data.data.xzqy);
+            if (xzqyData == "") {
+              //查询系统配置
+              this.areaFlag = true;
+              this._querySys();
+            } else {
+              xzqyData = JSON.parse(res.data.data.xzqy);
+              this.ruleForm.pro = xzqyData[0].pro;
+              this._queryCity(this.ruleForm.pro, 'city');
+              if (xzqyData.length == 2) {
+                if (xzqyData[1].city != '' && xzqyData[1].city != undefined) {
+                  this.ruleForm.city = xzqyData[1].city;
+                  this._queryCity(this.ruleForm.city, 'urban');
+                }
               }
-            }
-            if (xzqyData.length == 3) {
-              if (xzqyData[1].city != '' && xzqyData[1].city != undefined) {
-                this.ruleForm.city = xzqyData[1].city;
-                this._queryCity(this.ruleForm.city, 'urban');
-              }
-              if (xzqyData[2].urban != '' && xzqyData[2].urban != undefined) {
-                this.ruleForm.urban = xzqyData[2].urban;
+              if (xzqyData.length == 3) {
+                if (xzqyData[1].city != '' && xzqyData[1].city != undefined) {
+                  this.ruleForm.city = xzqyData[1].city;
+                  this._queryCity(this.ruleForm.city, 'urban');
+                }
+                if (xzqyData[2].urban != '' && xzqyData[2].urban != undefined) {
+                  this.ruleForm.urban = xzqyData[2].urban;
+                }
               }
             }
           }
+
         } else {
           //查询系统配置
           this.areaFlag = true;
@@ -726,34 +732,34 @@ export default {
   },
   watch: {
     msg() {
-       if (this.info.id != undefined) {
-      this.tableid = this.info.id;
-      this.tableids = this.info.id;
-      if (this.info.comments == '' || this.info.comments == null) {
-        this.ruleForm.rename = this.info.diyComments
-      } else {
-        this.ruleForm.rename = this.info.comments;
-      }
-      this.ruleForm.tablename = this.info.name;
-
-    } else {
-      for (let i = 0; i < this.info.length; i++) {
-        if (i != this.info.length - 1) {
-          this.tableids += this.info[i].id + ','
+      if (this.info.id != undefined) {
+        this.tableid = this.info.id;
+        this.tableids = this.info.id;
+        if (this.info.comments == '' || this.info.comments == null) {
+          this.ruleForm.rename = this.info.diyComments
         } else {
-          this.tableids += this.info[i].id
+          this.ruleForm.rename = this.info.comments;
         }
+        this.ruleForm.tablename = this.info.name;
 
-      }
-      this.tableid = this.info[0].id
-      if (this.info[0].comments == '' || this.info[0].comments == null) {
-        this.ruleForm.rename = this.info[0].diyComments
       } else {
-        this.ruleForm.rename = this.info[0].comments;
+        for (let i = 0; i < this.info.length; i++) {
+          if (i != this.info.length - 1) {
+            this.tableids += this.info[i].id + ','
+          } else {
+            this.tableids += this.info[i].id
+          }
+
+        }
+        this.tableid = this.info[0].id
+        if (this.info[0].comments == '' || this.info[0].comments == null) {
+          this.ruleForm.rename = this.info[0].diyComments
+        } else {
+          this.ruleForm.rename = this.info[0].comments;
+        }
+        this.ruleForm.tablename = this.info[0].name;
       }
-      this.ruleForm.tablename = this.info[0].name;
-    }
-    console.log(this.tableid);
+      console.log(this.tableid);
       this._getStaticDatas();
 
     }

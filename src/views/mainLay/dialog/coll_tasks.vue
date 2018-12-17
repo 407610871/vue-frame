@@ -557,6 +557,7 @@ export default {
           return false;
         }*/
       }
+      this._reveAcmode();
       var save = {
         "accessSysObjDetails": this.increArr,
         "priority": this.ruleForm.accessPri,
@@ -575,100 +576,71 @@ export default {
         "accessSysId": this.rowList[0].accessSys.id
       }
       this.loading = true;
+      let saves = {};
+
       if (this.$store.state.isSign == "false" || this.$store.state.isSign == false) {
-        this.$ajax({
-          method: "post",
-          url: this.GLOBAL.api.API_DACM + '/task/saveRegexHeliumTask',
-          /* url:'http://10.19.160.168:8080/DACM/task/saveRegexHeliumTask',*/
-          // headers:{
-          //   'Content-Type':'application/json;charset=utf-8',
-          // },
-          data: save
-
-        }).then(res => {
-          this.loading = false;
-          
-          if (res.data.success) {
-
- this.websock.send(JSON.stringify(res.data.data));
-            let ctips = '采集任务启动成功！';
-            if (this.ruleForm.taskSubMode == "false") {
-              ctips = '采集任务创建成功！';
-            }
-            this.$alert(ctips, '信息', {
-              confirmButtonText: '确定',
-              callback: action => {
-                this.$emit('fresh');
-              }
-            });
-          } else {
-            this.$alert('采集任务启动失败！', '信息', {
-              confirmButtonText: '确定',
-              callback: action => {
-
-              }
-            });
-          }
-        })
+        saves = this.$store.state.userList;
+        saves.dATA_UPDATE_MODE = this.$store.state.modeStyle;
+        saves.tABLE_ID = this.accId;
       } else {
-        let saves = this.$store.state.userList;
+        saves = this.$store.state.userList;
+        saves.dATA_UPDATE_MODE = this.$store.state.modeStyle;
         saves.isCustom = this.$store.state.regInfo.baseflag;
         saves.isBatch = true;
         saves.regexInfo = this.$store.state.regInfo.baseEnd;
         saves.tableCommonName = this.$store.state.regInfo.baseStart;
-        this.$ajax({
-          method: 'post',
-          url: this.GLOBAL.api.API_DACM + '/dataTable/inputSurvey',
-          data: saves
-        }).then(res => {
 
-          if (res.data.success) {
-            this.$ajax({
-              method: "post",
-              /* url:'http://10.19.160.168:8080/DACM/task/saveRegexHeliumTask',*/
-              url: this.GLOBAL.api.API_DACM + '/task/saveRegexHeliumTask',
-              // headers:{
-              //   'Content-Type':'application/json;charset=utf-8',
-              // },
-              data: save
+      }
+      this.$ajax({
+        method: 'post',
+        url: this.GLOBAL.api.API_DACM + '/dataTable/inputSurvey',
+        data: saves
+      }).then(res => {
 
-            }).then(res => {
-              this.loading = false;
-              if (res.data.success) {
-                let ctips = '采集任务启动成功！';
-                if (this.ruleForm.taskSubMode == "false") {
-                  ctips = '采集任务创建成功！';
-                }
-                this.$alert(ctips, '信息', {
-                  confirmButtonText: '确定',
-                  callback: action => {
-                    this.$emit('fresh');
-                  }
-                });
-              } else {
-                this.$alert('采集任务启动失败！', '信息', {
-                  confirmButtonText: '确定',
-                  callback: action => {
+        if (res.data.success) {
+          this.$ajax({
+            method: "post",
+            /* url:'http://10.19.160.168:8080/DACM/task/saveRegexHeliumTask',*/
+            url: this.GLOBAL.api.API_DACM + '/task/saveRegexHeliumTask',
+            // headers:{
+            //   'Content-Type':'application/json;charset=utf-8',
+            // },
+            data: save
 
-                  }
-                });
-              }
-            })
-          } else {
+          }).then(res => {
             this.loading = false;
-            this.$alert('用户标记失败', '信息', {
-              confirmButtonText: '确定'
-            });
-          }
-        }, (res) => {
+            if (res.data.success) {
+              let ctips = '采集任务启动成功！';
+              if (this.ruleForm.taskSubMode == "false") {
+                ctips = '采集任务创建成功！';
+              }
+              this.$alert(ctips, '信息', {
+                confirmButtonText: '确定',
+                callback: action => {
+                  this.$emit('fresh');
+                }
+              });
+            } else {
+              this.$alert('采集任务启动失败！', '信息', {
+                confirmButtonText: '确定',
+                callback: action => {
+
+                }
+              });
+            }
+          })
+        } else {
           this.loading = false;
           this.$alert('用户标记失败', '信息', {
             confirmButtonText: '确定'
           });
-        })
-      }
-
-
+        }
+      }, (res) => {
+        this.loading = false;
+        this.$alert('用户标记失败', '信息', {
+          confirmButtonText: '确定'
+        });
+      })
     },
     formateTime(day, hour, min) {
       return parseInt(day * 86400000 + hour * 3600000 + min * 60000);
@@ -685,6 +657,20 @@ export default {
       }
       if (this.$store.state.modeStyle == '4') { //增量接入
         this.ruleForm.accessMode = '2'
+      }
+    },
+    _reveAcmode() {
+      if (this.ruleForm.accessMode == '1') {
+        this.$store.commit('setMode', '1');
+      }
+      if (this.ruleForm.accessMode == '3') {
+        this.$store.commit('setMode', '3');
+      }
+      if (this.ruleForm.accessMode == '0') {
+        this.$store.commit('setMode', '5');
+      }
+      if (this.ruleForm.accessMode == '2') {
+        this.$store.commit('setMode', '4');
       }
     },
     //获取源树

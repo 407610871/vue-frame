@@ -365,42 +365,47 @@ export default {
       }).then(res => {
         //_self.loading = false;
         if (res.data.success) {
-
-          _self.ruleForm.industry = res.data.data.iNDUSTRY_CATEGORY;
-          _self.ruleForm.znb = res.data.data.pOLICE_BUSINESS;
-          _self.ruleForm.fcc = res.data.data.fIRST_CLASS_CLASSIFICATION;
-          _self.ruleForm.tlc = res.data.data.tWO_LEVEL_CLASSIFICATION;
-          _self.ruleForm.bdc = res.data.data.tAXONOMY;
-          _self.ruleForm.abc = res.data.data.aTTRIBUTE_CLASSIFICATION;
-          _self.ruleForm.datamode = res.data.data.dATA_UPDATE_MODE;
-          _self.ruleForm.datanum = res.data.data.iNITIAL_DATA_VOLUME;
-          _self.ruleForm.datarange = res.data.data.dATA_RANGE;
-          let xzqyData = JSON.parse(res.data.data.xzqy);
-          if (xzqyData == "") {
-            //查询系统配置
-            _self.areaFlag = true;
-            _self._querySys();
+          if (res.data.data.iNDUSTRY_CATEGORY == undefined) {
+            _self.ruleForm.datamode = res.data.data.dATA_UPDATE_MODE;
           } else {
-            xzqyData = JSON.parse(res.data.data.xzqy);
-            _self.ruleForm.pro = xzqyData[0].pro;
-            _self._queryCity(_self.ruleForm.pro, 'city');
-            if (xzqyData.length == 2) {
-              if (xzqyData[1].city != '' && xzqyData[1].city != undefined) {
-                _self.ruleForm.city = xzqyData[1].city;
-                _self._queryCity(_self.ruleForm.city, 'urban');
+            _self.ruleForm.industry = res.data.data.iNDUSTRY_CATEGORY;
+            _self.ruleForm.znb = res.data.data.pOLICE_BUSINESS;
+            _self.ruleForm.fcc = res.data.data.fIRST_CLASS_CLASSIFICATION;
+            _self.ruleForm.tlc = res.data.data.tWO_LEVEL_CLASSIFICATION;
+            _self.ruleForm.bdc = res.data.data.tAXONOMY;
+            _self.ruleForm.abc = res.data.data.aTTRIBUTE_CLASSIFICATION;
+            _self.ruleForm.datamode = res.data.data.dATA_UPDATE_MODE;
+            _self.ruleForm.datanum = res.data.data.iNITIAL_DATA_VOLUME;
+            _self.ruleForm.datarange = res.data.data.dATA_RANGE;
+            let xzqyData = JSON.parse(res.data.data.xzqy);
+            
+            if (xzqyData == "") {
+              //查询系统配置
+              _self.areaFlag = true;
+              _self._querySys();
+            } else {
+              xzqyData = JSON.parse(res.data.data.xzqy);
+              _self.ruleForm.pro = xzqyData[0].pro;
+              _self._queryCity(_self.ruleForm.pro, 'city');
+              if (xzqyData.length == 2) {
+                if (xzqyData[1].city != '' && xzqyData[1].city != undefined) {
+                  _self.ruleForm.city = xzqyData[1].city;
+                  _self._queryCity(_self.ruleForm.city, 'urban');
+                }
               }
-            }
-            if (xzqyData.length == 3) {
-              if (xzqyData[1].city != '' && xzqyData[1].city != undefined) {
-                this.ruleForm.city = xzqyData[1].city;
-                this._queryCity(this.ruleForm.city, 'urban');
+              if (xzqyData.length == 3) {
+                if (xzqyData[1].city != '' && xzqyData[1].city != undefined) {
+                  this.ruleForm.city = xzqyData[1].city;
+                  this._queryCity(this.ruleForm.city, 'urban');
+                }
+                if (xzqyData[2].urban != '' && xzqyData[2].urban != undefined) {
+                  this.ruleForm.urban = xzqyData[2].urban;
+                }
               }
-              if (xzqyData[2].urban != '' && xzqyData[2].urban != undefined) {
-                this.ruleForm.urban = xzqyData[2].urban;
-              }
-            }
 
+            }
           }
+
         } else {
           _self.areaFlag = true;
           _self._querySys();
