@@ -534,8 +534,7 @@ export default {
     //将corn表达式转换成周期
     translatePeriodFromCorn(str,timeType){
       // str="0,5 5 15 ? ? 2 ";
-      var result = str.split(' ').join('')
-      var nArr = str.split(' ')
+      var result = str.split(' ');
       if(timeType==2){//月
         let day = result[3]>9?result[3]:'0'+result[3];
         let hour = result[2]>9?result[2]:'0'+result[2];
@@ -691,6 +690,7 @@ export default {
                */
               let timeType = that.taskBaseInfo.timeType
               let intervalMs = that.taskBaseInfo.intervalMs
+              debugger;
               if(timeType!=2&&timeType!=3&&timeType!=4){
                 //timeType不等于2、3、4即为间隔执行单位为ms
                 that.taskBaseInfo.periodSet=that.translatePeriodFromMS(intervalMs);
