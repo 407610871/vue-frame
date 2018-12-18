@@ -22,7 +22,7 @@
             <el-col :span="2" class="bank">bank</el-col>
             <el-col :span="8">
               <div class="path-box">
-                <el-tree show-checkbox node-key="id" :check-strictly="true" :props="defaultProps" accordion @check-change="handleClick" @check="nodeClick" ref="treeForm" :load="loadNode1" lazy :default-checked-keys="checkData">
+                <el-tree show-checkbox node-key="id" :check-strictly="true" :props="defaultProps" accordion @check-change="handleClick" @check="nodeClick" ref="treeForm" :load="loadNode1" :data="tData" lazy :default-checked-keys="checkData">
                 </el-tree>
               </div>
             </el-col>
@@ -70,6 +70,9 @@ export default {
       dialogVisible: false,
       loading: true,
       checkData: [],
+      disaData: [],
+      againData: {},
+      tData:[],
       ruleForm: {
         ftpurl: '',
         delete: false,
@@ -103,15 +106,33 @@ export default {
     },
     //实现树的单选
     handleClick(data, checked, node) {
-      if (checked == true) {
-        this.checkedId = data.id;
-        this.$refs.treeForm.setCheckedNodes([data]);
+      if (this.againData.id != undefined) {
+        for (let i = 0; i < this.disaData.length; i++) {
+          if (this.disaData[i].id == this.againData.id) {
+            this.disaData.splice(i, 1);
+          }
+        }
       }
+      if (data.chkDisabled == true && data.checked) {
+        this.disaData.push(data);
+      } else {
+        if (checked) {
+          this.againData = {};
+          this.againData = data;
+          //console.log(this.againData);
+
+        }
+
+      }
+      this.disaData.push(this.againData);
+
+      this.$refs.treeForm.setCheckedNodes(this.disaData);
     },
     //树的点击
     nodeClick(data, checked, node) {
       this.checkedId = data.id
       this.$refs.treeForm.setCheckedNodes([data]);
+      // console.log(this.$refs.treeForm.getCheckedNodes());
       this.ruleForm.ftpurl = data.linkPath;
       this.ruleForm.ftpId = data.id;
     },
@@ -133,7 +154,7 @@ export default {
         /*this.dialogVisible = false;
         this.$refs['ruleForm'].resetFields();*/
 
-        console.log(this.ruleForm.ftpurl);
+        // console.log(this.ruleForm.ftpurl);
         var params = {
           filepath: this.ruleForm.ftpurl,
           accessSysId: this.$route.params.sourceId,
@@ -165,11 +186,11 @@ export default {
               }
             });
           } else {
-            this.$alert('保存路径失败', '信息', {
+            this.$alert(res.data.message, '信息', {
               confirmButtonText: '确定'
             });
           }
-          console.log(res);
+          //console.log(res);
         }, (res) => {
           this.loading = false;
           this.$alert('保存路径失败', '信息', {
@@ -197,7 +218,7 @@ export default {
 
         }).then(res => {
           this.loading = false;
-          console.log(res.data.data);
+          //console.log(res.data.data);
           let treeData = [];
           res.data.data.forEach(e => {
             treeData.push(e)
@@ -231,7 +252,7 @@ export default {
 
         }).then(res => {
 
-          console.log(res.data.data);
+          //console.log(res.data.data);
           let myList = [];
           res.data.data.forEach(e => {
             myList.push(e)
@@ -248,7 +269,39 @@ export default {
         })
       }
     },
+    _init() {
+      this.loading = true;
+      var params = {
+        accessSysId: this.$route.params.sourceId,
+        linkPath: '/'
+      }
+      this.$ajax({
+        method: "POST",
+        url: this.GLOBAL.api.API_DACM + '/ctables/getStructure',
+        // headers:{
+        //   'Content-Type':'application/json;charset=utf-8',
+        // },
+        data: params
 
+      }).then(res => {
+        this.loading = false;
+        //console.log(res.data.data);
+        this.tData =[];
+        res.data.data.forEach(e => {
+          this.tData.push(e)
+        });
+        this.tData.forEach(e => {
+          if (e.checked) {
+            this.checkData.push(e.id);
+          }
+
+        })
+        resolve(this.tData)
+      }).catch(res => {
+        this.loading = false;
+        resolve([]);
+      })
+    }
   },
   components: {
 
@@ -259,8 +312,9 @@ export default {
   watch: {
     dialogVisible() {
       if (this.dialogVisible) {
-        this.$refs.treeForm.setCheckedNodes([]);
-        this.$refs.treeForm.setCheckedKeys([]);
+        //this.$refs.treeForm.setCheckedNodes([]);
+        // this.$refs.treeForm.setCheckedKeys([]);
+        this._init();
         this.ruleForm.ftpurl = '';
         this.ruleForm.ftpId = '';
       }
