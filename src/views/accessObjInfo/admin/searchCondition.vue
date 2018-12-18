@@ -1,12 +1,12 @@
 <template>
-<el-form :model="searchFormItem" label-width="100px" class="search-form" ref="searchFormItem">
+<el-form :model="searchFormItem" label-width="80px" class="search-form" ref="searchFormItem">
 <el-row :gutter="20">
-  <el-col :span="4" v-if="NOIndex == 0">
-    <el-form-item label="设置查询条数:">
+  <el-col :span="5" v-if="NOIndex == 0">
+    <el-form-item label="查询条数:">
       <el-input v-model.trim ="count" placeholder="请输入条数" clearable></el-input>
     </el-form-item>
   </el-col>
-  <el-col :span="4" v-else>
+  <el-col :span="5" v-else>
     <el-form-item class="outrelate-form-item">
       <el-select v-model="searchFormItem.outrelate" placeholder="">
         <el-option v-for="(item,index) in outrelateList" :key="index" :value="item.value" :label="item.name"></el-option>
@@ -36,10 +36,10 @@
     <el-input v-model.trim ="searchFormItem.filterdata" placeholder="请输入查询的条件" clearable></el-input>
     </el-form-item>
   </el-col>
-  <el-col :span="4" v-if="NOIndex == 0">
+  <el-col :span="3" v-if="NOIndex == 0">
     <el-button type="primary" size="mini" @click="searchAll">查询</el-button>
   </el-col>
-  <el-col :span="4" v-else>
+  <el-col :span="3" v-else>
     <el-button type="primary" size="mini" @click="delCondition(NOIndex)">删除</el-button>
   </el-col>
 </el-row>
@@ -143,8 +143,7 @@ export default {
 </style>
 <style lang="scss">
 .timestamp-form-item,
-.filterdata-form-item,
-.outrelate-form-item{
+.filterdata-form-item{
     .el-form-item__content{
       margin-left:0!important;
     }
