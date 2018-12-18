@@ -99,6 +99,7 @@ export default {
       this.$ajax({
         method: "GET",
         url: this.GLOBAL.api.API_DACM + '/ccheckData/tableSourceNum',
+        timeout:2000,
         // headers:{
         //   'Content-Type':'application/json;charset=utf-8',
         // },
@@ -109,6 +110,8 @@ export default {
       }).then(res => {
         this.loading2 = false;
         this.tableData = res.data.data;
+      },(res) =>{
+        console.log(res);
       })
     },
     //开始核验

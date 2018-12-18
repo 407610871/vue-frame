@@ -70,6 +70,8 @@ export default {
       dialogVisible: false,
       loading: true,
       checkData: [],
+      disaData: [],
+      againData: {},
       ruleForm: {
         ftpurl: '',
         delete: false,
@@ -103,15 +105,33 @@ export default {
     },
     //实现树的单选
     handleClick(data, checked, node) {
-      if (checked == true) {
-        this.checkedId = data.id;
-        this.$refs.treeForm.setCheckedNodes([data]);
+      if (this.againData.id != undefined) {
+        for (let i = 0; i < this.disaData.length; i++) {
+          if (this.disaData[i].id == this.againData.id) {
+            this.disaData.splice(i, 1);
+          }
+        }
       }
+      if (data.chkDisabled == true && data.checked) {
+        this.disaData.push(data);
+      } else {
+        if (checked) {
+          this.againData = {};
+          this.againData = data;
+          //console.log(this.againData);
+
+        }
+
+      }
+      this.disaData.push(this.againData);
+      
+      this.$refs.treeForm.setCheckedNodes(this.disaData);
     },
     //树的点击
     nodeClick(data, checked, node) {
       this.checkedId = data.id
       this.$refs.treeForm.setCheckedNodes([data]);
+      // console.log(this.$refs.treeForm.getCheckedNodes());
       this.ruleForm.ftpurl = data.linkPath;
       this.ruleForm.ftpId = data.id;
     },
@@ -133,7 +153,7 @@ export default {
         /*this.dialogVisible = false;
         this.$refs['ruleForm'].resetFields();*/
 
-        console.log(this.ruleForm.ftpurl);
+        // console.log(this.ruleForm.ftpurl);
         var params = {
           filepath: this.ruleForm.ftpurl,
           accessSysId: this.$route.params.sourceId,
@@ -165,11 +185,11 @@ export default {
               }
             });
           } else {
-            this.$alert('保存路径失败', '信息', {
+            this.$alert(res.data.message, '信息', {
               confirmButtonText: '确定'
             });
           }
-          console.log(res);
+          //console.log(res);
         }, (res) => {
           this.loading = false;
           this.$alert('保存路径失败', '信息', {
@@ -197,7 +217,7 @@ export default {
 
         }).then(res => {
           this.loading = false;
-          console.log(res.data.data);
+          //console.log(res.data.data);
           let treeData = [];
           res.data.data.forEach(e => {
             treeData.push(e)
@@ -231,7 +251,7 @@ export default {
 
         }).then(res => {
 
-          console.log(res.data.data);
+          //console.log(res.data.data);
           let myList = [];
           res.data.data.forEach(e => {
             myList.push(e)
