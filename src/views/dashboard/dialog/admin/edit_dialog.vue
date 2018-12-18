@@ -81,7 +81,7 @@
               <el-col :span="7">
                 <el-popover placement="right" width="400" trigger="click">
                   <el-tree :data="treedata" show-checkbox node-key="id" :check-strictly="true" :props="defaultProps" accordion @check-change="handleClick" @check="nodeClick" :default-checked-keys="[ruleForm.dockid]" :default-expanded-keys="[deIndex]" ref="treeForm" class="treeAuto"></el-tree>
-                  <span class="deicon" slot="reference"></span>
+                  <span class="deicon" slot="reference" title="选择部门树"></span>
                 </el-popover>
               </el-col>
             </el-col>

@@ -118,7 +118,7 @@
           </el-table-column>
           <el-table-column label="接入对象" width="180" show-overflow-tooltip v-if="type=='oracle' || type=='mysql' || type=='postgresql'">
             <template slot-scope="scope">
-              <a href="javascript:void(0)" v-on:click="goAccessObjInfo(scope.row)">{{ scope.row.name }}</a>
+              <a class="underdone" href="javascript:void(0)" v-on:click="goAccessObjInfo(scope.row)">{{ scope.row.name }}</a>
             </template>
           </el-table-column>
           <el-table-column label="接入对象类型" v-if="type=='oracle' || type=='mysql' || type=='postgresql'" min-width="160">
@@ -803,5 +803,7 @@ export default {
   display: inline-block;
   cursor: pointer;
 }
-
+.underdone, .underdone:focus, .underdone:hover{
+  text-decoration: underline;
+}
 </style>

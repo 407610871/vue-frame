@@ -76,14 +76,15 @@
               <el-col :span="16">
                 <el-form-item label="数据所属部门:">
                   <el-input v-model="ruleForm.dockdata" disabled placeholder prop="dockdata" class="disele"></el-input>
-                
                 </el-form-item>
               </el-col>
-             
               <el-col :span="7">
                 <el-popover placement="right" width="400" trigger="click">
                   <el-tree :data="treedata" show-checkbox node-key="id" :check-strictly="true" :props="defaultProps" accordion @check-change="handleClick" @check="nodeClick" :default-checked-keys="[ruleForm.dockid]" :default-expanded-keys="[deIndex]" ref="treeForm" class="treeAuto"></el-tree>
-                  <span class="deicon" slot="reference"></span>
+                  <!--  -->
+                 
+                    <span class="deicon" slot="reference" title="选择部门树"></span>
+              
                 </el-popover>
               </el-col>
             </el-col>
@@ -682,6 +683,7 @@ export default {
             }
           }
         }
+        this.$message.info(`当前默认对接方信息的数据所属部门是: ${_self.ruleForm.dockdata}；如有不同，请点击下面部门选择按钮修改`);
       });
     },
     //找到id的index值
@@ -1293,7 +1295,8 @@ export default {
     dialogVisible() {
       if (this.dialogVisible) {
         //得到数据库方言
-
+        //数据所属部门
+        this._getSYBM();
         this._getAccessDialect();
         //数据来源
         this._getSJLYandSSJZ();
@@ -1301,8 +1304,7 @@ export default {
         this._getDJBM();
         //对接平台
         this._getDJPT();
-        //数据所属部门
-        this._getSYBM();
+
       }
     }
   }
@@ -1312,23 +1314,24 @@ export default {
 <style lang="scss">
 @import "@/assets/css/base.scss";
 @import "@/assets/css/dialog.scss";
-.reg_dialog1{
-  .el-form-item{
-    height:30px!important;
+.reg_dialog1 {
+  .el-form-item {
+    height: 30px!important;
   }
-  .my_form_item{
+  .my_form_item {
     width: 80%;
     display: inline-block;
-    label{
+    label {
       text-align: left;
     }
   }
-  .el-form-item__content{
-    label:first{
+  .el-form-item__content {
+    label:first {
       margin-left: 0px!important;
     }
   }
 }
+
 .el-select {
   width: 100%;
 }
