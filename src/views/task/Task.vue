@@ -320,7 +320,7 @@
               @click="doCheck(scope.$index, scope.row)"
             >数据核验</el-button>
             <el-button
-              v-if="scope.row.status==2||scope.row.status==4||scope.row.status==3"
+              v-if="(scope.row.status==2||scope.row.status==4||scope.row.status==3)&&scope.row.isPeriod!=0"
               type="text"
               size="small"
               @click="doConverge(scope.$index, scope.row)"
@@ -811,7 +811,7 @@ this.pageNum=1;
         let errorData = [];
         for (let i = 0; i < rowNew.length; i++) {
           // console.log(row[i].status,row[i].isPeriod)
-          if (rowNew[i].status == 1 || rowNew[i].status == 0) {
+          if (rowNew[i].status == 1 || rowNew[i].status == 0||rowNew[i].isPeriod == 0) {
             errorData.push(rowNew[i]);
           }
         }
