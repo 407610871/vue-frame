@@ -89,7 +89,7 @@
               <el-col :span="6">
                 <el-form-item label="数据接入方式:" prop="datamode">
                   <el-select v-model="ruleForm.datamode" placeholder="请选择">
-                    <el-option v-for="item in sDum" :label="item.sTATIC_NAME" :value="item.sTATIC_CODE" :id="item.dICT_ID"></el-option>
+                    <el-option v-for="item in sDum" :label="item.sTATIC_NAME" :value="item.sTATIC_CODE" :id="item.dICT_ID" :disabled="item.sTATIC_CODE=='5'&&batch==true"></el-option>
                   </el-select>
                 </el-form-item>
               </el-col>
@@ -772,7 +772,7 @@ export default {
   computed: {
 
   },
-  props: ['info', 'msg'],
+  props: ['info', 'msg','batch'],
 
 };
 

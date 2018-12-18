@@ -19,7 +19,7 @@
                 <h2>提供方信息</h2>
               </div>
             </div>
-            <user-surveybak :msg ="this.num" :info="rowList" @pre="next('second')" @closeuser="closeDialog()" ref="survey"></user-surveybak>
+            <user-surveybak :msg ="this.num" :batch="true" :info="rowList" @pre="next('second')" @closeuser="closeDialog()" ref="survey"></user-surveybak>
             <!--  <div class="btn tcenter">
              <el-button type="primary" style="margin-top: 12px;" @click="next('second')">下一步</el-button>
              <el-button style="margin-top: 12px;" @click="closeDialog">取消</el-button>

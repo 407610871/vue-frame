@@ -147,7 +147,7 @@
             <h2>接入源设置</h2>
           </div>
           <div class="daiInfo-box clearfix">
-            <el-form-item label="接入源类型:" prop="syskind">
+            <el-form-item class="my_form_item" label="接入源类型:" prop="syskind">
               <el-radio-group v-model="ruleForm.syskind">
                 <el-radio v-for="(item,index) in syskindList" :label="item.id" :key="item.id" v-if="index<5||accdiaFlag">{{item.name}}</el-radio>
                 <!--  <el-radio label="mysql"></el-radio>
@@ -163,11 +163,11 @@
               </el-radio-group>
               <span class="curspan" @click="more(accdiaFlag)">{{accdiaName}}</span>
             </el-form-item>
-            <el-row>
-              <el-col style="text-align:right;margin-bottom:10px;">
+            <div style="float:right;">
+              <div style="text-align:right;margin-bottom:10px;">
                 <el-button type="primary" v-if="ruleForm.syskind!=''&&ruleForm.syskind!='10023'" @click="testForm('ruleForm')" v-loading.fullscreen.lock="fullscreenLoading">测试连接</el-button>
-              </el-col>
-            </el-row>
+              </div>
+            </div>
             <el-col>
               <el-col :span="10" class="uncol">
                 <span class="fl" v-show="this.ruleForm.author=='true'&&ruleForm.syskind!=''&&ruleForm.syskind!='10023'">*</span>
@@ -1315,6 +1315,18 @@ export default {
 .reg_dialog1{
   .el-form-item{
     height:30px!important;
+  }
+  .my_form_item{
+    width: 80%;
+    display: inline-block;
+    label{
+      text-align: left;
+    }
+  }
+  .el-form-item__content{
+    label:first{
+      margin-left: 0px!important;
+    }
   }
 }
 .el-select {

@@ -219,7 +219,7 @@ export default {
             }
           }).then(function(res) {
             if (res.data.success) {
-              _self.loadTable();
+              _self.loadTable(_self.$store.state.deptId);
             } else {
               // console.log(res.data.code)
               _self.$alert('恢复失败', '提示', {
@@ -252,7 +252,7 @@ export default {
             }
           }).then(function(res) {
             if (res.data.success) {
-              _self.loadTable();
+              _self.loadTable(_self.$store.state.deptId);
             } else {
               // console.log(res.data.code)
               _self.$alert('删除失败', '提示', {
