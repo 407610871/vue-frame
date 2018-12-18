@@ -50,6 +50,8 @@
           </el-table-column>
           <el-table-column prop="totalRows" label="数据量" v-if="type=='mongodb'" show-overflow-tooltip>
           </el-table-column>
+           <el-table-column prop="owner" label="持有者" v-if="type=='mongodb'" show-overflow-tooltip>
+          </el-table-column>
           <el-table-column prop="name" label="备注" v-if="type=='mongodb'" show-overflow-tooltip>
             <template slot-scope="scope">
               <span>{{scope.row.comments}}</span>
