@@ -510,6 +510,7 @@ export default {
       console.log(this.websock);
             this.websock.onopen = this.websocketonopen;
       // this.websock.send = this.websocketsend;
+      // debugger;
             if(this.$route.path=='/task'){
                     this.websock.onmessage = this.websocketonmessage;
 
@@ -586,16 +587,16 @@ this.pageNum=1;
     //重新汇聚
     doConverge(index, row) {
       let _self = this;
-      this.$confirm(
-        "重新汇聚完成之前，当前表的数据将会被全部删除，相应数据服务将终止，直到汇聚完成。 请确认！",
-        "提示",
-        {
-          confirmButtonText: "确定",
-          cancelButtonText: "取消",
-          type: "info"
-        }
-      )
-        .then(() => {
+      // this.$confirm(
+      //   "重新汇聚完成之前，当前表的数据将会被全部删除，相应数据服务将终止，直到汇聚完成。 请确认！",
+      //   "提示",
+      //   {
+      //     confirmButtonText: "确定",
+      //     cancelButtonText: "取消",
+      //     type: "info"
+      //   }
+      // )
+      //   .then(() => {
           _self.loading = true;
 
           this.$ajax
@@ -612,8 +613,8 @@ this.pageNum=1;
             .catch(function(err) {
               console.log(err);
             });
-        })
-        .catch(() => {});
+        // })
+        // .catch(() => {});
     },
     //处理完毕
     doDel(index, row) {
@@ -815,17 +816,17 @@ this.pageNum=1;
           }
         }
         if (errorData.length == 0) {
-          _self
-            .$confirm(
-              "重新汇聚完成之前，当前表的数据将会被全部删除，相应数据服务将终止，直到汇聚完成。 请确认！",
-              "重新汇聚",
-              {
-                confirmButtonText: "确定",
-                cancelButtonText: "取消",
-                type: "info"
-              }
-            )
-            .then(() => {
+          // _self
+          //   .$confirm(
+          //     "重新汇聚完成之前，当前表的数据将会被全部删除，相应数据服务将终止，直到汇聚完成。 请确认！",
+          //     "重新汇聚",
+          //     {
+          //       confirmButtonText: "确定",
+          //       cancelButtonText: "取消",
+          //       type: "info"
+          //     }
+          //   )
+          //   .then(() => {
               _self.loading = true;
               _self
                 .$ajax({
@@ -863,10 +864,10 @@ this.pageNum=1;
                       dangerouslyUseHTMLString: true
                     });
                   }
-                })
-                .catch(function(err) {
-                  console.log(err);
-                });
+                // })
+                // .catch(function(err) {
+                //   console.log(err);
+                // });
             })
             .catch(() => {});
         } else {
