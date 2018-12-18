@@ -49,7 +49,7 @@
         </div>
       </div>
       <div class="proInfo-box log-box clearfix ptb20 bornone" v-show="textShow">
-        <textarea name="" id="" disabled="disabled" >{{loginfo}}</textarea>
+        <textarea name="" id="" disabled="disabled">{{loginfo}}</textarea>
       </div>
     </el-dialog>
   </div>
@@ -68,6 +68,7 @@ export default {
       accessSysId: '',
       loading2: false,
       taskId: '',
+      timer: null,
       loginfo: '',
       name: '',
       textShow: false,
@@ -80,6 +81,7 @@ export default {
     //关闭对话框
     closeDialog() {
       this.dialogVisible = false;
+      this.timer = null;
 
     },
     //核验弹框的再次打开
@@ -92,26 +94,34 @@ export default {
       this._getTableNum();
       //刷新数据
     },
+    setTimer: function() {
+      this.timer = setTimeout(() => {
+        this.$message({
+          message: '由于请求数据量过多，系统要花几分钟处理，请耐心等待',
+          type: 'warning'
+        });
+      }, 10000);
+    },
     //数据表核验
     _getTableNum() {
-      this.loading2 =true;
-      console.log(this.cindex);
-      this.$ajax({
+      this.loading2 = true;
+      let _self = this;
+      _self.setTimer();
+      console.log(_self.cindex);
+      _self.$ajax({
         method: "GET",
-        url: this.GLOBAL.api.API_DACM + '/ccheckData/tableSourceNum',
-        timeout:2000,
+        url: _self.GLOBAL.api.API_DACM + '/ccheckData/tableSourceNum',
         // headers:{
         //   'Content-Type':'application/json;charset=utf-8',
         // },
         params: {
-          accessSysId: this.accessSysId
+          accessSysId: _self.accessSysId
         }
 
       }).then(res => {
-        this.loading2 = false;
-        this.tableData = res.data.data;
-      },(res) =>{
-        console.log(res);
+        _self.loading2 = false;
+        window.clearTimeout(this.timer);
+        _self.tableData = res.data.data;
       })
     },
     //开始核验
@@ -225,7 +235,7 @@ export default {
       if (this.dialogVisible) {
         this.accessSysId = this.pdata.accessSysId;
         this._getTableNum();
-         this.textShow = false;
+        this.textShow = false;
         this.name = decodeURI(this.$route.params.sourceName);
       }
     }
