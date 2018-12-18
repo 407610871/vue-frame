@@ -14,7 +14,7 @@
     </el-form-item>
   </el-col>
   <el-col :span="4">
-    <el-select v-model="searchFormItem.filtercolumn" placeholder="查询项" @change="changeFiltercolumn" clearable>
+    <el-select v-model="searchFormItem.filtercolumn" placeholder="查询项" @change="changeFiltercolumn" clearable @clear="clsFiltercolumn">
       <el-option v-for="(item,index) in filtercolumnList" :key="index" :value="item.name" :label="item.name"></el-option>
     </el-select>
   </el-col>
@@ -73,7 +73,15 @@ export default {
       delCondition(index ){
         this.searchForm.splice(index,1);
       },
+      clsFiltercolumn(){
+        this.$refs.searchFormItem.clearValidate();
+      },
       changeFiltercolumn(){
+        if(!this.searchFormItem.filtercolumn){
+          delete this.searchFormItem.columnType;
+          delete this.searchFormItem.timestamp;
+          return;
+        }
         if(this.isTimestamp(this.searchFormItem.filtercolumn)){
           this.searchFormItem.columnType = "TIMESTAMP";
         }else{
@@ -92,7 +100,6 @@ export default {
         if(this.tableParams.ACCESS_SYS_DIALECT_ID == '10001'){
           return datatype == "timestamp"||datatype == "datetime";
         }else if(this.tableParams.ACCESS_SYS_DIALECT_ID == '10002'){
-          //return datatype == "TIMESTAMP(0)";
           return datatype.indexOf('TIMESTAMP') > -1||datatype.toUpperCase().indexOf('DATE') > -1;
         }else{
           return false;
