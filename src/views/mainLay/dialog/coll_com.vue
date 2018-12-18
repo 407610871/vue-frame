@@ -569,11 +569,8 @@ export default {
         }
         ctt = '0';
         actech = this.$route.params.type;
-      }
-      if(this.ruleForm.accessMode == "1" && this.$route.params.type == 'mongodb'){//mongodb 增量接入
-        actech = "mongodb_cycle";
-      }else if(this.$route.params.type == 'ftp'){//ftp 增量接入
-        actech = "ftp_cycle";
+      }else{
+        actech = this.$route.params.type +"_cycle";
       }
       if (this.ruleForm.accessMode == "2") { //一次性
         ctt = '3'
