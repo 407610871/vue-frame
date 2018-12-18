@@ -260,7 +260,7 @@ export default {
           window.clearTimeout(this.timer);
           this.timer = null;
           this.loading = false;
-         // this.status = "开始核验";
+          this.status = "开始核验";
           this.radio = res.data.config_key;
           this.radio == 1 ? (this.timeCheck = true) : (this.timeCheck = false);
 
