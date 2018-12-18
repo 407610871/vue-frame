@@ -22,7 +22,7 @@
             <el-col :span="2" class="bank">bank</el-col>
             <el-col :span="8">
               <div class="path-box">
-                <el-tree show-checkbox node-key="id" :check-strictly="true" :props="defaultProps" accordion @check-change="handleClick" @check="nodeClick" ref="treeForm" :load="loadNode1" lazy :default-checked-keys="checkData">
+                <el-tree show-checkbox node-key="id" :check-strictly="true" :props="defaultProps" accordion @check-change="handleClick" @check="nodeClick" ref="treeForm" :load="loadNode1" :data="tData" lazy :default-checked-keys="checkData">
                 </el-tree>
               </div>
             </el-col>
@@ -72,6 +72,7 @@ export default {
       checkData: [],
       disaData: [],
       againData: {},
+      tData:[],
       ruleForm: {
         ftpurl: '',
         delete: false,
@@ -124,7 +125,7 @@ export default {
 
       }
       this.disaData.push(this.againData);
-      
+
       this.$refs.treeForm.setCheckedNodes(this.disaData);
     },
     //树的点击
@@ -268,7 +269,39 @@ export default {
         })
       }
     },
+    _init() {
+      this.loading = true;
+      var params = {
+        accessSysId: this.$route.params.sourceId,
+        linkPath: '/'
+      }
+      this.$ajax({
+        method: "POST",
+        url: this.GLOBAL.api.API_DACM + '/ctables/getStructure',
+        // headers:{
+        //   'Content-Type':'application/json;charset=utf-8',
+        // },
+        data: params
 
+      }).then(res => {
+        this.loading = false;
+        //console.log(res.data.data);
+        this.tData =[];
+        res.data.data.forEach(e => {
+          this.tData.push(e)
+        });
+        this.tData.forEach(e => {
+          if (e.checked) {
+            this.checkData.push(e.id);
+          }
+
+        })
+        resolve(this.tData)
+      }).catch(res => {
+        this.loading = false;
+        resolve([]);
+      })
+    }
   },
   components: {
 
@@ -279,8 +312,9 @@ export default {
   watch: {
     dialogVisible() {
       if (this.dialogVisible) {
-        this.$refs.treeForm.setCheckedNodes([]);
-        this.$refs.treeForm.setCheckedKeys([]);
+        //this.$refs.treeForm.setCheckedNodes([]);
+        // this.$refs.treeForm.setCheckedKeys([]);
+        this._init();
         this.ruleForm.ftpurl = '';
         this.ruleForm.ftpId = '';
       }
