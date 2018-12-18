@@ -22,7 +22,7 @@
             <el-col :span="2" class="bank">bank</el-col>
             <el-col :span="8">
               <div class="path-box">
-                <el-tree show-checkbox node-key="id" :check-strictly="pcflag" :props="defaultProps" accordion @check-change="handleClick" @check="nodeClick" ref="treeForm" :load="loadNode1" lazy :default-checked-keys="checkData">
+                <el-tree show-checkbox node-key="id" :check-strictly="true" :props="defaultProps" accordion @check-change="handleClick" @check="nodeClick" ref="treeForm" :load="loadNode1" lazy :default-checked-keys="checkData">
                 </el-tree>
               </div>
             </el-col>
@@ -39,7 +39,7 @@
           <el-col :span="24" class="tip-box">
             <el-col :span="2" class="bank">bank</el-col>
             <el-col :span="6">
-              <el-checkbox v-model="ruleForm.subDele" @change="checkChange">备选项</el-checkbox>包含子目录
+              <el-checkbox v-model="ruleForm.subDele">备选项</el-checkbox>包含子目录
             </el-col>
           </el-col>
           <el-col :span="24" class="mt30 tcenter ftpbtn">
@@ -69,7 +69,6 @@ export default {
       i: 0, //树节点只允许单选
       dialogVisible: false,
       loading: true,
-      pcflag: true,
       checkData: [],
       ruleForm: {
         ftpurl: '',
@@ -102,40 +101,19 @@ export default {
       this.$refs.treeForm.setCheckedNodes([]);
       this.$refs.treeForm.setCheckedKeys([]);
     },
-    checkChange(value) {
-      if (value == true) {
-        this.pcflag = false;
-      } else {
-        this.pcflag = true;
-      }
-    },
     //实现树的单选
     handleClick(data, checked, node) {
-      if (this.ruleForm.subDele) {
-        this.$refs.treeForm.setCheckedNodes([]);
+      if (checked == true) {
+        this.checkedId = data.id;
         this.$refs.treeForm.setCheckedNodes([data]);
-      } else {
-        if (checked == true) {
-          this.checkedId = data.id;
-          this.$refs.treeForm.setCheckedNodes([data]);
-        }
       }
-
     },
     //树的点击
     nodeClick(data, checked, node) {
-      if (this.ruleForm.subDele) {
-        this.checkedId = data.id
-        this.$refs.treeForm.setCheckedNodes([data]);
-        this.ruleForm.ftpurl = data.linkPath;
-        this.ruleForm.ftpId = data.id;
-      } else {
-        this.checkedId = data.id
-        this.$refs.treeForm.setCheckedNodes([data]);
-        this.ruleForm.ftpurl = data.linkPath;
-        this.ruleForm.ftpId = data.id;
-      }
-
+      this.checkedId = data.id
+      this.$refs.treeForm.setCheckedNodes([data]);
+      this.ruleForm.ftpurl = data.linkPath;
+      this.ruleForm.ftpId = data.id;
     },
     //关闭
     closeForm() {
