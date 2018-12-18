@@ -67,12 +67,13 @@ export default {
   },
   methods: {
     setVisible() {
-      if (this.pdata.exitTask) {
+     /*  if (this.pdata.exitTask) {
         this.$message.warning('已设置过采集');
         return false;
       } else {
         this.dialogVisible = true;
-      }
+      } */
+      this.dialogVisible = true;
     },
     fresh() {
 
