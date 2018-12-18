@@ -100,6 +100,8 @@ export default {
     //关闭对话框
     closeDialog() {
       this.dialogVisible = false;
+      this.ruleForm.subDele = false;
+      this.ruleForm.delete = false;
       this.$refs['ruleForm'].resetFields();
       this.$refs.treeForm.setCheckedNodes([]);
       this.$refs.treeForm.setCheckedKeys([]);
@@ -269,7 +271,7 @@ export default {
         })
       }
     },
-    _init() {
+    init() {
       this.loading = true;
       var params = {
         accessSysId: this.$route.params.sourceId,
@@ -296,10 +298,10 @@ export default {
           }
 
         })
-        resolve(this.tData)
+       
       }).catch(res => {
         this.loading = false;
-        resolve([]);
+       
       })
     }
   },
@@ -314,7 +316,10 @@ export default {
       if (this.dialogVisible) {
         //this.$refs.treeForm.setCheckedNodes([]);
         // this.$refs.treeForm.setCheckedKeys([]);
-        this._init();
+        this.ruleForm.subDele = false;
+        this.ruleForm.delete = false;
+        this.init();
+
         this.ruleForm.ftpurl = '';
         this.ruleForm.ftpId = '';
       }
