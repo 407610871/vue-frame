@@ -569,37 +569,34 @@ export default {
         }
         ctt = '0';
         actech = this.$route.params.type;
+      }else{
+        actech = this.$route.params.type +"_cycle";
       }
-      if(this.ruleForm.accessMode == "1" && this.$route.params.type == 'mongodb'){//mongodb 增量接入
-        actech = "mongodb_cycle";
-      }else if(this.$route.params.type == 'ftp'){//ftp 增量接入
-        actech = "ftp_cycle";
-      }
-      if (this.ruleForm.accessMode == "2") { //实时
+      if (this.ruleForm.accessMode == "2") { //一次性
         ctt = '3'
       }
-      if (this.ruleForm.accessMode == "1" && this.ruleForm.cycleSet == "0"&& this.$route.params.type != 'mongodb'&& this.$route.params.type != 'ftp') { //间隔
-        if (this.increArr.id == undefined) {
+      if (this.ruleForm.accessMode == "1" && this.ruleForm.cycleSet == "0") { //增量 间隔
+        if (this.increArr.id == undefined && this.$route.params.type != 'mongodb'&& this.$route.params.type != 'ftp') {
           this.$message.warning('请选择增量字段');
           return false;
         }
         ctt = '1'
       }
-      if (this.ruleForm.accessMode == "1" && this.ruleForm.cycleSet == "1") { //实时
+      if (this.ruleForm.accessMode == "1" && this.ruleForm.cycleSet == "1") { //增量 实时
         if (this.increArr.id == undefined) {
           this.$message.warning('请选择增量字段');
           return false;
         }
         ctt = '2'
       }
-      if (this.ruleForm.accessMode == "3" && this.ruleForm.cycleSet == "0") { //间隔
+      if (this.ruleForm.accessMode == "3" && this.ruleForm.cycleSet == "0") { //全量 间隔
         /*if (this.increArr.id == undefined) {
           this.$message.warning('请选择增量字段');
           return false;
         }*/
         ctt = '4'
       }
-      if (this.ruleForm.accessMode == "3" && this.ruleForm.cycleSet == "1") { //实时
+      if (this.ruleForm.accessMode == "3" && this.ruleForm.cycleSet == "1") { //全量 实时
         /*if (this.increArr.id == undefined) {
           this.$message.warning('请选择增量字段');
           return false;

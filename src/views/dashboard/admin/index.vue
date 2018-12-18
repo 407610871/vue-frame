@@ -2,13 +2,7 @@
 <div>
     <el-container style="height:100%" class="dashboard-container" v-loading="loading">
         <div class="filter-container">
-
-            <div class="regbtn fr">
-                <reg-dialog @refreshTable="loadTable"   @storeReady="storeReady"  @refreshCount="countTotal++"></reg-dialog>
-            </div>
-            <!-- <el-tooltip class="item" effect="light" content="收起/展开" placement="top">		<a v-on:click="collapseExpand" class="right-btn collapse-btn">		<i :class="{'el-icon-circle-plus':collapse,'el-icon-remove':!collapse}"></i>		</a>		</el-tooltip> -->
             <formFliter style="padding-top: 20px" v-if="queryParamReady"    @highMore="moreHeight"    @highSeaech="hightrue" v-bind:formCollapse="collapse" v-bind:dataObj="formFilterData" @doSearch="search" @formFilter="changeFormFilter" />
-
             <div class="count-container">
                 <div class="count-title">
                     <label>数据源注册总数</label>
@@ -18,6 +12,9 @@
                 <dataCount v-bind:dataObj="count1Data" class="countData" />
                 <div class="line"></div>
                 <dataCount v-bind:dataObj="count2Data" class="countData" />
+                <div class="regbtn fr">
+                    <reg-dialog @refreshTable="loadTable"   @storeReady="storeReady"  @refreshCount="countTotal++"></reg-dialog>
+                </div>
             </div>
         </div>
         <el-main style="padding-bottom:0;">
@@ -656,6 +653,10 @@ _self.updataFliterItemList();
         width: 3px;
         background-color: #999;
         border-radius: 2px;
+      }
+      .regbtn{
+        margin-top:25px;
+        padding-right:20px;
       }
     }
 

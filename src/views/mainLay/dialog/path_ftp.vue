@@ -69,11 +69,11 @@ export default {
       i: 0, //树节点只允许单选
       dialogVisible: false,
       loading: true,
-      checkData:[],
+      checkData: [],
       ruleForm: {
         ftpurl: '',
         delete: false,
-        subDele:false,
+        subDele: false,
         ftpId: '',
       },
       formRules: {
@@ -87,7 +87,7 @@ export default {
         children: 'children',
         label: 'label',
         isLeaf: 'leaf',
-        disabled:'chkDisabled'
+        disabled: 'chkDisabled'
       },
 
       // msgId:this.dialogMsg?this.dialogMsg[1]:''
@@ -202,11 +202,11 @@ export default {
           res.data.data.forEach(e => {
             treeData.push(e)
           });
-          treeData.forEach(e=>{
-            if(e.checked){
+          treeData.forEach(e => {
+            if (e.checked) {
               this.checkData.push(e.id);
             }
-            
+
           })
           resolve(treeData)
         }).catch(res => {
@@ -236,11 +236,11 @@ export default {
           res.data.data.forEach(e => {
             myList.push(e)
           })
-          myList.forEach(e=>{
-            if(e.checked){
-               this.checkData.push(e.id);
+          myList.forEach(e => {
+            if (e.checked) {
+              this.checkData.push(e.id);
             }
-           
+
           })
           resolve(myList)
         }).catch(res => {

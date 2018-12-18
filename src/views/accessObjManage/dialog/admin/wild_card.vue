@@ -156,6 +156,10 @@ export default {
         //校验表结构
         //基础匹配
         if (this.ruleForm.typeKind == '0') {
+          if (this.ruleForm.baseStart == '' && this.ruleForm.baseEnd == '') {
+            this.$message.warning('请将基础信息配置填写完整');
+            return false;
+          }
           saveInfo = {
             "regexInfo": this.ruleForm.baseEnd,
             "isCustom": false,
@@ -164,6 +168,10 @@ export default {
           }
         } else {
           //高级匹配
+          if (this.ruleForm.highMatch == '') {
+            this.$message.warning('请填写正则表达式');
+            return false;
+          }
           saveInfo = {
             "regexInfo": this.ruleForm.highMatch,
             "isCustom": true,
