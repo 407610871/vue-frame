@@ -1147,6 +1147,7 @@ export default {
     height:30px!important;
   }
   .my_form_item{
+    margin-bottom:-10px;
     width: 80%;
     display: inline-block;
     label{
@@ -1181,9 +1182,7 @@ export default {
 }
 
 .otherInfo .el-radio {
-  margin-bottom: 12px;
-  margin-top: 8px;
-  margin-left: 30px;
+  margin-left: 8px;
 }
 
 .test-btn {

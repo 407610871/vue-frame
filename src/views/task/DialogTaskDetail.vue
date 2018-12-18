@@ -690,7 +690,6 @@ export default {
                */
               let timeType = that.taskBaseInfo.timeType
               let intervalMs = that.taskBaseInfo.intervalMs
-              debugger;
               if(timeType!=2&&timeType!=3&&timeType!=4){
                 //timeType不等于2、3、4即为间隔执行单位为ms
                 that.taskBaseInfo.periodSet=that.translatePeriodFromMS(intervalMs);
@@ -840,7 +839,6 @@ export default {
           if(res.data.code!="200"&&res.data.code!="0000"){
             that.doMsg("/manager/taskOperate/dataPreview："+res.data.message,'error');
           }else{
-            debugger;
             that.dataViewsList = res.data.data;
             that.keyList = [];
             for (var p in that.dataViewsList[0]){

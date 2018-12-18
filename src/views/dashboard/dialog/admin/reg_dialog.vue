@@ -1337,9 +1337,7 @@ export default {
 }
 
 .otherInfo .el-radio {
-  margin-bottom: 12px;
-  margin-top: 8px;
-  margin-left: 30px;
+  margin-left: 8px;
 }
 
 .test-btn {
