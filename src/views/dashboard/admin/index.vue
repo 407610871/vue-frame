@@ -304,7 +304,17 @@ export default {
           checkData: this.$store.state.fliterItemList.platform.data,
           seledData: platform,
           limit: 4
-        }
+        },
+        // {
+        //   // this.$store.state.queryParams[this.$route.name].condition
+        //   name: "搜索条件",
+        //   id: "condition",
+        //   type: "condition",
+        //   checkData: [],
+        //   seledData:[],
+        //   condition:this.$store.state.queryParams[this.$route.name].condition==[]?"":""
+        // }
+  
       ];
       this.queryParamReady = true;
       console.log(this.formFilterData);
@@ -382,8 +392,8 @@ export default {
             data: list
           });
  _self.formFilterData[2].checkData=list
- console.log(_self.formFilterData);
-  console.log(res.data);
+//  console.log(_self.formFilterData);
+  // console.log(res.data);
 
 
         })
@@ -563,9 +573,13 @@ _self.updataFliterItemList();
       this.setStore(fliterParams);
     },
     storeReady: function() {
-      console.log("111");
-      console.log(this.$store.state.deptId);
+      // console.log("111");
+      // console.log(this.$store.state.deptId);
       var fliterItemList = this.$store.state.fliterItemList;
+
+     
+      // console.log(this.$store.state)
+      // this.tableParams.condition= this.$store.state.queryParams[this.$route.name].condition;
       if (
         fliterItemList.network.ready &&
         fliterItemList.dataSourceName.ready &&

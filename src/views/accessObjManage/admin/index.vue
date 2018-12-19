@@ -312,6 +312,7 @@ export default {
   watch: {
     tableParams(newVal, oldVal) {
       if (JSON.stringify(newVal) != JSON.stringify(oldVal)) {
+        // debugger;
         if (newVal.deptId == oldVal.deptId) {
           //判断树的调度不会影响
           // if (
@@ -319,7 +320,7 @@ export default {
           //   newVal.objectType.toString() == oldVal.objectType.toString()
           // ) {
           //判断高级搜索的词不会进入
-          this.loadTable();
+          // this.loadTable();
           // }
         }
       }
@@ -349,12 +350,13 @@ export default {
     // })
     // this.tableParams.condition="";
 
-    //this.loadTable();
-
+    //this.loadTable();storeReady
+this.storeReady();
     // this.loadTable();
 
   },
   methods: {
+  
     //数据核验
     dataInverCheck(row){
       this.dialogVisible = true;
@@ -534,6 +536,7 @@ export default {
         });
     },
     setStore: function(obj) {
+      // debugger;
       let storeData = JSON.parse(
         JSON.stringify(this.$store.state.queryParams[this.$route.name])
       );
@@ -579,7 +582,7 @@ export default {
       this.setStore({
         pageNum: 1,
         condition: keyword,
-        // timeFlag: new Date().getTime()
+        timeFlag: new Date().getTime()
       });
       this.searchParams.condition = keyword;
       this.loadTable();
@@ -650,16 +653,20 @@ export default {
       this.rowList = val;
     },
     changeFormFilter: function(fliterParams) {
+      console.log(fliterParams);
       this.searchParams = fliterParams;
       fliterParams.pageNum = 1;
-      // this.setStore(fliterParams);
+      this.setStore(fliterParams);
 
-      fliterParams.keyword = "";
+      // fliterParams.keyword = "";
     },
     storeReady() {
       // var queryParams = this.$store.state.queryParams.accessObjManage;
       if (this.$store.state.pageReady) {
+                // setFliter();
+  // this.setFliter();
         this.loadTable();
+       
       } else {
         var _self = this;
         setTimeout(function() {
@@ -669,15 +676,19 @@ export default {
     },
     setFliter() {
       var queryParams = this.$store.state.queryParams[this.$route.name];
+
+
+
       let objectType = queryParams.objectType ? queryParams.objectType : [];
       let dataRange = queryParams.dataRange ? queryParams.dataRange : [];
-
+ objectType == true ? [] : objectType;
+      dataRange == true ? [] : dataRange;
       this.formFilterData = [{
           name: "接入对象类型：",
           id: "objectType",
           type: "checkbox",
           checkData: this.objectType,
-          seledData: [],
+          seledData: objectType,
           limit: 4
         },
         {
@@ -685,7 +696,7 @@ export default {
           id: "dataRange",
           type: "checkbox",
           checkData: this.dataRange,
-          seledData: [],
+          seledData: dataRange,
           limit: 4
         }
       ];

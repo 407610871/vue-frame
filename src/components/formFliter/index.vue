@@ -100,7 +100,7 @@ export default {
     }
     this.getFormSeled();
     this.getFormSeledShow();
-this.keyword=this.dataObj[3].condition;
+    this.keyword=this.$store.state.queryParams[this.$route.name].condition||"";
 
 
   },
@@ -119,7 +119,7 @@ this.keyword=this.dataObj[3].condition;
     delSelect(index, a) {
       this.formSeledShow[this.dataObj[a].id].splice(index, 1);
       this.formSeled[this.dataObj[a].id].splice(index, 1);
-      this.$emit("formFilter", this.formSeled);
+      // this.$emit("formFilter", this.formSeled);
     },
     //更多收起功能
     domoreSeclect(index) {
@@ -143,11 +143,13 @@ this.keyword=this.dataObj[3].condition;
     },
     //查询按钮
     search() {
+            this.$emit("formFilter", this.formSeled);
+
       this.$emit("doSearch", this.keyword);
     },
 
     formFilter: function() {
-      this.$emit("formFilter", this.formSeled);
+      // this.$emit("formFilter", this.formSeled);
       this.getFormSeledShow();
     },
 
