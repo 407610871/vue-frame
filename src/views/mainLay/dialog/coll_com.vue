@@ -26,13 +26,13 @@
                 <el-radio label="1" v-if="this.$route.params.type=='oracle'||this.$route.params.type == 'mongodb'||this.$route.params.type == 'ftp'">增量接入</el-radio>
                 <el-radio label="3" v-if="this.$route.params.type=='oracle'">全量接入</el-radio>
                 <el-radio label="0" v-if="this.$route.params.type != 'ftp'">实时接入</el-radio>
-                <el-radio label="2" v-if="this.$route.params.type=='oracle'||this.$route.params.type=='ftp'">一次性接入</el-radio>
+                <el-radio label="2" v-if="this.$route.params.type=='oracle'">一次性接入</el-radio>
               </el-radio-group>
             </el-form-item>
           </el-col>
           <el-col :span="24">
             <el-form-item label="接入优先级:" prop="priority">
-              <el-radio-group v-model="ruleForm.priority" :disabled = "(this.$route.params.type == 'mongodb'||this.$route.params.type == 'ftp') && this.ruleForm.accessMode == 1">
+              <el-radio-group v-model="ruleForm.priority">
                 <el-radio label="1">高</el-radio>
                 <el-radio label="2">中</el-radio>
                 <el-radio label="3">低</el-radio>
@@ -41,7 +41,7 @@
           </el-col>
           <el-col :span="24">
             <el-form-item label="任务提交方式:" prop="taskSubMode">
-              <el-radio-group v-model="ruleForm.taskSubMode" :disabled = "(this.$route.params.type == 'mongodb'||this.$route.params.type == 'ftp') && this.ruleForm.accessMode == 1">
+              <el-radio-group v-model="ruleForm.taskSubMode" :disabled = "taskStatus">
                 <el-radio label="true">自动提交</el-radio>
                 <el-radio label="false">手工提交</el-radio>
               </el-radio-group>
@@ -108,7 +108,7 @@
                     <el-col :span="4">
                       <el-form-item>
                         <el-select v-model="ruleForm.jhour" placeholder="请选择">
-                          <el-option v-for="item in hourData" :key="item" :label="item" :value="item">
+                          <el-option v-for="(index,item) in hourData" :key="index" :label="item" :value="item">
                           </el-option>
                         </el-select>
                       </el-form-item>
@@ -121,7 +121,7 @@
                     <el-col :span="4">
                       <el-form-item>
                         <el-select v-model="ruleForm.jmin" placeholder="请选择">
-                          <el-option v-for="item in minData" :key="item" :label="item" :value="item">
+                          <el-option v-for="(index,item) in minData" :key="index" :label="item" :value="item">
                           </el-option>
                         </el-select>
                       </el-form-item>
@@ -153,7 +153,7 @@
                         <el-col :span="4">
                           <el-form-item>
                             <el-select v-model="ruleForm.dfmon" placeholder="请选择">
-                              <el-option v-for="item in monthData" :key="item" :label="item" :value="item">
+                              <el-option v-for="(index,item) in monthData" :key="index" :label="item" :value="item">
                               </el-option>
                             </el-select>
                           </el-form-item>
@@ -166,7 +166,7 @@
                         <el-col :span="4">
                           <el-form-item>
                             <el-select v-model="ruleForm.dfhour" placeholder="请选择">
-                              <el-option v-for="item in hourData" :key="item" :label="item" :value="item">
+                              <el-option v-for="(index,item) in hourData" :key="index" :label="item" :value="item">
                               </el-option>
                             </el-select>
                           </el-form-item>
@@ -179,7 +179,7 @@
                         <el-col :span="4">
                           <el-form-item>
                             <el-select v-model="ruleForm.dfmin" placeholder="请选择">
-                              <el-option v-for="item in minData" :key="item" :label="item" :value="item">
+                              <el-option v-for="(index,item) in minData" :key="index" :label="item" :value="item">
                               </el-option>
                             </el-select>
                           </el-form-item>
@@ -217,7 +217,7 @@
                         <el-col :span="4">
                           <el-form-item>
                             <el-select v-model="ruleForm.dshour" placeholder="请选择">
-                              <el-option v-for="item in hourData" :key="item" :label="item" :value="item">
+                              <el-option v-for="(index,item) in hourData" :key="index" :label="item" :value="item">
                               </el-option>
                             </el-select>
                           </el-form-item>
@@ -230,7 +230,7 @@
                         <el-col :span="4">
                           <el-form-item>
                             <el-select v-model="ruleForm.dsmin" placeholder="请选择">
-                              <el-option v-for="item in minData" :key="item" :label="item" :value="item">
+                              <el-option v-for="(index,item) in minData" :key="index" :label="item" :value="item">
                               </el-option>
                             </el-select>
                           </el-form-item>
@@ -255,7 +255,7 @@
                         <el-col :span="4">
                           <el-form-item>
                             <el-select v-model="ruleForm.dthour" placeholder="请选择">
-                              <el-option v-for="item in hourData" :key="item" :label="item" :value="item">
+                              <el-option v-for="(index,item) in hourData" :key="index" :label="item" :value="item">
                               </el-option>
                             </el-select>
                           </el-form-item>
@@ -268,7 +268,7 @@
                         <el-col :span="4">
                           <el-form-item>
                             <el-select v-model="ruleForm.dtmin" placeholder="请选择">
-                              <el-option v-for="item in minData" :key="item" :label="item" :value="item">
+                              <el-option v-for="(index,item) in minData" :key="index" :label="item" :value="item">
                               </el-option>
                             </el-select>
                           </el-form-item>
@@ -312,6 +312,7 @@ export default {
       treeData: [],
       editfalg: false,
       isregin: false,
+      taskStatus: false,
       appId: '',
 
       taskInfoId: '',
@@ -811,7 +812,7 @@ export default {
     },
     //获取修改内容
     _getInit() {
-      if(this.$route.params.type!='oracle'&&this.$route.params.type!='ftp'){
+      if(this.$route.params.type!='oracle'&&this.$route.params.type!='ftp'&&this.$route.params.type!='mongodb'){
         this.ruleForm.accessMode = '0';
       }
       this.$ajax({
@@ -834,6 +835,13 @@ export default {
             this.isdisable = true;
             this.ruleForm.increment = data.incrementColumn;
             this.increArr = {};
+            if (data.taskStatus == '0') {
+              this.ruleForm.taskSubMode = "false";
+              this.taskStatus = false;
+            } else {
+              this.ruleForm.taskSubMode = 'true';
+              this.taskStatus = true;
+            }
             this.increArr.id = data.incrementColumnId;
             this.increArr.name = data.incrementColumn;
             this.increArr.datatype = data.incrementColumnDataType;

@@ -31,7 +31,7 @@
           <el-col :span="24" class="tip-box">
             <el-col :span="2" class="bank">bank</el-col>
             <el-col :span="6">
-              <el-checkbox v-model="ruleForm.delete">备选项</el-checkbox>采集后源文件是否需要删除
+              <el-checkbox v-model="ruleForm.delete"></el-checkbox>采集后源文件是否需要删除
             </el-col>
             <el-col :span="8">
               <span class="ftp-tip">*暂不支持中文路径采集</span>
@@ -40,7 +40,7 @@
           <el-col :span="24" class="tip-box">
             <el-col :span="2" class="bank">bank</el-col>
             <el-col :span="6">
-              <el-checkbox v-model="ruleForm.subDele" @change="selectChildrenNodes">备选项</el-checkbox>包含子目录
+              <el-checkbox v-model="ruleForm.subDele"></el-checkbox>包含子目录
             </el-col>
           </el-col>
           <el-col :span="24" class="mt30 tcenter ftpbtn">
@@ -73,7 +73,7 @@ export default {
       checkData: [],
       disaData: [],
       againData: {},
-      tData:[],
+      tData: [],
       ruleForm: {
         ftpurl: '',
         delete: false,
@@ -100,6 +100,7 @@ export default {
     closeDialog() {
       this.dialogVisible = false;
       this.againData = {};
+      this.ruleForm.delete = false;
       this.ruleForm.subDele = false;
       this.$refs['ruleForm'].resetFields();
       this.$refs.treeForm.setCheckedNodes([]);
@@ -274,7 +275,7 @@ export default {
 
       }).then(res => {
         this.loading = false;
-        this.tData =[];
+        this.tData = [];
         res.data.data.forEach(e => {
           this.tData.push(e)
         });
@@ -293,6 +294,8 @@ export default {
     dialogVisible() {
       if (this.dialogVisible) {
         this.defaultInit();
+        this.ruleForm.subDele = false;
+        this.ruleForm.delete = false;
         this.ruleForm.ftpurl = '';
         this.ruleForm.ftpId = '';
       }
@@ -368,6 +371,9 @@ export default {
 
 .ftpInfo {
   margin-top: 35px;
+  .el-checkbox {
+    margin-right: 10px;
+  }
 }
 
 .path-box {

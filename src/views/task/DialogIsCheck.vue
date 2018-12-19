@@ -24,14 +24,9 @@
               <el-date-picker size="small" :picker-options="pickerOptions" v-model="startTime" type="daterange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" value-format="yyyy-MM-dd">
               </el-date-picker>
               <el-select v-model="queryTargetColumn" placeholder="选择核验时间字段" style="width:160px;margin-left:5px;">
-                <el-option
-                  v-for="item in queryTargetColumnList"
-                  :key="item"
-                  :label="item"
-                  :value="item">
+                <el-option v-for="item in queryTargetColumnList" :key="item" :label="item" :value="item">
                 </el-option>
               </el-select>
-              
             </div>
           </div>
         </div>
@@ -111,10 +106,10 @@
               <span v-if="scope.row.config_key == '1'">时间范围</span>
             </template>
           </el-table-column>
-          <el-table-column  label="核验误差">
-              <template slot-scope="scope">
-                <span>{{scope.row.config_range | percentFormat}}</span>
-              </template>
+          <el-table-column label="核验误差">
+            <template slot-scope="scope">
+              <span>{{scope.row.config_range | percentFormat}}</span>
+            </template>
           </el-table-column>
           <el-table-column label="核验结果">
             <template slot-scope="scope">
@@ -124,7 +119,7 @@
           </el-table-column>
           <el-table-column label="核验报告">
             <template slot-scope="scope">
-              <el-button  @click="downTxt(scope.row.id)" class="export-btn" size="mini">导出</el-button>
+              <el-button @click="downTxt(scope.row.id)" class="export-btn" size="mini">导出</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -142,14 +137,14 @@ export default {
   beforeCreate() {
     window.dialogIsCheck = this;
   },
-  props: ["msgCheck","title"],
+  props: ["msgCheck", "title"],
   created() {
     this.init();
-    console.log(this.msgCheck,111)
+    console.log(this.msgCheck, 111)
   },
   data: function() {
     return {
-      queryTargetColumn:'',
+      queryTargetColumn: '',
       queryTargetColumnList: [],
       baseUrl: baseUrl,
       showInnerDialog: true,
@@ -231,16 +226,16 @@ export default {
     },
     init() {
       let that = this;
-     // this.loading = true;
+      // this.loading = true;
       this.$ajax.get(baseUrl + '/ccheckData/tableNum', {
-      //this.$ajax.get('http://10.19.160.25:8080/DACM/ccheckData/tableNum', {
+        //this.$ajax.get('http://10.19.160.25:8080/DACM/ccheckData/tableNum', {
         params: {
           taskId: that.msgCheck.taskInfoId
           //taskId: '68377'
         }
       }).then(res => {
-      //  this.loading = false;
-        
+        //  this.loading = false;
+
         res = res.data;
         if (res.data.result == "false" || res.data.message == "还未核验暂无数据,请核验") {
           this.$alert(res.data.message, "核验结果", {
@@ -253,7 +248,10 @@ export default {
         //this.resData = res.datas;
         this.resData = res.data;
         //不知道这个的展示有没有什么限制，所以暂时先不作什么限制
-        that.queryTargetColumnList=res.data.listIncrementCon;
+        that.queryTargetColumnList = res.data.listIncrementCon;
+        if(that.queryTargetColumnList.length!=0&&that.queryTargetColumnList.length!=undefined){
+          that.queryTargetColumn = that.queryTargetColumnList[0];
+        }
         if (res.data.status == "1") {
           this.textShow = false;
 
@@ -274,10 +272,13 @@ export default {
           }
 
           this.range = res.data.config_range;
-          this.queryTargetColumn = res.data.queryTargetColumn;
+          if(res.data.queryTargetColumn!=''&&res.data.queryTargetColumn!=undefined){
+             this.queryTargetColumn = res.data.queryTargetColumn;
+          }
+         
           //  let loadingInstance = Loading.service({text:"核验中，请稍等...",target:document.getElementsByName("el-dialog")});
         } else if (res.data.status == "0") {
-       //   this.loading = true;
+          //   this.loading = true;
           this.setTimer();
           this.status = "核验中";
         }
@@ -329,7 +330,7 @@ export default {
           confirmButtonText: "确定"
         });
         return;
-      } else if(this.radio == "1" && this.queryTargetColumn ==""){
+      } else if (this.radio == "1" && this.queryTargetColumn == "") {
         this.$alert("请选择核验时间字段", "核验", {
           confirmButtonText: "确定"
         });
@@ -343,10 +344,10 @@ export default {
           range: this.range,
           startTime: this.startTime[0],
           endTime: this.startTime[1],
-          queryTargetColumn:this.queryTargetColumn
+          queryTargetColumn: this.queryTargetColumn
         }
       }).then(res => {
-       // this.loading = false;
+        // this.loading = false;
         res.data = res.data.data;
         if (res.data.result) {
           this.$alert(res.data.message, "核验结果", {
@@ -364,7 +365,7 @@ export default {
     },
     //查看日志按钮
     doDetail() {
-      this.textShow = !this.textShow;
+     
       this.loading2 = true;
       let that = this;
       this.$ajax.get(baseUrl + '/ccheckData/checkLog', {
@@ -374,17 +375,21 @@ export default {
       }).then(res => {
         this.loading2 = false;
         res = res.data;
-        if (res.result == "false") {
-          //this.textShow = false;
+        if (res.success == "false" || res.success == false) {
+          this.textShow = false;
 
           this.$alert("查看日志失败", "查看日志", {
             confirmButtonText: "确定"
           });
         } else {
-         // this.textShow = true;
-
-          let result = res.data.testresults_result == 0 ? "成功" : "失败";
-          this.loginfo = `源库：${res.data.source_library}\n
+          // this.textShow = true;
+          if (res.data.result == false) {
+            this.textShow = false;
+            this.$message.warning(res.data.message);
+          } else {
+             this.textShow = !this.textShow;
+            let result = res.data.testresults_result == 0 ? "成功" : "失败";
+            this.loginfo = `源库：${res.data.source_library}\n
 源表：${res.data.source_tableName}\n
 执行结果：${res.data.source_tableNum}\n
 数据核验查询语句：${res.data.source_sql}\n
@@ -397,6 +402,8 @@ export default {
 核验结果:${result}\n
 核验差值:${res.data.testresults_dvalue}\n
 `;
+          }
+
         }
       });
     },
@@ -431,12 +438,12 @@ export default {
       /*window.location.href = `${this.GLOBAL.api.API_DACM}/ccheckData/downloadCheckDataById?id=${item.id}&browser=${browser}&accessName=${this.$route.params.sourceName}`*/
     }
   },
-  filters:{
-    percentFormat(val){
-      if(val == 0){
+  filters: {
+    percentFormat(val) {
+      if (val == 0) {
         return 0;
-      }else{
-        return val+'%';
+      } else {
+        return val + '%';
       }
     },
   },
@@ -580,10 +587,12 @@ h5 {
   font-size: 14px;
   margin-bottom: 10px;
 }
-.export-btn.el-button{
+
+.export-btn.el-button {
   color: white!important;
   background-color: #2f6ac5!important;
 }
+
 </style>
 <style lang="scss">
 .check-data-dialog {
@@ -591,7 +600,7 @@ h5 {
     min-width: 860px;
     max-height: calc(100% - 30vh);
   }
-  .el-dialog__body{
+  .el-dialog__body {
     max-height: calc(100% - 82px);
     overflow: auto;
   }

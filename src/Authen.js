@@ -1,7 +1,11 @@
 import Keycloak from "keycloak-js";
 import store from "@/store";
+import { isInArray } from "@/api/validate";
 let installed = false;
 let Authen = {
+  userInfo: {
+    info: ""
+  },
   install(Vue, options) {
     if (installed) return
     installed = true;
@@ -26,9 +30,20 @@ let Authen = {
       })
       .success(isAuthenticated => {
         if (isAuthenticated) {
+          //获取用户信息
+          this.userInfo = keycloak.tokenParsed;
+          let adminArr = keycloak.tokenParsed.resource_access["register-server"].roles;
+          let isAdmin = isInArray("ROLE_REGISTERSERVER_ADMIN", adminArr);
+          let roleName = isAdmin ? "管理员" : "普通用户";
+          let userName = Authen.userInfo.name;
+          let obj = {
+            userName: userName,
+            roleName: roleName
+          };
+          store.commit("setUserInfo", obj);
           watch.token = keycloak.token;
           watch.tokenType = keycloak.tokenParsed.typ;
-          store.commit("SET_TOKEN",keycloak.tokenParsed.typ + ' ' + keycloak.token );
+          store.commit("SET_TOKEN", keycloak.tokenParsed.typ + ' ' + keycloak.token);
           store.commit(
             "SET_TOKEN",
             keycloak.tokenParsed.typ + " " + keycloak.token
@@ -38,7 +53,7 @@ let Authen = {
               if (refreshed) {
                 watch.token = keycloak.token;
                 watch.tokenType = keycloak.tokenParsed.typ;
-                store.commit("SET_TOKEN",keycloak.tokenParsed.typ+ ' ' + keycloak.token );
+                store.commit("SET_TOKEN", keycloak.tokenParsed.typ + ' ' + keycloak.token);
               }
             });
           }, 290000);

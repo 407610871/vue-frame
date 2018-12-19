@@ -15,7 +15,7 @@
                 </el-col>
                 <el-col :span="4" class="bank">bank</el-col>
                 <el-col :span="6">
-                  <el-radio :label="1">根据时间范围核验</el-radio>
+                  <el-radio :label="1" :disabled="!this.queryTargetColumnList.length">根据时间范围核验</el-radio>
                 </el-col>
                 <el-col :span="10">
                   <el-button type="primary" size="small" @click="inverCheck()">开始核验</el-button>
@@ -37,13 +37,13 @@
             </div>
           </el-col>
           <el-col :span="6" v-show="ruleForm.setVer=='1'">
-              <el-form-item>
-                <el-select v-model="ruleForm.queryTargetColumn" placeholder="请选择">
-                  <el-option v-for="item in columnData" :key="item" :label="item" :value="item">
-                  </el-option>
-                </el-select>
-              </el-form-item>
-            </el-col>
+            <el-form-item>
+              <el-select v-model="ruleForm.queryTargetColumn" placeholder="请选择">
+                <el-option v-for="item in queryTargetColumnList" :key="item" :label="item" :value="item">
+                </el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
         </el-col>
       </div>
     </el-form>
@@ -56,12 +56,12 @@ export default {
     return {
       innerVisible: this.msg,
       result: '0',
-      columnData:[],
+      queryTargetColumnList: [],
       ruleForm: {
         setVer: 0, //核验设置
         range: 0, //核验误差范围
         startTime: [],
-        queryTargetColumn: 'TIME',
+        queryTargetColumn: '',
         pickerOptions: {
           disabledDate(time) {
             return time.getTime() > Date.now() - 8.64e7;
@@ -91,7 +91,7 @@ export default {
         });
         return;
       }
-      if(this.ruleForm.range==undefined){
+      if (this.ruleForm.range == undefined) {
         this.$alert("请填写数据核验范围", "核验", {
           confirmButtonText: "确定"
         });
@@ -126,9 +126,10 @@ export default {
     },
     //查询表数据
     _checkData() {
+      debugger;
       this.$ajax({
         method: "GET",
-        url: this.GLOBAL.api.API_DACM +'/ccheckData/tableNum',
+        url: this.GLOBAL.api.API_DACM + '/ccheckData/tableNum',
         // headers:{
         //   'Content-Type':'application/json;charset=utf-8',
         // },
@@ -136,21 +137,31 @@ export default {
           taskId: this.taskId
         }
       }).then(res => {
-        if (res.data.result == "true" || res.data.result == true) {
+        debugger;
+        let _self = this;
+        if (res.data.success == "true" || res.data.success == true) {
+          res.data = res.data.data;
+            _self.queryTargetColumnList = res.data.listIncrementCon;
+            if(_self.queryTargetColumnList.length!=0&&_self.queryTargetColumnList.length!=undefined){
+              _self.ruleForm.queryTargetColumn = _self.queryTargetColumnList[0];
+            }
           if (res.data.config_key != undefined && res.data.config_key != null) {
             //全量
             if (res.data.config_key == "0") {
-              this.ruleForm.setVer = 0;
-              this.ruleForm.startTime = [];
+              _self.ruleForm.setVer = 0;
+              _self.ruleForm.startTime = [];
             } else {
               //时间范围
-              this.ruleForm.setVer = 1;
-              this.ruleForm.startTime = [
+              _self.ruleForm.setVer = 1;
+              _self.ruleForm.startTime = [
                 res.data.config_startTime,
                 res.data.config_endTime
               ]
             }
-            this.ruleForm.range = res.data.config_range;
+            //不知道这个的展示有没有什么限制，所以暂时先不作什么限制
+           
+            _self.ruleForm.range = res.data.config_range;
+            _self.ruleForm.queryTargetColumn = res.data.queryTargetColumn;
 
           }
         }
@@ -173,11 +184,14 @@ export default {
   watch: {
     msg() {
       this.innerVisible = this.msg;
-      this._checkData();
+      if(this.innerVisible){
+           this._checkData();
+      }
+   
     }
 
   },
-  props: ['msg','taskId']
+  props: ['msg', 'taskId']
 
 };
 
@@ -194,7 +208,9 @@ export default {
   line-height: 10px !important;
   margin-right: 10px !important;
 }
-.el-radio{
+
+.el-radio {
   line-height: 30px;
 }
+
 </style>

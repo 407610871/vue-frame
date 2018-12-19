@@ -195,6 +195,10 @@
       },
     },
     mounted() {
+      this.$root.eventHub.$emit(
+        "selTreeNode",
+        this.$store.state.deptId
+      );
       var tableParams = this.$store.state.queryParams.accessObjInfo;
       this.$root.eventHub.$emit('setActiveNav', 1);
       var _self = this;
