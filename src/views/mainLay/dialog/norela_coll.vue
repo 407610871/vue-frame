@@ -17,7 +17,7 @@
            
             
             <norela-unwild v-if="isParquet&&this.$route.params.type=='ftp'" :msg="msg" @pre="next('second')" @clo="closeDialog"></norela-unwild>
-            <norela-wild v-else :msg="msg" @pre="next('second')" @clo="closeDialog"></norela-wild>
+            <norela-wild v-else :msg="msg" :rowList="pdata" @pre="next('second')" @clo="closeDialog"></norela-wild>
           </el-tab-pane>
           <el-tab-pane name="second" disabled><span slot="label"><i class="el-icon-circle">2</i> 建立数据映射关系</span>
             <div class="daiInfo proInfo">

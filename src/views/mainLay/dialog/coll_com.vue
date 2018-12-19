@@ -611,7 +611,7 @@ export default {
         var save = {
           "incrementColumn": this.increArr.name,
           "incrementColumnType": this.increArr.datatype,
-          
+          "jobType": actech,
           "taskInfoId": this.taskInfoId,
           "pollIntervalMs": pollIntervalMs,
           "collectionTaskType": ctt,
@@ -815,6 +815,13 @@ export default {
       if(this.$route.params.type!='oracle'&&this.$route.params.type!='ftp'&&this.$route.params.type!='mongodb'){
         this.ruleForm.accessMode = '0';
       }
+      console.log(this.rowList)
+      var actech = 'JDBC';
+      if (this.rowList.collectName.indexOf("实时") > -1) { //实时
+        actech = this.$route.params.type;
+      }else{
+        actech = this.$route.params.type +"_cycle";
+      }
       this.$ajax({
         method: 'POST',
         url: this.GLOBAL.api.API_DACM + '/task/getSourceConfig',
@@ -822,6 +829,7 @@ export default {
         params: {
           accessSysObjInfoId: this.rowList.id,
           /* accessSysObjInfoId: '10658915'*/
+          "jobType": actech
         }
 
       }).then(res => {

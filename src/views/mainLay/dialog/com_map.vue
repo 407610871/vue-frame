@@ -8,12 +8,12 @@
         </el-table-column>
         <el-table-column prop="" label="目标字段名称" width="180">
           <template slot-scope="scope">
-            <el-input v-model="scope.row.newColumnName" :disabled="type=='ftp'&&parflag"></el-input>
+            <el-input v-model="scope.row.newColumnName" :disabled="(type=='ftp'&&parflag)||isDisabled(scope.row)"></el-input>
           </template>
         </el-table-column>
         <el-table-column prop="toType" label="目标字段类型">
           <template slot-scope="scope">
-            <el-select v-model="scope.row.newColumnType" placeholder="请选择">
+            <el-select v-model="scope.row.newColumnType" placeholder="请选择" :disabled="isDisabled(scope.row)">
               <el-option v-for="item in TypeData" :key="item" :label="item" :value="item" :disabled="type=='ftp'&&scope.row.newColumnType=='BIGINT'">
               </el-option>
             </el-select>
@@ -21,7 +21,7 @@
         </el-table-column>
         <el-table-column prop="foreignKey" label="目标描述信息" width="180">
           <template slot-scope="scope">
-            <el-input v-model="scope.row.orgColumnComment"></el-input>
+            <el-input v-model="scope.row.orgColumnComment" :disabled="isDisabled(scope.row)"></el-input>
           </template>
         </el-table-column>
       </el-table>
@@ -262,7 +262,14 @@ export default {
     next() {
       this.$emit('next');
       this.setSchemaList(this.schemaMappingDTOList);
-    }
+    },
+    isDisabled(row){
+      if(row.newColumnName == "_id"&&row.length == 0&&this.ismongodb){
+        return true;
+      }else{
+        return false;
+      }
+    },
   },
   components: {
 
@@ -288,7 +295,10 @@ export default {
         return "STRING"
       }
 
-    }
+    },
+    ismongodb(){
+      return this.$route.params.type == 'mongodb';
+    },
   },
   props: ['rowList', 'msg', 'flag'],
   watch: {

@@ -12,13 +12,13 @@
         </el-table-column>
         <el-table-column label="字段名称">
           <template slot-scope="scope">
-            <el-input v-model="scope.row.name"></el-input>
+            <el-input v-model="scope.row.name" :disabled="isDisabled(scope.row)"></el-input>
           </template>
         </el-table-column>
         <el-table-column prop="datatype" label="字段类型">
           <template slot-scope="scope">
           
-            <el-select v-model="scope.row.datatype" placeholder="请选择">
+            <el-select v-model="scope.row.datatype" placeholder="请选择" :disabled="isDisabled(scope.row)">
               <el-option v-for="item in TypeData" :key="item" :label="item" :value="item">
               </el-option>
             </el-select>
@@ -46,9 +46,14 @@ export default {
       TypeData: [],
       schemas:[],
       i:0,
-
+      tableDataCont:{
+        name:"_id",
+        datatype:"ObjectId",
+        comments: ''
+      }
     }
   },
+  props: ['rowList'],
   methods: {
     ...mapMutations([
       'setNoreData', 'setDelimiter','setSchemaList'
@@ -76,7 +81,7 @@ export default {
       ])
     },
     handleDelete(index, row) {
-     
+      if(this.isDisabled(row)) return;
        this.schemas = this.$store.state.schemaList;
       for(let i=0; i<this.schemas.length;i++){
         if(this.schemas[i].length==this.tableData[index].id){
@@ -117,14 +122,19 @@ export default {
       }
       for (let i = 0; i < this.tableData.length; i++) {
         if (this.tableData[i].name == '' || this.tableData[i].datatype == '') {
-          this.$message.warning('不能为空');
-          return false;
+          if(this.tableData[i].name != '_id'&& i != 0){
+            this.$message.warning('不能为空');
+            return false;
+          }
+          
         }
       }
       for (let i = 0; i < this.tableData.length; i++) {
         if (vex.test(this.tableData[i].name)==false) {
-          this.$message.warning('字段名请以字符开头,仅支持字母,数字,下划线');
-          return false;
+          if(this.tableData[i].name != '_id'&& i != 0){
+            this.$message.warning('字段名请以字符开头,仅支持字母,数字,下划线');
+            return false;
+          }
         }
       }
       if(this.$route.params.type="mongodb"){
@@ -156,7 +166,37 @@ export default {
     },
     next() {
       this.$emit('clo');
-    }
+    },
+    isDisabled(row){
+      if(row.name == "_id"&&row.id == 0&&this.ismongodb){
+        return true;
+      }else{
+        return false;
+      }
+    },
+    getTableData(){
+      this.$ajax({
+        method: "get",
+        url: this.GLOBAL.api.API_DACM + `/task/getSchemaMappingList?accessSysObjInfoId=${this.rowList.id}`,
+      }).then(res=>{
+        if(res.success){
+          this.opData(res.data);
+        }
+      });
+    },
+    opData(data){
+      data.array.forEach(item => {
+        let _data = {};
+        _data = {
+          'comments':item.orgColumnComment,
+          'datatype':item.orgColumnType,
+          'id':this.i,
+          'name':item.orgColumnName,
+        };
+        this.tableData.push(_data);
+        this.i++;
+      });
+    },
   },
 
   components: {
@@ -167,10 +207,17 @@ export default {
 
   },
   created() {
-
+    if(this.ismongodb){
+      this.tableDataCont.id = this.i;
+      this.i++;
+      this.tableData.push(this.tableDataCont);
+      this.getTableData();
+    }
   },
   computed: {
-
+    ismongodb(){
+      return this.$route.params.type == 'mongodb';
+    },
   },
   watch: {
 
