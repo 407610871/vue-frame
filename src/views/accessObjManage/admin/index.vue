@@ -334,6 +334,10 @@ export default {
     }
   },
   mounted() {
+    this.$root.eventHub.$emit(
+      "selTreeNode",
+      this.$store.state.deptId
+    );
     this.$root.eventHub.$emit("setActiveNav", 1);
     this.storeReady();
     this.setFliter();
