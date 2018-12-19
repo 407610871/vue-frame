@@ -314,7 +314,7 @@
               @click="doDel(scope.$index, scope.row)"
             >删除</el-button>
             <el-button
-              v-if="(scope.row.status==1||scope.row.status==2||scope.row.status==4||scope.row.sourceType!='mongodb')&&scope.row.isPeriod!=0"
+              v-if="(scope.row.status==1||scope.row.status==2||scope.row.status==4)&&scope.row.isPeriod!=0&&scope.row.sourceType!='mongodb'"
               type="text"
               size="small"
               @click="doCheck(scope.$index, scope.row)"
