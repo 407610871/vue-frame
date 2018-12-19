@@ -249,6 +249,9 @@ export default {
         this.resData = res.data;
         //不知道这个的展示有没有什么限制，所以暂时先不作什么限制
         that.queryTargetColumnList = res.data.listIncrementCon;
+        if(that.queryTargetColumnList.length!=0&&that.queryTargetColumnList.length!=undefined){
+          that.queryTargetColumn = that.queryTargetColumnList[0];
+        }
         if (res.data.status == "1") {
           this.textShow = false;
 
@@ -269,7 +272,10 @@ export default {
           }
 
           this.range = res.data.config_range;
-          this.queryTargetColumn = res.data.queryTargetColumn;
+          if(res.data.queryTargetColumn!=''&&res.data.queryTargetColumn!=undefined){
+             this.queryTargetColumn = res.data.queryTargetColumn;
+          }
+         
           //  let loadingInstance = Loading.service({text:"核验中，请稍等...",target:document.getElementsByName("el-dialog")});
         } else if (res.data.status == "0") {
           //   this.loading = true;
