@@ -134,9 +134,6 @@ export default {
         }
     },
     created(){
-        console.log("莫名其妙：",this.$store.state.kettleTask.status);
-        console.log("莫名其妙：",this.$store.state.kettleTask.time);
-        console.log("莫名其妙：",this.$store.state.kettleTask.taskName);
        this.init();
     },
     mounted() {

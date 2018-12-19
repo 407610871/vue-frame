@@ -527,7 +527,7 @@ export default {
 
 let redata = JSON.parse(e.data);
       // let redata = e.data;
-            console.log(redata);
+            // console.log(redata);
             redata.zc=1;
         this.removeCla();
       let tim = setTimeout(()=>{

@@ -815,7 +815,6 @@ export default {
       }//http://10.19.160.59:8081/DEMO/ccheckData/checkLogByTaskId
       axios.get(that.httpUrl2+'ccheckData/checkLogByTaskId',reqData).then(
         function(res){
-          console.log('数据核验日志信息',res)
           if(res.data.code!="200"&&res.data.code!="0000"){
             that.doMsg("/ccheckData/checkLogByTaskId"+res.data.message,'error');
           }else{
