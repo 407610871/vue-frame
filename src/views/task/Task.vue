@@ -466,7 +466,14 @@ export default {
     this.init(" ");
     this.initWebSocket();
   },
-
+  mounted() {
+      this.$root.eventHub.$emit(
+      "selTreeNode",
+      this.$store.state.deptId
+      );
+      this.$root.eventHub.$emit("setActiveNav", 3);
+      // this.storeReady();
+  },
   components: {
     DialogIsCheck,
     DialogTaskDetail
