@@ -40,7 +40,7 @@
           <el-col :span="24" class="tip-box">
             <el-col :span="2" class="bank">bank</el-col>
             <el-col :span="6">
-              <el-checkbox v-model="ruleForm.subDele"></el-checkbox>包含子目录
+              <el-checkbox v-model="ruleForm.subDele" @change="selectChildrenNodes"></el-checkbox>包含子目录
             </el-col>
           </el-col>
           <el-col :span="24" class="mt30 tcenter ftpbtn">
