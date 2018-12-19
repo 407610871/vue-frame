@@ -367,17 +367,17 @@ export default {
   data() {
     return {
       loading: false,
-      taskPeriodType: this.$store.state.taskParam.taskPeriodType, //任务类型
-      status: this.$store.state.taskParam.status, //任务状态
-      time: this.$store.state.taskParam.time,
+      taskPeriodType: JSON.parse(JSON.stringify(this.$store.state.taskParam.taskPeriodType)), //任务类型
+      status: JSON.parse(JSON.stringify(this.$store.state.taskParam.status)), //任务状态
+      time: JSON.parse(JSON.stringify(this.$store.state.taskParam.time)),
       check: "",
-      priority: this.$store.state.taskParam.priority,
+      priority: JSON.parse(JSON.stringify(this.$store.state.taskParam.priority)),
       pageNum: 1,
       showTaskDetail: false,
       showTaskCheck: false,
       moreSearch: false,
       allSecectData: {},
-      keyword: this.$store.state.taskParam.keyword,
+      keyword: JSON.parse(JSON.stringify(this.$store.state.taskParam.keyword)),
       isDeleted: 0,
       tableData: [],
       selectionChangeData: [],
@@ -561,11 +561,11 @@ let redata = JSON.parse(e.data);
   },
     //查询按钮
     search() {
-      this.$store.state.taskParam.taskPeriodType = this.taskPeriodType;
-      this.$store.state.taskParam.status = this.status;
-      this.$store.state.taskParam.time = this.time;
-      this.$store.state.taskParam.priority = this.priority;
-      this.$store.state.taskParam.keyword = this.keyword;
+      this.$store.state.taskParam.taskPeriodType = JSON.parse(JSON.stringify(this.taskPeriodType));
+      this.$store.state.taskParam.status = JSON.parse(JSON.stringify(this.status));
+      this.$store.state.taskParam.time = JSON.parse(JSON.stringify(this.time));
+      this.$store.state.taskParam.priority = JSON.parse(JSON.stringify(this.priority));
+      this.$store.state.taskParam.keyword = JSON.parse(JSON.stringify(this.keyword));
       let keyword = this.keyword;
       // this.websock.send(123);
 

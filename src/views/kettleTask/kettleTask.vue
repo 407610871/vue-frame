@@ -115,14 +115,14 @@ export default {
             loading:false,
             pageNum: 1,
             totalPage: 0,
-            status:this.$store.state.kettleTask.status,
+            status:JSON.parse(JSON.stringify(this.$store.state.kettleTask.status)),
             checkStatus:[{name:'暂停',label:'Paused'},{name:'新建',label:'create'},{name:'失败',label:'Finished (with errors)'},{name:'运行',label:'Running'},{name:'完成',label:'Finished'}],
             isIndeterminate:false,
             checkAll:false,
-            taskName:this.$store.state.kettleTask.taskName,
+            taskName:JSON.parse(JSON.stringify(this.$store.state.kettleTask.taskName)),
             tableData:[],
             moreSearch:false,
-            time: this.$store.state.kettleTask.time,
+            time: JSON.parse(JSON.stringify(this.$store.state.kettleTask.time)),
             pickerOptions: {
                 disabledDate(time) {
                 return time.getTime() > Date.now();
@@ -314,9 +314,9 @@ export default {
         },
         //查询按钮
         search(){
-            this.$store.state.kettleTask.status = this.status;
-            this.$store.state.kettleTask.taskName = this.taskName;
-            this.$store.state.kettleTask.time = this.time;
+            this.$store.state.kettleTask.status = JSON.parse(JSON.stringify(this.status));
+            this.$store.state.kettleTask.taskName = JSON.parse(JSON.stringify(this.taskName));
+            this.$store.state.kettleTask.time = JSON.parse(JSON.stringify(this.time));
             this.init();
         },
         //高级搜索
