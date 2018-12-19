@@ -94,6 +94,7 @@ export default {
   computed: {},
   watch: {},
   created() {
+    // console.log(dataObj)
     for (let i = 0; i < this.dataObj.length; i++) {
       this.doMoreArray.push(false);
       this.doMore.push(false);
@@ -128,8 +129,8 @@ export default {
       this.doMoreArray[index]
         ? (this.dataObj[index].limit = this.dataObj[index].checkData.length)
         : (this.dataObj[index].limit = 4);
-              console.log(this.doMoreArray)
-                            console.log( this.dataObj)
+              // console.log(this.doMoreArray)
+                            // console.log( this.dataObj)
 
 
       let heit = 0;
@@ -176,7 +177,7 @@ export default {
     },
 
     getFormSeled: function() {
-      console.log(this.ObjManage);
+      // console.log(this.ObjManage);
       if (this.ObjManage) {
         //进入数据源展示搜索条件清空
         this.keyword = "";

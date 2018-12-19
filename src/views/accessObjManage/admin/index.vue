@@ -34,12 +34,6 @@
               <span v-if="scope.row.extendParams.isdelet=='false'">否</span>
             </template>
           </el-table-column>
-          <el-table-column label="包含子目录" v-if="type=='ftp'" show-overflow-tooltip>
-            <template slot-scope="scope">
-              <span v-if="scope.row.extendParams.isSubDirectory=='true'">是</span>
-              <span v-if="scope.row.extendParams.isSubDirectory=='false'">否</span>
-            </template>
-          </el-table-column>
           <el-table-column prop="extendParams.diyComments" label="自定义注释" v-if="type=='ftp'" show-overflow-tooltip>
             <template slot-scope="scope">
               <div>
@@ -357,7 +351,7 @@ export default {
     // this.tableParams.condition="";
 
     //this.loadTable();storeReady
-this.storeReady();
+// this.storeReady();
     // this.loadTable();
 
   },
@@ -543,6 +537,7 @@ this.storeReady();
     },
     setStore: function(obj) {
       // debugger;
+      console.log(obj)
       let storeData = JSON.parse(
         JSON.stringify(this.$store.state.queryParams[this.$route.name])
       );
@@ -553,6 +548,7 @@ this.storeReady();
         name: this.$route.name,
         data: storeData
       });
+      console.log(this.$store.state.queryParams)
     },
     goPage: function(val) {
       this.setStore({
