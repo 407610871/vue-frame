@@ -1,6 +1,5 @@
 <template>
   <div class="taskMDialog">
-    <!--  <el-button  class="add-btn fr ml10" @click="dialogVisible = true">文件上传</el-button> -->
     <el-tooltip class="item" effect="light" content="文件上传" placement="top">
       <span class="upfilelogo diabtn tin-btn add-btn" @click="dialogVisible = true"></span>
     </el-tooltip>
@@ -22,7 +21,9 @@
             <el-col :span="2" class="bank">bank</el-col>
             <el-col :span="8">
               <div class="path-box">
-                <el-tree show-checkbox node-key="id" :check-strictly="true" :props="defaultProps" accordion @check-change="handleClick" @check="nodeClick" ref="treeForm" :load="loadNode1" :data="tData" lazy :default-checked-keys="checkData">
+                <el-tree show-checkbox node-key="id" :check-strictly="true" :props="defaultProps"
+                 accordion @check-change="handleClick" @check="nodeClick" ref="treeForm" :load="loadNode1"
+                  :data="tData" lazy :default-checked-keys="checkData" @node-expand="handleNodeExpand">
                 </el-tree>
               </div>
             </el-col>
@@ -39,7 +40,7 @@
           <el-col :span="24" class="tip-box">
             <el-col :span="2" class="bank">bank</el-col>
             <el-col :span="6">
-              <el-checkbox v-model="ruleForm.subDele">备选项</el-checkbox>包含子目录
+              <el-checkbox v-model="ruleForm.subDele" @change="selectChildrenNodes">备选项</el-checkbox>包含子目录
             </el-col>
           </el-col>
           <el-col :span="24" class="mt30 tcenter ftpbtn">
@@ -80,9 +81,7 @@ export default {
         ftpId: '',
       },
       formRules: {
-        ftpurl: [
-          { /* required: true, validator: validateNull, trigger: "blur"*/ }
-        ]
+        ftpurl: []
 
       },
       treedata: [],
@@ -92,20 +91,59 @@ export default {
         isLeaf: 'leaf',
         disabled: 'chkDisabled'
       },
-
-      // msgId:this.dialogMsg?this.dialogMsg[1]:''
+      childrenData:[],
+      checkStrictly: true,
     };
   },
   methods: {
     //关闭对话框
     closeDialog() {
       this.dialogVisible = false;
+      this.againData = {};
+      this.ruleForm.subDele = false;
       this.$refs['ruleForm'].resetFields();
       this.$refs.treeForm.setCheckedNodes([]);
       this.$refs.treeForm.setCheckedKeys([]);
     },
     //实现树的单选
     handleClick(data, checked, node) {
+      
+    },
+    //树的点击
+    nodeClick(data, node) {
+      this.checkedId = data.id;
+      if (this.againData.id) {
+        for (let i = 0; i < this.disaData.length; i++) {
+          if (this.disaData[i].id == this.againData.id) {
+            this.disaData.splice(i, 1);
+          }
+        }
+      }
+      this.disaData.push(data)
+      this.$refs.treeForm.setCheckedNodes(this.disaData);
+      this.ruleForm.ftpurl = data.linkPath;
+      this.ruleForm.ftpId = data.id;
+      this.againData = data;
+      if(this.ruleForm.subDele && data.childNodes){
+        this.childrenDataHandel(data, true);
+      }
+    },
+    // 节点展开事件
+    handleNodeExpand(data,node) {
+      this.childrenData = data;
+      data.expanded = node.expanded;
+      data.childNodes = node.childNodes;
+      if(this.ruleForm.subDele && data.childNodes && data.id===this.againData.id){
+        this.childrenDataHandel(data, true);
+      }
+    },
+    selectChildrenNodes(val){
+      if(this.againData.childNodes){
+        this.childrenDataHandel(this.againData, val);
+      }
+    },
+    //树选中结果的处理
+    selectDataHandel(data, checked, node){
       if (this.againData.id != undefined) {
         for (let i = 0; i < this.disaData.length; i++) {
           if (this.disaData[i].id == this.againData.id) {
@@ -113,28 +151,29 @@ export default {
           }
         }
       }
-      if (data.chkDisabled == true && data.checked) {
+      if (data.chkDisabled && data.checked) {
         this.disaData.push(data);
       } else {
         if (checked) {
-          this.againData = {};
           this.againData = data;
-          //console.log(this.againData);
-
         }
-
       }
       this.disaData.push(this.againData);
-
       this.$refs.treeForm.setCheckedNodes(this.disaData);
     },
-    //树的点击
-    nodeClick(data, checked, node) {
-      this.checkedId = data.id
-      this.$refs.treeForm.setCheckedNodes([data]);
-      // console.log(this.$refs.treeForm.getCheckedNodes());
-      this.ruleForm.ftpurl = data.linkPath;
-      this.ruleForm.ftpId = data.id;
+    childrenDataHandel(data, type){
+      data.childNodes.forEach(res =>{
+          res.checked = type;
+        if(res.childNodes){
+          this.childNodesHandel(res, type);
+        }
+      })  
+    },
+    childNodesHandel(res, type){
+      res.childNodes.forEach( res =>{
+        res.checked = type;
+        return this.childNodesHandel(res, type);
+      })
     },
     //关闭
     closeForm() {
@@ -151,10 +190,6 @@ export default {
         });
       } else {
         this.loading = true;
-        /*this.dialogVisible = false;
-        this.$refs['ruleForm'].resetFields();*/
-
-        // console.log(this.ruleForm.ftpurl);
         var params = {
           filepath: this.ruleForm.ftpurl,
           accessSysId: this.$route.params.sourceId,
@@ -165,10 +200,6 @@ export default {
         this.$ajax({
           method: "POST",
           url: this.GLOBAL.api.API_DACM + '/ctables/addRecord',
-          /* url:'http://10.19.160.25:8080/DACM/ctables/addRecord',*/
-          // headers:{
-          //   'Content-Type':'application/json;charset=utf-8',
-          // },
           data: params
 
         }).then(res => {
@@ -190,7 +221,6 @@ export default {
               confirmButtonText: '确定'
             });
           }
-          //console.log(res);
         }, (res) => {
           this.loading = false;
           this.$alert('保存路径失败', '信息', {
@@ -202,57 +232,17 @@ export default {
     //懒加载
     loadNode1(node, resolve) {
       let _self = this;
-      console.log(node);
-      if (node.level == 0) {
-        var params = {
-          accessSysId: this.$route.params.sourceId,
-          linkPath: '/'
-        }
-        this.$ajax({
-          method: "POST",
-          url: this.GLOBAL.api.API_DACM + '/ctables/getStructure',
-          // headers:{
-          //   'Content-Type':'application/json;charset=utf-8',
-          // },
-          data: params
-
-        }).then(res => {
-          this.loading = false;
-          //console.log(res.data.data);
-          let treeData = [];
-          res.data.data.forEach(e => {
-            treeData.push(e)
-          });
-          treeData.forEach(e => {
-            if (e.checked) {
-              this.checkData.push(e.id);
-            }
-
-          })
-          resolve(treeData)
-        }).catch(res => {
-          this.loading = false;
-          resolve([]);
-        })
-      } else {
-
+      if (node.level !== 0){
         var params = {
           accessSysId: this.$route.params.sourceId,
           linkPath: node.data.linkPath
-          /* accessSysId :'58714',
-           linkPath: '/boot/'*/
         }
         this.$ajax({
           method: "POST",
           url: this.GLOBAL.api.API_DACM + '/ctables/getStructure',
-          // headers:{
-          //   'Content-Type':'application/json;charset=utf-8',
-          // },
           data: params
 
         }).then(res => {
-
-          //console.log(res.data.data);
           let myList = [];
           res.data.data.forEach(e => {
             myList.push(e)
@@ -260,17 +250,19 @@ export default {
           myList.forEach(e => {
             if (e.checked) {
               this.checkData.push(e.id);
+              this.disaData.push(e);
             }
-
-          })
-          resolve(myList)
+          });
+          resolve(myList);
+          this.handleNodeExpand(this.childrenData, node);
         }).catch(res => {
           resolve([]);
         })
       }
     },
-    _init() {
+    defaultInit() {
       this.loading = true;
+      this.checkData = [];
       var params = {
         accessSysId: this.$route.params.sourceId,
         linkPath: '/'
@@ -278,14 +270,10 @@ export default {
       this.$ajax({
         method: "POST",
         url: this.GLOBAL.api.API_DACM + '/ctables/getStructure',
-        // headers:{
-        //   'Content-Type':'application/json;charset=utf-8',
-        // },
         data: params
 
       }).then(res => {
         this.loading = false;
-        //console.log(res.data.data);
         this.tData =[];
         res.data.data.forEach(e => {
           this.tData.push(e)
@@ -293,34 +281,23 @@ export default {
         this.tData.forEach(e => {
           if (e.checked) {
             this.checkData.push(e.id);
+            this.disaData.push(e);
           }
-
         })
-        resolve(this.tData)
       }).catch(res => {
         this.loading = false;
-        resolve([]);
       })
     }
-  },
-  components: {
-
-  },
-  created() {
-
   },
   watch: {
     dialogVisible() {
       if (this.dialogVisible) {
-        //this.$refs.treeForm.setCheckedNodes([]);
-        // this.$refs.treeForm.setCheckedKeys([]);
-        this._init();
+        this.defaultInit();
         this.ruleForm.ftpurl = '';
         this.ruleForm.ftpId = '';
       }
     }
   }
-
 };
 
 </script>
