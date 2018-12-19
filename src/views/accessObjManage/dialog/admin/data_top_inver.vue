@@ -61,7 +61,7 @@ export default {
         setVer: 0, //核验设置
         range: 0, //核验误差范围
         startTime: [],
-        queryTargetColumn: 'time',
+        queryTargetColumn: '',
         pickerOptions: {
           disabledDate(time) {
             return time.getTime() > Date.now() - 8.64e7;
@@ -143,7 +143,7 @@ export default {
           res.data = res.data.data;
             _self.queryTargetColumnList = res.data.listIncrementCon;
             if(_self.queryTargetColumnList.length!=0&&_self.queryTargetColumnList.length!=undefined){
-              _self.queryTargetColumn = _self.queryTargetColumnList[0];
+              _self.ruleForm.queryTargetColumn = _self.queryTargetColumnList[0];
             }
           if (res.data.config_key != undefined && res.data.config_key != null) {
             //全量
