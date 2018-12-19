@@ -161,7 +161,7 @@ export default {
             //不知道这个的展示有没有什么限制，所以暂时先不作什么限制
            
             _self.ruleForm.range = res.data.config_range;
-            _self.queryTargetColumn = res.data.queryTargetColumn;
+            _self.ruleForm.queryTargetColumn = res.data.queryTargetColumn;
 
           }
         }
