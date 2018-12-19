@@ -61,7 +61,7 @@ export default {
         setVer: 0, //核验设置
         range: 0, //核验误差范围
         startTime: [],
-        queryTargetColumn: 'TIME',
+        queryTargetColumn: 'time',
         pickerOptions: {
           disabledDate(time) {
             return time.getTime() > Date.now() - 8.64e7;
@@ -126,6 +126,7 @@ export default {
     },
     //查询表数据
     _checkData() {
+      debugger;
       this.$ajax({
         method: "GET",
         url: this.GLOBAL.api.API_DACM + '/ccheckData/tableNum',
@@ -136,24 +137,31 @@ export default {
           taskId: this.taskId
         }
       }).then(res => {
-        if (res.data.result == "true" || res.data.result == true) {
+        debugger;
+        let _self = this;
+        if (res.data.success == "true" || res.data.success == true) {
+          res.data = res.data.data;
+            _self.queryTargetColumnList = res.data.listIncrementCon;
+            if(_self.queryTargetColumnList.length!=0&&_self.queryTargetColumnList.length!=undefined){
+              _self.queryTargetColumn = _self.queryTargetColumnList[0];
+            }
           if (res.data.config_key != undefined && res.data.config_key != null) {
             //全量
             if (res.data.config_key == "0") {
-              this.ruleForm.setVer = 0;
-              this.ruleForm.startTime = [];
+              _self.ruleForm.setVer = 0;
+              _self.ruleForm.startTime = [];
             } else {
               //时间范围
-              this.ruleForm.setVer = 1;
-              this.ruleForm.startTime = [
+              _self.ruleForm.setVer = 1;
+              _self.ruleForm.startTime = [
                 res.data.config_startTime,
                 res.data.config_endTime
               ]
             }
             //不知道这个的展示有没有什么限制，所以暂时先不作什么限制
-            that.queryTargetColumnList = res.data.listIncrementCon;
-            this.ruleForm.range = res.data.config_range;
-            this.queryTargetColumn = res.data.queryTargetColumn;
+           
+            _self.ruleForm.range = res.data.config_range;
+            _self.queryTargetColumn = res.data.queryTargetColumn;
 
           }
         }
@@ -176,7 +184,10 @@ export default {
   watch: {
     msg() {
       this.innerVisible = this.msg;
-      this._checkData();
+      if(this.innerVisible){
+           this._checkData();
+      }
+   
     }
 
   },

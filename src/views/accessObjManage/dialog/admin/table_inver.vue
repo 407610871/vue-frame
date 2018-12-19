@@ -150,9 +150,7 @@ export default {
 
           if (res.data.data.result == false) {
             this.textShow = false;
-            this.$alert("查看日志失败", "查看日志", {
-              confirmButtonText: "确定"
-            });
+            this.$message.warning(res.data.data.message);
             return false;
           }
           this.textShow = true;

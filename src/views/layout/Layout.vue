@@ -7,34 +7,35 @@
       <nav-menu />
       <div class="right-menu clearfix">
         <!--  <el-button class="document" type="primary" icon="enc-icon-documents"></el-button> -->
-        
-        <el-tooltip class="item" effect="light" content="系统设置" placement="bottom">
+        <!-- <el-tooltip class="item" effect="light" content="系统设置" placement="bottom">
           <el-button
             class="setting"
             type="primary"
             icon="enc-icon-setting"
             v-on:click="goRoute('setting')"
           ></el-button>
-        </el-tooltip>
-
-        <el-popover placement="bottom-start" width="200" trigger="hover">
-          <ul class="popup-menu warn-menu">
-            <li><a href="javascript:void(0)" v-on:click="goRoute('recyclingBins')">回收箱</a></li>
-            <li><a href="javascript:void(0)" @click="_release()">版本信息</a></li>
-          </ul>
-          <el-button slot="reference" class="document" type="primary" icon="enc-icon-documents"></el-button>
-        </el-popover>
+        </el-tooltip> -->
         <el-tooltip class="item" effect="light" content="告警中心" placement="bottom">
           <el-button class="warncon" v-on:click="_goWarn()"></el-button>
         </el-tooltip>
         <release v-if="releaseflag" v-on:closeDia="releaseflag=false"></release>
         <el-popover placement="bottom-start" width="200" trigger="hover">
-          <ul class="popup-menu warn-menu">
+          <ul class="popup-menu warn-menu warn-popover">
             <!--  <li><a href="javascript:void(0)" v-on:click="goRoute('recyclingBins')">回收箱</a></li>
            <li><a :href="warnurl" target="_blank">告警中心</a></li> -->
-            <li><a href="javascript:void(0)" v-on:click="loginOut()">退出登录</a></li>
+            <li class="even-li">{{ userName }}</li>
+            <li class="odd-li">{{ roleName }}</li>
+            <li class="even-li" v-on:click="loginOut()">退出</li>
           </ul>
           <el-button slot="reference" class="user" type="primary" icon="enc-icon-user"></el-button>
+        </el-popover>
+        <el-popover placement="bottom-start" width="200" trigger="hover">
+          <ul class="popup-menu warn-menu">
+            <li><a href="javascript:void(0)" v-on:click="goRoute('setting')">系统参数</a></li>
+            <li><a href="javascript:void(0)" v-on:click="goRoute('recyclingBins')">回收箱</a></li>
+            <li><a href="javascript:void(0)" @click="_release()">版本信息</a></li>
+          </ul>
+          <el-button slot="reference" class="moreSys" type="primary"></el-button>
         </el-popover>
       </div>
     </el-header>
@@ -43,11 +44,7 @@
         <!-- <aside-tree></aside-tree> -->
         <new-aside-tree></new-aside-tree>
       </el-aside>
-      <div
-        class="sidebar-control-btn"
-        v-bind:style="{'left':sideBarWidth+'px'}"
-        v-on:click="changeSideBar"
-      >
+      <div class="sidebar-control-btn" v-bind:style="{'left':sideBarWidth+'px'}" v-on:click="changeSideBar">
         <i class="el-icon-caret-left" v-if="sideBarWidth==210"></i>
         <i class="el-icon-caret-right" v-if="sideBarWidth==0"></i>
       </div>
@@ -59,15 +56,12 @@
         <div class="enc-sub-header">
           <el-breadcrumb separator="/">
             <el-breadcrumb-item v-for="(item,index) in breadcrumb" :key="index">
-              <a
-                href="javascript:void(0)"
-                v-on:click="breadcrumbChange(index,item)"
-              >{{item.breadcrumbName}}</a>
+              <a href="javascript:void(0)" v-on:click="breadcrumbChange(index,item)">{{item.breadcrumbName}}</a>
             </el-breadcrumb-item>
           </el-breadcrumb>
           <!-- <span v-for="item in breadcrumb"> / <a href="javascript:void(0)" v-on:click="goToPage(item.path)">{{item.name}}</a></span> -->
         </div>
-        <app-main ref="mainTable"/>
+        <app-main ref="mainTable" />
       </el-main>
     </el-container>
   </el-container>
@@ -86,7 +80,9 @@ export default {
       releaseflag: false,
       breadcrumb: [],
       sideBarWidth: 210,
-      warnurl: ''
+      warnurl: '',
+      userName: '',
+      roleName: ''
     }
   },
   components: {
@@ -135,8 +131,14 @@ export default {
     this.$root.eventHub.$on("setKeyword", keyword => {
       this.keyword = keyword;
     });
-    this.getBreadcrumb();
 
+    this.getBreadcrumb();
+    let _self = this;
+    setTimeout(function() {
+      let usrObj = _self.$store.state.userInfo;
+      _self.userName = usrObj.userName;
+      _self.roleName = usrObj.roleName;
+    }, 1000)
     // this.$root.eventHub.$on("updataFliterItemList", () => {
     //   this.updataFliterItemList();
     // });
@@ -152,7 +154,7 @@ export default {
   },
   methods: {
 
-       updataFliterItemList() {
+    updataFliterItemList() {
       var _self = this;
       this.$ajax
         .get(window.ENV.API_DACM + "/caccess/sysdialect", {
@@ -166,7 +168,7 @@ export default {
               name: "dataSourceName",
               data: res.data.data
             });
-             _self.formFilterData[0].checkData=list
+            _self.formFilterData[0].checkData = list
           }
         })
         .catch(function(err) {
@@ -192,7 +194,7 @@ export default {
               name: "network",
               data: list
             });
-             _self.formFilterData[1].checkData=list
+            _self.formFilterData[1].checkData = list
           }
           console.log(list);
         })
@@ -221,9 +223,9 @@ export default {
             name: "platform",
             data: list
           });
- _self.formFilterData[2].checkData=list
- console.log(_self.formFilterData);
-  console.log(res.data);
+          _self.formFilterData[2].checkData = list
+          console.log(_self.formFilterData);
+          console.log(res.data);
 
 
         })
@@ -231,7 +233,7 @@ export default {
           console.log(err);
         });
     },
-    _goWarn(){
+    _goWarn() {
       window.open(this.warnurl);
     },
     _release() {
@@ -279,14 +281,12 @@ export default {
         routeName == "accessObjManage" ||
         routeName == "accessObjInfo"
       ) {
-        this.breadcrumb = [
-          {
-            name: "dashboard",
-            breadcrumbName: "数据接入",
-            params: {},
-            query: this.$store.state.queryParams["dashboard"]
-          }
-        ];
+        this.breadcrumb = [{
+          name: "dashboard",
+          breadcrumbName: "数据接入",
+          params: {},
+          query: this.$store.state.queryParams["dashboard"]
+        }];
         if (this.$route.params.sourceId && this.$route.params.sourceName) {
           this.breadcrumb.push({
             name: "accessObjManage",
@@ -328,6 +328,7 @@ export default {
     }
   }
 };
+
 </script>
 <style rel="stylesheet/scss" lang="scss" scoped>
 @import "src/styles/variables.scss";
@@ -335,17 +336,19 @@ export default {
 .warn-menu a {
   line-height: 30px;
 }
-.warncon{
-  width:66px;
+
+.warncon {
+  width: 66px;
   height: 66px;
   background: url("../../assets/images/warnicon.png");
   background-repeat: no-repeat;
-  background-size:contain;
+  background-size: contain;
   float: left
 }
-.warn-menu li:nth-child(1) a,
-.warn-menu li:nth-child(2) a {
-  border-bottom: 1px solid #c9cdd0;
+
+.warn-menu li a {
+  border-bottom: none;
+  text-align: center;
 }
 
 .app-wrapper {
@@ -368,10 +371,12 @@ export default {
     vertical-align: middle;
   }
 }
+
 .clearfix {
   float: none;
-  clear:both;
+  clear: both;
 }
+
 .enc-header {
   padding: 0;
   height: $enc-nav-header-height;
@@ -460,28 +465,28 @@ export default {
     border: 0 none;
     outline: 0 none;
   }
-  ::-webkit-input-placeholder {
+   ::-webkit-input-placeholder {
     color: #999;
   } ///* 使用webkit内核的浏览器 */
-  :-moz-placeholder {
+   :-moz-placeholder {
     color: #999;
   } ///* Firefox版本4-18 */
-  ::-moz-placeholder {
+   ::-moz-placeholder {
     color: #999;
   } ///* Firefox版本19+ */
-  :-ms-input-placeholder {
+   :-ms-input-placeholder {
     color: #999;
   } ///* IE浏览器 */
   a {
     display: inline-block;
     margin-left: 10px;
     font-size: 18px;
-    :link,
-    :visited {
+     :link,
+     :visited {
       color: #eff2f5;
     }
-    :hover,
-    :active {
+     :hover,
+     :active {
       color: #479ad8;
     }
   }
@@ -537,15 +542,16 @@ export default {
     }
   }
 }
+
 </style>
 <style rel="stylesheet/scss" lang="scss">
-.enc-header {
+  .enc-header {
   .right-menu {
     .el-button {
       &.user {
         i {
           font-size: 32px;
-          color: #fff;
+          color: #fff !important;
         }
       }
       &.setting {
@@ -563,7 +569,46 @@ export default {
     }
   }
 }
-.enc-header .right-menu .el-button.user{
-  background: #479bd9;
+
+.enc-header .right-menu .el-button.user {
+  background: #479bd9 !important;
+}
+
+.moreSys {
+  width: 66px;
+  height: 66px;
+  background: url("../../assets/images/moreicon.png");
+  background-repeat: no-repeat;
+  background-size: contain;
+  float: left
+}
+
+.enc-header .right-menu .el-button.moreSys:focus,
+.enc-header .right-menu .el-button.moreSys:hover {
+  width: 66px;
+  height: 66px;
+  background: url("../../assets/images/moreicon.png");
+  background-repeat: no-repeat;
+  background-size: contain;
+  float: left
+}
+
+.warn-popover li {
+  height: 30px;
+  line-height: 30px;
+  text-align: center;
+  list-style: none;
+  cursor: pointer;
+}
+
+.even-li {
+  color: #374673!important;
+}
+
+.odd-li {
+  color: #c6c6c6!important;
+  border-bottom: 1px solid #d6d6d6;
+  margin-left: -15px;
+  margin-right: -15px;
 }
 </style>
