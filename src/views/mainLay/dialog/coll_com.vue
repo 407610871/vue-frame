@@ -616,7 +616,7 @@ export default {
           "pollIntervalMs": pollIntervalMs,
           "collectionTaskType": ctt,
           "isStartOverTask": this.ruleForm.taskSubMode,
-          "timeType": this.radio,
+          "timeType": this.radioSelect,
           "startLocation": this.ruleForm.startLocation,
           "xStreamServiceName": this.ruleForm.xStreamServiceName
         }
@@ -713,7 +713,7 @@ export default {
           "accessRelationWorkInfoId": this.ruleForm.dLibrary,
           "collectionTaskType": ctt,
           "isStartOverTask": this.ruleForm.taskSubMode,
-          "timeType": this.radio,
+          "timeType": this.radioSelect,
           "startLocation": this.ruleForm.startLocation,
           "xStreamServiceName": this.ruleForm.xStreamServiceName,
           "priority":this.ruleForm.priority
@@ -815,7 +815,6 @@ export default {
       if(this.$route.params.type!='oracle'&&this.$route.params.type!='ftp'&&this.$route.params.type!='mongodb'){
         this.ruleForm.accessMode = '0';
       }
-      console.log(this.rowList)
       var actech = 'JDBC';
       if (this.rowList.collectName.indexOf("实时") > -1) { //实时
         actech = this.$route.params.type;
@@ -951,7 +950,9 @@ export default {
     }
   },
   computed: {
-
+    radioSelect(){
+      return this.ruleForm.cycleSet == "0"?"":this.radio;
+    },
   },
   props: ['rowList', 'msg']
 

@@ -752,7 +752,7 @@ export default {
           "pollIntervalMs": pollIntervalMs,
           "collectionTaskType": ctt,
           "isStartOverTask": this.ruleForm.taskSubMode,
-          "timeType": this.radio,
+          "timeType": this.radioSelect,
           "startLocation": this.ruleForm.startLocation,
           "xStreamServiceName": this.ruleForm.xStreamServiceName,
           "xStreamUsername": this.ruleForm.userName,
@@ -836,7 +836,7 @@ export default {
           "accessRelationWorkInfoId": this.ruleForm.dLibrary,
           "collectionTaskType": ctt,
           "isStartOverTask": this.ruleForm.taskSubMode,
-          "timeType": this.radio,
+          "timeType": this.radioSelect,
           "startLocation": this.ruleForm.startLocation,
           "xStreamServiceName": this.ruleForm.xStreamServiceName,
           "xStreamUsername": this.ruleForm.userName,
@@ -1107,7 +1107,9 @@ export default {
     }
   },
   computed: {
-
+    radioSelect(){
+      return this.ruleForm.cycleSet == "0"?"":this.radio;
+    },
   },
   props: ['pdata', 'msg']
 
