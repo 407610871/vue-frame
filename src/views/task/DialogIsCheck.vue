@@ -359,7 +359,7 @@ export default {
     },
     //查看日志按钮
     doDetail() {
-      this.textShow = !this.textShow;
+     
       this.loading2 = true;
       let that = this;
       this.$ajax.get(baseUrl + '/ccheckData/checkLog', {
@@ -370,7 +370,7 @@ export default {
         this.loading2 = false;
         res = res.data;
         if (res.success == "false" || res.success == false) {
-          //this.textShow = false;
+          this.textShow = false;
 
           this.$alert("查看日志失败", "查看日志", {
             confirmButtonText: "确定"
@@ -378,8 +378,10 @@ export default {
         } else {
           // this.textShow = true;
           if (res.data.result == false) {
+            this.textShow = false;
             this.$message.warning(res.data.message);
           } else {
+             this.textShow = !this.textShow;
             let result = res.data.testresults_result == 0 ? "成功" : "失败";
             this.loginfo = `源库：${res.data.source_library}\n
 源表：${res.data.source_tableName}\n
