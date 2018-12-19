@@ -756,7 +756,8 @@ export default {
           "startLocation": this.ruleForm.startLocation,
           "xStreamServiceName": this.ruleForm.xStreamServiceName,
           "xStreamUsername": this.ruleForm.userName,
-          "xStreamPassword": this.ruleForm.password
+          "xStreamPassword": this.ruleForm.password,
+          "jobType": actech,
         }
         this.loading = true;
         if (this.$store.state.isSign == "false" || this.$store.state.isSign == false) {

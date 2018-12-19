@@ -100,6 +100,9 @@ export default {
     }
     this.getFormSeled();
     this.getFormSeledShow();
+this.keyword=this.dataObj[3].condition;
+
+
   },
   mounted() {
     this.getFormSeled();

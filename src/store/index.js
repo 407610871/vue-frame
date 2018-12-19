@@ -86,6 +86,18 @@ const store = new Vuex.Store({
       userName: "",
       roleName: ""
     },
+    taskParam:{
+      keyword:'',//查询条件
+      taskPeriodType:[],//任务类型
+      status:[],//任务状态
+      priority:[],//任务优先级
+      time:[]//任务开始时间
+    },
+    kettleTask:{
+      status:[],
+      time:[],
+      taskName:''
+    }
   },
   mutations: {
     setUserInfo(state, obj) {

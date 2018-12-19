@@ -283,8 +283,14 @@ export default {
           this.status = "核验中";
         }
         // this.liData = res.data.result;
+
+         //核验历史记录
+        this.getHistory();
       });
-      //核验历史记录
+    },
+    //获取核验历史记录
+    getHistory(){
+      let that = this;
       this.$ajax.get(baseUrl + '/ccheckData/tableNumAllByTaskId', {
         params: {
           taskId: that.msgCheck.taskInfoId
