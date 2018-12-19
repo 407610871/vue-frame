@@ -8,12 +8,12 @@
         </el-table-column>
         <el-table-column prop="" label="目标字段名称">
           <template slot-scope="scope">
-            <el-input v-model="scope.row.newColumnName"></el-input>
+            <el-input v-model="scope.row.newColumnName" :disabled="dis"></el-input>
           </template>
         </el-table-column>
         <el-table-column prop="toType" label="目标字段类型">
           <template slot-scope="scope">
-            <el-select v-model="scope.row.newColumnType" placeholder="请选择">
+            <el-select v-model="scope.row.newColumnType" placeholder="请选择" :disabled="dis">
               <el-option v-for="item in TypeData" :key="item" :label="item" :value="item">
               </el-option>
             </el-select>
@@ -21,7 +21,7 @@
         </el-table-column>
         <el-table-column prop="foreignKey" label="目标描述信息" width="180">
           <template slot-scope="scope">
-            <el-input v-model="scope.row.orgColumnComment"></el-input>
+            <el-input v-model="scope.row.orgColumnComment" :disabled="dis"></el-input>
           </template>
         </el-table-column>
       </el-table>
@@ -49,6 +49,7 @@ export default {
       smapData: [],
       mapflag: true,
       loading: false,
+      dis: false,
       schemaMappingDTOList: [],
 
     }
@@ -58,6 +59,34 @@ export default {
     ...mapMutations([
       'setSchemaList'
     ]),
+    //得到先前设置过的值
+    _getPre() {
+
+      this.$ajax({
+        method: "GET",
+        url: this.GLOBAL.api.API_DACM + '/task/getSchemaMappingList',
+        // headers:{
+        //   'Content-Type':'application/json;charset=utf-8',
+        // },
+        params: {
+          accessSysObjInfoId: this.tableId
+        }
+      }).then(res => {
+         let _self = this;
+        if (res.data.success) {
+          debugger;
+          if (res.data.data.length != 0) {
+            _self.dis = true;
+            _self.schemaMappingDTOList = res.data.data;
+          } else {
+            _self.dis = false;
+            _self._getMap();
+            _self._getType();
+          }
+        }
+      })
+
+    },
     //得到map的值
     _getMap() {
       var _self = this;
@@ -266,9 +295,9 @@ export default {
 
   },
   mounted() {
-
-    this._getMap()
-    this._getType()
+    this._getPre()
+    /*  this._getMap()
+      this._getType()*/
   },
   created() {
 

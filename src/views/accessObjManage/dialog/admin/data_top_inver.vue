@@ -15,7 +15,7 @@
                 </el-col>
                 <el-col :span="4" class="bank">bank</el-col>
                 <el-col :span="6">
-                  <el-radio :label="1">根据时间范围核验</el-radio>
+                  <el-radio :label="1" :disabled="!this.queryTargetColumnList.length">根据时间范围核验</el-radio>
                 </el-col>
                 <el-col :span="10">
                   <el-button type="primary" size="small" @click="inverCheck()">开始核验</el-button>
@@ -37,13 +37,13 @@
             </div>
           </el-col>
           <el-col :span="6" v-show="ruleForm.setVer=='1'">
-              <el-form-item>
-                <el-select v-model="ruleForm.queryTargetColumn" placeholder="请选择">
-                  <el-option v-for="item in columnData" :key="item" :label="item" :value="item">
-                  </el-option>
-                </el-select>
-              </el-form-item>
-            </el-col>
+            <el-form-item>
+              <el-select v-model="ruleForm.queryTargetColumn" placeholder="请选择">
+                <el-option v-for="item in queryTargetColumnList" :key="item" :label="item" :value="item">
+                </el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
         </el-col>
       </div>
     </el-form>
@@ -56,7 +56,7 @@ export default {
     return {
       innerVisible: this.msg,
       result: '0',
-      columnData:[],
+      queryTargetColumnList: [],
       ruleForm: {
         setVer: 0, //核验设置
         range: 0, //核验误差范围
@@ -91,7 +91,7 @@ export default {
         });
         return;
       }
-      if(this.ruleForm.range==undefined){
+      if (this.ruleForm.range == undefined) {
         this.$alert("请填写数据核验范围", "核验", {
           confirmButtonText: "确定"
         });
@@ -128,7 +128,7 @@ export default {
     _checkData() {
       this.$ajax({
         method: "GET",
-        url: this.GLOBAL.api.API_DACM +'/ccheckData/tableNum',
+        url: this.GLOBAL.api.API_DACM + '/ccheckData/tableNum',
         // headers:{
         //   'Content-Type':'application/json;charset=utf-8',
         // },
@@ -150,7 +150,10 @@ export default {
                 res.data.config_endTime
               ]
             }
+            //不知道这个的展示有没有什么限制，所以暂时先不作什么限制
+            that.queryTargetColumnList = res.data.listIncrementCon;
             this.ruleForm.range = res.data.config_range;
+            this.queryTargetColumn = res.data.queryTargetColumn;
 
           }
         }
@@ -177,7 +180,7 @@ export default {
     }
 
   },
-  props: ['msg','taskId']
+  props: ['msg', 'taskId']
 
 };
 
@@ -194,7 +197,9 @@ export default {
   line-height: 10px !important;
   margin-right: 10px !important;
 }
-.el-radio{
+
+.el-radio {
   line-height: 30px;
 }
+
 </style>

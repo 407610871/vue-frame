@@ -545,7 +545,7 @@ export default {
       &.user {
         i {
           font-size: 32px;
-          color: #425365;
+          color: #fff;
         }
       }
       &.setting {
@@ -562,5 +562,8 @@ export default {
       }
     }
   }
+}
+.enc-header .right-menu .el-button.user{
+  background: #479bd9;
 }
 </style>
