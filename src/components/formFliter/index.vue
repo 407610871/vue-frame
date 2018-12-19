@@ -282,6 +282,7 @@ export default {
     color: #425365;
     font-weight: 600;
     overflow: hidden;
+    margin-right: 20px;
 
     .lookstyle {
       font-weight: normal;
