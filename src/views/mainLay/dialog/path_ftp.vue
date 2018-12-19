@@ -162,6 +162,7 @@ export default {
       this.disaData.push(this.againData);
       this.$refs.treeForm.setCheckedNodes(this.disaData);
     },
+    //勾选了包含子目录测处理结果 
     childrenDataHandel(data, type){
       data.childNodes.forEach(res =>{
           res.checked = type;
@@ -175,13 +176,6 @@ export default {
         res.checked = type;
         return this.childNodesHandel(res, type);
       })
-    },
-    //关闭
-    closeForm() {
-      this.dialogVisible = false;
-      this.$refs['ruleForm'].resetFields();
-      this.$refs.treeForm.setCheckedNodes([]);
-      this.$refs.treeForm.setCheckedKeys([]);
     },
     save() {
       if (this.ruleForm.ftpurl == '') {
