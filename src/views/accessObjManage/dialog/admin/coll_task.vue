@@ -952,12 +952,17 @@ export default {
     },
     //获取修改内容
     _getInit() {
+      let acmode = 'JDBC';
+      if(this.pdata.collectName=='实时接入'){
+        acmode = this.$route.params.type;
+      }
       this.$ajax({
         method: 'POST',
         url: this.GLOBAL.api.API_DACM + '/task/getSourceConfig',
         /* url: 'http://10.19.160.168:8080/DACM/task/getSourceConfig',*/
         params: {
           accessSysObjInfoId: this.pdata.id,
+          jobType:acmode
           /* accessSysObjInfoId: '10658915'*/
         }
 
