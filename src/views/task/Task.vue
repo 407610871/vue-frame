@@ -314,7 +314,7 @@
               @click="doDel(scope.$index, scope.row)"
             >删除</el-button>
             <el-button
-              v-if="(scope.row.status==1||scope.row.status==2||scope.row.status==4)&&scope.row.isPeriod!=0"
+              v-if="(scope.row.status==1||scope.row.status==2||scope.row.status==4||scope.row.sourceType!='mongodb')&&scope.row.isPeriod!=0"
               type="text"
               size="small"
               @click="doCheck(scope.$index, scope.row)"
@@ -678,7 +678,8 @@ this.pageNum=1;
     },
     //分页切换
     handleCurrentChange() {
-      this.init();
+       let keyword = this.keyword;
+      this.init(keyword);
     },
     //信息提示
     doMsg(msg, type) {
@@ -793,14 +794,11 @@ this.pageNum=1;
       let params = {
         taskInfoIds: tableParams.join(",")
       };
-      // console.log(row);
-      // console.log(row1);
-      // console.log(this.allSecectData);
+     
       let rowNew = Array.from(row);
-      // console.log(row);
-      // console.log(rowNew);
+    
 
-      // return;
+     
       //  <span v-if="scope.row.status==0">新建</span>
       //       <span v-if="scope.row.status==1">运行</span>
       //       <span v-else-if="scope.row.status==2">暂停</span>
