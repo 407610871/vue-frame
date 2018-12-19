@@ -665,7 +665,7 @@ export default {
             }
             that.taskBaseInfo.statusDesc = statusMap[that.taskBaseInfo.status];
             //网络指示灯判断
-            that.newWorkTrans(that.taskBaseInfo.networkStatus,response.data.data.speed);
+            that.newWorkTrans(that.taskBaseInfo.networkStatus,response.data.data.speed,true);
             //可操作类型
             let t=that.taskBaseInfo.status;
             that.flagDesc=(t==0||t==1)?'run':'stop';
@@ -856,7 +856,7 @@ export default {
       )
     },
     //网络测试指示灯及内容翻译
-    newWorkTrans(value,speed){
+    newWorkTrans(value,speed,flag){
       let newWorkMap = {
         0:'rgb(27, 255, 0)',
         1:'rgb(255, 153, 0)',
@@ -868,8 +868,13 @@ export default {
         1:'数据源连接不稳定（数据源能访问，ping的响应时间在10秒-30秒内）',
         2:'数据源不通',
       }
-      speed = speed||0;
-      this.taskBaseInfo.newWorkDesc = newWorkDescMap[value]+' '+speed+"kb/s";
+      if(flag){
+        this.taskBaseInfo.newWorkDesc = newWorkDescMap[value];
+      }else{
+        speed = speed||0;
+        this.taskBaseInfo.newWorkDesc = newWorkDescMap[value]+' '+speed+"kb/s";
+      }
+      
     },
     //信息提示
     doMsg(msg, type) {
