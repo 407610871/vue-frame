@@ -320,7 +320,7 @@ export default {
           //   newVal.objectType.toString() == oldVal.objectType.toString()
           // ) {
           //判断高级搜索的词不会进入
-          // this.loadTable();
+           this.loadTable();
           // }
         }
       }
