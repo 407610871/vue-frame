@@ -34,6 +34,12 @@
               <span v-if="scope.row.extendParams.isdelet=='false'">否</span>
             </template>
           </el-table-column>
+          <el-table-column label="包含子目录" v-if="type=='ftp'" show-overflow-tooltip>
+            <template slot-scope="scope">
+              <span v-if="scope.row.extendParams.isSubDirectory=='true'">是</span>
+              <span v-if="scope.row.extendParams.isSubDirectory=='false'">否</span>
+            </template>
+          </el-table-column>
           <el-table-column prop="extendParams.diyComments" label="自定义注释" v-if="type=='ftp'" show-overflow-tooltip>
             <template slot-scope="scope">
               <div>

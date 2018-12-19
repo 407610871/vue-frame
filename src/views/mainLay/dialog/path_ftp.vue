@@ -93,6 +93,7 @@ export default {
       },
       childrenData:[],
       checkStrictly: true,
+      parentId: ""
     };
   },
   methods: {
@@ -134,8 +135,21 @@ export default {
       this.childrenData = data;
       data.expanded = node.expanded;
       data.childNodes = node.childNodes;
-      if(this.ruleForm.subDele && data.childNodes && data.id===this.againData.id){
+      this.parentId = data.id;
+      this.parentHandel(node);
+      console.log(this.againData.id, this.parentId);
+      if(this.ruleForm.subDele && data.childNodes && this.parentId===this.againData.id){
         this.childrenDataHandel(data, true);
+      }
+    },
+    parentHandel(node){
+      if(node.parent && node.parent.parent !=null){
+        if(node.label !== this.againData.label){
+          this.parentId = node.parent.data.id;
+          return this.parentHandel(node.parent);
+        }else{
+          this.parentId = node.data.id;
+        }
       }
     },
     selectChildrenNodes(val){

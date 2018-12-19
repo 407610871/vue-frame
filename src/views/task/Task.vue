@@ -121,11 +121,9 @@
             </span>
           </div>
 
-          <div
-            v-show="time!=null && time.length>0"
+          <div v-show="time!=null && time.length>0"
             class="selected-task-type"
-            style="display: inline-block;"
-          >
+            style="display: inline-block;">
             <span style="margin-right:10px;">任务开始时间:</span>
             <span>
               {{time==null?'':time[0]}} - {{time==null?'':time[1]}}
@@ -369,17 +367,17 @@ export default {
   data() {
     return {
       loading: false,
-      taskPeriodType: [], //任务类型
-      status: [], //任务状态
-      time: [],
+      taskPeriodType: this.$store.state.taskParam.taskPeriodType, //任务类型
+      status: this.$store.state.taskParam.status, //任务状态
+      time: this.$store.state.taskParam.time,
       check: "",
-      priority: [],
+      priority: this.$store.state.taskParam.priority,
       pageNum: 1,
       showTaskDetail: false,
       showTaskCheck: false,
       moreSearch: false,
       allSecectData: {},
-      keyword: "",
+      keyword: this.$store.state.taskParam.keyword,
       isDeleted: 0,
       tableData: [],
       selectionChangeData: [],
@@ -563,6 +561,11 @@ let redata = JSON.parse(e.data);
   },
     //查询按钮
     search() {
+      this.$store.state.taskParam.taskPeriodType = this.taskPeriodType;
+      this.$store.state.taskParam.status = this.status;
+      this.$store.state.taskParam.time = this.time;
+      this.$store.state.taskParam.priority = this.priority;
+      this.$store.state.taskParam.keyword = this.keyword;
       let keyword = this.keyword;
       // this.websock.send(123);
 
