@@ -618,7 +618,8 @@ export default {
           "isStartOverTask": this.ruleForm.taskSubMode,
           "timeType": this.radioSelect,
           "startLocation": this.ruleForm.startLocation,
-          "xStreamServiceName": this.ruleForm.xStreamServiceName
+          "xStreamServiceName": this.ruleForm.xStreamServiceName,
+          "priority":this.ruleForm.priority
         }
         this.loading = true;
         if (JSON.stringify(this.$store.state.userList) == "{}") {
