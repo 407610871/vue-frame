@@ -410,7 +410,7 @@ export default {
       })
     },
     //查询全省市
-    _queryCity(value, flag) {
+    _queryCity(value, flag,label) {
       this.$ajax({
         method: "get",
         url: this.GLOBAL.api.API_DACM + '/commonInter/getAreas?parentid=' + value,
@@ -426,9 +426,16 @@ export default {
           this.proArr = res.data.data;
         }
         if (flag == 'city') {
+          if(label=='2'){
+            this.ruleForm.city = '';
+            this.ruleForm.urban = '';
+          }
           this.cityArr = res.data.data;
         }
         if (flag == 'urban') {
+          if(label=='2'){
+            this.ruleForm.urban = '';
+          }
           this.urbanArr = res.data.data;
         }
 
@@ -467,13 +474,14 @@ export default {
     },
     //通过省查询市
     proChange() {
-      console.log(this.ruleForm.pro);
-      this._queryCity(this.ruleForm.pro, 'city');
+      //console.log(this.ruleForm.pro);
+      this._queryCity(this.ruleForm.pro, 'city','2');
     },
     //通过市获取区域
     cityChange() {
-      console.log(this.ruleForm.city);
-      this._queryCity(this.ruleForm.city, 'urban');
+      //console.log(this.ruleForm.city);
+      this._queryCity(this.ruleForm.city, 'urban','2');
+
     },
     //查詢系統配置
     _querySys() {

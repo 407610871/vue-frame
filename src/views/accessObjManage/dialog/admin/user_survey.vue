@@ -378,7 +378,7 @@ export default {
             _self.ruleForm.datanum = res.data.data.iNITIAL_DATA_VOLUME;
             _self.ruleForm.datarange = res.data.data.dATA_RANGE;
             let xzqyData = JSON.parse(res.data.data.xzqy);
-            
+
             if (xzqyData == "") {
               //查询系统配置
               _self.areaFlag = true;
@@ -418,7 +418,7 @@ export default {
       })
     },
     //查询全省市
-    _queryCity(value, flag) {
+    _queryCity(value, flag, label) {
       let _self = this;
       this.$ajax({
         method: "get",
@@ -436,9 +436,16 @@ export default {
           _self.proArr = res.data.data;
         }
         if (flag == 'city') {
+          if (label == '2') {
+            _self.ruleForm.city = '';
+             _self.ruleForm.urban = '';
+          }
           _self.cityArr = res.data.data;
         }
         if (flag == 'urban') {
+          if (label == '2') {
+            _self.ruleForm.urban = '';
+          }
           _self.urbanArr = res.data.data;
         }
 
@@ -486,12 +493,12 @@ export default {
     //通过省查询市
     proChange() {
       console.log(this.ruleForm.pro);
-      this._queryCity(this.ruleForm.pro, 'city');
+      this._queryCity(this.ruleForm.pro, 'city','2');
     },
     //通过市获取区域
     cityChange() {
       console.log(this.ruleForm.city);
-      this._queryCity(this.ruleForm.city, 'urban');
+      this._queryCity(this.ruleForm.city, 'urban','2');
     },
     //查詢系統配置
     _querySys() {
