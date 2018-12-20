@@ -1,6 +1,6 @@
 <template>
   <div class="nav-menu owntmenu">
-    <el-menu :default-active="activeIndex" class="enc-nav-menu" mode="horizontal" @select="handleSelect" text-color="#425365" active-text-color="#499bd7">
+    <el-menu :default-active="activeIndex" class="enc-nav-menu" mode="horizontal" @select="handleSelect" >
       <el-menu-item index="1">
         <i class="enc-icon-shujujieru"></i>数据接入
       </el-menu-item>

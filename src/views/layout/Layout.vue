@@ -35,7 +35,7 @@
             <li><a href="javascript:void(0)" v-on:click="goRoute('recyclingBins')">回收箱</a></li>
             <li><a href="javascript:void(0)" @click="_release()">版本信息</a></li>
           </ul>
-          <el-button slot="reference" class="moreSys" type="primary"></el-button>
+          <el-button slot="reference" class="moreSys"></el-button>
         </el-popover>
       </div>
     </el-header>

@@ -98,7 +98,7 @@ export default {
       versionDate: '',
       loading:false,
       versionData: [
-        '当前','1.0.0'
+        '当前','1.0.0','1.0.1'
       ],
       tableData: [],
       changeData: [],
@@ -107,7 +107,7 @@ export default {
     };
   },
   mounted(){
-   this._getVersion('1.0.0');
+   this._getVersion('1.0.1');
   },
   methods: {
     //关闭对话框
@@ -119,7 +119,7 @@ export default {
     handleClick(tab, event){
       /* console.log(tab, event);*/
       if(tab.label=='当前'){
-        this._getVersion('1.0.0');
+        this._getVersion('1.0.1');
       }
       else{
         this._getVersion(tab.label);
@@ -148,7 +148,7 @@ export default {
           _self.tableData = jsonObj.note.specialityList.item;
           _self.changeData = jsonObj.note.changeList.item;
           _self.finishData = jsonObj.note.finishedPunchList.item;
-          _self.knownData = jsonObj.note.questionList.item;
+          _self.knownData = Array.isArray(jsonObj.note.questionList.item) ? jsonObj.note.questionList.item : [jsonObj.note.questionList.item];
           _self.versionDes =  jsonObj.note.name;
           _self.versionDate = jsonObj.note.date;
 

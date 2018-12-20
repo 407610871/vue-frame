@@ -1,3 +1,5 @@
+@import './variables.scss';
+@import './mixin.scss';
 /* checkbox */
 .el-checkbox {
   color: #425365;
@@ -115,8 +117,7 @@
 
 .el-button--primary {
   color: #fff;
-  background-color: #489bd9;
-  border-color: #489bd9;
+  @include el-button--primary($el-primary-theme);
 }
 
 .el-button:focus, .el-button:hover {

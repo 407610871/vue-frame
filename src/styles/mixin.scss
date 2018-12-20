@@ -58,21 +58,49 @@
     border-bottom: $transparent-border-style;
   }
 }
-@mixin aside-bg-color($color){
- background: $color;
- [data-theme = 'theme1'] & {
-   background: $enc-aside-background-theme1;
- }
+
+@mixin aside-bg-color($color) {
+  background: $color;
+  [data-theme='theme1'] & {
+    background: $enc-aside-background-theme1;
+  }
 }
-@mixin tree-tools-bg-color($color){
- background: $color;
- [data-theme = 'theme1'] & {
-   background: $tree-tools-background-theme1;
- }
+
+@mixin tree-tools-bg-color($color) {
+  background: $color;
+  [data-theme='theme1'] & {
+    background: $tree-tools-background-theme1;
+  }
 }
-@mixin table-thead-bg-color($color){
- background: $color;
- [data-theme = 'theme1'] & {
-   background: $el-table-thead-background-theme1;
- }
+
+@mixin table-thead-bg-color($color) {
+  background: $color;
+  [data-theme='theme1'] & {
+    background: $el-table-thead-background-theme1;
+  }
+}
+
+@mixin el-button--primary($color) {
+  background-color: $color;
+  border-color: $color;
+  [data-theme='theme1'] & {
+    background: $el-primary-theme1;
+    border-color: $el-primary-theme1;
+  }
+}
+
+@mixin el-menu-item-active($color,$border) {
+  border-bottom: 2px solid $border;
+  color: $color;
+  [data-theme='theme1'] & {
+    border-bottom: 2px solid $el-primary-theme1;
+    color: $el-primary-theme1;
+  }
+}
+
+@mixin el-color($color){
+  color:$color;
+   [data-theme='theme1'] & {
+    color: $el-primary-theme1;
+  }
 }
