@@ -57,26 +57,32 @@
                 <span>{{sourceBaseInfo.periodDesc}}</span>
               </el-form-item>
             </el-col>
-            <el-col :span="10">
-              <el-form-item label="接入对象:">
-                <div style="height:80px;width:100%;overflow:auto;">
-                  <span style="display:block" v-for="item in sourceBaseInfo.sourceObjNameList" :key="item.tableName" v-show="item.type=='TABLE'||item.type=='VIEW'">{{item.type=="TABLE"?'表':'视图'}}:{{item.tableName}}</span>
-                  <span v-show="sourceBaseInfo.sourceObjNameStr!=''">{{sourceBaseInfo.sourceObjNameStr}}</span>
-                </div>
-              </el-form-item>
-            </el-col>
-            <el-col :span="4" class="bank">bank</el-col>
-            <el-col :span="10">
-              <el-form-item label="增量字段:" v-show="sourceBaseInfo.period==1||sourceBaseInfo.period==2">
-                <span>{{sourceBaseInfo.incrementColumn}}</span>
-              </el-form-item>
-            </el-col>
-            <el-col :span="10" class="bank">bank</el-col>
-            <el-col :span="4" class="bank">bank</el-col>
-            <el-col :span="10">
-              <el-form-item label="增量字段类型:" v-show="sourceBaseInfo.period==1||sourceBaseInfo.period==2">
-                <span>{{sourceBaseInfo.columnType}}</span>
-              </el-form-item>
+            <el-col :span="24">
+              <el-col :span="12">
+                <el-col :span="20">
+                  <el-form-item label="接入对象:">
+                    <div style="height:80px;width:100%;overflow:auto;">
+                      <span style="display:block" v-for="item in sourceBaseInfo.sourceObjNameList" :key="item.tableName" v-show="item.type=='TABLE'||item.type=='VIEW'">{{item.type=="TABLE"?'表':'视图'}}:{{item.tableName}}</span>
+                      <span v-show="sourceBaseInfo.sourceObjNameStr!=''">{{sourceBaseInfo.sourceObjNameStr}}</span>
+                    </div>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="4" class="bank">bank</el-col>
+              </el-col>
+              <el-col :span="12">
+                <el-col :span="4" class="bank">bank</el-col>
+                <el-col :span="20">
+                  <el-form-item label="增量字段:" v-show="sourceBaseInfo.period==1||sourceBaseInfo.period==2">
+                    <span>{{sourceBaseInfo.incrementColumn}}</span>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="4" class="bank">bank</el-col>
+                <el-col :span="10">
+                  <el-form-item label="增量字段类型:" v-show="sourceBaseInfo.period==1||sourceBaseInfo.period==2">
+                    <span>{{sourceBaseInfo.columnType}}</span>
+                  </el-form-item>
+                </el-col>
+              </el-col>
             </el-col>
           </div>
         </div>
