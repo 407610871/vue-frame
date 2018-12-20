@@ -74,13 +74,13 @@
               <el-col :span="12">
                 <el-col :span="4" class="bank">bank</el-col>
                 <el-col :span="20">
-                  <el-form-item label="增量字段:" v-show="sourceBaseInfo.period==1||sourceBaseInfo.period==2">
+                  <el-form-item label="增量字段:" v-show="isShow">
                     <span>{{sourceBaseInfo.incrementColumn}}</span>
                   </el-form-item>
                 </el-col> 
                 <el-col :span="4" class="bank">bank</el-col>
                 <el-col :span="10">
-                  <el-form-item label="增量字段类型:" v-show="sourceBaseInfo.period==1||sourceBaseInfo.period==2">
+                  <el-form-item label="增量字段类型:" v-show="isShow">
                     <span>{{sourceBaseInfo.columnType}}</span>
                   </el-form-item>
                 </el-col>
@@ -426,6 +426,19 @@ export default {
   props: ["title",'reqObj'],
   components:{
     DialogIsCheck
+  },
+  computed: {
+    isShow(){
+      if(this.sourceBaseInfo.period==1||this.sourceBaseInfo.period==2){
+        if(this.sourceBaseInfo.dbType=='mongodb'||this.sourceBaseInfo.dbType=='ftp'){
+          return false;
+        }else{
+          return true;
+        }
+      }else{
+        return false;
+      }
+    },
   },
   created(){
     console.log("页面入参",this.reqObj);
