@@ -467,12 +467,15 @@ export default {
     closeDialog() {
       this.dialogVisible = false;
       this.$refs['ruleForm'].resetFields();
+      this.websocketclose();
     },
 
     //关闭
     closeForm() {
       this.dialogVisible = false;
       this.$refs['ruleForm'].resetFields();
+            this.websocketclose();
+
     },
     //增量字段弹框的再次打开
     showIncrement() {
@@ -872,7 +875,6 @@ export default {
             }).then(res => {
               this.loading = false;
               if (res.data.success) {
-
                 this.websock.send(JSON.stringify(res.data.data));
                 let ctips = '采集任务启动成功！';
                 if (this.ruleForm.taskSubMode == "false") {

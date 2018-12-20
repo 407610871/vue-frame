@@ -525,11 +525,17 @@ export default {
     },
       //数据接收
     websocketonmessage(e) {
-
 let redata = JSON.parse(e.data);
-      // let redata = e.data;
-            // console.log(redata);
-            redata.zc=1;
+let redataTrue=true;
+for(let i=0;i<this.tableData.length;i++){
+  if(this.tableData[i].taskInfoId==redata.taskInfoId){
+redataTrue=false;
+
+  }
+
+}
+if(redataTrue){
+    redata.zc=1;
         this.removeCla();
       let tim = setTimeout(()=>{
           this.$message({
@@ -539,9 +545,8 @@ let redata = JSON.parse(e.data);
           this.tableData.unshift(redata);
           clearTimeout(tim);
         },0);
-      // }else{
-      //   return;
-      // }
+}
+
         
     },
     websocketclose(e) {

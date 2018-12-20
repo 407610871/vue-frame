@@ -331,12 +331,16 @@ export default {
     closeDialog() {
       this.dialogVisible = false;
       this.$refs['ruleForm'].resetFields();
+                  this.websocketclose();
+
     },
 
     //关闭
     closeForm() {
       this.dialogVisible = false;
       this.$refs['ruleForm'].resetFields();
+                  this.websocketclose();
+
     },
     //增量字段弹框的再次打开
     showIncrement() {
