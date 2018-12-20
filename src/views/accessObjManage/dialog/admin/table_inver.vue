@@ -48,6 +48,9 @@
           </el-table>
         </div>
       </div>
+      <div class="doDisplay" v-show="loginfo">
+        <el-button type="primary" size="mini" @click="isTextShow">{{btnInfo}}</el-button>
+      </div>
       <div class="proInfo-box log-box clearfix ptb20 bornone" v-show="textShow">
         <textarea name="" id="" disabled="disabled" v-model="loginfo" class="checkDataTextarea"></textarea>
       </div>
@@ -74,10 +77,14 @@ export default {
       textShow: false,
       result: '0',
       tableData: []
-
     }
   },
   methods: {
+    //日志显隐控制
+    isTextShow(){
+      this.textShow = !this.textShow;
+      this.btnInfo = this.textShow?"收起":"展开";
+    },
     //关闭对话框
     closeDialog() {
       this.dialogVisible = false;
@@ -226,7 +233,9 @@ export default {
 
   },
   computed: {
-
+     btnInfo(){
+       return this.textShow?'收起':'展示';
+     },
   },
   watch: {
     dialogVisible() {
@@ -235,6 +244,7 @@ export default {
         this._getTableNum();
         this.textShow = false;
         this.name = decodeURI(this.$route.params.sourceName);
+        if(this.loginfo) this.textShow = true;
       }
     }
 
@@ -395,5 +405,12 @@ textarea {
 .checkDataTextarea{
   width:calc(100% - 60px);
   height:410px;
+}
+.dowBtn {
+  margin-top: -35px;
+}
+.doDisplay{
+  margin:10px 30px 0;
+  text-align:right;
 }
 </style>
