@@ -474,14 +474,13 @@ export default {
     },
     //通过省查询市
     proChange() {
-      //console.log(this.ruleForm.pro);
+      console.log(this.ruleForm.pro);
       this._queryCity(this.ruleForm.pro, 'city','2');
     },
     //通过市获取区域
     cityChange() {
-      //console.log(this.ruleForm.city);
+      console.log(this.ruleForm.city);
       this._queryCity(this.ruleForm.city, 'urban','2');
-
     },
     //查詢系統配置
     _querySys() {
@@ -579,7 +578,7 @@ export default {
             if (this.ruleForm.datarange == "1") { //全市
               areaData = [{ "pro": this.ruleForm.pro }, { "city": this.ruleForm.city }]
             }
-            if (this.ruleForm.datarange == "0") { //行政区
+            if (this.ruleForm.datarange == "4") { //行政区
               areaData = [{ "pro": this.ruleForm.pro }, { "city": this.ruleForm.city }, { "urban": this.ruleForm.urban }]
             }
             if (this.info.length == undefined) {
