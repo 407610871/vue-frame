@@ -947,6 +947,9 @@ export default {
           
         }
       }
+      if (this.msg == "third") {
+        this._getInit();
+      }
 
     }
   },
