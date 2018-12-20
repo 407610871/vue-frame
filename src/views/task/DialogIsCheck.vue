@@ -275,7 +275,8 @@ export default {
           if(res.data.queryTargetColumn!=''&&res.data.queryTargetColumn!=undefined){
              this.queryTargetColumn = res.data.queryTargetColumn;
           }
-         
+           //核验历史记录
+         this.getHistory();
           //  let loadingInstance = Loading.service({text:"核验中，请稍等...",target:document.getElementsByName("el-dialog")});
         } else if (res.data.status == "0") {
           //   this.loading = true;
@@ -283,9 +284,6 @@ export default {
           this.status = "核验中";
         }
         // this.liData = res.data.result;
-
-         //核验历史记录
-        this.getHistory();
       });
     },
     //获取核验历史记录
