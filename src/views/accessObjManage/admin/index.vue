@@ -330,7 +330,7 @@ export default {
       this.searchParams.condition = "";
       this.searchParams.objectType = [];
       this.searchParams.dataRange = [];
-      console.log(this.searchParams)
+      // console.log(this.searchParams)
 
     }
   },

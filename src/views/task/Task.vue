@@ -312,13 +312,13 @@
               @click="doDel(scope.$index, scope.row)"
             >删除</el-button>
             <el-button
-              v-if="(scope.row.status==1||scope.row.status==2||scope.row.status==4)&&scope.row.isPeriod!=0&&scope.row.sourceType!='mongodb'"
+              v-if="(scope.row.status==1||scope.row.status==2||scope.row.status==4)&&scope.row.isPeriod!=0&&scope.row.sourceType!='mongodb'&&scope.row.sourceType!='ftp'"
               type="text"
               size="small"
               @click="doCheck(scope.$index, scope.row)"
             >数据核验</el-button>
             <el-button
-              v-if="(scope.row.status==2||scope.row.status==4||scope.row.status==3)&&scope.row.isPeriod!=0"
+              v-if="(scope.row.status==2||scope.row.status==4||scope.row.status==3)&&scope.row.isPeriod!=0&&scope.row.sourceType!='ftp'"
               type="text"
               size="small"
               @click="doConverge(scope.$index, scope.row)"
@@ -820,7 +820,7 @@ this.pageNum=1;
         let errorData = [];
         for (let i = 0; i < rowNew.length; i++) {
           // console.log(row[i].status,row[i].isPeriod)
-          if (rowNew[i].status == 1 || rowNew[i].status == 0||rowNew[i].isPeriod == 0) {
+          if (rowNew[i].status == 1 || rowNew[i].status == 0||rowNew[i].isPeriod == 0||rowNew[i].sourceType=='ftp') {
             errorData.push(rowNew[i]);
           }
         }
