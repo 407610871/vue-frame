@@ -8,12 +8,12 @@
         </el-table-column>
         <el-table-column prop="" label="目标字段名称" width="180">
           <template slot-scope="scope">
-            <el-input v-model="scope.row.newColumnName" :disabled="(type=='ftp'&&parflag)||isDisabled(scope.row)"></el-input>
+            <el-input v-model="scope.row.newColumnName" :disabled="(type=='ftp'&&parflag)||isDisabled(scope.row)||isForbidEdit"></el-input>
           </template>
         </el-table-column>
         <el-table-column prop="toType" label="目标字段类型">
           <template slot-scope="scope">
-            <el-select v-model="scope.row.newColumnType" placeholder="请选择" :disabled="isDisabled(scope.row)">
+            <el-select v-model="scope.row.newColumnType" placeholder="请选择" :disabled="isDisabled(scope.row)||isForbidEdit">
               <el-option v-for="item in TypeData" :key="item" :label="item" :value="item" :disabled="type=='ftp'&&scope.row.newColumnType=='BIGINT'">
               </el-option>
             </el-select>
@@ -21,7 +21,7 @@
         </el-table-column>
         <el-table-column prop="foreignKey" label="目标描述信息" width="180">
           <template slot-scope="scope">
-            <el-input v-model="scope.row.orgColumnComment" :disabled="isDisabled(scope.row)"></el-input>
+            <el-input v-model="scope.row.orgColumnComment" :disabled="isDisabled(scope.row)||isForbidEdit"></el-input>
           </template>
         </el-table-column>
       </el-table>
@@ -50,7 +50,7 @@ export default {
       mapData: [],
       smapData: [],
       schemaMappingDTOList: [],
-
+      isForbidEdit:false,
     }
   },
   methods: {
@@ -284,7 +284,9 @@ export default {
 
   },
   created() {
-
+    this.$root.eventHub.$on("setForbidEdit", flag => {
+      this.isForbidEdit = flag;
+    });
   },
   computed: {
     typeTran: {

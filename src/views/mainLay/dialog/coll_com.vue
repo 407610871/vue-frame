@@ -816,7 +816,7 @@ export default {
         this.ruleForm.accessMode = '0';
       }
       var actech = 'JDBC';
-      if (this.rowList.collectName.indexOf("实时") > -1) { //实时
+      if (this.rowList.collectName&&this.rowList.collectName.indexOf("实时") > -1) { //实时
         actech = this.$route.params.type;
       }else{
         actech = this.$route.params.type +"_cycle";
