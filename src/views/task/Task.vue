@@ -1,5 +1,5 @@
 <template>
-  <div v-loading="loading" class="task-template">
+  <div v-loading="loading" :element-loading-text="tips" class="task-template">
     <!-- 搜索栏 -->
     <div class="count-container" ref="searchArea">
       <!-- 查询按钮 -->
@@ -366,6 +366,7 @@ export default {
   name: "task",
   data() {
     return {
+      tips:"",
       loading: false,
       taskPeriodType: JSON.parse(JSON.stringify(this.$store.state.taskParam.taskPeriodType)), //任务类型
       status: JSON.parse(JSON.stringify(this.$store.state.taskParam.status)), //任务状态
@@ -461,7 +462,7 @@ export default {
     }
   },
   created() {
-    this.init(" ");
+    this.init(this.$store.state.taskParam.keyword);
     this.initWebSocket();
   },
   mounted() {
@@ -836,6 +837,7 @@ this.pageNum=1;
           //   )
           //   .then(() => {
               _self.loading = true;
+              _self.tips = "批量汇聚中...";
               _self
                 .$ajax({
                   url: httpUrl + url,
@@ -845,6 +847,7 @@ this.pageNum=1;
                 })
                 .then(function(res) {
                   _self.loading = false;
+                  _self.tips = "";
                   if (res.data.success) {
                     let successHtml = "";
                     let errorHtml = "";
@@ -912,6 +915,7 @@ this.pageNum=1;
         }
         if (errorData.length == 0) {
           _self.loading = true;
+          _self.tips = "批量启动中...";
           _self
             .$ajax({
               url: httpUrl + url,
@@ -921,6 +925,7 @@ this.pageNum=1;
             })
             .then(function(res) {
               _self.loading = false;
+              _self.tips = "";
               if (res.data.success) {
                 let successHtml = "";
                 let errorHtml = "";
@@ -985,6 +990,7 @@ this.pageNum=1;
         }
         if (errorData.length == 0) {
           _self.loading = true;
+          _self.tips = "批量停止中...";
           _self
             .$ajax({
               url: httpUrl + url,
@@ -994,6 +1000,7 @@ this.pageNum=1;
             })
             .then(function(res) {
               _self.loading = false;
+              _self.tips = "";
               if (res.data.success) {
                 let successHtml = "";
                 let errorHtml = "";
