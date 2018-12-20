@@ -49,7 +49,7 @@
         </div>
       </div>
       <div class="proInfo-box log-box clearfix ptb20 bornone" v-show="textShow">
-        <textarea name="" id="" disabled="disabled">{{loginfo}}</textarea>
+        <textarea name="" id="" disabled="disabled" v-model="loginfo" class="checkDataTextarea"></textarea>
       </div>
     </el-dialog>
   </div>
@@ -390,4 +390,10 @@ textarea {
   cursor: pointer;
 }
 
+</style>
+<style lang="scss" scoped>
+.checkDataTextarea{
+  width:calc(100% - 60px);
+  height:410px;
+}
 </style>
