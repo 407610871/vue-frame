@@ -8,8 +8,8 @@
       <div class="panel-title">外观</div>
       <el-row :gutter="20">
         <el-col :span="8">
-          <el-card class="theme-preview" @click="changeSkin('theme')">
-            <img src="./../../static/img/1.jpg" />
+          <el-card class="theme-preview">
+            <img @click="changeSkin('theme')" src="./../../static/img/1.jpg" />
           </el-card>
         </el-col>
         <el-col :span="16">
