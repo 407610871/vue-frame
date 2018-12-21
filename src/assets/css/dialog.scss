@@ -59,7 +59,7 @@
     }
     .gra-l {
       width: 30%;
-      @include el-backcolor($color-background-lp);
+      @include el-color-lp($color-background-lp);
     }
     .gra-r {
       width: 70%;

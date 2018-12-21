@@ -273,8 +273,6 @@ export default {
       });
     },
     selDept(node, nodeStatus) {
-      window.localStorage.setItem('data-theme', 'theme');
-      window.document.documentElement.setAttribute('data-theme', 'theme')
       var list = this.$refs.tree.getCheckedNodes();
       var deptIds = this.$refs.tree.getCheckedKeys();
       var factorial;

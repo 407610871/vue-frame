@@ -181,3 +181,9 @@
 .el-tabs__active-bar{
   @include el-bgcolor($el-radio-btn);
 }
+.right-tools a{
+  @include el-color($el-radio-btn);
+}
+.task-template .el-table__body tr.hover-row > td{
+  @include el-table-hover($el-table-td-hover);
+}

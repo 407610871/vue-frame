@@ -1229,7 +1229,7 @@ this.pageNum=1;
         margin-right: 10px;
         a {
           font-size: 26px;
-          color: #479ad8;
+          /* color: #479ad8; */
            :hover,
            :active {
             color: #f93;
@@ -1258,7 +1258,7 @@ this.pageNum=1;
     background-color: #eff3f6;
   }
   .el-table__body tr.hover-row > td {
-    background-color: #95a1b3 !important;
+   /*  background-color: #95a1b3 !important; */
     color: #fff;
   }
   .el-message-box {
