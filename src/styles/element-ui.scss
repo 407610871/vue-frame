@@ -1,11 +1,12 @@
  //覆盖一些element-ui样式
-@import './el-table-override.scss';
-@import './el-form-ovdrride.scss';
-@import './el-datepicker-override.scss';
+ @import './el-table-override.scss';
+ @import './el-form-ovdrride.scss';
+ @import './el-datepicker-override.scss';
 
-.el-breadcrumb__inner, .el-breadcrumb__inner a{
-  font-weight: 400!important;
-}
+ .el-breadcrumb__inner,
+ .el-breadcrumb__inner a {
+   font-weight: 400!important;
+ }
 
  .el-upload {
    input[type="file"] {
@@ -23,18 +24,18 @@
    }
  }
 
-.small-padding {
+ .small-padding {
    .cell {
      padding-left: 5px;
      padding-right: 5px;
    }
  }
 
- .fixed-width{
-  .el-button--mini{
-    padding: 7px 10px;
-    width: 60px;
-  }
+ .fixed-width {
+   .el-button--mini {
+     padding: 7px 10px;
+     width: 60px;
+   }
  }
 
  .status-col {
@@ -45,17 +46,13 @@
        margin-right: 0px;
      }
    }
- }
-
- //暂时性解决dialog 问题 https://github.com/ElemeFE/element/issues/2461
+ } //暂时性解决dialog 问题 https://github.com/ElemeFE/element/issues/2461
  .el-dialog {
    transform: none;
    left: 0;
    position: relative;
    margin: 0 auto;
- }
-
- //文章页textarea修改样式
+ } //文章页textarea修改样式
  .article-textarea {
    textarea {
      padding-right: 40px;
@@ -64,9 +61,7 @@
      border-radius: 0px;
      border-bottom: 1px solid #bfcbd9;
    }
- }
-
- //element ui upload
+ } //element ui upload
  .upload-container {
    .el-upload {
      width: 100%;
@@ -77,54 +72,112 @@
    }
  }
 
-//dropdown
- .el-dropdown-menu{
-  a{
-    display: block
-  }
-}
+ //dropdown
+ .el-dropdown-menu {
+   a {
+     display: block
+   }
+ }
 
-.enc-header {
-  .el-menu--horizontal>.el-submenu .el-submenu__title {
-    height: $enc-nav-header-height;
-    line-height: $enc-nav-header-height;
-  }
+ .enc-header {
+   .el-menu--horizontal>.el-submenu .el-submenu__title {
+     height: $enc-nav-header-height;
+     line-height: $enc-nav-header-height;
+   }
 
-  .el-menu--popup {
-    background-color: #e6eaed;
-  }
+   .el-menu--popup {
+     background-color: #e6eaed;
+   }
 
-  .el-menu--horizontal .el-menu .el-menu-item, .el-menu--horizontal .el-menu .el-submenu__title {
-    background-color: #e6eaed;
-    // height: 36px;
-    // line-height: 36px;
-    color: #b2b6b9;
-  }
+   .el-menu--horizontal .el-menu .el-menu-item,
+   .el-menu--horizontal .el-menu .el-submenu__title {
+     background-color: #e6eaed; // height: 36px;
+     // line-height: 36px;
+     color: #b2b6b9;
+   }
 
-  .el-dropdown-menu__item--divided:before, .el-menu, .el-menu--horizontal>.el-menu-item:not(.is-disabled):focus, .el-menu--horizontal>.el-menu-item:not(.is-disabled):hover, .el-menu--horizontal>.el-submenu .el-submenu__title:hover {
-    background-color: #469bde;
-    color: #fff!important;
-  }
-}
+   .el-dropdown-menu__item--divided:before,
+   .el-menu,
+   .el-menu--horizontal>.el-menu-item:not(.is-disabled):focus,
+   .el-menu--horizontal>.el-menu-item:not(.is-disabled):hover,
+   .el-menu--horizontal>.el-submenu .el-submenu__title:hover {
+     background-color: #469bde;
+     color: #fff!important;
+   }
+ }
 
-.el-menu--horizontal .el-menu-item:not(.is-disabled):focus, .el-menu--horizontal .el-menu-item:not(.is-disabled):hover {
-  background: #469bde;
-  color: #fff!important;
+ .el-menu--horizontal .el-menu-item:not(.is-disabled):focus,
+ .el-menu--horizontal .el-menu-item:not(.is-disabled):hover {
+   background: #469bde;
+   color: #fff!important;
+ }
+
+ .el-menu--horizontal>.el-menu-item.is-active {
+   @include el-menu-item-active($el-menu-item-active-text-theme, $el-primary-theme);
+ }
+
+ .enc-header .nav-menu .enc-nav-menu .is-active i {
+   @include el-color($el-primary-theme);
+ }
+
+ .enc-header .el-dropdown-menu__item--divided:before,
+ .enc-header .el-menu,
+ .enc-header .el-menu--horizontal>.el-menu-item:not(.is-disabled):focus,
+ .enc-header .el-menu--horizontal>.el-menu-item:not(.is-disabled):hover,
+ .enc-header .el-menu--horizontal>.el-submenu .el-submenu__title:hover {
+   @include el-bgcolor($el-primary-theme);
+ }
+.el-menu--horizontal .el-menu-item:not(.is-disabled):focus, .el-menu--horizontal .el-menu-item:not(.is-disabled):hover{
+  @include el-backcolor($el-primary-theme);
 }
-.el-menu--horizontal>.el-menu-item.is-active{
-      @include el-menu-item-active($el-menu-item-active-text-theme,$el-primary-theme);
+.el-menu--horizontal>.el-submenu.is-active .el-submenu__title{
+  @include el-menu-item-active($el-radio-btn,$el-radio-btn);
 }
-.nav-menu .enc-nav-menu .is-active i{
-   @include el-color($el-menu-item-active-text-theme);
+ @media screen and ( max-width: 1280px) {
+   .enc-header {
+     height: 50px!important;
+     line-height: 50px!important;
+     .el-menu--horizontal>.el-submenu .el-submenu__title {
+       height: 50px;
+       line-height: 50px;
+       padding: 0 10px;
+     }
+   }
+ }
+.el-breadcrumb__inner a:hover, .el-breadcrumb__inner.is-link:hover{
+  @include el-color($el-radio-btn);
 }
-@media screen and ( max-width: 1280px ) {
-  .enc-header {
-    height: 50px!important;
-    line-height: 50px!important;
-    .el-menu--horizontal>.el-submenu .el-submenu__title {
-      height: 50px;
-      line-height: 50px;
-      padding: 0 10px;
-    }
-  }
+.dashboard-container .filter-container .count-container .count-title .all-number{
+  @include el-color($el-all-number);
+}
+#NewAisdeTree .el-tree .el-tree-node__content:focus, #NewAisdeTree .el-tree .el-tree-node__content:hover{
+  @include el-color($el-radio-btn);
+}
+#NewAisdeTree .el-tree .el-checkbox__input.is-checked .el-checkbox__inner, #NewAisdeTree .el-tree .el-checkbox__input.is-indeterminate .el-checkbox__inner{
+  @include el-bgcolor($el-radio-btn);
+  @include el-border-color($el-radio-btn);
+}
+.el-tabs--border-card>.el-tabs__header .el-tabs__item.is-active{
+  @include el-color($el-radio-btn);
+}
+.el-tabs--border-card>.el-tabs__header .el-tabs__item:not(.is-disabled):hover{
+   @include el-color($el-radio-btn);
+}
+.nav-menu .enc-nav-menu .el-submenu .el-submenu__title i{
+  /* @include el-color($el-sub-title-i); */
+}
+.icon-span{
+   @include el-color($el-kittle-icon-span);
+}
+.el-loading-spinner .path{
+  @include el-loading-spinner($el-radio-btn);
+}
+.el-tabs__item.is-active{
+   @include el-color($el-radio-btn);
+}
+.el-tabs__item:hover{
+  @include el-color($el-radio-btn);
+}
+.el-tabs__active-bar{
+  @include el-bgcolor($el-radio-btn);
 }

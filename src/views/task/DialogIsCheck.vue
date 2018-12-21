@@ -456,6 +456,8 @@ export default {
 
 </script>
 <style lang="scss" scoped>
+@import "@/assets/css/base.scss";
+@import "@/assets/css/dialog.scss";
 .time {
   display: inline-block;
   margin-left: 10px;
@@ -475,7 +477,6 @@ export default {
 
 .checkBtn {
   color: white !important;
-  background-color: #2f6ac5 !important;
   border: none !important;
   position: absolute;
   right: 5%;
@@ -486,7 +487,7 @@ export default {
 
 .contanst {
   font-size: 14px;
-  border-bottom: 1px solid #2f6ac5;
+  
   padding-bottom: 20px;
   display: flex;
 }
@@ -521,7 +522,7 @@ export default {
 
 .contanst_vs {
   font-size: 50px;
-  color: #2f6ac5; // width: 23%;
+ /*  color: #2f6ac5; */ // width: 23%;
   text-align: center; // max-width: 260px;
   width: 150px;
   height: 170px;
@@ -564,7 +565,7 @@ export default {
 
 .checkResult a {
   display: inline-block;
-  color: #2f6ac5;
+  /* color: #2f6ac5; */
   text-decoration: underline;
   cursor: pointer;
 }
@@ -594,7 +595,7 @@ h5 {
 
 .export-btn.el-button {
   color: white!important;
-  background-color: #2f6ac5!important;
+ /*  background-color: #2f6ac5!important; */
 }
 
 </style>

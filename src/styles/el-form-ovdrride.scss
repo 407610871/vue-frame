@@ -90,7 +90,7 @@
   width: 24px;
   height: 24px;
   top: 3px;
-  background-color: #4f609d;
+  @include el-bgcolor($el-input-suffix);
 }
 
 .el-select-dropdown {
@@ -124,4 +124,7 @@
   color: #489bd9;
   border-color: #c9cdd0;
   background-color: #f0f3f6;
+}
+.el-select-dropdown__item.selected{
+  @include el-color($el-select-dropdown-selected);
 }

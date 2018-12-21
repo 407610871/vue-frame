@@ -160,16 +160,16 @@ export default {
 
   .el-dialog__title {
     font-size: $font-size-medium;
-    color: $color-text-title;
+   /*  color: $color-text-title; */
   }
 }
 
 .el-dialog__title {
   font-size: $font-size-medium;
-  color: $color-text-title;
+  /* color: $color-text-title; */
 }
-
-.title-gra {
+.taskMDialog {
+  .title-gra {
   margin-bottom: 20px;
   .grab {
     height: 4px;
@@ -177,13 +177,15 @@ export default {
   }
   .gra-l {
     width: 30%;
-    background: $color-background-lp;
+    /* background: $color-background-lp; */
   }
   .gra-r {
     width: 70%;
-    background: $color-background-rp;
+    /* background: $color-background-rp; */
   }
 }
+}
+
 
 .el-dialog__body {
   padding-top: 0px;

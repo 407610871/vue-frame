@@ -189,7 +189,7 @@ export default {
 }
 
 .el-tabs__item.is-active i {
-  background: $color-background-tabs;
+/*   background: $color-background-tabs; */
   color: #fff;
 }
 
@@ -206,9 +206,9 @@ export default {
   color: #303133;
 }
 
-.setTaskDia .el-tabs__item.is-active {
+/* .setTaskDia .el-tabs__item.is-active {
   color: $color-background-tabs;
-}
+} */
 
 .diaicon i {
   cursor: pointer;

@@ -34,7 +34,7 @@
 
       .el-dialog__title {
         font-size: $font-size-medium;
-        color: $color-text-title;
+        @include el-color($color-text-title);
       }
     }
     .el-dialog__headerbtn {
@@ -59,11 +59,11 @@
     }
     .gra-l {
       width: 30%;
-      background: $color-background-lp;
+      @include el-backcolor($color-background-lp);
     }
     .gra-r {
       width: 70%;
-      background: $color-background-rp;
+      @include el-backcolor($color-background-rp);
     }
   }
   .el-dialog__body {
@@ -76,7 +76,7 @@
     }
     h2 {
       font-size: $font-size-medium;
-      color: $color-text-stitle;
+      @include el-color($color-text-stitle);
       padding: 0;
       margin: 0;
       line-height: 40px;
@@ -99,8 +99,10 @@
 
 .el-table .cell .taskMDialog .el-button--primary {
   color: #fff;
-  background-color: #489bd9;
-  border-color: #489bd9;
+  @include el-bgcolor($el-primary-theme);
+  @include el-border-color($el-primary-theme);
+ /*  background-color: #489bd9;
+ border-color: #489bd9; */
 }
 
 .ml0 .el-form-item--medium .el-form-item__content {
@@ -255,4 +257,32 @@
 }
 .el-picker-panel__icon-btn{
   color:#303133 !important;
+}
+.setTaskDia .el-tabs__item.is-active {
+  @include el-color($color-background-tabs);
+}
+.el-tabs__item.is-active i{
+  @include el-backcolor($color-background-tabs);
+}
+
+/* 任务中心 */
+.taskMDialog .checkBtn{
+   @include el-bgcolor($el-btn-color);
+}
+.taskMDialog .contanst {
+  @include el-border-contanst($el-btn-color);
+}
+.taskMDialog{
+  .contanst_vs{
+    @include el-color($color-background);
+  }
+  .checkResult a{
+     @include el-color($color-background);
+  }
+  .export-btn.el-button{
+    @include el-bgcolor($color-background);
+  }
+}
+.el-input.is-active .el-input__inner, .el-input__inner:focus{
+  @include el-border-color($el-radio-btn);
 }

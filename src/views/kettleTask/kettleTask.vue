@@ -444,7 +444,7 @@ export default {
 }
 .icon-span{
     font-size:18px;
-    color:#0095e7;
+   /*  color:#0095e7; */
     cursor:pointer;
     margin-right:5px;
 }

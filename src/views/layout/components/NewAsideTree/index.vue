@@ -273,8 +273,8 @@ export default {
       });
     },
     selDept(node, nodeStatus) {
-      window.localStorage.setItem('data-theme', 'theme1');
-      window.document.documentElement.setAttribute('data-theme', 'theme1')
+      window.localStorage.setItem('data-theme', 'theme');
+      window.document.documentElement.setAttribute('data-theme', 'theme')
       var list = this.$refs.tree.getCheckedNodes();
       var deptIds = this.$refs.tree.getCheckedKeys();
       var factorial;
@@ -426,7 +426,7 @@ export default {
     .el-tree-node__content:focus,
     .el-tree-node__content:hover {
       background-color: transparent;
-      color: #409EFF;
+     /*  color: #409EFF; */
     }
     /* .el-tree-node:focus>.el-tree-node__content{ */
     /* background-color:transparent; */
@@ -438,8 +438,8 @@ export default {
     }
     .el-checkbox__input.is-checked .el-checkbox__inner,
     .el-checkbox__input.is-indeterminate .el-checkbox__inner {
-      background-color: #409EFF;
-      border-color: #409EFF;
+     /*  background-color: #409EFF;
+     border-color: #409EFF; */
     }
   }
 }

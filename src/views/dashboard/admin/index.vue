@@ -648,7 +648,7 @@ _self.updataFliterItemList();
         }
 
         .all-number {
-          color: #425365;
+          /* color: #425365; */
           font-size: 24px;
           font-weight: bold;
         }

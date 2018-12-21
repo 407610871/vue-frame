@@ -8,13 +8,13 @@
       <div class="panel-title">外观</div>
       <el-row :gutter="20">
         <el-col :span="8">
-          <el-card class="theme-preview">
+          <el-card class="theme-preview" @click="changeSkin('theme')">
             <img src="./../../static/img/1.jpg" />
           </el-card>
         </el-col>
         <el-col :span="16">
-          <div class="theme-item">
-            <img src="./../../static/img/1.jpg" /> 风格1
+          <div class="theme-item"  @click="changeSkin('theme1')">
+            <img  src="./../../static/img/1.jpg" /> 风格1
           </div>
         </el-col>
       </el-row>
@@ -113,6 +113,10 @@ export default {
     this.initPage()
   },
   methods: {
+    changeSkin(value) {
+      window.localStorage.setItem('data-theme', value);
+      window.document.documentElement.setAttribute('data-theme', value);
+    },
     init(data) {
       this.datas = data;
       this.initPage();
@@ -293,8 +297,8 @@ export default {
             value.name = this.sysParam.pageLimit + '';
             break;
           case '行政区域':
-                  //以下格式为了满足后端需求封装，循环是为了获取名称再塞入对象中
-            var position = [{"pro":"","proname":"","city":"","cityname":""}];
+            //以下格式为了满足后端需求封装，循环是为了获取名称再塞入对象中
+            var position = [{ "pro": "", "proname": "", "city": "", "cityname": "" }];
             for (var valueList of this.provinceList) {
               if (valueList.code == this.sysParam.province) {
                 position[0].pro = valueList.code;
@@ -304,8 +308,8 @@ export default {
             }
             for (var valueCity of this.cityList) {
               if (valueCity.code == this.sysParam.city) {
-                   position[0].city = valueCity.code;
-                    position[0].cityname = valueCity.name;
+                position[0].city = valueCity.code;
+                position[0].cityname = valueCity.name;
                 break;
               }
             }

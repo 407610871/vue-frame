@@ -89,7 +89,7 @@
   }
 }
 
-@mixin el-menu-item-active($color,$border) {
+@mixin el-menu-item-active($color, $border) {
   border-bottom: 2px solid $border;
   color: $color;
   [data-theme='theme1'] & {
@@ -98,9 +98,67 @@
   }
 }
 
-@mixin el-color($color){
-  color:$color;
-   [data-theme='theme1'] & {
+@mixin el-border-contanst($border) {
+  border-bottom: 1px solid $border;
+  [data-theme='theme1'] & {
+    border-bottom: 1px solid $el-primary-theme1;
+  }
+}
+
+@mixin el-color($color) {
+  color: $color;
+  [data-theme='theme1'] & {
     color: $el-primary-theme1;
+  }
+}
+
+@mixin el-bgcolor($color) {
+  background-color: $color;
+  [data-theme='theme1'] & {
+    background-color: $el-primary-theme1;
+  }
+}
+
+@mixin el-backcolor($color) {
+  background: $color;
+  [data-theme='theme1'] & {
+    background: $el-primary-theme1;
+  }
+}
+
+@mixin el-color-lp($color) {
+  background: $color;
+  [data-theme='theme1'] & {
+    background: $el-color-lp-theme1;
+  }
+}
+
+@mixin el-table-hover($color) {
+  background-color: $color;
+  [data-theme='theme1'] & {
+    background: $el-table-hover-theme1;
+  }
+}
+
+@mixin el-border-color($color) {
+  border-color: $color;
+  [data-theme='theme1'] & {
+    border-color: $el-primary-theme1;
+  }
+}
+
+@mixin el-shadow($color) {
+  -webkit-box-shadow: -1px 0 0 0 $color;
+  box-shadow: -1px 0 0 0 $color;
+  [data-theme='theme1'] & {
+    -webkit-box-shadow: -1px 0 0 0 $el-primary-theme1;
+    box-shadow: -1px 0 0 0 $el-primary-theme1;
+  }
+}
+
+@mixin el-loading-spinner($color) {
+  stroke: $color;
+  [data-theme='theme1'] & {
+    stroke: $el-primary-theme1;
   }
 }

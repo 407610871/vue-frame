@@ -29,6 +29,7 @@ export default {
   computed: {
     mydata:function(){
       var max = 0;
+      this._getColor();
       var obj = JSON.parse(JSON.stringify(this.dataObj));
       for(var value of this.dataObj.list){
         max += parseFloat(value.data);
@@ -49,6 +50,14 @@ export default {
         color = this.mydata.list[this.mydata.list.length-1].color;
       }
       return color;
+    }
+  },
+  methods:{
+    _getColor(){
+      if(window.localStorage.getItem('data-theme')=='theme1'){
+        this.defaultColor = [];
+        this.defaultColor = ['#000e6a','#5567be','#7385d8','#91a4f2',"#47aa65","#ffd866","#66efff"];
+      }
     }
   }
 }
