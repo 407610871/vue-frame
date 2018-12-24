@@ -486,7 +486,7 @@ export default {
     _querySys() {
       this.$ajax({
         method: "get",
-        url: this.GLOBAL.api.API_DACM + '/caccesssysRelationWorkInfo/getSystemSet.do',
+        url: this.GLOBAL.api.API_DACM + '/caccesssysRelationWorkInfo/getSystemSet',
         // headers:{
         //   'Content-Type':'application/json;charset=utf-8',
         // },

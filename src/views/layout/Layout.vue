@@ -6,23 +6,12 @@
       </div>
       <nav-menu />
       <div class="right-menu clearfix">
-        <!--  <el-button class="document" type="primary" icon="enc-icon-documents"></el-button> -->
-        <!-- <el-tooltip class="item" effect="light" content="系统设置" placement="bottom">
-          <el-button
-            class="setting"
-            type="primary"
-            icon="enc-icon-setting"
-            v-on:click="goRoute('setting')"
-          ></el-button>
-        </el-tooltip> -->
         <el-tooltip class="item" effect="light" content="告警中心" placement="bottom">
           <el-button class="warncon" v-on:click="_goWarn()"></el-button>
         </el-tooltip>
         <release v-if="releaseflag" v-on:closeDia="releaseflag=false"></release>
         <el-popover placement="bottom-start" width="200" trigger="hover">
           <ul class="popup-menu warn-menu warn-popover">
-            <!--  <li><a href="javascript:void(0)" v-on:click="goRoute('recyclingBins')">回收箱</a></li>
-           <li><a :href="warnurl" target="_blank">告警中心</a></li> -->
             <li class="even-li">{{ userName }}</li>
             <li class="odd-li">{{ roleName }}</li>
             <li class="even-li" v-on:click="loginOut()">退出</li>
@@ -39,31 +28,28 @@
         </el-popover>
       </div>
     </el-header>
-    <el-container>
+
+    <div style="display:flex; height: calc(100vh - 66px);">
+
       <el-aside :width="sideBarWidth+'px'" class="enc-aside">
-        <!-- <aside-tree></aside-tree> -->
-        <new-aside-tree></new-aside-tree>
+          <new-aside-tree></new-aside-tree>
+          <div class="sidebar-control-btn" v-bind:style="{'left':sideBarWidth+'px'}" v-on:click="changeSideBar">
+              <i class="el-icon-caret-left" v-if="sideBarWidth==210"></i>
+              <i class="el-icon-caret-right" v-if="sideBarWidth==0"></i>
+          </div>
       </el-aside>
-      <div class="sidebar-control-btn" v-bind:style="{'left':sideBarWidth+'px'}" v-on:click="changeSideBar">
-        <i class="el-icon-caret-left" v-if="sideBarWidth==210"></i>
-        <i class="el-icon-caret-right" v-if="sideBarWidth==0"></i>
-      </div>
+      
       <el-main class="enc-main">
-        <!-- <div class="enc-search">
-          <input type="text" v-model="keyword" placeholder="输入查询..." />
-          <a href="javascript:void(0)" v-on:click="search"><i class="el-icon-search"></i></a>
-        </div>-->
-        <div class="enc-sub-header">
-          <el-breadcrumb separator="/">
-            <el-breadcrumb-item v-for="(item,index) in breadcrumb" :key="index">
-              <a href="javascript:void(0)" v-on:click="breadcrumbChange(index,item)">{{item.breadcrumbName}}</a>
-            </el-breadcrumb-item>
-          </el-breadcrumb>
-          <!-- <span v-for="item in breadcrumb"> / <a href="javascript:void(0)" v-on:click="goToPage(item.path)">{{item.name}}</a></span> -->
-        </div>
-        <app-main ref="mainTable" />
+          <div class="enc-sub-header">
+            <el-breadcrumb separator="/">
+              <el-breadcrumb-item v-for="(item,index) in breadcrumb" :key="index">
+                <a href="javascript:void(0)" v-on:click="breadcrumbChange(index,item)">{{item.breadcrumbName}}</a>
+              </el-breadcrumb-item>
+            </el-breadcrumb>
+          </div>
+          <app-main ref="mainTable" />
       </el-main>
-    </el-container>
+    </div>
   </el-container>
 </template>
 <script>
@@ -100,7 +86,7 @@ export default {
     }
     _self.warnurl = encodeURI(window.ENV.API_WARN + '/#/alert/dashboard?platform=数据工厂产品线');
     this.$ajax
-      .get(window.ENV.API_DACM + "/caccesssysRelationWorkInfo/getSystemSet.do")
+      .get(window.ENV.API_DACM + "/caccesssysRelationWorkInfo/getSystemSet")
       .then(function(res) {
         if (res.data.result == "success") {
           var configs = JSON.parse(res.data.message);

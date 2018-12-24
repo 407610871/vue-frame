@@ -1,7 +1,6 @@
 <template>
-<div>
-    <el-container style="height:100%" class="dashboard-container" v-loading="loading">
-        <div class="filter-container">
+  <div class="dashboard-container" >
+        <div class="filter-container ">
             <formFliter style="padding-top: 20px" v-if="queryParamReady"    @highMore="moreHeight"    @highSeaech="hightrue" v-bind:formCollapse="collapse" v-bind:dataObj="formFilterData" @doSearch="search" @formFilter="changeFormFilter" />
             <div class="count-container">
                 <div class="count-title">
@@ -17,9 +16,8 @@
                 </div>
             </div>
         </div>
-        <el-main style="padding-bottom:0;">
-            <router-view />
-            <el-table :data="mainTableData" stripe :height="tableHeight" border style="width: 100%;min-height:300px;" tooltip-effect="light">
+
+        <el-table v-loading="loading" :data="mainTableData" stripe border style="width: 100%;" tooltip-effect="light">
                 <el-table-column label="接入源名称" width="250" show-overflow-tooltip>
                     <template slot-scope="scope">
                         <a class="underdone" href="javascript:void(0)" v-on:click="goSubPage(scope.$index,scope.row.dataSourceName)">{{ scope.row.name }}</a>
@@ -55,17 +53,12 @@
                         </div>
                     </template>
                 </el-table-column>
-            </el-table>
-        </el-main>
-        <el-footer>
-            <div class="enc-pagination">
+        </el-table>
+        <div class="enc-pagination">
                 <el-pagination v-if="queryParamReady" style="float:right; margin:10px;" @current-change="goPage" background :page-size.sync="pageSize" :total="mainTableDataTotal" layout="prev, pager, next, jumper" :current-page.sync="currentPage">
                 </el-pagination>
-            </div>
-        </el-footer>
-    </el-container>
-    <router-view />
-</div>
+        </div>
+  </div>
 </template>
 
 <script>

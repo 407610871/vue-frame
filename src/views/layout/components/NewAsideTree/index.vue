@@ -6,7 +6,10 @@
       <a href="javascript:void(0)" v-on:click="delNode" :style="styleObj"><i class="el-icon-close"></i></a>
     </div>
     <div class="treeContainer">
-      <el-tree v-if="dataReady" :data="data" v-bind:style="{'height':treeHeight+'px'}" node-key="id" show-checkbox default-expand-all highlight-current draggable :props="defaultProps" check-strictly :default-checked-keys="checkedDepts" @node-click="handleNodeClick" @check="selDept" @node-drop="dragDept" ref="tree" :allow-drop="allowDrop">
+      <el-tree v-if="dataReady" style="height: calc(100vh - 106px);" :data="data" node-key="id" show-checkbox default-expand-all 
+        highlight-current draggable :props="defaultProps" 
+        check-strictly :default-checked-keys="checkedDepts" @node-click="handleNodeClick" 
+        @check="selDept" @node-drop="dragDept" ref="tree" :allow-drop="allowDrop">
       </el-tree>
     </div>
     <el-dialog title="请输入部门节点名称" :visible.sync="dialogVisible" width="30%" class="input-dialog">
@@ -444,7 +447,7 @@ export default {
 
 .el-tree {
   width: 100%;
-  overflow-x: scroll;
+  overflow:auto;
 }
 
 .el-tree>.el-tree-node {

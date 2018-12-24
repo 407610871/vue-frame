@@ -61,7 +61,7 @@ export default {
     var _self = this;
     _self.warnurl = encodeURI(window.ENV.API_WARN+'/#/alert/dashboard?platform=告警中心');
     this.$ajax
-      .get(window.ENV.API_DACM + "/caccesssysRelationWorkInfo/getSystemSet.do")
+      .get(window.ENV.API_DACM + "/caccesssysRelationWorkInfo/getSystemSet")
       .then(function(res) {
         if (res.data.result == 'success') {
           var configs = JSON.parse(res.data.message);
