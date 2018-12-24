@@ -12,8 +12,23 @@
             <img @click="changeSkin('theme')" src="./../../static/img/1.jpg" />
           </el-card>
         </el-col>
-        <el-col :span="16">
+        <el-col :span="6">
           <div class="theme-item"  @click="changeSkin('theme1')">
+            <img  src="./../../static/img/1.jpg" /> 风格1
+          </div>
+        </el-col>
+        <el-col :span="6">
+          <div class="theme-item"  @click="changeSkin('theme2')">
+            <img  src="./../../static/img/1.jpg" /> 风格1
+          </div>
+        </el-col>
+        <el-col :span="6">
+          <div class="theme-item"  @click="changeSkin('theme3')">
+            <img  src="./../../static/img/1.jpg" /> 风格1
+          </div>
+        </el-col>
+         <el-col :span="6">
+          <div class="theme-item"  @click="changeSkin('theme4')">
             <img  src="./../../static/img/1.jpg" /> 风格1
           </div>
         </el-col>

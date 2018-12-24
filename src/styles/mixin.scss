@@ -76,7 +76,16 @@
 @mixin table-thead-bg-color($color) {
   background: $color;
   [data-theme='theme1'] & {
-    background: $el-table-thead-background-theme1;
+    background: $el-primary-theme1;
+  }
+  [data-theme='theme2'] & {
+    background: $el-primary-theme2;
+  }
+  [data-theme='theme3'] & {
+    background: $el-primary-theme3;
+  }
+  [data-theme='theme4'] & {
+    background: $el-primary-theme4;
   }
 }
 
@@ -87,6 +96,18 @@
     background: $el-primary-theme1;
     border-color: $el-primary-theme1;
   }
+  [data-theme='theme2'] & {
+    background: $el-primary-theme2;
+    border-color: $el-primary-theme2;
+  }
+  [data-theme='theme3'] & {
+    background: $el-primary-theme3;
+    border-color: $el-primary-theme3;
+  }
+  [data-theme='theme4'] & {
+    background: $el-primary-theme4;
+    border-color: $el-primary-theme4;
+  }
 }
 
 @mixin el-menu-item-active($color, $border) {
@@ -96,12 +117,33 @@
     border-bottom: 2px solid $el-primary-theme1;
     color: $el-primary-theme1;
   }
+  [data-theme='theme2'] & {
+    border-bottom: 2px solid $el-primary-theme2;
+    color: $el-primary-theme2;
+  }
+  [data-theme='theme3'] & {
+    border-bottom: 2px solid $el-primary-theme3;
+    color: $el-primary-theme3;
+  }
+  [data-theme='theme4'] & {
+    border-bottom: 2px solid $el-primary-theme4;
+    color: $el-primary-theme4;
+  }
 }
 
 @mixin el-border-contanst($border) {
   border-bottom: 1px solid $border;
   [data-theme='theme1'] & {
     border-bottom: 1px solid $el-primary-theme1;
+  }
+  [data-theme='theme2'] & {
+    border-bottom: 1px solid $el-primary-theme2;
+  }
+  [data-theme='theme3'] & {
+    border-bottom: 1px solid $el-primary-theme3;
+  }
+  [data-theme='theme4'] & {
+    border-bottom: 1px solid $el-primary-theme4;
   }
 }
 
@@ -110,12 +152,30 @@
   [data-theme='theme1'] & {
     color: $el-primary-theme1;
   }
+  [data-theme='theme2'] & {
+    color: $el-primary-theme2;
+  }
+  [data-theme='theme3'] & {
+    color: $el-primary-theme3;
+  }
+  [data-theme='theme4'] & {
+    color: $el-primary-theme4;
+  }
 }
 
 @mixin el-bgcolor($color) {
   background-color: $color;
   [data-theme='theme1'] & {
     background-color: $el-primary-theme1;
+  }
+  [data-theme='theme2'] & {
+    background-color: $el-primary-theme2;
+  }
+  [data-theme='theme3'] & {
+    background-color: $el-primary-theme3;
+  }
+  [data-theme='theme4'] & {
+    background-color: $el-primary-theme4;
   }
 }
 
@@ -124,12 +184,30 @@
   [data-theme='theme1'] & {
     background: $el-primary-theme1;
   }
+  [data-theme='theme2'] & {
+    background: $el-primary-theme2;
+  }
+  [data-theme='theme3'] & {
+    background: $el-primary-theme3;
+  }
+  [data-theme='theme4'] & {
+    background: $el-primary-theme4;
+  }
 }
 
 @mixin el-color-lp($color) {
   background: $color;
   [data-theme='theme1'] & {
     background: $el-color-lp-theme1;
+  }
+  [data-theme='theme2'] & {
+    background: $el-primary-theme2;
+  }
+  [data-theme='theme3'] & {
+    background: $el-primary-theme3;
+  }
+  [data-theme='theme4'] & {
+    background: $el-primary-theme4;
   }
 }
 
@@ -138,12 +216,30 @@
   [data-theme='theme1'] & {
     background: $el-table-hover-theme1;
   }
+  [data-theme='theme2'] & {
+    background: $el-table-hover-theme2;
+  }
+  [data-theme='theme3'] & {
+    background: $el-table-hover-theme3;
+  }
+  [data-theme='theme4'] & {
+    background: $el-table-hover-theme4;
+  }
 }
 
 @mixin el-border-color($color) {
   border-color: $color;
   [data-theme='theme1'] & {
     border-color: $el-primary-theme1;
+  }
+  [data-theme='theme2'] & {
+    border-color: $el-primary-theme2;
+  }
+  [data-theme='theme3'] & {
+    border-color: $el-primary-theme3;
+  }
+  [data-theme='theme4'] & {
+    border-color: $el-primary-theme4;
   }
 }
 
@@ -154,11 +250,32 @@
     -webkit-box-shadow: -1px 0 0 0 $el-primary-theme1;
     box-shadow: -1px 0 0 0 $el-primary-theme1;
   }
+  [data-theme='theme1'] & {
+    -webkit-box-shadow: -1px 0 0 0 $el-primary-theme2;
+    box-shadow: -1px 0 0 0 $el-primary-theme2;
+  }
+  [data-theme='theme3'] & {
+    -webkit-box-shadow: -1px 0 0 0 $el-primary-theme3;
+    box-shadow: -1px 0 0 0 $el-primary-theme3;
+  }
+  [data-theme='theme4'] & {
+    -webkit-box-shadow: -1px 0 0 0 $el-primary-theme4;
+    box-shadow: -1px 0 0 0 $el-primary-theme4;
+  }
 }
 
 @mixin el-loading-spinner($color) {
   stroke: $color;
   [data-theme='theme1'] & {
     stroke: $el-primary-theme1;
+  }
+  [data-theme='theme2'] & {
+    stroke: $el-primary-theme2;
+  }
+  [data-theme='theme3'] & {
+    stroke: $el-primary-theme3;
+  }
+  [data-theme='theme4'] & {
+    stroke: $el-primary-theme4;
   }
 }
