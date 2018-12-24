@@ -86,18 +86,19 @@ const store = new Vuex.Store({
       userName: "",
       roleName: ""
     },
-    taskParam:{
-      keyword:'',//查询条件
-      taskPeriodType:[],//任务类型
-      status:[],//任务状态
-      priority:[],//任务优先级
-      time:[]//任务开始时间
+    taskParam: {
+      keyword: '', //查询条件
+      taskPeriodType: [], //任务类型
+      status: [], //任务状态
+      priority: [], //任务优先级
+      time: [] //任务开始时间
     },
-    kettleTask:{
-      status:[],
-      time:[],
-      taskName:''
-    }
+    kettleTask: {
+      status: [],
+      time: [],
+      taskName: ''
+    },
+    userThemes: '',
   },
   mutations: {
     setUserInfo(state, obj) {
@@ -198,6 +199,11 @@ const store = new Vuex.Store({
     setJrStyle(state, obj) {
       state.jrstyle = '';
       state.jrstyle = obj;
+    },
+    //用户的颜色
+    setThemes(state, obj) {
+      state.userThemes = '';
+      state.userThemes = obj;
     }
   },
   modules: {

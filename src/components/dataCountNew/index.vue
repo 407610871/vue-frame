@@ -12,11 +12,13 @@
   </div>
 </template>
 <script>
+ import { mapState } from 'vuex'
 export default {
   name: 'dataCount',
   data() {
     return {
-      defaultColor: ["#f90", "#069", "#999", "#900", "#47aa65", "#ffd866", "#66efff"]
+      defaultColor: ["#f90", "#069", "#999", "#900", "#47aa65", "#ffd866", "#66efff"],
+      userThemes:{}
     }
   },
   props: {
@@ -26,6 +28,9 @@ export default {
     }
   },
   computed: {
+    getUserThemes(){
+     return this.$store.state.userThemes;
+    },
     mydata: function() {
       var max = 0;
       this._getColor();
@@ -69,6 +74,12 @@ export default {
         this.defaultColor = [];
         this.defaultColor = ['#8e764b', '#a4906d', '#c4b8a1', '#e8e4db', '#91a4f2', "#47aa65", "#ffd866"];
       }
+    }
+  },
+  watch:{
+    getUserThemes(){
+      //console.log("454245");
+      this._getColor();
     }
   }
 }
