@@ -10,10 +10,14 @@
           <el-button class="warncon" v-on:click="_goWarn()"></el-button>
         </el-tooltip>
         <release v-if="releaseflag" v-on:closeDia="releaseflag=false"></release>
+        <Themes v-if="themesflag" v-on:closeDia="themesflag=false"></Themes>
         <el-popover placement="bottom-start" width="200" trigger="hover">
           <ul class="popup-menu warn-menu warn-popover">
             <li class="even-li">{{ userName }}</li>
             <li class="odd-li">{{ roleName }}</li>
+
+             <li class="" v-on:click="_changeSkin()">主题</li>
+              <li class="theme-li"></li>
             <li class="even-li" v-on:click="loginOut()">退出</li>
           </ul>
           <el-button slot="reference" class="user" type="primary" icon="enc-icon-user"></el-button>
@@ -23,6 +27,7 @@
             <li><a href="javascript:void(0)" v-on:click="goRoute('setting')">系统参数</a></li>
             <li><a href="javascript:void(0)" v-on:click="goRoute('recyclingBins')">回收箱</a></li>
             <li><a href="javascript:void(0)" @click="_release()">版本信息</a></li>
+           
           </ul>
           <el-button slot="reference" class="moreSys"></el-button>
         </el-popover>
@@ -56,7 +61,7 @@
 import { AppMain, AsideTree, NavMenu, NewAsideTree } from "./components";
 import logo from "@/assets/images/enc-logo.png";
 import release from "@/views/mainLay/dialog/release";
-
+import Themes from '@/views/layout/components/themes'
 export default {
   name: "Layout",
   data() {
@@ -64,6 +69,7 @@ export default {
       logo: logo + '?' + +new Date(),
       keyword: '',
       releaseflag: false,
+      themesflag: false,
       breadcrumb: [],
       sideBarWidth: 210,
       warnurl: '',
@@ -76,7 +82,8 @@ export default {
     AsideTree,
     NavMenu,
     release,
-    NewAsideTree
+    NewAsideTree,
+    Themes
   },
   computed: {},
   mounted() {
@@ -104,8 +111,10 @@ export default {
         _self.$store.commit("setPageReady");
       });
     _self.updataFliterItemList();
+ 
   },
   created() {
+       this.getUser();
     if (sessionStorage.getItem("store")) {
       var oldStore = JSON.parse(sessionStorage.getItem("store"));
       oldStore.app.token = this.$store.getters.token;
@@ -225,12 +234,55 @@ export default {
     _release() {
       this.releaseflag = true;
     },
+    _changeSkin() {
+      this.themesflag = true;
+    },
     changeSideBar() {
       this.sideBarWidth = this.sideBarWidth == 0 ? 210 : 0;
     },
     loginOut() {
       window.localStorage.removeItem('data-theme');
       this.$keycloak.logout();
+    },
+    //换肤
+    getUser() {
+
+      this.$ajax({
+          methods: "get",
+          url: this.GLOBAL.api.API_DACM + "/users/getProperty",
+          params: {}
+        })
+        .then(res => {
+          if (res.data.success) {
+            let obj = {
+              "cnName": res.data.data.cnName,
+              "color": res.data.data.color,
+              "id": res.data.data.id,
+              "userId": res.data.data.userId,
+              "userName": res.data.data.userName
+            }
+            debugger;
+            let values = '';
+            if (res.data.data.color == 'PURPLE') {
+              values = 'theme1';
+            }
+            if (res.data.data.color == 'GREEN') {
+              values = 'theme2';
+            }
+            if (res.data.data.color == 'BLUE') {
+              values = 'theme3';
+            }
+            if (res.data.data.color == 'YELLOW') {
+              values = 'theme4';
+            }
+            window.localStorage.setItem('data-theme', values);
+            window.document.documentElement.setAttribute('data-theme', values);
+            this.$store.commit('setThemes',res.data.data.color);
+            obj = JSON.stringify(obj);
+            localStorage.setItem("userSet", obj);
+          } else {
+          }
+        })
     },
     goRoute: function(name) {
       if (this.$store.state.queryParams[name]) {
@@ -382,7 +434,7 @@ export default {
       float: left;
 
       &.user {
-        background: #cacfd5;
+        background: #cac fd5;
         vertical-align: top;
       }
       &.setting {
@@ -531,7 +583,7 @@ export default {
 
 </style>
 <style rel="stylesheet/scss" lang="scss">
-  .enc-header {
+.enc-header {
   .right-menu {
     .el-button {
       &.user {
@@ -593,8 +645,14 @@ export default {
 
 .odd-li {
   color: #c6c6c6!important;
-  border-bottom: 1px solid #d6d6d6;
+  border-bottom: none;
   margin-left: -15px;
   margin-right: -15px;
+}
+.warn-popover .theme-li {
+  border-bottom: 1px solid #d6d6d6;
+  line-height: 5px;
+  height: 5px;
+  margin-bottom: 10px;
 }
 </style>

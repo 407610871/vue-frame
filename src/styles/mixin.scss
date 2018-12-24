@@ -162,7 +162,21 @@
     color: $el-primary-theme4;
   }
 }
-
+@mixin el-page-color($color) {
+  color: $color;
+  [data-theme='theme1'] & {
+    color: $el-table-hover-theme1;
+  }
+  [data-theme='theme2'] & {
+    color: $el-table-hover-theme2;
+  }
+  [data-theme='theme3'] & {
+    color: $el-table-hover-theme3;
+  }
+  [data-theme='theme4'] & {
+    color: $el-table-hover-theme4;
+  }
+}
 @mixin el-bgcolor($color) {
   background-color: $color;
   [data-theme='theme1'] & {

@@ -198,5 +198,10 @@
 }
 .checkDiv .look{
    @include el-color($el-all-number);
-  
+}
+.el-pagination.is-background .el-pager li:not(.disabled).active {
+  @include el-bgcolor($el-page-theme);
+}
+.el-pagination.is-background .el-pager li:not(.disabled):hover {
+    @include el-page-color($el-table-td-hover);
 }

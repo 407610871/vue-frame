@@ -9,29 +9,15 @@
       <el-row :gutter="20">
         <el-col :span="8">
           <el-card class="theme-preview">
-            <img @click="changeSkin('theme')" src="./../../static/img/1.jpg" />
+            <img src="./../../static/img/1.jpg" />
           </el-card>
         </el-col>
         <el-col :span="6">
-          <div class="theme-item"  @click="changeSkin('theme1')">
+          <div class="theme-item">
             <img  src="./../../static/img/1.jpg" /> 风格1
           </div>
         </el-col>
-        <el-col :span="6">
-          <div class="theme-item"  @click="changeSkin('theme2')">
-            <img  src="./../../static/img/1.jpg" /> 风格1
-          </div>
-        </el-col>
-        <el-col :span="6">
-          <div class="theme-item"  @click="changeSkin('theme3')">
-            <img  src="./../../static/img/1.jpg" /> 风格1
-          </div>
-        </el-col>
-         <el-col :span="6">
-          <div class="theme-item"  @click="changeSkin('theme4')">
-            <img  src="./../../static/img/1.jpg" /> 风格1
-          </div>
-        </el-col>
+        
       </el-row>
     </div>
     <div class="panel">
