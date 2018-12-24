@@ -26,6 +26,9 @@
            <li><a :href="warnurl" target="_blank">告警中心</a></li> -->
             <li class="even-li">{{ userName }}</li>
             <li class="odd-li">{{ roleName }}</li>
+
+             <li class="" v-on:click="_changeSkin()">主题</li>
+              <li class="theme-li"></li>
             <li class="even-li" v-on:click="loginOut()">退出</li>
           </ul>
           <el-button slot="reference" class="user" type="primary" icon="enc-icon-user"></el-button>
@@ -35,7 +38,7 @@
             <li><a href="javascript:void(0)" v-on:click="goRoute('setting')">系统参数</a></li>
             <li><a href="javascript:void(0)" v-on:click="goRoute('recyclingBins')">回收箱</a></li>
             <li><a href="javascript:void(0)" @click="_release()">版本信息</a></li>
-            <li><a href="javascript:void(0)" v-on:click="_changeSkin()">主题</a></li>
+           
           </ul>
           <el-button slot="reference" class="moreSys"></el-button>
         </el-popover>
@@ -272,21 +275,23 @@ export default {
               "userId": res.data.data.userId,
               "userName": res.data.data.userName
             }
+            debugger;
             let values = '';
-            if (res.data.color == 'PURPLE') {
+            if (res.data.data.color == 'PURPLE') {
               values = 'theme1';
             }
-            if (res.data.color == 'GREEN') {
+            if (res.data.data.color == 'GREEN') {
               values = 'theme2';
             }
-            if (res.data.color == 'BLUE') {
+            if (res.data.data.color == 'BLUE') {
               values = 'theme3';
             }
-            if (res.data.color == 'YELLOW') {
+            if (res.data.data.color == 'YELLOW') {
               values = 'theme4';
             }
             window.localStorage.setItem('data-theme', values);
             window.document.documentElement.setAttribute('data-theme', values);
+            this.$store.commit('setThemes',res.data.data.color);
             obj = JSON.stringify(obj);
             localStorage.setItem("userSet", obj);
           } else {
@@ -654,9 +659,14 @@ export default {
 
 .odd-li {
   color: #c6c6c6!important;
-  border-bottom: 1px solid #d6d6d6;
+  border-bottom: none;
   margin-left: -15px;
   margin-right: -15px;
 }
-
+.warn-popover .theme-li {
+  border-bottom: 1px solid #d6d6d6;
+  line-height: 5px;
+  height: 5px;
+  margin-bottom: 10px;
+}
 </style>
