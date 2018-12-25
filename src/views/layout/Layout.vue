@@ -142,7 +142,7 @@ export default {
         console.log(err);
         _self.$store.commit("setPageReady");
       });
-    _self.updataFliterItemList();
+    // _self.updataFliterItemList();
 
   },
   created() {
