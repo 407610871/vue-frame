@@ -303,8 +303,8 @@ export default {
     },
     //换肤
     getUser() {
-      let usrObj = this.$store.state.userInfo;
-      let userids = usrObj.sub;
+      
+      let userids =  window.localStorage.getItem('userID');
       this.$ajax({
          method: "POST",
           url: "http://10.19.248.200:32470/BCM/skin/query",
@@ -318,7 +318,7 @@ export default {
             let obj = {
               "cnName": res.data.data.cnName,
               "color": res.data.data.color,
-              "id": res.data.data.id,
+              "appId":'DACM',
               "userId": res.data.data.userId,
               "userName": res.data.data.userName
             }

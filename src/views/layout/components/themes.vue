@@ -93,10 +93,10 @@ export default {
     save() {
       let _self = this;
       let value = '';
-
       let userProperty = JSON.parse(localStorage.getItem("userSet"));
       userProperty.color = _self.ruleForm.themeName;
-
+      userProperty.userId = window.localStorage.getItem('userID');
+      userProperty.userName = window.localStorage.getItem('userNames');
       this.$ajax({
         method: "POST",
         url: 'http://10.19.248.200:32470/BCM/skin/update',
