@@ -2,7 +2,7 @@
 @import './mixin.scss';
 /* checkbox */
 .el-checkbox {
-   @include el-color($el-all-number);
+    color: #425365;
 }
 
 .el-checkbox__inner {
