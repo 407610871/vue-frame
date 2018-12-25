@@ -123,7 +123,6 @@ export default {
       }
     },
     allowDrop(draggingNode, dropNode, type) {
-      debugger;
       console.log(dropNode.data.id)
       if (dropNode.data.id == '1') {
         return false;

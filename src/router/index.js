@@ -93,28 +93,6 @@ export const constantRouterMap = [
           noCache: true
         }
       }
-      // {
-      //   path:"test/:sourceId/:sourceName/:objId/:objName",
-      //   component: () => import("@/views/dataAccess/index"),
-      //   name: "test",
-      //   meta: {
-      //     title: "test",
-      //     icon: "dashboard",
-      //     noCache: true
-      //   },
-      //   children:[
-      //     {
-      //       path:"testManage/:sourceId/:sourceName",
-      //       component: () => import("@/views/dataAccess/accessObjManage/index"),
-      //       name: "test",
-      //       meta: {
-      //         title: "test",
-      //         icon: "dashboard",
-      //         noCache: true
-      //       }
-      //     }
-      //   ]
-      // }
     ]
   },
   {

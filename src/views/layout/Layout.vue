@@ -261,7 +261,6 @@ export default {
               "userId": res.data.data.userId,
               "userName": res.data.data.userName
             }
-            debugger;
             let values = '';
             if (res.data.data.color == 'PURPLE') {
               values = 'theme1';

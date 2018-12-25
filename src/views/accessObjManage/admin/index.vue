@@ -1,13 +1,10 @@
 <template>
   <div>
     <el-container style="height:100%;" class="dashboard-container" v-loading="loading">
-      <!-- <el-header class="filter-container" > -->
       <div class="moreSearch" style="margin-bottom:10px;">
-        <!-- <a v-on:click="collapseExpand" class="right-btn collapse-btn"><i :class="{'el-icon-circle-plus':collapse,'el-icon-remove':!collapse}"></i></a> -->
-        <formFliter :ObjManage="ObjManage" v-if="cleanData" @highMore="moreHeight" @highSeaech="hightrue" v-bind:formCollapse="collapse" v-bind:dataObj="formFilterData" @doSearch="search" @formFilter="changeFormFilter" />
-        <!-- </el-header> -->
+        <form-fliter :ObjManage="ObjManage" v-if="cleanData" @highMore="moreHeight" @highSeaech="hightrue" 
+          v-bind:formCollapse="collapse" v-bind:dataObj="formFilterData" @doSearch="search" @formFilter="changeFormFilter" />
         <div class="table-tools">
-          <!-- <i title="数据更新" class="enc-icon-shujugengxin"  v-on:click="updataSource"><i> -->
           <el-tooltip v-if="type=='mysql'|| type=='oracle'|| type=='postgresql' || type=='sqlserver'||type=='mongodb'" class="item" effect="light" content="接入源更新" placement="top"> <span class="updatelogo right-btn" v-on:click="updataSource" style="margin-left:10px; margin-right: 50px;float:right"></span> </el-tooltip>
           <table-inver v-if="type=='mysql'|| type=='oracle'|| type=='postgresql' || type=='sqlserver'" class="right-btn" :pdata="tablePa" style="float:right"></table-inver>
           <path-ftp class="right-btn" @refresh="loadTable" v-if="type=='ftp'" style="float:right"></path-ftp>
@@ -148,7 +145,6 @@
           </el-table-column>
           <el-table-column label="操作" width="160">
             <template slot-scope="scope">
-              <!-- <el-button size="mini" v-on:click="updataSourceSingle(scope.$index, scope.row)" title="数据量更新">数据量更新</el-button> -->
               <el-tooltip class="item" effect="light" content="数据量更新" placement="top" v-if="type=='mysql'|| type=='oracle'|| type=='postgresql' || type=='sqlserver'">
                 <i class="enc-icon-shujugengxin" v-on:click="updataSourceSingle(scope.$index, scope.row)" title="数据量更新"></i>
               </el-tooltip>
@@ -159,7 +155,6 @@
                 <userSurvey v-if="type=='mysql'|| type=='oracle'|| type=='postgresql' || type=='sqlserver'" :pdata="scope.row" @fre="loadTable()"></userSurvey>
               </div>
               <div class="survey" v-if="(type=='mysql'&&scope.row.accessConnectorSource!=undefined&&scope.row.accessConnectorSource.isPeriod!='0')|| (type=='oracle'&&scope.row.accessConnectorSource!=undefined&&scope.row.accessConnectorSource.isPeriod!='0')|| (type=='postgresql'&&scope.row.accessConnectorSource!=undefined&&scope.row.accessConnectorSource.isPeriod!='0') || (type=='sqlserver'&&scope.row.accessConnectorSource!=undefined&&scope.row.accessConnectorSource.isPeriod!='0')">
-                <!-- <data-inver :pdata="scope.row" @fre="loadTable()"></data-inver> -->
                 <el-tooltip class="item" effect="light" content="数据核验" placement="top">
                   <i class="enc-icon-shujuheyan" @click="dataInverCheck(scope.row)"></i>
                 </el-tooltip>
@@ -167,9 +162,6 @@
               <div class="survey" v-if="type!='mysql' && type!='oracle' && type!='sqlserver' && type!='postgresql'">
                 <norela-coll :pdata="scope.row" :type="type" @fre="loadTable()"></norela-coll>
               </div>
-              <!--  <div class="survey" v-if="jrtype=='ftp'">
-               <path-ftp></path-ftp>
-             </div> -->
             </template>
           </el-table-column>
         </el-table>
@@ -186,7 +178,7 @@
     <!--  批量采集 -->
     <set-task v-if="showSetTask" class="right-btn" :rowList="rowList" :jrtype="type" @close="closeTask()" @fre="loadTask()"></set-task>
     <!-- 数据核验 -->
-    <DialogIsCheck v-if="dialogVisible" :msgCheck="msgCheck" @closeDiaChk="dialogVisible=false" title = "数据核验"></DialogIsCheck>
+    <dialog-is-check v-if="dialogVisible" :msgCheck="msgCheck" @closeDiaChk="dialogVisible=false" title = "数据核验"></dialog-is-check>
   </div>
 </template>
 <script>
@@ -312,16 +304,9 @@ export default {
   watch: {
     tableParams(newVal, oldVal) {
       if (JSON.stringify(newVal) != JSON.stringify(oldVal)) {
-        // debugger;
         if (newVal.deptId == oldVal.deptId) {
-          //判断树的调度不会影响
-          // if (
-          //   newVal.dataRange.toString() == oldVal.dataRange.toString() &&
-          //   newVal.objectType.toString() == oldVal.objectType.toString()
-          // ) {
           //判断高级搜索的词不会进入
            this.loadTable();
-          // }
         }
       }
     },
@@ -330,7 +315,6 @@ export default {
       this.searchParams.condition = "";
       this.searchParams.objectType = [];
       this.searchParams.dataRange = [];
-      // console.log(this.searchParams)
 
     }
   },
@@ -345,18 +329,9 @@ export default {
     this.isParquet();
   },
   created() {
-    // this.$root.eventHub.$on('search', (keyword) => {
-    //   this.search(keyword);
-    // })
-    // this.tableParams.condition="";
-
-    //this.loadTable();storeReady
-// this.storeReady();
-    // this.loadTable();
 
   },
   methods: {
-  
     //数据核验
     dataInverCheck(row){
       this.dialogVisible = true;
@@ -379,7 +354,6 @@ export default {
           else if(res.data.hdfsFormat=='json'){
             _self.$store.state.commit('setParquet',false);
           }
-          //console.log(_self.$store.state.isParquet);
         })
     },
     moreHeight(data) {
@@ -458,10 +432,7 @@ export default {
       paramsObj.objInfoId  = urlIds;
       console.log(this.searchParams)
       this.$ajax({
-          // url: window.ENV.API_DACM+'ctables/datas',
           url: window.ENV.API_DACM + "/ctables/datas",
-          //  url:'http://10.19.160.93:8080/DACM/ctables/datas',
-
           method: "post",
           data: JSON.stringify(paramsObj),
           headers: {
@@ -500,7 +471,6 @@ export default {
         .catch(function(err) {
           _self.pageShow = false;
           _self.mainTableData = [];
-          console.log(err);
           _self.loading = false;
           _self.$alert("加载接入对象列表失败", "提示", {
             confirmButtonText: "确定"
@@ -510,7 +480,6 @@ export default {
     changeName: function(index, row) {
       var _self = this;
       this.loading = true;
-      // this.$ajax.post('http://10.19.160.25:8080/DACM/ctables/diyComments',{
       this.$ajax
         .post(window.ENV.API_DACM + "/ctables/diyComments", {
           objInfoId: row.id,
@@ -528,7 +497,6 @@ export default {
           _self.loading = false;
         })
         .catch(function(err) {
-          console.log(err);
           _self.loading = false;
           _self.$alert("字段中文名称修改失败", "提示", {
             confirmButtonText: "确定"
@@ -536,8 +504,6 @@ export default {
         });
     },
     setStore: function(obj) {
-      // debugger;
-      console.log(obj)
       let storeData = JSON.parse(
         JSON.stringify(this.$store.state.queryParams[this.$route.name])
       );
@@ -548,7 +514,6 @@ export default {
         name: this.$route.name,
         data: storeData
       });
-      console.log(this.$store.state.queryParams)
     },
     goPage: function(val) {
       this.setStore({
@@ -614,7 +579,6 @@ export default {
           }
         })
         .catch(function(err) {
-          console.log(err);
           _self.$alert("更新失败", "提示", {
             confirmButtonText: "确定"
           });
@@ -644,7 +608,6 @@ export default {
           }
         })
         .catch(function(err) {
-          console.log(err);
           _self.$alert("更新失败", "提示", {
             confirmButtonText: "确定"
           });
@@ -655,20 +618,13 @@ export default {
       this.rowList = val;
     },
     changeFormFilter: function(fliterParams) {
-      console.log(fliterParams);
       this.searchParams = fliterParams;
       fliterParams.pageNum = 1;
       this.setStore(fliterParams);
-
-      // fliterParams.keyword = "";
     },
     storeReady() {
-      // var queryParams = this.$store.state.queryParams.accessObjManage;
       if (this.$store.state.pageReady) {
-                // setFliter();
-  // this.setFliter();
         this.loadTable();
-       
       } else {
         var _self = this;
         setTimeout(function() {
@@ -678,12 +634,9 @@ export default {
     },
     setFliter() {
       var queryParams = this.$store.state.queryParams[this.$route.name];
-
-
-
       let objectType = queryParams.objectType ? queryParams.objectType : [];
       let dataRange = queryParams.dataRange ? queryParams.dataRange : [];
- objectType == true ? [] : objectType;
+      objectType == true ? [] : objectType;
       dataRange == true ? [] : dataRange;
       this.formFilterData = [{
           name: "接入对象类型：",
