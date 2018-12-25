@@ -16,7 +16,11 @@
           ></el-button>
         </el-tooltip> -->
         <el-tooltip class="item" effect="light" content="告警中心" placement="bottom">
-          <el-button class="warncon" v-on:click="_goWarn()"></el-button>
+          <el-button class="warncon" v-on:click="_goWarn()">
+            <span>
+              <img :src="warnicon">
+            </span>
+          </el-button>
         </el-tooltip>
         <release v-if="releaseflag" v-on:closeDia="releaseflag=false"></release>
         <Themes v-if="themesflag" v-on:closeDia="themesflag=false"></Themes>
@@ -26,21 +30,27 @@
            <li><a :href="warnurl" target="_blank">告警中心</a></li> -->
             <li class="even-li">{{ userName }}</li>
             <li class="odd-li">{{ roleName }}</li>
-
-             <li class="" v-on:click="_changeSkin()">主题</li>
-              <li class="theme-li"></li>
+            <li class="" v-on:click="_changeSkin()">主题</li>
+            <li class="theme-li"></li>
             <li class="even-li" v-on:click="loginOut()">退出</li>
           </ul>
-          <el-button slot="reference" class="user" type="primary" icon="enc-icon-user"></el-button>
+          <el-button slot="reference" class="moreSys">
+            <span>
+              <img :src="usericon">
+            </span>
+          </el-button>
         </el-popover>
         <el-popover placement="bottom-start" width="200" trigger="hover">
           <ul class="popup-menu warn-menu">
             <li><a href="javascript:void(0)" v-on:click="goRoute('setting')">系统参数</a></li>
             <li><a href="javascript:void(0)" v-on:click="goRoute('recyclingBins')">回收箱</a></li>
             <li><a href="javascript:void(0)" @click="_release()">版本信息</a></li>
-           
           </ul>
-          <el-button slot="reference" class="moreSys"></el-button>
+          <el-button slot="reference" class="moreSys">
+            <span>
+              <img :src="moreicon">
+            </span>
+          </el-button>
         </el-popover>
       </div>
     </el-header>
@@ -74,6 +84,21 @@
 <script>
 import { AppMain, AsideTree, NavMenu, NewAsideTree } from "./components";
 import logo from "@/assets/images/enc-logo.png";
+import userd from "@/assets/images/user.png";
+import mored from "@/assets/images/moreicon.png";
+import warnd from "@/assets/images/warnicon.png";
+import userp from "@/assets/images/userp.png";
+import morep from "@/assets/images/morep.png";
+import warnp from "@/assets/images/warnp.png";
+import userg from "@/assets/images/userg.png";
+import moreg from "@/assets/images/moreg.png";
+import warng from "@/assets/images/warng.png";
+import userb from "@/assets/images/userb.png";
+import moreb from "@/assets/images/moreb.png";
+import warnb from "@/assets/images/warnb.png";
+import usery from "@/assets/images/usery.png";
+import morey from "@/assets/images/morey.png";
+import warny from "@/assets/images/warny.png";
 import release from "@/views/mainLay/dialog/release";
 import Themes from '@/views/layout/components/themes'
 export default {
@@ -88,7 +113,10 @@ export default {
       sideBarWidth: 210,
       warnurl: '',
       userName: '',
-      roleName: ''
+      roleName: '',
+      usericon: '',
+      warnicon: '',
+      moreicon: ''
     }
   },
   components: {
@@ -99,7 +127,11 @@ export default {
     NewAsideTree,
     Themes
   },
-  computed: {},
+  computed: {
+    getUserThemes() {
+      return this.$store.state.userThemes;
+    },
+  },
   mounted() {
     var _self = this;
     if (window.localStorage.getItem('data-theme') != undefined) {
@@ -125,10 +157,10 @@ export default {
         _self.$store.commit("setPageReady");
       });
     _self.updataFliterItemList();
- 
+
   },
   created() {
-       this.getUser();
+    this.getUser();
     if (sessionStorage.getItem("store")) {
       var oldStore = JSON.parse(sessionStorage.getItem("store"));
       oldStore.app.token = this.$store.getters.token;
@@ -159,10 +191,38 @@ export default {
       // this.$route.matched.forEach((item, index) => {
       //   console.log(item)
       // })
+    },
+    getUserThemes() {
+      //console.log("454245");
+      this._getColor();
     }
   },
   methods: {
+    _getColor() {
 
+      if (window.localStorage.getItem('data-theme') == 'theme1') {
+         this.usericon = `${userp}`;
+        this.warnicon = `${warnp}`;
+        this.moreicon = `${morep}`;
+      } else if (window.localStorage.getItem('data-theme') == 'theme2') {
+         this.usericon = `${userg}`;
+        this.warnicon = `${warng}`;
+        this.moreicon = `${moreg}`;
+      } else if (window.localStorage.getItem('data-theme') == 'theme3') {
+         this.usericon = `${userb}`;
+        this.warnicon = `${warnb}`;
+        this.moreicon = `${moreb}`;
+      } else if (window.localStorage.getItem('data-theme') == 'theme4') {
+         this.usericon = `${usery}`;
+        this.warnicon = `${warny}`;
+        this.moreicon = `${morey}`;
+      } else {
+      
+        this.usericon = `${userd}`;
+        this.warnicon = `${warnd}`;
+        this.moreicon = `${mored}`;
+      }
+    },
     updataFliterItemList() {
       var _self = this;
       this.$ajax
@@ -275,7 +335,6 @@ export default {
               "userId": res.data.data.userId,
               "userName": res.data.data.userName
             }
-            debugger;
             let values = '';
             if (res.data.data.color == 'PURPLE') {
               values = 'theme1';
@@ -291,11 +350,10 @@ export default {
             }
             window.localStorage.setItem('data-theme', values);
             window.document.documentElement.setAttribute('data-theme', values);
-            this.$store.commit('setThemes',res.data.data.color);
+            this.$store.commit('setThemes', res.data.data.color);
             obj = JSON.stringify(obj);
             localStorage.setItem("userSet", obj);
-          } else {
-          }
+          } else {}
         })
     },
     goRoute: function(name) {
@@ -392,9 +450,9 @@ export default {
 .warncon {
   width: 66px;
   height: 66px;
-  background: url("../../assets/images/warnicon.png");
-  background-repeat: no-repeat;
-  background-size: contain;
+  /*  background: url("../../assets/images/warnicon.png");
+ background-repeat: no-repeat;
+ background-size: contain; */
   float: left
 }
 
@@ -629,9 +687,9 @@ export default {
 .moreSys {
   width: 66px;
   height: 66px;
-  background: url("../../assets/images/moreicon.png");
+  /* background: url("../../assets/images/moreicon.png");
   background-repeat: no-repeat;
-  background-size: contain;
+  background-size: contain; */
   float: left
 }
 
@@ -663,10 +721,12 @@ export default {
   margin-left: -15px;
   margin-right: -15px;
 }
+
 .warn-popover .theme-li {
   border-bottom: 1px solid #d6d6d6;
   line-height: 5px;
   height: 5px;
   margin-bottom: 10px;
 }
+
 </style>

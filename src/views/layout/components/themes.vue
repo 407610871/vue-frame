@@ -14,15 +14,14 @@
           <el-col :span="3" class="bank">bank</el-col>
           <el-form-item label="主题颜色:" prop="themeName">
             <el-select v-model="ruleForm.themeName" placeholder="请选择">
-              <el-option :label="item" :value="item" :key="item" v-for="item in themes"></el-option>
+              <el-option :label="item.label" :value="item.value" :key="item.value" v-for="item in themes">
+                <span :class="item.value" style="width:16px;height:16px;border-radius:50%; float: left; margin-right:15px; margin-top:8px;"></span>
+                <span>{{item.label}}</span>
+              </el-option>
             </el-select>
           </el-form-item>
         </el-col>
-        <el-col :span="24" class="thDe">
-          <el-col :span="8" class="bank">bank</el-col>
-          <el-checkbox v-model="ruleForm.delete"></el-checkbox>是否选用暗色主题
-        </el-col>
-        <el-col :span="24" class="mt30 tcenter ftpbtn">
+        <el-col :span="24" class="tcenter ftpbtn">
           <el-form-item class="mrf20">
             <el-button type="primary" size="small" @click="save()">保存</el-button>
             <el-button @click="closeDialog()" size="small">关闭</el-button>
@@ -45,7 +44,13 @@ export default {
       versionDes: '',
       versionDate: '',
       loading: false,
-      themes: ['PURPLE', 'BLUE', 'GREEN', 'YELLOW'],
+      themes: [
+        { value: 'DEFAULT', label: '默认' },
+        { value: 'PURPLE', label: '紫' },
+        { value: 'BLUE', label: '蓝' },
+        { value: 'GREEN', label: '绿' },
+        { value: 'YELLOW', label: '金' }
+      ],
       ruleForm: {
         themeName: '',
         default: false
@@ -59,9 +64,27 @@ export default {
     };
   },
   mounted() {
-
+    this._getDefault();
   },
   methods: {
+    _getColor() {
+     
+    },
+    _getDefault() {
+      let userProperty = window.localStorage.getItem('data-theme');
+      if (userProperty == 'theme1') {
+        this.ruleForm.themeName = 'PURPLE';
+      } else if (userProperty == 'theme2') {
+        this.ruleForm.themeName = 'GREEN';
+      } else if (userProperty == 'theme3') {
+        this.ruleForm.themeName = 'BLUE';
+      } else if (userProperty == 'theme4') {
+        this.ruleForm.themeName = 'YELLOW';
+      }
+      else{
+        this.ruleForm.themeName = 'DEFAULT';
+      }
+    },
     //关闭对话框
     closeDialog() {
       this.$emit('closeDia', );
@@ -83,6 +106,9 @@ export default {
           this.$alert("设置主题成功", "信息", {
             confirmButtonText: "确定",
             callback: action => {
+              if (_self.ruleForm.themeName == 'DEFAULT') {
+                value = 'theme';
+              }
               if (_self.ruleForm.themeName == 'PURPLE') {
                 value = 'theme1';
               }
@@ -97,8 +123,8 @@ export default {
               }
               window.localStorage.setItem('data-theme', value);
               window.document.documentElement.setAttribute('data-theme', value);
-              _self.$store.commit('setThemes',_self.ruleForm.themeName);
-               this.$emit('closeDia', );
+              _self.$store.commit('setThemes', _self.ruleForm.themeName);
+              this.$emit('closeDia', );
             }
           });
         } else {
@@ -125,6 +151,9 @@ export default {
 @import "@/assets/css/base.scss";
 @import "@/assets/css/dialog.scss";
 .themesDialog {
+  .ftpbtn {
+    margin-top: 110px;
+  }
   .el-select {
     width: 64%;
   }
@@ -144,6 +173,9 @@ export default {
       line-height: 30px;
       height: 30px;
     }
+    span {
+      float: left;
+    }
   }
   .tcenter .el-form-item--medium .el-form-item__content {
     text-align: right;
@@ -154,7 +186,27 @@ export default {
 }
 
 .themesDialog .el-dialog {
-  height: 330px !important;
+  height: 350px !important;
+}
+
+span.DEFAULT {
+  background: #47505d;
+}
+
+span.PURPLE {
+  background: #54448f;
+}
+
+span.BLUE {
+  background: #1ca9de;
+}
+
+span.YELLOW {
+  background: #8e764b;
+}
+
+span.GREEN {
+  background: #448f6b;
 }
 
 </style>

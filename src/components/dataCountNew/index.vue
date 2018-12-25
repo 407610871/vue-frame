@@ -12,13 +12,13 @@
   </div>
 </template>
 <script>
- import { mapState } from 'vuex'
+import { mapState } from 'vuex'
 export default {
   name: 'dataCount',
   data() {
     return {
       defaultColor: ["#f90", "#069", "#999", "#900", "#47aa65", "#ffd866", "#66efff"],
-      userThemes:{}
+      userThemes: {}
     }
   },
   props: {
@@ -28,8 +28,8 @@ export default {
     }
   },
   computed: {
-    getUserThemes(){
-     return this.$store.state.userThemes;
+    getUserThemes() {
+      return this.$store.state.userThemes;
     },
     mydata: function() {
       var max = 0;
@@ -58,26 +58,27 @@ export default {
   },
   methods: {
     _getColor() {
+
       if (window.localStorage.getItem('data-theme') == 'theme1') {
         this.defaultColor = [];
         this.defaultColor = ['#000e6a', '#5567be', '#7385d8', '#91a4f2', "#47aa65", "#ffd866", "#66efff"];
-      }
-      if (window.localStorage.getItem('data-theme') == 'theme2') {
+      } else if (window.localStorage.getItem('data-theme') == 'theme2') {
         this.defaultColor = [];
         this.defaultColor = ['#448f6b', '#68a587', '#9ec5b2', '#dae9e1', '#91a4f2', "#47aa65", "#ffd866"];
-      }
-      if (window.localStorage.getItem('data-theme') == 'theme3') {
+      } else if (window.localStorage.getItem('data-theme') == 'theme3') {
         this.defaultColor = [];
         this.defaultColor = ['#1ca9de', '#48b9e4', '#89d2ee', '#d2eef8', '#91a4f2', "#47aa65", "#ffd866"];
-      }
-      if (window.localStorage.getItem('data-theme') == 'theme4') {
+      } else if (window.localStorage.getItem('data-theme') == 'theme4') {
         this.defaultColor = [];
         this.defaultColor = ['#8e764b', '#a4906d', '#c4b8a1', '#e8e4db', '#91a4f2', "#47aa65", "#ffd866"];
+      } else {
+        this.defaultColor = [];
+        this.defaultColor = ["#f90", "#069", "#999", "#900", "#47aa65", "#ffd866", "#66efff"];
       }
     }
   },
-  watch:{
-    getUserThemes(){
+  watch: {
+    getUserThemes() {
       //console.log("454245");
       this._getColor();
     }

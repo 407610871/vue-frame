@@ -205,3 +205,6 @@
 .el-pagination.is-background .el-pager li:not(.disabled):hover {
     @include el-page-color($el-table-td-hover);
 }
+.el-checkbox__inner {
+   @include el-border($el-table-thead-background-theme);
+}
