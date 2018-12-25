@@ -619,7 +619,7 @@ this.pageNum=1;
             .then(function(res) {
               _self.loading = false;
               if (res.data.success) {
-                _self.doMsg("重新汇聚成功", "success");
+                _self.doMsg("汇聚任务已经生成，任务将在接下来的周期执行", "success");
                 _self.init();
               } else {
                 _self.doMsg(res.data.message, "error");

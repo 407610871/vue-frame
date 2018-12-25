@@ -36,9 +36,11 @@ let Authen = {
           let isAdmin = isInArray("ROLE_REGISTERSERVER_ADMIN", adminArr);
           let roleName = isAdmin ? "管理员" : "普通用户";
           let userName = Authen.userInfo.name;
+          let userId = Authen.userInfo.sub;
           let obj = {
             userName: userName,
-            roleName: roleName
+            roleName: roleName,
+            userId : userId
           };
           store.commit("setUserInfo", obj);
           watch.token = keycloak.token;

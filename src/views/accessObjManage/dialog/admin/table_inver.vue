@@ -337,8 +337,8 @@ export default {
   padding: 20px 30px;
   .el-table .cell .el-button--primary {
     color: #fff;
-    background-color: #489bd9;
-    border-color: #489bd9;
+   /*  background-color: #489bd9;
+   border-color: #489bd9; */
     display: inline-block;
   }
 }

@@ -208,3 +208,7 @@
 .el-checkbox__inner {
    @include el-border($el-table-thead-background-theme);
 }
+.comTable .el-table .cell .el-button--primary {
+  
+    @include el-button--primary($el-primary-theme);
+}
