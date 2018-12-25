@@ -3,7 +3,7 @@
       <div class="moreSearch" style="margin-bottom:10px;">
         <form-fliter :ObjManage="ObjManage" v-if="cleanData" @highMore="moreHeight" @highSeaech="hightrue" 
           v-bind:formCollapse="collapse" v-bind:dataObj="formFilterData" @doSearch="search" @formFilter="changeFormFilter" />
-        <div class="table-tools">
+        <div class="table-tools clearfix">
           <el-tooltip v-if="type=='mysql'|| type=='oracle'|| type=='postgresql' || type=='sqlserver'||type=='mongodb'" class="item" effect="light" content="接入源更新" placement="top"> <span class="updatelogo right-btn" v-on:click="updataSource" style="margin-left:10px; margin-right: 50px;float:right"></span> </el-tooltip>
           <table-inver v-if="type=='mysql'|| type=='oracle'|| type=='postgresql' || type=='sqlserver'" class="right-btn" :pdata="tablePa" style="float:right"></table-inver>
           <path-ftp class="right-btn" @refresh="loadTable" v-if="type=='ftp'" style="float:right"></path-ftp>
@@ -470,7 +470,7 @@ export default {
             _self.currentPage = _self.tableParams.pageNum;
             _self.pageShow = true;
           } else {
-            _self.$alert("加载接入对象列表失败", "提示", {
+            _self.$alert(res.data.message, "提示", {
               confirmButtonText: "确定"
             });
             _self.pageShow = false;
