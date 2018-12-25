@@ -1,64 +1,67 @@
 <template>
   <div class="dashboard-container" >
-        <div class="filter-container ">
-            <form-fliter style="padding-top: 20px" v-if="queryParamReady" @highMore="moreHeight" 
-            @highSeaech="hightrue" v-bind:formCollapse="collapse" v-bind:dataObj="formFilterData" 
-            @doSearch="search" @formFilter="changeFormFilter" />
-            <div class="count-container">
-                <div class="count-title">
-                    <label>数据源注册总数</label>
-                    <div class="all-number">{{countTotal}}</div>
-                </div>
-                <div class="line"></div>
-                <dataCount v-bind:dataObj="count1Data" class="countData" />
-                <div class="line"></div>
-                <dataCount v-bind:dataObj="count2Data" class="countData" />
-                <div class="regbtn fr">
-                    <reg-dialog @refreshTable="loadTable"   @storeReady="storeReady"  @refreshCount="countTotal++"></reg-dialog>
-                </div>
-            </div>
+      <div class="main">
+          <div class="filter-container">
+              <form-fliter style="padding-top: 20px" v-if="queryParamReady" @highMore="moreHeight" 
+              @highSeaech="hightrue" v-bind:formCollapse="collapse" v-bind:dataObj="formFilterData" 
+              @doSearch="search" @formFilter="changeFormFilter" />
+              <div class="count-container">
+                  <div class="count-title">
+                      <label>数据源注册总数</label>
+                      <div class="all-number">{{countTotal}}</div>
+                  </div>
+                  <div class="line"></div>
+                  <dataCount v-bind:dataObj="count1Data" class="countData" />
+                  <div class="line"></div>
+                  <dataCount v-bind:dataObj="count2Data" class="countData" />
+                  <div class="regbtn fr">
+                      <reg-dialog @refreshTable="loadTable"   @storeReady="storeReady"  @refreshCount="countTotal++"></reg-dialog>
+                  </div>
+              </div>
+          </div>
+
+          <el-table v-loading="loading" :data="mainTableData" stripe border style="width: 100%;" tooltip-effect="light">
+                  <el-table-column label="接入源名称" width="250" show-overflow-tooltip>
+                      <template slot-scope="scope">
+                          <a class="underdone" href="javascript:void(0)" v-on:click="goSubPage(scope.$index,scope.row.dataSourceName)">{{ scope.row.name }}</a>
+                      </template>
+                  </el-table-column>
+                  <el-table-column prop="id" label="接入源ID" min-width="180">
+                  </el-table-column>
+                  <el-table-column prop="dataSourceName" label="接入源类型" min-width="140">
+                  </el-table-column>
+                  <el-table-column label="对接平台" min-width="140">
+                      <template slot-scope="scope">
+                          {{getPlatfrom(scope.row.platform)}}
+                      </template>
+                  </el-table-column>
+                  <el-table-column label="接入数据来源" min-width="140">
+                      <template slot-scope="scope">
+                          {{getNetwork(scope.row.network)}}
+                      </template>
+                  </el-table-column>
+                  <el-table-column prop="createTime" label="注册时间" min-width="160">
+                  </el-table-column>
+                  <el-table-column label="操作" min-width="140">
+                      <template slot-scope="scope">
+                          <div class="lofile">
+                              <edit-dialog :acId="scope.row.id" @refreshTable="loadTable"  @storeReady="storeReady"></edit-dialog>
+
+                              <el-tooltip class="item" effect="light" content="复制" placement="top" v-if="scope.row.dataSourceName!='本地文件'">
+                                  <i @click="handleCopy(scope.$index, scope.row)" class="enc-icon-fuzhi table-action-btn"></i>
+                              </el-tooltip>
+                              <el-tooltip class="item" effect="light" content="废止" placement="top">
+                                  <i @click="handleDelete(scope.$index, scope.row)" class="enc-icon-feizhi table-action-btn"></i>
+                              </el-tooltip>
+                          </div>
+                      </template>
+                  </el-table-column>
+          </el-table>
         </div>
 
-        <el-table v-loading="loading" :data="mainTableData" stripe border style="width: 100%;" tooltip-effect="light">
-                <el-table-column label="接入源名称" width="250" show-overflow-tooltip>
-                    <template slot-scope="scope">
-                        <a class="underdone" href="javascript:void(0)" v-on:click="goSubPage(scope.$index,scope.row.dataSourceName)">{{ scope.row.name }}</a>
-                    </template>
-                </el-table-column>
-                <el-table-column prop="id" label="接入源ID" min-width="180">
-                </el-table-column>
-                <el-table-column prop="dataSourceName" label="接入源类型" min-width="140">
-                </el-table-column>
-                <el-table-column label="对接平台" min-width="140">
-                    <template slot-scope="scope">
-                        {{getPlatfrom(scope.row.platform)}}
-                    </template>
-                </el-table-column>
-                <el-table-column label="接入数据来源" min-width="140">
-                    <template slot-scope="scope">
-                        {{getNetwork(scope.row.network)}}
-                    </template>
-                </el-table-column>
-                <el-table-column prop="createTime" label="注册时间" min-width="160">
-                </el-table-column>
-                <el-table-column label="操作" min-width="140">
-                    <template slot-scope="scope">
-                        <div class="lofile">
-                            <edit-dialog :acId="scope.row.id" @refreshTable="loadTable"  @storeReady="storeReady"></edit-dialog>
-
-                            <el-tooltip class="item" effect="light" content="复制" placement="top" v-if="scope.row.dataSourceName!='本地文件'">
-                                <i @click="handleCopy(scope.$index, scope.row)" class="enc-icon-fuzhi table-action-btn"></i>
-                            </el-tooltip>
-                            <el-tooltip class="item" effect="light" content="废止" placement="top">
-                                <i @click="handleDelete(scope.$index, scope.row)" class="enc-icon-feizhi table-action-btn"></i>
-                            </el-tooltip>
-                        </div>
-                    </template>
-                </el-table-column>
-        </el-table>
         <div class="enc-pagination">
-                <el-pagination v-if="queryParamReady" style="float:right; margin:10px;" @current-change="goPage" background :page-size.sync="pageSize" :total="mainTableDataTotal" layout="prev, pager, next, jumper" :current-page.sync="currentPage">
-                </el-pagination>
+            <el-pagination v-if="queryParamReady" style="float:right; margin:10px;" @current-change="goPage" background :page-size.sync="pageSize" :total="mainTableDataTotal" layout="prev, pager, next, jumper" :current-page.sync="currentPage">
+            </el-pagination>
         </div>
   </div>
 </template>
@@ -535,6 +538,13 @@ export default {
 
 <style lang="scss" scoped>
 .dashboard-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  .main {
+    flex: 1;
+    overflow: auto;
+  }
   .filter-container {
     padding-top: 5px;
     background: #fff;

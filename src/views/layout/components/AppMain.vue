@@ -26,7 +26,7 @@ export default {
   height: calc(100vh - 113px);
   width: 100%;
   position: relative;
-  overflow: auto;
+  overflow: hidden;
   background: #eff3f6;
 }
 </style>

@@ -1,5 +1,6 @@
 <template>
   <div style="height:100%;" class="dashboard-container" >
+    <div class="main">
       <div class="moreSearch" style="margin-bottom:10px;">
         <form-fliter :ObjManage="ObjManage" v-if="cleanData" @highMore="moreHeight" @highSeaech="hightrue" 
           v-bind:formCollapse="collapse" v-bind:dataObj="formFilterData" @doSearch="search" @formFilter="changeFormFilter" />
@@ -178,6 +179,7 @@
             </template>
           </el-table-column>
       </el-table>
+    </div>
       <div class="enc-pagination">
         <el-pagination v-if="queryParamReady" v-show="pageShow" style="float:right; margin:10px;" @current-change="goPage" background :page-size="pageSize" :total="mainTableDataTotal" layout="prev, pager, next, jumper" :current-page.sync="currentPage">
         </el-pagination>
@@ -726,6 +728,13 @@ export default {
 
 .dashboard-container {
   background: #fff;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  .main {
+    flex: 1;
+    overflow: auto;
+  }
   .filter-container {
     padding-top: 10px;
     background: #fff;
