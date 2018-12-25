@@ -210,7 +210,7 @@ export default {
         })
       });
       const promist1 = new Promise((resolve, reject) => {
-        this.$ajax.get(window.ENV.API_DACM + '/caccesssysRelationWorkInfo/getSystemSet.do').then((res) => {
+        this.$ajax.get(window.ENV.API_DACM + '/caccesssysRelationWorkInfo/getSystemSet').then((res) => {
           if (res.data.result == 'success') {
             resolve(res);
 

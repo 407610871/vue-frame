@@ -74,7 +74,6 @@ export default {
       }).then(res => {
          let _self = this;
         if (res.data.success) {
-          debugger;
           if (res.data.data.length != 0) {
             _self.dis = true;
             _self.schemaMappingDTOList = res.data.data;

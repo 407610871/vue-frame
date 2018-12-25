@@ -430,7 +430,6 @@ export default {
       }
     },
     finish() {
-      // debugger;
       //间隔执行
       var pollIntervalMs = "-1";
       var actech = this.ruleForm.actech;

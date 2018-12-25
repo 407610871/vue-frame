@@ -1,21 +1,18 @@
 <template>
-  <div>
-    <el-container style="height:100%;" class="dashboard-container" v-loading="loading">
-      <!-- <el-header class="filter-container" > -->
+  <div style="height:100%;" class="dashboard-container" >
       <div class="moreSearch" style="margin-bottom:10px;">
-        <!-- <a v-on:click="collapseExpand" class="right-btn collapse-btn"><i :class="{'el-icon-circle-plus':collapse,'el-icon-remove':!collapse}"></i></a> -->
-        <formFliter :ObjManage="ObjManage" v-if="cleanData" @highMore="moreHeight" @highSeaech="hightrue" v-bind:formCollapse="collapse" v-bind:dataObj="formFilterData" @doSearch="search" @formFilter="changeFormFilter" />
-        <!-- </el-header> -->
+        <form-fliter :ObjManage="ObjManage" v-if="cleanData" @highMore="moreHeight" @highSeaech="hightrue" 
+          v-bind:formCollapse="collapse" v-bind:dataObj="formFilterData" @doSearch="search" @formFilter="changeFormFilter" />
         <div class="table-tools">
-          <!-- <i title="数据更新" class="enc-icon-shujugengxin"  v-on:click="updataSource"><i> -->
           <el-tooltip v-if="type=='mysql'|| type=='oracle'|| type=='postgresql' || type=='sqlserver'||type=='mongodb'" class="item" effect="light" content="接入源更新" placement="top"> <span class="updatelogo right-btn" v-on:click="updataSource" style="margin-left:10px; margin-right: 50px;float:right"></span> </el-tooltip>
           <table-inver v-if="type=='mysql'|| type=='oracle'|| type=='postgresql' || type=='sqlserver'" class="right-btn" :pdata="tablePa" style="float:right"></table-inver>
           <path-ftp class="right-btn" @refresh="loadTable" v-if="type=='ftp'" style="float:right"></path-ftp>
           <el-tooltip v-if="type=='mysql'|| type=='oracle'|| type=='postgresql' || type=='sqlserver' || type=='file'" class="item" effect="light" content="批量采集" placement="top" style="float:right;"> <span class="setlogo right-btn" @click="showTask()"></span> </el-tooltip>
         </div>
       </div>
-      <el-main class="main-container icon-dai">
-        <el-table ref="multipleTable" :data="mainTableData" stripe :height="tableHeight" border style="width: 100%" tooltip-effect="light" :row-class-name="tableRowClassName" @selection-change="handleSelectionChange">
+      
+      <el-table ref="multipleTable" v-loading="loading" :data="mainTableData" stripe
+          border style="width: 100%" tooltip-effect="light" :row-class-name="tableRowClassName" @selection-change="handleSelectionChange">
           <el-table-column type="selection">
           </el-table-column>
           <!-- ftp -->
@@ -28,13 +25,13 @@
           </el-table-column>
           <el-table-column prop="extendParams.filePath" label="路径" v-if="type=='ftp'" show-overflow-tooltip>
           </el-table-column>
-          <el-table-column label="是否删除文件" v-if="type=='ftp'" show-overflow-tooltip>
+          <el-table-column label="是否删除文件" v-if="type=='ftp'" width="160" show-overflow-tooltip>
             <template slot-scope="scope">
               <span v-if="scope.row.extendParams.isdelet=='true'">是</span>
               <span v-if="scope.row.extendParams.isdelet=='false'">否</span>
             </template>
           </el-table-column>
-          <el-table-column prop="extendParams.diyComments" label="自定义注释" v-if="type=='ftp'" show-overflow-tooltip>
+          <el-table-column prop="extendParams.diyComments" label="自定义注释" width="160" v-if="type=='ftp'" show-overflow-tooltip>
             <template slot-scope="scope">
               <div>
                 <el-tooltip class="item" effect="light" content="修改" placement="top" show-overflow-tooltip>
@@ -57,7 +54,7 @@
               <span>{{scope.row.comments}}</span>
             </template>
           </el-table-column>
-          <el-table-column prop="lastChangeTime" label="最后更新时间" v-if="type=='mongodb'" show-overflow-tooltip>
+          <el-table-column prop="lastChangeTime" label="最后更新时间" v-if="type=='mongodb'" min-width="180" show-overflow-tooltip>
           </el-table-column>
           <!-- RabbitMQ -->
           <el-table-column prop="name" label="队列名称" v-if="type=='rabbitmq'" show-overflow-tooltip>
@@ -146,47 +143,51 @@
           </el-table-column>
           <el-table-column prop="collectName" label="数据采集方式" v-if="type=='oracle' || type=='mysql' || type=='postgresql'" min-width="160" show-overflow-tooltip>
           </el-table-column>
-          <el-table-column label="操作" width="160">
+          <el-table-column label="操作" width="160" align="left">
             <template slot-scope="scope">
-              <!-- <el-button size="mini" v-on:click="updataSourceSingle(scope.$index, scope.row)" title="数据量更新">数据量更新</el-button> -->
-              <el-tooltip class="item" effect="light" content="数据量更新" placement="top" v-if="type=='mysql'|| type=='oracle'|| type=='postgresql' || type=='sqlserver'">
+              <el-tooltip class="item" effect="light" content="数据量更新" placement="top" 
+                v-if="type=='mysql'|| type=='oracle'|| type=='postgresql' || type=='sqlserver'">
                 <i class="enc-icon-shujugengxin" v-on:click="updataSourceSingle(scope.$index, scope.row)" title="数据量更新"></i>
               </el-tooltip>
               <div class="survey">
                 <singleTask v-if="type=='mysql'|| type=='oracle'|| type=='postgresql' || type=='sqlserver'" :pdata="scope.row" @fre="loadTable()"></singleTask>
               </div>
               <div class="survey">
-                <userSurvey v-if="type=='mysql'|| type=='oracle'|| type=='postgresql' || type=='sqlserver'" :pdata="scope.row" @fre="loadTable()"></userSurvey>
+                <userSurvey v-if="type=='mysql'|| type=='oracle'|| type=='postgresql' || type=='sqlserver'" 
+                :pdata="scope.row" @fre="loadTable()"></userSurvey>
               </div>
-              <div class="survey" v-if="(type=='mysql'&&scope.row.accessConnectorSource!=undefined&&scope.row.accessConnectorSource.isPeriod!='0')|| (type=='oracle'&&scope.row.accessConnectorSource!=undefined&&scope.row.accessConnectorSource.isPeriod!='0')|| (type=='postgresql'&&scope.row.accessConnectorSource!=undefined&&scope.row.accessConnectorSource.isPeriod!='0') || (type=='sqlserver'&&scope.row.accessConnectorSource!=undefined&&scope.row.accessConnectorSource.isPeriod!='0')">
-                <!-- <data-inver :pdata="scope.row" @fre="loadTable()"></data-inver> -->
+              <div class="survey" v-if="(type=='mysql'&&scope.row.accessConnectorSource!=undefined&&scope.row.accessConnectorSource.isPeriod!='0')
+                || (type=='oracle'&&scope.row.accessConnectorSource!=undefined&&scope.row.accessConnectorSource.isPeriod!='0')
+                || (type=='postgresql'&&scope.row.accessConnectorSource!=undefined&&scope.row.accessConnectorSource.isPeriod!='0') 
+                || (type=='sqlserver'&&scope.row.accessConnectorSource!=undefined&&scope.row.accessConnectorSource.isPeriod!='0')">
                 <el-tooltip class="item" effect="light" content="数据核验" placement="top">
                   <i class="enc-icon-shujuheyan" @click="dataInverCheck(scope.row)"></i>
                 </el-tooltip>
               </div>
-              <div class="survey" v-if="type!='mysql' && type!='oracle' && type!='sqlserver' && type!='postgresql'">
-                <norela-coll :pdata="scope.row" :type="type" @fre="loadTable()"></norela-coll>
+              <div class="survey" style="width:100%">
+                <div class="survey-operate">
+                  <norela-coll :pdata="scope.row" :type="type" @fre="loadTable()" v-if="type!='mysql' && type!='oracle' && type!='sqlserver' && type!='postgresql'"></norela-coll> 
+                  <div>
+                    <el-tooltip effect="light" content="删除" placement="top" v-if="type==='ftp' && !scope.row.exitTask">
+                      <i class="el-icon-delete" @click="deleteFtp(scope.row)"></i>
+                    </el-tooltip>
+                  </div>
+                </div>
               </div>
-              <!--  <div class="survey" v-if="jrtype=='ftp'">
-               <path-ftp></path-ftp>
-             </div> -->
+              
             </template>
           </el-table-column>
-        </el-table>
-      </el-main>
-      <el-footer>
-        <div class="enc-pagination">
-          <el-pagination v-if="queryParamReady" v-show="pageShow" style="float:right; margin:10px;" @current-change="goPage" background :page-size="pageSize" :total="mainTableDataTotal" layout="prev, pager, next, jumper" :current-page.sync="currentPage">
-          </el-pagination>
-        </div>
-      </el-footer>
-    </el-container>
+      </el-table>
+      <div class="enc-pagination">
+        <el-pagination v-if="queryParamReady" v-show="pageShow" style="float:right; margin:10px;" @current-change="goPage" background :page-size="pageSize" :total="mainTableDataTotal" layout="prev, pager, next, jumper" :current-page.sync="currentPage">
+        </el-pagination>
+      </div>
     <!-- 任务详情 -->
     <dialogTaskDetail :reqObj="reqObj" v-if="showTaskDetail" v-on:closeDia="showTaskDetail=false"></dialogTaskDetail>
     <!--  批量采集 -->
     <set-task v-if="showSetTask" class="right-btn" :rowList="rowList" :jrtype="type" @close="closeTask()" @fre="loadTask()"></set-task>
     <!-- 数据核验 -->
-    <DialogIsCheck v-if="dialogVisible" :msgCheck="msgCheck" @closeDiaChk="dialogVisible=false" title = "数据核验"></DialogIsCheck>
+    <dialog-is-check v-if="dialogVisible" :msgCheck="msgCheck" @closeDiaChk="dialogVisible=false" title = "数据核验"></dialog-is-check>
   </div>
 </template>
 <script>
@@ -200,6 +201,8 @@ import pathFtp from "@/views/mainLay/dialog/path_ftp";
 import norelaColl from "@/views/mainLay/dialog/norela_coll";
 import DialogTaskDetail from "@/views/mainLay/dialog/DialogTaskDetails";
 import DialogIsCheck from "@/views/task/DialogIsCheck";
+import { getHdfsFormat, ctablesDatas, diyComments, synchronize, refreshAmount, ctablesDelete} from "@/api/commonApi.js";
+
 export default {
   name: "DashboardAdmin",
   data() {
@@ -312,16 +315,9 @@ export default {
   watch: {
     tableParams(newVal, oldVal) {
       if (JSON.stringify(newVal) != JSON.stringify(oldVal)) {
-        // debugger;
         if (newVal.deptId == oldVal.deptId) {
-          //判断树的调度不会影响
-          // if (
-          //   newVal.dataRange.toString() == oldVal.dataRange.toString() &&
-          //   newVal.objectType.toString() == oldVal.objectType.toString()
-          // ) {
           //判断高级搜索的词不会进入
            this.loadTable();
-          // }
         }
       }
     },
@@ -330,7 +326,6 @@ export default {
       this.searchParams.condition = "";
       this.searchParams.objectType = [];
       this.searchParams.dataRange = [];
-      // console.log(this.searchParams)
 
     }
   },
@@ -345,18 +340,9 @@ export default {
     this.isParquet();
   },
   created() {
-    // this.$root.eventHub.$on('search', (keyword) => {
-    //   this.search(keyword);
-    // })
-    // this.tableParams.condition="";
-
-    //this.loadTable();storeReady
-// this.storeReady();
-    // this.loadTable();
 
   },
   methods: {
-  
     //数据核验
     dataInverCheck(row){
       this.dialogVisible = true;
@@ -369,7 +355,7 @@ export default {
       _self
         .$ajax({
           methods: "get",
-          url: this.GLOBAL.api.API_DACM + "/task/getHdfsFormat",
+          url: this.GLOBAL.api.API_DACM + getHdfsFormat,
           params: {}
         })
         .then(res => {
@@ -379,7 +365,6 @@ export default {
           else if(res.data.hdfsFormat=='json'){
             _self.$store.state.commit('setParquet',false);
           }
-          //console.log(_self.$store.state.isParquet);
         })
     },
     moreHeight(data) {
@@ -456,12 +441,8 @@ export default {
       paramsObj.dataRange = this.searchParams.dataRange.join(",");
       paramsObj.accessSysId = parseInt(this.$route.params.sourceId);
       paramsObj.objInfoId  = urlIds;
-      console.log(this.searchParams)
       this.$ajax({
-          // url: window.ENV.API_DACM+'ctables/datas',
-          url: window.ENV.API_DACM + "/ctables/datas",
-          //  url:'http://10.19.160.93:8080/DACM/ctables/datas',
-
+          url: window.ENV.API_DACM + ctablesDatas,
           method: "post",
           data: JSON.stringify(paramsObj),
           headers: {
@@ -500,7 +481,6 @@ export default {
         .catch(function(err) {
           _self.pageShow = false;
           _self.mainTableData = [];
-          console.log(err);
           _self.loading = false;
           _self.$alert("加载接入对象列表失败", "提示", {
             confirmButtonText: "确定"
@@ -510,9 +490,8 @@ export default {
     changeName: function(index, row) {
       var _self = this;
       this.loading = true;
-      // this.$ajax.post('http://10.19.160.25:8080/DACM/ctables/diyComments',{
       this.$ajax
-        .post(window.ENV.API_DACM + "/ctables/diyComments", {
+        .post(window.ENV.API_DACM + diyComments, {
           objInfoId: row.id,
           value: this.editingRow.diyComments
         })
@@ -528,7 +507,6 @@ export default {
           _self.loading = false;
         })
         .catch(function(err) {
-          console.log(err);
           _self.loading = false;
           _self.$alert("字段中文名称修改失败", "提示", {
             confirmButtonText: "确定"
@@ -536,8 +514,6 @@ export default {
         });
     },
     setStore: function(obj) {
-      // debugger;
-      console.log(obj)
       let storeData = JSON.parse(
         JSON.stringify(this.$store.state.queryParams[this.$route.name])
       );
@@ -548,7 +524,6 @@ export default {
         name: this.$route.name,
         data: storeData
       });
-      console.log(this.$store.state.queryParams)
     },
     goPage: function(val) {
       this.setStore({
@@ -595,7 +570,7 @@ export default {
       self.loadTable = true;
       _self.loading = true;
       this.$ajax
-        .get(window.ENV.API_DACM + "/ctables/synchronize", {
+        .get(window.ENV.API_DACM + synchronize, {
           params: {
             accessSysId: this.$route.params.sourceId
           }
@@ -614,7 +589,6 @@ export default {
           }
         })
         .catch(function(err) {
-          console.log(err);
           _self.$alert("更新失败", "提示", {
             confirmButtonText: "确定"
           });
@@ -623,7 +597,7 @@ export default {
     updataSourceSingle: function(index, row) {
       var _self = this;
       this.$ajax
-        .get(window.ENV.API_DACM + "/ctables/refreshAmount", {
+        .get(window.ENV.API_DACM + refreshAmount, {
           params: {
             objectInfoId: row.id
           }
@@ -644,7 +618,6 @@ export default {
           }
         })
         .catch(function(err) {
-          console.log(err);
           _self.$alert("更新失败", "提示", {
             confirmButtonText: "确定"
           });
@@ -655,20 +628,13 @@ export default {
       this.rowList = val;
     },
     changeFormFilter: function(fliterParams) {
-      console.log(fliterParams);
       this.searchParams = fliterParams;
       fliterParams.pageNum = 1;
       this.setStore(fliterParams);
-
-      // fliterParams.keyword = "";
     },
     storeReady() {
-      // var queryParams = this.$store.state.queryParams.accessObjManage;
       if (this.$store.state.pageReady) {
-                // setFliter();
-  // this.setFliter();
         this.loadTable();
-       
       } else {
         var _self = this;
         setTimeout(function() {
@@ -678,12 +644,9 @@ export default {
     },
     setFliter() {
       var queryParams = this.$store.state.queryParams[this.$route.name];
-
-
-
       let objectType = queryParams.objectType ? queryParams.objectType : [];
       let dataRange = queryParams.dataRange ? queryParams.dataRange : [];
- objectType == true ? [] : objectType;
+      objectType == true ? [] : objectType;
       dataRange == true ? [] : dataRange;
       this.formFilterData = [{
           name: "接入对象类型：",
@@ -728,6 +691,19 @@ export default {
     doDetail(index, row) {
       this.reqObj = row;
       this.showTaskDetail = true;
+    },
+    // ftp文件路径删除
+    deleteFtp(row){
+      let params = {
+        objInfoId: `${row.id}`
+      }
+      this.$ajax.post(window.ENV.API_DACM + ctablesDelete, params).then(res=>{
+          if(res.data.success){
+            this.$message("success", "删除成功");
+          } else {
+            this.$message("error", res.data.message);
+          }
+      })
     }
   }
 };
@@ -801,6 +777,15 @@ export default {
 
 .survey i {
   font-size: 20px;
+}
+.survey-operate {
+  display: flex;
+  justify-content: left;
+  align-content: center;
+}
+.survey-operate .el-icon-delete{
+  margin-left: 10px;
+  margin-top: 5px;
 }
 
 .cell i {

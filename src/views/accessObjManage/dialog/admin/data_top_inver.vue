@@ -126,7 +126,6 @@ export default {
     },
     //查询表数据
     _checkData() {
-      debugger;
       this.$ajax({
         method: "GET",
         url: this.GLOBAL.api.API_DACM + '/ccheckData/tableNum',
@@ -137,7 +136,6 @@ export default {
           taskId: this.taskId
         }
       }).then(res => {
-        debugger;
         let _self = this;
         if (res.data.success == "true" || res.data.success == true) {
           res.data = res.data.data;

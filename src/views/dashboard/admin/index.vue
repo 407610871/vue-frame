@@ -1,8 +1,9 @@
 <template>
-<div>
-    <el-container style="height:100%" class="dashboard-container" v-loading="loading">
-        <div class="filter-container">
-            <formFliter style="padding-top: 20px" v-if="queryParamReady"    @highMore="moreHeight"    @highSeaech="hightrue" v-bind:formCollapse="collapse" v-bind:dataObj="formFilterData" @doSearch="search" @formFilter="changeFormFilter" />
+  <div class="dashboard-container" >
+        <div class="filter-container ">
+            <form-fliter style="padding-top: 20px" v-if="queryParamReady" @highMore="moreHeight" 
+            @highSeaech="hightrue" v-bind:formCollapse="collapse" v-bind:dataObj="formFilterData" 
+            @doSearch="search" @formFilter="changeFormFilter" />
             <div class="count-container">
                 <div class="count-title">
                     <label>数据源注册总数</label>
@@ -17,9 +18,8 @@
                 </div>
             </div>
         </div>
-        <el-main style="padding-bottom:0;">
-            <router-view />
-            <el-table :data="mainTableData" stripe :height="tableHeight" border style="width: 100%;min-height:300px;" tooltip-effect="light">
+
+        <el-table v-loading="loading" :data="mainTableData" stripe border style="width: 100%;" tooltip-effect="light">
                 <el-table-column label="接入源名称" width="250" show-overflow-tooltip>
                     <template slot-scope="scope">
                         <a class="underdone" href="javascript:void(0)" v-on:click="goSubPage(scope.$index,scope.row.dataSourceName)">{{ scope.row.name }}</a>
@@ -55,17 +55,12 @@
                         </div>
                     </template>
                 </el-table-column>
-            </el-table>
-        </el-main>
-        <el-footer>
-            <div class="enc-pagination">
+        </el-table>
+        <div class="enc-pagination">
                 <el-pagination v-if="queryParamReady" style="float:right; margin:10px;" @current-change="goPage" background :page-size.sync="pageSize" :total="mainTableDataTotal" layout="prev, pager, next, jumper" :current-page.sync="currentPage">
                 </el-pagination>
-            </div>
-        </el-footer>
-    </el-container>
-    <router-view />
-</div>
+        </div>
+  </div>
 </template>
 
 <script>
@@ -75,6 +70,8 @@ import formFliter from "./../../../components/formFliter";
 
 import regDialog from "./../dialog/admin/reg_dialog";
 import editDialog from "./../dialog/admin/edit_dialog";
+import {dataAccessStatistics, sysdialect, getListStaticDataOrder, query,
+  dataSourceCopy, deleteId} from "@/api/commonApi.js";
 
 export default {
   name: "DashboardAdmin",
@@ -88,7 +85,6 @@ export default {
       countTotal: "",
       keyword: "",
       moreData: 0,
-      // highSeaech:true,
       myDialogRouter: "adminAdd",
       dialogTitle: "新增",
       collapse: true,
@@ -110,15 +106,10 @@ export default {
     tableParams: function() {
       return this.$store.state.queryParams.dashboard;
     },
-
     tableHeight: function() {
       return this.collapse
         ? window.innerHeight - 440
         : (window.innerHeight - 540 - 40 * this.moreData<400?300:window.innerHeight - 540 - 40);
-      console.log(window.innerHeight - 540 - 40 * this.moreData)
-    },
-    headerHeight: function() {
-      // return this.collapse ? "160px" : "230px";
     }
   },
   components: {
@@ -128,35 +119,15 @@ export default {
     editDialog
   },
   watch: {
-    tableParams(newVal, oldVal) {
-      if (
-        this.queryParamReady &&
-        JSON.stringify(newVal) != JSON.stringify(oldVal) &&
-        newVal.timeFlag != 0
-      ) {
-        // this.loadTable();
-      }
-    },
     $route(to,form){
         if(to.name == "dashboard"){
-          console.log("route");
           this.setCount(this.$store.state.deptId);
           this.loadTable(this.$store.state.deptId);
         }
     },
   },
   created() {
-    // this.$root.eventHub.$on("search", keyword => {
-    //   this.search(keyword);
-    // });
     this.storeReady();
-    // this.$root.eventHub.$on("selDept", ids => {
-    //   this.setStore({
-    //     deptId: ids
-    //   });
-    //   this.setCount();
-    //   this.loadTable();
-    // });
   },
   mounted() {
     this.$root.eventHub.$emit(
@@ -171,7 +142,6 @@ export default {
       this.setStore({
         deptId: ids
       });
-      console.log("555");
       this.setCount(ids);
       this.loadTable(ids);
     });
@@ -183,20 +153,13 @@ export default {
 
     hightrue: function(a) {
       this.collapse = a;
-      // console.log(a);
     },
     setCount(id) {//此处vuex获取的值，比$root慢
-      console.log("setCount");
-      console.log(id);
       var ids=[];
-      //debugger;
      id?ids=id:ids=this.tableParams.deptId;
       var _self = this;
       _self.loading = true;
-      // this.pageSize = this.$store.state.pageSize;
       var paramsObj = {
-        // pageSize: this.$store.state.pageSize,
-        // pageNum: this.tableParams.pageNum,
         domain: "0",
         _: new Date().getTime()
       };
@@ -215,17 +178,14 @@ export default {
            paramsObj.deptIds =ids;
 
       var _self = this;
-      // this.$ajax.post('http://10.19.160.29:8080/DACM/caccess/dataAccessStatistics',this.tableParams.deptId
       this.$ajax
         .post(
-          window.ENV.API_DACM + "/caccess/dataAccessStatistics",
-          // "http://10.19.160.67:8083/DACM/caccess/dataAccessStatistics",
-         paramsObj
+          window.ENV.API_DACM + dataAccessStatistics,
+          paramsObj
         )
         .then(function(res) {
-        //  console.log(res);
           if (res.data.success) {
-            
+          
             if (res.data.data.discontinuousPercentage) {
               _self.count1Data.total = res.data.data.dPercentage;
               _self.count1Data.list = res.data.data.discontinuousPercentage;
@@ -243,14 +203,12 @@ export default {
             }
             _self.countReady = true;
           } else {
-            // console.log(res.data.code);
             _self.$alert("加载统计数据失败", "提示", {
               confirmButtonText: "确定"
             });
           }
         })
         .catch(function(err) {
-          console.log(err);
           _self.$alert("加载统计数据失败", "提示", {
             confirmButtonText: "确定"
           });
@@ -268,18 +226,6 @@ export default {
       network == true ? [] : network;
       platform == true ? [] : platform;
       dataSourceName == true ? [] : dataSourceName;
-// console.log(network)
-// console.log(platform)
-// console.log(dataSourceName)
-
-      //   let radioData = data.network.data;
-      //             if(data.network.data[data.network.data.length-1].name!="取消"){
-      // radioData[data.network.data.length] = {
-      //                 id: "",
-      //                 name: "取消"
-      //             };
-      //             }
-
       this.formFilterData = [
         {
           name: "接入源类型：",
@@ -305,19 +251,9 @@ export default {
           seledData: platform,
           limit: 4
         },
-        // {
-        //   // this.$store.state.queryParams[this.$route.name].condition
-        //   name: "搜索条件",
-        //   id: "condition",
-        //   type: "condition",
-        //   checkData: [],
-        //   seledData:[],
-        //   condition:this.$store.state.queryParams[this.$route.name].condition==[]?"":""
-        // }
   
       ];
       this.queryParamReady = true;
-      console.log(this.formFilterData);
     },
     collapseExpand: function() {
       this.collapse = !this.collapse;
@@ -325,7 +261,7 @@ export default {
      updataFliterItemList() {
       var _self = this;
       this.$ajax
-        .get(window.ENV.API_DACM + "/caccess/sysdialect", {
+        .get(window.ENV.API_DACM + sysdialect, {
           params: {
             type: 0
           }
@@ -343,13 +279,12 @@ export default {
           console.log(err);
         });
       this.$ajax
-        .get(window.ENV.API_DACM + "/commonInter/getListStaticDataOrder.do", {
+        .get(window.ENV.API_DACM + getListStaticDataOrder, {
           params: {
             dictCode: "NetWork"
           }
         })
         .then(function(res) {
-          //  console.log(res)
           var list = [];
           if (res.data != undefined) {
             for (var value of res.data) {
@@ -364,20 +299,17 @@ export default {
             });
              _self.formFilterData[1].checkData=list
           }
-          console.log(list);
         })
         .catch(function(err) {
           console.log(err);
         });
       this.$ajax
-        .get(window.ENV.API_DACM + "/commonInter/getListStaticDataOrder.do", {
+        .get(window.ENV.API_DACM + getListStaticDataOrder, {
           params: {
             dictCode: "ButtPlatForm"
           }
         })
         .then(function(res) {
-          //  console.log(res)
-
           var list = [];
           for (var value of res.data) {
             list.push({
@@ -385,17 +317,11 @@ export default {
               name: value.sTATIC_NAME
             });
           }
-          // console.log(list)
-
           _self.$store.commit("setFilterItmeList", {
             name: "platform",
             data: list
           });
- _self.formFilterData[2].checkData=list
-//  console.log(_self.formFilterData);
-  // console.log(res.data);
-
-
+          _self.formFilterData[2].checkData=list;
         })
         .catch(function(err) {
           console.log(err);
@@ -426,17 +352,10 @@ export default {
         ? this.tableParams.platform
         : [];
            paramsObj.deptIds =ids;
-
-
-_self.updataFliterItemList();
-//  this.$root.eventHub.$emit('updataFliterItemList');
-
-
-
+      _self.updataFliterItemList();
       this.$ajax
-        .post(window.ENV.API_DACM + "/caccess/query", paramsObj)
+        .post(window.ENV.API_DACM + query, paramsObj)
         .then(function(res) {
-          console.log("tableLoaded:dashboard");
           if (res.data.code == "0000") {
             _self.mainTableData = res.data.data.list;
             _self.mainTableDataTotal = res.data.data.total;
@@ -456,7 +375,6 @@ _self.updataFliterItemList();
         .catch(function(err) {
           _self.currentPage = _self.tableParams.pageNum;
           _self.loading = false;
-          console.log(err);
           _self.$alert("加载数据源数据失败", "提示", {
             confirmButtonText: "确定"
           });
@@ -506,7 +424,7 @@ _self.updataFliterItemList();
       }).then(() => {
         var _self = this;
         this.$ajax
-          .get(window.ENV.API_DACM + "/update/dataSourceCopy", {
+          .get(window.ENV.API_DACM + dataSourceCopy, {
             params: {
               id: row.id
             }
@@ -517,11 +435,10 @@ _self.updataFliterItemList();
               timeFlag: new Date().getTime()
             });
             _self.loadTable();
-                        _self.countTotal++;
+            _self.countTotal++;
 
           })
           .catch(function(err) {
-            console.log(err);
             _self.$alert("复制失败", "提示", {
               confirmButtonText: "确定"
             });
@@ -536,7 +453,7 @@ _self.updataFliterItemList();
       }).then(() => {
         var _self = this;
         this.$ajax
-          .post(window.ENV.API_DACM + "/caccess/delete?ids=" + row.id)
+          .post(window.ENV.API_DACM + deleteId + row.id)
           .then(function(res) {
             if(res.data.code=="0000"&&res.data.data.success == true) {
               _self.loadTable();
@@ -569,24 +486,16 @@ _self.updataFliterItemList();
       this.setCount();
     },
     changeFormFilter: function(fliterParams) {
-      // console.log(fliterParams)
       this.setStore(fliterParams);
     },
     storeReady: function() {
-      // console.log("111");
-      // console.log(this.$store.state.deptId);
       var fliterItemList = this.$store.state.fliterItemList;
-
-     
-      // console.log(this.$store.state)
-      // this.tableParams.condition= this.$store.state.queryParams[this.$route.name].condition;
       if (
         fliterItemList.network.ready &&
         fliterItemList.dataSourceName.ready &&
         fliterItemList.platform.ready &&
         this.$store.state.pageReady
       ) {
-         console.log(fliterItemList);
         this.setFliter(fliterItemList);
         this.loadTable(this.$store.state.deptId);
       } else {

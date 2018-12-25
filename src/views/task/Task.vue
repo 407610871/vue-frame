@@ -516,7 +516,6 @@ export default {
       console.log(this.websock);
             this.websock.onopen = this.websocketonopen;
       // this.websock.send = this.websocketsend;
-      // debugger;
             if(this.$route.path=='/task'){
                     this.websock.onmessage = this.websocketonmessage;
 
