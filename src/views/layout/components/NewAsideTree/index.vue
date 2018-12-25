@@ -413,7 +413,7 @@ export default {
     color: #fff;
     font-size: 16px;
      :hover {
-      color: #489bd9;
+     /*  color: #489bd9; */
     }
   }
 }

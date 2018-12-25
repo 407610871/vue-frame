@@ -211,3 +211,9 @@
   
     @include el-button--primary($el-primary-theme);
 }
+.tree-tools a :hover {
+@include el-color($el-primary-theme);
+}
+.el-message-box__headerbtn:focus .el-message-box__close, .el-message-box__headerbtn:hover .el-message-box__close {
+   @include el-color($el-radio-btn);
+}

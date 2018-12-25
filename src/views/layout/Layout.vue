@@ -43,26 +43,23 @@
         </el-popover>
       </div>
     </el-header>
-
     <div style="display:flex; height: calc(100vh - 66px);">
-
       <el-aside :width="sideBarWidth+'px'" class="enc-aside">
-          <new-aside-tree></new-aside-tree>
-          <div class="sidebar-control-btn" v-bind:style="{'left':sideBarWidth+'px'}" v-on:click="changeSideBar">
-              <i class="el-icon-caret-left" v-if="sideBarWidth==210"></i>
-              <i class="el-icon-caret-right" v-if="sideBarWidth==0"></i>
-          </div>
+        <new-aside-tree></new-aside-tree>
+        <div class="sidebar-control-btn" v-bind:style="{'left':sideBarWidth+'px'}" v-on:click="changeSideBar">
+          <i class="el-icon-caret-left" v-if="sideBarWidth==210"></i>
+          <i class="el-icon-caret-right" v-if="sideBarWidth==0"></i>
+        </div>
       </el-aside>
-      
       <el-main class="enc-main">
-          <div class="enc-sub-header">
-            <el-breadcrumb separator="/">
-              <el-breadcrumb-item v-for="(item,index) in breadcrumb" :key="index">
-                <a href="javascript:void(0)" v-on:click="breadcrumbChange(index,item)">{{item.breadcrumbName}}</a>
-              </el-breadcrumb-item>
-            </el-breadcrumb>
-          </div>
-          <app-main ref="mainTable" />
+        <div class="enc-sub-header">
+          <el-breadcrumb separator="/">
+            <el-breadcrumb-item v-for="(item,index) in breadcrumb" :key="index">
+              <a href="javascript:void(0)" v-on:click="breadcrumbChange(index,item)">{{item.breadcrumbName}}</a>
+            </el-breadcrumb-item>
+          </el-breadcrumb>
+        </div>
+        <app-main ref="mainTable" />
       </el-main>
     </div>
   </el-container>
@@ -187,23 +184,23 @@ export default {
     _getColor() {
 
       if (this.$store.state.userThemes == 'PURPLE') {
-         this.usericon = `${userp}`;
+        this.usericon = `${userp}`;
         this.warnicon = `${warnp}`;
         this.moreicon = `${morep}`;
       } else if (this.$store.state.userThemes == 'GREEN') {
-         this.usericon = `${userg}`;
+        this.usericon = `${userg}`;
         this.warnicon = `${warng}`;
         this.moreicon = `${moreg}`;
       } else if (this.$store.state.userThemes == 'BLUE') {
-         this.usericon = `${userb}`;
+        this.usericon = `${userb}`;
         this.warnicon = `${warnb}`;
         this.moreicon = `${moreb}`;
-      } else if (this.$store.state.userThemes == 'YELLOW') {
-         this.usericon = `${usery}`;
+      } else if (this.$store.state.userThemes == 'GOLDEN') {
+        this.usericon = `${usery}`;
         this.warnicon = `${warny}`;
         this.moreicon = `${morey}`;
       } else {
-      
+
         this.usericon = `${userd}`;
         this.warnicon = `${warnd}`;
         this.moreicon = `${mored}`;
@@ -306,11 +303,15 @@ export default {
     },
     //换肤
     getUser() {
-
+      let usrObj = this.$store.state.userInfo;
+      let userids = usrObj.sub;
       this.$ajax({
-          methods: "get",
-          url: this.GLOBAL.api.API_DACM + "/users/getProperty",
-          params: {}
+         method: "POST",
+          url: "http://10.19.248.200:32470/BCM/skin/query",
+          data: {
+            userId:userids,
+            appId:'DACM'
+          }
         })
         .then(res => {
           if (res.data.success) {
@@ -331,7 +332,7 @@ export default {
             if (res.data.data.color == 'BLUE') {
               values = 'theme3';
             }
-            if (res.data.data.color == 'YELLOW') {
+            if (res.data.data.color == 'GOLDEN') {
               values = 'theme4';
             }
             window.localStorage.setItem('data-theme', values);

@@ -49,7 +49,7 @@ export default {
         { value: 'PURPLE', label: '紫' },
         { value: 'BLUE', label: '蓝' },
         { value: 'GREEN', label: '绿' },
-        { value: 'YELLOW', label: '金' }
+        { value: 'GOLDEN', label: '金' }
       ],
       ruleForm: {
         themeName: '',
@@ -79,7 +79,7 @@ export default {
       } else if (userProperty == 'theme3') {
         this.ruleForm.themeName = 'BLUE';
       } else if (userProperty == 'theme4') {
-        this.ruleForm.themeName = 'YELLOW';
+        this.ruleForm.themeName = 'GOLDEN';
       }
       else{
         this.ruleForm.themeName = 'DEFAULT';
@@ -99,7 +99,7 @@ export default {
 
       this.$ajax({
         method: "POST",
-        url: this.GLOBAL.api.API_DACM + "/users/updateProperty",
+        url: 'http://10.19.248.200:32470/BCM/skin/update',
         data: userProperty
       }).then(res => {
         if (res.data.success) {
@@ -118,7 +118,7 @@ export default {
               if (_self.ruleForm.themeName == 'BLUE') {
                 value = 'theme3';
               }
-              if (_self.ruleForm.themeName == 'YELLOW') {
+              if (_self.ruleForm.themeName == 'GOLDEN') {
                 value = 'theme4';
               }
               window.localStorage.setItem('data-theme', value);
@@ -201,12 +201,21 @@ span.BLUE {
   background: #1ca9de;
 }
 
-span.YELLOW {
+span.GOLDEN {
   background: #8e764b;
 }
 
 span.GREEN {
   background: #448f6b;
 }
-
+.themesDialog {
+  .title-gra {
+    line-height: 0px !important;
+    margin-bottom: 45px !important; 
+  }
+  .el-dialog .el-dialog__header {
+    line-height: 60px;
+    padding-top: 0px !important; 
+  }
+}
 </style>
