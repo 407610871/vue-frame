@@ -38,6 +38,7 @@ let Authen = {
           let userName = Authen.userInfo.name;
           let userId = Authen.userInfo.sub;
            window.localStorage.setItem('userID', userId);
+           window.localStorage.setItem('userNames', userName);
           let obj = {
             userName: userName,
             roleName: roleName,

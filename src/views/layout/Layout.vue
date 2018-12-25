@@ -318,7 +318,7 @@ export default {
             let obj = {
               "cnName": res.data.data.cnName,
               "color": res.data.data.color,
-              "id": res.data.data.id,
+              "appId":'DACM',
               "userId": res.data.data.userId,
               "userName": res.data.data.userName
             }
