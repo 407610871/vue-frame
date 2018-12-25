@@ -9,14 +9,13 @@
         <span v-show="taskBaseInfo.status==1||taskBaseInfo.status==2" style="float:right;">当前状态:
           <el-select v-model="flagDesc" :disabled="loading3" placeholder="请选择" @change="changeStatus" class="select">
             <el-option
-              v-for="item in operateList"
-              :key="item.value"
+              v-for="(item,index) in operateList"
+              :key="index"
               :label="item.type"
               :value="item.value"
               :disabled="item.disabled">
             </el-option>
           </el-select>
-          <!-- <el-button style="margin-left:10px" type="primary" size="small" @click="changeStatus">{{flagDesc=='stop'?'暂停':'运行'}}</el-button> -->
           </span>
         <!-- 接入基本信息 模块开始-->
         <div class="daiInfo proInfo" v-loading="loading1">
@@ -62,7 +61,7 @@
                 <el-col :span="20">
                   <el-form-item label="接入对象:">
                     <div style="height:80px;width:100%;overflow:auto;">
-                      <span style="display:block" v-for="item in sourceBaseInfo.sourceObjNameList" :key="item.tableName"
+                      <span style="display:block" v-for="(item, index) in sourceBaseInfo.sourceObjNameList" :key="index"
                       v-show="item.type=='TABLE'||item.type=='VIEW'"
                       >{{item.type=="TABLE"?'表':'视图'}}:{{item.tableName}}</span>
                       <span v-show="sourceBaseInfo.sourceObjNameStr!=''">{{sourceBaseInfo.sourceObjNameStr}}</span>
@@ -145,7 +144,6 @@
                 <div class="item-label">
                   <span class="label-color" v-bind:style="lightBackground"></span>{{taskBaseInfo.newWorkDesc}}
                 </div>
-              <!-- <span>网络当前不问题，当前速率为20kbps/s</span> -->
               </el-form-item>
             </el-col>
             <el-col :span="4">
@@ -158,11 +156,9 @@
             </el-col>
             <el-col :span="12">
               <el-form-item label="最近一次任务开始时间:">
-                <span>{{taskBaseInfo.startTime}}</span>
+                <span>{{reqObj.startTime}}</span>
               </el-form-item>
             </el-col>
-            <!-- <el-col :span="4" class="bank">bank</el-col> -->
-            <!-- <el-col :span="10" class="bank">bank</el-col> -->
             <el-col :span="12">
               <el-form-item label="任务创建时间:">
                 <span>{{taskBaseInfo.createTime}}</span>
@@ -170,10 +166,9 @@
             </el-col>
             <el-col :span="12">
               <el-form-item label="最近任务成功结束时间:" >
-                <span>{{taskBaseInfo.endTime}}</span>
+                <span>{{reqObj.endTime}}</span>
               </el-form-item>
             </el-col>
-            <!-- <el-col :span="4" class="bank">bank</el-col> -->
             <el-col :span="12">
               <el-form-item label="任务创建人:">
                 <span>{{taskBaseInfo.creater}}</span>
@@ -192,7 +187,7 @@
               </el-tab-pane>
               <el-tab-pane label="数据核验日志信息">
                 <div class="dataCheck-tab" v-loading="loading5">
-                  <div class="logItem" v-for="item in dataCheckList" :key="item.source_library">
+                  <div class="logItem" v-for="(item, index) in dataCheckList" :key="index">
                     <span class="lab">源库：</span><span>{{item.source_library}}</span>
                     <br>
                     <span class="lab">源表：</span><span>{{item.source_tableName}}</span>
@@ -232,33 +227,17 @@
                 <!-- 数据预览 表格开始 -->
                 <!-- 数据预览表头不确定，根据接口返回的list集合对象里的key值来确定，所以采用如下写法实现 -->
                 <div class="dataViews-table" v-loading="loading6">
-                  <!-- <el-table :data="dataViewsList" style="width: 100%">
-                    <el-table-column v-for="keyitem in keyList" :key="keyitem" :prop="keyitem" :label="keyitem"> </el-table-column>
-                  </el-table> -->
                   <table style="width:100%;">
                     <thead>
-                      <th v-for="keyitem in keyList" :key="keyitem">{{keyitem}}</th>
+                      <th v-for="(keyitem, index) in keyList" :key="index">{{keyitem}}</th>
                     </thead>
                     <tbody>
-                      <tr v-for="item in dataViewsList" :key="item[keyList[0]]">
-                        <td v-for="keyitem in keyList" :key="keyitem" :title="item[keyitem]">{{item[keyitem]}}</td>
+                      <tr v-for="(item, index) in dataViewsList" :key="index">
+                        <td v-for="(keyitem, index) in keyList" :key="index" :title="item[keyitem]">{{item[keyitem]}}</td>
                       </tr>
                     </tbody>
                   </table>
-                  <!-- <div class="table-header">
-                    <div class="table-th">
-                      <span v-for="keyitem in keyList" :key="keyitem">{{keyitem}}</span>
-                    </div>
-                    <div class=table-tr-line></div>
-                  </div>
-                  <div class="table-body">
-                    <div class="table-tr" v-for="item in dataViewsList" :key="item[keyList[0]]">
-                      <div class=table-tr-context>
-                        <span v-for="keyitem in keyList" :key="keyitem" :title="item[keyitem]">{{item[keyitem]}}</span>
-                      </div>
-                      <div class=table-tr-line></div>
-                    </div>
-                  </div> -->
+
                   <div class="tips-none" v-show="keyList.length==0">暂无数据</div>
                 </div>
                 <!-- 数据预览 表格结束 -->
@@ -300,7 +279,6 @@
   margin-left: 19px;
 }
 .label-color{
-  // background-color:rgb(255, 153, 0);
   display: inline-block;
   margin-right: 8px;
   width: 12px;
@@ -441,7 +419,6 @@ export default {
     },
   },
   created(){
-    console.log("页面入参",this.reqObj);
     //查询接入基本信息
     this.getSourceInfo();
     //查询任务基本信息
@@ -452,8 +429,6 @@ export default {
     this.getSourceTaskLog();
     //查询数据核验日志信息
     this.getDataCheckLog();
-    //查询网络连接信息--与上面查询任务基本信息一个接口，所以在此不需要调用专门的查询
-    //this.getNewworkConLog();
     //查询数据预览
     this.getDataViews();
   },
@@ -488,7 +463,6 @@ export default {
             }
           }  
         ).catch(function(err){
-          console.log(err);
           //如果任务状态未切换成功，任务状态下拉框仍显示原来的值“run--运行”
           that.flagDesc=='run';
           that.loading3 = false;
@@ -509,7 +483,6 @@ export default {
             }
           }
         ).catch(function(err){
-          console.log(err);
           //如果任务状态未切换成功，任务状态下拉框仍显示原来的值“stop--暂停”
           that.flagDesc=='stop';
           that.loading3 = false;

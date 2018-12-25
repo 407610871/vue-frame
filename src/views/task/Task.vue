@@ -81,6 +81,11 @@
                 <i class="el-icon-error"></i>
               </span>
             </span>
+            <span v-show="status.indexOf('5')>-1">准备中
+              <span @click="pop('5',status);">
+                <i class="el-icon-error"></i>
+              </span>
+            </span>
             <span v-show="status.indexOf('1')>-1">运行
               <span @click="pop('1',status);">
                 <i class="el-icon-error"></i>
@@ -154,6 +159,7 @@
         <el-form-item label="任务状态:">
           <el-checkbox-group v-model="status">
             <el-checkbox label="0" name="status">新建</el-checkbox>
+            <el-checkbox label="5" name="status">准备中</el-checkbox>
             <el-checkbox label="1" name="status">运行</el-checkbox>
             <el-checkbox label="2" name="status">暂停</el-checkbox>
             <el-checkbox label="3" name="status">失败</el-checkbox>
@@ -239,11 +245,6 @@
             <el-button @click="doDetail(scope.$index, scope.row)" style="text-decoration: underline;">{{scope.row.taskInfoId}}</el-button>
           </template>
         </el-table-column>
-
-        <!-- <el-table-column fixed label="任务名称" width="200" :show-overflow-tooltip='true' @click="showTaskDetail=true">
-         
-
-        </el-table-column>-->
         <el-table-column
           prop="sourceDBName"
           label="接入源名称"
@@ -263,8 +264,16 @@
           width="200"
           :show-overflow-tooltip="true"
         ></el-table-column>
-        <el-table-column prop="startTime" label="任务开始时间" width="150" :show-overflow-tooltip="true"></el-table-column>
-        <el-table-column prop="endTime" label="任务结束时间" width="150" :show-overflow-tooltip="true"></el-table-column>
+        <el-table-column label="任务开始时间" width="150" :show-overflow-tooltip="true">
+          <template slot-scope="scope">
+            {{scope.row.status=='5' ? '' : scope.row.startTime | formateDateTime }}
+          </template>
+        </el-table-column>
+        <el-table-column label="任务结束时间" width="150" :show-overflow-tooltip="true">
+          <template slot-scope="scope">
+            {{scope.row.status=='5' ? '' : scope.row.endTime | formateDateTime}}
+          </template>
+        </el-table-column>
         <el-table-column label="任务类型" width="130" :show-overflow-tooltip="true">
           <template slot-scope="scope">
             <span v-if="scope.row.isPeriod==0">实时</span>
@@ -282,6 +291,7 @@
             <span v-else-if="scope.row.status==2">暂停</span>
             <span v-else-if="scope.row.status==3" style="color:red">失败</span>
             <span v-else-if="scope.row.status==4">完成</span>
+            <span v-else-if="scope.row.status==5">准备中</span>
           </template>
         </el-table-column>
         <el-table-column
@@ -298,9 +308,8 @@
               size="small"
               @click="doRun(scope.$index, scope.row)"
             >运行</el-button>
-            <!-- <el-button v-if="scope.row.status==3" type="text" size="small" @click="doRun(scope.$index, scope.row)">重启</el-button> -->
             <el-button
-              v-if="scope.row.status==1"
+              v-if="scope.row.status==1 || scope.row.status==5"
               type="text"
               size="small"
               @click="doRun(scope.$index, scope.row)"
@@ -352,15 +361,13 @@
 <script>
 import DialogIsCheck from "./DialogIsCheck";
 import DialogTaskDetail from "./DialogTaskDetail";
+import { deleteTask } from "@/api/commonApi.js";
+
 //盐城环境地址
 const httpUrl = window.ENV.API_DOWN + "/";
 //websocket地址
 const wsUrl=`ws${httpUrl.substring(4,httpUrl.length-1)}/websocket`
-// const wsUrl="ws://10.19.160.213:8080/DOMN/websocket";
-// alert(wsUrl)
-//本地调试地址
-// const httpUrl="http://10.19.160.67:8081/DOMN/";
-// export const httpUrl="http://10.19.160.67:8081/DOMN/";
+
 var tableZC;
 export default {
   name: "task",
@@ -384,7 +391,6 @@ export default {
       selectionChangeData: [],
       mainTableDataTotal: 0,
       reqObj: "",
-
       pickerOptions: {
         disabledDate(time) {
           return time.getTime() > Date.now();
@@ -395,14 +401,8 @@ export default {
   },
 
   watch: {
-    //
-    // taskPeriodType(newA, oldA) { this.init()},
-    // status(newA, oldA) { init()},
-    // time() {
-    // }
     //监听树节点deptID,操作数据
     departmentId(newVal, oldVal) {
-      //do something
       this.init("");
     },
     keyword() {
@@ -427,9 +427,9 @@ export default {
     $route(to, from) {
       if (to.path == "/task") {
         this.init(this.keyword);
-       this.initWebSocket();
+        this.initWebSocket();
       }else{
- this.websocketclose();
+        this.websocketclose();
       }
     }
   },
@@ -439,26 +439,19 @@ export default {
     },
     departmentId: function() {
       return this.$store.state.deptId;
-
-      // return 1;
     },
     tableHeight: function() {
-      /* return !this.moreSearch
-        ? window.innerHeight - 300
-        : window.innerHeight - 545;*/
-      /* if(!this.moreSearch){
-          if(!this.keyword){
-              return window.innerHeight - 290;
-          }else{
-              return window.innerHeight - 350;
-          }
-      }else{
-          return window.innerHeight - 560;
-      } */
       return window.innerHeight - this.searchHeight - 224;
     },
     pageSize() {
       return this.$store.state.pageSize;
+    }
+  },
+  filters: {
+    formateDateTime(time){
+      if(time && time !=null){
+        return time.substring(0,19);
+      }
     }
   },
   created() {
@@ -471,13 +464,11 @@ export default {
       this.$store.state.deptId
       );
       this.$root.eventHub.$emit("setActiveNav", 3);
-      // this.storeReady();
   },
   components: {
     DialogIsCheck,
     DialogTaskDetail
   },
-
   methods: {
     removeCla(){
       this.tableData.forEach(item=>{
@@ -487,7 +478,6 @@ export default {
     //新增人物高亮
     tableRowClassName({row,rowIndex}){
       if (row.zc === 1&&rowIndex == 0) {
-         // return 'success-row';
          return 'animated slideInLeft success-row';
       }else if(row.zc === 0){
         return 'success-row';
@@ -510,43 +500,35 @@ export default {
       //初始化weosocket
       //ws地址
       // const wsuri = "ws://10.19.160.160:8080/";
-            const wsuri =wsUrl;
-
+      const wsuri =wsUrl;
       this.websock = new WebSocket(wsuri);
-      console.log(this.websock);
-            this.websock.onopen = this.websocketonopen;
-      // this.websock.send = this.websocketsend;
-            if(this.$route.path=='/task'){
-                    this.websock.onmessage = this.websocketonmessage;
-
-            }
+      this.websock.onopen = this.websocketonopen;
+      if(this.$route.path=='/task'){
+        this.websock.onmessage = this.websocketonmessage;
+      }
       this.websock.onclose = this.websocketclose;
     },
-      //数据接收
+    //数据接收
     websocketonmessage(e) {
-let redata = JSON.parse(e.data);
-let redataTrue=true;
-for(let i=0;i<this.tableData.length;i++){
-  if(this.tableData[i].taskInfoId==redata.taskInfoId){
-redataTrue=false;
-
-  }
-
-}
-if(redataTrue){
-    redata.zc=1;
+      let redata = JSON.parse(e.data);
+      let redataTrue=true;
+      for(let i=0;i<this.tableData.length;i++){
+        if(this.tableData[i].taskInfoId==redata.taskInfoId){
+          redataTrue=false;
+        }
+      }
+      if(redataTrue){
+        redata.zc=1;
         this.removeCla();
-      let tim = setTimeout(()=>{
+        let tim = setTimeout(()=>{
           this.$message({
             message:`实时播报：新增一条 ID为：${redata.taskInfoId}的任务`,
             type: 'success'
           });
-          this.tableData.unshift(redata);
+        this.tableData.unshift(redata);
           clearTimeout(tim);
         },0);
-}
-
-        
+      }   
     },
     websocketclose(e) {
       //关闭
@@ -556,14 +538,12 @@ if(redataTrue){
     websocketonopen(){
       console.log("websocket连接成功！")
     },
-    //webcocket发送方法
+    // 刷新按钮
+    refresh(){
+        let keyword = this.keyword;
+        this.init(keyword);
 
-  // 刷新按钮
-  refresh(){
-      let keyword = this.keyword;
-      this.init(keyword);
-
-  },
+    },
     //查询按钮
     search() {
       this.$store.state.taskParam.taskPeriodType = JSON.parse(JSON.stringify(this.taskPeriodType));
@@ -571,21 +551,13 @@ if(redataTrue){
       this.$store.state.taskParam.time = JSON.parse(JSON.stringify(this.time));
       this.$store.state.taskParam.priority = JSON.parse(JSON.stringify(this.priority));
       this.$store.state.taskParam.keyword = JSON.parse(JSON.stringify(this.keyword));
-      let keyword = this.keyword;
-      // this.websock.send(123);
-
-      // this.tableData.unshift(tableZC);
-      // console.log(this.$refs.multipleTable);
-this.pageNum=1;
-      // return;
+      this.pageNum=1;
       this.allSecectData = {};
-      this.init(keyword);
+      this.init(this.keyword);
     },
     //高级搜索
     doMoreSearch() {
       this.moreSearch = !this.moreSearch;
-      //  this.taskPeriodType = [];
-      // this.status = [];
     },
     //详情
     doDetail(index, row) {
@@ -602,22 +574,10 @@ this.pageNum=1;
     //重新汇聚
     doConverge(index, row) {
       let _self = this;
-      // this.$confirm(
-      //   "重新汇聚完成之前，当前表的数据将会被全部删除，相应数据服务将终止，直到汇聚完成。 请确认！",
-      //   "提示",
-      //   {
-      //     confirmButtonText: "确定",
-      //     cancelButtonText: "取消",
-      //     type: "info"
-      //   }
-      // )
-      //   .then(() => {
           _self.loading = true;
 
-          this.$ajax
-            .put(httpUrl + "manager/taskOperate/converge/" + row.taskInfoId)
-            .then(function(res) {
-              _self.loading = false;
+      this.$ajax.put(httpUrl + "manager/taskOperate/converge/" + row.taskInfoId).then(function(res) {
+        _self.loading = false;
               if (res.data.success) {
                 _self.doMsg("重新汇聚成功", "success");
                 _self.init();
@@ -625,11 +585,6 @@ this.pageNum=1;
                 _self.doMsg(res.data.message, "error");
               }
             })
-            .catch(function(err) {
-              console.log(err);
-            });
-        // })
-        // .catch(() => {});
     },
     //处理完毕
     doDel(index, row) {
@@ -640,15 +595,14 @@ this.pageNum=1;
         .then(function(res) {
           _self.loading = false;
           if (res.data.success) {
+            // 调用/DACM/接口
+            _self.$ajax.delete(window.ENV.API_DACM + deleteTask + row.taskInfoId);
             _self.doMsg("处理成功", "success");
             _self.init();
           } else {
             _self.doMsg(res.data.message, "error");
           }
         })
-        .catch(function(err) {
-          console.log(err);
-        });
     },
     //运行、暂停
     doRun(index, row) {
@@ -664,15 +618,15 @@ this.pageNum=1;
             _self.loading = false;
             if (res.data.success) {
               _self.doMsg("运行成功", "success");
-              row.status = 1;
+              row.status = 5;
+              row.startTime = "";
+              row.endTime = "";
+              row.joinDataNum = "";
             } else {
               _self.doMsg(res.data.message, "error");
             }
           })
-          .catch(function(err) {
-            console.log(err);
-          });
-      } else if (row.status == 1) {
+      } else if (row.status == 1 || row.status == 5) {
         //执行暂停
         url = httpUrl + "manager/taskOperate/pause/" + row.taskInfoId;
         this.$ajax
@@ -686,14 +640,11 @@ this.pageNum=1;
               _self.doMsg(res.data.message, "error");
             }
           })
-          .catch(function(err) {
-            console.log(err);
-          });
       }
     },
     //分页切换
     handleCurrentChange() {
-       let keyword = this.keyword;
+      let keyword = this.keyword;
       this.init(keyword);
     },
     //信息提示
@@ -720,7 +671,6 @@ this.pageNum=1;
         taskName: keyword,
         departmentId: _self.departmentId.join(",")
       };
-
       this.$ajax
         .get(httpUrl + "manager/task/show/0", {
           params: tableParams
@@ -728,7 +678,13 @@ this.pageNum=1;
         .then(function(res) {
           if (res.data.code == 200) {
             _self.tableData = res.data.data.result;
-            // console.log(_self.tableData);
+            _self.tableData.forEach(res=>{
+               if(res.status=='5'){
+                  res.startTime = "";
+                  res.endTime = "";
+                  res.joinDataNum = "";
+               }
+            })
             tableZC = _self.tableData[0];
             _self.mainTableDataTotal = res.data.data.total * 1;
             _self.loading = false;
@@ -773,12 +729,7 @@ this.pageNum=1;
       let tableParams = [];
       let _self = this;
       let row = [];
-
       let row1 = Object.keys(this.allSecectData);
-      // console.log(this.allSecectData)
-      // console.log(row1)
-      // return;
-      // console.log(row1.length)
       if (row1.length == 0) {
         this.$alert("请选择相应的任务！", "提示", {
           height: 50,
@@ -811,14 +762,6 @@ this.pageNum=1;
       };
      
       let rowNew = Array.from(row);
-    
-
-     
-      //  <span v-if="scope.row.status==0">新建</span>
-      //       <span v-if="scope.row.status==1">运行</span>
-      //       <span v-else-if="scope.row.status==2">暂停</span>
-      //       <span v-else-if="scope.row.status==3" style="color:red">失败</span>
-      //       <span v-else-if="scope.row.status==4">完成</span>
       if (a == 1) {
         //批量汇聚
         let errorData = [];
@@ -829,17 +772,6 @@ this.pageNum=1;
           }
         }
         if (errorData.length == 0) {
-          // _self
-          //   .$confirm(
-          //     "重新汇聚完成之前，当前表的数据将会被全部删除，相应数据服务将终止，直到汇聚完成。 请确认！",
-          //     "重新汇聚",
-          //     {
-          //       confirmButtonText: "确定",
-          //       cancelButtonText: "取消",
-          //       type: "info"
-          //     }
-          //   )
-          //   .then(() => {
               _self.loading = true;
               _self.tips = "批量汇聚中...";
               _self
@@ -879,10 +811,6 @@ this.pageNum=1;
                       dangerouslyUseHTMLString: true
                     });
                   }
-                // })
-                // .catch(function(err) {
-                //   console.log(err);
-                // });
             })
             .catch(() => {});
         } else {
@@ -983,9 +911,6 @@ this.pageNum=1;
         }
       } else if (a == 3) {
         //批量停止
-        // alert( rowNew);
-        // console.log(rowNew)
-        // return;
         let errorData = [];
         for (let i = 0; i < rowNew.length; i++) {
           if (rowNew[i].status != 1) {
@@ -1057,36 +982,6 @@ this.pageNum=1;
           );
         }
       }
-    },
-
-    //批量汇聚
-    // doConverge() {
-    //   let tableParams = [];
-    //   let _self = this;
-    //   let row = [];
-
-    //   let row1 = Object.keys(this.allSecectData);
-    //   for (let i = 0; i < row1.length; i++) {
-    //     for (let j = 0; j < this.allSecectData[row1[i]].length; j++) {
-    //       row.push(this.allSecectData[row1[i]][j]);
-    //     }
-    //   }
-    //   for (let i = 0; i < row.length; i++) {
-    //     tableParams.push(row[i].taskInfoId);
-    //   }
-
-    //   let params = {
-    //     taskInfoIds: tableParams.join(",")
-    //   };
-
-    // },
-
-    //弹框信息提示1
-    doMessage(message) {
-      this.$alert(message, "提示", {
-        confirmButtonText: "确定",
-        callback: action => {}
-      });
     }
   }
 };
@@ -1114,17 +1009,13 @@ this.pageNum=1;
   cursor: pointer;
 }
 .count-container {
-  // width: 95%;
-  // height: 150px;
   background-color: #fff;
   border-bottom: 1px solid #d9d9d9;
   margin: 0 auto;
   padding-top: 20px;
 }
 .timeSearch {
-  // width: 40%;
   float: left;
-  // margin-top: -5px;
 }
 .el-checkbox {
   width: 95px;
@@ -1144,12 +1035,10 @@ this.pageNum=1;
   width: 15px;
   height: 15px;
   border-radius: 50%;
-  // background-color: red;
 }
 .enc-pagination {
   float: right;
 }
-
 .mainTable {
   width: 95%;
   margin: 0 auto;
@@ -1228,7 +1117,6 @@ this.pageNum=1;
         margin-right: 10px;
         a {
           font-size: 26px;
-          /* color: #479ad8; */
            :hover,
            :active {
             color: #f93;
