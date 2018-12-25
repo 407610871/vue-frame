@@ -230,7 +230,7 @@ export default {
           console.log(err);
         });
       this.$ajax
-        .get(window.ENV.API_DACM + "/commonInter/getListStaticDataOrder.do", {
+        .get(window.ENV.API_DACM + "/commonInter/getListStaticDataOrder", {
           params: {
             dictCode: "NetWork"
           }
@@ -257,7 +257,7 @@ export default {
           console.log(err);
         });
       this.$ajax
-        .get(window.ENV.API_DACM + "/commonInter/getListStaticDataOrder.do", {
+        .get(window.ENV.API_DACM + "/commonInter/getListStaticDataOrder", {
           params: {
             dictCode: "ButtPlatForm"
           }
