@@ -217,3 +217,6 @@
 .el-message-box__headerbtn:focus .el-message-box__close, .el-message-box__headerbtn:hover .el-message-box__close {
    @include el-color($el-radio-btn);
 }
+#NewAisdeTree .el-tree .is-current > .el-tree-node__content {
+   @include el-color($el-all-number);
+}
