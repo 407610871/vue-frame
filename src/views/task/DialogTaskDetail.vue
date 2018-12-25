@@ -229,7 +229,7 @@
                 <div class="dataViews-table" v-loading="loading6">
                   <table style="width:100%;">
                     <thead>
-                      <th v-for="(keyitem, index) in keyList" :key="index">{{keyitem}}</th>
+                      <th v-for="(keyitem, index) in keyList" :key="index">{{keyitem | dataPreviewHandel}}</th>
                     </thead>
                     <tbody>
                       <tr v-for="(item, index) in dataViewsList" :key="index">
@@ -254,81 +254,81 @@
   </div>
 </template>
 <style lang="scss">
-.task-Detail-dialog {
-  .el-dialog{
-        min-width: 80%;
-        max-height:calc(100% - 50px);
-        overflow:auto;
-        margin-bottom: 25px;
-        margin-top: 25px!important;
-        height: 100%!important;
+    .task-Detail-dialog {
+      .el-dialog{
+            min-width: 80%;
+            max-height:calc(100% - 50px);
+            overflow:auto;
+            margin-bottom: 25px;
+            margin-top: 25px!important;
+            height: 100%!important;
+        }
     }
-}
-.task-Detail-dialog .proInfo-box .el-form-item--medium .el-form-item__content{
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-.task-Detail-dialog .select input{
-  height:31px!important;
-}
-</style>
+    .task-Detail-dialog .proInfo-box .el-form-item--medium .el-form-item__content{
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .task-Detail-dialog .select input{
+      height:31px!important;
+    }
+    </style>
 
-<style lang="scss" scoped>
-.el-radio+.el-radio {
-  margin-left: 19px;
-}
-.label-color{
-  display: inline-block;
-  margin-right: 8px;
-  width: 12px;
-  height: 12px;
-  border-radius: 6px;
-}
-.dataViews-table{
-  height: 200px;
-  overflow: auto;
-}
-.dataViews-table th,td{
-  text-align: center;
-  vertical-align: middle;
-  height: 30px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  border-bottom: 1px solid #e4e7ed;
-}
-.dataViews-table .table-tr-line{
-  margin-bottom: 10px;
-}
-.dataCheck-tab{
-  padding-left: 12px;
-  padding-top: 12px;
-  height: 200px;
-  overflow: auto;
-}
-.dataCheck-tab .logItem span{
-  display: inline-block;
-  margin-top: 2px;
-  margin-bottom: 2px;
-  
-}
-.dataCheck-tab .logItem .logItem-line{
-  width: 100%;
-  border-bottom: 1px solid #e4e7ed;
-}
-.dataCheck-tab .lab{
-  letter-spacing: 6px;
-}
-.tips-none{
-  text-align: center;
-  margin-top: 40px;
-  font-size: 16px;
-  color: #a7a2a2;
-}
-.select{
-  width: 70%;
-}
+    <style lang="scss" scoped>
+    .el-radio+.el-radio {
+      margin-left: 19px;
+    }
+    .label-color{
+      display: inline-block;
+      margin-right: 8px;
+      width: 12px;
+      height: 12px;
+      border-radius: 6px;
+    }
+    .dataViews-table{
+      height: 200px;
+      overflow: auto;
+    }
+    .dataViews-table th,td{
+      text-align: center;
+      vertical-align: middle;
+      height: 30px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      border-bottom: 1px solid #e4e7ed;
+    }
+    .dataViews-table .table-tr-line{
+      margin-bottom: 10px;
+    }
+    .dataCheck-tab{
+      padding-left: 12px;
+      padding-top: 12px;
+      height: 200px;
+      overflow: auto;
+    }
+    .dataCheck-tab .logItem span{
+      display: inline-block;
+      margin-top: 2px;
+      margin-bottom: 2px;
+      
+    }
+    .dataCheck-tab .logItem .logItem-line{
+      width: 100%;
+      border-bottom: 1px solid #e4e7ed;
+    }
+    .dataCheck-tab .lab{
+      letter-spacing: 6px;
+    }
+    .tips-none{
+      text-align: center;
+      margin-top: 40px;
+      font-size: 16px;
+      color: #a7a2a2;
+    }
+    .select{
+      width: 70%;
+    }
 
 </style>
 <script>
@@ -417,6 +417,13 @@ export default {
         return false;
       }
     },
+  },
+  filters: {
+    dataPreviewHandel(str){
+      if(str && str != null){
+        return str.split('/')[0];
+      }
+    }
   },
   created(){
     //查询接入基本信息
