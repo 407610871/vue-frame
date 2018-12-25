@@ -4,7 +4,7 @@
     <el-tooltip class="item" effect="light" content="单表采集" placement="top">
       <i class="enc-icon-danbiaocaiji" @click="dialogVisible = true"></i>
     </el-tooltip>
-    <el-dialog title="单表采集任务向导" :visible.sync="dialogVisible" width="73%" :before-close="closeDialog" class="single-task-dialog" :close-on-click-modal="false">
+    <el-dialog title="单表采集任务向导"   :visible.sync="dialogVisible" width="73%" :before-close="closeDialog" class="single-task-dialog" :close-on-click-modal="false">
       <div class="title-gra plr30">
         <span class="grab gra-l"></span>
         <span class="grab gra-r"></span>
@@ -38,7 +38,7 @@
                 <h2>设置采集任务</h2>
               </div>
             </div>
-            <coll-task :pdata="pdata" :msg="activeName" @pre="next('second')" @close="closeDialog()" @fresh="fresh()"></coll-task>
+            <coll-task :pdata="pdata" :msg="activeName" ref="collTask" @pre="next('second')" @close="closeDialog()" @fresh="fresh()"></coll-task>
             <!-- <div class="btn tcenter mt30">
               <el-button type="primary" style="margin-top: 12px;" @click="next('second')">上一步</el-button>
               <el-button type="primary" style="margin-top: 12px;">完成</el-button>
@@ -68,6 +68,7 @@ export default {
   methods: {
     //关闭对话框
     closeDialog() {
+      this.$refs.collTask.websocketclose();
       this.dialogVisible = false;
       this.activeName = 'first';
       this.$store.commit("setMode", "");
