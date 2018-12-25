@@ -312,4 +312,10 @@ export default {
 .retable .el-table th>.cell{
   text-align: center
 }
+.release {
+  line-height: 55px !important;
+  .el-dialog__body {
+    padding-top:13px !important;
+  }
+}
 </style>

@@ -211,10 +211,10 @@ span.GREEN {
 .themesDialog {
   .title-gra {
     line-height: 0px !important;
-    margin-bottom: 45px !important; 
+    margin-bottom: 60px !important; 
   }
   .el-dialog .el-dialog__header {
-    line-height: 60px;
+    line-height: 50px;
     padding-top: 0px !important; 
   }
 }
