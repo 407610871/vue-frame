@@ -63,7 +63,7 @@
     }
     .gra-r {
       width: 70%;
-      @include el-backcolor($color-background-rp);
+      @include el-color-rp($color-background-rp);
     }
   }
   .el-dialog__body {
@@ -76,7 +76,7 @@
     }
     h2 {
       font-size: $font-size-medium;
-      @include el-color($color-text-stitle);
+      @include el-color-ys($color-text-stitle);
       padding: 0;
       margin: 0;
       line-height: 40px;
@@ -101,7 +101,7 @@
   color: #fff;
   @include el-bgcolor($el-primary-theme);
   @include el-border-color($el-primary-theme);
- /*  background-color: #489bd9;
+  /*  background-color: #489bd9;
  border-color: #489bd9; */
 }
 
@@ -128,27 +128,35 @@
 .mt25 {
   margin-top: 25px;
 }
-.mb20{
+
+.mb20 {
   margin-bottom: 20px;
 }
+
 .plr10 {
   padding-left: 10px;
 }
+
 .plr60 {
   padding-left: 60px;
 }
+
 .mr10 {
   margin-right: 10px;
 }
-.mr5{
+
+.mr5 {
   margin-right: 5px;
 }
+
 .ml10 {
   margin-left: 10px;
 }
-.ml25{
+
+.ml25 {
   margin-left: 25px;
 }
+
 .ptb20 {
   padding: 20px 0px;
 }
@@ -200,13 +208,18 @@
   border: none !important;
 }
 
-.bornone{
-  border:none !important;
+.bornone {
+  border: none !important;
 }
+
+
+
 /* treeStyle */
-.tleft{
+
+.tleft {
   text-align: left;
 }
+
 .treeAuto {
   height: 300px;
   overflow: auto;
@@ -219,10 +232,13 @@
   border: 1px solid #c9cdd0;
 }
 
-.curspan{
+.curspan {
   cursor: pointer;
   margin-left: 10px;
 }
+
+
+
 /* .el-dialog::-webkit-scrollbar-thumb {
   background: #50609c;
   border-radius: 4px;
@@ -247,42 +263,75 @@
   background: transparent;
 }
  */
-.tasktips{
-  font-size:$font-size-small;
-  color:red;
+
+.tasktips {
+  font-size: $font-size-small;
+  color: red;
 }
-.respan{
-  color:red;
+
+.respan {
+  color: red;
   display: inline-block;
 }
-.el-picker-panel__icon-btn{
-  color:#303133 !important;
+
+.el-picker-panel__icon-btn {
+  color: #303133 !important;
 }
+
 .setTaskDia .el-tabs__item.is-active {
   @include el-color($color-background-tabs);
 }
-.el-tabs__item.is-active i{
+
+.el-tabs__item.is-active i {
   @include el-backcolor($color-background-tabs);
 }
 
+
+
 /* 任务中心 */
-.taskMDialog .checkBtn{
-   @include el-bgcolor($el-btn-color);
+
+.taskMDialog .checkBtn {
+  @include el-bgcolor($el-btn-color);
 }
+
 .taskMDialog .contanst {
   @include el-border-contanst($el-btn-color);
 }
-.taskMDialog{
-  .contanst_vs{
+
+.taskMDialog {
+  .contanst_vs {
     @include el-color($color-background);
   }
-  .checkResult a{
-     @include el-color($color-background);
+  .checkResult a {
+    @include el-color($color-background);
   }
-  .export-btn.el-button{
+  .export-btn.el-button {
     @include el-bgcolor($color-background);
   }
 }
-.el-input.is-active .el-input__inner, .el-input__inner:focus{
+
+.el-input.is-active .el-input__inner,
+.el-input__inner:focus {
   @include el-border-color($el-radio-btn);
 }
+
+ .top-inver-title {
+  margin-bottom: 20px;
+  .grab {
+    height: 4px;
+    display: inline-block;
+  }
+  .gra-l {
+    width: 30%;
+    @include el-color-lp($color-background-lp);
+  }
+  .gra-r {
+    width: 70%;
+    @include el-color-rp($color-background-rp);
+  }
+}
+
+.topInver .el-dialog__title {
+  font-size: $font-size-medium;
+  @include el-color($color-text-title);
+} 

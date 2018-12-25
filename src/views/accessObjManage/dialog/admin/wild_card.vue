@@ -113,6 +113,7 @@ export default {
     return {
       dialogVisible: false,
       regxData: [],
+      timer: null,
       accId: '',
       wildData: [],
       tableData: [],
@@ -145,6 +146,14 @@ export default {
     },
     pres() {
       this.$emit('pre');
+    },
+    setTimer: function() {
+      this.timer = setTimeout(() => {
+        this.$message({
+          message: '正在进行元数据结构核验，正在验证中，请耐心等待. ',
+          type: 'warning'
+        });
+      }, 3000);
     },
     nre() {
       if (this.ruleForm.matchType == '0') {
@@ -180,6 +189,7 @@ export default {
           }
         }
         this.loading = true;
+         this.setTimer();
         this.$ajax({
           method: "post",
           url: this.GLOBAL.api.API_DACM + '/task/checkTableStructureByRegex',
@@ -190,6 +200,7 @@ export default {
           data: saveInfo
 
         }).then(res => {
+          window.clearTimeout(this.timer);
           this.loading = false;
           if (res.data.success) {
             if (this.ruleForm.baseEnd.indexOf('-') != -1) {

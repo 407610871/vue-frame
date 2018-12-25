@@ -188,8 +188,7 @@
   @include el-table-hover($el-table-td-hover);
 }
 .collaspe-btn .el-button--primary.is-disabled,.collaspe-btn .el-button--primary.is-disabled:active,.collaspe-btn .el-button--primary.is-disabled:focus, .collaspe-btn .el-button--primary.is-disabled:hover{
-  @include el-border-color($el-table-hover-theme1);
-  @include el-bgcolor($el-table-hover-theme1);
+  @include el-btn-disabled($el-dis-form);
   color:#fff;
 }
 .el-checkbox__input.is-checked .el-checkbox__inner, .el-checkbox__input.is-indeterminate .el-checkbox__inner{
@@ -207,4 +206,8 @@
 }
 .el-checkbox__inner {
    @include el-border($el-table-thead-background-theme);
+}
+.comTable .el-table .cell .el-button--primary {
+  
+    @include el-button--primary($el-primary-theme);
 }

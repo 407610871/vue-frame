@@ -186,19 +186,19 @@ export default {
   methods: {
     _getColor() {
 
-      if (window.localStorage.getItem('data-theme') == 'theme1') {
+      if (this.$store.state.userThemes == 'PURPLE') {
          this.usericon = `${userp}`;
         this.warnicon = `${warnp}`;
         this.moreicon = `${morep}`;
-      } else if (window.localStorage.getItem('data-theme') == 'theme2') {
+      } else if (this.$store.state.userThemes == 'GREEN') {
          this.usericon = `${userg}`;
         this.warnicon = `${warng}`;
         this.moreicon = `${moreg}`;
-      } else if (window.localStorage.getItem('data-theme') == 'theme3') {
+      } else if (this.$store.state.userThemes == 'BLUE') {
          this.usericon = `${userb}`;
         this.warnicon = `${warnb}`;
         this.moreicon = `${moreb}`;
-      } else if (window.localStorage.getItem('data-theme') == 'theme4') {
+      } else if (this.$store.state.userThemes == 'YELLOW') {
          this.usericon = `${usery}`;
         this.warnicon = `${warny}`;
         this.moreicon = `${morey}`;

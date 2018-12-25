@@ -130,7 +130,26 @@
     color: $el-primary-theme4;
   }
 }
-
+@mixin el-btn-disabled($color) {
+  border-color:$color;
+  background-color: $color;
+  [data-theme='theme1'] & {
+   border-color:$el-table-hover-theme1;
+  background-color: $el-table-hover-theme1;
+  }
+  [data-theme='theme2'] & {
+   border-color:$el-table-hover-theme2;
+  background-color: $el-table-hover-theme2;
+  }
+  [data-theme='theme3'] & {
+   border-color:$el-table-hover-theme3;
+  background-color: $el-table-hover-theme3;
+  }
+  [data-theme='theme4'] & {
+   border-color:$el-table-hover-theme4;
+  background-color: $el-table-hover-theme4;
+  }
+}
 @mixin el-border-contanst($border) {
   border-bottom: 1px solid $border;
   [data-theme='theme1'] & {
@@ -160,6 +179,21 @@
   }
   [data-theme='theme4'] & {
     color: $el-primary-theme4;
+  }
+}
+@mixin el-color-ys($color) {
+  color: $color;
+  [data-theme='theme1'] & {
+    color: $el-table-hover-theme1;
+  }
+  [data-theme='theme2'] & {
+    color: $el-table-hover-theme2;
+  }
+  [data-theme='theme3'] & {
+    color: $el-table-hover-theme3;
+  }
+  [data-theme='theme4'] & {
+    color: $el-table-hover-theme4;
   }
 }
 @mixin el-page-color($color) {
@@ -224,7 +258,21 @@
     background: $el-primary-theme4;
   }
 }
-
+@mixin el-color-rp($color) {
+  background: $color;
+  [data-theme='theme1'] & {
+    background: $el-table-hover-theme1;
+  }
+  [data-theme='theme2'] & {
+    background: $el-table-hover-theme2;
+  }
+  [data-theme='theme3'] & {
+    background: $el-table-hover-theme3;
+  }
+  [data-theme='theme4'] & {
+    background: $el-table-hover-theme4;
+  }
+}
 @mixin el-table-hover($color) {
   background-color: $color;
   [data-theme='theme1'] & {
