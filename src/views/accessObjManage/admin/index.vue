@@ -12,7 +12,7 @@
       </div>
       
       <el-table ref="multipleTable" v-loading="loading" :data="mainTableData" stripe
-          border style="width: 100%" tooltip-effect="light" :row-class-name="tableRowClassName" @selection-change="handleSelectionChange">
+          border style="width: 100%; margin-top:10px;" tooltip-effect="light" :row-class-name="tableRowClassName" @selection-change="handleSelectionChange">
           <el-table-column type="selection">
           </el-table-column>
           <!-- ftp -->

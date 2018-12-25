@@ -4,7 +4,7 @@
       <el-button @click="dialogVisible = true" class="document" icon="enc-icon-documents"></el-button>
     </el-tooltip> -->
     <!--  <a href="javascript:void(0)" @click="dialogVisible = true" >版本信息</a> -->
-    <el-dialog :title="versionDes + '  '+ versionDate" :visible.sync="dialogVisible" width="30%" :before-close="closeDialog">
+    <el-dialog title="主题" :visible.sync="dialogVisible" width="30%" :before-close="closeDialog">
       <div class="title-gra">
         <span class="grab gra-l"></span>
         <span class="grab gra-r"></span>

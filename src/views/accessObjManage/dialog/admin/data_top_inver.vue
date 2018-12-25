@@ -1,53 +1,55 @@
 <template>
-  <el-dialog title="数据核验" :visible.sync="innerVisible" width="60%" :before-close="closeDialog" append-to-body>
-    <div class="title-gra">
-      <span class="grab gra-l"></span>
-      <span class="grab gra-r"></span>
-    </div>
-    <el-form :model="ruleForm" ref="ruleForm" label-width="100px" class="demo-ruleForm">
-      <div class="proInfo-box clearfix">
-        <el-col :span="24">
-          <el-form-item label="核验设置:" class="radiow100">
-            <el-radio-group v-model="ruleForm.setVer">
-              <el-col :span="24">
-                <el-col :span="6">
-                  <el-radio :label="0">全量核验</el-radio>
-                </el-col>
-                <el-col :span="4" class="bank">bank</el-col>
-                <el-col :span="6">
-                  <el-radio :label="1" :disabled="!this.queryTargetColumnList.length">根据时间范围核验</el-radio>
-                </el-col>
-                <el-col :span="10">
-                  <el-button type="primary" size="small" @click="inverCheck()">开始核验</el-button>
-                </el-col>
-              </el-col>
-            </el-radio-group>
-          </el-form-item>
-        </el-col>
-        <el-col :span="24">
-          <el-col :span="8">
-            <el-form-item label="核验误差范围:">
-              <el-input-number v-model="ruleForm.range" controls-position="right" size="small" :min="0" :max="100" :step="1"></el-input-number>%
-            </el-form-item>
-          </el-col>
-          <el-col :span="6">
-            <div class="time" v-show="ruleForm.setVer=='1'">
-              <el-date-picker size="small" :picker-options="ruleForm.pickerOptions" v-model="ruleForm.startTime" type="daterange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" value-format="yyyy-MM-dd">
-              </el-date-picker>
-            </div>
-          </el-col>
-          <el-col :span="6" v-show="ruleForm.setVer=='1'">
-            <el-form-item>
-              <el-select v-model="ruleForm.queryTargetColumn" placeholder="请选择">
-                <el-option v-for="item in queryTargetColumnList" :key="item" :label="item" :value="item">
-                </el-option>
-              </el-select>
-            </el-form-item>
-          </el-col>
-        </el-col>
+  <div class="taskMDialog topInver">
+    <el-dialog title="数据核验" :visible.sync="innerVisible" width="60%" :before-close="closeDialog" append-to-body>
+      <div class="title-gra top-inver-title">
+        <span class="grab gra-l"></span>
+        <span class="grab gra-r"></span>
       </div>
-    </el-form>
-  </el-dialog>
+      <el-form :model="ruleForm" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+        <div class="proInfo-box clearfix">
+          <el-col :span="24">
+            <el-form-item label="核验设置:" class="radiow100">
+              <el-radio-group v-model="ruleForm.setVer">
+                <el-col :span="24">
+                  <el-col :span="6">
+                    <el-radio :label="0">全量核验</el-radio>
+                  </el-col>
+                  <el-col :span="4" class="bank">bank</el-col>
+                  <el-col :span="6">
+                    <el-radio :label="1" :disabled="!this.queryTargetColumnList.length">根据时间范围核验</el-radio>
+                  </el-col>
+                  <el-col :span="10">
+                    <el-button type="primary" size="small" @click="inverCheck()">开始核验</el-button>
+                  </el-col>
+                </el-col>
+              </el-radio-group>
+            </el-form-item>
+          </el-col>
+          <el-col :span="24">
+            <el-col :span="8">
+              <el-form-item label="核验误差范围:">
+                <el-input-number v-model="ruleForm.range" controls-position="right" size="small" :min="0" :max="100" :step="1"></el-input-number>%
+              </el-form-item>
+            </el-col>
+            <el-col :span="6">
+              <div class="time" v-show="ruleForm.setVer=='1'">
+                <el-date-picker size="small" :picker-options="ruleForm.pickerOptions" v-model="ruleForm.startTime" type="daterange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" value-format="yyyy-MM-dd">
+                </el-date-picker>
+              </div>
+            </el-col>
+            <el-col :span="6" v-show="ruleForm.setVer=='1'">
+              <el-form-item>
+                <el-select v-model="ruleForm.queryTargetColumn" placeholder="请选择">
+                  <el-option v-for="item in queryTargetColumnList" :key="item" :label="item" :value="item">
+                  </el-option>
+                </el-select>
+              </el-form-item>
+            </el-col>
+          </el-col>
+        </div>
+      </el-form>
+    </el-dialog>
+  </div>
 </template>
 <script>
 export default {
@@ -139,10 +141,10 @@ export default {
         let _self = this;
         if (res.data.success == "true" || res.data.success == true) {
           res.data = res.data.data;
-            _self.queryTargetColumnList = res.data.listIncrementCon;
-            if(_self.queryTargetColumnList.length!=0&&_self.queryTargetColumnList.length!=undefined){
-              _self.ruleForm.queryTargetColumn = _self.queryTargetColumnList[0];
-            }
+          _self.queryTargetColumnList = res.data.listIncrementCon;
+          if (_self.queryTargetColumnList.length != 0 && _self.queryTargetColumnList.length != undefined) {
+            _self.ruleForm.queryTargetColumn = _self.queryTargetColumnList[0];
+          }
           if (res.data.config_key != undefined && res.data.config_key != null) {
             //全量
             if (res.data.config_key == "0") {
@@ -157,7 +159,7 @@ export default {
               ]
             }
             //不知道这个的展示有没有什么限制，所以暂时先不作什么限制
-           
+
             _self.ruleForm.range = res.data.config_range;
             _self.ruleForm.queryTargetColumn = res.data.queryTargetColumn;
 
@@ -182,10 +184,10 @@ export default {
   watch: {
     msg() {
       this.innerVisible = this.msg;
-      if(this.innerVisible){
-           this._checkData();
+      if (this.innerVisible) {
+        this._checkData();
       }
-   
+
     }
 
   },

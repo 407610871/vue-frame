@@ -315,7 +315,7 @@
   @include el-border-color($el-radio-btn);
 }
 
-.title-gra {
+ .top-inver-title {
   margin-bottom: 20px;
   .grab {
     height: 4px;
@@ -331,7 +331,7 @@
   }
 }
 
-.el-dialog__title {
+.topInver .el-dialog__title {
   font-size: $font-size-medium;
   @include el-color($color-text-title);
-}
+} 

@@ -8,7 +8,7 @@
         </el-table-column>
         <el-table-column prop="" label="目标字段名称">
           <template slot-scope="scope">
-            <el-input v-model="scope.row.newColumnName" :disabled="dis"></el-input>
+            <el-input v-model="scope.row.newColumnName" :disabled="dis" @blur="newblur(scope.row.newColumnName)"></el-input>
           </template>
         </el-table-column>
         <el-table-column prop="toType" label="目标字段类型">
@@ -59,6 +59,21 @@ export default {
     ...mapMutations([
       'setSchemaList'
     ]),
+    //判断是否大小写
+    newblur(val) {
+      if (val == '') {
+        this.$message.warning('不能为空');
+        return false;
+      } else {
+        if (/^[A-Z]+$/.test(val)) //a-z
+        {
+
+        } else {
+          this.$message.warning('请输入大写英文字母');
+          return false;
+        }
+      }
+    },
     //得到先前设置过的值
     _getPre() {
 
@@ -72,7 +87,7 @@ export default {
           accessSysObjInfoId: this.tableId
         }
       }).then(res => {
-         let _self = this;
+        let _self = this;
         if (res.data.success) {
           if (res.data.data.length != 0) {
             _self.dis = true;
@@ -102,7 +117,7 @@ export default {
           _self.tableData = res.data.data.list;
           for (let j = 0; j < _self.tableData.length; j++) {
             _self.schemaMappingDTOList.push({
-              "newColumnName": _self.tableData[j].name,
+              "newColumnName": _self.tableData[j].name.toUpperCase(),
               "newColumnType": '',
               "orgColumnName": _self.tableData[j].name,
               "orgColumnType": _self.tableData[j].datatype,
@@ -284,8 +299,21 @@ export default {
     //下一步
     next() {
       if (this.mapflag) {
-        this.$emit('nre');
-        this.setSchemaList(this.schemaMappingDTOList);
+        let flag = true;
+        for (let i = 0; i < this.schemaMappingDTOList.length; i++) {
+          if (/^[A-Z]+$/.test(this.schemaMappingDTOList[i].newColumnName)) {
+
+          } else {
+            flag = false;
+            break;
+          }
+        }
+        if (flag) {
+          this.$emit('nre');
+          this.setSchemaList(this.schemaMappingDTOList);
+        } else {
+          this.$message.warning('目标字段名称只支持大写英文字母');
+        }
       }
 
     }
