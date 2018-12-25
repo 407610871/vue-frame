@@ -119,7 +119,8 @@
           </el-table-column>
           <el-table-column label="核验报告">
             <template slot-scope="scope">
-              <el-button @click="downTxt(scope.row.id)" class="export-btn" size="mini">导出</el-button>
+              <el-button @click="downTxt(scope.row.id)" class="export-btn" size="mini" v-if="scope.row.status == '1'">导出</el-button>
+              <el-button @click="downTxt(scope.row.id)" class="export-btn" size="mini" v-else disabled>导出</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -139,8 +140,8 @@ export default {
   },
   props: ["msgCheck", "title"],
   created() {
+    this.getHistory();
     this.init();
-    console.log(this.msgCheck, 111)
   },
   data: function() {
     return {
@@ -289,7 +290,7 @@ export default {
     //获取核验历史记录
     getHistory(){
       let that = this;
-      this.$ajax.get(baseUrl + '/ccheckData/tableNumAllByTaskId', {
+     this.$ajax.get(baseUrl + '/ccheckData/tableNumAllByTaskId', {
         params: {
           taskId: that.msgCheck.taskInfoId
         }
