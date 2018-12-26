@@ -394,15 +394,29 @@ export default {
           } else {
              this.textShow = !this.textShow;
             let result = res.data.testresults_result == 0 ? "成功" : "失败";
+            let target_sqls = '';
+            if(res.data.target_sql==undefined){
+              target_sqls = ''
+            }
+            else{
+              target_sqls = res.data.target_sql;
+            }
+            let source_sqls = '';
+            if(res.data.source_sql ==undefined){
+              source_sqls = ''
+            }
+            else{
+              source_sqls = res.data.source_sql;
+            }
             this.loginfo = `源库：${res.data.source_library}\n
 源表：${res.data.source_tableName}\n
 执行结果：${res.data.source_tableNum}\n
-数据核验查询语句：${res.data.source_sql}\n
+数据核验查询语句：${source_sqls}\n
 \n
 目标库：${res.data.target_library}\n
 目标表：${res.data.target_tableName}\n
 执行结果：${res.data.target_tableNum}\n
-数据核验查询语句：${res.data.target_sql}\n
+数据核验查询语句：${target_sqls}\n
 \n
 核验结果:${result}\n
 核验差值:${res.data.testresults_dvalue}\n

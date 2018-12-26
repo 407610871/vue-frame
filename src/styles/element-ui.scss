@@ -279,6 +279,9 @@
  .el-form-item.is-success .el-textarea__inner:focus {
    @include el-color($el-input-success);
  }
+ .el-loading-spinner .el-loading-text {
+  @include el-color($el-radio-btn);
+ }
  /*滚动条样式*/
 
 /*  .main::-webkit-scrollbar {

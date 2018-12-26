@@ -8,21 +8,20 @@
         </el-table-column>
         <el-table-column prop="" label="目标字段名称" width="180">
           <template slot-scope="scope">
-            <el-input v-model="scope.row.newColumnName" :disabled="(type=='ftp'&&parflag)||isDisabled(scope.row)||isForbidEdit"></el-input>
+            <el-input v-model="scope.row.newColumnName" :disabled="(type=='ftp'&&parflag)||isDisabled(scope.row)||isForbidEdit || dis"></el-input>
           </template>
         </el-table-column>
         <el-table-column prop="toType" label="目标字段类型">
           <template slot-scope="scope">
-            <el-select v-model="scope.row.newColumnType" placeholder="请选择" :disabled="isDisabled(scope.row)||isForbidEdit">
-              <el-option v-for="(item, index) in TypeData" :key="index" :label="item" :value="item" 
-              :disabled="type=='ftp'&&scope.row.newColumnType=='BIGINT'">
+            <el-select v-model="scope.row.newColumnType" placeholder="请选择" :disabled="isDisabled(scope.row)||isForbidEdit || dis">
+              <el-option v-for="(item, index) in TypeData" :key="index" :label="item" :value="item" :disabled="type=='ftp'&&scope.row.newColumnType=='BIGINT'">
               </el-option>
             </el-select>
           </template>
         </el-table-column>
         <el-table-column prop="foreignKey" label="目标描述信息" width="180">
           <template slot-scope="scope">
-            <el-input v-model="scope.row.orgColumnComment" :disabled="isDisabled(scope.row)||isForbidEdit"></el-input>
+            <el-input v-model="scope.row.orgColumnComment" :disabled="isDisabled(scope.row)||isForbidEdit||dis"></el-input>
           </template>
         </el-table-column>
       </el-table>
@@ -46,12 +45,13 @@ export default {
       tableData: [],
       TypeData: [],
       cloneData: [],
-      type:'',
-      parflag:true,
+      type: '',
+      parflag: true,
       mapData: [],
       smapData: [],
+      dis: false,
       schemaMappingDTOList: [],
-      isForbidEdit:false,
+      isForbidEdit: false,
     }
   },
   methods: {
@@ -63,7 +63,7 @@ export default {
       var _self = this;
       _self.tableData = [];
       _self.schemaMappingDTOList = [];
-      if (_self.$store.state.noreData.length !== 0){
+      if (_self.$store.state.noreData.length !== 0) {
         _self.tableData = _self.$store.state.noreData;
         if (_self.$store.state.schemaList.length != 0) {
           _self.schemaMappingDTOList = _self.$store.state.schemaList;
@@ -232,10 +232,10 @@ export default {
         }
       }
       for (let n = 0; n < _self.cloneData.length; n++) {
-       if(_self.schemaMappingDTOList[n].newColumnType==''){
-         _self.schemaMappingDTOList[n].newColumnType = _self.cloneData[n];
-       }
-       
+        if (_self.schemaMappingDTOList[n].newColumnType == '') {
+          _self.schemaMappingDTOList[n].newColumnType = _self.cloneData[n];
+        }
+
       }
     },
     //上一步
@@ -249,13 +249,38 @@ export default {
       this.$emit('next');
       this.setSchemaList(this.schemaMappingDTOList);
     },
-    isDisabled(row){
-      if(row.newColumnName == "_id"&&row.length == 0&&this.ismongodb){
+    isDisabled(row) {
+      if (row.newColumnName == "_id" && row.length == 0 && this.ismongodb) {
         return true;
-      }else{
+      } else {
         return false;
       }
     },
+    //得到以前的设置过的值
+    _getPre() {
+      this.$ajax({
+        method: "GET",
+        url: this.GLOBAL.api.API_DACM + '/task/getSchemaMappingList',
+        // headers:{
+        //   'Content-Type':'application/json;charset=utf-8',
+        // },
+        params: {
+          accessSysObjInfoId: this.rowList.id
+        }
+      }).then(res => {
+        let _self = this;
+        if (res.data.success) {
+          if (res.data.data.length != 0) {
+            _self.dis = true;
+            _self.schemaMappingDTOList = res.data.data;
+          } else {
+            _self.dis = false;
+            this._getMatch();
+            this._getType()
+          }
+        }
+      })
+    }
   },
   components: {
 
@@ -263,8 +288,8 @@ export default {
   mounted() {
     this.type = this.$route.params.type;
     this.parflag = this.$store.state.isParquet;
-    this._getMatch();
-    this._getType()
+    this._getPre();
+
   },
   watch: {
 
@@ -284,7 +309,7 @@ export default {
       }
 
     },
-    ismongodb(){
+    ismongodb() {
       return this.$route.params.type == 'mongodb';
     },
   },
@@ -299,8 +324,7 @@ export default {
     msg() {
       if (this.msg == 'second') {
         if (this.flag == true) {
-          this._getMatch();
-          this._getType()
+         this._getPre();
         }
 
       }
@@ -366,10 +390,12 @@ export default {
 .typeMapDia {
   width: 100%;
 }
+
 .unnore .el-input.is-disabled .el-input__inner {
   background-color: #f0f3f6;
   color: #4f609d;
   border-radius: 0;
   border: 1px solid #c9cdd0;
 }
+
 </style>
