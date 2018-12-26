@@ -121,7 +121,7 @@ export default {
               "newColumnType": '',
               "orgColumnName": _self.tableData[j].name,
               "orgColumnType": _self.tableData[j].datatype,
-              "orgColumnComment": _self.tableData[j].comments,
+              "orgColumnComment": _self.tableData[j].diyComments,
               "length": _self.tableData[j].length
             })
           }

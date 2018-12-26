@@ -587,7 +587,7 @@
         margin-right: 10px;
         a {
           font-size: 26px;
-          color: #479ad8;
+         /*  color: #479ad8; */
            :hover,
            :active {
             color: #f93;
