@@ -821,9 +821,6 @@ export default {
             this.$ajax({
               method: "post",
               url: this.GLOBAL.api.API_DACM + '/task/saveHeliumTask',
-              // headers:{
-              //   'Content-Type':'application/json;charset=utf-8',
-              // },
               data: save
 
             }).then(res => {
@@ -913,7 +910,7 @@ export default {
         acmode = this.$route.params.type;
       }
       this.$ajax({
-        method: 'POST',
+        method: 'GET',
         url: this.GLOBAL.api.API_DACM + '/task/getSourceConfig',
         /* url: 'http://10.19.160.168:8080/DACM/task/getSourceConfig',*/
         params: {

@@ -580,17 +580,9 @@ export default {
         ctt = '2'
       }
       if (this.ruleForm.accessMode == "3" && this.ruleForm.cycleSet == "0") { //全量 间隔
-        /*if (this.increArr.id == undefined) {
-          this.$message.warning('请选择增量字段');
-          return false;
-        }*/
         ctt = '4'
       }
       if (this.ruleForm.accessMode == "3" && this.ruleForm.cycleSet == "1") { //全量 实时
-        /*if (this.increArr.id == undefined) {
-          this.$message.warning('请选择增量字段');
-          return false;
-        }*/
         ctt = '5'
       }
       if (this.ruleForm.accessMode == "2") {
@@ -616,10 +608,6 @@ export default {
             method: "post",
             url: this.GLOBAL.api.API_DACM + '/task/updateSourceConfig',
             /* url: 'http://10.19.160.168:8080/DACM/task/updateSourceConfig',*/
-
-            // headers:{
-            //   'Content-Type':'application/json;charset=utf-8',
-            // },
             data: save
 
           }).then(res => {
@@ -741,9 +729,7 @@ export default {
               this.$ajax({
                 method: "post",
                 url: this.GLOBAL.api.API_DACM + '/task/saveHeliumTask',
-                // headers:{
-                //   'Content-Type':'application/json;charset=utf-8',
-                // },
+                //url: this.GLOBAL.api.API_DACM + '/task/saveHeliumTask',
                 data: save
 
               }).then(res => {
@@ -806,12 +792,11 @@ export default {
         actech = this.$route.params.type +"_cycle";
       }
       this.$ajax({
-        method: 'POST',
+        method: 'GET',
         url: this.GLOBAL.api.API_DACM + '/task/getSourceConfig',
         /* url: 'http://10.19.160.168:8080/DACM/task/getSourceConfig',*/
         params: {
           accessSysObjInfoId: this.rowList.id,
-          /* accessSysObjInfoId: '10658915'*/
           "jobType": actech
         }
 
