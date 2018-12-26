@@ -236,6 +236,8 @@ export default {
           //  console.log(res)
           var list = [];
           if (res.data != undefined) {
+             let objNet  = JSON.stringify(res.data);
+             window.localStorage.setItem('NetWork',objNet);
             for (var value of res.data) {
               list.push({
                 id: value.sTATIC_CODE,
@@ -263,6 +265,8 @@ export default {
           //  console.log(res)
 
           var list = [];
+          let objNet  = JSON.stringify(res.data);
+             window.localStorage.setItem('ButtPlatForm',objNet);
           for (var value of res.data) {
             list.push({
               id: value.sTATIC_CODE,

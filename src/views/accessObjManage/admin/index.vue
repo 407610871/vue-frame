@@ -144,7 +144,7 @@
           </el-table-column>
           <el-table-column prop="collectName" label="数据采集方式" v-if="type=='oracle' || type=='mysql' || type=='postgresql'" min-width="160" show-overflow-tooltip>
           </el-table-column>
-          <el-table-column label="操作" width="160" align="left">
+          <el-table-column label="操作" width="160" >
             <template slot-scope="scope">
               <div class="survey" style="width:50%">
                 <div class="survey-operate">
