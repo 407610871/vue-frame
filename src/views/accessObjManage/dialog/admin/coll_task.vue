@@ -7,11 +7,7 @@
             <el-col :span="6">
               <el-form-item label="接入目的库:" prop="dLibrary">
                 <el-select v-model="ruleForm.dLibrary" placeholder="请选择" :disabled="isdisable">
-                  <!-- <el-option label="全国" value="0"></el-option>
-                  <el-option label="全省" value="1"></el-option>
-                  <el-option label="全市" value="2"></el-option>
-                  <el-option label="行政区" value="3"></el-option> -->
-                  <el-option v-for="item in treeData" :label="item.label" :value="item.storageId"></el-option>
+                  <el-option v-for="(item, index) in treeData" :key="index" :label="item.label" :value="item.storageId"></el-option>
                 </el-select>
               </el-form-item>
             </el-col>
@@ -82,13 +78,6 @@
                 <incre-map :msg='innerVisible' :incid="pdata.id" :yid="yid" :alincre="this.increArr" @showIncre="showIncrement()" @saveIncre="saveIncrement($event)"></incre-map>
               </el-form-item>
             </el-col>
-            <!--  <el-col :span="6">
-             <el-form-item label="采集技术:" prop="actech">
-               <el-select v-model="ruleForm.actech" placeholder="请选择" disabled>
-                 <el-option label="JDBC" value="JDBC"></el-option>
-               </el-select>
-             </el-form-item>
-           </el-col> -->
           </el-col>
           <el-col :span="24" v-show="ruleForm.accessMode=='1'||ruleForm.accessMode=='3'">
             <el-form-item label="周期设置:" prop="cycleSet">
@@ -219,7 +208,7 @@
                         <el-col :span="4">
                           <el-form-item>
                             <el-select v-model="ruleForm.dsweek" placeholder="请选择">
-                              <el-option v-for="item in weekData" :label="item.name" :value="item.val">
+                              <el-option v-for="(item, index) in weekData" :key="index" :label="item.name" :value="item.val">
                               </el-option>
                             </el-select>
                           </el-form-item>
@@ -398,15 +387,9 @@ export default {
   methods: {
 
     initWebSocket() {
-      //初始化weosocket
-      //ws地址
-      // const wsuri = "ws://10.19.160.160:8080/";
       const wsuri = wsUrl;
-
       this.websock = new WebSocket(wsuri);
       this.websock.onopen = this.websocketonopen;
-      // this.websock.send = this.websocketsend;
-      // this.websock.onmessage = this.websocketonmessage;
       this.websock.onclose = this.websocketclose;
     },
     websocketclose(e) {
@@ -471,12 +454,11 @@ export default {
     closeForm() {
       this.dialogVisible = false;
       this.$refs['ruleForm'].resetFields();
-            this.websocketclose();
+      this.websocketclose();
 
     },
     //增量字段弹框的再次打开
     showIncrement() {
-
       this.innerVisible = false;
     },
     saveIncrement(value) {
@@ -494,19 +476,11 @@ export default {
       for (let i = 0; i < 60; i++) {
         this.$set(this.minData, i, i);
       }
-      /*       this.ruleForm.jmin = 0;
-           this.ruleForm.dfmin = 0;
-            this.ruleForm.dsmin = 0;
-            this.ruleForm.dtmin = 0;*/
     },
     _hourData() {
       for (let i = 0; i < 24; i++) {
         this.$set(this.hourData, i, i);
       }
-      /*      this.ruleForm.jhour = 0;
-            this.ruleForm.dfhour = 1;
-            this.ruleForm.dshour = 1;
-            this.ruleForm.dthour = 1;*/
     },
     _weekData() {
       for (let i = 1; i < 8; i++) {
@@ -720,17 +694,9 @@ export default {
         ctt = '2'
       }
       if (this.ruleForm.accessMode == "3" && this.ruleForm.cycleSet == "0") { //间隔
-        /*if (this.increArr.id == undefined) {
-          this.$message.warning('请选择增量字段');
-          return false;
-        }*/
         ctt = '4'
       }
       if (this.ruleForm.accessMode == "3" && this.ruleForm.cycleSet == "1") { //实时
-        /*if (this.increArr.id == undefined) {
-          this.$message.warning('请选择增量字段');
-          return false;
-        }*/
         ctt = '5'
       }
       if (this.ruleForm.accessMode == "2") {
@@ -777,9 +743,6 @@ export default {
               method: "post",
               url: this.GLOBAL.api.API_DACM + '/task/updateSourceConfig',
               /* url: 'http://10.19.160.168:8080/DACM/task/updateSourceConfig',*/
-              // headers:{
-              //   'Content-Type':'application/json;charset=utf-8',
-              // },
               data: save
 
             }).then(res => {

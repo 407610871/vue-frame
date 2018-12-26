@@ -146,34 +146,35 @@
           </el-table-column>
           <el-table-column label="操作" width="160" align="left">
             <template slot-scope="scope">
-              <el-tooltip class="item" effect="light" content="数据量更新" placement="top" 
-                v-if="type=='mysql'|| type=='oracle'|| type=='postgresql' || type=='sqlserver' || type=='mongodb'">
-                <i class="enc-icon-shujugengxin" v-on:click="updataSourceSingle(scope.$index, scope.row)" title="数据量更新"></i>
-              </el-tooltip>
-              <div class="survey">
-                <singleTask v-if="type=='mysql'|| type=='oracle'|| type=='postgresql' || type=='sqlserver'" :pdata="scope.row" @fre="loadTable()"></singleTask>
-              </div>
-              <div class="survey">
-                <userSurvey v-if="type=='mysql'|| type=='oracle'|| type=='postgresql' || type=='sqlserver'" 
-                :pdata="scope.row" @fre="loadTable()"></userSurvey>
-              </div>
-              
-              <div class="survey" v-if="(type=='mysql'&&scope.row.accessConnectorSource!=undefined&&scope.row.accessConnectorSource.isPeriod!='0')
-                || (type=='oracle'&&scope.row.accessConnectorSource!=undefined&&scope.row.accessConnectorSource.isPeriod!='0')
-                || (type=='postgresql'&&scope.row.accessConnectorSource!=undefined&&scope.row.accessConnectorSource.isPeriod!='0') 
-                || (type=='sqlserver'&&scope.row.accessConnectorSource!=undefined&&scope.row.accessConnectorSource.isPeriod!='0')||(type=='ftp'&&scope.row.accessConnectorSource!=undefined&&scope.row.accessConnectorSource.isPeriod!='0')||(type=='mongodb'&&scope.row.accessConnectorSource!=undefined&&scope.row.accessConnectorSource.isPeriod!='0')">
-                <el-tooltip class="item" effect="light" content="数据核验" placement="top">
-                  <i class="enc-icon-shujuheyan" @click="dataInverCheck(scope.row)"></i>
-                </el-tooltip>
-              </div>
               <div class="survey" style="width:50%">
                 <div class="survey-operate">
-                  <norela-coll :pdata="scope.row" :type="type" @fre="loadTable()" v-if="type!='mysql' && type!='oracle' && type!='sqlserver' && type!='postgresql'"></norela-coll> 
-                  <div>
-                    <el-tooltip effect="light" content="删除" placement="top" v-if="type==='ftp' && !scope.row.exitTask">
-                      <i class="el-icon-delete" @click="deleteFtp(scope.row)"></i>
+                  <el-tooltip class="item" effect="light" content="数据量更新" placement="top" 
+                    v-if="type=='mysql'|| type=='oracle'|| type=='postgresql' || type=='sqlserver' || type=='mongodb'">
+                    <i class="enc-icon-shujugengxin" v-on:click="updataSourceSingle(scope.$index, scope.row)" title="数据量更新"></i>
+                  </el-tooltip>
+                  <div class="survey">
+                    <singleTask v-if="type=='mysql'|| type=='oracle'|| type=='postgresql' || type=='sqlserver'" :pdata="scope.row" @fre="loadTable()"></singleTask>
+                  </div>
+                  <div class="survey">
+                    <userSurvey v-if="type=='mysql'|| type=='oracle'|| type=='postgresql' || type=='sqlserver'" 
+                    :pdata="scope.row" @fre="loadTable()"></userSurvey>
+                  </div>
+                  
+                  <div class="survey" v-if="(type=='mysql'&&scope.row.accessConnectorSource!=undefined&&scope.row.accessConnectorSource.isPeriod!='0')
+                    || (type=='oracle'&&scope.row.accessConnectorSource!=undefined&&scope.row.accessConnectorSource.isPeriod!='0')
+                    || (type=='postgresql'&&scope.row.accessConnectorSource!=undefined&&scope.row.accessConnectorSource.isPeriod!='0') 
+                    || (type=='sqlserver'&&scope.row.accessConnectorSource!=undefined&&scope.row.accessConnectorSource.isPeriod!='0')||(type=='ftp'&&scope.row.accessConnectorSource!=undefined&&scope.row.accessConnectorSource.isPeriod!='0')||(type=='mongodb'&&scope.row.accessConnectorSource!=undefined&&scope.row.accessConnectorSource.isPeriod!='0')">
+                    <el-tooltip class="item" effect="light" content="数据核验" placement="top">
+                      <i class="enc-icon-shujuheyan" @click="dataInverCheck(scope.row)"></i>
                     </el-tooltip>
                   </div>
+                    
+                      <norela-coll :pdata="scope.row" :type="type" @fre="loadTable()" v-if="type!='mysql' && type!='oracle' && type!='sqlserver' && type!='postgresql'"></norela-coll> 
+                      <div>
+                        <el-tooltip effect="light" content="删除" placement="top" v-if="type==='ftp' && !scope.row.exitTask">
+                          <i class="el-icon-delete" @click="deleteFtp(scope.row)"></i>
+                        </el-tooltip>
+                      </div>
                 </div>
               </div>
               

@@ -18,10 +18,12 @@
           <el-col :span="24">
             <el-form-item label="接入方式:" prop="accessMode">
               <el-radio-group v-model="ruleForm.accessMode" :disabled="isdisable">
-                <el-radio label="1" v-if="this.$route.params.type=='oracle'||this.$route.params.type == 'mongodb'||this.$route.params.type == 'ftp'">增量接入</el-radio>
+                <el-radio label="1" v-if="this.$route.params.type=='oracle'||this.$route.params.type == 'mongodb' 
+                ||this.$route.params.type == 'ftp'">增量接入</el-radio>
                 <el-radio label="3" v-if="this.$route.params.type=='oracle'">全量接入</el-radio>
                 <el-radio label="0" v-if="this.$route.params.type != 'ftp'">实时接入</el-radio>
-                <el-radio label="2" v-if="this.$route.params.type=='oracle' || this.$route.params.type=='mongodb'">一次性接入</el-radio>
+                <el-radio label="2" v-if="this.$route.params.type=='ftp' || this.$route.params.type=='oracle' ||
+                   this.$route.params.type=='mongodb'">一次性接入</el-radio>
               </el-radio-group>
             </el-form-item>
           </el-col>
@@ -651,9 +653,6 @@ export default {
                 method: "post",
                 url: this.GLOBAL.api.API_DACM + '/task/updateSourceConfig',
                 /* url: 'http://10.19.160.168:8080/DACM/task/updateSourceConfig',*/
-                // headers:{
-                //   'Content-Type':'application/json;charset=utf-8',
-                // },
                 data: save
 
               }).then(res => {
@@ -711,9 +710,6 @@ export default {
           this.$ajax({
             method: "post",
             url: this.GLOBAL.api.API_DACM + '/task/saveHeliumTask',
-            // headers:{
-            //   'Content-Type':'application/json;charset=utf-8',
-            // },
             data: save
 
           }).then(res => {
