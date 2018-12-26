@@ -65,11 +65,11 @@ export default {
         this.$message.warning('不能为空');
         return false;
       } else {
-        if (/^[A-Z]+$/.test(val)) //a-z
+        if (/^[a-z]+$/.test(val)) //a-z
         {
 
         } else {
-          this.$message.warning('请输入大写英文字母');
+          this.$message.warning('请输入小写英文字母');
           return false;
         }
       }
@@ -301,7 +301,7 @@ export default {
       if (this.mapflag) {
         let flag = true;
         for (let i = 0; i < this.schemaMappingDTOList.length; i++) {
-          if (/^[A-Z]+$/.test(this.schemaMappingDTOList[i].newColumnName)) {
+          if (/^[a-z]+$/.test(this.schemaMappingDTOList[i].newColumnName)) {
 
           } else {
             flag = false;
@@ -312,7 +312,7 @@ export default {
           this.$emit('nre');
           this.setSchemaList(this.schemaMappingDTOList);
         } else {
-          this.$message.warning('目标字段名称只支持大写英文字母');
+          this.$message.warning('目标字段名称只支持小写英文字母');
         }
       }
 
