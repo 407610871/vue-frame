@@ -8,7 +8,7 @@
         </el-table-column>
         <el-table-column prop="" label="目标字段名称" width="180">
           <template slot-scope="scope">
-            <el-input v-model="scope.row.newColumnName" @blur="newblur(scope.row.newColumnName)"></el-input>
+            <el-input v-model="scope.row.newColumnName"></el-input>
           </template>
         </el-table-column>
         <el-table-column prop="toType" label="目标字段类型">
@@ -57,7 +57,7 @@ export default {
     ...mapMutations([
       'setSchemaList',
     ]),
-     //判断是否大小写
+    //判断是否大小写
     newblur(val) {
       if (val == '') {
         this.$message.warning('不能为空');
@@ -250,22 +250,8 @@ export default {
     },
     //下一步
     next() {
-      let flag = true;
-      for (let i = 0; i < this.schemaMappingDTOList.length; i++) {
-        if (/^[a-z]+$/.test(this.schemaMappingDTOList[i].newColumnName)) {
-
-        } else {
-          flag = false;
-          break;
-        }
-      }
-      if (flag) {
-        this.$emit('next');
-        this.setSchemaList(this.schemaMappingDTOList);
-      } else {
-        this.$message.warning('目标字段名称只支持小写英文字母');
-      }
-
+      this.$emit('next');
+      this.setSchemaList(this.schemaMappingDTOList);
     }
   },
   components: {

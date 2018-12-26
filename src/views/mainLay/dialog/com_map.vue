@@ -8,7 +8,7 @@
         </el-table-column>
         <el-table-column prop="" label="目标字段名称" width="180">
           <template slot-scope="scope">
-            <el-input v-model="scope.row.newColumnName" :disabled="(type=='ftp'&&parflag)||isDisabled(scope.row)||isForbidEdit" @blur="newblur(scope.row.newColumnName)"></el-input>
+            <el-input v-model="scope.row.newColumnName" :disabled="(type=='ftp'&&parflag)||isDisabled(scope.row)||isForbidEdit"></el-input>
           </template>
         </el-table-column>
         <el-table-column prop="toType" label="目标字段类型">
@@ -45,12 +45,12 @@ export default {
       tableData: [],
       TypeData: [],
       cloneData: [],
-      type: '',
-      parflag: true,
+      type:'',
+      parflag:true,
       mapData: [],
       smapData: [],
       schemaMappingDTOList: [],
-      isForbidEdit: false,
+      isForbidEdit:false,
     }
   },
   methods: {
@@ -58,21 +58,6 @@ export default {
     ...mapMutations([
       'setSchemaList',
     ]),
-    //判断是否大小写
-    newblur(val) {
-      if (val == '') {
-        this.$message.warning('不能为空');
-        return false;
-      } else {
-        if (/^[a-z]+$/.test(val)) //a-z
-        {
-
-        } else {
-          this.$message.warning('请输入小写英文字母');
-          return false;
-        }
-      }
-    },
     _getMatch() {
       var _self = this;
       _self.tableData = [];
@@ -96,11 +81,11 @@ export default {
             }
             if (sflag == false) {
               _self.schemaMappingDTOList.push({
-                "newColumnName": _self.tableData[i].name.toLowerCase(),
+                "newColumnName": _self.tableData[i].name,
                 "newColumnType": '',
                 "orgColumnName": _self.tableData[i].name,
                 "orgColumnType": _self.tableData[i].datatype,
-                "orgColumnComment": _self.tableData[i].comments,
+                "orgColumnComment": _self.tableData[i].diyComments,
                 "length": _self.tableData[i].id
               })
             }
@@ -108,11 +93,11 @@ export default {
         } else {
           for (let j = 0; j < _self.tableData.length; j++) {
             _self.schemaMappingDTOList.push({
-              "newColumnName": _self.tableData[j].name.toLowerCase(),
+              "newColumnName": _self.tableData[j].name,
               "newColumnType": '',
               "orgColumnName": _self.tableData[j].name,
               "orgColumnType": _self.tableData[j].datatype,
-              "orgColumnComment": _self.tableData[j].comments,
+              "orgColumnComment": _self.tableData[j].diyComments,
               "length": _self.tableData[j].id
             })
           }
@@ -257,10 +242,10 @@ export default {
         console.log(_self.cloneData);
       }
       for (let n = 0; n < _self.cloneData.length; n++) {
-        if (_self.schemaMappingDTOList[n].newColumnType == '') {
-          _self.schemaMappingDTOList[n].newColumnType = _self.cloneData[n];
-        }
-
+       if(_self.schemaMappingDTOList[n].newColumnType==''){
+         _self.schemaMappingDTOList[n].newColumnType = _self.cloneData[n];
+       }
+       
       }
       console.log(_self.schemaMappingDTOList);
 
@@ -275,27 +260,13 @@ export default {
     },
     //下一步
     next() {
-      let flag = true;
-      for (let i = 0; i < this.schemaMappingDTOList.length; i++) {
-        if (/^[a-z]+$/.test(this.schemaMappingDTOList[i].newColumnName)) {
-
-        } else {
-          flag = false;
-          break;
-        }
-      }
-      if (flag) {
-        this.$emit('next');
-        this.setSchemaList(this.schemaMappingDTOList);
-      } else {
-        this.$message.warning('目标字段名称只支持小写英文字母');
-      }
-
+      this.$emit('next');
+      this.setSchemaList(this.schemaMappingDTOList);
     },
-    isDisabled(row) {
-      if (row.newColumnName == "_id" && row.length == 0 && this.ismongodb) {
+    isDisabled(row){
+      if(row.newColumnName == "_id"&&row.length == 0&&this.ismongodb){
         return true;
-      } else {
+      }else{
         return false;
       }
     },
@@ -327,7 +298,7 @@ export default {
       }
 
     },
-    ismongodb() {
+    ismongodb(){
       return this.$route.params.type == 'mongodb';
     },
   },
@@ -409,12 +380,10 @@ export default {
 .typeMapDia {
   width: 100%;
 }
-
 .unnore .el-input.is-disabled .el-input__inner {
   background-color: #f0f3f6;
   color: #4f609d;
   border-radius: 0;
   border: 1px solid #c9cdd0;
 }
-
 </style>
