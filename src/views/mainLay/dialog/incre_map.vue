@@ -7,20 +7,20 @@
         <span class="grab gra-r"></span>
       </div>
       <div class="daiInfo proInfo">
-        <div class="daiInfo-title proInfo-title clearfix">
-          <el-col :span="24">
-            <el-col :span="6">
-              <h2>增量字段选择</h2>
-            </el-col>
-            <el-col :span="13" class="bank">bank</el-col>
-            <el-col :span="4">
-              <el-form-item class="clearfix">
-                <!--  <el-input placeholder="请输入内容"></el-input> -->
-              </el-form-item>
-              <!--  <el-input v-model=""></el-input> -->
-            </el-col>
-          </el-col>
-        </div>
+       <!--  <div class="daiInfo-title proInfo-title clearfix">
+         <el-col :span="24">
+           <el-col :span="6">
+             <h2>增量字段选择</h2>
+           </el-col>
+           <el-col :span="13" class="bank">bank</el-col>
+           <el-col :span="4">
+             <el-form-item class="clearfix">
+               <el-input placeholder="请输入内容"></el-input>
+             </el-form-item>
+             <el-input v-model=""></el-input>
+           </el-col>
+         </el-col>
+       </div> -->
         <div class="proInfo-box clearfix">
           <div class="comTable">
             <el-table :data="tableData" stripe height="250" :span-method="arraySpanMethod">
@@ -229,7 +229,8 @@ export default {
 
 .el-dialog__title {
   font-size: $font-size-medium;
-  color: $color-text-title;
+  /* color: $color-text-title; */
+  @include el-color($color-text-title);
 }
 
 .el-dialog__body table .cell .red {
@@ -248,11 +249,13 @@ export default {
   }
   .gra-l {
     width: 30%;
-    background: $color-background-lp;
+    @include el-color-lp($color-background-lp);
+   /*  background: $color-background-lp; */
   }
   .gra-r {
     width: 70%;
-    background: $color-background-rp;
+     @include el-color-rp($color-background-rp);
+   /*  background: $color-background-rp; */
   }
 }
 

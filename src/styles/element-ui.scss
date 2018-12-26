@@ -70,9 +70,7 @@
        height: 200px;
      }
    }
- }
-
- //dropdown
+ } //dropdown
  .el-dropdown-menu {
    a {
      display: block
@@ -127,12 +125,16 @@
  .enc-header .el-menu--horizontal>.el-submenu .el-submenu__title:hover {
    @include el-bgcolor($el-primary-theme);
  }
-.el-menu--horizontal .el-menu-item:not(.is-disabled):focus, .el-menu--horizontal .el-menu-item:not(.is-disabled):hover{
-  @include el-backcolor($el-primary-theme);
-}
-.el-menu--horizontal>.el-submenu.is-active .el-submenu__title{
-  @include el-menu-item-active($el-radio-btn,$el-radio-btn);
-}
+
+ .el-menu--horizontal .el-menu-item:not(.is-disabled):focus,
+ .el-menu--horizontal .el-menu-item:not(.is-disabled):hover {
+   @include el-backcolor($el-primary-theme);
+ }
+
+ .el-menu--horizontal>.el-submenu.is-active .el-submenu__title {
+   @include el-menu-item-active($el-radio-btn, $el-radio-btn);
+ }
+
  @media screen and ( max-width: 1280px) {
    .enc-header {
      height: 50px!important;
@@ -144,91 +146,198 @@
      }
    }
  }
-.el-breadcrumb__inner a:hover, .el-breadcrumb__inner.is-link:hover{
-  @include el-color($el-radio-btn);
-}
-.dashboard-container .filter-container .count-container .count-title .all-number{
-  @include el-color($el-all-number);
-}
-#NewAisdeTree .el-tree .el-tree-node__content:focus, #NewAisdeTree .el-tree .el-tree-node__content:hover{
-  @include el-color($el-radio-btn);
-}
-#NewAisdeTree .el-tree .el-checkbox__input.is-checked .el-checkbox__inner, #NewAisdeTree .el-tree .el-checkbox__input.is-indeterminate .el-checkbox__inner{
-  @include el-bgcolor($el-radio-btn);
-  @include el-border-color($el-radio-btn);
-}
-.el-tabs--border-card>.el-tabs__header .el-tabs__item.is-active{
-  @include el-color($el-radio-btn);
-}
-.el-tabs--border-card>.el-tabs__header .el-tabs__item:not(.is-disabled):hover{
+
+ .el-breadcrumb__inner a:hover,
+ .el-breadcrumb__inner.is-link:hover {
    @include el-color($el-radio-btn);
-}
-.nav-menu .enc-nav-menu .el-submenu .el-submenu__title i{
-  /* @include el-color($el-sub-title-i); */
-}
-.icon-span{
+ }
+
+ .dashboard-container .filter-container .count-container .count-title .all-number {
+   @include el-color($el-all-number);
+ }
+
+ #NewAisdeTree .el-tree .el-tree-node__content:focus,
+ #NewAisdeTree .el-tree .el-tree-node__content:hover {
+   @include el-color($el-radio-btn);
+ }
+
+ #NewAisdeTree .el-tree .el-checkbox__input.is-checked .el-checkbox__inner,
+ #NewAisdeTree .el-tree .el-checkbox__input.is-indeterminate .el-checkbox__inner {
+   @include el-bgcolor($el-radio-btn);
+   @include el-border-color($el-radio-btn);
+ }
+
+ .el-tabs--border-card>.el-tabs__header .el-tabs__item.is-active {
+   @include el-color($el-radio-btn);
+ }
+
+ .el-tabs--border-card>.el-tabs__header .el-tabs__item:not(.is-disabled):hover {
+   @include el-color($el-radio-btn);
+ }
+
+ .nav-menu .enc-nav-menu .el-submenu .el-submenu__title i {
+   /* @include el-color($el-sub-title-i); */
+ }
+
+ .icon-span {
    @include el-color($el-kittle-icon-span);
-}
-.el-loading-spinner .path{
-  @include el-loading-spinner($el-radio-btn);
-}
-.el-tabs__item.is-active{
+ }
+
+ .el-loading-spinner .path {
+   @include el-loading-spinner($el-radio-btn);
+ }
+
+ .el-tabs__item.is-active {
    @include el-color($el-radio-btn);
-}
-.el-tabs__item:hover{
-  @include el-color($el-radio-btn);
-}
-.el-tabs__active-bar{
-  @include el-bgcolor($el-radio-btn);
-}
-.right-tools a{
-  @include el-color($el-radio-btn);
-}
-.task-template .el-table__body tr.hover-row > td{
-  @include el-table-hover($el-table-td-hover);
-}
-.collaspe-btn .el-button--primary.is-disabled,.collaspe-btn .el-button--primary.is-disabled:active,.collaspe-btn .el-button--primary.is-disabled:focus, .collaspe-btn .el-button--primary.is-disabled:hover{
-  @include el-btn-disabled($el-dis-form);
-  color:#fff;
-}
-.el-checkbox__input.is-checked .el-checkbox__inner, .el-checkbox__input.is-indeterminate .el-checkbox__inner{
-  @include el-border-color($el-primary-theme);
-  @include el-bgcolor($el-primary-theme);
-}
-.checkDiv .look{
+ }
+
+ .el-tabs__item:hover {
+   @include el-color($el-radio-btn);
+ }
+
+ .el-tabs__active-bar {
+   @include el-bgcolor($el-radio-btn);
+ }
+
+ .right-tools a {
+   @include el-color($el-radio-btn);
+ }
+
+ .task-template .el-table__body tr.hover-row>td {
+   @include el-table-hover($el-table-td-hover);
+ }
+
+ .collaspe-btn .el-button--primary.is-disabled,
+ .collaspe-btn .el-button--primary.is-disabled:active,
+ .collaspe-btn .el-button--primary.is-disabled:focus,
+ .collaspe-btn .el-button--primary.is-disabled:hover {
+   @include el-btn-disabled($el-dis-form);
+   color: #fff;
+ }
+
+ .el-checkbox__input.is-checked .el-checkbox__inner,
+ .el-checkbox__input.is-indeterminate .el-checkbox__inner {
+   @include el-border-color($el-primary-theme);
+   @include el-bgcolor($el-primary-theme);
+ }
+
+ .checkDiv .look {
    @include el-color($el-all-number);
-}
-.el-pagination.is-background .el-pager li:not(.disabled).active {
-  @include el-bgcolor($el-page-theme);
-}
-.el-pagination.is-background .el-pager li:not(.disabled):hover {
-    @include el-page-color($el-table-td-hover);
-}
-.el-checkbox__inner {
+ }
+
+ .el-pagination.is-background .el-pager li:not(.disabled).active {
+   @include el-bgcolor($el-page-theme);
+ }
+
+ .el-pagination.is-background .el-pager li:not(.disabled):hover {
+   @include el-page-color($el-table-td-hover);
+ }
+
+ .el-checkbox__inner {
    @include el-border($el-table-thead-background-theme);
-}
-.comTable .el-table .cell .el-button--primary {
-  
-    @include el-button--primary($el-primary-theme);
-}
-.tree-tools a :hover {
-@include el-color($el-primary-theme);
-}
-.el-message-box__headerbtn:focus .el-message-box__close, .el-message-box__headerbtn:hover .el-message-box__close {
+ }
+
+ .comTable .el-table .cell .el-button--primary {
+
+   @include el-button--primary($el-primary-theme);
+ }
+
+ .tree-tools a :hover {
+   @include el-color($el-primary-theme);
+ }
+
+ .el-message-box__headerbtn:focus .el-message-box__close,
+ .el-message-box__headerbtn:hover .el-message-box__close {
    @include el-color($el-radio-btn);
-}
-#NewAisdeTree .el-tree .is-current > .el-tree-node__content {
+ }
+
+ #NewAisdeTree .el-tree .is-current>.el-tree-node__content {
    @include el-color($el-all-number);
-}
-.dashboard-container .filter-container .right-tools a {
-  @include el-color($el-rtools-a);
-}
-.el-form-item.is-success .el-input__inner, .el-form-item.is-success .el-input__inner:focus, .el-form-item.is-success .el-textarea__inner, .el-form-item.is-success .el-textarea__inner:focus {
+ }
+
+ .dashboard-container .filter-container .right-tools a {
+   @include el-color($el-rtools-a);
+ }
+
+ .el-form-item.is-success .el-input__inner,
+ .el-form-item.is-success .el-input__inner:focus,
+ .el-form-item.is-success .el-textarea__inner,
+ .el-form-item.is-success .el-textarea__inner:focus {
    @include el-color($el-input-success);
-}
-.el-form-item.is-success .el-input__inner, .el-form-item.is-success .el-input__inner:focus, .el-form-item.is-success .el-textarea__inner, .el-form-item.is-success .el-textarea__inner:focus {
+ }
+
+ .el-form-item.is-success .el-input__inner,
+ .el-form-item.is-success .el-input__inner:focus,
+ .el-form-item.is-success .el-textarea__inner,
+ .el-form-item.is-success .el-textarea__inner:focus {
    @include el-color($el-input-success);
-}
-.el-form-item.is-success .el-input__inner, .el-form-item.is-success .el-input__inner:focus, .el-form-item.is-success .el-textarea__inner, .el-form-item.is-success .el-textarea__inner:focus {
+ }
+
+ .el-form-item.is-success .el-input__inner,
+ .el-form-item.is-success .el-input__inner:focus,
+ .el-form-item.is-success .el-textarea__inner,
+ .el-form-item.is-success .el-textarea__inner:focus {
    @include el-color($el-input-success);
+ }
+ /*滚动条样式*/
+
+/*  .main::-webkit-scrollbar {
+  滚动条整体样式
+  width: 6px;
+  高宽分别对应横竖滚动条的尺寸
+  height: 6px;
 }
+
+.main::-webkit-scrollbar-thumb {
+  滚动条里面小方块
+  border-radius: 5px;
+  -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+  background: #448f6b;
+}
+
+.main::-webkit-scrollbar-track {
+  滚动条里面轨道
+  -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+  border-radius: 0;
+  background: rgba(0, 0, 0, 0.1);
+}
+.el-table__body-wrapper::-webkit-scrollbar {
+  滚动条整体样式
+  width: 6px;
+  高宽分别对应横竖滚动条的尺寸
+  height: 6px;
+}
+
+.el-table__body-wrapper::-webkit-scrollbar-thumb {
+  滚动条里面小方块
+  border-radius: 5px;
+  -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+  background: #448f6b;
+}
+
+.el-table__body-wrapper::-webkit-scrollbar-track {
+  滚动条里面轨道
+  -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+  border-radius: 0;
+  background: rgba(0, 0, 0, 0.1);
+}
+ .el-tree::-webkit-scrollbar {
+  滚动条整体样式
+  width: 6px;
+  高宽分别对应横竖滚动条的尺寸
+  height: 6px;
+}
+
+.el-tree::-webkit-scrollbar-thumb {
+  滚动条里面小方块
+  border-radius: 5px;
+  -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+  background: #448f6b;
+}
+
+.el-tree::-webkit-scrollbar-track {
+  滚动条里面轨道
+  -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+  border-radius: 0;
+  background: rgba(0, 0, 0, 0.1);
+} */

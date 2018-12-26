@@ -103,7 +103,7 @@
             </el-col>
             <el-col :span="4" :class="{bank:!((reqObj.status==1||reqObj.status==2||reqObj.status==4)&&reqObj.isPeriod!=0&&sourceBaseInfo.dbType!='mongodb'&&sourceBaseInfo.dbType!='ftp')}">
               {{((reqObj.status==1||reqObj.status==2||reqObj.status==4)&&reqObj.isPeriod!=0&&sourceBaseInfo.dbType!='mongodb'&&sourceBaseInfo.dbType!='ftp')?'':'bank'}}
-              <el-button v-show="(reqObj.status==1||reqObj.status==2||reqObj.status==4)&&reqObj.isPeriod!=0&&sourceBaseInfo.dbType!='mongodb'&&sourceBaseInfo.dbType!='ftp'" type="primary" size="small" @click="checkData">数据核验</el-button>
+              <el-button v-show="(reqObj.status==1||reqObj.status==2||reqObj.status==4)&&reqObj.isPeriod!=0" type="primary" size="small" @click="checkData">数据核验</el-button>
             </el-col>
             <el-col :span="10">
               <el-form-item label="剩余数据量预估:">
