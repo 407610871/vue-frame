@@ -492,6 +492,7 @@ export default {
       this.setStore(fliterParams);
     },
     storeReady: function() {
+      debugger;
       var fliterItemList = this.$store.state.fliterItemList;
       if (
         fliterItemList.network.ready &&
