@@ -266,12 +266,12 @@
         ></el-table-column>
         <el-table-column label="任务开始时间" width="150" :show-overflow-tooltip="true">
           <template slot-scope="scope">
-            {{scope.row.status=='5' ? '' : scope.row.startTime | formateDateTime }}
+            {{scope.row.status==5 ? '' : scope.row.startTime | formateDateTime }}
           </template>
         </el-table-column>
         <el-table-column label="任务结束时间" width="150" :show-overflow-tooltip="true">
           <template slot-scope="scope">
-            {{scope.row.status=='5' ? '' : scope.row.endTime | formateDateTime}}
+            {{scope.row.status==5 ? '' : scope.row.endTime | formateDateTime}}
           </template>
         </el-table-column>
         <el-table-column label="任务类型" width="130" :show-overflow-tooltip="true">

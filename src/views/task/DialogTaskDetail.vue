@@ -383,10 +383,10 @@ export default {
       },
       //接入数据更新信息
       sourceDataInfo:{
-        left:'',
-        source_record_poll_rate:'',
-        waiting4processing:'',
-        writeNum:''
+        left:'0',
+        source_record_poll_rate:'0.0',
+        waiting4processing:'0',
+        writeNum:'0'
       },
       //数据预览列表集合
       dataViewsList:[],
@@ -654,7 +654,8 @@ export default {
               1:'运行',
               2:'暂停',
               3:'失败',
-              4:'完成'
+              4:'完成',
+              5:'准备中'
             }
             that.taskBaseInfo.statusDesc = statusMap[that.taskBaseInfo.status];
             //网络指示灯判断
@@ -764,13 +765,14 @@ export default {
           }else if(res.data.code!="0000"&&res.data.code!="200"){
             that.doMsg("/manager/taskOperate/dataInfo/"+res.data.data.message,'error');
           }else{
-            that.sourceDataInfo = res.data.data; 
+            if(that.reqObj.status != '5'){
+              that.sourceDataInfo = res.data.data; 
+            } 
           }
           that.loading2 = false;
         }
       ).catch(
         function(err){
-          console.log(err);
           that.loading2 = false;
         }
       )
