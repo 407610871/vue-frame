@@ -540,6 +540,7 @@ export default {
 .dashboard-container {
   display: flex;
   flex-direction: column;
+  height: 100%;
   .main {
     flex: 1;
     overflow: auto;

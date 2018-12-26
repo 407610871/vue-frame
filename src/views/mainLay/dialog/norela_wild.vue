@@ -193,9 +193,6 @@ export default {
                       this.tableData.push(map);
                     }
                 })
-                this.tableData = this.tableData.filter(res=>{
-                  return res.name != "_id";
-                })
               }
             })
           }else{

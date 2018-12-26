@@ -292,9 +292,13 @@ export default {
       return this.$store.state.queryParams.accessObjManage;
     },
     tableHeight: function() {
-      return this.collapse ?
-        window.innerHeight - 300 :
-        window.innerHeight - 400 - 40 * this.moreData;
+      //return this.collapse ?
+       // window.innerHeight - 300 :
+       // window.innerHeight - 400 - 40 * this.moreData;
+
+      return this.collapse
+        ? window.innerHeight - 400
+       : (window.innerHeight - 540 - 40 * this.moreData<400?300:window.innerHeight - 540 - 40);
     },
     headerHeight: function() {
       return this.collapse ? "50px" : "85px";
