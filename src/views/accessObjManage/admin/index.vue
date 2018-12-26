@@ -165,7 +165,7 @@
                   <i class="enc-icon-shujuheyan" @click="dataInverCheck(scope.row)"></i>
                 </el-tooltip>
               </div>
-              <div class="survey" style="width:100%">
+              <div class="survey" style="width:50%">
                 <div class="survey-operate">
                   <norela-coll :pdata="scope.row" :type="type" @fre="loadTable()" v-if="type!='mysql' && type!='oracle' && type!='sqlserver' && type!='postgresql'"></norela-coll> 
                   <div>

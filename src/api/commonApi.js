@@ -32,7 +32,7 @@ export const synchronize = '/ctables/synchronize';
 export const refreshAmount = '/ctables/refreshAmount';
 
 //ctables/delete
-export const ctablesDelete = 'ctables/delete';
+export const ctablesDelete = '/ctables/delete';
 
 // DCAM
 export const deleteTask = '/taskManager/deleteTask/';
