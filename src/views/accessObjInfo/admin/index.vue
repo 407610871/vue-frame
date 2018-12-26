@@ -283,7 +283,6 @@
             _self.loading = false;
           })
           .catch(function(err) {
-            console.log(err)
             _self.loading = false;
             _self.$alert('刷新失败', '提示', {
               confirmButtonText: '确定'
@@ -337,7 +336,6 @@
               _self.$alert('元数据模版不正确，建议先导出元数据模版', {
                 confirmButtonText: '确定'
               });
-              console.log(res);
             }
             _self.loading = false;
           })
@@ -345,7 +343,6 @@
             _self.$alert('未知错误', {
               confirmButtonText: '确定'
             });
-            console.log(err);
             _self.loading = false;
           })
       },
@@ -541,7 +538,6 @@
             _self.loading = false;
           })
           .catch(function(err) {
-            console.log(err)
             _self.loading = false;
             _self.$alert('字段中文名称修改失败', '提示', {
               confirmButtonText: '确定'

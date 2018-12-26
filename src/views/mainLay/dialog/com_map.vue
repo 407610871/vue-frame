@@ -14,7 +14,8 @@
         <el-table-column prop="toType" label="目标字段类型">
           <template slot-scope="scope">
             <el-select v-model="scope.row.newColumnType" placeholder="请选择" :disabled="isDisabled(scope.row)||isForbidEdit">
-              <el-option v-for="item in TypeData" :key="item" :label="item" :value="item" :disabled="type=='ftp'&&scope.row.newColumnType=='BIGINT'">
+              <el-option v-for="(item, index) in TypeData" :key="index" :label="item" :value="item" 
+              :disabled="type=='ftp'&&scope.row.newColumnType=='BIGINT'">
               </el-option>
             </el-select>
           </template>
@@ -61,11 +62,8 @@ export default {
     _getMatch() {
       var _self = this;
       _self.tableData = [];
-      console.log(_self.$store.state.schemaList);
       _self.schemaMappingDTOList = [];
-      if (_self.$store.state.noreData.length == 0) {
-
-      } else {
+      if (_self.$store.state.noreData.length !== 0){
         _self.tableData = _self.$store.state.noreData;
         if (_self.$store.state.schemaList.length != 0) {
           _self.schemaMappingDTOList = _self.$store.state.schemaList;
@@ -104,8 +102,6 @@ export default {
 
         }
         this._getAllType();
-        // console.log( _self.tableData)
-
       }
 
     },
@@ -113,7 +109,6 @@ export default {
 
       var _self = this;
       _self.TypeData = [];
-      /*_self.TypeData = res.data[0].datas_mapping;*/
       let reData = [];
       if (_self.$store.state.isParquet) {
         for (let m = 0; m < columnJson.length; m++) {
@@ -136,7 +131,6 @@ export default {
         }
         _self.TypeData.push(reData[i]);
       }
-      console.log(_self.TypeData);
     },
     _getAllType() {
 
@@ -166,9 +160,6 @@ export default {
             flag = true;
             temp = j;
             break;
-            /*_self.cloneData.push({
-              'mapping': _self.mapData.datas_mapping[j]
-            })*/
           } else {
             if (_self.tableData[i].datatype.toUpperCase().indexOf(_self.mapData.datas[j]) > -1) {
               flag = true;
@@ -239,7 +230,6 @@ export default {
           }
 
         }
-        console.log(_self.cloneData);
       }
       for (let n = 0; n < _self.cloneData.length; n++) {
        if(_self.schemaMappingDTOList[n].newColumnType==''){
@@ -247,10 +237,6 @@ export default {
        }
        
       }
-      console.log(_self.schemaMappingDTOList);
-
-
-
     },
     //上一步
     pre() {

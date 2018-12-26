@@ -7,17 +7,12 @@
             <el-col :span="10">
               <el-form-item label="接入目的库:" prop="dLibrary">
                 <el-select v-model="ruleForm.dLibrary" placeholder="请选择" :disabled="isdisable">
-                  <!-- <el-option label="全国" value="0"></el-option>
-                  <el-option label="全省" value="1"></el-option>
-                  <el-option label="全市" value="2"></el-option>
-                  <el-option label="行政区" value="3"></el-option> -->
-                  <el-option v-for="item in treeData" :label="item.label" :value="item.storageId" :key="item.storageId"></el-option>
+                  <el-option v-for="(item,index) in treeData" :label="item.label" :value="item.storageId" :key="index"></el-option>
                 </el-select>
               </el-form-item>
             </el-col>
             <el-col :span="1" class="bank">bank</el-col>
             <el-col :span="6">
-              <!--  <el-input v-model="ruleForm.tablename"></el-input> -->
             </el-col>
           </el-col>
           <el-col :span="24">
@@ -26,7 +21,7 @@
                 <el-radio label="1" v-if="this.$route.params.type=='oracle'||this.$route.params.type == 'mongodb'||this.$route.params.type == 'ftp'">增量接入</el-radio>
                 <el-radio label="3" v-if="this.$route.params.type=='oracle'">全量接入</el-radio>
                 <el-radio label="0" v-if="this.$route.params.type != 'ftp'">实时接入</el-radio>
-                <el-radio label="2" v-if="this.$route.params.type=='oracle'">一次性接入</el-radio>
+                <el-radio label="2" v-if="this.$route.params.type=='oracle' || this.$route.params.type=='mongodb'">一次性接入</el-radio>
               </el-radio-group>
             </el-form-item>
           </el-col>
@@ -72,13 +67,6 @@
                 <incre-map :msg='innerVisible' :incid="rowList.id" :yid="yid" :alincre="this.increArr" @showIncre="showIncrement()" @saveIncre="saveIncrement($event)"></incre-map>
               </el-form-item>
             </el-col>
-           <!--  <el-col :span="6">
-             <el-form-item label="采集技术:" prop="actech">
-               <el-select v-model="ruleForm.actech" placeholder="请选择" disabled>
-                 <el-option label="JDBC" value="JDBC"></el-option>
-               </el-select>
-             </el-form-item>
-           </el-col> -->
           </el-col>
           <el-col :span="24" v-show="ruleForm.accessMode=='1'||ruleForm.accessMode=='3'">
             <el-form-item label="周期设置:" prop="cycleSet">
@@ -376,7 +364,6 @@ export default {
       for (let i = 1; i < 29; i++) {
         this.$set(this.monthData, i, i);
       }
-      console.log(this.monthData);
     },
     _minData() {
       for (let i = 1; i < 60; i++) {
@@ -478,7 +465,7 @@ export default {
         let jday = 0;;
         let jhour = 0;
         let jmin;
-        if (this.ruleForm.jmin == '') {
+        if (!this.ruleForm.jmin.toString()) {
           this.$message.warning('请将间隔执行时间填写完整');
           return false;
         }

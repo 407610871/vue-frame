@@ -1,6 +1,5 @@
 <template>
   <div class="taskMDialog userSurveyDialog setTaskDia diaicon">
-    <!--  <el-button size="mini" class="diabtn incbtn" type="danger" @click="dialogVisible = true">设置通配符</el-button> -->
     <el-tooltip class="item" effect="light" content="单表采集" placement="top">
       <i class="enc-icon-danbiaocaiji" @click="dialogVisible = true"></i>
     </el-tooltip>
@@ -19,10 +18,7 @@
               </div>
             </div>
             <user-surveybak :msg="this.num" :batch="false" :info="this.pdata" @pre="next('second')" @closeuser="closeDialog()" ref="survey"></user-surveybak>
-            <!--  <div class="btn tcenter">
-             <el-button type="primary" style="margin-top: 12px;" @click="next('second')">下一步</el-button>
-             <el-button style="margin-top: 12px;" @click="closeDialog">取消</el-button>
-           </div> -->
+
           </el-tab-pane>
           <el-tab-pane name="second" disabled><span slot="label"><i class="el-icon-circle">2</i> 建立数据映射关系</span>
             <div class="daiInfo proInfo">
@@ -39,10 +35,6 @@
               </div>
             </div>
             <coll-task :pdata="pdata" :msg="activeName" ref="collTask" @pre="next('second')" @close="closeDialog()" @fresh="fresh()"></coll-task>
-            <!-- <div class="btn tcenter mt30">
-              <el-button type="primary" style="margin-top: 12px;" @click="next('second')">上一步</el-button>
-              <el-button type="primary" style="margin-top: 12px;">完成</el-button>
-            </div> -->
           </el-tab-pane>
         </el-tabs>
       </div>

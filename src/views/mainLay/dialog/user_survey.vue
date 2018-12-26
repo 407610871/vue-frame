@@ -27,7 +27,8 @@
                 <el-col :span="4" class="ml0">
                   <el-form-item prop="industry">
                     <el-select v-model="ruleForm.industry" placeholder="请选择">
-                      <el-option v-for="item in sIndustry" :label="item.static_NAME" :value="item.static_CODE" :id="item.dict_ID"></el-option>
+                      <el-option v-for="(item, index) in sIndustry" :key="index" :label="item.static_NAME" 
+                      :value="item.static_CODE" :id="item.dict_ID"></el-option>
                       <!-- <el-option label="一次性接入" value="1"></el-option>
                       <el-option label="全量接入" value="2"></el-option>
                       <el-option label="实时接入" value="3"></el-option> -->
@@ -37,35 +38,35 @@
                 <el-col :span="4" class="ml0">
                   <el-form-item prop="znb">
                     <el-select v-model="ruleForm.znb" placeholder="请选择">
-                      <el-option v-for="item in sZnb" :label="item.static_NAME" :value="item.static_CODE" :id="item.dict_ID"></el-option>
+                      <el-option v-for="(item,index) in sZnb" :key="index" :label="item.static_NAME" :value="item.static_CODE" :id="item.dict_ID"></el-option>
                     </el-select>
                   </el-form-item>
                 </el-col>
                 <el-col :span="4" class="ml0">
                   <el-form-item prop="fcc">
                     <el-select v-model="ruleForm.fcc" placeholder="请选择">
-                      <el-option v-for="item in sFcc" :label="item.static_NAME" :value="item.static_CODE" :id="item.dict_ID"></el-option>
+                      <el-option v-for="(item,index) in sFcc" :key="index" :label="item.static_NAME" :value="item.static_CODE" :id="item.dict_ID"></el-option>
                     </el-select>
                   </el-form-item>
                 </el-col>
                 <el-col :span="4" class="ml0">
                   <el-form-item prop="tlc">
                     <el-select v-model="ruleForm.tlc" placeholder="请选择">
-                      <el-option v-for="item in sTlc" :label="item.static_NAME" :value="item.static_CODE" :id="item.dict_ID"></el-option>
+                      <el-option v-for="(item, index) in sTlc" :key="index" :label="item.static_NAME" :value="item.static_CODE" :id="item.dict_ID"></el-option>
                     </el-select>
                   </el-form-item>
                 </el-col>
                 <el-col :span="4" class="ml0">
                   <el-form-item prop="bdc">
                     <el-select v-model="ruleForm.bdc" placeholder="请选择">
-                      <el-option v-for="item in sBdc" :label="item.static_NAME" :value="item.static_CODE" :id="item.dict_ID"></el-option>
+                      <el-option v-for="(item,index) in sBdc" :key="index" :label="item.static_NAME" :value="item.static_CODE" :id="item.dict_ID"></el-option>
                     </el-select>
                   </el-form-item>
                 </el-col>
                 <el-col :span="4" class="ml0">
                   <el-form-item prop="abc">
                     <el-select v-model="ruleForm.abc" placeholder="请选择">
-                      <el-option v-for="item in sAbc" :label="item.static_NAME" :value="item.static_CODE" :id="item.dict_ID"></el-option>
+                      <el-option v-for="(item,index) in sAbc" :key="index" :label="item.static_NAME" :value="item.static_CODE" :id="item.dict_ID"></el-option>
                     </el-select>
                   </el-form-item>
                 </el-col>
@@ -90,7 +91,7 @@
               <el-col :span="6">
                 <el-form-item label="数据接入方式:" prop="datamode">
                   <el-select v-model="ruleForm.datamode" placeholder="请选择">
-                     <el-option v-for="item in sDum" :label="item.static_NAME" :value="item.static_CODE" :id="item.dict_ID"></el-option>
+                     <el-option v-for="(item,index) in sDum" :key="index" :label="item.static_NAME" :value="item.static_CODE" :id="item.dict_ID"></el-option>
                   </el-select>
                 </el-form-item>
               </el-col>

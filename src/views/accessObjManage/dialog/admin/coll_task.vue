@@ -404,7 +404,6 @@ export default {
       const wsuri = wsUrl;
 
       this.websock = new WebSocket(wsuri);
-      console.log(this.websock);
       this.websock.onopen = this.websocketonopen;
       // this.websock.send = this.websocketsend;
       // this.websock.onmessage = this.websocketonmessage;
@@ -412,11 +411,9 @@ export default {
     },
     websocketclose(e) {
       //关闭
-      console.log("websocket连接已断开");
     },
     //连接成功回调方法
     websocketonopen() {
-      console.log("websocket连接成功！")
     },
 
     //清空非选中项
@@ -484,7 +481,6 @@ export default {
     },
     saveIncrement(value) {
       this.increArr = value;
-      console.log("****" + this.increArr);
       this.ruleForm.increment = this.increArr.name;
       this.innerVisible = false;
     },
@@ -493,7 +489,6 @@ export default {
       for (let i = 1; i < 29; i++) {
         this.$set(this.monthData, i, i);
       }
-      console.log(this.monthData);
     },
     _minData() {
       for (let i = 0; i < 60; i++) {
@@ -624,7 +619,6 @@ export default {
           jmin = this.ruleForm.jmin;
         }
         var pollIntervalMs = this.formateTime(parseInt(jday), parseInt(jhour), parseInt(jmin));
-        console.log(pollIntervalMs);
       } else if (this.ruleForm.cycleSet == '1' && this.ruleForm.accessMode != "0" && this.ruleForm.accessMode != "2") {
         if (this.radio == '') {
           this.$message.warning('请选择定时执行时间');
@@ -649,7 +643,6 @@ export default {
             dfmon = this.ruleForm.dfmon;
           }
           var pollIntervalMs = `0 ${dfmin} ${dfhour} ${dfmon} * ?`;
-          console.log(pollIntervalMs);
         }
         if (this.radio == '3') {
           //第二队列
@@ -671,7 +664,6 @@ export default {
             dsweek = this.weekTrans(this.ruleForm.dsweek);
           }
           var pollIntervalMs = `0 ${dsmin} ${dshour} ? * ${dsweek}`;
-          console.log(pollIntervalMs);
         }
         if (this.radio == '4') {
           //第三队列
@@ -689,7 +681,6 @@ export default {
           }
 
           var pollIntervalMs = `0 ${dtmin} ${dthour} * * ? *`;
-          console.log(pollIntervalMs);
         }
       }
       var ctt = '';

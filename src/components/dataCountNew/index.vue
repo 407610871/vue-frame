@@ -79,7 +79,6 @@ export default {
   },
   watch: {
     getUserThemes() {
-      //console.log("454245");
       this._getColor();
     }
   }

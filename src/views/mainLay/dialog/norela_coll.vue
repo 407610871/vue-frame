@@ -1,7 +1,5 @@
 <template>
   <div class="taskMDialog userSurveyDialog setTaskDia diaicon">
-    <!-- <el-button size="mini" class="diabtn incbtn" type="danger" @click="dialogVisible = true">设置通配符</el-button> -->
-    <!-- <i class="el-icon-info" @click="dialogVisible = true">设置通配符</i> -->
     <el-tooltip class="item" effect="light" :content="titleContent" placement="top">
       <i class="enc-icon-danbiaocaiji" @click="setVisible()"></i>
     </el-tooltip>
@@ -14,8 +12,6 @@
         <el-tabs v-model="activeName">
           <el-tab-pane name="first" disabled>
             <span slot="label"><i class="el-icon-circle">1</i>{{titleContent}}</span>
-           
-            
             <norela-unwild v-if="isParquet&&this.$route.params.type=='ftp'" :msg="msg" @pre="next('second')" @clo="closeDialog"></norela-unwild>
             <norela-wild v-else :msg="msg" :rowList="pdata" @pre="next('second')" @clo="closeDialog"></norela-wild>
           </el-tab-pane>
@@ -36,10 +32,6 @@
               </div>
             </div>
             <coll-task :rowList="pdata" :msg="activeName" @pre="nexts('second')" @fresh="fresh()"> </coll-task>
-            <!--  <div class="btn tcenter mt30">
-             <el-button type="primary" style="margin-top: 12px;" @click="next('second')">上一步</el-button>
-             <el-button type="primary" style="margin-top: 12px;">完成</el-button>
-            </div> -->
           </el-tab-pane>
         </el-tabs>
       </div>
@@ -67,18 +59,10 @@ export default {
   },
   methods: {
     setVisible() {
-     /*  if (this.pdata.exitTask) {
-        this.$message.warning('已设置过采集');
-        return false;
-      } else {
-        this.dialogVisible = true;
-      } */
       this.dialogVisible = true;
     },
     fresh() {
-
       this.activeName = 'first';
-      //this.$store.commit("setMode","");
       this.$store.commit('setSchemaList', this.clear);
       this.$store.commit('setNoreData', this.clear);
       this.$emit('fre');
@@ -90,26 +74,20 @@ export default {
     closeDialog() {
       this.dialogVisible = false;
       this.msg = false;
-      //this.setMatchType(this.clear);
       this.activeName = 'first';
       this.$store.commit('setSchemaList', this.clear);
       this.$store.commit('setNoreData', this.clear);
-      //this.$refs.survey._clearForm();
     },
     //步骤条
     handleClick(tab, event) {
-      console.log(tab, event);
-      console.log(this.activeName);
+
 
     },
     next(steps) {
-
       this.activeName = steps;
-      console.log(this.pdata);
     },
     nexts(steps) {
       this.activeName = steps;
-      console.log(this.pdata);
       this.msg = false;
     }
   },

@@ -137,7 +137,6 @@ const store = new Vuex.Store({
       for (var i in obj.data) { //这里obj.data是一个数组，表示不需要重置的
         state.queryParams[obj.name][i] = obj.data[i];
       }
-      console.log(state.queryParams[obj.name]);
     },
     setSchemaList(state, obj) {
       state.schemaList = [];

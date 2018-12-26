@@ -29,7 +29,6 @@ export default {
   },
   computed: {
     formHeight: function() {
-      console.log(this.formCollapse)
       return this.formCollapse ? 1 : 3;
     }
   },
@@ -41,8 +40,6 @@ export default {
       this.$emit("formFilter", this.formSeled);
     },
     getFormSeled: function() {
-      // console.log('this.dataObj');
-      // console.log(this.dataObj);
       var obj = {};
       for (var value of this.dataObj) {
         obj[value.id] = value.seledData;

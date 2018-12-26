@@ -27,7 +27,6 @@ export default {
     dialogRouter:{
       immediate: true,    // 这句重要
       handler (val) {
-          console.log('action Value:' + val);
           this.dialogRouter = val;
       }
     }

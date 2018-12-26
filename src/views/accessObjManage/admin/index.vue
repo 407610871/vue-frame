@@ -12,7 +12,7 @@
         </div>
       </div>
       
-      <el-table ref="multipleTable" v-loading="loading" :data="mainTableData" stripe
+      <el-table ref="multipleTable" :height="tableHeight" v-loading="loading" :data="mainTableData" stripe
           border style="width: 100%; margin-top:10px;" tooltip-effect="light" :row-class-name="tableRowClassName" @selection-change="handleSelectionChange">
           <el-table-column type="selection">
           </el-table-column>
@@ -147,7 +147,7 @@
           <el-table-column label="操作" width="160" align="left">
             <template slot-scope="scope">
               <el-tooltip class="item" effect="light" content="数据量更新" placement="top" 
-                v-if="type=='mysql'|| type=='oracle'|| type=='postgresql' || type=='sqlserver'">
+                v-if="type=='mysql'|| type=='oracle'|| type=='postgresql' || type=='sqlserver' || type=='mongodb'">
                 <i class="enc-icon-shujugengxin" v-on:click="updataSourceSingle(scope.$index, scope.row)" title="数据量更新"></i>
               </el-tooltip>
               <div class="survey">
@@ -293,7 +293,7 @@ export default {
     },
     tableHeight: function() {
       return this.collapse ?
-        window.innerHeight - 330 :
+        window.innerHeight - 300 :
         window.innerHeight - 400 - 40 * this.moreData;
     },
     headerHeight: function() {

@@ -107,14 +107,12 @@ export default {
 				data: formdata,
 				headers: {'Content-Type': 'application:json'}
 			}).then(function (res) {
-				console.log(res);
 				_self.$emit('closeImport');
 			})
 			.catch(function (err) {
 				_self.$alert('导入失败', {
 					confirmButtonText: '确定'
 				});
-				console.log(err);
 			});
 		}
   },

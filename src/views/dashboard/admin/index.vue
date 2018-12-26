@@ -20,7 +20,8 @@
               </div>
           </div>
 
-          <el-table v-loading="loading" :data="mainTableData" stripe border style="width: 100%;" tooltip-effect="light">
+          <el-table v-loading="loading" :data="mainTableData" :height="tableHeight"
+              stripe border style="width: 100%;" tooltip-effect="light">
                   <el-table-column label="接入源名称" width="250" show-overflow-tooltip>
                       <template slot-scope="scope">
                           <a class="underdone" href="javascript:void(0)" v-on:click="goSubPage(scope.$index,scope.row.dataSourceName)">{{ scope.row.name }}</a>
@@ -58,7 +59,6 @@
                   </el-table-column>
           </el-table>
         </div>
-
         <div class="enc-pagination">
             <el-pagination v-if="queryParamReady" style="float:right; margin:10px;" @current-change="goPage" background :page-size.sync="pageSize" :total="mainTableDataTotal" layout="prev, pager, next, jumper" :current-page.sync="currentPage">
             </el-pagination>
@@ -111,7 +111,7 @@ export default {
     },
     tableHeight: function() {
       return this.collapse
-        ? window.innerHeight - 440
+        ? window.innerHeight - 400
         : (window.innerHeight - 540 - 40 * this.moreData<400?300:window.innerHeight - 540 - 40);
     }
   },
@@ -540,7 +540,6 @@ export default {
 .dashboard-container {
   display: flex;
   flex-direction: column;
-  height: 100%;
   .main {
     flex: 1;
     overflow: auto;

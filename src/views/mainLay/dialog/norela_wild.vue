@@ -4,7 +4,7 @@
       <el-input v-model="delimiter"></el-input>
     </div>
     <div class="comTable">
-      <el-table stripe :data="tableData" height="250" style="width: 100%">
+      <el-table stripe :data="tableData" height="250" style="width: 100%" v-loading="loading">
         <el-table-column width="180" label="" :render-header="renderHeader">
           <template slot-scope="scope">
             <i class="el-icon-remove" @click="handleDelete(scope.$index, scope.row)"></i>
@@ -19,7 +19,7 @@
           <template slot-scope="scope">
           
             <el-select v-model="scope.row.datatype" placeholder="请选择" :disabled="isDisabled(scope.row)||isForbidEdit">
-              <el-option v-for="item in TypeData" :key="item" :label="item" :value="item">
+              <el-option v-for="(item, index) in TypeData" :key="index" :label="item" :value="item">
               </el-option>
             </el-select>
           </template>
@@ -52,6 +52,7 @@ export default {
         comments: ''
       },
       isForbidEdit:false,
+      loading: true,
     }
   },
   props: ['rowList'],
@@ -68,7 +69,6 @@ export default {
           on: {
             click: () => {
               if(this.isForbidEdit) return;
-              console.log(`${column.label}   ${$index}*********`);
               this.tableData.push({
                 name: '',
                 datatype: this.TypeData[0],
@@ -94,7 +94,6 @@ export default {
     //得到字段类型
     _getType() {
       var _self = this;
-      /*this.$ajax.get('./getColumnType').then(function(res) {*/
       if (_self.$store.state.isParquet) {
         for (let m = 0; m < columnJson.length; m++) {
           if (_self.$route.params.type == columnJson[m].type) {
@@ -108,12 +107,6 @@ export default {
           }
         }
       }
-      //console.log(_self.TypeData);
-      /* })
-       .catch(function(err) {
-         console.log(err)
-       });*/
-
     },
     pre() {
       let vex = /^[a-zA-Z][a-zA-Z0-9_]*$/;
@@ -159,9 +152,6 @@ export default {
       this.setSchemaList(this.$store.state.schemaList);
       this.setNoreData(this.tableData);
       this.setDelimiter(this.delimiter);
-      console.log(this.$store.state.noreData);
-      console.log(this.$store.state.delimiter);
-
       this.$emit('pre');
     },
     next() {
@@ -175,6 +165,7 @@ export default {
       }
     },
     getTableData(){
+      this.loading = true;
       this.$ajax({
         method: "get",
         url: this.GLOBAL.api.API_DACM + `/task/getSchemaMappingList?accessSysObjInfoId=${this.rowList.id}`,
@@ -182,8 +173,34 @@ export default {
         if(res.data.success){
           if(res.data.data.length == 0){
             this.isForbidEdit = false;
+            let params = {
+              objectInfoId: this.rowList.id,
+              pagNum: 1,
+              count: 200,
+              term: ""
+            }
+            this.$ajax.post(this.GLOBAL.api.API_DACM + '/objDetail/dataList', params).then(res=>{
+              if(res.data.success){
+                this.loading = false;
+                res.data.data.list.forEach(res=>{
+                    if(res.name != "_id"){
+                      let map = {
+                        'comments': "",
+                        'datatype': res.datatype.toUpperCase(),
+                        'id': res.id,
+                        'name': res.name,
+                      }
+                      this.tableData.push(map);
+                    }
+                })
+                this.tableData = this.tableData.filter(res=>{
+                  return res.name != "_id";
+                })
+              }
+            })
           }else{
             this.isForbidEdit = true;
+            this.loading = false;
             this.opData(res.data.data);
           }
         }
