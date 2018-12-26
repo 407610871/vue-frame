@@ -90,7 +90,7 @@ export default {
           _self.tableData = res.data.data.list;
           for (let j = 0; j < _self.tableData.length; j++) {
             _self.schemaMappingDTOList.push({
-              "newColumnName": _self.tableData[j].name.toUpperCase(),
+              "newColumnName": _self.tableData[j].name.toLowerCase(),
               "newColumnType": '',
               "orgColumnName": _self.tableData[j].name,
               "orgColumnType": _self.tableData[j].datatype,
@@ -111,7 +111,7 @@ export default {
       _self.tableData = _self.$store.state.matchType;
       for (let j = 0; j < _self.tableData.length; j++) {
         _self.schemaMappingDTOList.push({
-          "newColumnName": _self.tableData[j].name.toUpperCase(),
+          "newColumnName": _self.tableData[j].name.toLowerCase(),
           "newColumnType": '',
           "orgColumnName": _self.tableData[j].name,
           "orgColumnType": _self.tableData[j].datatype,
