@@ -129,7 +129,7 @@
             </el-col>
             <el-col :span="10" class="plr30">
               <el-form-item label="初始数据量:" prop="datanum">
-                <el-input v-model="ruleForm.datanum" required></el-input>
+                <el-input v-model="ruleForm.datanum"></el-input>
               </el-form-item>
             </el-col>
           </el-col>
@@ -210,10 +210,9 @@ export default {
         renumber: '',
         randomId: ''
       },
+      
       formRules: {
-        datanum: [
-          { required: false, validator: validateNum, trigger: "blur" }
-        ]
+       
       },
       // msgId:this.dialogMsg?this.dialogMsg[1]:''
     };

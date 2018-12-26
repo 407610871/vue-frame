@@ -135,3 +135,6 @@
 .el-select-dropdown__item.selected{
   @include el-color($el-select-dropdown-selected);
 }
+.el-container .el-form-item.is-success .el-input__inner, .el-form-item.is-success .el-input__inner:focus, .el-form-item.is-success .el-textarea__inner, .el-form-item.is-success .el-textarea__inner:focus {
+   @include el-border-color($el-input-success);
+}
