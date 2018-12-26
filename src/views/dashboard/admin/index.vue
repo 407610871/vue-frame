@@ -584,7 +584,7 @@ export default {
         display: inline-block;
         margin: 32px 0 12px 0;
         height: 30px;
-        width: 3px;
+        width: 2px;
         background-color: #999;
         border-radius: 2px;
       }
