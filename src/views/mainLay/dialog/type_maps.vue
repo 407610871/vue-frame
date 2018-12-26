@@ -8,7 +8,7 @@
         </el-table-column>
         <el-table-column prop="" label="目标字段名称" width="180">
           <template slot-scope="scope">
-            <el-input v-model="scope.row.newColumnName" @blur="newblur(scope.row.newColumnName)"></el-input>
+            <el-input v-model="scope.row.newColumnName"></el-input>
           </template>
         </el-table-column>
         <el-table-column prop="toType" label="目标字段类型">
@@ -57,17 +57,17 @@ export default {
     ...mapMutations([
       'setSchemaList',
     ]),
-     //判断是否大小写
+    //判断是否大小写
     newblur(val) {
       if (val == '') {
         this.$message.warning('不能为空');
         return false;
       } else {
-        if (/^[A-Z]+$/.test(val)) //a-z
+        if (/^[a-z]+$/.test(val)) //a-z
         {
 
         } else {
-          this.$message.warning('请输入大写英文字母');
+          this.$message.warning('请输入小写英文字母');
           return false;
         }
       }
@@ -90,11 +90,11 @@ export default {
           _self.tableData = res.data.data.list;
           for (let j = 0; j < _self.tableData.length; j++) {
             _self.schemaMappingDTOList.push({
-              "newColumnName": _self.tableData[j].name.toUpperCase(),
+              "newColumnName": _self.tableData[j].name.toLowerCase(),
               "newColumnType": '',
               "orgColumnName": _self.tableData[j].name,
               "orgColumnType": _self.tableData[j].datatype,
-              "orgColumnComment": _self.tableData[j].comments,
+              "orgColumnComment": _self.tableData[j].diyComments,
               "length": _self.tableData[j].length
             })
           }
@@ -111,11 +111,11 @@ export default {
       _self.tableData = _self.$store.state.matchType;
       for (let j = 0; j < _self.tableData.length; j++) {
         _self.schemaMappingDTOList.push({
-          "newColumnName": _self.tableData[j].name.toUpperCase(),
+          "newColumnName": _self.tableData[j].name.toLowerCase(),
           "newColumnType": '',
           "orgColumnName": _self.tableData[j].name,
           "orgColumnType": _self.tableData[j].datatype,
-          "orgColumnComment": _self.tableData[j].comments,
+          "orgColumnComment": _self.tableData[j].diyComments,
           "length": _self.tableData[j].length
         })
       }
@@ -250,22 +250,8 @@ export default {
     },
     //下一步
     next() {
-      let flag = true;
-      for (let i = 0; i < this.schemaMappingDTOList.length; i++) {
-        if (/^[A-Z]+$/.test(this.schemaMappingDTOList[i].newColumnName)) {
-
-        } else {
-          flag = false;
-          break;
-        }
-      }
-      if (flag) {
-        this.$emit('next');
-        this.setSchemaList(this.schemaMappingDTOList);
-      } else {
-        this.$message.warning('目标字段名称只支持大写英文字母');
-      }
-
+      this.$emit('next');
+      this.setSchemaList(this.schemaMappingDTOList);
     }
   },
   components: {

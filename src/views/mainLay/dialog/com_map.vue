@@ -83,7 +83,7 @@ export default {
                 "newColumnType": '',
                 "orgColumnName": _self.tableData[i].name,
                 "orgColumnType": _self.tableData[i].datatype,
-                "orgColumnComment": _self.tableData[i].comments,
+                "orgColumnComment": _self.tableData[i].diyComments,
                 "length": _self.tableData[i].id
               })
             }
@@ -95,7 +95,7 @@ export default {
               "newColumnType": '',
               "orgColumnName": _self.tableData[j].name,
               "orgColumnType": _self.tableData[j].datatype,
-              "orgColumnComment": _self.tableData[j].comments,
+              "orgColumnComment": _self.tableData[j].diyComments,
               "length": _self.tableData[j].id
             })
           }
