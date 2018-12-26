@@ -335,3 +335,6 @@
   font-size: $font-size-medium;
   @include el-color($color-text-title);
 } 
+.el-container .el-form-item.is-success .el-input__inner, .el-form-item.is-success .el-input__inner:focus, .el-form-item.is-success .el-textarea__inner, .el-form-item.is-success .el-textarea__inner:focus {
+   @include el-color($el-input-success);
+}
