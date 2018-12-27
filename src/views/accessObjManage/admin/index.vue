@@ -698,16 +698,28 @@ export default {
     },
     // ftp文件路径删除
     deleteFtp(row){
-      let params = {
-        objInfoId: `${row.id}`
-      }
-      this.$ajax.post(window.ENV.API_DACM + ctablesDelete, params).then(res=>{
+      this.$confirm('确认要删除此目录吗？', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        let params = {
+          objInfoId: `${row.id}`
+        }
+        this.$ajax.post(window.ENV.API_DACM + ctablesDelete, params).then(res=>{
           if(res.data.success){
-            this.$message("success", "删除成功");
+            this.$message.success("删除成功");
+            this.loadTable();
           } else {
-            this.$message("error", res.data.message);
+            this.$message.error(res.data.message);
           }
-      })
+        })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        });          
+      })      
     }
   }
 };
