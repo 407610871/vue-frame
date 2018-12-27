@@ -449,7 +449,13 @@ export default {
           }
         }
         if (this.ruleForm.jday !== '' && this.ruleForm.jday != undefined) {
-          jday = this.ruleForm.jday;
+          if (this.ruleForm.jday == '0') {
+            this.$message.warning('请输入正确的间隔时间');
+            return false;
+          }
+          else{
+            jday = this.ruleForm.jday;
+          }
         }
         if (this.ruleForm.jhour !== '' && this.ruleForm.jhour != undefined) {
           jhour = this.ruleForm.jhour;
