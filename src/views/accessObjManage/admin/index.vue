@@ -146,17 +146,18 @@
           </el-table-column>
           <el-table-column label="操作" width="160" >
             <template slot-scope="scope">
-              <div class="survey" style="width:50%">
+              <div class="survey" style="margin: auto; width:50%;">
                 <div class="survey-operate">
                   <el-tooltip class="item" effect="light" content="数据量更新" placement="top" 
                     v-if="type=='mysql'|| type=='oracle'|| type=='postgresql' || type=='sqlserver' || type=='mongodb'">
                     <i class="enc-icon-shujugengxin" v-on:click="updataSourceSingle(scope.$index, scope.row)" title="数据量更新"></i>
                   </el-tooltip>
-                  <div class="survey">
-                    <singleTask v-if="type=='mysql'|| type=='oracle'|| type=='postgresql' || type=='sqlserver'" :pdata="scope.row" @fre="loadTable()"></singleTask>
+                  <div class="survey" v-if="type=='mysql'|| type=='oracle'|| type=='postgresql' 
+                    || type=='sqlserver'">
+                    <singleTask  :pdata="scope.row" @fre="loadTable()"></singleTask>
                   </div>
-                  <div class="survey">
-                    <userSurvey v-if="type=='mysql'|| type=='oracle'|| type=='postgresql' || type=='sqlserver'" 
+                  <div class="survey" v-if="type=='mysql'|| type=='oracle'|| type=='postgresql' || type=='sqlserver'" >
+                    <userSurvey 
                     :pdata="scope.row" @fre="loadTable()"></userSurvey>
                   </div>
                   
@@ -170,8 +171,8 @@
                   </div>
                     
                       <norela-coll :pdata="scope.row" :type="type" @fre="loadTable()" v-if="type!='mysql' && type!='oracle' && type!='sqlserver' && type!='postgresql'"></norela-coll> 
-                      <div>
-                        <el-tooltip effect="light" content="删除" placement="top" v-if="type==='ftp' && !scope.row.exitTask">
+                      <div  v-if="type==='ftp' && !scope.row.exitTask">
+                        <el-tooltip effect="light" content="删除" placement="top">
                           <i class="el-icon-delete" @click="deleteFtp(scope.row)"></i>
                         </el-tooltip>
                       </div>
