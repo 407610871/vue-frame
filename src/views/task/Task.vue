@@ -668,7 +668,7 @@ export default {
         priority: this.priority.join(","),
         pageNum: this.pageNum,
         pageSize: this.pageSize,
-        taskName: keyword,
+        taskName: this.keyword,
         departmentId: _self.departmentId.join(",")
       };
       this.$ajax
@@ -690,18 +690,18 @@ export default {
             _self.loading = false;
             _self.$nextTick(function() {
               let row = [];
-              let row1 = Object.keys(this.allSecectData);
+              let row1 = Object.keys(_self.allSecectData);
               for (let i = 0; i < row1.length; i++) {
-                for (let j = 0; j < this.allSecectData[row1[i]].length; j++) {
-                  row.push(this.allSecectData[row1[i]][j]);
+                for (let j = 0; j < _self.allSecectData[row1[i]].length; j++) {
+                  row.push(_self.allSecectData[row1[i]][j]);
                 }
               }
               for (let a = 0; a < row.length; a++) {
-                for (let z = 0; z < this.tableData.length; z++) {
-                  if (row[a].taskInfoId == this.tableData[z].taskInfoId) {
-                    row[a].status = this.tableData[z].status;
-                    this.$refs.multipleTable.toggleRowSelection(
-                      this.tableData[z],
+                for (let z = 0; z < _self.tableData.length; z++) {
+                  if (row[a].taskInfoId == _self.tableData[z].taskInfoId) {
+                    row[a].status = _self.tableData[z].status;
+                    _self.$refs.multipleTable.toggleRowSelection(
+                      _self.tableData[z],
                       true
                     );
                   }
