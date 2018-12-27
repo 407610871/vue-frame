@@ -445,7 +445,11 @@ export default {
     },
     pageSize() {
       return this.$store.state.pageSize;
+    },
+    tableData(){
+      this.tableData= Array.from(new Set(this.tableData));
     }
+
   },
   filters: {
     formateDateTime(time){
@@ -511,6 +515,7 @@ export default {
     //数据接收
     websocketonmessage(e) {
       let redata = JSON.parse(e.data);
+      console.log(redata);
       let redataTrue=true;
       for(let i=0;i<this.tableData.length;i++){
         if(this.tableData[i].taskInfoId==redata.taskInfoId){
