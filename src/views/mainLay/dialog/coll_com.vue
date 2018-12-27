@@ -466,11 +466,22 @@ export default {
       if (this.ruleForm.cycleSet == '0' && this.ruleForm.accessMode != "0" && this.ruleForm.accessMode != "2") {
         let jday = 0;;
         let jhour = 0;
-        let jmin;
-        if (!this.ruleForm.jmin.toString()) {
+        let jmin = 0;
+        if (this.ruleForm.jmin === '' || this.ruleForm.jmin == undefined) {
+          if (this.ruleForm.jhour == '' && this.ruleForm.jday == '') {
+            this.$message.warning('请输入正确的间隔时间');
+            return false;
+          }
+        } else if (this.ruleForm.jmin == 0) {
+          if (this.ruleForm.jhour == '' && this.ruleForm.jday == '') {
+            this.$message.warning('请输入正确的间隔时间');
+            return false;
+          }
+        }
+/*        if (!this.ruleForm.jmin.toString()) {
           this.$message.warning('请将间隔执行时间填写完整');
           return false;
-        }
+        }*/
         if (this.ruleForm.jday !== '' && this.ruleForm.jday !== undefined) {
           jday = this.ruleForm.jday;
         }

@@ -391,9 +391,9 @@ export default {
 }
 
 .upfilelogo {
-  width: 40px;
+  width: 33px;
   height: 33px;
-  background: url('../../../assets/images/upfile.svg');
+  background: url('../../../assets/images/dn.svg');
   display: inline-block;
   cursor: pointer;
   margin-right: 30px;
