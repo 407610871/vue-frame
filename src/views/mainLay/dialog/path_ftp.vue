@@ -1,9 +1,9 @@
 <template>
   <div class="taskMDialog">
-    <el-tooltip class="item" effect="light" content="文件上传" placement="top">
+    <el-tooltip class="item" effect="light" content="选择路径" placement="top">
       <span class="upfilelogo diabtn tin-btn add-btn" @click="dialogVisible = true"></span>
     </el-tooltip>
-    <el-dialog title="上传文件" :visible.sync="dialogVisible" width="73%" :before-close="closeDialog">
+    <el-dialog title="选择路径" :visible.sync="dialogVisible" width="73%" :before-close="closeDialog">
       <div class="title-gra">
         <span class="grab gra-l"></span>
         <span class="grab gra-r"></span>

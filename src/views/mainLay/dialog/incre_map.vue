@@ -97,7 +97,7 @@ export default {
       var map = {
         objectInfoId: this.incid,
         pagNum: 1,
-        count: 20,
+        count: 200,
         term: ""
       }
       this.$ajax.post(this.GLOBAL.api.API_DACM + '/objDetail/dataList', map).

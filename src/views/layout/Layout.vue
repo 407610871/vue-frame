@@ -143,7 +143,7 @@ export default {
 
   },
   created() {
-    this.getUser();
+
     if (sessionStorage.getItem("store")) {
       var oldStore = JSON.parse(sessionStorage.getItem("store"));
       oldStore.app.token = this.$store.getters.token;
@@ -162,6 +162,7 @@ export default {
       let usrObj = _self.$store.state.userInfo;
       _self.userName = usrObj.userName;
       _self.roleName = usrObj.roleName;
+      _self.getUser();
     }, 1000)
     // this.$root.eventHub.$on("updataFliterItemList", () => {
     //   this.updataFliterItemList();
@@ -226,69 +227,104 @@ export default {
         .catch(function(err) {
           console.log(err);
         });
-      this.$ajax
-        .get(window.ENV.API_DACM + "/commonInter/getListStaticDataOrder", {
-          params: {
-            dictCode: "NetWork"
-          }
-        })
-        .then(function(res) {
-          //  console.log(res)
-          var list = [];
-          if (res.data != undefined) {
-             let objNet  = JSON.stringify(res.data);
-             window.localStorage.setItem('NetWork',objNet);
+      var objNets = JSON.parse(localStorage.getItem("NetWork"));
+      if (objNets == null || objNets == undefined ||JSON.stringify(objNets) == "{}") {
+        this.$ajax
+          .get(window.ENV.API_DACM + "/commonInter/getListStaticDataOrder", {
+            params: {
+              dictCode: "NetWork"
+            }
+          })
+          .then(function(res) {
+            //  console.log(res)
+            var list = [];
+            if (res.data != undefined) {
+              let objNet = JSON.stringify(res.data);
+              window.localStorage.setItem('NetWork', objNet);
+              for (var value of res.data) {
+                list.push({
+                  id: value.sTATIC_CODE,
+                  name: value.sTATIC_NAME
+                });
+              }
+              _self.$store.commit("setFilterItmeList", {
+                name: "network",
+                data: list
+              });
+              _self.formFilterData[1].checkData = list
+            }
+            console.log(list);
+          })
+          .catch(function(err) {
+            console.log(err);
+          });
+        this.$ajax
+          .get(window.ENV.API_DACM + "/commonInter/getListStaticDataOrder", {
+            params: {
+              dictCode: "ButtPlatForm"
+            }
+          })
+          .then(function(res) {
+            //  console.log(res)
+
+            var list = [];
+            let objNet = JSON.stringify(res.data);
+            window.localStorage.setItem('ButtPlatForm', objNet);
             for (var value of res.data) {
               list.push({
                 id: value.sTATIC_CODE,
                 name: value.sTATIC_NAME
               });
             }
+            // console.log(list)
+
             _self.$store.commit("setFilterItmeList", {
-              name: "network",
+              name: "platform",
               data: list
             });
-            _self.formFilterData[1].checkData = list
-          }
-          console.log(list);
-        })
-        .catch(function(err) {
-          console.log(err);
-        });
-      this.$ajax
-        .get(window.ENV.API_DACM + "/commonInter/getListStaticDataOrder", {
-          params: {
-            dictCode: "ButtPlatForm"
-          }
-        })
-        .then(function(res) {
-          //  console.log(res)
+            _self.formFilterData[2].checkData = list
+            console.log(_self.formFilterData);
+            console.log(res.data);
 
-          var list = [];
-          let objNet  = JSON.stringify(res.data);
-             window.localStorage.setItem('ButtPlatForm',objNet);
-          for (var value of res.data) {
-            list.push({
-              id: value.sTATIC_CODE,
-              name: value.sTATIC_NAME
-            });
-          }
-          // console.log(list)
 
-          _self.$store.commit("setFilterItmeList", {
-            name: "platform",
-            data: list
+          })
+          .catch(function(err) {
+            console.log(err);
           });
-          _self.formFilterData[2].checkData = list
-          console.log(_self.formFilterData);
-          console.log(res.data);
-
-
-        })
-        .catch(function(err) {
-          console.log(err);
+      } else {
+        let netList = [];
+        for (var value of objNets) {
+          netList.push({
+            id: value.sTATIC_CODE,
+            name: value.sTATIC_NAME
+          });
+        }
+        _self.$store.commit("setFilterItmeList", {
+          name: "network",
+          data: netList
         });
+        _self.formFilterData[1].checkData = netList;
+        let objButs = JSON.parse(localStorage.getItem("ButtPlatForm"));
+        let butList = [];
+        for (var value of objButs) {
+          butList.push({
+            id: value.sTATIC_CODE,
+            name: value.sTATIC_NAME
+          });
+        }
+        _self.$store.commit("setFilterItmeList", {
+          name: "platform",
+          data: butList
+        });
+        _self.formFilterData[2].checkData = butList;
+
+      }
+
+
     },
+
+
+
     _goWarn() {
       window.open(this.warnurl);
     },
@@ -307,14 +343,17 @@ export default {
     },
     //换肤
     getUser() {
-      
-      let userids =  window.localStorage.getItem('userID');
+
+      let userids = window.localStorage.getItem('userID');
+      if (userids == null || userids == undefined) {
+        userids = this.$store.state.userInfo.userId;
+      }
       this.$ajax({
-         method: "POST",
+          method: "POST",
           url: "http://10.19.248.200:32470/BCM/skin/query",
           data: {
-            userId:userids,
-            appId:'DACM'
+            userId: userids,
+            appId: 'DACM'
           }
         })
         .then(res => {
@@ -322,7 +361,7 @@ export default {
             let obj = {
               "cnName": res.data.data.cnName,
               "color": res.data.data.color,
-              "appId":'DACM',
+              "appId": 'DACM',
               "userId": res.data.data.userId,
               "userName": res.data.data.userName
             }

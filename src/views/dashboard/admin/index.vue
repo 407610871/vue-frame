@@ -257,6 +257,7 @@ export default {
       this.collapse = !this.collapse;
     },
     updataFliterItemList() {
+      //console.log("454");
       var _self = this;
       this.$ajax
         .get(window.ENV.API_DACM + sysdialect, {
@@ -276,32 +277,100 @@ export default {
         .catch(function(err) {
           console.log(err);
         });
-      let objNet = JSON.parse(localStorage.getItem("NetWork"));
-      let netList = [];
-      for (var value of objNet) {
-        netList.push({
-          id: value.sTATIC_CODE,
-          name: value.sTATIC_NAME
+
+      var objNets = JSON.parse(localStorage.getItem("NetWork"));
+      debugger;
+      if (objNets == null || objNets == undefined ||JSON.stringify(objNets) == "{}" ) {
+        this.$ajax
+          .get(window.ENV.API_DACM + "/commonInter/getListStaticDataOrder", {
+            params: {
+              dictCode: "NetWork"
+            }
+          })
+          .then(function(res) {
+            //  console.log(res)
+            var list = [];
+            if (res.data != undefined) {
+              let objNet = JSON.stringify(res.data);
+              window.localStorage.setItem('NetWork', objNet);
+              for (var value of res.data) {
+                list.push({
+                  id: value.sTATIC_CODE,
+                  name: value.sTATIC_NAME
+                });
+              }
+              _self.$store.commit("setFilterItmeList", {
+                name: "network",
+                data: list
+              });
+              _self.formFilterData[1].checkData = list
+            }
+            console.log(list);
+          })
+          .catch(function(err) {
+            console.log(err);
+          });
+        this.$ajax
+          .get(window.ENV.API_DACM + "/commonInter/getListStaticDataOrder", {
+            params: {
+              dictCode: "ButtPlatForm"
+            }
+          })
+          .then(function(res) {
+            //  console.log(res)
+
+            var list = [];
+            let objNet = JSON.stringify(res.data);
+            window.localStorage.setItem('ButtPlatForm', objNet);
+            for (var value of res.data) {
+              list.push({
+                id: value.sTATIC_CODE,
+                name: value.sTATIC_NAME
+              });
+            }
+            // console.log(list)
+
+            _self.$store.commit("setFilterItmeList", {
+              name: "platform",
+              data: list
+            });
+            _self.formFilterData[2].checkData = list
+            console.log(_self.formFilterData);
+            console.log(res.data);
+
+
+          })
+          .catch(function(err) {
+            console.log(err);
+          });
+      } else {
+        let netList = [];
+        for (var value of objNets) {
+          netList.push({
+            id: value.sTATIC_CODE,
+            name: value.sTATIC_NAME
+          });
+        }
+        _self.$store.commit("setFilterItmeList", {
+          name: "network",
+          data: netList
         });
-      }
-      _self.$store.commit("setFilterItmeList", {
-        name: "network",
-        data: netList
-      });
-      _self.formFilterData[1].checkData = netList
-      let objBut = JSON.parse(localStorage.getItem("ButtPlatForm"));
-      let butList = [];
-      for (var value of objBut) {
-        butList.push({
-          id: value.sTATIC_CODE,
-          name: value.sTATIC_NAME
+        _self.formFilterData[1].checkData = netList;
+        let objBut = JSON.parse(localStorage.getItem("ButtPlatForm"));
+        let butList = [];
+        for (var value of objBut) {
+          butList.push({
+            id: value.sTATIC_CODE,
+            name: value.sTATIC_NAME
+          });
+        }
+        _self.$store.commit("setFilterItmeList", {
+          name: "platform",
+          data: butList
         });
+        _self.formFilterData[2].checkData = butList;
       }
-      _self.$store.commit("setFilterItmeList", {
-        name: "platform",
-        data: butList
-      });
-      _self.formFilterData[2].checkData = butList;
+
     },
     loadTable: function(id) { //此处vuex获取的值，比$root慢
       var ids = [];
