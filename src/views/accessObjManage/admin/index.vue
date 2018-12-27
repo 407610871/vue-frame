@@ -813,10 +813,6 @@ export default {
   justify-content: left;
   align-content: center;
 }
-.survey-operate .el-icon-delete{
-  margin-left: 10px;
-  margin-top: 5px;
-}
 
 .cell i {
   cursor: pointer;
