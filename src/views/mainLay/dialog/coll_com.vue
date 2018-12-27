@@ -630,7 +630,11 @@ export default {
           }).then(res => {
             this.loading = false;
             if (res.data.success) {
-              this.$alert('采集任务启动成功！', '信息', {
+              let ctips = '采集任务启动成功！';
+                if (this.ruleForm.taskSubMode == "false") {
+                  ctips = '采集任务创建成功！';
+                }
+              this.$alert(ctips, '信息', {
                 confirmButtonText: '确定',
                 callback: action => {
                   this.isregin = false;
@@ -638,7 +642,7 @@ export default {
                 }
               });
             } else {
-              this.$alert('采集任务启动失败！', '信息', {
+              this.$alert(res.data.message, '信息', {
                 confirmButtonText: '确定',
                 callback: action => {
 
@@ -663,7 +667,11 @@ export default {
               }).then(res => {
                 this.loading = false;
                 if (res.data.success) {
-                  this.$alert('采集任务启动成功！', '信息', {
+                  let ctips = '采集任务启动成功！';
+                if (this.ruleForm.taskSubMode == "false") {
+                  ctips = '采集任务创建成功！';
+                }
+                  this.$alert(ctips, '信息', {
                     confirmButtonText: '确定',
                     callback: action => {
                       this.isregin = false;
@@ -671,7 +679,7 @@ export default {
                     }
                   });
                 } else {
-                  this.$alert('采集任务启动失败！', '信息', {
+                  this.$alert(res.data.message, '信息', {
                     confirmButtonText: '确定',
                     callback: action => {
 
@@ -720,14 +728,18 @@ export default {
           }).then(res => {
             this.loading = false;
             if (res.data.success) {
-              this.$alert('采集任务启动成功！', '信息', {
+              let ctips = '采集任务启动成功！';
+                if (this.ruleForm.taskSubMode == "false") {
+                  ctips = '采集任务创建成功！';
+                }
+              this.$alert(ctips, '信息', {
                 confirmButtonText: '确定',
                 callback: action => {
                   this.$emit('fresh');
                 }
               });
             } else {
-              this.$alert('采集任务启动失败！', '信息', {
+              this.$alert(res.data.message, '信息', {
                 confirmButtonText: '确定',
                 callback: action => {
 
@@ -752,14 +764,18 @@ export default {
               }).then(res => {
                 this.loading = false;
                 if (res.data.success) {
-                  this.$alert('采集任务启动成功！', '信息', {
+                  let ctips = '采集任务启动成功！';
+                if (this.ruleForm.taskSubMode == "false") {
+                  ctips = '采集任务创建成功！';
+                }
+                  this.$alert(ctips, '信息', {
                     confirmButtonText: '确定',
                     callback: action => {
                       this.$emit('fresh');
                     }
                   });
                 } else {
-                  this.$alert('采集任务启动失败！', '信息', {
+                  this.$alert(res.data.message, '信息', {
                     confirmButtonText: '确定',
                     callback: action => {
 
@@ -769,13 +785,13 @@ export default {
               })
             } else {
               this.loading = false;
-              this.$alert('数据标记失败', '信息', {
+              this.$alert('用户标记失败', '信息', {
                 confirmButtonText: '确定'
               });
             }
           }, (res) => {
             this.loading = false;
-            this.$alert('数据标记失败', '信息', {
+            this.$alert('用户标记失败', '信息', {
               confirmButtonText: '确定'
             });
           })
