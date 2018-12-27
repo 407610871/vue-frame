@@ -471,13 +471,13 @@ export default {
           this.$message.warning('请将间隔执行时间填写完整');
           return false;
         }
-        if (this.ruleForm.jday != '' && this.ruleForm.jday != undefined) {
+        if (this.ruleForm.jday !== '' && this.ruleForm.jday !== undefined) {
           jday = this.ruleForm.jday;
         }
-        if (this.ruleForm.jhour != '' && this.ruleForm.jhour != undefined) {
+        if (this.ruleForm.jhour !=='' && this.ruleForm.jhour !== undefined) {
           jhour = this.ruleForm.jhour;
         }
-        if (this.ruleForm.jmin != '' && this.ruleForm.jmin != undefined) {
+        if (this.ruleForm.jmin !== '' && this.ruleForm.jmin !== undefined) {
           jmin = this.ruleForm.jmin;
         }
         var pollIntervalMs = this.formateTime(parseInt(jday), parseInt(jhour), parseInt(jmin));
