@@ -767,7 +767,7 @@ export default {
         let errorData = [];
         for (let i = 0; i < rowNew.length; i++) {
           // console.log(row[i].status,row[i].isPeriod)
-          if (rowNew[i].status == 1 || rowNew[i].status == 0||rowNew[i].isPeriod == 0||rowNew[i].sourceType=='ftp') {
+          if (rowNew[i].status == 1 || rowNew[i].status == 0||rowNew[i].isPeriod == 0) {
             errorData.push(rowNew[i]);
           }
         }

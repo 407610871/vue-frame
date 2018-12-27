@@ -396,8 +396,7 @@ export default {
       //关闭
     },
     //连接成功回调方法
-    websocketonopen() {
-    },
+    websocketonopen() {},
 
     //清空非选中项
     cleanData(val) {
@@ -573,10 +572,12 @@ export default {
       if (this.ruleForm.cycleSet == '0' && this.ruleForm.accessMode != "0" && this.ruleForm.accessMode != "2") {
         let jday = 0;;
         let jhour = 0;
-        let jmin;
+        let jmin = 0;
         if (this.ruleForm.jmin === '' || this.ruleForm.jmin == undefined) {
-          this.$message.warning('请将间隔执行时间填写完整');
-          return false;
+          if (this.ruleForm.jhour == '' && this.ruleForm.jday == '') {
+            this.$message.warning('请输入正确的间隔时间');
+            return false;
+          }
         } else if (this.ruleForm.jmin == 0) {
           if (this.ruleForm.jhour == '' && this.ruleForm.jday == '') {
             this.$message.warning('请输入正确的间隔时间');
@@ -584,7 +585,14 @@ export default {
           }
         }
         if (this.ruleForm.jday !== '' && this.ruleForm.jday !== undefined) {
-          jday = this.ruleForm.jday;
+          if (this.ruleForm.jday == '0') {
+            this.$message.warning('请输入正确的间隔时间');
+            return false;
+          }
+          else{
+            jday = this.ruleForm.jday;
+          }
+          
         }
         if (this.ruleForm.jhour !== '' && this.ruleForm.jhour !== undefined) {
           jhour = this.ruleForm.jhour;
@@ -906,7 +914,7 @@ export default {
     //获取修改内容
     _getInit() {
       let acmode = 'JDBC';
-      if(this.pdata.collectName=='实时接入'){
+      if (this.pdata.collectName == '实时接入') {
         acmode = this.$route.params.type;
       }
       this.$ajax({
@@ -915,7 +923,7 @@ export default {
         /* url: 'http://10.19.160.168:8080/DACM/task/getSourceConfig',*/
         params: {
           accessSysObjInfoId: this.pdata.id,
-          jobType:acmode
+          jobType: acmode
           /* accessSysObjInfoId: '10658915'*/
         }
 
@@ -1060,8 +1068,8 @@ export default {
     }
   },
   computed: {
-    radioSelect(){
-      return this.ruleForm.cycleSet == "0"?"":this.radio;
+    radioSelect() {
+      return this.ruleForm.cycleSet == "0" ? "" : this.radio;
     },
   },
   props: ['pdata', 'msg']

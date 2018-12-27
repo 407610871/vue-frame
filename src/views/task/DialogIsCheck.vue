@@ -236,7 +236,6 @@ export default {
         }
       }).then(res => {
         //  this.loading = false;
-
         res = res.data;
         if (res.data.result == "false" || res.data.message == "还未核验暂无数据,请核验") {
           this.$alert(res.data.message, "核验结果", {
@@ -278,6 +277,8 @@ export default {
           }
            //核验历史记录
          this.getHistory();
+         //更新父级
+         this.updateDataCheckLog();
           //  let loadingInstance = Loading.service({text:"核验中，请稍等...",target:document.getElementsByName("el-dialog")});
         } else if (res.data.status == "0") {
           //   this.loading = true;
@@ -455,7 +456,12 @@ export default {
         window.URL.revokeObjectURL(href); //释放掉blob对象 
       })
       /*window.location.href = `${this.GLOBAL.api.API_DACM}/ccheckData/downloadCheckDataById?id=${item.id}&browser=${browser}&accessName=${this.$route.params.sourceName}`*/
-    }
+    },
+    //更新父级数据核验日志信息
+    updateDataCheckLog(){
+      let fn = this.$parent.getDataCheckLog;
+      fn&&fn();
+    },
   },
   filters: {
     percentFormat(val) {

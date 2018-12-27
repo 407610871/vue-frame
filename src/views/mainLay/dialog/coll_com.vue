@@ -466,18 +466,35 @@ export default {
       if (this.ruleForm.cycleSet == '0' && this.ruleForm.accessMode != "0" && this.ruleForm.accessMode != "2") {
         let jday = 0;;
         let jhour = 0;
-        let jmin;
-        if (!this.ruleForm.jmin.toString()) {
+        let jmin = 0;
+        if (this.ruleForm.jmin === '' || this.ruleForm.jmin == undefined) {
+          if (this.ruleForm.jhour == '' && this.ruleForm.jday == '') {
+            this.$message.warning('请输入正确的间隔时间');
+            return false;
+          }
+        } else if (this.ruleForm.jmin == 0) {
+          if (this.ruleForm.jhour == '' && this.ruleForm.jday == '') {
+            this.$message.warning('请输入正确的间隔时间');
+            return false;
+          }
+        }
+/*        if (!this.ruleForm.jmin.toString()) {
           this.$message.warning('请将间隔执行时间填写完整');
           return false;
+        }*/
+        if (this.ruleForm.jday !== '' && this.ruleForm.jday !== undefined) {
+         if (this.ruleForm.jday == '0') {
+            this.$message.warning('请输入正确的间隔时间');
+            return false;
+          }
+          else{
+            jday = this.ruleForm.jday;
+          }
         }
-        if (this.ruleForm.jday != '' && this.ruleForm.jday != undefined) {
-          jday = this.ruleForm.jday;
-        }
-        if (this.ruleForm.jhour != '' && this.ruleForm.jhour != undefined) {
+        if (this.ruleForm.jhour !=='' && this.ruleForm.jhour !== undefined) {
           jhour = this.ruleForm.jhour;
         }
-        if (this.ruleForm.jmin != '' && this.ruleForm.jmin != undefined) {
+        if (this.ruleForm.jmin !== '' && this.ruleForm.jmin !== undefined) {
           jmin = this.ruleForm.jmin;
         }
         var pollIntervalMs = this.formateTime(parseInt(jday), parseInt(jhour), parseInt(jmin));
@@ -613,7 +630,11 @@ export default {
           }).then(res => {
             this.loading = false;
             if (res.data.success) {
-              this.$alert('采集任务启动成功！', '信息', {
+              let ctips = '采集任务启动成功！';
+                if (this.ruleForm.taskSubMode == "false") {
+                  ctips = '采集任务创建成功！';
+                }
+              this.$alert(ctips, '信息', {
                 confirmButtonText: '确定',
                 callback: action => {
                   this.isregin = false;
@@ -621,7 +642,7 @@ export default {
                 }
               });
             } else {
-              this.$alert('采集任务启动失败！', '信息', {
+              this.$alert(res.data.message, '信息', {
                 confirmButtonText: '确定',
                 callback: action => {
 
@@ -646,7 +667,11 @@ export default {
               }).then(res => {
                 this.loading = false;
                 if (res.data.success) {
-                  this.$alert('采集任务启动成功！', '信息', {
+                  let ctips = '采集任务启动成功！';
+                if (this.ruleForm.taskSubMode == "false") {
+                  ctips = '采集任务创建成功！';
+                }
+                  this.$alert(ctips, '信息', {
                     confirmButtonText: '确定',
                     callback: action => {
                       this.isregin = false;
@@ -654,7 +679,7 @@ export default {
                     }
                   });
                 } else {
-                  this.$alert('采集任务启动失败！', '信息', {
+                  this.$alert(res.data.message, '信息', {
                     confirmButtonText: '确定',
                     callback: action => {
 
@@ -703,14 +728,18 @@ export default {
           }).then(res => {
             this.loading = false;
             if (res.data.success) {
-              this.$alert('采集任务启动成功！', '信息', {
+              let ctips = '采集任务启动成功！';
+                if (this.ruleForm.taskSubMode == "false") {
+                  ctips = '采集任务创建成功！';
+                }
+              this.$alert(ctips, '信息', {
                 confirmButtonText: '确定',
                 callback: action => {
                   this.$emit('fresh');
                 }
               });
             } else {
-              this.$alert('采集任务启动失败！', '信息', {
+              this.$alert(res.data.message, '信息', {
                 confirmButtonText: '确定',
                 callback: action => {
 
@@ -735,14 +764,18 @@ export default {
               }).then(res => {
                 this.loading = false;
                 if (res.data.success) {
-                  this.$alert('采集任务启动成功！', '信息', {
+                  let ctips = '采集任务启动成功！';
+                if (this.ruleForm.taskSubMode == "false") {
+                  ctips = '采集任务创建成功！';
+                }
+                  this.$alert(ctips, '信息', {
                     confirmButtonText: '确定',
                     callback: action => {
                       this.$emit('fresh');
                     }
                   });
                 } else {
-                  this.$alert('采集任务启动失败！', '信息', {
+                  this.$alert(res.data.message, '信息', {
                     confirmButtonText: '确定',
                     callback: action => {
 
@@ -752,13 +785,13 @@ export default {
               })
             } else {
               this.loading = false;
-              this.$alert('数据标记失败', '信息', {
+              this.$alert('用户标记失败', '信息', {
                 confirmButtonText: '确定'
               });
             }
           }, (res) => {
             this.loading = false;
-            this.$alert('数据标记失败', '信息', {
+            this.$alert('用户标记失败', '信息', {
               confirmButtonText: '确定'
             });
           })

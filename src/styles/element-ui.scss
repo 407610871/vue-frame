@@ -282,6 +282,9 @@
  .el-loading-spinner .el-loading-text {
   @include el-color($el-radio-btn);
  }
+ .el-range-editor.is-active, .el-range-editor.is-active:hover {
+   @include el-border-color($el-radio-btn);
+ }
  /*滚动条样式*/
 
 /*  .main::-webkit-scrollbar {

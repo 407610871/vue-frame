@@ -208,6 +208,7 @@ export default {
       }
     },
     updataFliterItemList() {
+      //console.log("5656");
       var _self = this;
       this.$ajax
         .get(window.ENV.API_DACM + "/caccess/sysdialect", {
@@ -227,246 +228,214 @@ export default {
         .catch(function(err) {
           console.log(err);
         });
-      var objNets = JSON.parse(localStorage.getItem("NetWork"));
-      if (objNets == null || objNets == undefined ||JSON.stringify(objNets) == "{}") {
-        this.$ajax
-          .get(window.ENV.API_DACM + "/commonInter/getListStaticDataOrder", {
-            params: {
-              dictCode: "NetWork"
-            }
-          })
-          .then(function(res) {
-            //  console.log(res)
-            var list = [];
-            if (res.data != undefined) {
-              let objNet = JSON.stringify(res.data);
-              window.localStorage.setItem('NetWork', objNet);
-              for (var value of res.data) {
-                list.push({
-                  id: value.sTATIC_CODE,
-                  name: value.sTATIC_NAME
-                });
-              }
-              _self.$store.commit("setFilterItmeList", {
-                name: "network",
-                data: list
-              });
-              _self.formFilterData[1].checkData = list
-            }
-            console.log(list);
-          })
-          .catch(function(err) {
-            console.log(err);
-          });
-        this.$ajax
-          .get(window.ENV.API_DACM + "/commonInter/getListStaticDataOrder", {
-            params: {
-              dictCode: "ButtPlatForm"
-            }
-          })
-          .then(function(res) {
-            //  console.log(res)
-
-            var list = [];
+      this.$ajax
+        .get(window.ENV.API_DACM + "/commonInter/getListStaticDataOrder", {
+          params: {
+            dictCode: "NetWork"
+          }
+        })
+        .then(function(res) {
+          //  console.log(res)
+          var list = [];
+          if (res.data != undefined) {
             let objNet = JSON.stringify(res.data);
-            window.localStorage.setItem('ButtPlatForm', objNet);
+            window.localStorage.setItem('NetWork', objNet);
             for (var value of res.data) {
               list.push({
                 id: value.sTATIC_CODE,
                 name: value.sTATIC_NAME
               });
             }
-            // console.log(list)
-
             _self.$store.commit("setFilterItmeList", {
-              name: "platform",
+              name: "network",
               data: list
             });
-            _self.formFilterData[2].checkData = list
-            console.log(_self.formFilterData);
-            console.log(res.data);
-
-
-          })
-          .catch(function(err) {
-            console.log(err);
-          });
-      } else {
-        let netList = [];
-        for (var value of objNets) {
-          netList.push({
-            id: value.sTATIC_CODE,
-            name: value.sTATIC_NAME
-          });
-        }
-        _self.$store.commit("setFilterItmeList", {
-          name: "network",
-          data: netList
+            _self.formFilterData[1].checkData = list
+          }
+          console.log(list);
+        })
+        .catch(function(err) {
+          console.log(err);
         });
-        _self.formFilterData[1].checkData = netList;
-        let objButs = JSON.parse(localStorage.getItem("ButtPlatForm"));
-        let butList = [];
-        for (var value of objButs) {
-          butList.push({
-            id: value.sTATIC_CODE,
-            name: value.sTATIC_NAME
-          });
-        }
-        _self.$store.commit("setFilterItmeList", {
-          name: "platform",
-          data: butList
-        });
-        _self.formFilterData[2].checkData = butList;
-
-      }
-
-
-    },
-
-
-
-    _goWarn() {
-      window.open(this.warnurl);
-    },
-    _release() {
-      this.releaseflag = true;
-    },
-    _changeSkin() {
-      this.themesflag = true;
-    },
-    changeSideBar() {
-      this.sideBarWidth = this.sideBarWidth == 0 ? 210 : 0;
-    },
-    loginOut() {
-      window.localStorage.removeItem('data-theme');
-      this.$keycloak.logout();
-    },
-    //换肤
-    getUser() {
-
-      let userids = window.localStorage.getItem('userID');
-      if (userids == null || userids == undefined) {
-        userids = this.$store.state.userInfo.userId;
-      }
-      this.$ajax({
-          method: "POST",
-          url: "http://10.19.248.200:32470/BCM/skin/query",
-          data: {
-            userId: userids,
-            appId: 'DACM'
+      this.$ajax
+        .get(window.ENV.API_DACM + "/commonInter/getListStaticDataOrder", {
+          params: {
+            dictCode: "ButtPlatForm"
           }
         })
-        .then(res => {
-          if (res.data.success) {
-            let obj = {
-              "cnName": res.data.data.cnName,
-              "color": res.data.data.color,
-              "appId": 'DACM',
-              "userId": res.data.data.userId,
-              "userName": res.data.data.userName
-            }
-            let values = '';
-            if (res.data.data.color == 'PURPLE') {
-              values = 'theme1';
-            }
-            if (res.data.data.color == 'GREEN') {
-              values = 'theme2';
-            }
-            if (res.data.data.color == 'BLUE') {
-              values = 'theme3';
-            }
-            if (res.data.data.color == 'GOLDEN') {
-              values = 'theme4';
-            }
-            window.localStorage.setItem('data-theme', values);
-            window.document.documentElement.setAttribute('data-theme', values);
-            this.$store.commit('setThemes', res.data.data.color);
-            obj = JSON.stringify(obj);
-            localStorage.setItem("userSet", obj);
-          } else {}
-        })
-    },
-    goRoute: function(name) {
-      if (this.$store.state.queryParams[name]) {
-        var obj = {
-          resetData: name
-        };
-        this.$store.commit("resetQueryParam", obj);
-      }
-      this.$router.push({ name: name });
-    },
-    search: function() {
-      this.$root.eventHub.$emit("search", this.keyword);
-    },
-    breadcrumbChange: function(index, item) {
-      if (index != this.breadcrumb.length - 1) {
-        // var obj = {
-        // resetData:[]
-        // };
-        // for(var i = index+1;i<this.breadcrumb.length;i++){
-        // obj.resetData.push(this.breadcrumb[i].name)
-        // }
-        // this.$store.commit('resetQueryParam', obj);
-        this.$router.push({
-          name: item.name,
-          params: item.params,
-          query: item.query
-        });
-      }
-    },
-    getBreadcrumb() {
-      var routeName = this.$route.name;
-      if (
-        routeName == "dashboard" ||
-        routeName == "accessObjManage" ||
-        routeName == "accessObjInfo"
-      ) {
-        this.breadcrumb = [{
-          name: "dashboard",
-          breadcrumbName: "数据接入",
-          params: {},
-          query: this.$store.state.queryParams["dashboard"]
-        }];
-        if (this.$route.params.sourceId && this.$route.params.sourceName) {
-          this.breadcrumb.push({
-            name: "accessObjManage",
-            breadcrumbName: decodeURI(this.$route.params.sourceName),
-            params: {
-              sourceId: this.$route.params.sourceId,
-              sourceName: decodeURI(this.$route.params.sourceName),
-              type: this.$route.params.type
-            },
-            query: this.$store.state.queryParams["accessObjManage"]
-          });
-        }
-        if (this.$route.params.objId && this.$route.params.objName) {
-          this.breadcrumb.push({
-            name: "accessObjInfo",
-            breadcrumbName: decodeURI(this.$route.params.objName),
-            params: {
-              sourceId: this.$route.params.sourceId,
-              sourceName: decodeURI(this.$route.params.sourceName),
-              objId: this.$route.params.objId,
-              objName: decodeURI(this.$route.params.objName),
-              type: this.$route.params.type
-            }
-          });
-        }
-      } else {
-        var list = [];
-        this.$route.matched.forEach((item, index) => {
-          if (item.path != "") {
+        .then(function(res) {
+          //  console.log(res)
+
+          var list = [];
+          let objNet = JSON.stringify(res.data);
+          window.localStorage.setItem('ButtPlatForm', objNet);
+          for (var value of res.data) {
             list.push({
-              name: this.$route.name,
-              breadcrumbName: this.$route.meta.title
+              id: value.sTATIC_CODE,
+              name: value.sTATIC_NAME
             });
           }
+          // console.log(list)
+
+          _self.$store.commit("setFilterItmeList", {
+            name: "platform",
+            data: list
+          });
+          _self.formFilterData[2].checkData = list
+          console.log(_self.formFilterData);
+          console.log(res.data);
+
+
+        })
+        .catch(function(err) {
+          console.log(err);
         });
-        this.$set(this.$data, "breadcrumb", list);
-      }
-      //end of getBreadcrumb
+
+    
+
+  },
+  _goWarn() {
+    window.open(this.warnurl);
+  },
+  _release() {
+    this.releaseflag = true;
+  },
+  _changeSkin() {
+    this.themesflag = true;
+  },
+  changeSideBar() {
+    this.sideBarWidth = this.sideBarWidth == 0 ? 210 : 0;
+  },
+  loginOut() {
+    window.localStorage.removeItem('data-theme');
+    this.$keycloak.logout();
+  },
+  //换肤
+  getUser() {
+
+    let userids = window.localStorage.getItem('userID');
+    if (userids == null || userids == undefined) {
+      userids = this.$store.state.userInfo.userId;
     }
+    this.$ajax({
+        method: "POST",
+        url: "http://10.19.248.200:32470/BCM/skin/query",
+        data: {
+          userId: userids,
+          appId: 'DACM'
+        }
+      })
+      .then(res => {
+        if (res.data.success) {
+          let obj = {
+            "cnName": res.data.data.cnName,
+            "color": res.data.data.color,
+            "appId": 'DACM',
+            "userId": res.data.data.userId,
+            "userName": res.data.data.userName
+          }
+          let values = '';
+          if (res.data.data.color == 'PURPLE') {
+            values = 'theme1';
+          }
+          if (res.data.data.color == 'GREEN') {
+            values = 'theme2';
+          }
+          if (res.data.data.color == 'BLUE') {
+            values = 'theme3';
+          }
+          if (res.data.data.color == 'GOLDEN') {
+            values = 'theme4';
+          }
+          window.localStorage.setItem('data-theme', values);
+          window.document.documentElement.setAttribute('data-theme', values);
+          this.$store.commit('setThemes', res.data.data.color);
+          obj = JSON.stringify(obj);
+          localStorage.setItem("userSet", obj);
+        } else {}
+      })
+  },
+  goRoute: function(name) {
+    if (this.$store.state.queryParams[name]) {
+      var obj = {
+        resetData: name
+      };
+      this.$store.commit("resetQueryParam", obj);
+    }
+    this.$router.push({ name: name });
+  },
+  search: function() {
+    this.$root.eventHub.$emit("search", this.keyword);
+  },
+  breadcrumbChange: function(index, item) {
+    if (index != this.breadcrumb.length - 1) {
+      // var obj = {
+      // resetData:[]
+      // };
+      // for(var i = index+1;i<this.breadcrumb.length;i++){
+      // obj.resetData.push(this.breadcrumb[i].name)
+      // }
+      // this.$store.commit('resetQueryParam', obj);
+      this.$router.push({
+        name: item.name,
+        params: item.params,
+        query: item.query
+      });
+    }
+  },
+  getBreadcrumb() {
+    var routeName = this.$route.name;
+    if (
+      routeName == "dashboard" ||
+      routeName == "accessObjManage" ||
+      routeName == "accessObjInfo"
+    ) {
+      this.breadcrumb = [{
+        name: "dashboard",
+        breadcrumbName: "数据接入",
+        params: {},
+        query: this.$store.state.queryParams["dashboard"]
+      }];
+      if (this.$route.params.sourceId && this.$route.params.sourceName) {
+        this.breadcrumb.push({
+          name: "accessObjManage",
+          breadcrumbName: decodeURI(this.$route.params.sourceName),
+          params: {
+            sourceId: this.$route.params.sourceId,
+            sourceName: decodeURI(this.$route.params.sourceName),
+            type: this.$route.params.type
+          },
+          query: this.$store.state.queryParams["accessObjManage"]
+        });
+      }
+      if (this.$route.params.objId && this.$route.params.objName) {
+        this.breadcrumb.push({
+          name: "accessObjInfo",
+          breadcrumbName: decodeURI(this.$route.params.objName),
+          params: {
+            sourceId: this.$route.params.sourceId,
+            sourceName: decodeURI(this.$route.params.sourceName),
+            objId: this.$route.params.objId,
+            objName: decodeURI(this.$route.params.objName),
+            type: this.$route.params.type
+          }
+        });
+      }
+    } else {
+      var list = [];
+      this.$route.matched.forEach((item, index) => {
+        if (item.path != "") {
+          list.push({
+            name: this.$route.name,
+            breadcrumbName: this.$route.meta.title
+          });
+        }
+      });
+      this.$set(this.$data, "breadcrumb", list);
+    }
+    //end of getBreadcrumb
   }
+}
 };
 
 </script>
