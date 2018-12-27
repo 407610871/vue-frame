@@ -21,7 +21,9 @@
             </el-table-column>
             <el-table-column prop="flag" label="状态">
               <template slot-scope="scope">
-                <span>{{scope.row.status=="1"?'已核验':'核验中'}}</span>
+                <span v-if="scope.row.flag=='0'">未核验</span>
+                <span v-if="scope.row.status=='0'&&scope.row.flag=='1'">核验中</span>
+                <span v-if="scope.row.status=='1'&&scope.row.flag=='1'">已核验</span>
               </template>
             </el-table-column>
             <el-table-column prop="source_tableNum" label="源数据量">
