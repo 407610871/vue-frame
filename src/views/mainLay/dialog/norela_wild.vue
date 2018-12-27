@@ -186,7 +186,7 @@ export default {
                     if(res.name != "_id"){
                       let map = {
                         'comments': "",
-                        'datatype': res.datatype.toUpperCase(),
+                        'datatype': res.datatype,
                         'id': res.id,
                         'name': res.name,
                       }
