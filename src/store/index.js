@@ -84,7 +84,8 @@ const store = new Vuex.Store({
     jrstyle: '', //用户标记的接入方式
     userInfo: {
       userName: "",
-      roleName: ""
+      roleName: "",
+      userId: ""
     },
     taskParam: {
       keyword: '', //查询条件
@@ -104,6 +105,7 @@ const store = new Vuex.Store({
     setUserInfo(state, obj) {
       state.userInfo.userName = obj.userName;
       state.userInfo.roleName = obj.roleName;
+      state.userInfo.userId = obj.userId;
     },
     setPageSize(state, pageSize) {
       state.pageSize = pageSize;
