@@ -146,7 +146,7 @@
           </el-table-column>
           <el-table-column label="操作" width="200" >
             <template slot-scope="scope">
-                <div style="width:100px; margin:auto; text-align:left;">
+                <div style="icon-center">
                   <div class="survey" v-if="type=='mysql'|| type=='oracle'|| type=='postgresql' || type=='sqlserver' || type=='mongodb'">
                     <el-tooltip class="item" effect="light" content="数据量更新" placement="top" >
                       <i class="enc-icon-shujugengxin" v-on:click="updataSourceSingle(scope.$index, scope.row)" title="数据量更新"></i>
@@ -461,6 +461,17 @@ export default {
 
           if (res.data.success) {
             var data = res.data.data.list;
+            if(this.$route.params.type=='ftp'){ //ftp根据id进行倒叙排列
+              data.sort((a,b)=>{
+                if(a.id>b.id){
+                  return -1;
+                } else if(a.id==b.id){
+                  return 0;
+                } else {
+                  return 1
+                }
+              })
+            }
             for (var value of data) {
               value.showEdit = false;
             }
@@ -804,10 +815,10 @@ export default {
 .survey i {
   font-size: 20px;
 }
-.survey-operate {
-  display: flex;
-  justify-content: left;
-  align-content: center;
+.icon-center{
+  width:100px;
+  margin:auto;
+  text-align:left;
 }
 
 .cell i {
