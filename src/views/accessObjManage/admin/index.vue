@@ -146,8 +146,7 @@
           </el-table-column>
           <el-table-column label="操作" width="200" >
             <template slot-scope="scope">
-              <div class="survey" style="width: 100px">
-                <div class="survey-operate">
+                <div style="width:100px; margin:auto; text-align:left;">
                   <div class="survey" v-if="type=='mysql'|| type=='oracle'|| type=='postgresql' || type=='sqlserver' || type=='mongodb'">
                     <el-tooltip class="item" effect="light" content="数据量更新" placement="top" >
                       <i class="enc-icon-shujugengxin" v-on:click="updataSourceSingle(scope.$index, scope.row)" title="数据量更新"></i>
@@ -176,15 +175,12 @@
                       <i class="enc-icon-shujuheyan" @click="dataInverCheck(scope.row)"></i>
                     </el-tooltip>
                   </div>
-                    
                   <div class="survey"  v-if="type==='ftp' && !scope.row.exitTask">
-                    <el-tooltip effect="light" content="删除" placement="top">
+                    <el-tooltip style="font-size:19px" class="item" effect="light" content="删除" placement="top">
                       <i class="el-icon-delete" @click="deleteFtp(scope.row)"></i>
                     </el-tooltip>
                   </div>
                 </div>
-              </div>
-              
             </template>
           </el-table-column>
       </el-table>
