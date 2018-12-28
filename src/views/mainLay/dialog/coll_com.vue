@@ -4,9 +4,9 @@
       <div class="daiInfo proInfo">
         <div class="proInfo-box clearfix">
           <el-col :span="24">
-            <el-col :span="10">
+            <el-col :span="10" class="hd30">
               <el-form-item label="接入目的库:" prop="dLibrary">
-                <el-select v-model="ruleForm.dLibrary" placeholder="请选择" :disabled="isdisable">
+                <el-select v-model="ruleForm.dLibrary" placeholder="请选择" :disabled="isdisable" style="height:30px !important;">
                   <el-option v-for="(item,index) in treeData" :label="item.label" :value="item.storageId" :key="index"></el-option>
                 </el-select>
               </el-form-item>
@@ -483,7 +483,7 @@ export default {
           return false;
         }*/
         if (this.ruleForm.jday !== '' && this.ruleForm.jday !== undefined) {
-         if (this.ruleForm.jday == '0') {
+         if (this.ruleForm.jday == '0'&&(this.ruleForm.jhour=='0'||this.ruleForm.jhour=='')&&(this.ruleForm.jmin==''||this.ruleForm.jmin=='0'))  {
             this.$message.warning('请输入正确的间隔时间');
             return false;
           }
@@ -1051,5 +1051,7 @@ export default {
     display: none;
   }
 }
-
+.hd30 .el-input.is-disabled .el-input__inner {
+  height: 30px !important;
+}
 </style>
