@@ -262,6 +262,9 @@
             margin-bottom: 25px;
             margin-top: 25px!important;
             height: 100%!important;
+            .el-tabs__nav{
+              text-align:left;
+            }
         }
     }
     .task-Detail-dialog .proInfo-box .el-form-item--medium .el-form-item__content{
