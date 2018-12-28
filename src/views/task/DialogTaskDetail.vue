@@ -657,7 +657,7 @@ export default {
               4:'完成',
               5:'准备中'
             }
-            that.taskBaseInfo.statusDesc = statusMap[that.taskBaseInfo.status];
+            that.taskBaseInfo.statusDesc = that.reqObj.status==1 ? "运行" : statusMap[that.taskBaseInfo.status];
             //网络指示灯判断
             that.newWorkTrans(that.taskBaseInfo.networkStatus,response.data.data.speed,true);
             //可操作类型
@@ -767,7 +767,7 @@ export default {
           }else{
             if(that.reqObj.status != '5'){
               that.sourceDataInfo = res.data.data; 
-            } 
+            }
           }
           that.loading2 = false;
         }

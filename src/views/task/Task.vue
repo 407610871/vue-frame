@@ -623,10 +623,7 @@ export default {
             _self.loading = false;
             if (res.data.success) {
               _self.doMsg("运行成功", "success");
-              row.status = 5;
-              row.startTime = "";
-              row.endTime = "";
-              row.joinDataNum = "";
+              _self.init();
             } else {
               _self.doMsg(res.data.message, "error");
             }
@@ -684,10 +681,14 @@ export default {
           if (res.data.code == 200) {
             _self.tableData = res.data.data.result;
             _self.tableData.forEach(res=>{
-               if(res.status=='5'){
-                  res.startTime = "";
-                  res.endTime = "";
-                  res.joinDataNum = "";
+               if(res.status==5){
+                 if(res.startTime){
+                    res.status = 1;
+                 }else {
+                    res.startTime = "";
+                    res.endTime = "";
+                    res.joinDataNum = "";
+                 }
                }
             })
             tableZC = _self.tableData[0];
@@ -771,7 +772,6 @@ export default {
         //批量汇聚
         let errorData = [];
         for (let i = 0; i < rowNew.length; i++) {
-          // console.log(row[i].status,row[i].isPeriod)
           if (rowNew[i].status == 1 || rowNew[i].status == 0||rowNew[i].isPeriod == 0) {
             errorData.push(rowNew[i]);
           }
