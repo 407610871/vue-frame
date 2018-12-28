@@ -1,6 +1,5 @@
 <template>
   <div class="taskMDialog icon-dai regcon reg_dialog1">
-    <!-- <el-button @click="dialogVisible = true" class="add-btn">注册</el-button> -->
     <el-tooltip class="item" effect="light" content="注册" placement="top">
       <i @click="dialogVisible = true" class="enc-icon-zhuce table-action-btn" style="margin-right:15px; font-size:30px;"></i>
     </el-tooltip>
@@ -27,12 +26,7 @@
               </el-form-item>
             </el-col>
             <el-col :span="10">
-              <el-form-item label="接入数据来源:" prop="resource">
-                <!-- <el-radio-group v-model="ruleForm.resource">
-                  <el-radio v-for="item in SJLY" :label="item.static_CODE" :key="item.static_CODE">{{item.static_NAME}}</el-radio>
-                  <el-radio label="私网"></el-radio>
-                 <el-radio label="委办网"></el-radio>
-                </el-radio-group>-->
+              <el-form-item label="接入数据来源:" prop="resource"> 
                 <el-select v-model="ruleForm.resource" placeholder="请选择">
                   <el-option :label="item.sTATIC_NAME" :value="item.sTATIC_CODE" :key="item.sTATIC_CODE" v-for="item in SJLY"></el-option>
                 </el-select>
@@ -118,15 +112,6 @@
                     </el-select>
                   </el-form-item>
                 </el-col>
-                <!--                 <el-col :span="4" class="bank">bank</el-col>
-<el-col :span="10">
-  <el-form-item prop="authors">
-    <el-select v-model="ruleForm.authors" placeholder="请选择">
-      <el-option label="部门一" value="first"></el-option>
-      <el-option label="部门二" value="second"></el-option>
-    </el-select>
-  </el-form-item>
-                </el-col>-->
               </el-form-item>
             </el-col>
             <el-col :span="4" class="bank">bank</el-col>
@@ -135,11 +120,6 @@
                 <el-input v-model="ruleForm.dockphone"></el-input>
               </el-form-item>
             </el-col>
-            <!-- <el-col :span="10">
-              <el-form-item label="数据提供人邮箱:" prop="proemail">
-                <el-input v-model="ruleForm.proemail"></el-input>
-              </el-form-item>
-            </el-col>-->
             <el-col :span="10" class="bank">bank</el-col>
           </div>
         </div>
@@ -151,16 +131,6 @@
             <el-form-item class="my_form_item" label="接入源类型:" prop="syskind">
               <el-radio-group v-model="ruleForm.syskind">
                 <el-radio v-for="(item,index) in syskindList" :label="item.id" :key="item.id" v-if="index<5||accdiaFlag">{{item.name}}</el-radio>
-                <!--  <el-radio label="mysql"></el-radio>
-               <el-radio label="oracle"></el-radio>
-               <el-radio label="activemq"></el-radio>
-               <el-radio label="sqlserver"></el-radio>
-               <el-radio label="postgresql"></el-radio>
-               <el-radio label="ftp"></el-radio>
-               <el-radio label="rabbitmq"></el-radio>
-               <el-radio label="mongodb"></el-radio>
-               <el-radio label="本地文件"></el-radio>
-                <el-radio label="其他"></el-radio>-->
               </el-radio-group>
               <span class="curspan" @click="more(accdiaFlag)">{{accdiaName}}</span>
             </el-form-item>
@@ -179,28 +149,22 @@
               <el-col :span="2" class="bank">bank</el-col>
               <el-col :span="10" class="uncol">
                 <span class="fl" v-show="this.ruleForm.author=='true'&&ruleForm.syskind!=''&&ruleForm.syskind!='10023'">*</span>
+                <el-form-item class="fl unrequired" label="端口号:" prop="iport" v-if="ruleForm.syskind!=''&&ruleForm.syskind!='10023'">
+                  <el-input v-model="ruleForm.iport"></el-input>
+                </el-form-item>
+              </el-col>
+              <el-col :span="2" class="bank">bank</el-col>
+              <el-col :span="10" class="uncol">
+                <span class="fl" v-show="this.ruleForm.author=='true'&&ruleForm.syskind!=''&&ruleForm.syskind!='10023'">*</span>
                 <el-form-item class="fl unrequired" label="登录名:" prop="username" v-if="ruleForm.syskind!=''&&ruleForm.syskind!='10023'">
                   <el-input v-model="ruleForm.username"></el-input>
                 </el-form-item>
               </el-col>
-              <!--               <el-col :span="2" class="bank">bank</el-col>
-<el-col :span="10">
-  <el-form-item label="路径" required prop="url" v-if="ruleForm.syskind=='9'">
-    <el-input v-model="ruleForm.url"></el-input>
-  </el-form-item>
-              </el-col>-->
               <el-col :span="2" class="bank">bank</el-col>
               <el-col :span="10" class="uncol">
                 <span class="fl" v-show="this.ruleForm.author=='true'&&ruleForm.syskind!=''&&ruleForm.syskind!='10023'">*</span>
                 <el-form-item class="fl unrequired" label="密码:" prop="password" v-if="ruleForm.syskind!=''&&ruleForm.syskind!='10023'">
                   <el-input v-model="ruleForm.password"></el-input>
-                </el-form-item>
-              </el-col>
-              <el-col :span="2" class="bank">bank</el-col>
-              <el-col :span="10" class="uncol">
-                <span class="fl" v-show="this.ruleForm.author=='true'&&ruleForm.syskind!=''&&ruleForm.syskind!='10023'">*</span>
-                <el-form-item class="fl unrequired" label="端口号:" prop="iport" v-if="ruleForm.syskind!=''&&ruleForm.syskind!='10023'">
-                  <el-input v-model="ruleForm.iport"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="2" class="bank" v-if="ruleForm.syskind=='10001'||ruleForm.syskind=='10003'||ruleForm.syskind=='10002'||ruleForm.syskind=='10004'||ruleForm.syskind=='10020'">bank</el-col>
@@ -217,43 +181,6 @@
                   <el-input v-model="ruleForm.model"></el-input>
                 </el-form-item>
               </el-col>
-              <!--  <el-col :span="10">
-               <el-form-item label="接口名称" required prop="operationName">
-                 <el-input v-model="ruleForm.operationName"></el-input>
-               </el-form-item>
-             </el-col>
-              <el-col :span="2" class="bank">bank</el-col>-->
-              <!--               <el-col :span="10">
-  <el-form-item label="参数名" required prop="parameterName">
-    <el-input v-model="ruleForm.parameterName"></el-input>
-  </el-form-item>
-</el-col>
-<el-col :span="2" class="bank">bank</el-col>
-<el-col :span="10">
-  <el-form-item label="timeout" required prop="timeout">
-    <el-input v-model="ruleForm.timeout"></el-input>
-  </el-form-item>
-</el-col>
-<el-col :span="2" class="bank">bank</el-col>
-<el-col :span="10">
-  <el-form-item label="表结构" required prop="tableStructure">
-    <el-input v-model="ruleForm.tableStructure"></el-input>
-  </el-form-item>
-</el-col>
-<el-col :span="2" class="bank">bank</el-col>
-<el-col :span="10">
-  <el-form-item label="源路径" required prop="fromPath">
-    <el-input v-model="ruleForm.fromPath"></el-input>
-  </el-form-item>
-</el-col>
-<el-col :span="2" class="bank">bank</el-col>
-<el-col :span="10">
-  <el-form-item label="目标路径" required prop="toPath">
-    <el-input v-model="ruleForm.toPath"></el-input>
-  </el-form-item>
-</el-col> 
-              <el-col :span="2" class="bank">bank</el-col>-->
-              <!-- hive专有 -->
               <el-col :span="10" class="uncol">
                 <span class="fl" v-show="this.ruleForm.author=='true'&&ruleForm.syskind!=''&& ruleForm.syskind=='vhost'">*</span>
                 <el-form-item class="fl unrequired" label="集群根目录" prop="hadoopDir" v-if="ruleForm.syskind!=''&& ruleForm.syskind=='vhost'">
@@ -287,8 +214,6 @@
                 <el-form-item label="选择本地文件(仅支持txt,excel,csv文件):" prop="upfile">
                   <el-upload class="upload-demo" name="files" ref="upload" action :on-preview="handlePreview" :on-remove="handleRemove" :file-list="fileList" :auto-upload="false">
                     <el-button slot="trigger" size="small" type="primary">选择文件</el-button>
-                    <!-- <el-button style="margin-left: 10px;" size="small" type="success" @click="submitUpload">上传到服务器</el-button> -->
-                    <!--  <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div> -->
                   </el-upload>
                 </el-form-item>
               </el-col>
@@ -532,8 +457,6 @@ export default {
         children: "children",
         label: "deptName"
       }
-
-      // msgId:this.dialogMsg?this.dialogMsg[1]:''
     };
   },
   methods: {
@@ -568,10 +491,8 @@ export default {
       this.$refs.upload.submit();
     },
     handleRemove(file, fileList) {
-      console.log(file, fileList);
     },
     handlePreview(file) {
-      console.log(file);
     },
     _getSJLYandSSJZ() {
       let _self = this;
@@ -593,7 +514,6 @@ export default {
           }
           _self.SJLY = res.data.staticDatas.SJLY;
           _self.SSJZ = res.data.staticDatas.SSJZ;
-          console.log(_self.SSJZ);
           _self.ruleForm.resource = _self.SJLY[0].sTATIC_CODE;
           _self.ruleForm.authorf = _self.SSJZ[0].sTATIC_CODE;
         });
@@ -647,21 +567,16 @@ export default {
     //数据所属部门
     _getSYBM() {
       var _self = this;
-      /*  this.$ajax.post('http://10.19.160.29:8088/demo/deptInfo/getDeptInfo',{}).then(res=>{
-           console.log(res);
-        })*/
       this.$ajax({
         method: "post",
         url: this.GLOBAL.api.API_DACM + "/deptInfo/getDeptInfo"
       }).then(res => {
-        console.log(res);
         _self.treedata = res.data.datas;
         if (_self.$store.state.deptId.length == 0) {
           _self.ruleForm.dockid = _self.treedata[0].id;
           _self.ruleForm.dockdata = _self.treedata[0].deptName;
         } else {
           let depIds = _self.$store.state.deptId;
-          console.log(depIds);
           for (let i = 0; i < _self.treedata.length; i++) {
             _self.deptData.push({
               id: _self.treedata[i].id,
@@ -705,7 +620,6 @@ export default {
     //保存信息
     submitForm(formName) {
       this.testflag = false;
-      console.log(this.ruleForm.syskind);
       var _self = this;
       this.$refs[formName].validate(valid => {
         if (valid) {
@@ -834,16 +748,12 @@ export default {
             this.$ajax({
               method: "get",
               url: this.GLOBAL.api.API_DACM + "/register/dataSourceCheck",
-              // headers:{
-              //   'Content-Type':'application/json;charset=utf-8',
-              // },
               params: {
                 ip: this.ruleForm.ipname,
                 username: this.ruleForm.username,
                 name: this.ruleForm.jrname
               }
             }).then(res => {
-              console.log(res);
               if (res.data.data.exist) {
                 if (res.data.data.existName) {
                   this.$message.warning("接入源名称已存在");
@@ -861,9 +771,6 @@ export default {
                     this.$ajax({
                       method: "POST",
                       url: this.GLOBAL.api.API_DACM + "/register/dataSourceInsert",
-                      // headers:{
-                      //   'Content-Type':'application/json;charset=utf-8',
-                      // },
                       data: save
                     }).then(res => {
                       this.loading = false;
@@ -892,9 +799,6 @@ export default {
                 this.$ajax({
                   method: "POST",
                   url: this.GLOBAL.api.API_DACM + "/register/dataSourceInsert",
-                  // headers:{
-                  //   'Content-Type':'application/json;charset=utf-8',
-                  // },
                   data: save
                 }).then(res => {
                   this.loading = false;
@@ -1056,11 +960,9 @@ export default {
                 this.$refs.upload.clearFiles();
                 this.$refs["ruleForm"].resetFields();
                 this.dialogVisible = false;
-                //this.dialogVisible = false;
                 this.$ajax({
                   method: "POST",
                   url: this.GLOBAL.api.API_DACM + "/register/fileSourceInsert",
-                  /* url:'http://10.19.160.211:8080/DACM/register/fileSourceInsert',*/
                   processData: false,
                   contentType: false,
                   data: formData
@@ -1224,7 +1126,6 @@ export default {
               this.$ajax({
                 method: "POST",
                 url: this.GLOBAL.api.API_DACM + "/register/fileSourceInsert",
-                /* url:'http://10.19.160.211:8080/DACM/register/fileSourceInsert',*/
                 processData: false,
                 contentType: false,
                 data: formData
@@ -1241,7 +1142,6 @@ export default {
               });
             }
           } else {
-            console.log("error submit!!");
             return false;
           }
         }
@@ -1267,9 +1167,6 @@ export default {
           this.$ajax({
             method: "POST",
             url: this.GLOBAL.api.API_DACM + "/register/dataSourceConnect",
-            // headers:{
-            //   'Content-Type':'application/json;charset=utf-8',
-            // },
             data: testData
           }).then(res => {
             this.loading = false;
@@ -1284,7 +1181,6 @@ export default {
             }
           });
         } else {
-          console.log("error submit!!");
           return false;
         }
       });

@@ -1,6 +1,5 @@
 <template>
   <div class="taskMDialog regcon edit_dialog2">
-    <!-- <el-button class="diabtn incbtn" size="mini" @click="dialogVisible = true">编辑</el-button> -->
     <el-tooltip class="item" effect="light" content="编辑" placement="top">
       <i @click="dialogVisible = true" class="enc-icon-bianji table-action-btn"></i>
     </el-tooltip>
@@ -28,11 +27,6 @@
             </el-col>
             <el-col :span="10">
               <el-form-item label="接入数据来源:" prop="resource">
-                <!--  <el-radio-group v-model="ruleForm.resource">
-                 <el-radio v-for="item in SJLY" :label="item.static_CODE" :key="item.static_CODE">{{item.static_NAME}}</el-radio>
-                 <el-radio label="私网"></el-radio>
-                <el-radio label="委办网"></el-radio>
-               </el-radio-group> -->
                 <el-select v-model="ruleForm.resource" placeholder="请选择">
                   <el-option :label="item.sTATIC_NAME" :value="item.sTATIC_CODE" :key="item.sTATIC_CODE" v-for="item in SJLY"></el-option>
                 </el-select>
@@ -115,15 +109,6 @@
                     </el-select>
                   </el-form-item>
                 </el-col>
-                <!--                 <el-col :span="4" class="bank">bank</el-col>
-<el-col :span="10">
-  <el-form-item prop="authors">
-    <el-select v-model="ruleForm.authors" placeholder="请选择">
-      <el-option label="部门一" value="first"></el-option>
-      <el-option label="部门二" value="second"></el-option>
-    </el-select>
-  </el-form-item>
-</el-col> -->
               </el-form-item>
             </el-col>
             <el-col :span="4" class="bank">bank</el-col>
@@ -132,11 +117,6 @@
                 <el-input v-model="ruleForm.dockphone"></el-input>
               </el-form-item>
             </el-col>
-            <!-- <el-col :span="10">
-              <el-form-item label="数据提供人邮箱:" prop="proemail">
-                <el-input v-model="ruleForm.proemail"></el-input>
-              </el-form-item>
-            </el-col> -->
             <el-col :span="10" class="bank">bank</el-col>
           </div>
         </div>
@@ -148,16 +128,6 @@
             <el-form-item class="my_form_item" label="接入源类型:" prop="syskind">
               <el-radio-group v-model="ruleForm.syskind">
                 <el-radio v-for="item in syskindList" :label="item.id" :key="item.id" disabled>{{item.name}}</el-radio>
-                <!--  <el-radio label="mysql"></el-radio>
-               <el-radio label="oracle"></el-radio>
-               <el-radio label="activemq"></el-radio>
-               <el-radio label="sqlserver"></el-radio>
-               <el-radio label="postgresql"></el-radio>
-               <el-radio label="ftp"></el-radio>
-               <el-radio label="rabbitmq"></el-radio>
-               <el-radio label="mongodb"></el-radio>
-               <el-radio label="本地文件"></el-radio>
-               <el-radio label="其他"></el-radio> -->
               </el-radio-group>
             </el-form-item>
             <el-button type="primary" v-if="ruleForm.syskind!=''&&ruleForm.syskind!='10023'" @click="testForm('ruleForm')" v-loading.fullscreen.lock="fullscreenLoading">测试连接</el-button>
@@ -166,7 +136,6 @@
                 <el-col :span="15" class="tleft">
                   <span class="tleft cred">tips:数据源连接更新仅适用于数据源用户信息变更或数据源无变更迁移</span>
                 </el-col>
-                <!-- <el-button type="primary" v-if="ruleForm.syskind!=''&&ruleForm.syskind!='10023'" @click="testForm('ruleForm')" v-loading.fullscreen.lock="fullscreenLoading">测试连接</el-button> -->
                 <p v-if="isDisableClassFlag" class="isRed">*修改接入源设置需测试连接</p>
               </el-col>
             </el-row>
@@ -180,28 +149,22 @@
               <el-col :span="2" class="bank">bank</el-col>
               <el-col :span="10" class="uncol">
                 <span class="fl" v-show="this.ruleForm.author=='true'&&ruleForm.syskind!=''&&ruleForm.syskind!='10023'">*</span>
+                <el-form-item class="fl unrequired" label="端口号:" prop="iport" v-if="ruleForm.syskind!=''&&ruleForm.syskind!='10023'">
+                  <el-input v-model="ruleForm.iport" @change="changeContentInfo()"></el-input>
+                </el-form-item>
+              </el-col>
+              <el-col :span="2" class="bank">bank</el-col>
+              <el-col :span="10" class="uncol">
+                <span class="fl" v-show="this.ruleForm.author=='true'&&ruleForm.syskind!=''&&ruleForm.syskind!='10023'">*</span>
                 <el-form-item class="fl unrequired" label="登录名:" prop="username" v-if="ruleForm.syskind!=''&&ruleForm.syskind!='10023'">
                   <el-input v-model="ruleForm.username" @change="changeContentInfo()"></el-input>
                 </el-form-item>
               </el-col>
-              <!--               <el-col :span="2" class="bank">bank</el-col>
-<el-col :span="10">
-  <el-form-item label="路径"  prop="url" v-if="ruleForm.syskind=='9'">
-    <el-input v-model="ruleForm.url"></el-input>
-  </el-form-item>
-</el-col> -->
               <el-col :span="2" class="bank">bank</el-col>
               <el-col :span="10" class="uncol">
                 <span class="fl" v-show="this.ruleForm.author=='true'&&ruleForm.syskind!=''&&ruleForm.syskind!='10023'">*</span>
                 <el-form-item class="fl unrequired" label="密码:" prop="password" v-if="ruleForm.syskind!=''&&ruleForm.syskind!='10023'">
                   <el-input v-model="ruleForm.password" @change="changeContentInfo()"></el-input>
-                </el-form-item>
-              </el-col>
-              <el-col :span="2" class="bank">bank</el-col>
-              <el-col :span="10" class="uncol">
-                <span class="fl" v-show="this.ruleForm.author=='true'&&ruleForm.syskind!=''&&ruleForm.syskind!='10023'">*</span>
-                <el-form-item class="fl unrequired" label="端口号:" prop="iport" v-if="ruleForm.syskind!=''&&ruleForm.syskind!='10023'">
-                  <el-input v-model="ruleForm.iport" @change="changeContentInfo()"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="2" class="bank" v-if="ruleForm.syskind=='10001'||ruleForm.syskind=='10003'||ruleForm.syskind=='10002'||ruleForm.syskind=='10004'||ruleForm.syskind=='10020'">bank</el-col>
@@ -218,43 +181,7 @@
                   <el-input v-model="ruleForm.model"  @change="changeContentInfo()"></el-input>
                 </el-form-item>
               </el-col>
-              <!--  <el-col :span="10">
-               <el-form-item label="接口名称"  prop="operationName">
-                 <el-input v-model="ruleForm.operationName"></el-input>
-               </el-form-item>
-             </el-col>
-             <el-col :span="2" class="bank">bank</el-col> -->
-              <!--               <el-col :span="10">
-  <el-form-item label="参数名"  prop="parameterName">
-    <el-input v-model="ruleForm.parameterName"></el-input>
-  </el-form-item>
-</el-col>
-<el-col :span="2" class="bank">bank</el-col>
-<el-col :span="10">
-  <el-form-item label="timeout"  prop="timeout">
-    <el-input v-model="ruleForm.timeout"></el-input>
-  </el-form-item>
-</el-col>
-<el-col :span="2" class="bank">bank</el-col>
-<el-col :span="10">
-  <el-form-item label="表结构"  prop="tableStructure">
-    <el-input v-model="ruleForm.tableStructure"></el-input>
-  </el-form-item>
-</el-col>
-<el-col :span="2" class="bank">bank</el-col>
-<el-col :span="10">
-  <el-form-item label="源路径"  prop="fromPath">
-    <el-input v-model="ruleForm.fromPath"></el-input>
-  </el-form-item>
-</el-col>
-<el-col :span="2" class="bank">bank</el-col>
-<el-col :span="10">
-  <el-form-item label="目标路径"  prop="toPath">
-    <el-input v-model="ruleForm.toPath"></el-input>
-  </el-form-item>
-</el-col> 
-              <el-col :span="2" class="bank">bank</el-col>-->
-              <!-- hive专有 -->
+              
               <el-col :span="10" class="uncol">
                 <span class="fl" v-show="this.ruleForm.author=='true'&&ruleForm.syskind!=''&& ruleForm.syskind=='vhost'">*</span>
                 <el-form-item class="fl unrequired" label="集群根目录" prop="hadoopDir" v-if="ruleForm.syskind!=''&& ruleForm.syskind=='vhost'">
@@ -494,8 +421,6 @@ export default {
         children: 'children',
         label: 'deptName'
       },
-
-      // msgId:this.dialogMsg?this.dialogMsg[1]:''
     };
   },
   methods: {
@@ -570,9 +495,7 @@ export default {
           type: '2'
         }
       }).then(res => {
-
         this.syskindList = res.data;
-        /*this.ruleForm.syskind = res.data[0].id;*/
       })
     },
     //对接部门
@@ -609,9 +532,6 @@ export default {
     //数据所属部门
     _getSYBM() {
       var _self = this;
-      /*  this.$ajax.post('http://10.19.160.29:8088/demo/deptInfo/getDeptInfo',{}).then(res=>{
-           console.log(res);
-        })*/
       this.$ajax({
         method: "post",
         url: this.GLOBAL.api.API_DACM + '/deptInfo/getDeptInfo',
@@ -628,32 +548,6 @@ export default {
             this._getDepId(_self.treedata[i].children);
           }
         }
-        console.log(_self.deptData);
-        /*  _self.ruleForm.dockid = _self.treedata[0].id;
-          _self.ruleForm.dockdata = _self.treedata[0].deptName*/
-
-
-        /*else {
-                 let depIds = _self.$store.state.deptId;
-                 console.log(depIds);
-                 for (let i = 0; i < _self.treedata.length; i++) {
-                   _self.deptData.push({
-                     id: _self.treedata[i].id,
-                     name: _self.treedata[i].deptName,
-                     pid: _self.treedata[i].pid
-                   })
-                   if (_self.treedata[i].children.length != 0 && _self.treedata[i].children.length != undefined) {
-                     this._getDepId(_self.treedata[i].children);
-                   }
-                 }
-                 for (let m = 0; m < _self.deptData.length; m++) {
-                   if (_self.deptData[m].id == depIds[0]) {
-                     _self.ruleForm.dockid = _self.deptData[m].id;
-                     _self.ruleForm.dockdata = _self.deptData[m].name;
-                     _self.deIndex = _self.deptData[m].pid
-                   }
-                 }
-               }*/
       })
     },
     //找到id的index值
@@ -809,9 +703,6 @@ export default {
           this.$ajax({
             method: "get",
             url: this.GLOBAL.api.API_DACM + '/register/dataSourceCheck',
-            // headers:{
-            //   'Content-Type':'application/json;charset=utf-8',
-            // },
             params: {
               ip: this.ruleForm.ipname,
               username: this.ruleForm.username,
@@ -833,9 +724,6 @@ export default {
                 this.$ajax({
                   method: "POST",
                   url: this.GLOBAL.api.API_DACM + '/update/dataSourceUpdate',
-                  // headers:{
-                  //   'Content-Type':'application/json;charset=utf-8',
-                  // },
                   data: save
 
                 }).then(res => {
@@ -847,8 +735,6 @@ export default {
                         this.$refs['ruleForm'].resetFields();
                         this.dialogVisible = false;
                         this.$emit('refreshTable');
-
-                        // this.$root.eventHub.$emit('updataFliterItemList');
                         this.$emit('storeReady');
                       }
                     });
@@ -875,10 +761,6 @@ export default {
                 this.$ajax({
                   method: "POST",
                   url: this.GLOBAL.api.API_DACM + '/update/dataSourceUpdate',
-                  /*  url:'http://10.19.160.211:8080/DACM/update/dataSourceUpdate',*/
-                  // headers:{
-                  //   'Content-Type':'application/json;charset=utf-8',
-                  // },
                   data: save
 
                 }).then(res => {
@@ -890,14 +772,9 @@ export default {
                         this.$refs['ruleForm'].resetFields();
                         this.dialogVisible = false;
                         this.$emit('refreshTable');
-
-
-
-                        // this.$root.eventHub.$emit('updataFliterItemList');
                         this.$emit('storeReady');
                       }
                     });
-
                   } else {
                     this.$alert(res.data.message, '信息', {
                       confirmButtonText: '确定',
@@ -911,15 +788,9 @@ export default {
               }).catch(() => {
 
               })
-
             }
           })
-
-
         }
-
-
-
       });
     },
     //测试连接
@@ -942,11 +813,7 @@ export default {
           this.$ajax({
             method: "POST",
             url: this.GLOBAL.api.API_DACM + '/register/dataSourceConnect',
-            // headers:{
-            //   'Content-Type':'application/json;charset=utf-8',
-            // },
             data: testData
-
           }).then(res => {
             this.loading = false;
             if (res.data.success) {
@@ -964,7 +831,6 @@ export default {
           })
         } else {
           this.isDisableClassFlag = true; //控制保存按钮是否可点击
-          console.log('error submit!!');
           return false;
         }
       });
@@ -975,7 +841,6 @@ export default {
       this.$ajax({
         method: "get",
         url: this.GLOBAL.api.API_DACM + '/update/dataSourceSelect',
-        /*url:'http://10.19.160.211:8080/DACM/update/dataSourceSelect',*/
         params: {
           id: this.appId
         }
@@ -991,7 +856,6 @@ export default {
           _self.ruleForm.prophone = data.contactsPhone;
           _self.ruleForm.proemail = data.contactsEmail;
           _self.ruleForm.dockid = data.accessSysDeptInfoId;
-
           for (let m = 0; m < _self.deptData.length; m++) {
             if (_self.deptData[m].id == data.accessSysDeptInfoId) {
               _self.ruleForm.dockid = _self.deptData[m].id;
@@ -999,7 +863,6 @@ export default {
               _self.deIndex = _self.deptData[m].pid
             }
           }
-
           //属性
           for (let i = 0; i < data.attr.length; i++) {
             if (data.attr[i].key == 'sourceQQ') {
@@ -1088,7 +951,6 @@ export default {
               _self.ruleForm.tableStructure = data.attr[i].value;
             }
           }
-
         } else {
           this.$alert('获取数据失败', '信息', {
             confirmButtonText: '确定',
@@ -1099,7 +961,6 @@ export default {
         }
       }, (res) => {
         this.loading = false;
-        console.log('error');
       })
     },
     changeContentInfo(e) { //参数留下做判断，如果用户返回初始数据是否需要判断
@@ -1112,7 +973,6 @@ export default {
   props: ['acId'],
 
   watch: {
-
     dialogVisible() {
       if (this.dialogVisible) {
         this.appId = this.acId;
@@ -1129,11 +989,8 @@ export default {
         this._getSYBM();
         //初始数据
         this._getInit();
-
       }
     },
-
-
   }
 
 };
