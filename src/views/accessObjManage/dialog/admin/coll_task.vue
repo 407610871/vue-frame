@@ -585,7 +585,7 @@ export default {
           }
         }
         if (this.ruleForm.jday !== '' && this.ruleForm.jday !== undefined) {
-          if (this.ruleForm.jday == '0') {
+          if (this.ruleForm.jday == '0'&&this.ruleForm.jhour==='0'&&this.ruleForm.jmin==='0') {
             this.$message.warning('请输入正确的间隔时间');
             return false;
           }
