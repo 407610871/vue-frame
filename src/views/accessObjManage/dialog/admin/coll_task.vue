@@ -929,9 +929,10 @@ export default {
 
       }).then(res => {
         if (res.data.success) {
-          this.editfalg = true;
+         
           var data = res.data.data;
           if (data != undefined) {
+             this.editfalg = true;
             this.ruleForm.accessPri = data.priority; //优先级
             this.yid = data.incrementColumnId; //增量字段的id
             //增量字段
