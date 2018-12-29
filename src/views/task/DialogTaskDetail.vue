@@ -1,6 +1,7 @@
 <template>
   <div class="taskMDialog" style="padding-bottom:15px;" >
-    <el-dialog :title="reqObj.taskName" :close-on-click-modal="false" :visible.sync="showInnerDialog" @closed="closeDia" class="task-Detail-dialog" width="73%">
+    <el-dialog :title="reqObj.taskName" :close-on-click-modal="false" 
+    :visible.sync="showInnerDialog" @closed="closeDia" class="task-Detail-dialog">
       <div class="title-gra">
         <span class="grab gra-l"></span>
         <span class="grab gra-r"></span>
@@ -256,14 +257,25 @@
   </div>
 </template>
 <style lang="scss">
+    @media screen and (max-width: 1280px){
+        .task-Detail-dialog {
+        .el-dialog{
+              width: 80%;
+              height:500px;
+          }
+      }
+    }
+    @media screen and (min-width: 1400px){
+        .task-Detail-dialog {
+        .el-dialog{
+              width: 60%;
+              height:600px;
+          }
+      }
+    }
     .task-Detail-dialog {
       .el-dialog{
-            min-width: 80%;
-            max-height:calc(100% - 50px);
             overflow:auto;
-            margin-bottom: 25px;
-            margin-top: 25px!important;
-            height: 100%!important;
             .el-tabs__nav{
               text-align:left;
             }

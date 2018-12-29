@@ -29,9 +29,7 @@
     height: 600px;
     overflow: auto;
     .el-dialog__header {
-      margin: 0 20px;
-      padding: 20px 10px 0px;
-
+        padding: 20px 40px 0px 40px;
       .el-dialog__title {
         font-size: $font-size-medium;
         @include el-color($color-text-title);
@@ -67,9 +65,7 @@
     }
   }
   .el-dialog__body {
-    padding-top: 0px;
-    padding-left: 30px;
-    padding-right: 30px;
+    padding: 20px 40px 40px 40px;
     .daiInfo-title {
       border-bottom: 1px solid $border-color-dai;
       margin-bottom: 20px;
