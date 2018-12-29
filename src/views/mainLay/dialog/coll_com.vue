@@ -285,6 +285,10 @@
   </div>
 </template>
 <script>
+//盐城环境地址
+const httpUrl = window.ENV.API_DOWN + "/";
+//websocket地址
+const wsUrl = `ws${httpUrl.substring(4,httpUrl.length-1)}/websocket`;
 import increMap from '@/views/mainLay/dialog/incre_map' //增量字段
 
 export default {
@@ -339,16 +343,32 @@ export default {
     };
   },
   methods: {
+
+    initWebSocket() {
+      const wsuri = wsUrl;
+      this.websock = new WebSocket(wsuri);
+      this.websock.onopen = this.websocketonopen;
+      this.websock.onclose = this.websocketclose;
+    },
+    websocketclose(e) {
+      //关闭
+    },
+    //连接成功回调方法
+    websocketonopen() {},
     //关闭对话框
     closeDialog() {
       this.dialogVisible = false;
       this.$refs['ruleForm'].resetFields();
+            this.websocketclose();
+
     },
 
     //关闭
     closeForm() {
       this.dialogVisible = false;
       this.$refs['ruleForm'].resetFields();
+            this.websocketclose();
+
     },
     //增量字段弹框的再次打开
     showIncrement() {
@@ -728,6 +748,8 @@ export default {
           }).then(res => {
             this.loading = false;
             if (res.data.success) {
+                              this.websock.send(JSON.stringify(res.data.data));
+
               let ctips = '采集任务启动成功！';
                 if (this.ruleForm.taskSubMode == "false") {
                   ctips = '采集任务创建成功！';
@@ -764,6 +786,8 @@ export default {
               }).then(res => {
                 this.loading = false;
                 if (res.data.success) {
+                                  this.websock.send(JSON.stringify(res.data.data));
+
                   let ctips = '采集任务启动成功！';
                 if (this.ruleForm.taskSubMode == "false") {
                   ctips = '采集任务创建成功！';
