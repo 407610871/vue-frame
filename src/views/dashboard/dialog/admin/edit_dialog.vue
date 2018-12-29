@@ -126,8 +126,8 @@
           </div>
           <div class="daiInfo-box clearfix">
             <el-form-item class="my_form_item" label="接入源类型:" prop="syskind">
-              <el-radio-group v-model="ruleForm.syskind">
-                <el-radio v-for="item in syskindList" :label="item.id" :key="item.id" disabled>{{item.name}}</el-radio>
+              <el-radio-group v-model="ruleForm.syskind" style="margin-top:-12px;">
+                <el-radio v-for="item in syskindList" :label="item.id" :key="item.id" disabled><span>{{item.name}}</span><span v-if="item.id=='10010' || item.id=='10020'" class="enc-icon-beta betaspan"></span></el-radio>
               </el-radio-group>
             </el-form-item>
             <el-button type="primary" v-if="ruleForm.syskind!=''&&ruleForm.syskind!='10023'" @click="testForm('ruleForm')" v-loading.fullscreen.lock="fullscreenLoading">测试连接</el-button>
@@ -1005,7 +1005,7 @@ export default {
   }
   .my_form_item{
     margin-bottom:-10px;
-    width: 80%;
+    width: 82%;
     display: inline-block;
     label{
       text-align: left;
@@ -1128,5 +1128,7 @@ i {
 .regcon .otherInfo .ftptype .el-form-item--medium .el-form-item__content {
   margin-left: 151px !important;
 }
-
+.betaspan {
+  font-size: 30px;
+}
 </style>

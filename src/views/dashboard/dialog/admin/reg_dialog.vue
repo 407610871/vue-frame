@@ -129,8 +129,8 @@
           </div>
           <div class="daiInfo-box clearfix">
             <el-form-item class="my_form_item" label="接入源类型:" prop="syskind">
-              <el-radio-group v-model="ruleForm.syskind">
-                <el-radio v-for="(item,index) in syskindList" :label="item.id" :key="item.id" v-if="index<5||accdiaFlag">{{item.name}}</el-radio>
+              <el-radio-group v-model="ruleForm.syskind" style="margin-top:-12px;">
+                <el-radio v-for="(item,index) in syskindList" :label="item.id" :key="item.id" v-if="index<5||accdiaFlag"><span>{{item.name}}</span><span v-if="item.id=='10010' || item.id=='10020'" class="enc-icon-beta betaspan"></span></el-radio>
               </el-radio-group>
               <span class="curspan" @click="more(accdiaFlag)">{{accdiaName}}</span>
             </el-form-item>
@@ -1215,7 +1215,7 @@ export default {
     height: 30px!important;
   }
   .my_form_item {
-    width: 80%;
+    width: 82%;
     display: inline-block;
     label {
       text-align: left;
@@ -1323,5 +1323,7 @@ export default {
 .regcon .otherInfo .ftptype .el-form-item--medium .el-form-item__content {
   margin-left: 151px !important;
 }
-
+.betaspan {
+  font-size: 30px;
+}
 </style>
