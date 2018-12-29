@@ -963,6 +963,7 @@ export default {
 
   },
   created() {
+    this.initWebSocket();
 
   },
   watch: {
