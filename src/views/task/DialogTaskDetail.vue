@@ -257,30 +257,6 @@
   </div>
 </template>
 <style lang="scss">
-    @media screen and (max-width: 1280px){
-        .task-Detail-dialog {
-        .el-dialog{
-              width: 80%;
-              height:500px;
-          }
-      }
-    }
-    @media screen and (min-width: 1400px){
-        .task-Detail-dialog {
-        .el-dialog{
-              width: 60%;
-              height:600px;
-          }
-      }
-    }
-    .task-Detail-dialog {
-      .el-dialog{
-            overflow:auto;
-            .el-tabs__nav{
-              text-align:left;
-            }
-        }
-    }
     .task-Detail-dialog .proInfo-box .el-form-item--medium .el-form-item__content{
       overflow: hidden;
       text-overflow: ellipsis;

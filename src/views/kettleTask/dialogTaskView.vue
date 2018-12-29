@@ -1,6 +1,7 @@
 <template>
-  <div class="taskMDialog" style="padding-bottom:15px;max-height:calc(100% - 50px);margin-bottom:25px;" >
-    <el-dialog width="60%" title="任务详情信息" :visible.sync="showInnerDialog" @closed="closeDia" :close-on-click-modal="false" class="task-view-dialog"> 
+  <div class="taskMDialog" >
+    <el-dialog title="任务详情信息" :visible.sync="showInnerDialog" @closed="closeDia" 
+    :close-on-click-modal="false" class="task-Detail-dialog"> 
       <div class="title-gra">
         <span class="grab gra-l"></span>
         <span class="grab gra-r"></span>
@@ -9,18 +10,16 @@
         
         <!-- 任务基本信息 模块开始 -->
         <div class="daiInfo dockInfo">
-          <div class="daiInfo-box clearfix">
+          <div class="clearfix">
             <el-col :span="12" v-loading="loading1">
-              <div style="height:323px;width:95%;border:1px solid blue" >
-                  <a :href="taskBaseInfo.flowChartPath" target="_blank">
-                    <img :src="src1">
+              <div style="height:323px;width:95%;border:1px solid #C8CFD5;" >
+                    <img :src="src1" class="daiInfo-img">
                     <textarea name="" id="flowChartPath" cols="30" rows="12" style="display:none" ></textarea>
-                  </a>
               </div>
             </el-col>
             <el-col :span="12" class="info-right" v-loading="loading2">
               <div class="taskStatus">
-                <span>处理任务:</span><span>{{reqObj.taskName}}</span>
+                <span style="width:80px;">处理任务:</span><span :title="reqObj.taskName">{{reqObj.taskName}}</span>
                 <span v-if="reqObj.status=='create'" style="float:right;color:red;font-weight:700;width:50px">新建</span>
                 <span v-if="reqObj.status=='Running'" style="float:right;color:red;font-weight:700;width:50px">运行</span>
                 <span v-if="reqObj.status=='Paused'" style="float:right;color:red;font-weight:700;width:50px">暂停</span>
@@ -28,16 +27,17 @@
                 <span v-if="reqObj.status=='Finished'" style="float:right;color:red;font-weight:700;width:50px">完成</span>
               </div>
               <div>
-                  <span style="width:50px;">输入：</span><span style="width:300px;">{{taskBaseInfo.input}}</span>
+                  <span>输入：</span><span>{{taskBaseInfo.input}}</span>
               </div>
               <div style="height:78px">
-                  <span style="vertical-align:top">处理步骤：</span>
+                  <span style="vertical-align:top;">处理步骤：</span>
                   <div class="steps">
-                      <P style="margin-top:0px;" v-for="(item,index) in taskBaseInfo.steps" :key="item.jobEntryType">步骤{{index+1}}：{{item.jobEntryName}}</P>
+                      <P style="margin-top:0px;" v-for="(item,index) in taskBaseInfo.steps" 
+                      :key="item.jobEntryType">步骤{{index+1}}：{{item.jobEntryName}}</P>
                    </div>
               </div>
               <div>
-                  <span style="width:50px;">输出：</span><span style="width:300px;">{{taskBaseInfo.output}}</span>
+                  <span>输出：</span><span>{{taskBaseInfo.output}}</span>
               </div>
               <div>
                   <span>创建时间：</span><span>{{reqObj.createTime}}</span>
@@ -50,12 +50,13 @@
               </div>
             </el-col>
           </div>
-          <el-button class="button-log" type="primary" size="small" @click="queryLogs()">日志</el-button>
+         <el-button class="button-log" type="primary" size="small" @click="queryLogs()">日志</el-button>
           <!-- 四个日志tab 开始 -->
           <div class="daiInfo-tabs">
             <div type="border-card" style="height:265px;">
                 <div class="dataCheck-tab" v-loading="loading3">
-                    <textarea v-show="taskBaseInfo.log!=''" name="" id="" cols="30" rows="12" disabled="disabled" style="resize:none;width: 100%; height: 264px;border:none;background:inherit" >{{taskBaseInfo.log}}</textarea>
+                    <textarea v-show="taskBaseInfo.log!=''" v-model="taskBaseInfo.log" name="" id="" cols="30" rows="12" disabled="disabled" 
+                    class="log-view" ></textarea>
                     <div class="tips-none" v-show="taskBaseInfo.log==''">暂无数据</div>
                 </div>
             </div>
@@ -66,21 +67,8 @@
         
       </el-form>
     </el-dialog>
-    <!-- <dialogIsCheck :msgCheck="reqObj" v-if="isShowCheck"></dialogIsCheck> -->
   </div>
 </template>
-<style lang="scss">
-.task-view-dialog{
-    .el-dialog{
-        min-width: 80%;
-        max-height:calc(100% - 50px);
-        overflow:auto;
-        margin-bottom: 25px;
-        margin-top: 25px!important;
-        height: 100%!important;
-    }
-} 
-</style>
 
 <style lang="scss" scoped>
     .tips-none{
@@ -100,26 +88,36 @@
     }
     .taskStatus span{
         display: inline-block;
-        width: 97px;
+        width: 200px;
     }
     .info-right>div{
         height: 38px;
     }
-    .info-right>div span{
+    .info-right span {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+    .info-right>div span:nth-child(1){
         display: inline-block;
-        width: 107px;
+        width: 100px;
     }
     .info-right>div span:last-child{
-        color: #2f6ac5;
-        cursor: pointer;
-        width: 200px;
+        display: inline-block;
+        width: 240px;
+    }
+    @media screen and (min-width: 1280px){
+        .taskStatus span{
+            display: inline-block;
+            width: 240px;
+        }
+        .info-right>div span:last-child{
+            display: inline-block;
+            width: 300px;
+        }
     }
     .daiInfo-tabs{
-        border:1px solid blue;
-    }
-    img{
-        height:100%;
-        width:100%;
+        border:1px solid #C8CFD5;
     }
     .steps{
         display: inline-block;
@@ -128,6 +126,19 @@
         min-width: 200px;
         max-width: 300px;
     }
+    .log-view {
+        resize: none;
+        width: 100%;
+        height: 264px;
+        border: none;
+        background: inherit;
+        line-height: 24px;
+        padding: 20px;
+    }
+    .daiInfo-img {
+        width: 100%;
+        height: 100%;
+    }  
 </style>
 <script>
 import axios from "axios";
@@ -151,7 +162,7 @@ export default {
           steps:[],//步骤
           flowChartPath:''//流程图地址
       },
-      serveFinishCount:0
+      serveFinishCount:0,
     };
   },
   props: ["title",'reqObj'],
@@ -309,7 +320,7 @@ export default {
             console.log(err);
             that.loading3 = false;
         })
-    },
+    }
   },
   watch:{
       serveFinishCount:{

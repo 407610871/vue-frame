@@ -337,3 +337,28 @@
 .enc-icon-zhuce:hover {
   @include el-color($tree-tools-background-theme);
 }
+
+@media screen and (max-width: 1399px){
+  .task-Detail-dialog {
+  .el-dialog{
+        width: 80%;
+        height:480px;
+    }
+}
+}
+@media screen and (min-width: 1400px){
+  .task-Detail-dialog {
+  .el-dialog{
+        width: 60%;
+        height:600px;
+    }
+}
+}
+.task-Detail-dialog {
+.el-dialog{
+      overflow:auto;
+      .el-tabs__nav{
+        text-align:left;
+      }
+  }
+}
