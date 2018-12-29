@@ -308,7 +308,7 @@ export default {
 
   },
   mounted() {
-    this._getPre()
+   /* this._getPre()*/
     /*  this._getMap()
       this._getType()*/
   },
@@ -326,7 +326,12 @@ export default {
 
     }
   },
-  props: ['tableId', 'maptype']
+  props: ['tableId', 'maptype', 'msg'],
+  watch: {
+    msg() {
+      this._getPre();
+    }
+  }
 
 };
 

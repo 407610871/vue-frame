@@ -319,7 +319,7 @@ export default {
     }
     this.$ajax({
         method: "POST",
-        url: "http://10.19.248.200:32470/BCM/skin/query",
+        url: this.GLOBAL.skin.API_SKIN +"/BCM/skin/query",
         data: {
           userId: userids,
           appId: 'DACM'

@@ -297,7 +297,7 @@
 //盐城环境地址
 const httpUrl = window.ENV.API_DOWN + "/";
 //websocket地址
-const wsUrl = `ws${httpUrl.substring(4,httpUrl.length-1)}/websocket`
+const wsUrl = `ws${httpUrl.substring(4,httpUrl.length-1)}/websocket`;
 import increMap from '@/views/mainLay/dialog/incre_map' //增量字段
 
 export default {
@@ -393,10 +393,14 @@ export default {
       this.websock.onclose = this.websocketclose;
     },
     websocketclose(e) {
+      console.log(`websocket已关闭`);
       //关闭
     },
     //连接成功回调方法
-    websocketonopen() {},
+    websocketonopen() {
+            console.log(`websocket已连接`);
+
+    },
 
     //清空非选中项
     cleanData(val) {
@@ -929,9 +933,10 @@ export default {
 
       }).then(res => {
         if (res.data.success) {
-          this.editfalg = true;
+         
           var data = res.data.data;
           if (data != undefined) {
+             this.editfalg = true;
             this.ruleForm.accessPri = data.priority; //优先级
             this.yid = data.incrementColumnId; //增量字段的id
             //增量字段

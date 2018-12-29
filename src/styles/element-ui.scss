@@ -291,6 +291,9 @@
  .dashboard-container .filter-container .right-tools a:hover, .dashboard-container .filter-container .right-tools a:active {
   @include el-color($el-radio-btn);
  }
+ .el-radio__input.is-disabled .el-radio__inner, .el-radio__input.is-disabled.is-checked .el-radio__inner {
+       border-color: #e4e7ed !important;
+ }
  /*滚动条样式*/
 
 /*  .main::-webkit-scrollbar {

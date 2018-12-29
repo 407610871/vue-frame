@@ -35,6 +35,9 @@ spec:
 #amc-platform
         - name: API_WARN
           value: 'http://$(NODE_IP):29533'
+#web-bcm
+        - name: API_SKIN
+          value: 'http://$(NODE_IP):29540'
         resources:
           limits:
             cpu: 300m

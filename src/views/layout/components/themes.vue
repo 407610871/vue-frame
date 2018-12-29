@@ -99,7 +99,7 @@ export default {
       userProperty.userName = window.localStorage.getItem('userNames');
       this.$ajax({
         method: "POST",
-        url: 'http://10.19.248.200:32470/BCM/skin/update',
+        url: this.GLOBAL.skin.API_SKIN + '/BCM/skin/update',
         data: userProperty
       }).then(res => {
         if (res.data.success) {
