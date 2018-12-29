@@ -229,16 +229,18 @@
                 <div class="dataViews-table" v-loading="loading6">
                   <table style="width:100%;">
                     <thead>
-                      <th v-for="(keyitem, index) in keyList" :key="index">{{keyitem | dataPreviewHandel}}</th>
+                      <th v-for="(val, index) in keyList" :key="index">
+                       {{val}}
+                      </th>
                     </thead>
                     <tbody>
                       <tr v-for="(item, index) in dataViewsList" :key="index">
-                        <td v-for="(keyitem, index) in keyList" :key="index" :title="item[keyitem]">{{item[keyitem]}}</td>
+                        <td v-for="(keyitem, index) in keyList" :key="index" :title="item[index]">{{item[index]}}</td>
                       </tr>
                     </tbody>
                   </table>
 
-                  <div class="tips-none" v-show="keyList.length==0">暂无数据</div>
+                  <div class="tips-none" v-show="dataViewsList.length==0">暂无数据</div>
                 </div>
                 <!-- 数据预览 表格结束 -->
               </el-tab-pane>
@@ -393,7 +395,7 @@ export default {
       },
       //数据预览列表集合
       dataViewsList:[],
-      keyList:[],
+      keyList:{},
       //数据核验日志集合
       dataCheckList:[],
       //任务指示灯背景颜色
@@ -420,13 +422,6 @@ export default {
         return false;
       }
     },
-  },
-  filters: {
-    dataPreviewHandel(str){
-      if(str && str != null){
-        return str.split('/')[0];
-      }
-    }
   },
   created(){
     //查询接入基本信息
@@ -738,7 +733,6 @@ export default {
                 that.doMsg('数据核验失败！','error');
                 
               }
-              
             }else{
               that.isTestLink = true;
             }
@@ -808,9 +802,8 @@ export default {
       let reqData = {
         params:{
           'taskId':that.reqObj.taskInfoId
-          // 'taskId':92066
         }
-      }//http://10.19.160.59:8081/DEMO/ccheckData/checkLogByTaskId
+      }
       axios.get(that.httpUrl2+'ccheckData/checkLogByTaskId',reqData).then(
         function(res){
           if(res.data.code!="200"&&res.data.code!="0000"){
@@ -835,13 +828,19 @@ export default {
         function(res){
           if(res.data.code!="200"&&res.data.code!="0000"){
             that.doMsg("/manager/taskOperate/dataPreview："+res.data.message,'error');
-          }else{
+          }else if(res.data.data.length!=0){
             that.dataViewsList = res.data.data;
-            that.keyList = [];
+            that.keyList = {};
+            let newMap = {};
             for (var p in that.dataViewsList[0]){
-              that.keyList.push(p);
-            }  
-            that.keyList.reverse();  
+              let value = that.dataViewsList[0][p];
+              let headerValue = p.split('/')[0];
+              let headerKey = p.split('/')[1];
+              that.keyList[headerKey]=headerValue;
+              newMap[headerKey] = value;
+            }
+            that.dataViewsList.shift(0);
+            that.dataViewsList.unshift(newMap);
           }
           that.loading6 = false;
         }
