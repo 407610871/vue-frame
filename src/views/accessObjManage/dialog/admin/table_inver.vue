@@ -397,7 +397,9 @@ textarea {
 .dialogo {
   width: 30px;
   height: 30px;
-  background: url('../../../../assets/images/dataReport.svg');
+   -webkit-mask: url('../../../../assets/images/dataReport.svg');
+  mask:url('../../../../assets/images/dataReport.svg');
+  background-color:#000;
   display: inline-block;
   cursor: pointer;
 }

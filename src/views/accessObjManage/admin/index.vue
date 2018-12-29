@@ -829,15 +829,20 @@ export default {
 .updatelogo {
   width: 30px;
   height: 30px;
-  background: url("../../../assets/images/dataupdate.svg");
+  -webkit-mask: url("../../../assets/images/dataupdate.svg");
+  mask:url("../../../assets/images/dataupdate.svg");
   display: inline-block;
   cursor: pointer;
+  background-color:#000;
 }
 
 .setlogo {
   width: 30px;
   height: 30px;
-  background: url("../../../assets/images/tasklogo.svg");
+  -webkit-mask: url("../../../assets/images/tasklogo.svg");
+  mask:url("../../../assets/images/tasklogo.svg");
+  background-color:#000;
+  /* background: url("../../../assets/images/tasklogo.svg"); */
   display: inline-block;
   cursor: pointer;
 }
