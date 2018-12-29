@@ -393,7 +393,9 @@ export default {
 .upfilelogo {
   width: 33px;
   height: 33px;
-  background: url('../../../assets/images/dn.svg');
+  -webkit-mask: url('../../../assets/images/dn.svg');
+  mask:url('../../../assets/images/dn.svg');
+  background-color:#000;
   display: inline-block;
   cursor: pointer;
   margin-right: 30px;

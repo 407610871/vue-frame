@@ -285,6 +285,12 @@
  .el-range-editor.is-active, .el-range-editor.is-active:hover {
    @include el-border-color($el-radio-btn);
  }
+ .main .setlogo:hover,.main .updatelogo:hover,.upfilelogo:hover,.dialogo:hover{
+    @include el-bgcolor($el-table-thead-background-theme);
+ }
+ .dashboard-container .filter-container .right-tools a:hover, .dashboard-container .filter-container .right-tools a:active {
+  @include el-color($el-radio-btn);
+ }
  /*滚动条样式*/
 
 /*  .main::-webkit-scrollbar {

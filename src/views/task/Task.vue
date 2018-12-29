@@ -446,9 +446,7 @@ export default {
     pageSize() {
       return this.$store.state.pageSize;
     },
-    tableData(){
-      this.tableData= Array.from(new Set(this.tableData));
-    }
+    
 
   },
   filters: {
@@ -522,6 +520,7 @@ export default {
           redataTrue=false;
         }
       }
+           
       if(redataTrue){
         redata.zc=1;
         this.removeCla();
@@ -531,6 +530,8 @@ export default {
             type: 'success'
           });
         this.tableData.unshift(redata);
+         this.tableData= Array.from(new Set(this.tableData));
+
           clearTimeout(tim);
         },0);
       }   

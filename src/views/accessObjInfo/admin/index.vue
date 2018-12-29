@@ -584,10 +584,10 @@
         a {
           font-size: 26px;
          /*  color: #479ad8; */
-           :hover,
+           /* :hover,
            :active {
-            color: #f93;
-          }
+           color: #f93;
+                     } */
           i {
             font-size: 32px;
           }
