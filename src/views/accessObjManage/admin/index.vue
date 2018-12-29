@@ -166,7 +166,7 @@
                       ></norela-coll> 
                   </div>
                   <div class="survey" v-if="(type=='mysql'&&scope.row.accessConnectorSource!=undefined&&scope.row.accessConnectorSource.isPeriod!='0'&&(scope.row.extendParams.taskStatus=='1'||scope.row.extendParams.taskStatus=='2'||scope.row.extendParams.taskStatus=='4'))
-                    || (type=='oracle'&&scope.row.accessConnectorSource!=undefined&&scope.row.accessConnectorSource.isPeriod!='0')
+                    || (type=='oracle'&&scope.row.accessConnectorSource!=undefined&&scope.row.accessConnectorSource.isPeriod!='0'&&(scope.row.extendParams.taskStatus=='1'||scope.row.extendParams.taskStatus=='2'||scope.row.extendParams.taskStatus=='4'))
                     || (type=='postgresql'&&scope.row.accessConnectorSource!=undefined&&scope.row.accessConnectorSource.isPeriod!='0'&&(scope.row.extendParams.taskStatus=='1'||scope.row.extendParams.taskStatus=='2'||scope.row.extendParams.taskStatus=='4')) 
                     || (type=='sqlserver'&&scope.row.accessConnectorSource!=undefined&&scope.row.accessConnectorSource.isPeriod!='0'&&(scope.row.extendParams.taskStatus=='1'||scope.row.extendParams.taskStatus=='2'||scope.row.extendParams.taskStatus=='4'))
                     ||(type=='ftp'&&scope.row.accessConnectorSource!=undefined&&scope.row.accessConnectorSource.isPeriod!='0'&&(scope.row.extendParams.taskStatus=='1'||scope.row.extendParams.taskStatus=='2'||scope.row.extendParams.taskStatus=='4'))
