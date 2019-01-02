@@ -683,14 +683,20 @@ export default {
             _self.tableData = res.data.data.result;
             _self.tableData.forEach(res=>{
                if(res.status==5){
-                 if(res.startTime){
+                  if(res.isPeriod==3){
+                    res.endTime = "";
+                  }
+                  if(res.startTime){
                     res.status = 1;
-                 }else {
+                  } else {
                     res.startTime = "";
                     res.endTime = "";
                     res.joinDataNum = "";
-                 }
-               }
+                    
+                  }
+                } else if(res.status==1 && res.isPeriod==3){
+                    res.endTime = "";
+                }
             })
             tableZC = _self.tableData[0];
             _self.mainTableDataTotal = res.data.data.total * 1;

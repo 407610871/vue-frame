@@ -104,7 +104,8 @@
             </el-col>
             <el-col :span="4" :class="{bank:!((reqObj.status==1||reqObj.status==2||reqObj.status==4)&&reqObj.isPeriod!=0)}">
               {{((reqObj.status==1||reqObj.status==2||reqObj.status==4)&&reqObj.isPeriod!=0)?' ':'bank'}}
-              <el-button v-show="(reqObj.status==1||reqObj.status==2||reqObj.status==4)&&reqObj.isPeriod!=0" type="primary" size="small" @click="checkData">数据核验</el-button>
+              <el-button v-show="(reqObj.status==1||reqObj.status==2||reqObj.status==4)&&reqObj.isPeriod!=0" 
+              type="primary" size="small" @click="checkData">数据核验</el-button>
             </el-col>
             <el-col :span="10">
               <el-form-item label="剩余数据量预估:">
@@ -253,7 +254,7 @@
         
       </el-form>
     </el-dialog>
-    <dialogIsCheck :msgCheck="reqObj" v-if="isTestLink&&showCheckData"></dialogIsCheck>
+    <dialogIsCheck :msgCheck="reqObj" v-if="showCheckData"></dialogIsCheck>
   </div>
 </template>
 <style lang="scss">
@@ -340,7 +341,6 @@ export default {
       loading6:true,//数据预览的loading
       flagDesc:'',
       showInnerDialog: true,
-      isTestLink:false,//测试连接是否正常
       showCheckData:false,
       entFromCheck:false,//是否从数据核验处点击入口
       isCheckLoading:false,//是否因为点击数据核验而展示loading
@@ -689,13 +689,12 @@ export default {
     //数据核验按钮点击
     checkData(){ 
       //isTestLink控制是否展示数据核验弹框
-      //isTestLink表示测试连接是否中断，若中断，则无法数据核验
-      this.isTestLink=false;
       this.showCheckData = true;
-      this.entFromCheck = true;
+      this.entFromCheck = false;
       //接入数据更新是否通过测试连接接口展示loading，这个时候是点击“数据核验”时加载的loading
-      this.isCheckLoading = true;
-      this.testConnect();
+      this.isCheckLoading = false;
+      this.loading3 = false;
+      //this.testConnect();
     },
     //点击测试连接按钮，进行接口条用
     testConnect(){
@@ -734,7 +733,6 @@ export default {
           console.log(err);
           that.loading3 = false;
           that.isCheckLoading = false;
-          that.isTestLink = false;
           that.entFromCheck = false;
         }
       )
