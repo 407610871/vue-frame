@@ -82,6 +82,7 @@ const store = new Vuex.Store({
     delimiter: '', //非关系型分隔符
     isSign: false, //采集中的数据标记是否保存
     jrstyle: '', //用户标记的接入方式
+    nums: 0, //映射关系
     userInfo: {
       userName: "",
       roleName: "",
@@ -205,6 +206,11 @@ const store = new Vuex.Store({
     setThemes(state, obj) {
       state.userThemes = '';
       state.userThemes = obj;
+    },
+    //设置映射关系
+    setNums(state, obj) {
+      state.nums = true;
+      state.nums = obj;
     }
   },
   modules: {
