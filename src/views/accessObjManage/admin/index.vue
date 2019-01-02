@@ -489,7 +489,7 @@ export default {
             _self.currentPage = _self.tableParams.pageNum;
             _self.pageShow = true;
           } else {
-            _self.$alert(res.data.message, "提示", {
+            _self.$alert('加载接入对象列表失败，因为数据源链接错误。', "提示", {
               confirmButtonText: "确定"
             });
             _self.pageShow = false;
