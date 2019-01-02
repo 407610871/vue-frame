@@ -12,6 +12,9 @@
       </div>
       <div class="proInfo-box bornone clearfix">
         <p style="text-align: center">{{name}}</p>
+        <el-tooltip class="item" effect="light" content="刷新" placement="top">
+          <a href="javascript:void(0)" class="refresha" v-on:click="_getTableNum"><i class="enc-icon-shuaxin"></i></a>
+        </el-tooltip>
         <el-button size="mini" type="primary" @click="downTable()" class="dowBtn">导出报告</el-button>
       </div>
       <div class="proInfo-box" v-loading="loading2">
@@ -83,9 +86,9 @@ export default {
   },
   methods: {
     //日志显隐控制
-    isTextShow(){
+    isTextShow() {
       this.textShow = !this.textShow;
-      this.btnInfo = this.textShow?"收起":"展开";
+      this.btnInfo = this.textShow ? "收起" : "展开";
     },
     //关闭对话框
     closeDialog() {
@@ -235,9 +238,9 @@ export default {
 
   },
   computed: {
-     btnInfo(){
-       return this.textShow?'收起':'展示';
-     },
+    btnInfo() {
+      return this.textShow ? '收起' : '展示';
+    },
   },
   watch: {
     dialogVisible() {
@@ -246,7 +249,7 @@ export default {
         this._getTableNum();
         this.textShow = false;
         this.name = decodeURI(this.$route.params.sourceName);
-        if(this.loginfo) this.textShow = true;
+        if (this.loginfo) this.textShow = true;
       }
     }
 
@@ -339,7 +342,7 @@ export default {
   padding: 20px 30px;
   .el-table .cell .el-button--primary {
     color: #fff;
-   /*  background-color: #489bd9;
+    /*  background-color: #489bd9;
    border-color: #489bd9; */
     display: inline-block;
   }
@@ -397,24 +400,34 @@ textarea {
 .dialogo {
   width: 30px;
   height: 30px;
-   -webkit-mask: url('../../../../assets/images/dataReport.svg');
-  mask:url('../../../../assets/images/dataReport.svg');
-  background-color:#000;
+  -webkit-mask: url('../../../../assets/images/dataReport.svg');
+  mask: url('../../../../assets/images/dataReport.svg');
+  background-color: #000;
   display: inline-block;
   cursor: pointer;
 }
 
 </style>
 <style lang="scss" scoped>
-.checkDataTextarea{
-  width:calc(100% - 60px);
-  height:410px;
+.checkDataTextarea {
+  width: calc(100% - 60px);
+  height: 410px;
 }
+
 .dowBtn {
   margin-top: -35px;
 }
-.doDisplay{
-  margin:10px 30px 0;
-  text-align:right;
+
+.doDisplay {
+  margin: 10px 30px 0;
+  text-align: right;
+}
+.refresha {
+  float: right;
+  margin-top:-39px;
+  margin-right: 142px;
+   i {
+    font-size:30px;
+   }
 }
 </style>
