@@ -509,6 +509,8 @@ export default {
         this.websock.onmessage = this.websocketonmessage;
       }
       this.websock.onclose = this.websocketclose;
+
+      
     },
     //数据接收
     websocketonmessage(e) {
@@ -538,6 +540,7 @@ export default {
     },
     websocketclose(e) {
       //关闭
+       this.websock.close();
       console.log( "websocket连接已断开");
     },
     //连接成功回调方法
