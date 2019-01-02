@@ -308,7 +308,7 @@ export default {
 
   },
   mounted() {
-   /* this._getPre()*/
+    /* this._getPre()*/
     /*  this._getMap()
       this._getType()*/
   },
@@ -329,7 +329,12 @@ export default {
   props: ['tableId', 'maptype', 'msg'],
   watch: {
     msg() {
-      this._getPre();
+      if (this.msg == "second"&&this.$store.state.nums) {
+this.schemaMappingDTOList = [];
+
+        this._getPre();
+      }
+
     }
   }
 

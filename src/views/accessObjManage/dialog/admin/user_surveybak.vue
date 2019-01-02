@@ -524,6 +524,7 @@ export default {
       this.setMode(this.ruleForm.datamode);
 
       console.log(this.$store.state.modeStyle);
+      this.$store.commit ('setNums',true);
       this.$refs[formName].validate((valid) => {
         if (valid) {
           if (this.userflag == false) {

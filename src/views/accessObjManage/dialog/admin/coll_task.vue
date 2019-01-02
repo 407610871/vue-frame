@@ -519,6 +519,7 @@ export default {
 
     },
     pre() {
+      this.$store.commit ('setNums',false);
       this._reveAcmode();
       this.$emit('pre');
     },
@@ -570,6 +571,7 @@ export default {
     },
     finish() {
       //间隔执行
+      this.$store.commit ('setNums',false);
       var pollIntervalMs = -1;
       var actech = 'JDBC';
       //this.cleanData();
