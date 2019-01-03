@@ -1005,7 +1005,7 @@ export default {
   }
   .my_form_item{
     margin-bottom:-10px;
-    width: 82%;
+    width: 84%;
     display: inline-block;
     label{
       text-align: left;

@@ -1215,7 +1215,7 @@ export default {
     height: 30px!important;
   }
   .my_form_item {
-    width: 82%;
+    width: 84%;
     display: inline-block;
     label {
       text-align: left;
