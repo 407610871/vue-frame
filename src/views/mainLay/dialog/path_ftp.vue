@@ -18,7 +18,7 @@
             </el-col>
           </el-col>
           <el-col :span="24">
-            <el-col :span="2" class="bank">bank</el-col>
+            <el-col :span="1" class="bank"  style="margin-left: 28px;">bank</el-col>
             <el-col :span="8">
               <div class="path-box">
                 <el-tree show-checkbox node-key="id" :check-strictly="true" :props="defaultProps"
@@ -29,7 +29,7 @@
             </el-col>
           </el-col>
           <el-col :span="24" class="tip-box">
-            <el-col :span="2" class="bank">bank</el-col>
+            <el-col :span="1" class="bank"  style="margin-left: 28px;">bank</el-col>
             <el-col :span="6">
               <el-checkbox v-model="ruleForm.delete"></el-checkbox>采集后源文件是否需要删除
             </el-col>
@@ -38,7 +38,7 @@
             </el-col>
           </el-col>
           <el-col :span="24" class="tip-box">
-            <el-col :span="2" class="bank">bank</el-col>
+            <el-col :span="1" class="bank" style="margin-left: 28px;">bank</el-col>
             <el-col :span="6">
               <el-checkbox v-model="ruleForm.subDele" @change="selectChildrenNodes"></el-checkbox>包含子目录
             </el-col>
