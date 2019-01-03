@@ -1,6 +1,6 @@
 <note>
-	<name>name</name>
-	<date>数据引擎</date>
+	<name>数据引擎产品版本发布说明书（V1.1.0）</name>
+	<date>2018/12/30</date>
 	<specialityList>
 		<name>清单特性</name>
 		<item>
@@ -23,7 +23,7 @@
 		</item>
 		<item>
 			<Introduction>新增功能</Introduction>
-			<content>Kettle任务管控 - 使用XXL-JOB对Kettle 6.1 ktr&kjb进行调度管理　</content>
+			<content>Kettle任务管控 - 使用XXL-JOB对Kettle 6.1 ktr and kjb进行调度管理</content>
 			<sysName>数据汇聚</sysName>
 			<remark></remark>
 		</item>
@@ -58,13 +58,12 @@
 			<sysName>数据汇聚</sysName>
 			<remark></remark>
 		</item>
-<item>
+		<item>
 			<Introduction>问题修复</Introduction>
 			<content>修复数据汇聚任务状态显示延时，包含任务开始，结束以及接入数据量</content>
 			<sysName>数据汇聚</sysName>
 			<remark></remark>
 		</item>
-		
 	</finishedPunchList>
 	<questionList>
 		<name>已知问题和限制</name>
