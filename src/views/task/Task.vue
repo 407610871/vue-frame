@@ -1,7 +1,7 @@
 <template>
   <div v-loading="loading" :element-loading-text="tips" class="task-template">
     <!-- 搜索栏 -->
-    <div class="count-container" ref="searchArea">
+    <div class="el-breadcrumb" ref="searchArea">
       <!-- 查询按钮 -->
       <div class="searchDiv">
         <div class="dataSearch">
@@ -12,12 +12,6 @@
           <i :class="!moreSearch?'el-icon-caret-bottom':'el-icon-caret-top'"></i>
         </span>
         <el-button type="primary" class="doCearch" @click="search">查询</el-button>
-
-          <div class="right-tools" >
-          <el-tooltip class="item" effect="light" content="刷新" placement="top">
-            <a href="javascript:void(0)" v-on:click="refresh"><i class="enc-icon-shuaxin"></i></a>
-          </el-tooltip>
-        </div>
       </div>
 
       <el-form
@@ -193,11 +187,16 @@
         <el-button type="primary" @click="doMore('manager/taskOperate/batchConverge',1)">重新汇聚</el-button>
         <el-button type="primary" @click="doMore('manager/taskOperate/batchStart',2)">批量启动</el-button>
         <el-button type="primary" @click="doMore('manager/taskOperate/batchPause',3)">批量停止</el-button>
+        <div class="right-tools" >
+          <el-tooltip class="item" effect="light" content="刷新" placement="top">
+              <a href="javascript:void(0)" v-on:click="refresh"><i class="enc-icon-shuaxin"></i></a>
+          </el-tooltip>
+        </div>
       </div>
     </div>
 
     <!-- 表格数据 -->
-    <div class="mainTable">
+    <div class="main-content">
       <el-table
         border
        :row-class-name="tableRowClassName"
@@ -205,7 +204,6 @@
         :data="tableData"
         tooltip-effect="light"
         :height="tableHeight"
-        style="width: 100%;min-height:300px;"
         @select-all="selectAll"
         @select="select"
         @selection-change="handleSelectionChange"
@@ -375,6 +373,7 @@ export default {
     return {
       tips:"",
       loading: false,
+      collapse: false,
       taskPeriodType: JSON.parse(JSON.stringify(this.$store.state.taskParam.taskPeriodType)), //任务类型
       status: JSON.parse(JSON.stringify(this.$store.state.taskParam.status)), //任务状态
       time: JSON.parse(JSON.stringify(this.$store.state.taskParam.time)),
@@ -441,7 +440,9 @@ export default {
       return this.$store.state.deptId;
     },
     tableHeight: function() {
-      return window.innerHeight - this.searchHeight - 224;
+      return this.collapse ?
+        window.innerHeight - this.searchHeight - 265:
+        window.innerHeight - 305;
     },
     pageSize() {
       return this.$store.state.pageSize;
@@ -566,6 +567,7 @@ export default {
     },
     //高级搜索
     doMoreSearch() {
+      this.collapse = !this.collapse;
       this.moreSearch = !this.moreSearch;
     },
     //详情
@@ -1023,12 +1025,7 @@ export default {
   margin-left: 3px;
   cursor: pointer;
 }
-.count-container {
-  background-color: #fff;
-  border-bottom: 1px solid #d9d9d9;
-  margin: 0 auto;
-  padding-top: 20px;
-}
+
 .timeSearch {
   float: left;
 }
@@ -1036,13 +1033,10 @@ export default {
   width: 95px;
 }
 .count-operate {
-  width: 95%;
-  height: 50px;
-  margin: 0 auto;
+  padding: 0 20px 0 20px;
+  margin: 20px auto;
   div {
-    width: 330px;
-    float: right;
-    padding-top: 10px;
+    text-align: right;
   }
 }
 .indicate {
@@ -1054,23 +1048,45 @@ export default {
 .enc-pagination {
   float: right;
 }
-.mainTable {
-  width: 95%;
-  margin: 0 auto;
+.el-form-item {
+  margin-bottom: 10px;
+}
+.el-message-box {
+  max-height: 50%;
+  overflow: auto;
+}
+.el-message-box__wrapper {
+  .el-message-box {
+    max-height: 50%;
+    overflow: auto;
+  }
+}
+.searchDiv {
+  span {
+    display: inline-block;
+    font-size: 15px;
+    cursor: pointer;
+    width: 100px;
+    height: 30px;
+    border: 1px solid #C8CFD5;
+    border-left: none;
+    line-height: 30px;
+    text-align: center;
+    position: relative;
+  }
 }
 .dataSearch {
   display: inline-block;
   width: 210px;
   height: 30px;
-  border: 1px solid #c9cdd0;
+  line-height: 30px;
+  border: 1px solid #C8CFD5;
   input {
-    margin-left: 5px;
+    margin-left: 7px;
     width: 180px;
     background-color: transparent;
     border: 0 none;
     outline: 0 none;
-    height: 28px;
-    font-size: 14px;
   }
   i {
     text-indent: 5px;
@@ -1088,50 +1104,19 @@ export default {
     color: #999;
   } ///* IE浏览器 */
 }
-.searchDiv {
-  width: 95%;
-  margin-left: 2.5%;
-  margin-bottom: 20px;
-  span {
-    display: inline-block;
-    font-size: 14px;
-    cursor: pointer;
-    width: 100px;
-    height: 30px;
-    border: 1px solid #c9cdd0;
-    border-left: none;
-    line-height: 30px;
-    text-align: center;
-    position: relative;
-    top: 1px;
-  }
-}
 .doCearch {
   display: inline-block;
   height: 30px;
   margin-left: 15px;
   margin-top: 0;
   position: relative;
-  line-height: 8px;
-}
-.el-form-item {
-  margin-bottom: 10px;
-}
-.el-message-box {
-  max-height: 50%;
-  overflow: auto;
-}
-.el-message-box__wrapper {
-  .el-message-box {
-    max-height: 50%;
-    overflow: auto;
-  }
+  line-height: 12px;
 }
  .right-tools {
         float: right;
-        margin-right: 10px;
+        margin-left: 10px;
         a {
-          font-size: 26px;
+          font-size: 21px;
            :hover,
            :active {
             color: #f93;

@@ -351,12 +351,6 @@ export default {
   background: #eff3f6;
 }
 
-.el-breadcrumb {
-  line-height: $enc-nav-sub-header-height;
-  text-indent: 0;
-}
-
-
 .enc-search {
   float: right;
   margin-top: 3px;

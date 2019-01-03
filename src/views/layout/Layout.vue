@@ -52,13 +52,11 @@
         </div>
       </el-aside>
       <el-main class="enc-main">
-        <div class="enc-sub-header">
           <el-breadcrumb separator="/">
             <el-breadcrumb-item v-for="(item,index) in breadcrumb" :key="index">
               <a href="javascript:void(0)" v-on:click="breadcrumbChange(index,item)">{{item.breadcrumbName}}</a>
             </el-breadcrumb-item>
           </el-breadcrumb>
-        </div>
         <app-main ref="mainTable" />
       </el-main>
     </div>
@@ -439,6 +437,7 @@ export default {
 };
 
 </script>
+
 <style rel="stylesheet/scss" lang="scss" scoped>
 @import "src/styles/variables.scss";
 @import "src/styles/mixin.scss";
@@ -449,9 +448,6 @@ export default {
 .warncon {
   width: 66px;
   height: 66px;
-  /*  background: url("../../assets/images/warnicon.png");
- background-repeat: no-repeat;
- background-size: contain; */
   float: left
 }
 
@@ -553,12 +549,6 @@ export default {
     margin-top: 0px;
   }
 }
-
-.el-breadcrumb {
-  line-height: $enc-nav-sub-header-height;
-  text-indent: 0;
-}
-
 .enc-search {
   float: right;
   margin-top: 3px;
@@ -600,7 +590,6 @@ export default {
     }
   }
 }
-
 .popup-menu {
   margin: 0;
   padding: 0;

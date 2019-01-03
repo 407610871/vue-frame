@@ -99,18 +99,21 @@ export default {
       height: $enc-nav-header-height;
       line-height: $enc-nav-header-height;
       font-size:15px;
+      margin-left: 36px;
       i {
-        margin-right: 10px;
+        margin-right: 7px;
         font-size: 36px;
-        color: #4f4f4f;
+        color: #425365;
       }
     }
     .el-submenu {
+      margin-left: 36px;
       .el-submenu__title {
+        color: #425365;
         i {
-          margin-right: 10px;
+          margin-right: 7px;
           font-size: 36px;
-          color: #4f4f4f;
+          color: #425365;
         }
       }
     }
@@ -139,6 +142,9 @@ export default {
     .el-submenu__title i {
       color: #fff;
     }
+  }
+  .el-menu--horizontal>.el-menu-item {
+    color: #425365;
   }
 }
 
