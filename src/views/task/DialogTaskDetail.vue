@@ -439,8 +439,26 @@ export default {
     //切换当前任务状态
     changeStatus(){
       let that = this;
-      that.loading3 = true;
-      if(that.flagDesc=='stop'){
+      this.loading3 = true;
+      let statusKey = [{"stop":"pause/","run":"start/"},{"stop":2,"run":1},{"stop":"run","run":"stop"}];
+      axios.put(this.httpUrl+'manager/taskOperate/'+statusKey[0][this.flagDesc]+this.reqObj.taskInfoId).then(res=>{
+        res = res.data;
+        this.loading3 = false;
+        if(res.success){
+          this.doMsg(res.message,'success');
+          this.reqObj.status = statusKey[1][this.flagDesc];
+          this.getTaskInfo();
+        }else{
+          this.doMsg(res.message,'error');
+          this.flagDesc =  statusKey[2][this.flagDesc];
+        }
+      }).catch(err=>{
+        this.loading3 = false;
+        this.flagDesc =  statusKey[2][this.flagDesc];
+      });
+
+
+      /* if(that.flagDesc=='stop'){
         //调用暂停接口
         axios.put(that.httpUrl+'manager/taskOperate/pause/'+that.reqObj.taskInfoId).then(
           function(res){
@@ -482,7 +500,7 @@ export default {
           that.flagDesc=='stop';
           that.loading3 = false;
         })
-      }
+      } */
     },
     //将毫秒转换成周期
     translatePeriodFromMS(ms){
