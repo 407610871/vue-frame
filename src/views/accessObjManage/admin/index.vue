@@ -405,24 +405,7 @@ export default {
       if (this.rowList.length == 0) {
         this.$message.warning("请选择批式采集的表");
         return false;
-      } else {
-        if (this.rowList.length == 1) {
-          this.showSetTask = true;
-        } else {
-          for (let i = 1; i < this.rowList.length; i++) {
-            //if(this.rowList[0].diyComments==undefined)
-            if (this.rowList[0].diyComments != this.rowList[i].diyComments) {
-              flag = false;
-            }
-          }
-          if (flag) {
-            this.showSetTask = true;
-          } else {
-            this.$message.warning("请选择资源名称相同的表");
-            return false;
-          }
-        }
-      }
+      } 
     },
     loadTable: function() {
       var _self = this;
