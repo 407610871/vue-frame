@@ -254,7 +254,7 @@
         
       </el-form>
     </el-dialog>
-    <dialogIsCheck :msgCheck="reqObj" v-if="showCheckData"></dialogIsCheck>
+    <dialogIsCheck :msgCheck="reqObj" v-if="showCheckData" @closeDiaChk="closeDiaChk()"></dialogIsCheck>
   </div>
 </template>
 <style lang="scss">
@@ -426,6 +426,9 @@ export default {
     this.getDataViews();
   },
   methods: {
+    closeDiaChk () {
+      this.showCheckData = false;
+    },
     setHeadStyle(){
       return {
         background:"#fff",
