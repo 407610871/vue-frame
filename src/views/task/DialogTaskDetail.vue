@@ -671,13 +671,13 @@ export default {
               4:'完成',
               5:'准备中'
             }
-            that.taskBaseInfo.statusDesc = that.reqObj.status==1 ? "运行" : statusMap[that.taskBaseInfo.status];
             //网络指示灯判断
             that.newWorkTrans(that.taskBaseInfo.networkStatus,response.data.data.speed,true);
             //可操作类型
             let t=that.taskBaseInfo.status;
             that.flagDesc=(t==0||t==1)?'run':'stop';
             that.reqObj.status = t;
+             that.taskBaseInfo.statusDesc = that.reqObj.status==1 ? "运行" : statusMap[that.taskBaseInfo.status];
             if(that.flagDesc=='stop'){
               that.operateList[1].disabled=false;
               that.operateList[0].disabled=true;
