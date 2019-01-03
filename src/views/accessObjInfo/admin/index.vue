@@ -27,7 +27,7 @@
                 <template slot-scope="scope">
                   <div>
                     <el-tooltip class="item" effect="light" content="修改" placement="top">
-                      <i @click="editingRow.index = scope.$index; editingRow.diyComments = scope.row.diyComments;scope.row.showEdit = !scope.row.showEdit" class="el-icon-edit-outline table-action-btn" v-show="!scope.row.showEdit" />
+                      <i @click="editName(scope.row,scope.$index)" class="el-icon-edit-outline table-action-btn" v-show="!scope.row.showEdit" />
                     </el-tooltip>
                     <span v-show="!scope.row.showEdit">{{ scope.row.diyComments }}</span>
                     <input type="text" v-model="editingRow.diyComments" v-show="scope.row.showEdit" @blur="changeName(scope.$index, scope.row)" />
@@ -214,7 +214,20 @@
         this.search(keyword);
       });
     },
-    methods: {    
+    methods: {
+    editName(row, index) {
+      console.log(row);
+      this.editingRow.index = index;
+      this.editingRow.diyComments = row.diyComments;
+      row.showEdit = !row.showEdit;
+      for (let i = 0; i < this.mainTableData1.length; i++) {
+        if (index == i) {
+
+        } else {
+          this.mainTableData1[i].showEdit = false;
+        }
+      }
+    }, 
       searchAll(count){
         let checkArr = [];
         this.count = count;

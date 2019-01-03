@@ -8,16 +8,11 @@
           <i class="el-icon-search"></i>
           <input type="text" v-model="keyword" placeholder="请输入查询条件" @keyup.13="search">
         </div>
-        <span @click="doMoreSearch">高级搜索
+        <span @click="doMoreSearch">
+          高级搜索
           <i :class="!moreSearch?'el-icon-caret-bottom':'el-icon-caret-top'"></i>
         </span>
         <el-button type="primary" class="doCearch" @click="search">查询</el-button>
-
-          <div class="right-tools" >
-          <el-tooltip class="item" effect="light" content="刷新" placement="top">
-            <a href="javascript:void(0)" v-on:click="refresh"><i class="enc-icon-shuaxin"></i></a>
-          </el-tooltip>
-        </div>
       </div>
 
       <el-form
@@ -43,32 +38,38 @@
             style="display: inline-block;"
           >
             <span>任务类型:</span>
-            <span v-show="taskPeriodType.indexOf('0')>-1">实时
+            <span v-show="taskPeriodType.indexOf('0')>-1">
+              实时
               <span @click="pop('0',taskPeriodType);">
                 <i class="el-icon-error"></i>
               </span>
             </span>
-            <span v-show="taskPeriodType.indexOf('1')>-1">周期间隔增量
+            <span v-show="taskPeriodType.indexOf('1')>-1">
+              周期间隔增量
               <span @click="pop('1',taskPeriodType);">
                 <i class="el-icon-error"></i>
               </span>
             </span>
-            <span v-show="taskPeriodType.indexOf('2')>-1">周期定时增量
+            <span v-show="taskPeriodType.indexOf('2')>-1">
+              周期定时增量
               <span @click="pop('2',taskPeriodType);">
                 <i class="el-icon-error"></i>
               </span>
             </span>
-            <span v-show="taskPeriodType.indexOf('3')>-1">一次性接入
+            <span v-show="taskPeriodType.indexOf('3')>-1">
+              一次性接入
               <span @click="pop('3',taskPeriodType);">
                 <i class="el-icon-error"></i>
               </span>
             </span>
-            <span v-show="taskPeriodType.indexOf('4')>-1">周期间隔全量;
+            <span v-show="taskPeriodType.indexOf('4')>-1">
+              周期间隔全量;
               <span @click="pop('4',taskPeriodType);">
                 <i class="el-icon-error"></i>
               </span>
             </span>
-            <span v-show="taskPeriodType.indexOf('5')>-1">周期定时全量
+            <span v-show="taskPeriodType.indexOf('5')>-1">
+              周期定时全量
               <span @click="pop('5',taskPeriodType);">
                 <i class="el-icon-error"></i>
               </span>
@@ -76,32 +77,38 @@
           </div>
           <div v-show="status.length>0" class="selected-task-type" style="display: inline-block;">
             <span>任务状态:</span>
-            <span v-show="status.indexOf('0')>-1">新建
+            <span v-show="status.indexOf('0')>-1">
+              新建
               <span @click="pop('0',status);">
                 <i class="el-icon-error"></i>
               </span>
             </span>
-            <span v-show="status.indexOf('5')>-1">准备中
+            <span v-show="status.indexOf('5')>-1">
+              准备中
               <span @click="pop('5',status);">
                 <i class="el-icon-error"></i>
               </span>
             </span>
-            <span v-show="status.indexOf('1')>-1">运行
+            <span v-show="status.indexOf('1')>-1">
+              运行
               <span @click="pop('1',status);">
                 <i class="el-icon-error"></i>
               </span>
             </span>
-            <span v-show="status.indexOf('2')>-1">暂停
+            <span v-show="status.indexOf('2')>-1">
+              暂停
               <span @click="pop('2',status);">
                 <i class="el-icon-error"></i>
               </span>
             </span>
-            <span v-show="status.indexOf('3')>-1">失败
+            <span v-show="status.indexOf('3')>-1">
+              失败
               <span @click="pop('3',status);">
                 <i class="el-icon-error"></i>
               </span>
             </span>
-            <span v-show="status.indexOf('4')>-1">完成
+            <span v-show="status.indexOf('4')>-1">
+              完成
               <span @click="pop('4',status);">
                 <i class="el-icon-error"></i>
               </span>
@@ -109,26 +116,31 @@
           </div>
           <div v-show="priority.length>0" class="selected-task-type" style="display: inline-block;">
             <span>任务优先级:</span>
-            <span v-show="priority.indexOf('1')>-1">高
+            <span v-show="priority.indexOf('1')>-1">
+              高
               <span @click="pop('1',priority);">
                 <i class="el-icon-error"></i>
               </span>
             </span>
-            <span v-show="priority.indexOf('2')>-1">中
+            <span v-show="priority.indexOf('2')>-1">
+              中
               <span @click="pop('2',priority);">
                 <i class="el-icon-error"></i>
               </span>
             </span>
-            <span v-show="priority.indexOf('3')>-1">低
+            <span v-show="priority.indexOf('3')>-1">
+              低
               <span @click="pop('3',priority);">
                 <i class="el-icon-error"></i>
               </span>
             </span>
           </div>
 
-          <div v-show="time!=null && time.length>0"
+          <div
+            v-show="time!=null && time.length>0"
             class="selected-task-type"
-            style="display: inline-block;">
+            style="display: inline-block;"
+          >
             <span style="margin-right:10px;">任务开始时间:</span>
             <span>
               {{time==null?'':time[0]}} - {{time==null?'':time[1]}}
@@ -189,6 +201,13 @@
     </div>
     <!-- 操作按钮 -->
     <div class="count-operate">
+      <div class="right-tools">
+        <el-tooltip class="item" effect="light" content="刷新" placement="top">
+          <a href="javascript:void(0)" v-on:click="refresh">
+            <i class="enc-icon-shuaxin"></i>
+          </a>
+        </el-tooltip>
+      </div>
       <div>
         <el-button type="primary" @click="doMore('manager/taskOperate/batchConverge',1)">重新汇聚</el-button>
         <el-button type="primary" @click="doMore('manager/taskOperate/batchStart',2)">批量启动</el-button>
@@ -200,7 +219,7 @@
     <div class="mainTable">
       <el-table
         border
-       :row-class-name="tableRowClassName"
+        :row-class-name="tableRowClassName"
         ref="multipleTable"
         :data="tableData"
         tooltip-effect="light"
@@ -242,7 +261,10 @@
           @click="showTaskDetail=true"
         >
           <template slot-scope="scope">
-            <el-button @click="doDetail(scope.$index, scope.row)" style="text-decoration: underline;">{{scope.row.taskInfoId}}</el-button>
+            <el-button
+              @click="doDetail(scope.$index, scope.row)"
+              style="text-decoration: underline;"
+            >{{scope.row.taskInfoId}}</el-button>
           </template>
         </el-table-column>
         <el-table-column
@@ -265,14 +287,14 @@
           :show-overflow-tooltip="true"
         ></el-table-column>
         <el-table-column label="任务开始时间" width="150" :show-overflow-tooltip="true">
-          <template slot-scope="scope">
-            {{scope.row.status==5 ? '' : scope.row.startTime | formateDateTime }}
-          </template>
+          <template
+            slot-scope="scope"
+          >{{scope.row.status==5 ? '' : scope.row.startTime | formateDateTime }}</template>
         </el-table-column>
         <el-table-column label="任务结束时间" width="150" :show-overflow-tooltip="true">
-          <template slot-scope="scope">
-            {{scope.row.status==5 ? '' : scope.row.endTime | formateDateTime}}
-          </template>
+          <template
+            slot-scope="scope"
+          >{{scope.row.status==5 ? '' : scope.row.endTime | formateDateTime}}</template>
         </el-table-column>
         <el-table-column label="任务类型" width="130" :show-overflow-tooltip="true">
           <template slot-scope="scope">
@@ -355,7 +377,12 @@
     <!-- 任务详情 -->
     <dialogTaskDetail :reqObj="reqObj" v-if="showTaskDetail" v-on:closeDia="showTaskDetail=false"></dialogTaskDetail>
 
-    <DialogIsCheck v-if="showTaskCheck" v-on:closeDiaChk="showTaskCheck=false" :msgCheck="check" :title="dialogIsCheckTitile"></DialogIsCheck>
+    <DialogIsCheck
+      v-if="showTaskCheck"
+      v-on:closeDiaChk="showTaskCheck=false"
+      :msgCheck="check"
+      :title="dialogIsCheckTitile"
+    ></DialogIsCheck>
   </div>
 </template>
 <script>
@@ -366,24 +393,29 @@ import { deleteTask } from "@/api/commonApi.js";
 //盐城环境地址
 const httpUrl = window.ENV.API_DOWN + "/";
 //websocket地址
-const wsUrl=`ws${httpUrl.substring(4,httpUrl.length-1)}/websocket`
+const wsUrl = `ws${httpUrl.substring(4, httpUrl.length - 1)}/websocket`;
 
 var tableZC;
 export default {
   name: "task",
   data() {
     return {
-      tips:"",
+      tips: "",
       loading: false,
-      taskPeriodType: JSON.parse(JSON.stringify(this.$store.state.taskParam.taskPeriodType)), //任务类型
+      taskPeriodType: JSON.parse(
+        JSON.stringify(this.$store.state.taskParam.taskPeriodType)
+      ), //任务类型
       status: JSON.parse(JSON.stringify(this.$store.state.taskParam.status)), //任务状态
       time: JSON.parse(JSON.stringify(this.$store.state.taskParam.time)),
       check: "",
-      priority: JSON.parse(JSON.stringify(this.$store.state.taskParam.priority)),
+      priority: JSON.parse(
+        JSON.stringify(this.$store.state.taskParam.priority)
+      ),
       pageNum: 1,
       showTaskDetail: false,
       showTaskCheck: false,
       moreSearch: false,
+      websock: null,
       allSecectData: {},
       keyword: JSON.parse(JSON.stringify(this.$store.state.taskParam.keyword)),
       isDeleted: 0,
@@ -428,13 +460,13 @@ export default {
       if (to.path == "/task") {
         this.init(this.keyword);
         this.initWebSocket();
-      }else{
+      } else {
         this.websocketclose();
       }
     }
   },
   computed: {
-    dialogIsCheckTitile(){
+    dialogIsCheckTitile() {
       return `表${this.check.taskName}数据核验`;
     },
     departmentId: function() {
@@ -445,14 +477,12 @@ export default {
     },
     pageSize() {
       return this.$store.state.pageSize;
-    },
-    
-
+    }
   },
   filters: {
-    formateDateTime(time){
-      if(time && time !=null){
-        return time.substring(0,19);
+    formateDateTime(time) {
+      if (time && time != null) {
+        return time.substring(0, 19);
       }
     }
   },
@@ -461,30 +491,27 @@ export default {
     this.initWebSocket();
   },
   mounted() {
-      this.$root.eventHub.$emit(
-      "selTreeNode",
-      this.$store.state.deptId
-      );
-      this.$root.eventHub.$emit("setActiveNav", 3);
+    this.$root.eventHub.$emit("selTreeNode", this.$store.state.deptId);
+    this.$root.eventHub.$emit("setActiveNav", 3);
   },
   components: {
     DialogIsCheck,
     DialogTaskDetail
   },
   methods: {
-    removeCla(){
-      this.tableData.forEach(item=>{
-        if(item.zc == 1) item.zc = 0;
+    removeCla() {
+      this.tableData.forEach(item => {
+        if (item.zc == 1) item.zc = 0;
       });
     },
     //新增人物高亮
-    tableRowClassName({row,rowIndex}){
-      if (row.zc === 1&&rowIndex == 0) {
-         return 'animated slideInLeft success-row';
-      }else if(row.zc === 0){
-        return 'success-row';
-      }else{
-          return '';
+    tableRowClassName({ row, rowIndex }) {
+      if (row.zc === 1 && rowIndex == 0) {
+        return "animated slideInLeft success-row";
+      } else if (row.zc === 0) {
+        return "success-row";
+      } else {
+        return "";
       }
     },
     getSearchArea() {
@@ -502,71 +529,79 @@ export default {
       //初始化weosocket
       //ws地址
       // const wsuri = "ws://10.19.160.160:8080/";
-      const wsuri =wsUrl;
+      const wsuri = wsUrl;
       this.websock = new WebSocket(wsuri);
       this.websock.onopen = this.websocketonopen;
-      if(this.$route.path=='/task'){
+      if (this.$route.path == "/task") {
         this.websock.onmessage = this.websocketonmessage;
       }
       this.websock.onclose = this.websocketclose;
-
-      
     },
     //数据接收
     websocketonmessage(e) {
       let redata = JSON.parse(e.data);
       console.log(redata);
-      let redataTrue=true;
-      for(let i=0;i<this.tableData.length;i++){
-        if(this.tableData[i].taskInfoId==redata.taskInfoId){
-          redataTrue=false;
+      let redataTrue = true;
+      for (let i = 0; i < this.tableData.length; i++) {
+        if (this.tableData[i].taskInfoId == redata.taskInfoId) {
+          redataTrue = false;
         }
       }
-           
-      if(redataTrue){
-        redata.zc=1;
+
+      if (redataTrue) {
+        redata.zc = 1;
         this.removeCla();
-        let tim = setTimeout(()=>{
+        let tim = setTimeout(() => {
           this.$message({
-            message:`实时播报：新增一条 ID为：${redata.taskInfoId}的任务`,
-            type: 'success'
+            message: `实时播报：新增一条 ID为：${redata.taskInfoId}的任务`,
+            type: "success"
           });
-        this.tableData.unshift(redata);
-         this.tableData= Array.from(new Set(this.tableData));
+          this.tableData.unshift(redata);
+          this.tableData = Array.from(new Set(this.tableData));
 
           clearTimeout(tim);
-        },0);
-      }   
+        }, 0);
+      }
     },
     websocketclose(e) {
       //关闭
-       this.websock.close();
-      console.log( "websocket连接已断开");
+      this.websock.close();
+      console.log("websocket连接已断开");
     },
     //连接成功回调方法
-    websocketonopen(){
-      console.log("websocket连接成功！")
+    websocketonopen() {
+      console.log("websocket连接成功！");
     },
     // 刷新按钮
-    refresh(){
-        let keyword = this.keyword;
-        this.init(keyword);
-
+    refresh() {
+      let keyword = this.keyword;
+      this.init(keyword);
     },
     //查询按钮
     search() {
-      this.$store.state.taskParam.taskPeriodType = JSON.parse(JSON.stringify(this.taskPeriodType));
-      this.$store.state.taskParam.status = JSON.parse(JSON.stringify(this.status));
+      this.$store.state.taskParam.taskPeriodType = JSON.parse(
+        JSON.stringify(this.taskPeriodType)
+      );
+      this.$store.state.taskParam.status = JSON.parse(
+        JSON.stringify(this.status)
+      );
       this.$store.state.taskParam.time = JSON.parse(JSON.stringify(this.time));
-      this.$store.state.taskParam.priority = JSON.parse(JSON.stringify(this.priority));
-      this.$store.state.taskParam.keyword = JSON.parse(JSON.stringify(this.keyword));
-      this.pageNum=1;
+      this.$store.state.taskParam.priority = JSON.parse(
+        JSON.stringify(this.priority)
+      );
+      this.$store.state.taskParam.keyword = JSON.parse(
+        JSON.stringify(this.keyword)
+      );
+      this.pageNum = 1;
       this.allSecectData = {};
       this.init(this.keyword);
     },
     //高级搜索
     doMoreSearch() {
       this.moreSearch = !this.moreSearch;
+
+
+
     },
     //详情
     doDetail(index, row) {
@@ -583,17 +618,22 @@ export default {
     //重新汇聚
     doConverge(index, row) {
       let _self = this;
-          _self.loading = true;
+      _self.loading = true;
 
-      this.$ajax.put(httpUrl + "manager/taskOperate/converge/" + row.taskInfoId).then(function(res) {
-        _self.loading = false;
-              if (res.data.success) {
-                _self.doMsg("汇聚任务已经生成，任务将在接下来的周期执行", "success");
-                _self.init();
-              } else {
-                _self.doMsg(res.data.message, "error");
-              }
-            })
+      this.$ajax
+        .put(httpUrl + "manager/taskOperate/converge/" + row.taskInfoId)
+        .then(function(res) {
+          _self.loading = false;
+          if (res.data.success) {
+            _self.doMsg(
+              "汇聚任务已经生成，任务将在接下来的周期执行",
+              "success"
+            );
+            _self.init();
+          } else {
+            _self.doMsg(res.data.message, "error");
+          }
+        });
     },
     //处理完毕
     doDel(index, row) {
@@ -605,13 +645,15 @@ export default {
           _self.loading = false;
           if (res.data.success) {
             // 调用/DACM/接口
-            _self.$ajax.delete(window.ENV.API_DACM + deleteTask + row.taskInfoId);
+            _self.$ajax.delete(
+              window.ENV.API_DACM + deleteTask + row.taskInfoId
+            );
             _self.doMsg("处理成功", "success");
             _self.init();
           } else {
             _self.doMsg(res.data.message, "error");
           }
-        })
+        });
     },
     //运行、暂停
     doRun(index, row) {
@@ -621,31 +663,27 @@ export default {
       if (row.status == 0 || row.status == 2 || row.status == 3) {
         //执行运行
         url = httpUrl + "manager/taskOperate/start/" + row.taskInfoId;
-        this.$ajax
-          .put(url)
-          .then(function(res) {
-            _self.loading = false;
-            if (res.data.success) {
-              _self.doMsg("运行成功", "success");
-              _self.init();
-            } else {
-              _self.doMsg(res.data.message, "error");
-            }
-          })
+        this.$ajax.put(url).then(function(res) {
+          _self.loading = false;
+          if (res.data.success) {
+            _self.doMsg("运行成功", "success");
+            _self.init();
+          } else {
+            _self.doMsg(res.data.message, "error");
+          }
+        });
       } else if (row.status == 1 || row.status == 5) {
         //执行暂停
         url = httpUrl + "manager/taskOperate/pause/" + row.taskInfoId;
-        this.$ajax
-          .put(url)
-          .then(function(res) {
-            _self.loading = false;
-            if (res.data.code == "0000") {
-              _self.doMsg("暂停成功", "success");
-              row.status = 2;
-            } else {
-              _self.doMsg(res.data.message, "error");
-            }
-          })
+        this.$ajax.put(url).then(function(res) {
+          _self.loading = false;
+          if (res.data.code == "0000") {
+            _self.doMsg("暂停成功", "success");
+            row.status = 2;
+          } else {
+            _self.doMsg(res.data.message, "error");
+          }
+        });
       }
     },
     //分页切换
@@ -684,23 +722,17 @@ export default {
         .then(function(res) {
           if (res.data.code == 200) {
             _self.tableData = res.data.data.result;
-            _self.tableData.forEach(res=>{
-               if(res.status==5){
-                  if(res.isPeriod==3){
-                    res.endTime = "";
-                  }
-                  if(res.startTime){
-                    res.status = 1;
-                  } else {
-                    res.startTime = "";
-                    res.endTime = "";
-                    res.joinDataNum = "";
-                    
-                  }
-                } else if(res.status==1 && res.isPeriod==3){
-                    res.endTime = "";
+            _self.tableData.forEach(res => {
+              if (res.status == 5) {
+                if (res.startTime) {
+                  res.status = 1;
+                } else {
+                  res.startTime = "";
+                  res.endTime = "";
+                  res.joinDataNum = "";
                 }
-            })
+              }
+            });
             tableZC = _self.tableData[0];
             _self.mainTableDataTotal = res.data.data.total * 1;
             _self.loading = false;
@@ -776,56 +808,60 @@ export default {
       let params = {
         taskInfoIds: tableParams.join(",")
       };
-     
+
       let rowNew = Array.from(row);
       if (a == 1) {
         //批量汇聚
         let errorData = [];
         for (let i = 0; i < rowNew.length; i++) {
-          if (rowNew[i].status == 1 || rowNew[i].status == 0||rowNew[i].isPeriod == 0) {
+          if (
+            rowNew[i].status == 1 ||
+            rowNew[i].status == 0 ||
+            rowNew[i].isPeriod == 0
+          ) {
             errorData.push(rowNew[i]);
           }
         }
         if (errorData.length == 0) {
-              _self.loading = true;
-              _self.tips = "批量汇聚中...";
-              _self
-                .$ajax({
-                  url: httpUrl + url,
-                  method: "POST",
-                  data: {},
-                  params: params
-                })
-                .then(function(res) {
-                  _self.loading = false;
-                  _self.tips = "";
-                  if (res.data.success) {
-                    let successHtml = "";
-                    let errorHtml = "";
-                    for (let i = 0; i < res.data.data.successList.length; i++) {
-                      successHtml +=
-                        i + 1 + "." + res.data.data.successList[i] + "</br>";
-                    }
-                    for (let i = 0; i < res.data.data.errorList.length; i++) {
-                      errorHtml +=
-                        i + 1 + "." + res.data.data.errorList[i] + "</br>";
-                    }
-                    _self.$alert(
-                      "操作成功！重新汇聚成功的任务如下：</br>" +
-                        successHtml +
-                        "重新汇聚失败的任务如下：</br>" +
-                        errorHtml,
-                      "重新汇聚",
-                      {
-                        dangerouslyUseHTMLString: true
-                      }
-                    );
-                    _self.init();
-                  } else {
-                    _self.$alert("重新汇聚失败", "重新汇聚", {
-                      dangerouslyUseHTMLString: true
-                    });
+          _self.loading = true;
+          _self.tips = "批量汇聚中...";
+          _self
+            .$ajax({
+              url: httpUrl + url,
+              method: "POST",
+              data: {},
+              params: params
+            })
+            .then(function(res) {
+              _self.loading = false;
+              _self.tips = "";
+              if (res.data.success) {
+                let successHtml = "";
+                let errorHtml = "";
+                for (let i = 0; i < res.data.data.successList.length; i++) {
+                  successHtml +=
+                    i + 1 + "." + res.data.data.successList[i] + "</br>";
+                }
+                for (let i = 0; i < res.data.data.errorList.length; i++) {
+                  errorHtml +=
+                    i + 1 + "." + res.data.data.errorList[i] + "</br>";
+                }
+                _self.$alert(
+                  "操作成功！重新汇聚成功的任务如下：</br>" +
+                    successHtml +
+                    "重新汇聚失败的任务如下：</br>" +
+                    errorHtml,
+                  "重新汇聚",
+                  {
+                    dangerouslyUseHTMLString: true
                   }
+                );
+                _self.init();
+              } else {
+                _self.$alert("重新汇聚失败", "重新汇聚", {
+                  dangerouslyUseHTMLString: true
+                });
+              }
             })
             .catch(() => {});
         } else {
@@ -1040,7 +1076,7 @@ export default {
   height: 50px;
   margin: 0 auto;
   div {
-    width: 330px;
+    // width: 330px;
     float: right;
     padding-top: 10px;
   }
@@ -1127,23 +1163,23 @@ export default {
     overflow: auto;
   }
 }
- .right-tools {
-        float: right;
-        margin-right: 10px;
-        a {
-          font-size: 26px;
-           :hover,
-           :active {
-            color: #f93;
-          }
-          i {
-            font-size: 32px;
-          }
-        }
-      }
+.right-tools {
+  float: right;
+  margin-right: 10px;
+  a {
+    font-size: 26px;
+    :hover,
+    :active {
+      color: #f93;
+    }
+    i {
+      font-size: 32px;
+    }
+  }
+}
 </style>
 <style rel="stylesheet/scss" lang="scss">
-.task-template{
+.task-template {
   .el-picker-panel__icon-btn {
     color: #303133 !important;
   }
@@ -1160,7 +1196,7 @@ export default {
     background-color: #eff3f6;
   }
   .el-table__body tr.hover-row > td {
-   /*  background-color: #95a1b3 !important; */
+    /*  background-color: #95a1b3 !important; */
     color: #fff;
   }
   .el-message-box {
@@ -1168,8 +1204,8 @@ export default {
     overflow: auto;
   }
   .mainTable .el-table .success-row {
-      background: #d9f9c8;
-    }
+    background: #d9f9c8;
+  }
   .el-message-box__wrapper .el-message-box {
     max-height: 50%;
     overflow: auto;
@@ -1179,7 +1215,6 @@ export default {
     margin-left: 15px;
   }
 }
-
 </style>
 
 
