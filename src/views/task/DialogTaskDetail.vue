@@ -451,6 +451,7 @@ export default {
               that.loading3 = false;
             }else{
               that.doMsg(res.data.message,'success');
+              that.reqObj.status = 2;
               //重新查询任务基本信息
               that.getTaskInfo();
             }
@@ -471,6 +472,7 @@ export default {
               that.loading3 = false;
             }else{
               that.doMsg(res.data.message,'success');
+              that.reqObj.status = 1;
               //重新查询任务基本信息
               that.getTaskInfo();
             }
@@ -649,6 +651,7 @@ export default {
             //可操作类型
             let t=that.taskBaseInfo.status;
             that.flagDesc=(t==0||t==1)?'run':'stop';
+            that.reqObj.status = t;
             if(that.flagDesc=='stop'){
               that.operateList[1].disabled=false;
               that.operateList[0].disabled=true;
