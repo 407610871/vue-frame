@@ -410,6 +410,7 @@ export default {
           this.showSetTask = true;
         } else {
           for (let i = 1; i < this.rowList.length; i++) {
+            //if(this.rowList[0].diyComments==undefined)
             if (this.rowList[0].diyComments != this.rowList[i].diyComments) {
               flag = false;
             }
@@ -449,8 +450,8 @@ export default {
       paramsObj.accessSysId = parseInt(this.$route.params.sourceId);
       paramsObj.objInfoId  = urlIds;
       this.$ajax({
-          url: window.ENV.API_DACM + ctablesDatas,
-          /*url:'http://10.19.160.93:8080/DACM/ctables/datas',*/
+          /*url: window.ENV.API_DACM + ctablesDatas,*/
+          url:'http://10.19.160.93:8080/DACM/ctables/datas',
           method: "post",
           data: JSON.stringify(paramsObj),
           headers: {
