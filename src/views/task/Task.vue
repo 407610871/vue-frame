@@ -258,7 +258,6 @@
           label="ID"
           width="100"
           :show-overflow-tooltip="true"
-          @click="showTaskDetail=true"
         >
           <template slot-scope="scope">
             <el-button

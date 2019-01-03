@@ -676,8 +676,8 @@ export default {
             //可操作类型
             let t=that.taskBaseInfo.status;
             that.flagDesc=(t==0||t==1)?'run':'stop';
-            that.reqObj.status = t;
-             that.taskBaseInfo.statusDesc = that.reqObj.status==1 ? "运行" : statusMap[that.taskBaseInfo.status];
+            //that.reqObj.status = t;
+            that.taskBaseInfo.statusDesc = that.reqObj.status==1 ? "运行" : statusMap[that.taskBaseInfo.status];
             if(that.flagDesc=='stop'){
               that.operateList[1].disabled=false;
               that.operateList[0].disabled=true;
