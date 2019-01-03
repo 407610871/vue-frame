@@ -36,7 +36,7 @@
                 <i @click="editName(scope.row,scope.$index)" class="el-icon-edit-outline table-action-btn" v-show="!scope.row.showEdit" />
               </el-tooltip>
               <span v-show="!scope.row.showEdit">{{ scope.row.diyComments }}</span>
-              <input type="text" v-model="editingRow.diyComments" v-show="scope.row.showEdit" :autofocus="scope.row.showEdit" @blur="changeName(scope.$index, scope.row)" />
+              <input type="text" v-model="editingRow.diyComments" v-show="scope.row.showEdit" autofocus @blur="changeName(scope.$index, scope.row)" />
             </div>
           </template>
         </el-table-column>
@@ -109,7 +109,7 @@
                 <i @click="editName(scope.row,scope.$index)" class="el-icon-edit-outline table-action-btn" v-show="!scope.row.showEdit" />
               </el-tooltip>
               <span v-show="!scope.row.showEdit">{{ scope.row.diyComments }}</span>
-              <input type="text" v-model="editingRow.diyComments" v-show="scope.row.showEdit" :autofocus="scope.row.showEdit" @blur="changeName(scope.$index, scope.row)" />
+              <input type="text" v-model="editingRow.diyComments" v-show="scope.row.showEdit" autofocus @blur="changeName(scope.$index, scope.row)" />
             </div>
           </template>
         </el-table-column>
@@ -343,7 +343,7 @@ export default {
 
   },
   methods: {
-    
+
     editName(row, index) {
       console.log(row);
       this.editingRow.index = index;
