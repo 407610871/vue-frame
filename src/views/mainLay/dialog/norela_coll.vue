@@ -31,7 +31,7 @@
                 <h2>设置采集任务</h2>
               </div>
             </div>
-            <coll-task :rowList="pdata" :msg="activeName" @pre="nexts('second')" @fresh="fresh()"> </coll-task>
+            <coll-task :rowList="pdata" :msg="activeName" @pre="nexts('second')" @fresh="fresh()" > </coll-task>
           </el-tab-pane>
         </el-tabs>
       </div>
@@ -77,6 +77,7 @@ export default {
       this.activeName = 'first';
       this.$store.commit('setSchemaList', this.clear);
       this.$store.commit('setNoreData', this.clear);
+      this.$store.commit('setClearStepsData', this.clear);
     },
     //步骤条
     handleClick(tab, event) {

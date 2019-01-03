@@ -101,6 +101,8 @@ const store = new Vuex.Store({
       taskName: ''
     },
     userThemes: '',
+    thirdStepsData: {},
+    clearStepsData: ""
   },
   mutations: {
     setUserInfo(state, obj) {
@@ -211,6 +213,12 @@ const store = new Vuex.Store({
     setNums(state, obj) {
       state.nums = true;
       state.nums = obj;
+    },
+    setThirdStepsData(state, obj) {
+      state.thirdStepsData = obj;
+    },
+    setClearStepsData(state, obj) {
+      state.clearStepsData = obj;
     }
   },
   modules: {
