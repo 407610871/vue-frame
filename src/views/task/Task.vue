@@ -13,6 +13,13 @@
           <i :class="!moreSearch?'el-icon-caret-bottom':'el-icon-caret-top'"></i>
         </span>
         <el-button type="primary" class="doCearch" @click="search">查询</el-button>
+        <div class="right-tools">
+          <el-tooltip class="item" effect="light" content="刷新" placement="top">
+            <a href="javascript:void(0)" v-on:click="refresh">
+              <i class="enc-icon-shuaxin"></i>
+            </a>
+          </el-tooltip>
+        </div>
       </div>
 
       <el-form
@@ -201,13 +208,6 @@
     </div>
     <!-- 操作按钮 -->
     <div class="count-operate">
-      <div class="right-tools">
-        <el-tooltip class="item" effect="light" content="刷新" placement="top">
-          <a href="javascript:void(0)" v-on:click="refresh">
-            <i class="enc-icon-shuaxin"></i>
-          </a>
-        </el-tooltip>
-      </div>
       <div>
         <el-button type="primary" @click="doMore('manager/taskOperate/batchConverge',1)">重新汇聚</el-button>
         <el-button type="primary" @click="doMore('manager/taskOperate/batchStart',2)">批量启动</el-button>
@@ -1078,6 +1078,8 @@ export default {
     // width: 330px;
     float: right;
     padding-top: 10px;
+    margin-right: 15px;
+    
   }
 }
 .indicate {
