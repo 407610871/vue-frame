@@ -416,7 +416,6 @@ export default {
       showTaskCheck: false,
       moreSearch: false,
       websock: null,
-
       allSecectData: {},
       keyword: JSON.parse(JSON.stringify(this.$store.state.taskParam.keyword)),
       isDeleted: 0,
@@ -600,6 +599,9 @@ export default {
     //高级搜索
     doMoreSearch() {
       this.moreSearch = !this.moreSearch;
+
+
+
     },
     //详情
     doDetail(index, row) {

@@ -449,9 +449,12 @@ export default {
               //如果任务状态未切换成功，任务状态下拉框仍显示原来的值“run--运行”
               that.flagDesc ='run';
               that.loading3 = false;
+                        
+
             }else{
               that.doMsg(res.data.message,'success');
               //重新查询任务基本信息
+                 
               that.getTaskInfo();
             }
           }  
@@ -469,9 +472,11 @@ export default {
               //如果任务状态未切换成功，任务状态下拉框仍显示原来的值“stop--暂停”
               that.flagDesc ='stop';
               that.loading3 = false;
+             
             }else{
               that.doMsg(res.data.message,'success');
               //重新查询任务基本信息
+             
               that.getTaskInfo();
             }
           }
