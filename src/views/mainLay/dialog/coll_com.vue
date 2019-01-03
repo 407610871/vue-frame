@@ -437,6 +437,7 @@ export default {
       this.dialogVisible = false;
       this.editfalg = false;
       this.isdisable = false;
+      this.taskStatus = false;
       this.$refs["ruleForm"].resetFields();
       this.ruleForm.jday = "";
       this.ruleForm.jhour = "";
