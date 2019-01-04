@@ -324,7 +324,7 @@ export default {
         }
       })
       .then(res => {
-        if (res.data.success) {
+        if (res.data.success && res.data.data) {
           let obj = {
             "cnName": res.data.data.cnName,
             "color": res.data.data.color,
@@ -350,7 +350,17 @@ export default {
           this.$store.commit('setThemes', res.data.data.color);
           obj = JSON.stringify(obj);
           localStorage.setItem("userSet", obj);
-        } else {}
+        } else {
+          let obj = {
+            "cnName": window.localStorage.getItem('userNames'),
+            "color": "DEFAULT",
+            "appId": 'DACM',
+            "userId": window.localStorage.getItem('userID'),
+            "userName": window.localStorage.getItem('userNames')
+          }
+          localStorage.setItem("userSet", JSON.stringify(obj));
+          this._getColor();
+        }
       })
   },
   goRoute: function(name) {
