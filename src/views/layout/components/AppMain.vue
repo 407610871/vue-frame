@@ -1,5 +1,5 @@
 <template>
-  <section class="app-main">
+  <section class="app-main main-content">
     <transition name="fade-transform" mode="out-in">
       <keep-alive>
         <router-view />
@@ -18,12 +18,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-.app-main {
-  height: calc(100vh - 113px);
-  width: 100%;
-  position: relative;
-  overflow: hidden;
-}
-</style>

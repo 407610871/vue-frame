@@ -1,6 +1,5 @@
 <template>
   <el-form label-width="120px" class="form-fliter" @submit.native.prevent>
-    <div class="el-breadcrumb">
       <div class="searchDiv">
         <div class="dataSearch">
           <i class="el-icon-search"></i>
@@ -32,7 +31,6 @@
           <!-- <span v-else-if=""></span> -->
         </el-form-item>
       </div>
-    </div>
   </el-form>
 </template>
 <script>

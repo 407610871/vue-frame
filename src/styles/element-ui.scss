@@ -155,16 +155,6 @@
      }
    }
  }
-
- .el-breadcrumb {
-   min-height: 40px;
-   font-size: 15px;
-   line-height: 40px;
-   margin: 3px 0px 0px 0px;
-   padding: 0px 20px 0px 20px;
-   background: #E6EAED;
-   color: #425365;
- }
  .el-breadcrumb__inner a:hover,
  .el-breadcrumb__inner.is-link:hover {
    @include el-color($el-radio-btn);

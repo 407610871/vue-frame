@@ -1,6 +1,7 @@
 <template>
   <div class="dashboard-container">
-    <form-fliter v-if="queryParamReady" @highMore="moreHeight" @highSeaech="hightrue" v-bind:formCollapse="collapse" v-bind:dataObj="formFilterData" @doSearch="search" @formFilter="changeFormFilter" />
+    <form-fliter v-if="queryParamReady" @highMore="moreHeight" @highSeaech="hightrue" 
+    v-bind:formCollapse="collapse" v-bind:dataObj="formFilterData" @doSearch="search" @formFilter="changeFormFilter" />
     <div class="main">
       <div class="filter-container">
         <div class="count-container">
@@ -17,7 +18,6 @@
           </div>
         </div>
       </div>
-      <div class="main-content">
         <el-table v-loading="loading" :data="mainTableData" :height="tableHeight" stripe border style="width: 100%;" tooltip-effect="light">
           <el-table-column label="接入源名称" width="250" show-overflow-tooltip>
             <template slot-scope="scope">
@@ -53,8 +53,7 @@
               </div>
             </template>
           </el-table-column>
-        </el-table>
-      </div>  
+        </el-table> 
     </div>
     <div class="enc-pagination">
       <el-pagination v-if="queryParamReady" style="float:right; margin:10px;" @current-change="goPage" background :page-size.sync="pageSize" :total="mainTableDataTotal" layout="prev, pager, next, jumper" :current-page.sync="currentPage">

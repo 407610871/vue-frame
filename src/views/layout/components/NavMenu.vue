@@ -91,44 +91,8 @@ export default {
 .nav-menu {
   display: inline-block;
   padding-left: 0px;
-
   .enc-nav-menu {
     background: transparent;
-
-    .el-menu-item {
-      height: $enc-nav-header-height;
-      line-height: $enc-nav-header-height;
-      font-size:15px;
-      margin-left: 36px;
-      i {
-        margin-right: 7px;
-        font-size: 36px;
-        color: #425365;
-      }
-    }
-    .el-submenu {
-      margin-left: 36px;
-      .el-submenu__title {
-        color: #425365;
-        i {
-          margin-right: 7px;
-          font-size: 36px;
-          color: #425365;
-        }
-      }
-    }
-    .is-active {
-      i {
-        color: #409efe;
-      }
-    }
-    .el-menu-item:hover,
-    .el-menu-item:focus {
-      i {
-        color: #fff;
-      }
-    }
-
     .el-submenu {
       height: $enc-nav-header-height;
       line-height: $enc-nav-header-height;
@@ -143,24 +107,10 @@ export default {
       color: #fff;
     }
   }
-  .el-menu--horizontal>.el-menu-item {
-    color: #425365;
-  }
+
 }
 
 @media screen and ( max-width: 1280px) {
-  .nav-menu {
-    .enc-nav-menu {
-      .el-menu-item {
-        height: $enc-nav-header-mini-height;
-        line-height: $enc-nav-header-mini-height;
-      }
-    }
-  }
-  .nav-menu .enc-nav-menu .el-submenu {
-    height: $enc-nav-header-mini-height;
-    line-height: $enc-nav-header-mini-height;
-  }
   .enc-sub-header{
     margin-top:0px;
   }

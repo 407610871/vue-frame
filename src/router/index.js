@@ -5,7 +5,7 @@ Vue.use(Router);
 
 /* Layout */
 import Layout from "@/views/layout/Layout";
-import NoLeftLayout from "@/views/layout/NoLeftLayout";
+//import NoLeftLayout from "@/views/layout/NoLeftLayout";
 
 export const constantRouterMap = [
   {
@@ -90,22 +90,6 @@ export const constantRouterMap = [
         meta: {
           title: "kettle任务",
           icon: "kettleTask",
-          noCache: true
-        }
-      }
-    ]
-  },
-  {
-    path: "",
-    component: NoLeftLayout,
-    children: [
-      {
-        path: "data-processing",
-        component: () => import("@/views/dataProcessing/index"),
-        name: "dataProcessing",
-        meta: {
-          title: "数据处理",
-          icon: "dashboard",
           noCache: true
         }
       }
