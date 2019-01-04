@@ -326,7 +326,7 @@ export default {
         }
       })
       .then(res => {
-        if (!res.data.success && res.data.data) {
+        if (res.data.success && res.data.data) {
           let obj = {
             "cnName": res.data.data.cnName,
             "color": res.data.data.color,
