@@ -11,7 +11,7 @@
       </div>
       <el-col :span="4">
         <el-tabs tab-position="left" style="height: 200px;" @tab-click="handleClick">
-          <el-tab-pane v-for="item in versionData" :label="item"></el-tab-pane>
+          <el-tab-pane v-for="(item, index) in versionData" :key="index" :label="item"></el-tab-pane>
           <!-- <el-tab-pane label="用户管理"></el-tab-pane>
           <el-tab-pane label="配置管理"></el-tab-pane>
           <el-tab-pane label="角色管理"></el-tab-pane>
@@ -98,7 +98,7 @@ export default {
       versionDate: '',
       loading:false,
       versionData: [
-        '当前','1.0.0','1.0.1'
+        '当前','1.1.0','1.0.1','1.0.0'
       ],
       tableData: [],
       changeData: [],
@@ -107,7 +107,7 @@ export default {
     };
   },
   mounted(){
-   this._getVersion('1.0.1');
+   this._getVersion('1.1.0');
   },
   methods: {
     //关闭对话框
@@ -119,7 +119,7 @@ export default {
     handleClick(tab, event){
       /* console.log(tab, event);*/
       if(tab.label=='当前'){
-        this._getVersion('1.0.1');
+        this._getVersion('1.1.0');
       }
       else{
         this._getVersion(tab.label);
@@ -139,12 +139,7 @@ export default {
       let _self = this;
       this.$ajax.get(`/data/version${url}.xml`).then(function(res) {
         _self.loading = false;
-          console.log(res.data);
-          /* var x2js = new X2JS();*/
-          /* var obj = x2js.xml_str2json(res.data).note;*/
           var jsonObj = _self.$x2js.xml2js(res.data);
-          console.log("-----");
-          console.log(jsonObj.note);
           _self.tableData = jsonObj.note.specialityList.item;
           _self.changeData = jsonObj.note.changeList.item;
           _self.finishData = jsonObj.note.finishedPunchList.item;

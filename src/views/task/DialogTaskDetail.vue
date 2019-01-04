@@ -254,7 +254,7 @@
         
       </el-form>
     </el-dialog>
-    <dialogIsCheck :msgCheck="reqObj" v-if="showCheckData"></dialogIsCheck>
+    <dialogIsCheck :msgCheck="reqObj" v-if="showCheckData" @closeDiaChk="closeDiaChk()"></dialogIsCheck>
   </div>
 </template>
 <style lang="scss">
@@ -426,6 +426,9 @@ export default {
     this.getDataViews();
   },
   methods: {
+    closeDiaChk () {
+      this.showCheckData = false;
+    },
     setHeadStyle(){
       return {
         background:"#fff",
@@ -439,8 +442,26 @@ export default {
     //切换当前任务状态
     changeStatus(){
       let that = this;
-      that.loading3 = true;
-      if(that.flagDesc=='stop'){
+      this.loading3 = true;
+      let statusKey = [{"stop":"pause/","run":"start/"},{"stop":2,"run":1},{"stop":"run","run":"stop"}];
+      axios.put(this.httpUrl+'manager/taskOperate/'+statusKey[0][this.flagDesc]+this.reqObj.taskInfoId).then(res=>{
+        res = res.data;
+        this.loading3 = false;
+        if(res.success){
+          this.doMsg(res.message,'success');
+          this.reqObj.status = statusKey[1][this.flagDesc];
+          this.getTaskInfo();
+        }else{
+          this.doMsg(res.message,'error');
+          this.flagDesc =  statusKey[2][this.flagDesc];
+        }
+      }).catch(err=>{
+        this.loading3 = false;
+        this.flagDesc =  statusKey[2][this.flagDesc];
+      });
+
+
+      /* if(that.flagDesc=='stop'){
         //调用暂停接口
         axios.put(that.httpUrl+'manager/taskOperate/pause/'+that.reqObj.taskInfoId).then(
           function(res){
@@ -449,9 +470,13 @@ export default {
               //如果任务状态未切换成功，任务状态下拉框仍显示原来的值“run--运行”
               that.flagDesc ='run';
               that.loading3 = false;
+                        
+
             }else{
               that.doMsg(res.data.message,'success');
+              that.reqObj.status = 2;
               //重新查询任务基本信息
+                 
               that.getTaskInfo();
             }
           }  
@@ -469,9 +494,12 @@ export default {
               //如果任务状态未切换成功，任务状态下拉框仍显示原来的值“stop--暂停”
               that.flagDesc ='stop';
               that.loading3 = false;
+             
             }else{
               that.doMsg(res.data.message,'success');
+              that.reqObj.status = 1;
               //重新查询任务基本信息
+             
               that.getTaskInfo();
             }
           }
@@ -480,7 +508,7 @@ export default {
           that.flagDesc=='stop';
           that.loading3 = false;
         })
-      }
+      } */
     },
     //将毫秒转换成周期
     translatePeriodFromMS(ms){
@@ -643,12 +671,13 @@ export default {
               4:'完成',
               5:'准备中'
             }
-            that.taskBaseInfo.statusDesc = that.reqObj.status==1 ? "运行" : statusMap[that.taskBaseInfo.status];
             //网络指示灯判断
             that.newWorkTrans(that.taskBaseInfo.networkStatus,response.data.data.speed,true);
             //可操作类型
             let t=that.taskBaseInfo.status;
             that.flagDesc=(t==0||t==1)?'run':'stop';
+            //that.reqObj.status = t;
+            that.taskBaseInfo.statusDesc = that.reqObj.status==1 ? "运行" : statusMap[that.taskBaseInfo.status];
             if(that.flagDesc=='stop'){
               that.operateList[1].disabled=false;
               that.operateList[0].disabled=true;
