@@ -353,6 +353,14 @@ export default {
           obj = JSON.stringify(obj);
           localStorage.setItem("userSet", obj);
         } else {
+          let obj = {
+            "cnName": window.localStorage.getItem('userNames'),
+            "color": "DEFAULT",
+            "appId": 'DACM',
+            "userId": window.localStorage.getItem('userID'),
+            "userName": window.localStorage.getItem('userNames')
+          }
+          localStorage.setItem("userSet", JSON.stringify(obj));
           this._getColor();
         }
       })
