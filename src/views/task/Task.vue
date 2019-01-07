@@ -348,7 +348,7 @@
               @click="doCheck(scope.$index, scope.row)"
             >数据核验</el-button>
             <el-button
-              v-if="(scope.row.status==2||scope.row.status==4||scope.row.status==3)&&scope.row.isPeriod!=0"
+              v-if="(scope.row.status==2||scope.row.status==4||scope.row.status==3)&&scope.row.isPeriod!=0&&(scope.row.ftpIsDelete!='true')"
               type="text"
               size="small"
               @click="doConverge(scope.$index, scope.row)"
