@@ -21,14 +21,7 @@
           </el-tooltip>
         </div>
       </div>
-
-      <el-form
-        ref="form"
-        label-width="110px"
-        class="formGroup task-query-form"
-        v-if="keyword!=''||taskPeriodType.length>0||status.length>0||priority.length>0||(time!=null && time.length>0)"
-        style="padding-left: 27px;"
-      >
+      <el-form ref="form" label-width="110px" class="formGroup task-query-form" v-if="keyword!=''||taskPeriodType.length>0||status.length>0||priority.length>0||(time!=null && time.length>0)" style="padding-left: 27px;">
         <el-form-item label="已选查询条件:" style="max-height: 60px;overflow: auto;">
           <div v-show="keyword!=''" class="selected-task-type" style="display: inline-block;">
             <span>查询条件:</span>
@@ -39,11 +32,7 @@
               </span>
             </span>
           </div>
-          <div
-            v-show="taskPeriodType.length>0"
-            class="selected-task-type"
-            style="display: inline-block;"
-          >
+          <div v-show="taskPeriodType.length>0" class="selected-task-type" style="display: inline-block;">
             <span>任务类型:</span>
             <span v-show="taskPeriodType.indexOf('0')>-1">
               实时
@@ -142,12 +131,7 @@
               </span>
             </span>
           </div>
-
-          <div
-            v-show="time!=null && time.length>0"
-            class="selected-task-type"
-            style="display: inline-block;"
-          >
+          <div v-show="time!=null && time.length>0" class="selected-task-type" style="display: inline-block;">
             <span style="margin-right:10px;">任务开始时间:</span>
             <span>
               {{time==null?'':time[0]}} - {{time==null?'':time[1]}}
@@ -158,13 +142,7 @@
           </div>
         </el-form-item>
       </el-form>
-      <el-form
-        ref="form"
-        label-width="110px"
-        class="formGroup task-query-form"
-        v-if="moreSearch"
-        style="padding-left: 27px;"
-      >
+      <el-form ref="form" label-width="110px" class="formGroup task-query-form" v-if="moreSearch" style="padding-left: 27px;">
         <el-form-item label="任务类型:">
           <el-checkbox-group v-model="taskPeriodType">
             <el-checkbox label="0" name="taskPeriodType">实时</el-checkbox>
@@ -192,17 +170,8 @@
             <el-checkbox label="3" name="priority">低</el-checkbox>
           </el-checkbox-group>
         </el-form-item>
-
         <el-form-item label="任务开始时间:">
-          <el-date-picker
-            v-model="time"
-            :picker-options="pickerOptions"
-            type="datetimerange"
-            start-placeholder="开始时间"
-            end-placeholder="结束时间"
-            value-format="yyyy-MM-dd HH:mm:ss"
-            :default-time="['12:00:00']"
-          ></el-date-picker>
+          <el-date-picker v-model="time" :picker-options="pickerOptions" type="datetimerange" start-placeholder="开始时间" end-placeholder="结束时间" value-format="yyyy-MM-dd HH:mm:ss" :default-time="['12:00:00']"></el-date-picker>
         </el-form-item>
       </el-form>
     </div>
@@ -214,86 +183,31 @@
         <el-button type="primary" @click="doMore('manager/taskOperate/batchPause',3)">批量停止</el-button>
       </div>
     </div>
-
     <!-- 表格数据 -->
     <div class="mainTable">
-      <el-table
-        border
-        :row-class-name="tableRowClassName"
-        ref="multipleTable"
-        :data="tableData"
-        tooltip-effect="light"
-        :height="tableHeight"
-        style="width: 100%;min-height:300px;"
-        @select-all="selectAll"
-        @select="select"
-        @selection-change="handleSelectionChange"
-      >
+      <el-table border :row-class-name="tableRowClassName" ref="multipleTable" :data="tableData" tooltip-effect="light" :height="tableHeight" style="width: 100%;min-height:300px;" @select-all="selectAll" @select="select" @selection-change="handleSelectionChange">
         <el-table-column fixed type="selection" width="55"></el-table-column>
         <el-table-column fixed label="接入指示" width="100">
           <template slot-scope="scope">
-            <i
-              v-if="scope.row.networkStatus==0"
-              class="indicate"
-              style="backgroundColor:green"
-              title="数据源连接正常"
-            ></i>
-            <i
-              v-else-if="scope.row.networkStatus==1"
-              class="indicate"
-              style="backgroundColor:yellow"
-              title="数据源链接不稳定"
-            ></i>
-            <i
-              v-else-if="scope.row.networkStatus==2"
-              class="indicate"
-              style="backgroundColor:red"
-              title="数据源不通"
-            ></i>
+            <i v-if="scope.row.networkStatus==0" class="indicate" style="backgroundColor:green" title="数据源连接正常"></i>
+            <i v-else-if="scope.row.networkStatus==1" class="indicate" style="backgroundColor:yellow" title="数据源链接不稳定"></i>
+            <i v-else-if="scope.row.networkStatus==2" class="indicate" style="backgroundColor:red" title="数据源不通"></i>
           </template>
         </el-table-column>
-        <el-table-column
-          prop="taskInfoId"
-          fixed
-          label="ID"
-          width="100"
-          :show-overflow-tooltip="true"
-        >
+        <el-table-column prop="taskInfoId" fixed label="ID" width="100" :show-overflow-tooltip="true">
           <template slot-scope="scope">
-            <el-button
-              @click="doDetail(scope.$index, scope.row)"
-              style="text-decoration: underline;"
-            >{{scope.row.taskInfoId}}</el-button>
+            <el-button @click="doDetail(scope.$index, scope.row)" style="text-decoration: underline;">{{scope.row.taskInfoId}}</el-button>
           </template>
         </el-table-column>
-        <el-table-column
-          prop="sourceDBName"
-          label="接入源名称"
-          width="200"
-          :show-overflow-tooltip="true"
-        ></el-table-column>
-        <el-table-column
-          prop="dataTableName"
-          label="接入对象"
-          width="200"
-          :show-overflow-tooltip="true"
-        ></el-table-column>
+        <el-table-column prop="sourceDBName" label="接入源名称" width="200" :show-overflow-tooltip="true"></el-table-column>
+        <el-table-column prop="dataTableName" label="接入对象" width="200" :show-overflow-tooltip="true"></el-table-column>
         <el-table-column prop="targetDBName" label="目标库" width="200" :show-overflow-tooltip="true"></el-table-column>
-        <el-table-column
-          prop="targetTableName"
-          label="目标表"
-          width="200"
-          :show-overflow-tooltip="true"
-        ></el-table-column>
+        <el-table-column prop="targetTableName" label="目标表" width="200" :show-overflow-tooltip="true"></el-table-column>
         <el-table-column label="任务开始时间" width="150" :show-overflow-tooltip="true">
-          <template
-            slot-scope="scope"
-          >{{scope.row.status==5 ? '' : scope.row.startTime | formateDateTime }}</template>
+          <template slot-scope="scope">{{scope.row.status==5 ? '' : scope.row.startTime | formateDateTime }}</template>
         </el-table-column>
         <el-table-column label="任务结束时间" width="150" :show-overflow-tooltip="true">
-          <template
-            slot-scope="scope"
-          >{{scope.row.status==5 ? '' : scope.row.endTime | formateDateTime}}</template>
+          <template slot-scope="scope">{{scope.row.status==5 ? '' : scope.row.endTime | formateDateTime}}</template>
         </el-table-column>
         <el-table-column label="任务类型" width="130" :show-overflow-tooltip="true">
           <template slot-scope="scope">
@@ -315,73 +229,27 @@
             <span v-else-if="scope.row.status==5">准备中</span>
           </template>
         </el-table-column>
-        <el-table-column
-          prop="joinDataNum"
-          label="已接入数据量"
-          :show-overflow-tooltip="true"
-          width="150"
-        ></el-table-column>
+        <el-table-column prop="joinDataNum" label="已接入数据量" :show-overflow-tooltip="true" width="150"></el-table-column>
         <el-table-column label="操作" width="200">
           <template slot-scope="scope">
-            <el-button
-              v-if="scope.row.status==0||scope.row.status==2"
-              type="text"
-              size="small"
-              @click="doRun(scope.$index, scope.row)"
-            >运行</el-button>
-            <el-button
-              v-if="scope.row.status==1 || scope.row.status==5"
-              type="text"
-              size="small"
-              @click="doRun(scope.$index, scope.row)"
-            >暂停</el-button>
-            <el-button
-              v-if="scope.row.status!=1"
-              type="text"
-              size="small"
-              @click="doDel(scope.$index, scope.row)"
-            >删除</el-button>
-            <el-button
-              v-if="(scope.row.status==1||scope.row.status==2||scope.row.status==4)&&scope.row.isPeriod!=0"
-              type="text"
-              size="small"
-              @click="doCheck(scope.$index, scope.row)"
-            >数据核验</el-button>
-            <el-button
-              v-if="(scope.row.status==2||scope.row.status==4||scope.row.status==3)&&scope.row.isPeriod!=0"
-              type="text"
-              size="small"
-              @click="doConverge(scope.$index, scope.row)"
-            >重新汇聚</el-button>
+            <el-button v-if="scope.row.status==0||scope.row.status==2" type="text" size="small" @click="doRun(scope.$index, scope.row)">运行</el-button>
+            <el-button v-if="scope.row.status==1 || scope.row.status==5" type="text" size="small" @click="doRun(scope.$index, scope.row)">暂停</el-button>
+            <el-button v-if="scope.row.status!=1" type="text" size="small" @click="doDel(scope.$index, scope.row)">删除</el-button>
+            <el-button v-if="(scope.row.status==1||scope.row.status==2||scope.row.status==4)&&scope.row.isPeriod!=0" type="text" size="small" @click="doCheck(scope.$index, scope.row)">数据核验</el-button>
+            <el-button v-if="(scope.row.status==2||scope.row.status==4||scope.row.status==3)&&scope.row.isPeriod!=0" type="text" size="small" @click="doConverge(scope.$index, scope.row)">重新汇聚</el-button>
           </template>
         </el-table-column>
       </el-table>
     </div>
-
     <!-- 分页 -->
     <el-footer>
       <div class="enc-pagination">
-        <el-pagination
-          style="float:right; margin:10px;"
-          @current-change="handleCurrentChange"
-          background
-          :current-page.sync="pageNum"
-          :page-size="pageSize"
-          :total="mainTableDataTotal"
-          layout="prev, pager, next, jumper"
-        ></el-pagination>
+        <el-pagination style="float:right; margin:10px;" @current-change="handleCurrentChange" background :current-page.sync="pageNum" :page-size="pageSize" :total="mainTableDataTotal" layout="prev, pager, next, jumper"></el-pagination>
       </div>
     </el-footer>
-
     <!-- 任务详情 -->
     <dialogTaskDetail :reqObj="reqObj" v-if="showTaskDetail" v-on:closeDia="showTaskDetail=false"></dialogTaskDetail>
-
-    <DialogIsCheck
-      v-if="showTaskCheck"
-      v-on:closeDiaChk="showTaskCheck=false"
-      :msgCheck="check"
-      :title="dialogIsCheckTitile"
-    ></DialogIsCheck>
+    <DialogIsCheck v-if="showTaskCheck" v-on:closeDiaChk="showTaskCheck=false" :msgCheck="check" :title="dialogIsCheckTitile"></DialogIsCheck>
   </div>
 </template>
 <script>
@@ -847,11 +715,10 @@ export default {
                 }
                 _self.$alert(
                   "操作成功！重新汇聚成功的任务如下：</br>" +
-                    successHtml +
-                    "重新汇聚失败的任务如下：</br>" +
-                    errorHtml,
-                  "重新汇聚",
-                  {
+                  successHtml +
+                  "重新汇聚失败的任务如下：</br>" +
+                  errorHtml,
+                  "重新汇聚", {
                     dangerouslyUseHTMLString: true
                   }
                 );
@@ -877,8 +744,7 @@ export default {
           }
           this.$alert(
             "重新汇聚时，以下任务不能被汇聚,请重新选择：</br>" + errerHtml,
-            "重新汇聚",
-            {
+            "重新汇聚", {
               dangerouslyUseHTMLString: true
             }
           );
@@ -919,16 +785,42 @@ export default {
                   errorHtml +=
                     i + 1 + "." + res.data.data.errorList[i] + "</br>";
                 }
-                _self.$alert(
-                  "操作成功！批量启动成功的任务如下：</br>" +
+                if (res.data.data.successList.length == 0 && res.data.data.errorList.length > 0) {
+                  _self.$alert(
+                    "批量启动失败的任务如下：</br>" +
+                    errorHtml,
+                    "批量启动", {
+                      dangerouslyUseHTMLString: true
+                    }
+                  );
+                } else if (res.data.data.errorList.length == 0 && res.data.data.successList.length > 0) {
+                  _self.$alert(
+                    "操作成功！批量启动成功的任务如下：</br>" +
+                    successHtml, "批量启动", {
+                      dangerouslyUseHTMLString: true
+                    }
+                  );
+                } else {
+                  _self.$alert(
+                    "操作成功！批量启动成功的任务如下：</br>" +
                     successHtml +
                     "批量启动失败的任务如下：</br>" +
                     errorHtml,
-                  "批量启动",
-                  {
-                    dangerouslyUseHTMLString: true
-                  }
-                );
+                    "批量启动", {
+                      dangerouslyUseHTMLString: true
+                    }
+                  );
+                }
+                /* _self.$alert(
+                   "操作成功！批量启动成功的任务如下：</br>" +
+                     successHtml +
+                     "批量启动失败的任务如下：</br>" +
+                     errorHtml,
+                   "批量启动",
+                   {
+                     dangerouslyUseHTMLString: true
+                   }
+                 );*/
                 _self.init();
               } else {
                 _self.$alert("批量启动失败", "批量启动", {
@@ -953,8 +845,7 @@ export default {
           }
           this.$alert(
             "批量启动时，以下任务不能被启动,请重新选择：</br>" + errerHtml,
-            "批量启动",
-            {
+            "批量启动", {
               dangerouslyUseHTMLString: true
             }
           );
@@ -993,11 +884,10 @@ export default {
                 }
                 _self.$alert(
                   "操作成功！批量停止成功的任务如下：</br>" +
-                    successHtml +
-                    "批量停止失败的任务如下：</br>" +
-                    errorHtml,
-                  "批量停止",
-                  {
+                  successHtml +
+                  "批量停止失败的任务如下：</br>" +
+                  errorHtml,
+                  "批量停止", {
                     dangerouslyUseHTMLString: true
                   }
                 );
@@ -1025,8 +915,7 @@ export default {
           }
           this.$alert(
             "批量停止时，以下任务不能被停止,请重新选择：</br>" + errerHtml,
-            "提示",
-            {
+            "提示", {
               dangerouslyUseHTMLString: true
             }
           );
@@ -1035,8 +924,9 @@ export default {
     }
   }
 };
+
 </script>
-<style  rel="stylesheet/scss" lang="scss" scoped>
+<style rel="stylesheet/scss" lang="scss" scoped>
 .limtLength {
   display: inline-block;
   max-width: 140px;
@@ -1047,29 +937,36 @@ export default {
   font-style: normal;
   margin-top: -3px;
 }
+
 .selected-task-type span {
   margin-right: 10px;
   color: #425365;
 }
+
 .selected-task-type span:first-child {
   font-weight: 600;
 }
+
 .selected-task-type span i {
   margin-left: 3px;
   cursor: pointer;
 }
+
 .count-container {
   background-color: #fff;
   border-bottom: 1px solid #d9d9d9;
   margin: 0 auto;
   padding-top: 20px;
 }
+
 .timeSearch {
   float: left;
 }
+
 .el-checkbox {
   width: 95px;
 }
+
 .count-operate {
   width: 95%;
   height: 50px;
@@ -1079,22 +976,25 @@ export default {
     float: right;
     padding-top: 10px;
     margin-right: 15px;
-    
   }
 }
+
 .indicate {
   display: inline-block;
   width: 15px;
   height: 15px;
   border-radius: 50%;
 }
+
 .enc-pagination {
   float: right;
 }
+
 .mainTable {
   width: 95%;
   margin: 0 auto;
 }
+
 .dataSearch {
   display: inline-block;
   width: 210px;
@@ -1112,19 +1012,20 @@ export default {
   i {
     text-indent: 5px;
   }
-  ::-webkit-input-placeholder {
+   ::-webkit-input-placeholder {
     color: #999;
   } ///* 使用webkit内核的浏览器 */
-  :-moz-placeholder {
+   :-moz-placeholder {
     color: #999;
   } ///* Firefox版本4-18 */
-  ::-moz-placeholder {
+   ::-moz-placeholder {
     color: #999;
   } ///* Firefox版本19+ */
-  :-ms-input-placeholder {
+   :-ms-input-placeholder {
     color: #999;
   } ///* IE浏览器 */
 }
+
 .searchDiv {
   width: 95%;
   margin-left: 2.5%;
@@ -1143,6 +1044,7 @@ export default {
     top: 1px;
   }
 }
+
 .doCearch {
   display: inline-block;
   height: 30px;
@@ -1151,26 +1053,30 @@ export default {
   position: relative;
   line-height: 8px;
 }
+
 .el-form-item {
   margin-bottom: 10px;
 }
+
 .el-message-box {
   max-height: 50%;
   overflow: auto;
 }
+
 .el-message-box__wrapper {
   .el-message-box {
     max-height: 50%;
     overflow: auto;
   }
 }
+
 .right-tools {
   float: right;
   margin-right: 10px;
   a {
     font-size: 26px;
-    :hover,
-    :active {
+     :hover,
+     :active {
       color: #f93;
     }
     i {
@@ -1178,6 +1084,7 @@ export default {
     }
   }
 }
+
 </style>
 <style rel="stylesheet/scss" lang="scss">
 .task-template {
@@ -1196,7 +1103,7 @@ export default {
   .el-table__body tbody tr:nth-child(2n + 1) {
     background-color: #eff3f6;
   }
-  .el-table__body tr.hover-row > td {
+  .el-table__body tr.hover-row>td {
     /*  background-color: #95a1b3 !important; */
     color: #fff;
   }
@@ -1216,6 +1123,5 @@ export default {
     margin-left: 15px;
   }
 }
+
 </style>
-
-

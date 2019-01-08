@@ -10,10 +10,10 @@
       </div>
       <!-- loading -->
       <div v-loading="loading" element-loading-text="核验中，请稍等..." element-loading-spinner="el-icon-loading" element-loading-background="rgba(255, 251, 251, 0.77)">
-        <div class="checkData">
+        <div class="checkData" style="padding-left: 40px;">
           校验设置：
           <el-radio v-model="radio" label="0" @change="checkChange" style="color:rgb(96, 98, 102);">全量核验</el-radio>
-          <el-radio v-model="radio" label="1" @change="checkChange" style="color:rgb(96, 98, 102);" :disabled="!this.queryTargetColumnList.length||types=='mongodb'">根据时间范围核验</el-radio>
+          <el-radio v-model="radio" label="1" @change="checkChange" style="color:rgb(96, 98, 102);" :disabled="!this.queryTargetColumnList.length||types=='mongodb'||types=='ftp'">根据时间范围核验</el-radio>
           <el-button type="" size="small" class="checkBtn" @click="doCheck">{{status}}</el-button>
           <div class="">
             <div class="range">
@@ -34,7 +34,7 @@
           <div class="contanst_source">
             <ul>
               <li>源库：</li>
-              <li>源端表：</li>
+              <li>{{types=='fpt'?'源端文件：':'源端表：'}}</li>
               <li>源端数据量：</li>
             </ul>
             <ul>
