@@ -21,7 +21,7 @@
             <el-checkbox v-model="userflag">用户标记</el-checkbox>
           </el-col>
           <el-col :span="24" v-show="userflag">
-            <el-col :span="24" class="surveybg plr30">
+            <el-col :span="24" class="surveybg sur plr30">
               <el-form-item label="资源目录编号:">
                 <el-col :span="4" class="ml0">
                   <el-form-item prop="industry">
@@ -85,7 +85,7 @@
                 </el-col>
               </el-form-item>
             </el-col>
-            <el-col :span="24" class="plr30 mt25">
+            <el-col :span="24" class="plr30 mt25 sur">
               <el-col :span="6">
                 <el-form-item label="数据接入方式:" prop="datamode">
                   <el-select v-model="ruleForm.datamode" placeholder="请选择">
@@ -94,7 +94,7 @@
                 </el-form-item>
               </el-col>
             </el-col>
-            <el-col :span="24" class="plr30 mt20">
+            <el-col :span="24" class="plr30 mt20 sur">
               <el-col :span="6">
                 <el-form-item label="数据范围:" prop="datarange">
                   <el-select v-model="ruleForm.datarange" placeholder="请选择">
@@ -847,5 +847,14 @@ export default {
 .demo-ruleForm {
   padding: 0;
 }
-
+@media screen and ( max-width: 1490px) {
+ .sur {
+  .el-col-4 {
+     width:26%;
+  }
+    .el-col-6 {
+     width:36%;
+  }
+ }
+}
 </style>
