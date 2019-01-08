@@ -97,9 +97,15 @@
                 <i class="el-icon-error"></i>
               </span>
             </span>
-            <span v-show="status.indexOf('3')>-1">
-              失败
-              <span @click="pop('3',status);">
+            <span v-show="status.indexOf('6')>-1">
+              采集失败
+              <span @click="pop('6',status);">
+                <i class="el-icon-error"></i>
+              </span>
+            </span>
+            <span v-show="status.indexOf('7')>-1">
+              汇聚失败
+              <span @click="pop('7',status);">
                 <i class="el-icon-error"></i>
               </span>
             </span>
@@ -159,7 +165,8 @@
             <el-checkbox label="5" name="status">准备中</el-checkbox>
             <el-checkbox label="1" name="status">运行</el-checkbox>
             <el-checkbox label="2" name="status">暂停</el-checkbox>
-            <el-checkbox label="3" name="status">失败</el-checkbox>
+            <el-checkbox label="6" name="status">采集失败</el-checkbox>
+            <el-checkbox label="7" name="status">汇聚失败</el-checkbox>
             <el-checkbox label="4" name="status">完成</el-checkbox>
           </el-checkbox-group>
         </el-form-item>
@@ -224,7 +231,8 @@
             <span v-if="scope.row.status==0">新建</span>
             <span v-if="scope.row.status==1">运行</span>
             <span v-else-if="scope.row.status==2">暂停</span>
-            <span v-else-if="scope.row.status==3" style="color:red">失败</span>
+            <span v-else-if="scope.row.status==6" style="color:red">采集失败</span>
+            <span v-else-if="scope.row.status==7" style="color:red">汇聚失败</span>
             <span v-else-if="scope.row.status==4">完成</span>
             <span v-else-if="scope.row.status==5">准备中</span>
           </template>
@@ -527,10 +535,10 @@ export default {
             }
           });
       }).catch(() => {
-      /*  this.$message({
-          type: 'info',
-          message: '已取消删除'
-        });*/
+        /*  this.$message({
+            type: 'info',
+            message: '已取消删除'
+          });*/
       });
 
     },
@@ -797,15 +805,32 @@ export default {
                   errorHtml +=
                     i + 1 + "." + res.data.data.errorList[i] + "</br>";
                 }
-                _self.$alert(
-                  "操作成功！批量启动成功的任务如下：</br>" +
-                  successHtml +
-                  "批量启动失败的任务如下：</br>" +
-                  errorHtml,
-                  "批量启动", {
-                    dangerouslyUseHTMLString: true
-                  }
-                );
+                if (res.data.data.successList.length == 0 && res.data.data.errorList.length > 0) {
+                  _self.$alert(
+                    "批量启动失败的任务如下：</br>" +
+                    errorHtml,
+                    "批量启动", {
+                      dangerouslyUseHTMLString: true
+                    }
+                  );
+                } else if (res.data.data.errorList.length == 0 && res.data.data.successList.length > 0) {
+                  _self.$alert(
+                    "操作成功！批量启动成功的任务如下：</br>" +
+                    successHtml, "批量启动", {
+                      dangerouslyUseHTMLString: true
+                    }
+                  );
+                } else {
+                  _self.$alert(
+                    "操作成功！批量启动成功的任务如下：</br>" +
+                    successHtml +
+                    "批量启动失败的任务如下：</br>" +
+                    errorHtml,
+                    "批量启动", {
+                      dangerouslyUseHTMLString: true
+                    }
+                  );
+                }
                 _self.init();
               } else {
                 _self.$alert("批量启动失败", "批量启动", {

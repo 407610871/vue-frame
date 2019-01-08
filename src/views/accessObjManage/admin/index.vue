@@ -149,7 +149,7 @@
         </el-table-column>
         <el-table-column label="操作" width="200">
           <template slot-scope="scope">
-            <div class="icon-center">
+            <div :class="(type=='ftp'||type=='mongodb')?'icon-other':'icon-center'">
               <div class="survey" v-if="type=='mysql'|| type=='oracle'|| type=='postgresql' || type=='sqlserver' || type=='mongodb'">
                 <el-tooltip class="item" effect="light" content="数据量更新" placement="top">
                   <i class="enc-icon-shujugengxin" v-on:click="updataSourceSingle(scope.$index, scope.row)" title="数据量更新"></i>
@@ -820,7 +820,11 @@ export default {
   margin: auto;
   text-align: left;
 }
-
+.icon-other {
+  width: 56px;
+  margin: auto;
+  text-align: left;
+}
 .cell i {
   cursor: pointer;
 }
