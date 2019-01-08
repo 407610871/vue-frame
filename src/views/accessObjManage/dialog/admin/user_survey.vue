@@ -625,12 +625,6 @@ export default {
   background: #f0f3f6;
   padding-top: 20px;
 }
-
-.plr30 {
-  padding-left: 30px;
-  padding-right: 30px;
-}
-
 .sursavebtn .el-form-item--medium .el-form-item__content {
   margin-left: 0px;
 }

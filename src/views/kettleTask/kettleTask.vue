@@ -404,7 +404,6 @@ export default {
 }
 .doCearch {
   display: inline-block;
-  height: 30px;
   margin-left: 15px;
   margin-top: 0;
   position: relative;

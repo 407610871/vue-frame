@@ -157,36 +157,14 @@ export default {
 .el-dialog__header {
   margin: 0 20px;
   padding: 20px 10px 0px;
-
   .el-dialog__title {
     font-size: $font-size-medium;
-   /*  color: $color-text-title; */
   }
 }
 
 .el-dialog__title {
   font-size: $font-size-medium;
-  /* color: $color-text-title; */
 }
-.taskMDialog {
-  .title-gra {
-  margin-bottom: 20px;
-  .grab {
-    height: 4px;
-    display: inline-block;
-  }
-  .gra-l {
-    width: 30%;
-    /* background: $color-background-lp; */
-  }
-  .gra-r {
-    width: 70%;
-    /* background: $color-background-rp; */
-  }
-}
-}
-
-
 .el-dialog__body {
   padding-top: 0px;
   padding-left: 30px;

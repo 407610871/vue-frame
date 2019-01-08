@@ -90,21 +90,11 @@ export default {
 @import "src/styles/variables.scss";
 .nav-menu {
   display: inline-block;
-  padding-left: 0px;
   .enc-nav-menu {
     background: transparent;
     .el-submenu {
       height: $enc-nav-header-height;
       line-height: $enc-nav-header-height;
-    }
-  }
-  .el-submenu:hover,
-  .el-submenu:focus {
-    i {
-      color: #fff;
-    }
-    .el-submenu__title i {
-      color: #fff;
     }
   }
 

@@ -1148,12 +1148,6 @@ export default {
   background: #f0f3f6;
   padding-top: 20px;
 }
-
-.plr30 {
-  padding-left: 30px;
-  padding-right: 30px;
-}
-
 .increbtn.el-button--medium {
   padding: 7px 20px;
   margin-left: 10px;

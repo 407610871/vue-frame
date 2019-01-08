@@ -839,11 +839,6 @@ export default {
   padding: 20px 20px 0;
 }
 
-.plr30 {
-  padding-left: 30px;
-  padding-right: 30px;
-}
-
 .demo-ruleForm {
   padding: 0;
 }

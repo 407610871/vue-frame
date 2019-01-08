@@ -13,8 +13,6 @@
             </span>
           </el-button>
         </el-tooltip>
-        <release v-if="releaseflag" v-on:closeDia="releaseflag=false"></release>
-        <Themes v-if="themesflag" v-on:closeDia="themesflag=false"></Themes>
         <el-popover placement="bottom-start" width="200" trigger="hover">
           <ul class="popup-menu warn-menu warn-popover">
             <li class="even-li">{{ userName }}</li>
@@ -60,6 +58,8 @@
         <app-main ref="mainTable" />
       </el-main>
     </div>
+    <release v-if="releaseflag" v-on:closeDia="releaseflag=false"></release>
+    <Themes v-if="themesflag" v-on:closeDia="themesflag=false"></Themes>
   </el-container>
 </template>
 <script>
@@ -361,6 +361,16 @@ export default {
           localStorage.setItem("userSet", JSON.stringify(obj));
           this._getColor();
         }
+      }).catch(error =>{
+        let obj = {
+            "cnName": window.localStorage.getItem('userNames'),
+            "color": "DEFAULT",
+            "appId": 'DACM',
+            "userId": window.localStorage.getItem('userID'),
+            "userName": window.localStorage.getItem('userNames')
+        }
+        localStorage.setItem("userSet", JSON.stringify(obj));
+        this._getColor();
       })
   },
   goRoute: function(name) {
@@ -573,26 +583,6 @@ export default {
     }
   }
 }
-
-.sidebar-control-btn {
-  display: block;
-  position: absolute;
-  z-index: 1000;
-  top: 50%;
-  margin-top: -15px;
-  width: 8px;
-  height: 30px;
-  border: 1px solid #ccc;
-  background-color: #fff;
-  cursor: pointer;
-  color: #999;
-  font-size: 12px;
-  line-height: 26px;
-  i {
-    margin-left: -3px;
-  }
-}
-
 </style>
 <style rel="stylesheet/scss" lang="scss">
 
