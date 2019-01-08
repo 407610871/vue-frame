@@ -23,6 +23,12 @@
         </el-table-column>
         <el-table-column prop="extendParams.filePath" label="路径" v-if="type=='ftp'" show-overflow-tooltip>
         </el-table-column>
+        <el-table-column label="是否包含子目录" v-if="type=='ftp'" width="160" show-overflow-tooltip>
+          <template slot-scope="scope">
+            <span v-if="scope.row.extendParams.isSubDirectory=='true'">是</span>
+            <span v-if="scope.row.extendParams.isSubDirectory=='false'">否</span>
+          </template>
+        </el-table-column>
         <el-table-column label="是否删除文件" v-if="type=='ftp'" width="160" show-overflow-tooltip>
           <template slot-scope="scope">
             <span v-if="scope.row.extendParams.isdelet=='true'">是</span>

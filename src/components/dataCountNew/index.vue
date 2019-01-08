@@ -108,7 +108,7 @@ export default {
   margin: 10px 0;
   font-size: 12px;
   color: #666;
-  text-align: center;
+  text-align: left;
   .item-label {
     display: inline-block;
     margin: 0 10px;
