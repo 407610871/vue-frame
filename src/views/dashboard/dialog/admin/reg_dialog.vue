@@ -131,15 +131,16 @@
             <el-form-item class="my_form_item" label="接入源类型:" prop="syskind">
               <el-radio-group v-model="ruleForm.syskind" style="margin-top:-12px;">
                 <el-radio v-for="(item,index) in syskindList" :label="item.id" :key="item.id" v-if="index<5||accdiaFlag"><span>{{item.name}}</span><span v-if="item.id=='10010' || item.id=='10020'" class="enc-icon-beta betaspan"></span></el-radio>
+                <span class="curspan" style="display:inline-block !important; font-size:14px;" @click="more(accdiaFlag)">{{accdiaName}}</span>
               </el-radio-group>
-              <span class="curspan" @click="more(accdiaFlag)">{{accdiaName}}</span>
+             <!--  <span class="curspan" @click="more(accdiaFlag)">{{accdiaName}}</span> -->
             </el-form-item>
             <div style="float:right;">
               <div style="text-align:right;margin-bottom:10px;">
                 <el-button type="primary" v-if="ruleForm.syskind!=''&&ruleForm.syskind!='10023'" @click="testForm('ruleForm')" v-loading.fullscreen.lock="fullscreenLoading">测试连接</el-button>
               </div>
             </div>
-            <el-col>
+            <el-col :class="(accdiaFlag==true&&ruleForm.syskind!='10023')?'ctp50':''">
               <el-col :span="10" class="uncol">
                 <span class="fl" v-show="this.ruleForm.author=='true'&&ruleForm.syskind!=''&&ruleForm.syskind!='10023'">*</span>
                 <el-form-item class="fl unrequired" label="IP地址/主机名:" prop="ipname" v-if="ruleForm.syskind!=''&&ruleForm.syskind!='10023'">
@@ -210,7 +211,7 @@
                   </el-select>
                 </el-form-item>
               </el-col>
-              <el-col :span="24" v-if="ruleForm.syskind=='10023'" class="fileItem">
+             <el-col :span="24" v-if="ruleForm.syskind=='10023'" class="fileItem" :class="accdiaFlag==true?'ctips':''">
                 <el-form-item label="选择本地文件(仅支持txt,excel,csv文件):" prop="upfile">
                   <el-upload class="upload-demo" name="files" ref="upload" action :on-preview="handlePreview" :on-remove="handleRemove" :file-list="fileList" :auto-upload="false">
                     <el-button slot="trigger" size="small" type="primary">选择文件</el-button>
@@ -1277,7 +1278,9 @@ export default {
 .el-dialog .otherInfo .fileItem .el-form-item__label {
   width: 235px !important;
 }
-
+.el-dialog .otherInfo .fileItem .el-form-item {
+  height: auto !important;
+}
 .icon-dai i {
   cursor: pointer;
 }
@@ -1325,5 +1328,13 @@ export default {
 }
 .betaspan {
   font-size: 30px;
+}
+@media screen and ( max-width: 1790px) {
+ .reg-dialog .ctp50 {
+   margin-top:50px;
+ }
+ .ctips {
+   margin-top:30px;
+ }
 }
 </style>
