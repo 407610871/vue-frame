@@ -134,19 +134,16 @@
  .el-menu--horizontal>.el-submenu.is-active .el-submenu__title {
    @include el-menu-item-active($el-radio-btn, $el-radio-btn);
  }
-
- @media screen and ( max-width: 1280px) {
-   .enc-header {
-     height: 50px!important;
-     line-height: 50px!important;
-     .el-menu--horizontal>.el-submenu .el-submenu__title {
-       height: 50px;
-       line-height: 50px;
-       padding: 0 10px;
-     }
-   }
+ .el-menu--horizontal>.el-submenu .el-submenu__title {
+   color: #425365;
+   font-size: 15px;
  }
-
+ .el-menu--horizontal>.el-submenu .el-submenu__icon-arrow {
+   margin-left: 7px;
+ }
+ .el-popover {
+    margin-top: 0!important;
+ }
  .el-breadcrumb__inner a:hover,
  .el-breadcrumb__inner.is-link:hover {
    @include el-color($el-radio-btn);
@@ -237,6 +234,9 @@
    @include el-border($el-table-thead-background-theme);
  }
 
+ .el-button--mini, .el-button--small {
+    border-radius: 0px;
+  }
  .comTable .el-table .cell .el-button--primary {
 
    @include el-button--primary($el-primary-theme);

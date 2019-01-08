@@ -357,13 +357,6 @@ export default {
   width: 235px !important;
 }
 
-
-
-.plr30 {
-  padding-left: 30px;
-  padding-right: 30px;
-}
-
 .typeMapDia {
   width: 100%;
 }

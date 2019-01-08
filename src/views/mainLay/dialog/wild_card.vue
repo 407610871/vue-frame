@@ -347,11 +347,6 @@ export default {
   padding-top: 20px;
 }
 
-.plr30 {
-  padding-left: 30px;
-  padding-right: 30px;
-}
-
 .mtsItem {
   .el-form-item--medium .el-form-item__content {
     margin-left: 10px !important;

@@ -90,71 +90,17 @@ export default {
 @import "src/styles/variables.scss";
 .nav-menu {
   display: inline-block;
-  padding-left: 0px;
-
   .enc-nav-menu {
     background: transparent;
-
-    .el-menu-item {
-      height: $enc-nav-header-height;
-      line-height: $enc-nav-header-height;
-      font-size:15px;
-      i {
-        margin-right: 10px;
-        font-size: 36px;
-        color: #4f4f4f;
-      }
-    }
-    .el-submenu {
-      .el-submenu__title {
-        i {
-          margin-right: 10px;
-          font-size: 36px;
-          color: #4f4f4f;
-        }
-      }
-    }
-    .is-active {
-      i {
-        color: #409efe;
-      }
-    }
-    .el-menu-item:hover,
-    .el-menu-item:focus {
-      i {
-        color: #fff;
-      }
-    }
-
     .el-submenu {
       height: $enc-nav-header-height;
       line-height: $enc-nav-header-height;
     }
   }
-  .el-submenu:hover,
-  .el-submenu:focus {
-    i {
-      color: #fff;
-    }
-    .el-submenu__title i {
-      color: #fff;
-    }
-  }
+
 }
 
 @media screen and ( max-width: 1280px) {
-  .nav-menu {
-    .enc-nav-menu {
-      .el-menu-item {
-        height: $enc-nav-header-mini-height;
-        line-height: $enc-nav-header-mini-height;
-      }
-    }
-  }
-  .nav-menu .enc-nav-menu .el-submenu {
-    height: $enc-nav-header-mini-height;
-    line-height: $enc-nav-header-mini-height;
-  }
   .enc-sub-header{
     margin-top:0px;
   }

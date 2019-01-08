@@ -101,7 +101,7 @@
         <el-table-column prop="extendParams.fileSize" label="文件大小" v-if="type=='file'" show-overflow-tooltip>
         </el-table-column>
         <el-table-column prop="extendParams.messagesDequeued" label="更新方式" v-if="type=='file'" show-overflow-tooltip>
-          <template slot-scope="scope">
+          <template>
             <span>历史</span>
           </template>
         </el-table-column>

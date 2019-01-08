@@ -49,21 +49,7 @@
       }
     }
   }
-  .title-gra {
-    margin-bottom: 20px;
-    .grab {
-      height: 4px;
-      display: inline-block;
-    }
-    .gra-l {
-      width: 30%;
-      @include el-color-lp($color-background-lp);
-    }
-    .gra-r {
-      width: 70%;
-      @include el-color-rp($color-background-rp);
-    }
-  }
+
   .el-dialog__body {
     padding: 20px 40px 40px 40px;
     .daiInfo-title {
@@ -311,22 +297,6 @@
 .el-input.is-active .el-input__inner,
 .el-input__inner:focus {
   @include el-border-color($el-radio-btn);
-}
-
- .top-inver-title {
-  margin-bottom: 20px;
-  .grab {
-    height: 4px;
-    display: inline-block;
-  }
-  .gra-l {
-    width: 30%;
-    @include el-color-lp($color-background-lp);
-  }
-  .gra-r {
-    width: 70%;
-    @include el-color-rp($color-background-rp);
-  }
 }
 
 .topInver .el-dialog__title {

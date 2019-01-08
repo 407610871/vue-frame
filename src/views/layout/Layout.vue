@@ -1,11 +1,11 @@
 <template>
   <el-container>
-    <el-header height="66px" class="enc-header">
+    <el-header class="enc-header">
       <div class="enc-logo">
         <img :src="logo" alt>
       </div>
       <nav-menu />
-      <div class="right-menu clearfix">
+      <div class="right-menu">
         <el-tooltip class="item" effect="light" content="告警中心" placement="bottom">
           <el-button class="warncon" v-on:click="_goWarn()">
             <span>
@@ -13,8 +13,6 @@
             </span>
           </el-button>
         </el-tooltip>
-        <release v-if="releaseflag" v-on:closeDia="releaseflag=false"></release>
-        <Themes v-if="themesflag" v-on:closeDia="themesflag=false"></Themes>
         <el-popover placement="bottom-start" width="200" trigger="hover">
           <ul class="popup-menu warn-menu warn-popover">
             <li class="even-li">{{ userName }}</li>
@@ -43,7 +41,7 @@
         </el-popover>
       </div>
     </el-header>
-    <div style="display:flex; height: calc(100vh - 66px);">
+    <div style="display:flex; height: calc(100vh - 66px);" class="clearfix">
       <el-aside :width="sideBarWidth+'px'" class="enc-aside">
         <new-aside-tree></new-aside-tree>
         <div class="sidebar-control-btn" v-bind:style="{'left':sideBarWidth+'px'}" v-on:click="changeSideBar">
@@ -52,16 +50,16 @@
         </div>
       </el-aside>
       <el-main class="enc-main">
-        <div class="enc-sub-header">
           <el-breadcrumb separator="/">
             <el-breadcrumb-item v-for="(item,index) in breadcrumb" :key="index">
               <a href="javascript:void(0)" v-on:click="breadcrumbChange(index,item)">{{item.breadcrumbName}}</a>
             </el-breadcrumb-item>
           </el-breadcrumb>
-        </div>
         <app-main ref="mainTable" />
       </el-main>
     </div>
+    <release v-if="releaseflag" v-on:closeDia="releaseflag=false"></release>
+    <Themes v-if="themesflag" v-on:closeDia="themesflag=false"></Themes>
   </el-container>
 </template>
 <script>
@@ -363,6 +361,16 @@ export default {
           localStorage.setItem("userSet", JSON.stringify(obj));
           this._getColor();
         }
+      }).catch(error =>{
+        let obj = {
+            "cnName": window.localStorage.getItem('userNames'),
+            "color": "DEFAULT",
+            "appId": 'DACM',
+            "userId": window.localStorage.getItem('userID'),
+            "userName": window.localStorage.getItem('userNames')
+        }
+        localStorage.setItem("userSet", JSON.stringify(obj));
+        this._getColor();
       })
   },
   goRoute: function(name) {
@@ -449,6 +457,7 @@ export default {
 };
 
 </script>
+
 <style rel="stylesheet/scss" lang="scss" scoped>
 @import "src/styles/variables.scss";
 @import "src/styles/mixin.scss";
@@ -459,9 +468,6 @@ export default {
 .warncon {
   width: 66px;
   height: 66px;
-  /*  background: url("../../assets/images/warnicon.png");
- background-repeat: no-repeat;
- background-size: contain; */
   float: left
 }
 
@@ -477,65 +483,22 @@ export default {
   width: 100%;
 }
 
-.enc-logo {
-  display: inline-block;
-  width: 210px;
-  background: #d7dce0;
-  height: 100%;
-  line-height: $enc-nav-header-height;
-  text-align: center;
-  vertical-align: top;
-  img {
-    width: 159px;
-    vertical-align: middle;
-  }
-}
-
 .clearfix {
   float: none;
   clear: both;
 }
-
-.enc-header {
-  padding: 0;
-  height: $enc-nav-header-height;
-  line-height: $enc-nav-header-height;
-  background: #e6eaed;
-
-  .right-menu {
-    float: right;
-    height: 100%;
-    .el-button {
-      width: 66px;
-      height: 100%;
-      margin: 0;
-      border-radius: 0;
-      border: 0;
-      padding: 0;
-      float: left;
-
-      &.user {
-        background: #cac fd5;
-        vertical-align: top;
-      }
-      &.setting {
-        background: #50609c;
-        vertical-align: top;
-        i {
-          color: #fff;
-        }
-      }
-      &.document {
-        background: #479bd9;
-        vertical-align: top;
-        i {
-          color: #fff;
-        }
-      }
-    }
-  }
+.enc-header .right-menu .el-button.moreSys:focus,
+.enc-header .right-menu .el-button.moreSys:hover {
+  width: 66px;
+  height: 66px;
+  background: url("../../assets/images/moreicon.png");
+  background-repeat: no-repeat;
+  background-size: contain;
+  float: left
 }
-
+.enc-header .right-menu .el-button.user {
+  background: #479bd9 !important;
+}
 .enc-aside {
   width: 210px;
   @include aside-bg-color($enc-aside-background-theme);
@@ -563,12 +526,6 @@ export default {
     margin-top: 0px;
   }
 }
-
-.el-breadcrumb {
-  line-height: $enc-nav-sub-header-height;
-  text-indent: 0;
-}
-
 .enc-search {
   float: right;
   margin-top: 3px;
@@ -610,7 +567,6 @@ export default {
     }
   }
 }
-
 .popup-menu {
   margin: 0;
   padding: 0;
@@ -627,88 +583,12 @@ export default {
     }
   }
 }
-
-.sidebar-control-btn {
-  display: block;
-  position: absolute;
-  z-index: 1000;
-  top: 50%;
-  margin-top: -15px;
-  width: 8px;
-  height: 30px;
-  border: 1px solid #ccc;
-  background-color: #fff;
-  cursor: pointer;
-  color: #999;
-  font-size: 12px;
-  line-height: 26px;
-  i {
-    margin-left: -3px;
-  }
-}
-
-@media screen and (max-width: 1280px) {
-  .enc-logo {
-    line-height: 50px;
-  }
-
-  .el-header {
-    .right-menu {
-      .el-button {
-        width: 60px;
-        height: 60px;
-      }
-    }
-  }
-}
-
 </style>
 <style rel="stylesheet/scss" lang="scss">
-.enc-header {
-  .right-menu {
-    .el-button {
-      &.user {
-        i {
-          font-size: 32px;
-          color: #fff !important;
-        }
-      }
-      &.setting {
-        i {
-          font-size: 32px;
-          color: #fff;
-        }
-      }
-      &.document {
-        i {
-          font-size: 32px;
-          color: #fff;
-        }
-      }
-    }
-  }
-}
-
-.enc-header .right-menu .el-button.user {
-  background: #479bd9 !important;
-}
 
 .moreSys {
   width: 66px;
   height: 66px;
-  /* background: url("../../assets/images/moreicon.png");
-  background-repeat: no-repeat;
-  background-size: contain; */
-  float: left
-}
-
-.enc-header .right-menu .el-button.moreSys:focus,
-.enc-header .right-menu .el-button.moreSys:hover {
-  width: 66px;
-  height: 66px;
-  background: url("../../assets/images/moreicon.png");
-  background-repeat: no-repeat;
-  background-size: contain;
   float: left
 }
 

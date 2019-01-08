@@ -382,9 +382,4 @@ export default {
   padding-top: 20px;
 }
 
-.plr30 {
-  padding-left: 30px;
-  padding-right: 30px;
-}
-
 </style>

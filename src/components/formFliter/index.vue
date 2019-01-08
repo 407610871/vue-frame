@@ -1,52 +1,36 @@
 <template>
   <el-form label-width="120px" class="form-fliter" @submit.native.prevent>
-    <div class="searchDiv">
-      <div class="dataSearch">
-        <i class="el-icon-search"></i>
-        <input type="text" v-model="keyword" placeholder="请输入查询条件" @keyup.enter="search"/>
+      <div class="searchDiv">
+        <div class="dataSearch">
+          <i class="el-icon-search"></i>
+          <input type="text" v-model="keyword" placeholder="请输入查询条件" @keyup.enter="search"/>
+        </div>
+        <i v-if="this.$route.params.type=='ftp'||this.$route.params.type=='mongodb'"></i>
+        <span v-else @click="doCollapse">高级搜索 <i :class="collapse?'el-icon-caret-bottom':'el-icon-caret-top'"></i> </span>
+        <el-button type="primary" class="doCearch" @click="search" >查询</el-button>
       </div>
-      <i v-if="this.$route.params.type=='ftp'||this.$route.params.type=='mongodb'"></i>
-      <span v-else @click="doCollapse">高级搜索 <i :class="collapse?'el-icon-caret-bottom':'el-icon-caret-top'"></i> </span>
-      <el-button type="primary" class="doCearch" @click="search" >查询</el-button>
-    </div>
 
-    <div class="checkDiv">
-      <el-form-item class="isSelect" label="已筛选条件：" v-show="keyword!=''||formSeledShow.dataSourceName.length!=0||formSeledShow.network.length!=0||formSeledShow.platform.length!=0||formSeledShow.objectType.length!=0||formSeledShow.dataRange.length!=0">
-        <div class="look" v-show="keyword!=''">
-              查询条件：<span class="lookstyle searchStyle">{{keyword}}</span> <i style="margin-left: 5px;cursor: pointer;" class="el-icon-error" @click="keyword=''"></i>
-        </div>
-        <div class="look" v-show="formSeledShow[item.id].length!=0" v-for="(item,index1) in dataObj" :key="index1">{{item.name}}
-          <span   class="lookstyle" v-for="(item1,index) in formSeledShow[item.id]" :key="index"> {{item1.name}} <i  class="el-icon-error" @click="delSelect(index,index1)"></i>
-          </span>
-        </div>
-        <!-- <div class="look" v-show="formSeledShow.dataSourceName.length!=0">接入源类型：
-          <span v-for="(dataSourceName,key,index) in formSeledShow.dataSourceName" :key="index">{{dataSourceName.name}} <i class="el-icon-error" @click="delSelect(index,0)"></i> </span>
-        </div>
-        <div class="look" v-show="formSeledShow.network.length!=0">接入数据来源：
-          <span v-for="(network,key,index) in formSeledShow.network" :key="index">{{network.name}} <i class="el-icon-error" @click="delSelect(index,1)"></i> </span>
-        </div>
-        <div class="look" v-show="formSeledShow.platform.length!=0">对接平台：
-          <span v-for="(platform,key,index) in formSeledShow.platform" :key="index">{{platform.name}} <i class="el-icon-error" @click="delSelect(index,2)"></i> </span>
-        </div>
-        <div class="look" v-show="formSeledShow.objectType.length!=0">接入对象类型：
-          <span v-for="(objectType,key,index) in formSeledShow.objectType" :key="index">{{objectType.name}} <i class="el-icon-error" @click="delSelect(index,0)"></i> </span>
-        </div>
-        <div class="look" v-show="formSeledShow.dataRange.length!=0">数据范围：
-          <span v-for="(dataRange,key,index) in formSeledShow.dataRange" :key="index">{{dataRange.name}} <i class="el-icon-error" @click="delSelect(index,1)"></i> </span>
-        </div>
-         -->
-      </el-form-item>
-      <el-form-item v-show="!collapse" v-for="(item,indexs) in dataObj" :label="item.name" :key="indexs" class="checkDivItem">
-        <el-checkbox-group v-if="item.type=='checkbox'" v-model="formSeled[item.id]" @change="formFilter">
-          <el-checkbox v-for="(subItem,index) in item.checkData" v-show="index<(dataObj[indexs].limit+1)" :label="subItem.id" :key="index">{{subItem.name}}</el-checkbox>
-        </el-checkbox-group> 
+      <div class="checkDiv">
+        <el-form-item class="isSelect" label="已筛选条件：" v-show="keyword!=''||formSeledShow.dataSourceName.length!=0||formSeledShow.network.length!=0||formSeledShow.platform.length!=0||formSeledShow.objectType.length!=0||formSeledShow.dataRange.length!=0">
+          <div class="look" v-show="keyword!=''">
+                查询条件：<span class="lookstyle searchStyle">{{keyword}}</span> <i style="margin-left: 5px;cursor: pointer;" class="el-icon-error" @click="keyword=''"></i>
+          </div>
+          <div class="look" v-show="formSeledShow[item.id].length!=0" v-for="(item,index1) in dataObj" :key="index1">{{item.name}}
+            <span   class="lookstyle" v-for="(item1,index) in formSeledShow[item.id]" :key="index"> {{item1.name}} <i  class="el-icon-error" @click="delSelect(index,index1)"></i>
+            </span>
+          </div>
+        </el-form-item>
+        <el-form-item v-show="!collapse" v-for="(item,indexs) in dataObj" :label="item.name" :key="indexs" class="checkDivItem">
+          <el-checkbox-group v-if="item.type=='checkbox'" v-model="formSeled[item.id]" @change="formFilter">
+            <el-checkbox v-for="(subItem,index) in item.checkData" v-show="index<(dataObj[indexs].limit+1)" :label="subItem.id" :key="index">{{subItem.name}}</el-checkbox>
+          </el-checkbox-group> 
 
-        <el-radio  v-if="item.type=='radio'" v-for="(subItem) in item.checkData" v-model="formSeled[item.id]" :label="subItem.id" :key="subItem.id" @change="formFilter">{{subItem.name}}</el-radio>
-        <span v-if="item.checkData.length>dataObj[indexs].limit&&item.checkData.length>5" class="moreSeclect" @click="domoreSeclect(indexs)">  更多  <i :class="!doMoreArray[indexs]?'el-icon-caret-bottom':'el-icon-caret-top'"></i> </span>
-        <span v-else-if="item.checkData.length<=dataObj[indexs].limit&&item.checkData.length>5" class="moreSeclect" @click="domoreSeclect(indexs)"> 收起 <i :class="!doMoreArray[indexs]?'el-icon-caret-bottom':'el-icon-caret-top'"></i> </span>
-        <!-- <span v-else-if=""></span> -->
-      </el-form-item>
-    </div>
+          <el-radio  v-if="item.type=='radio'" v-for="(subItem) in item.checkData" v-model="formSeled[item.id]" :label="subItem.id" :key="subItem.id" @change="formFilter">{{subItem.name}}</el-radio>
+          <span v-if="item.checkData.length>dataObj[indexs].limit&&item.checkData.length>5" class="moreSeclect" @click="domoreSeclect(indexs)">  更多  <i :class="!doMoreArray[indexs]?'el-icon-caret-bottom':'el-icon-caret-top'"></i> </span>
+          <span v-else-if="item.checkData.length<=dataObj[indexs].limit&&item.checkData.length>5" class="moreSeclect" @click="domoreSeclect(indexs)"> 收起 <i :class="!doMoreArray[indexs]?'el-icon-caret-bottom':'el-icon-caret-top'"></i> </span>
+          <!-- <span v-else-if=""></span> -->
+        </el-form-item>
+      </div>
   </el-form>
 </template>
 <script>
@@ -197,19 +181,32 @@ export default {
     margin-bottom: 2px;
   }
 }
+.searchDiv {
+  span {
+    display: inline-block;
+    font-size: 15px;
+    cursor: pointer;
+    width: 100px;
+    height: 30px;
+    border: 1px solid #C8CFD5;
+    border-left: none;
+    line-height: 30px;
+    text-align: center;
+    position: relative;
+  }
+}
 .dataSearch {
   display: inline-block;
   width: 210px;
   height: 30px;
-  border: 1px solid #c9cdd0;
+  line-height: 30px;
+  border: 1px solid #C8CFD5;
   input {
-    margin-left: 5px;
+    margin-left: 7px;
     width: 180px;
     background-color: transparent;
     border: 0 none;
     outline: 0 none;
-    height: 28px;
-    font-size: 14px;
   }
   i {
     text-indent: 5px;
@@ -227,45 +224,22 @@ export default {
     color: #999;
   } ///* IE浏览器 */
 }
-.searchDiv {
-  margin-left: 2.5%;
-  margin-bottom: 20px;
-  span {
-    display: inline-block;
-    font-size: 14px;
-    cursor: pointer;
-    width: 100px;
-    height: 30px;
-    border: 1px solid #c9cdd0;
-    border-left: none;
-    line-height: 30px;
-    text-align: center;
-    position: relative;
-    top: 1px;
-  }
-}
 .doCearch {
   display: inline-block;
-  height: 30px;
   margin-left: 15px;
   margin-top: 0;
   position: relative;
-  // top: 2px;
-  line-height: 8px;
+  line-height: 12px;
 }
 .el-form-item {
   margin-bottom: 10px;
 }
 .checkDiv {
-  width: 95%;
-  // margin-left: 20px;
-  margin: 0 auto;
+   margin-left: 27px;
   .isSelect {
     width: 100%;
     max-height: 70px;
     overflow-y: auto;
-    // position: relative;
-    // top: -10px;
   }
   div {
     display: inline-block;

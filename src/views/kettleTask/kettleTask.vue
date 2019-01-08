@@ -1,6 +1,6 @@
 <template>
 <div v-loading="loading">
-    <div class="count-container" ref="searchArea">
+    <div class="el-breadcrumb" ref="searchArea">
         <div class="searchDiv">
             <div class="dataSearch">
                 <i class="el-icon-search"></i>
@@ -9,14 +9,6 @@
             <span  @click="doMoreSearch" >高级搜索 <i :class="!moreSearch?'el-icon-caret-bottom':'el-icon-caret-top'"></i>  </span>
             <el-button type="primary" class="doCearch" @click="search">查询</el-button> 
         </div>
-        <!-- <el-tag
-            v-for="(item,index) in status"
-            :key="index"
-            :disable-transitions="false"
-            closable
-            @close="handleClose(item)">
-            {{getStatusName(item)}}
-        </el-tag> -->
         <el-form label-width="110px" class="formGroupSelect" v-if="taskName!='' || status.length || time.length">
             <el-form-item label="已选查询条件:">
                 <div v-show="taskName!=''" class="selected-task-type">
@@ -57,40 +49,42 @@
             </el-form-item>
         </el-form>
     </div>
-    <el-table :data="tableData" :height="tableHeight" stripe border class="table-data-list" tooltip-effect="light">
-        <el-table-column label="序号" type="index" width="100"></el-table-column>
-        <el-table-column label="任务名称" prop="taskName" :show-overflow-tooltip='true' min-width="95"></el-table-column>
-        <el-table-column label="任务类型"  prop="taskType" min-width="95"></el-table-column>
-        <el-table-column label="任务开始时间" :show-overflow-tooltip='true' min-width="150">
-            <template slot-scope="scope">
-                <span>{{scope.row.startTime | formatDateTime}}</span>
-            </template>
-        </el-table-column>
-        <el-table-column label="任务停止时间" :show-overflow-tooltip='true' min-width="150">
-            <template slot-scope="scope">
-                <span>{{scope.row.endTime | formatDateTime}}</span>
-            </template>
-        </el-table-column>
-        <el-table-column label="任务状态" min-width="95">
-            <template slot-scope="scope">
-                <span v-if="scope.row.status == 'create'">新建</span>
-                <span v-if="scope.row.status == 'Running'">运行</span>
-                <span v-if="scope.row.status == 'Paused'">暂停</span>
-                <span v-if="scope.row.status == 'Finished (with errors)'" class="finished-fail">失败</span>
-                <span v-if="scope.row.status == 'Finished'">完成</span>
-            </template>
-        </el-table-column>
-        <el-table-column label="操作" min-width="90">
-            <template slot-scope="scope">
-                <span v-if="scope.row.status == 'Running'" class="icon-span-disabled el-icon-remove-outline"></span>
-                <span v-else class="icon-span el-icon-caret-right" title="启动" @click="doStart(scope.row)"></span>
-                <span v-if="scope.row.status == 'create'" class="icon-span-disabled el-icon-view"></span>
-                <span v-else class="icon-span el-icon-view" title="查看" @click="doView(scope.row)"></span>
-                <span v-if="scope.row.status == 'Running'" class="icon-span-disabled el-icon-delete"></span>
-                <span v-else class="icon-span el-icon-delete" title="删除" @click="doDelete(scope.row)"></span>
-            </template>
-        </el-table-column>
-    </el-table>
+    <div class="main-content">
+        <el-table :data="tableData" :height="tableHeight" stripe border tooltip-effect="light">
+            <el-table-column label="序号" type="index" width="100"></el-table-column>
+            <el-table-column label="任务名称" prop="taskName" :show-overflow-tooltip='true' min-width="95"></el-table-column>
+            <el-table-column label="任务类型"  prop="taskType" min-width="95"></el-table-column>
+            <el-table-column label="任务开始时间" :show-overflow-tooltip='true' min-width="150">
+                <template slot-scope="scope">
+                    <span>{{scope.row.startTime | formatDateTime}}</span>
+                </template>
+            </el-table-column>
+            <el-table-column label="任务停止时间" :show-overflow-tooltip='true' min-width="150">
+                <template slot-scope="scope">
+                    <span>{{scope.row.endTime | formatDateTime}}</span>
+                </template>
+            </el-table-column>
+            <el-table-column label="任务状态" min-width="95">
+                <template slot-scope="scope">
+                    <span v-if="scope.row.status == 'create'">新建</span>
+                    <span v-if="scope.row.status == 'Running'">运行</span>
+                    <span v-if="scope.row.status == 'Paused'">暂停</span>
+                    <span v-if="scope.row.status == 'Finished (with errors)'" class="finished-fail">失败</span>
+                    <span v-if="scope.row.status == 'Finished'">完成</span>
+                </template>
+            </el-table-column>
+            <el-table-column label="操作" min-width="90">
+                <template slot-scope="scope">
+                    <span v-if="scope.row.status == 'Running'" class="icon-span-disabled enc-icon-feizhi"></span>
+                    <span v-else class="icon-span enc-icon-qidongyunhang1" title="启动" @click="doStart(scope.row)"></span>
+                    <span v-if="scope.row.status == 'create'" class="icon-span-disabled enc-icon-heyanchakan"></span>
+                    <span v-else class="icon-span enc-icon-heyanchakan" title="查看" @click="doView(scope.row)"></span>
+                    <span v-if="scope.row.status == 'Running'" class="icon-span-disabled enc-icon-shanchu"></span>
+                    <span v-else class="icon-span enc-icon-shanchu" title="删除" @click="doDelete(scope.row)"></span>
+                </template>
+            </el-table-column>
+        </el-table>
+    </div>    
     <el-footer>
         <div class="enc-pagination">
             <el-pagination  style="float:right; margin:10px;"
@@ -113,6 +107,7 @@ export default {
     data(){
         return {
             loading:false,
+            collapse:false,
             pageNum: 1,
             totalPage: 0,
             status:JSON.parse(JSON.stringify(this.$store.state.kettleTask.status)),
@@ -142,24 +137,15 @@ export default {
         this.$store.state.deptId
         );
         this.$root.eventHub.$emit("setActiveNav", 3);
-        // this.storeReady();
     },
     components:{
         dialogTaskView:dialogTaskView
     },
     computed:{
         tableHeight() {
-          // return  !this.moreSearch?   window.innerHeight - 357:window.innerHeight - 480;
-           /* if(!this.moreSearch){
-               if(!this.taskName){
-                   return window.innerHeight - 260;
-               }else{
-                   return window.innerHeight - 312;
-               }
-           }else{
-               return window.innerHeight - 460;
-           } */
-           return window.innerHeight - this.searchHeight - 194;
+            return this.collapse ?
+                window.innerHeight - this.searchHeight - 205:
+                window.innerHeight - 245;
         },
         _checkStatus(){
             return this.checkStatus.map(item => item.label);
@@ -199,13 +185,7 @@ export default {
             this.isIndeterminate = this.status.length > 0 && this.status.length < this.checkStatus.length;
             this.checkAll = this.status.length == this.checkStatus.length;
         },
-       /*  handleClose(item){
 
-        },
-        getStatusName(label){
-            let obj = this.checkStatus.find(item => item.label == label);
-            return obj.name;
-        }, */
         handleCheckAllChange(val){
             if(val){
                 this.status = [].concat(this._checkStatus);
@@ -318,6 +298,7 @@ export default {
         },
         //高级搜索
         doMoreSearch(){
+            this.collapse = !this.collapse;
             this.moreSearch=!this.moreSearch;
             //this.status=[];
         },
@@ -377,89 +358,74 @@ export default {
         cursor:pointer;
     }
 }
-.count-container {
-  background-color: #fff;
-  border-bottom: 1px solid #d9d9d9;
-  margin: 0 auto;
-  padding-top: 20px;
+
+.searchDiv {
+  span {
+    display: inline-block;
+    font-size: 15px;
+    cursor: pointer;
+    width: 100px;
+    height: 30px;
+    border: 1px solid #C8CFD5;
+    border-left: none;
+    line-height: 30px;
+    text-align: center;
+    position: relative;
+  }
 }
 .dataSearch {
   display: inline-block;
   width: 210px;
   height: 30px;
-  border: 1px solid #c9cdd0;
+  line-height: 30px;
+  border: 1px solid #C8CFD5;
   input {
-    margin-left: 5px;
+    margin-left: 7px;
     width: 180px;
     background-color: transparent;
     border: 0 none;
     outline: 0 none;
-    height: 28px;
-    font-size: 14px;
   }
-  i{
+  i {
     text-indent: 5px;
   }
   ::-webkit-input-placeholder {
     color: #999;
-  } /* 使用webkit内核的浏览器 */
+  } ///* 使用webkit内核的浏览器 */
   :-moz-placeholder {
     color: #999;
-  } //* Firefox版本4-18 */
+  } ///* Firefox版本4-18 */
   ::-moz-placeholder {
     color: #999;
-  } //* Firefox版本19+ */
+  } ///* Firefox版本19+ */
   :-ms-input-placeholder {
     color: #999;
-  } //* IE浏览器 */
+  } ///* IE浏览器 */
 }
-.searchDiv {
-    margin-left: 2.5%;
-    margin-bottom: 20px;
-    span {
-        display: inline-block;
-        font-size: 14px;
-        cursor: pointer;
-        width: 100px;
-        height: 30px;
-        border: 1px solid #c9cdd0;
-        border-left: none;
-        line-height: 30px;
-        text-align: center;
-        position: relative;
-        top: 1px;
-    }
-}
-.doCearch{
-    display:inline-block;
-    height:30px;
-    margin-left:15px;
-    margin-top:0;
-    position:relative;
-    line-height:8px;
+.doCearch {
+  display: inline-block;
+  margin-left: 15px;
+  margin-top: 0;
+  position: relative;
+  line-height: 12px;
 }
 .el-checkbox-group{
     display:inline-block;
     margin-left:30px;
 }
 .icon-span{
-    font-size:18px;
-   /*  color:#0095e7; */
+    font-size:21px;
     cursor:pointer;
     margin-right:5px;
 }
 .icon-span-disabled{
-    font-size:18px;
+    font-size:21px;
     color:#ccc;
     cursor: not-allowed;
     margin-right:5px;
 }
 .finished-fail{
     color:red;
-}
-.table-data-list{
-    margin:20px auto 0;
-    width:95%;
 }
 </style>
 <style lang="scss">

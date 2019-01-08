@@ -1,17 +1,11 @@
 <template>
-  <div class="taskMDialog themesDialog">
-    <!-- <el-tooltip class="item" effect="light" content="版本信息" placement="bottom">
-      <el-button @click="dialogVisible = true" class="document" icon="enc-icon-documents"></el-button>
-    </el-tooltip> -->
-    <!--  <a href="javascript:void(0)" @click="dialogVisible = true" >版本信息</a> -->
-    <el-dialog title="主题" :visible.sync="dialogVisible" width="30%" :before-close="closeDialog">
-      <div class="title-gra">
-        <span class="grab gra-l"></span>
-        <span class="grab gra-r"></span>
+    <el-dialog title="主题" :visible.sync="dialogVisible" :before-close="closeDialog">
+      <div class="title-gra plr30">
+        <div class="grab gra-r">
+          <span class="grab gra-l"></span>
+        </div>
       </div>
-      <el-form :model="ruleForm" ref="ruleForm" label-width="100px" class="demo-ruleForm" :rules="formRules" v-loading="loading">
-        <el-col :span="24" class="chDe">
-          <el-col :span="3" class="bank">bank</el-col>
+      <el-form :model="ruleForm" ref="ruleForm" label-width="100px" :rules="formRules" v-loading="loading">
           <el-form-item label="主题颜色:" prop="themeName">
             <el-select v-model="ruleForm.themeName" placeholder="请选择">
               <el-option :label="item.label" :value="item.value" :key="item.value" v-for="item in themes">
@@ -20,22 +14,15 @@
               </el-option>
             </el-select>
           </el-form-item>
-        </el-col>
-        <el-col :span="24" class="tcenter ftpbtn">
-          <el-form-item class="mrf20">
-            <el-button type="primary" size="small" @click="save()">保存</el-button>
-            <el-button @click="closeDialog()" size="small">关闭</el-button>
-          </el-form-item>
-        </el-col>
       </el-form>
+      <div class="mr-btn clearfix">
+          <el-button type="primary" size="small" @click="save()">保存</el-button>
+          <el-button @click="closeDialog()" size="small">关闭</el-button>
+      </div>
     </el-dialog>
-  </div>
 </template>
 <script type="text/javascript" src="../release/js/xml2json.min.js"></script>
 <script>
-/*import version from '@/views/mainLay/dialog/release_version'*/
-// import versionBank from '@/views/mainLay/release/data/version1.2.2.xml'
-/*console.log(versionBank);*/
 export default {
   name: "taskMDialog",
   data: function() {
@@ -150,44 +137,6 @@ export default {
 <style lang="scss">
 @import "@/assets/css/base.scss";
 @import "@/assets/css/dialog.scss";
-.themesDialog {
-  .ftpbtn {
-    margin-top: 110px;
-  }
-  .el-select {
-    width: 64%;
-  }
-  .thDe {
-    .bank {
-      height: 30px;
-      line-height: 30px;
-      margin-left: -5px;
-    }
-    .el-checkbox {
-      margin-right: 10px;
-    }
-  }
-  .chDe {
-    height: 30px;
-    .bank {
-      line-height: 30px;
-      height: 30px;
-    }
-    span {
-      float: left;
-    }
-  }
-  .tcenter .el-form-item--medium .el-form-item__content {
-    text-align: right;
-  }
-  .mrf20 {
-    margin-right: 20px;
-  }
-}
-
-.themesDialog .el-dialog {
-  height: 350px !important;
-}
 
 span.DEFAULT {
   background: #47505d;
@@ -208,14 +157,5 @@ span.GOLDEN {
 span.GREEN {
   background: #448f6b;
 }
-.themesDialog {
-  .title-gra {
-    line-height: 0px !important;
-    margin-bottom: 60px !important; 
-  }
-  .el-dialog .el-dialog__header {
-    line-height: 50px;
-    padding-top: 0px !important; 
-  }
-}
+
 </style>
