@@ -17,9 +17,10 @@
               </div>
             </div>
             <user-surveybak></user-surveybak>
-            <div class="btn tcenter">
-              <el-button type="primary" style="margin-top: 12px;" @click="next('second')">下一步</el-button>
-              <el-button style="margin-top: 12px;" @click="closeDialog">取消</el-button>
+            <div class="mr-btn">
+              <el-button type="primary"  @click="closeDialog">取消</el-button>
+              <el-button type="primary"  @click="next('second')">下一步</el-button>
+              
             </div>
           </el-tab-pane>
           <el-tab-pane name="second" disabled> <span slot="label"><i class="el-icon-circle">2</i> 批量匹配设置</span>
@@ -29,9 +30,9 @@
               </div>
             </div>
             <wild-card></wild-card>
-            <div class="btn tcenter">
-             <el-button type="primary" style="margin-top: 12px;" @click="next('first')">上一步</el-button>
-              <el-button type="primary" style="margin-top: 12px;" @click="next('third')">下一步</el-button>
+            <div class="mr-btn">
+             <el-button type="primary"  @click="next('first')">上一步</el-button>
+              <el-button type="primary" @click="next('third')">下一步</el-button>
              
             </div>
           </el-tab-pane>
@@ -42,9 +43,9 @@
               </div>
             </div>
             <type-map></type-map>
-            <div class="btn tcenter mt30">
-            <el-button type="primary" style="margin-top: 12px;" @click="next('second')">上一步</el-button>
-              <el-button type="primary" style="margin-top: 12px;" @click="next('fourth')">下一步</el-button>
+            <div class="mr-btn">
+            <el-button type="primary" @click="next('second')">上一步</el-button>
+              <el-button type="primary" @click="next('fourth')">下一步</el-button>
               
             </div>
           </el-tab-pane>
@@ -54,9 +55,9 @@
               </div>
             </div>
             <coll-task></coll-task>
-            <div class="btn tcenter mt30">
-              <el-button type="primary" style="margin-top: 12px;" @click="next('third')">上一步</el-button>
-              <el-button type="primary" style="margin-top: 12px;">完成</el-button>
+            <div class="mr-btn">
+              <el-button type="primary"  @click="next('third')">上一步</el-button>
+              <el-button type="primary" >完成</el-button>
             </div></el-tab-pane>
         </el-tabs>
       </div>

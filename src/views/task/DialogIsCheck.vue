@@ -3,9 +3,10 @@
     <el-dialog width="60%" :title="title" :visible.sync="showInnerDialog" class="check-data-dialog" @closed="closeDiaChk" :close-on-click-modal="false">
       <div slot="title">
         <span class="el-dialog__title">{{title}}</span>
-        <div class="title-gra">
-          <span class="grab gra-l"></span>
-          <span class="grab gra-r"></span>
+        <div class="title-gra plr30">
+          <div class="grab gra-r">
+            <span class="grab gra-l"></span>
+          </div>
         </div>
       </div>
       <!-- loading -->

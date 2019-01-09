@@ -1,6 +1,6 @@
 <template>
 <div v-loading="loading">
-    <div class="el-breadcrumb" ref="searchArea">
+    <div class="" ref="searchArea" style="margin-bottom:20px;">
         <div class="searchDiv">
             <div class="dataSearch">
                 <i class="el-icon-search"></i>
@@ -49,7 +49,6 @@
             </el-form-item>
         </el-form>
     </div>
-    <div class="main-content">
         <el-table :data="tableData" :height="tableHeight" stripe border tooltip-effect="light">
             <el-table-column label="序号" type="index" width="100"></el-table-column>
             <el-table-column label="任务名称" prop="taskName" :show-overflow-tooltip='true' min-width="95"></el-table-column>
@@ -84,7 +83,6 @@
                 </template>
             </el-table-column>
         </el-table>
-    </div>    
     <el-footer>
         <div class="enc-pagination">
             <el-pagination  style="float:right; margin:10px;"
@@ -265,6 +263,7 @@ export default {
                 {
                 confirmButtonText: "确定",
                 cancelButtonText: "取消",
+                cancelButtonClass: "el-button--primary",
                 type: "info"
                 }
             ).then(() => {

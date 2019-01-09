@@ -16,9 +16,9 @@
               </div>
             </div>
             <user-surveybak></user-surveybak>
-            <div class="btn tcenter">
-              <el-button type="primary" style="margin-top: 12px;" @click="next('second')">下一步</el-button>
-              <el-button style="margin-top: 12px;" @click="closeDialog">取消</el-button>
+            <div class="mr-btn">
+              <el-button type="primary" @click="closeDialog">取消</el-button>
+              <el-button type="primary"  @click="next('second')">下一步</el-button>
             </div>
           </el-tab-pane>
          
@@ -29,9 +29,9 @@
               </div>
             </div>
             <type-map></type-map>
-            <div class="btn tcenter mt30">
-            <el-button type="primary" style="margin-top: 12px;" @click="next('first')">上一步</el-button>
-              <el-button type="primary" style="margin-top: 12px;" @click="next('third')">下一步</el-button>
+            <div class="mr-btn">
+            <el-button type="primary"   @click="next('first')">上一步</el-button>
+              <el-button type="primary"   @click="next('third')">下一步</el-button>
               
             </div>
           </el-tab-pane>
@@ -41,9 +41,9 @@
               </div>
             </div>
             <coll-task></coll-task>
-            <div class="btn tcenter mt30">
-              <el-button type="primary" style="margin-top: 12px;" @click="next('second')">上一步</el-button>
-              <el-button type="primary" style="margin-top: 12px;">完成</el-button>
+            <div class="mr-btn">
+              <el-button type="primary"  @click="next('second')">上一步</el-button>
+              <el-button type="primary" >完成</el-button>
             </div></el-tab-pane>
         </el-tabs>
       </div>

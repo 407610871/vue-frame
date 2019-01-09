@@ -287,9 +287,9 @@
         </div>
       </div>
     </el-form>
-    <div class="btn tcenter mt30">
-      <el-button type="primary" style="margin-top: 12px;" @click="pre()">上一步</el-button>
-      <el-button type="primary" style="margin-top: 12px;" @click="finish()">完成</el-button>
+    <div class="mr-btn">
+      <el-button type="primary"  @click="pre()">上一步</el-button>
+      <el-button type="primary"  @click="finish()">完成</el-button>
     </div>
   </div>
 </template>

@@ -1,10 +1,11 @@
 <template>
   <div class="taskMDialog topInver">
     <el-dialog title="数据核验" :visible.sync="innerVisible" width="60%" :before-close="closeDialog" append-to-body>
-      <div class="title-gra top-inver-title">
-        <span class="grab gra-l"></span>
-        <span class="grab gra-r"></span>
-      </div>
+        <div class="title-gra plr30">
+          <div class="grab gra-r">
+            <span class="grab gra-l"></span>
+          </div>
+        </div>
       <el-form :model="ruleForm" ref="ruleForm" label-width="100px" class="demo-ruleForm">
         <div class="proInfo-box clearfix">
           <el-col :span="24">

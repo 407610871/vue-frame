@@ -1,5 +1,5 @@
 <template>
-    <el-dialog title="主题" :visible.sync="dialogVisible" :before-close="closeDialog">
+    <el-dialog title="主题" :visible.sync="dialogVisible" width="550px" :before-close="closeDialog">
       <div class="title-gra plr30">
         <div class="grab gra-r">
           <span class="grab gra-l"></span>
@@ -16,8 +16,8 @@
           </el-form-item>
       </el-form>
       <div class="mr-btn clearfix">
-          <el-button type="primary" size="small" @click="save()">保存</el-button>
-          <el-button @click="closeDialog()" size="small">关闭</el-button>
+          <el-button type="primary" @click="closeDialog()" >关闭</el-button>
+          <el-button type="primary" @click="save()">保存</el-button>
       </div>
     </el-dialog>
 </template>
@@ -120,6 +120,27 @@ export default {
             callback: action => {}
           });
         }
+      }).catch(res=>{
+        _self.ruleForm.themeName = "PURPLE";
+           if (_self.ruleForm.themeName == 'DEFAULT') {
+                value = 'theme';
+              }
+              if (_self.ruleForm.themeName == 'PURPLE') {
+                value = 'theme1';
+              }
+              if (_self.ruleForm.themeName == 'GREEN') {
+                value = 'theme2';
+              }
+              if (_self.ruleForm.themeName == 'BLUE') {
+                value = 'theme3';
+              }
+              if (_self.ruleForm.themeName == 'GOLDEN') {
+                value = 'theme4';
+              }
+              window.localStorage.setItem('data-theme', value);
+              window.document.documentElement.setAttribute('data-theme', value);
+              _self.$store.commit('setThemes', _self.ruleForm.themeName);
+              this.$emit('closeDia', );
       });
 
     }

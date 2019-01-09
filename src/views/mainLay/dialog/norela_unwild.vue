@@ -15,9 +15,10 @@
         </el-table-column>
       </el-table>
     </div>
-    <div class="btn tcenter">
-      <el-button type="primary" style="margin-top: 12px;" @click="pre()">下一步</el-button>
-      <el-button style="margin-top: 12px;" @click="next()">取消</el-button>
+    <div class="mr-btn">
+      <el-button type="primary" @click="next()">取消</el-button>
+      <el-button type="primary" @click="pre()">下一步</el-button>
+      
     </div>
   </div>
 </template>

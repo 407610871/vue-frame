@@ -3,11 +3,12 @@
     <el-tooltip class="item" effect="light" content="注册" placement="top">
       <i @click="dialogVisible = true" class="enc-icon-zhuce table-action-btn" style="margin-right:15px; font-size:30px;"></i>
     </el-tooltip>
-    <el-dialog title="接入数据源" :visible.sync="dialogVisible" width="72%" :before-close="closeDialog" class="reg-dialog" :close-on-click-modal="false">
-      <div class="title-gra">
-        <span class="grab gra-l"></span>
-        <span class="grab gra-r"></span>
-      </div>
+    <el-dialog title="接入数据源" :visible.sync="dialogVisible" width="70%" :before-close="closeDialog" class="reg-dialog" :close-on-click-modal="false">
+        <div class="title-gra plr30">
+          <div class="grab gra-r">
+            <span class="grab gra-l"></span>
+          </div>
+        </div>
       <el-form :model="ruleForm" ref="ruleForm" label-width="100px" class="demo-ruleForm" :rules="formRules" v-loading="loading">
         <div class="daiInfo proInfo">
           <div class="daiInfo-title proInfo-title">
@@ -221,17 +222,11 @@
             </el-col>
           </div>
         </div>
-        <div class="daiInfo reginfo">
-          <div class="daiInfo-box clearfix">
-            <el-form-item>
-              <el-col :span="24">
-                <el-button type="primary" size="small" @click="submitForm('ruleForm')">保存</el-button>
-                <el-button @click="closeDialog()" size="small">关闭</el-button>
-              </el-col>
-            </el-form-item>
-          </div>
-        </div>
       </el-form>
+      <div class="clearfix mr-btn">
+          <el-button type="primary" @click="closeDialog()">关闭</el-button>
+          <el-button type="primary" @click="submitForm('ruleForm')">保存</el-button>
+      </div>
     </el-dialog>
   </div>
 </template>
@@ -764,7 +759,8 @@ export default {
                     "已经存在同IP地址同用户的数据源，确定保存?",
                     "信息", {
                       confirmButtonText: "确定",
-                      cancelButtonText: "取消"
+                      cancelButtonText: "取消",
+                      cancelButtonClass: "el-button--primary",
                     }
                   )
                   .then(() => {

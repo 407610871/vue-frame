@@ -1,7 +1,7 @@
 <template>
   <div v-loading="loading" :element-loading-text="tips" class="task-template">
     <!-- 搜索栏 -->
-    <div class="el-breadcrumb" ref="searchArea">
+    <div class="" ref="searchArea" style="margin-bottom:20px;">
       <!-- 查询按钮 -->
       <div class="searchDiv">
         <div class="dataSearch">
@@ -13,13 +13,6 @@
           <i :class="!moreSearch?'el-icon-caret-bottom':'el-icon-caret-top'"></i>
         </span>
         <el-button type="primary" class="doCearch" @click="search">查询</el-button>
-        <div class="right-tools">
-          <el-tooltip class="item" effect="light" content="刷新" placement="top">
-            <a href="javascript:void(0)" v-on:click="refresh">
-              <i class="enc-icon-shuaxin"></i>
-            </a>
-          </el-tooltip>
-        </div>
       </div>
 
       <el-form
@@ -207,21 +200,17 @@
       </el-form>
     </div>
     <!-- 操作按钮 -->
-    <div class="count-operate">
-      <div>
+    <div class="count-operate ">
         <el-button type="primary" @click="doMore('manager/taskOperate/batchConverge',1)">重新汇聚</el-button>
         <el-button type="primary" @click="doMore('manager/taskOperate/batchStart',2)">批量启动</el-button>
         <el-button type="primary" @click="doMore('manager/taskOperate/batchPause',3)">批量停止</el-button>
-        <div class="right-tools" >
+        <div class="right-tools">
           <el-tooltip class="item" effect="light" content="刷新" placement="top">
               <a href="javascript:void(0)" v-on:click="refresh"><i class="enc-icon-shuaxin"></i></a>
           </el-tooltip>
         </div>
-      </div>
     </div>
-
     <!-- 表格数据 -->
-    <div class="main-content">
       <el-table
         border
         :row-class-name="tableRowClassName"
@@ -360,7 +349,6 @@
           </template>
         </el-table-column>
       </el-table>
-    </div>
 
     <!-- 分页 -->
     <el-footer>
@@ -475,10 +463,9 @@ export default {
     departmentId: function() {
       return this.$store.state.deptId;
     },
-    tableHeight: function() {
+    tableHeight() {
       return this.collapse ?
-        window.innerHeight - this.searchHeight - 265:
-        window.innerHeight - 305;
+      400: window.innerHeight - 295;
     },
     pageSize() {
       return this.$store.state.pageSize;
@@ -1073,15 +1060,8 @@ export default {
   width: 95px;
 }
 .count-operate {
-  padding: 0 20px 0 20px;
-  margin: 20px auto;
-  div {
-    // width: 330px;
-    float: right;
-    padding-top: 10px;
-    margin-right: 15px;
-    
-  }
+  margin: 20px 0;
+  text-align: right;
 }
 .indicate {
   display: inline-block;
@@ -1157,12 +1137,11 @@ export default {
 }
 .right-tools {
   float: right;
-  margin-right: 10px;
+  margin-left: 5px;
   a {
-    font-size: 26px;
-    :hover,
-    :active {
-      color: #f93;
+    font-size: 24px;
+    :hover {
+      opacity: 0.5;
     }
     i {
       font-size: 32px;

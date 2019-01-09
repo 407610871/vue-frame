@@ -289,7 +289,7 @@
   .checkResult a {
     @include el-color($color-background);
   }
-  .export-btn.el-button {
+  .export-btn .el-button {
     @include el-bgcolor($color-background);
   }
 }

@@ -2,10 +2,11 @@
   <div class="taskMDialog increDia">
     <!-- <i class="el-icon-info" @click="innerVisible = true">选择</i> -->
     <el-dialog title="增量字段选择" :visible.sync="innerVisible" width="60%" :before-close="closeDialog" append-to-body>
-      <div class="title-gra">
-        <span class="grab gra-l"></span>
-        <span class="grab gra-r"></span>
-      </div>
+        <div class="title-gra plr30">
+          <div class="grab gra-r">
+            <span class="grab gra-l"></span>
+          </div>
+        </div>
       <div class="daiInfo proInfo">
        <!--  <div class="daiInfo-title proInfo-title clearfix">
          <el-col :span="24">
@@ -240,25 +241,6 @@ export default {
   position: relative;
   left: -86px;
 }
-
-.title-gra {
-  margin-bottom: 20px;
-  .grab {
-    height: 4px;
-    display: inline-block;
-  }
-  .gra-l {
-    width: 30%;
-    @include el-color-lp($color-background-lp);
-   /*  background: $color-background-lp; */
-  }
-  .gra-r {
-    width: 70%;
-     @include el-color-rp($color-background-rp);
-   /*  background: $color-background-rp; */
-  }
-}
-
 .el-dialog__body {
   padding-top: 0px;
   padding-left: 30px;

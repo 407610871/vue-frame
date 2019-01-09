@@ -5,10 +5,11 @@
       <i class="enc-icon-shujuheyan" @click="dialogVisible = true"></i>
     </el-tooltip>
     <el-dialog title="数据核验" :visible.sync="dialogVisible" width="73%" :before-close="closeDialog">
-      <div class="title-gra">
-        <span class="grab gra-l"></span>
-        <span class="grab gra-r"></span>
-      </div>
+        <div class="title-gra plr30">
+          <div class="grab gra-r">
+            <span class="grab gra-l"></span>
+          </div>
+        </div>
       <el-form :model="ruleForm" ref="ruleForm" label-width="100px" class="demo-ruleForm">
         <div class="proInfo-box jytop clearfix">
           <el-col :span="24">
@@ -106,7 +107,7 @@
           </el-col>
         </div>
         <div class="proInfo-box log-box clearfix ptb20" v-loading="loading2">
-          <textarea name="" id="" disabled="disabled" v-show="textShow">{{loginfo}}</textarea>
+          <textarea name="" id="" disabled="disabled" v-model="loginfo" v-show="textShow"></textarea>
         </div>
         <div class="proInfo-box clearfix ptb20 hisInver">
           <span style="padding-left:30px;">核验历史记录:</span>

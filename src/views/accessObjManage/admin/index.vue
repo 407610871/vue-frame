@@ -1,8 +1,20 @@
 <template>
   <div style="height:100%;" class="dashboard-container">
-    <div class="main">
+    <div>
+      <el-breadcrumb separator="/">
+            <el-breadcrumb-item :to="{ path: '/dashboard' }">
+              数据接入
+            </el-breadcrumb-item>
+            <el-breadcrumb-item>
+              {{ breadcrumbName}}</a>
+            </el-breadcrumb-item>
+      </el-breadcrumb>
+      <form-fliter :ObjManage="ObjManage" v-if="cleanData" @highMore="moreHeight" @highSeaech="hightrue" 
+        v-bind:formCollapse="collapse" v-bind:dataObj="formFilterData" @doSearch="search" @formFilter="changeFormFilter" />
+
+    </div>
+    <div class="main main-content">
       <div class="moreSearch" style="margin-bottom:10px;">
-        <form-fliter :ObjManage="ObjManage" v-if="cleanData" @highMore="moreHeight" @highSeaech="hightrue" v-bind:formCollapse="collapse" v-bind:dataObj="formFilterData" @doSearch="search" @formFilter="changeFormFilter" />
         <div class="table-tools clearfix">
           <el-tooltip v-if="type=='mysql'|| type=='oracle'|| type=='postgresql' || type=='sqlserver'||type=='mongodb'" class="item" effect="light" content="接入源更新" placement="top"> <span class="updatelogo right-btn" v-on:click="updataSource" style="margin-left:10px; margin-right: 50px;float:right"></span> </el-tooltip>
           <table-inver v-if="type=='mysql'|| type=='oracle'|| type=='postgresql' || type=='sqlserver'" class="right-btn" :pdata="tablePa" style="float:right"></table-inver>
@@ -296,15 +308,25 @@ export default {
       return this.$store.state.queryParams.accessObjManage;
     },
     tableHeight: function() {
+      /** 
       return this.collapse ?
         window.innerHeight - 300 :
         window.innerHeight - 400 - 40 * this.moreData;
+        */
+       if(window.innerHeight >768){
+          return window.innerHeight - 255;
+        }
+        return 520;
     },
     headerHeight: function() {
       return this.collapse ? "50px" : "85px";
     },
     type: function() {
       return this.$route.params.type;
+    },
+    breadcrumbName() {
+       console.log("1111111",this.$route.params.sourceName);
+      return decodeURI(this.$route.params.sourceName);
     }
   },
   components: {
@@ -714,6 +736,7 @@ export default {
       this.$confirm('确认要删除此目录吗？', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
+        cancelButtonClass: "el-button--primary",
         type: 'warning'
       }).then(() => {
         let params = {
@@ -760,7 +783,7 @@ export default {
   height: 100%;
   .main {
     flex: 1;
-    overflow: auto;
+    overflow: hidden;
   }
   .filter-container {
     padding-top: 10px;
