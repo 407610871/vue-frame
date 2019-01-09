@@ -5,13 +5,19 @@
 		<name>清单特性</name>
 		<item>
 			<Introduction>新增功能</Introduction>
+			<content>支持多种主题换肤功能</content>
+			<sysName>用户界面</sysName>
+			<remark></remark>
+		</item>
+		<item>
+			<Introduction>新增功能</Introduction>
 			<content>FTP接入(Beta) - 支持FTP周期增量和一次性接入，并支持数据核验以及重新汇聚</content>
 			<sysName>数据接入</sysName>
 			<remark></remark>
 		</item>
 		<item>
 			<Introduction>新增功能</Introduction>
-			<content>MongodDB接入(Beta) - 增加MongoDB一次性接入，并支持对周期增量和一次性接入的数据核验和重新汇聚</content>
+			<content>MongoDB接入(Beta) - 增加MongoDB一次性接入，并支持对周期增量和一次性接入的数据核验和重新汇聚</content>
 			<sysName>数据接入</sysName>
 			<remark></remark>
 		</item>
@@ -23,7 +29,7 @@
 		</item>
 		<item>
 			<Introduction>新增功能</Introduction>
-			<content>Kettle任务管控 - 使用XXL-JOB对Kettle 6.1 ktr and kjb进行调度管理</content>
+			<content>Kettle任务管控 - 使用XXL-JOB对Kettle 6.1 ktr and kjb进行调度管理　</content>
 			<sysName>数据汇聚</sysName>
 			<remark></remark>
 		</item>
@@ -35,13 +41,13 @@
 		</item>
 		<item>
 			<Introduction>功能优化</Introduction>
-			<content>1）FTP采集中，允许删除已设置路径 2）优化批量接入中，验证是否符合条件的表已经被采集 3）优化数据工厂任务删除流程，确保数据资产中资源也被同步删除</content>
+			<content>1）FTP采集中，允许删除已设置路径 2）优化批量接入中，验证是否符合条件的表已经被采集 </content>
 			<sysName>数据接入</sysName>
 			<remark></remark>
 		</item>
 		<item>
 			<Introduction>功能优化</Introduction>
-			<content>优化汇聚任务状态，增加准备中状态</content>
+			<content>1）优化数据工厂任务删除流程，确保数据资产中资源也被同步删除 2）优化汇聚任务状态，增加准备中状态</content>
 			<sysName>数据汇聚</sysName>
 			<remark></remark>
 		</item>
@@ -58,12 +64,13 @@
 			<sysName>数据汇聚</sysName>
 			<remark></remark>
 		</item>
-		<item>
+<item>
 			<Introduction>问题修复</Introduction>
 			<content>修复数据汇聚任务状态显示延时，包含任务开始，结束以及接入数据量</content>
 			<sysName>数据汇聚</sysName>
 			<remark></remark>
 		</item>
+		
 	</finishedPunchList>
 	<questionList>
 		<name>已知问题和限制</name>
