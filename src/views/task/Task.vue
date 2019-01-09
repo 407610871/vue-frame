@@ -219,7 +219,7 @@
           <template slot-scope="scope">{{scope.row.status==5 ? '' : scope.row.startTime | formateDateTime }}</template>
         </el-table-column>
         <el-table-column label="任务结束时间" width="150" :show-overflow-tooltip="true">
-          <template slot-scope="scope">{{scope.row.status==5 ? '' : scope.row.endTime | formateDateTime}}</template>
+          <template slot-scope="scope">{{(scope.row.status==5||(scope.row.status==1&&scope.row.isPeriod=='3')) ? '' : scope.row.endTime | formateDateTime}}</template>
         </el-table-column>
         <el-table-column label="任务类型" width="130" :show-overflow-tooltip="true">
           <template slot-scope="scope">
@@ -506,7 +506,7 @@ export default {
         method: 'get',
         url: this.GLOBAL.api.API_DACM + '/taskManager/deleteStatistic',
         /*url:'http://10.19.160.213:8080/DACM/taskManager/deleteStatistic',*/
-        params: {'taskInfoId':row.taskInfoId},
+        params: { 'taskInfoId': row.taskInfoId },
       }).then(res => {
         if (res.data.code == '0000') {
           this.$ajax
@@ -558,15 +558,40 @@ export default {
                 });
             } else {
               _self.loading = false;
-              _self.$alert('当前任务的数据已在提供服务，请先到数据资产去废止数据。', '信息', {
-                confirmButtonText: '确定',
+              this.$confirm('当前任务的数据已在提供服务，请先到数据资产去废止数据。', '提示', {
+                confirmButtonText: '仅删除任务',
+                cancelButtonText: '到数据资产',
+                type: 'warning'
+              }).then(() => {
+                _self.loading = true;
+                this.$ajax
+                  .put(httpUrl + "manager/taskOperate/delete/" + row.taskInfoId)
+                  .then(function(res) {
+                    _self.loading = false;
+                    if (res.data.success) {
+                      // 调用/DACM/接口
+                      _self.$ajax.delete(
+                        window.ENV.API_DACM + deleteTask + row.taskInfoId
+                      );
+                      _self.doMsg("处理成功", "success");
+                      _self.init();
+                    } else {
+                      _self.doMsg(res.data.message, "error");
+                    }
+                  });
+              }).catch(() => {
+
+              });
+              /*_self.$confirm('当前任务的数据已在提供服务，请先到数据资产去废止数据。', '信息', {
+                confirmButtonText: '',
+                cancelButtonText: '',
                 callback: action => {
                   this.$message({
                     type: 'info',
                     message: `12123`
                   });
                 }
-              });
+              });*/
             }
           }).catch(() => {
 
@@ -755,8 +780,8 @@ export default {
           _self.$ajax({
             method: "get",
             url: this.GLOBAL.api.API_DACM + '/taskManager/deleteStatistic',
-           /*url:'http://10.19.160.213:8080/DACM/taskManager/deleteStatistic',*/
-            params: {'taskInfoId':tableParams.join(",")}
+            /*url:'http://10.19.160.213:8080/DACM/taskManager/deleteStatistic',*/
+            params: { 'taskInfoId': tableParams.join(",") }
           }).then(res => {
             if (res.data.code == '0000') {
               _self
@@ -801,8 +826,7 @@ export default {
               _self.loading = false;
               _self.$alert(res.data.message, '信息', {
                 confirmButtonText: '确定',
-                callback: action => {
-                }
+                callback: action => {}
               });
             }
           });
