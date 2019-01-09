@@ -168,7 +168,7 @@
             </el-col>
             <el-col :span="12">
               <el-form-item label="最近任务成功结束时间:" >
-                <span>{{reqObj.endTime}}</span>
+                <span>{{(reqObj.status=='1'&&reqObj.isPeriod=='3')?'':reqObj.endTime}}</span>
               </el-form-item>
             </el-col>
             <el-col :span="12">
