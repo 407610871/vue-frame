@@ -13,7 +13,7 @@
         <div class="checkData" style="padding-left: 40px;">
           校验设置：
           <el-radio v-model="radio" label="0" @change="checkChange" style="color:rgb(96, 98, 102);">全量核验</el-radio>
-          <el-radio v-model="radio" label="1" @change="checkChange" style="color:rgb(96, 98, 102);" :disabled="!this.queryTargetColumnList.length||types=='mongodb'||types=='ftp'">根据时间范围核验</el-radio>
+          <el-radio v-model="radio" label="1" @change="checkChange" style="color:rgb(96, 98, 102);" :disabled="!this.queryTargetColumnList.length||types=='mongodb'||types=='ftp'" v-show="types!='mongodb'&&types!='ftp'">根据时间范围核验</el-radio>
           <el-button type="" size="small" class="checkBtn" @click="doCheck">{{status}}</el-button>
           <div class="">
             <div class="range">

@@ -515,7 +515,7 @@ export default {
               _self.loading = false;
               if (res.data.success) {
                 _self.doMsg(
-                  "汇聚任务已经生成，任务将在接下来的周期执行",
+                  "汇聚任务ID:"+row.taskInfoId+"重新汇聚任务创建成功！",
                   "success"
                 );
                 _self.init();
@@ -807,9 +807,9 @@ export default {
                         i + 1 + "." + res.data.data.errorList[i] + "</br>";
                     }
                     _self.$alert(
-                      "操作成功！重新汇聚成功的任务如下：</br>" +
+                      "重新汇聚任务创建成功的任务如下：</br>" +
                       successHtml +
-                      "重新汇聚失败的任务如下：</br>" +
+                      "重新汇聚任务创建失败的任务如下：</br>" +
                       errorHtml,
                       "重新汇聚", {
                         dangerouslyUseHTMLString: true

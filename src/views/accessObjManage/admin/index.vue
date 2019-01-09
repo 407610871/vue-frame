@@ -196,7 +196,7 @@
     <dialogTaskDetail :reqObj="reqObj" v-if="showTaskDetail" v-on:closeDia="showTaskDetail=false"></dialogTaskDetail>
     <!--  批量采集 -->
     <set-task v-if="showSetTask" class="right-btn" :rowList="rowList" :jrtype="type" @close="closeTask()" @fre="loadTask()"></set-task>
-    <norela-coll v-if="showSetNore" @close="closeNore()" :pdata="noreData" :type="type" @fre="loadTable()"></norela-coll>
+    <norela-coll v-if="showSetNore" @close="closeNore()" :pdata="noreData" :type="type" @fre="loadNore()"></norela-coll>
     <!-- 数据核验 -->
     <dialog-is-check v-if="dialogVisible" :msgCheck="msgCheck" @closeDiaChk="dialogVisible=false" title="数据核验" :types="type"></dialog-is-check>
   </div>
@@ -385,8 +385,7 @@ export default {
               if (res.data.data.isExitFile == 'true') {
                 //console.log("454");
                 _self.showSetNore = true;
-              }
-              else {
+              } else {
                 //console.log("56565");
                 _self.$alert(res.data.data.message, "提示", {
                   confirmButtonText: "确定",
@@ -468,12 +467,16 @@ export default {
     closeTask() {
       this.showSetTask = false;
     },
-    closeNore(){
+    closeNore() {
       this.showSetNore = false;
 
     },
     loadTask() {
       this.showSetTask = false;
+      this.loadTable();
+    },
+    loadNore() {
+      this.showSetNore = false;
       this.loadTable();
     },
     showTask() {
