@@ -157,7 +157,10 @@
                 <userSurvey :pdata="scope.row" @fre="loadTable()"></userSurvey>
               </div>
               <div class="survey" v-if="type!='mysql' && type!='oracle' && type!='sqlserver' && type!='postgresql'">
-                <norela-coll :pdata="scope.row" :type="type" @fre="loadTable()"></norela-coll>
+                <el-tooltip class="item" effect="light" content="单表采集" placement="top">
+                  <i class="enc-icon-danbiaocaiji" @click="setNoreVisible(scope.row,scope.$index)"></i>
+                </el-tooltip>
+                <!-- <norela-coll :pdata="scope.row" :type="type" @fre="loadTable()"></norela-coll> -->
               </div>
               <div class="survey" v-if="(type=='mysql'&&scope.row.accessConnectorSource!=undefined&&scope.row.accessConnectorSource.isPeriod!='0'&&(scope.row.extendParams.taskStatus=='1'||scope.row.extendParams.taskStatus=='2'||scope.row.extendParams.taskStatus=='4'))
                     || (type=='oracle'&&scope.row.accessConnectorSource!=undefined&&scope.row.accessConnectorSource.isPeriod!='0'&&(scope.row.extendParams.taskStatus=='1'||scope.row.extendParams.taskStatus=='2'||scope.row.extendParams.taskStatus=='4'))
@@ -187,6 +190,8 @@
     <dialogTaskDetail :reqObj="reqObj" v-if="showTaskDetail" v-on:closeDia="showTaskDetail=false"></dialogTaskDetail>
     <!--  批量采集 -->
     <set-task v-if="showSetTask" class="right-btn" :rowList="rowList" :jrtype="type" @close="closeTask()" @fre="loadTask()"></set-task>
+    <norela-coll v-if="showSetNore" @close="closeNore()" :pdata="noreData" :type="type" @fre="loadNore()"></norela-coll>
+
     <!-- 数据核验 -->
     <dialog-is-check v-if="dialogVisible" :msgCheck="msgCheck" @closeDiaChk="dialogVisible=false" title="数据核验" :types="type"></dialog-is-check>
   </div>
@@ -213,6 +218,7 @@ export default {
       loading: false,
       queryParamReady: false,
       collapse: true,
+      noreData: {},
       mainTableReady: true,
       mainTableData: [],
       currentPage: 1,
@@ -227,6 +233,7 @@ export default {
         dataRange: []
       },
       showSetTask: false,
+      showSetNore: false,
       moreData: 0,
       myDialogRouter: "adminAdd",
       dialogTitle: "新增",
@@ -285,6 +292,7 @@ export default {
       accId: ""
     };
   },
+
   computed: {
     tableParams: function() {
       return this.$store.state.queryParams.accessObjManage;
@@ -343,7 +351,61 @@ export default {
 
   },
   methods: {
+    //非关系型采集
+    setNoreVisible(data) {
+      let _self = this;
+      /* let saves = {
+         accessSysId: data.accessSysId,
+         filePath: data.extendParams.filePath,
+         isSubDirectory: data.extendParams.isSubDirectory
+       }*/
+      _self.noreData = data;
+      console.log(_self.$route.params.type);
+      if (_self.$route.params.type == 'ftp') {
+        _self.loading = true;
+        this
+          .$ajax({
+            methods: "get",
+            /*url: this.GLOBAL.api.API_DACM + getHdfsFormat,*/
+            url: this.GLOBAL.api.API_DACM + '/ctables/checkFtpFileExist',
+            params: {
+              'accessSysId': data.accessSysId,
+              'filePath': data.extendParams.filePath,
+              'isSubDirectory': data.extendParams.isSubDirectory
+            }
+          })
+          .then(res => {
+            _self.loading = false;
+            //debugger;
+            if (res.data.success) {
+              //console.log(res.data.data.isExitFile);
+              if (res.data.data.isExitFile == 'true') {
+                //console.log("454");
+                _self.showSetNore = true;
+                //console.log(_self.showSetNore);
+              } else {
+                console.log("56565");
+                _self.$alert(res.data.data.message, "提示", {
+                  confirmButtonText: "确定",
+                  callback: action => {
 
+                  }
+                });
+                return false;
+              }
+            } else {
+              _self.$alert(res.data.message, "提示", {
+                confirmButtonText: "确定",
+                callback: action => {
+
+                }
+              });
+            }
+          })
+      } else {
+        _self.showSetNore = true;
+      }
+    },
     editName(row, index) {
       console.log(row);
       this.editingRow.index = index;
@@ -402,8 +464,16 @@ export default {
     closeTask() {
       this.showSetTask = false;
     },
+    closeNore() {
+      this.showSetNore = false;
+
+    },
     loadTask() {
       this.showSetTask = false;
+      this.loadTable();
+    },
+    loadNore(){
+      this.showSetNore = false;
       this.loadTable();
     },
     showTask() {
@@ -814,11 +884,13 @@ export default {
   margin: auto;
   text-align: left;
 }
+
 .icon-other {
   width: 56px;
   margin: auto;
   text-align: left;
 }
+
 .cell i {
   cursor: pointer;
 }

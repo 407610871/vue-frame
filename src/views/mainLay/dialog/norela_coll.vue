@@ -1,8 +1,8 @@
 <template>
   <div class="taskMDialog userSurveyDialog setTaskDia diaicon">
-    <el-tooltip class="item" effect="light" :content="titleContent" placement="top">
-      <i class="enc-icon-danbiaocaiji" @click="setVisible()"></i>
-    </el-tooltip>
+   <!--  <el-tooltip class="item" effect="light" :content="titleContent" placement="top">
+     <i class="enc-icon-danbiaocaiji" @click="setVisible()"></i>
+   </el-tooltip> -->
     <el-dialog :title="titleContent" :visible.sync="dialogVisible" width="73%" :before-close="closeDialog">
       <div class="title-gra plr30">
         <span class="grab gra-l"></span>
@@ -49,7 +49,7 @@ export default {
   data: function() {
     return {
       activeName: 'first',
-      dialogVisible: false,
+      dialogVisible: true,
       tabs: '',
       event: '',
       clear: [],
@@ -78,6 +78,7 @@ export default {
       this.$store.commit('setSchemaList', this.clear);
       this.$store.commit('setNoreData', this.clear);
       this.$store.commit('setClearStepsData', this.clear);
+        this.$emit('close');
     },
     //步骤条
     handleClick(tab, event) {
