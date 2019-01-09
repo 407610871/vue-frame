@@ -6,6 +6,9 @@ const api = window.ENV || {
 const skin = window.ENV || {
   "API_SKIN":"http://10.19.248.200:32470",
 };
+const dam = window.ENV || {
+  "API_DAM":"http://10.19.248.200:31777",
+};
 /*
 const api = window.ENV.API_DACM+'';
 */
@@ -66,6 +69,7 @@ const validatePhone = (rule, value, callback) => {
 export default {
   api, //接口地址
   skin, //换肤地址
+  dam,
   validateEmail, //邮箱地址校验
   validateNumber, //数字的校验
   validatePhone, //手机号校验

@@ -38,6 +38,9 @@ spec:
 #web-bcm
         - name: API_SKIN
           value: 'http://$(NODE_IP):29540'
+#web-bcm
+        - name: API_DAM
+          value: 'http://$(NODE_IP):29530'
         resources:
           limits:
             cpu: 300m

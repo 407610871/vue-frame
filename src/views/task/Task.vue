@@ -524,6 +524,7 @@ export default {
               }
             });
         } else {
+          _self.loading = false;
           _self.doMsg(res.data.message, "error");
         }
       });
@@ -558,7 +559,7 @@ export default {
                 });
             } else {
               _self.loading = false;
-              this.$confirm('当前任务的数据已在提供服务，请先到数据资产去废止数据。', '提示', {
+              _self.$confirm('当前任务的数据已在提供服务，请先到数据资产去废止数据。', '提示', {
                 confirmButtonText: '仅删除任务',
                 cancelButtonText: '到数据资产',
                 type: 'warning'
@@ -580,7 +581,7 @@ export default {
                     }
                   });
               }).catch(() => {
-
+                  window.open(_self.GLOBAL.dam.API_DAM);
               });
               /*_self.$confirm('当前任务的数据已在提供服务，请先到数据资产去废止数据。', '信息', {
                 confirmButtonText: '',
@@ -816,6 +817,7 @@ export default {
                     );
                     _self.init();
                   } else {
+                    _self.loading = false;
                     _self.$alert("重新汇聚失败", "重新汇聚", {
                       dangerouslyUseHTMLString: true
                     });

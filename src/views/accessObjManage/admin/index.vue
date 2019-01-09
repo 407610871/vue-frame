@@ -370,7 +370,7 @@ export default {
           .$ajax({
             methods: "get",
             /*url: this.GLOBAL.api.API_DACM + getHdfsFormat,*/
-            url: 'http://10.19.160.93:8080/DACM/ctables/checkFtpFileExist',
+            url: this.GLOBAL.api.API_DACM + '/ctables/checkFtpFileExist',
             params: {
               'accessSysId': data.accessSysId,
               'filePath': data.extendParams.filePath,
@@ -381,18 +381,27 @@ export default {
             _self.loading = false;
             debugger;
             if (res.data.success) {
+              console.log(res.data.data.isExitFile);
               if (res.data.data.isExitFile == 'true' || res.data.data.isExitFile) {
+                console.log("454");
                 _self.showSetNore = true;
               }
-              if (res.data.data.isExitFile == 'false' || res.data.data.isExitFile == false) {
+              else {
+                console.log("56565");
                 _self.$alert(res.data.data.message, "提示", {
-                  confirmButtonText: "确定"
+                  confirmButtonText: "确定",
+                  callback: action => {
+
+                  }
                 });
                 return false;
               }
             } else {
-              _self.$alert('加载接入对象列表失败，因为数据源链接错误。', "提示", {
-                confirmButtonText: "确定"
+              _self.$alert(res.data.message, "提示", {
+                confirmButtonText: "确定",
+                callback: action => {
+
+                }
               });
             }
           })
