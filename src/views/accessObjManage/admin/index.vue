@@ -379,7 +379,7 @@ export default {
           })
           .then(res => {
             _self.loading = false;
-            debugger;
+            //debugger;
             if (res.data.success) {
               console.log(res.data.data.isExitFile);
               if (res.data.data.isExitFile == 'true') {
