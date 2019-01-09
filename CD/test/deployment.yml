@@ -38,6 +38,9 @@ spec:
 #amc-platform
         - name: API_SKIN
           value: http://$(NODE_IP):32470
+#amc-platform
+        - name: API_DAM
+          value: http://$(NODE_IP):31777
         resources:
           limits:
             cpu: 300m

@@ -65,7 +65,15 @@ spec:
               name: sjsn-all-web-configmap
               key: web-bcm
         - name: API_SKIN
-          value: 'http://$(NODE_IP):$(API_SKIN_PORT)'       
+          value: 'http://$(NODE_IP):$(API_SKIN_PORT)'      
+ #web-dam           
+        - name: API_DAM_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: sjsn-all-web-configmap
+              key: web-dam            
+        - name: API_DAM
+          value: 'http://$(NODE_IP):$(API_DAM_PORT)'
         resources:
           limits:
             cpu: 300m

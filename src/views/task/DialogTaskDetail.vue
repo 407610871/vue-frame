@@ -169,7 +169,7 @@
             </el-col>
             <el-col :span="12">
               <el-form-item label="最近任务成功结束时间:" >
-                <span>{{reqObj.endTime}}</span>
+                <span>{{(reqObj.status=='1'&&reqObj.isPeriod=='3')?'':reqObj.endTime}}</span>
               </el-form-item>
             </el-col>
             <el-col :span="12">
@@ -678,7 +678,8 @@ export default {
               0:'创建',
               1:'运行',
               2:'暂停',
-              3:'失败',
+              6:'采集失败',
+              7:'汇聚失败',
               4:'完成',
               5:'准备中'
             }
@@ -861,12 +862,12 @@ export default {
             for (var p in that.dataViewsList[0]){
               let value = that.dataViewsList[0][p];
               let headerValue = p.split('/')[0];
-              let headerKey = p.split('/')[1];
-              that.keyList[headerKey]=headerValue;
-              newMap[headerKey] = value;
+              //let headerKey = p.split('/')[1];
+              that.keyList[headerValue]=headerValue;
+              //newMap[headerKey] = value;
             }
-            that.dataViewsList.shift(0);
-            that.dataViewsList.unshift(newMap);
+            //that.dataViewsList.shift(0);
+            //that.dataViewsList.unshift(newMap);
           }
           that.loading6 = false;
         }
