@@ -366,7 +366,7 @@ export default {
       _self.noreData = data;
       if (_self.type == 'ftp') {
         _self.loading = true;
-        _self
+        this
           .$ajax({
             methods: "get",
             /*url: this.GLOBAL.api.API_DACM + getHdfsFormat,*/
@@ -382,12 +382,12 @@ export default {
             debugger;
             if (res.data.success) {
               console.log(res.data.data.isExitFile);
-              if (res.data.data.isExitFile == 'true' || res.data.data.isExitFile) {
-                console.log("454");
+              if (res.data.data.isExitFile == 'true') {
+                //console.log("454");
                 _self.showSetNore = true;
               }
               else {
-                console.log("56565");
+                //console.log("56565");
                 _self.$alert(res.data.data.message, "提示", {
                   confirmButtonText: "确定",
                   callback: action => {
