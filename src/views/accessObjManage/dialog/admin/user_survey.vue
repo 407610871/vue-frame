@@ -5,11 +5,10 @@
       <i class="enc-icon-yonghutiaoyan" @click="dialogVisible = true"></i>
     </el-tooltip>
     <el-dialog title="用户标记" :visible.sync="dialogVisible" width="73%" :before-close="closeDialog">
-        <div class="title-gra plr30">
-          <div class="grab gra-r">
-            <span class="grab gra-l"></span>
-          </div>
-        </div>
+      <div class="title-gra">
+        <span class="grab gra-l"></span>
+        <span class="grab gra-r"></span>
+      </div>
       <el-form :model="ruleForm" ref="ruleForm" label-width="100px" class="demo-ruleForm" :rules="formRules" v-loading="loading">
         <div class="daiInfo proInfo">
           <div class="proInfo-box bornone clearfix">
@@ -26,7 +25,7 @@
                 </el-form-item>
               </el-col>
             </el-col>
-            <el-col :span="24" class="surveybg sur plr30">
+            <el-col :span="24" class="surveybg plr30 sur">
               <el-form-item label="资源目录编号:">
                 <el-col :span="4" class="ml0">
                   <el-form-item prop="industry">
@@ -626,6 +625,12 @@ export default {
   background: #f0f3f6;
   padding-top: 20px;
 }
+
+.plr30 {
+  padding-left: 30px;
+  padding-right: 30px;
+}
+
 .sursavebtn .el-form-item--medium .el-form-item__content {
   margin-left: 0px;
 }
@@ -634,7 +639,6 @@ export default {
   cursor: pointer;
   font-size: 20px;
 }
-
 @media screen and ( max-width: 1490px) {
  .sur {
   .el-col-4 {

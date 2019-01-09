@@ -1,20 +1,8 @@
 <template>
   <div style="height:100%;" class="dashboard-container">
-    <div>
-      <el-breadcrumb separator="/">
-            <el-breadcrumb-item :to="{ path: '/dashboard' }">
-              数据接入
-            </el-breadcrumb-item>
-            <el-breadcrumb-item>
-              {{ breadcrumbName}}</a>
-            </el-breadcrumb-item>
-      </el-breadcrumb>
-      <form-fliter :ObjManage="ObjManage" v-if="cleanData" @highMore="moreHeight" @highSeaech="hightrue" 
-        v-bind:formCollapse="collapse" v-bind:dataObj="formFilterData" @doSearch="search" @formFilter="changeFormFilter" />
-
-    </div>
-    <div class="main main-content">
+    <div class="main">
       <div class="moreSearch" style="margin-bottom:10px;">
+        <form-fliter :ObjManage="ObjManage" v-if="cleanData" @highMore="moreHeight" @highSeaech="hightrue" v-bind:formCollapse="collapse" v-bind:dataObj="formFilterData" @doSearch="search" @formFilter="changeFormFilter" />
         <div class="table-tools clearfix">
           <el-tooltip v-if="type=='mysql'|| type=='oracle'|| type=='postgresql' || type=='sqlserver'||type=='mongodb'" class="item" effect="light" content="接入源更新" placement="top"> <span class="updatelogo right-btn" v-on:click="updataSource" style="margin-left:10px; margin-right: 50px;float:right"></span> </el-tooltip>
           <table-inver v-if="type=='mysql'|| type=='oracle'|| type=='postgresql' || type=='sqlserver'" class="right-btn" :pdata="tablePa" style="float:right"></table-inver>
@@ -34,12 +22,6 @@
         <el-table-column prop="name" label="文件夹名" v-if="type=='ftp'" show-overflow-tooltip>
         </el-table-column>
         <el-table-column prop="extendParams.filePath" label="路径" v-if="type=='ftp'" show-overflow-tooltip>
-        </el-table-column>
-        <el-table-column label="是否包含子目录" v-if="type=='ftp'" width="160" show-overflow-tooltip>
-          <template slot-scope="scope">
-            <span v-if="scope.row.extendParams.isSubDirectory=='true'">是</span>
-            <span v-if="scope.row.extendParams.isSubDirectory=='false'">否</span>
-          </template>
         </el-table-column>
         <el-table-column label="是否删除文件" v-if="type=='ftp'" width="160" show-overflow-tooltip>
           <template slot-scope="scope">
@@ -113,7 +95,7 @@
         <el-table-column prop="extendParams.fileSize" label="文件大小" v-if="type=='file'" show-overflow-tooltip>
         </el-table-column>
         <el-table-column prop="extendParams.messagesDequeued" label="更新方式" v-if="type=='file'" show-overflow-tooltip>
-          <template>
+          <template slot-scope="scope">
             <span>历史</span>
           </template>
         </el-table-column>
@@ -178,7 +160,7 @@
                 <el-tooltip class="item" effect="light" content="单表采集" placement="top">
                   <i class="enc-icon-danbiaocaiji" @click="setNoreVisible(scope.row,scope.$index)"></i>
                 </el-tooltip>
-                <!--   -->
+                <!-- <norela-coll :pdata="scope.row" :type="type" @fre="loadTable()"></norela-coll> -->
               </div>
               <div class="survey" v-if="(type=='mysql'&&scope.row.accessConnectorSource!=undefined&&scope.row.accessConnectorSource.isPeriod!='0'&&(scope.row.extendParams.taskStatus=='1'||scope.row.extendParams.taskStatus=='2'||scope.row.extendParams.taskStatus=='4'))
                     || (type=='oracle'&&scope.row.accessConnectorSource!=undefined&&scope.row.accessConnectorSource.isPeriod!='0'&&(scope.row.extendParams.taskStatus=='1'||scope.row.extendParams.taskStatus=='2'||scope.row.extendParams.taskStatus=='4'))
@@ -209,6 +191,7 @@
     <!--  批量采集 -->
     <set-task v-if="showSetTask" class="right-btn" :rowList="rowList" :jrtype="type" @close="closeTask()" @fre="loadTask()"></set-task>
     <norela-coll v-if="showSetNore" @close="closeNore()" :pdata="noreData" :type="type" @fre="loadNore()"></norela-coll>
+
     <!-- 数据核验 -->
     <dialog-is-check v-if="dialogVisible" :msgCheck="msgCheck" @closeDiaChk="dialogVisible=false" title="数据核验" :types="type"></dialog-is-check>
   </div>
@@ -235,10 +218,10 @@ export default {
       loading: false,
       queryParamReady: false,
       collapse: true,
+      noreData: {},
       mainTableReady: true,
       mainTableData: [],
       currentPage: 1,
-      noreData: {},
       pageSize: 20,
       ObjManage: true,
       mainTableDataTotal: 1,
@@ -309,30 +292,21 @@ export default {
       accId: ""
     };
   },
+
   computed: {
     tableParams: function() {
       return this.$store.state.queryParams.accessObjManage;
     },
     tableHeight: function() {
-      /** 
       return this.collapse ?
         window.innerHeight - 300 :
         window.innerHeight - 400 - 40 * this.moreData;
-        */
-       if(window.innerHeight >768){
-          return window.innerHeight - 255;
-        }
-        return 520;
     },
     headerHeight: function() {
       return this.collapse ? "50px" : "85px";
     },
     type: function() {
       return this.$route.params.type;
-    },
-    breadcrumbName() {
-       console.log("1111111",this.$route.params.sourceName);
-      return decodeURI(this.$route.params.sourceName);
     }
   },
   components: {
@@ -386,7 +360,8 @@ export default {
          isSubDirectory: data.extendParams.isSubDirectory
        }*/
       _self.noreData = data;
-      if (_self.type == 'ftp') {
+      console.log(_self.$route.params.type);
+      if (_self.$route.params.type == 'ftp') {
         _self.loading = true;
         this
           .$ajax({
@@ -403,12 +378,13 @@ export default {
             _self.loading = false;
             //debugger;
             if (res.data.success) {
-              console.log(res.data.data.isExitFile);
+              //console.log(res.data.data.isExitFile);
               if (res.data.data.isExitFile == 'true') {
                 //console.log("454");
                 _self.showSetNore = true;
+                //console.log(_self.showSetNore);
               } else {
-                //console.log("56565");
+                console.log("56565");
                 _self.$alert(res.data.data.message, "提示", {
                   confirmButtonText: "确定",
                   callback: action => {
@@ -429,7 +405,6 @@ export default {
       } else {
         _self.showSetNore = true;
       }
-
     },
     editName(row, index) {
       console.log(row);
@@ -497,7 +472,7 @@ export default {
       this.showSetTask = false;
       this.loadTable();
     },
-    loadNore() {
+    loadNore(){
       this.showSetNore = false;
       this.loadTable();
     },
@@ -803,7 +778,6 @@ export default {
       this.$confirm('确认要删除此目录吗？', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
-        cancelButtonClass: "el-button--primary",
         type: 'warning'
       }).then(() => {
         let params = {
@@ -850,7 +824,7 @@ export default {
   height: 100%;
   .main {
     flex: 1;
-    overflow: hidden;
+    overflow: auto;
   }
   .filter-container {
     padding-top: 10px;

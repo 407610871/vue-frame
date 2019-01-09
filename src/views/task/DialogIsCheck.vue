@@ -3,10 +3,9 @@
     <el-dialog width="60%" :title="title" :visible.sync="showInnerDialog" class="check-data-dialog" @closed="closeDiaChk" :close-on-click-modal="false">
       <div slot="title">
         <span class="el-dialog__title">{{title}}</span>
-        <div class="title-gra plr30">
-          <div class="grab gra-r">
-            <span class="grab gra-l"></span>
-          </div>
+        <div class="title-gra">
+          <span class="grab gra-l"></span>
+          <span class="grab gra-r"></span>
         </div>
       </div>
       <!-- loading -->
@@ -14,7 +13,7 @@
         <div class="checkData" style="padding-left: 40px;">
           校验设置：
           <el-radio v-model="radio" label="0" @change="checkChange" style="color:rgb(96, 98, 102);">全量核验</el-radio>
-          <el-radio v-model="radio" label="1" @change="checkChange" style="color:rgb(96, 98, 102);" :disabled="!this.queryTargetColumnList.length||types=='mongodb'||types=='ftp'" v-show="types!='mongodb'&&types!='ftp'">根据时间范围核验</el-radio>
+          <el-radio v-model="radio" label="1" @change="checkChange" style="color:rgb(96, 98, 102);" :disabled="!this.queryTargetColumnList.length||types=='mongodb'||types=='ftp'">根据时间范围核验</el-radio>
           <el-button type="" size="small" class="checkBtn" @click="doCheck">{{status}}</el-button>
           <div class="">
             <div class="range">
@@ -35,7 +34,7 @@
           <div class="contanst_source">
             <ul>
               <li>源库：</li>
-              <li>{{types=='ftp'?'源端文件：':'源端表：'}}</li>
+              <li>{{types=='fpt'?'源端文件：':'源端表：'}}</li>
               <li>源端数据量：</li>
             </ul>
             <ul>
