@@ -196,7 +196,7 @@
     <dialogTaskDetail :reqObj="reqObj" v-if="showTaskDetail" v-on:closeDia="showTaskDetail=false"></dialogTaskDetail>
     <!--  批量采集 -->
     <set-task v-if="showSetTask" class="right-btn" :rowList="rowList" :jrtype="type" @close="closeTask()" @fre="loadTask()"></set-task>
-    <norela-coll v-if="showSetNore" :pdata="noreData" :type="type" @fre="loadTable()"></norela-coll>
+    <norela-coll v-if="showSetNore" @close="closeNore()" :pdata="noreData" :type="type" @fre="loadTable()"></norela-coll>
     <!-- 数据核验 -->
     <dialog-is-check v-if="dialogVisible" :msgCheck="msgCheck" @closeDiaChk="dialogVisible=false" title="数据核验" :types="type"></dialog-is-check>
   </div>
@@ -467,6 +467,10 @@ export default {
     },
     closeTask() {
       this.showSetTask = false;
+    },
+    closeNore(){
+      this.showSetNore = false;
+
     },
     loadTask() {
       this.showSetTask = false;

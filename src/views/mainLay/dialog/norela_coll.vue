@@ -78,6 +78,7 @@ export default {
       this.$store.commit('setSchemaList', this.clear);
       this.$store.commit('setNoreData', this.clear);
       this.$store.commit('setClearStepsData', this.clear);
+       this.$emit('close');
     },
     //步骤条
     handleClick(tab, event) {
