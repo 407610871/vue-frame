@@ -235,23 +235,27 @@ export default {
         })
         .then(function(res) {
           //  console.log(res)
-          var list = [];
-          if (res.data != undefined) {
-            let objNet = JSON.stringify(res.data);
-            window.localStorage.setItem('NetWork', objNet);
-            for (var value of res.data) {
-              list.push({
-                id: value.sTATIC_CODE,
-                name: value.sTATIC_NAME
+          if (res.data.success == false) {} else {
+            console.log("******65656");
+            var list = [];
+            if (res.data != undefined) {
+              let objNet = JSON.stringify(res.data);
+              window.localStorage.setItem('NetWork', objNet);
+              for (var value of res.data) {
+                list.push({
+                  id: value.sTATIC_CODE,
+                  name: value.sTATIC_NAME
+                });
+              }
+              _self.$store.commit("setFilterItmeList", {
+                name: "network",
+                data: list
               });
+              _self.formFilterData[1].checkData = list
             }
-            _self.$store.commit("setFilterItmeList", {
-              name: "network",
-              data: list
-            });
-            _self.formFilterData[1].checkData = list
+            console.log(list);
           }
-          console.log(list);
+
         })
         .catch(function(err) {
           console.log(err);
@@ -264,25 +268,29 @@ export default {
         })
         .then(function(res) {
           //  console.log(res)
+          if (res.data.success == false) {
 
-          var list = [];
-          let objNet = JSON.stringify(res.data);
-          window.localStorage.setItem('ButtPlatForm', objNet);
-          for (var value of res.data) {
-            list.push({
-              id: value.sTATIC_CODE,
-              name: value.sTATIC_NAME
+          } else {
+            var list = [];
+            let objNet = JSON.stringify(res.data);
+            window.localStorage.setItem('ButtPlatForm', objNet);
+            for (var value of res.data) {
+              list.push({
+                id: value.sTATIC_CODE,
+                name: value.sTATIC_NAME
+              });
+            }
+            // console.log(list)
+
+            _self.$store.commit("setFilterItmeList", {
+              name: "platform",
+              data: list
             });
+            _self.formFilterData[2].checkData = list
+            console.log(_self.formFilterData);
+            console.log(res.data);
           }
-          // console.log(list)
 
-          _self.$store.commit("setFilterItmeList", {
-            name: "platform",
-            data: list
-          });
-          _self.formFilterData[2].checkData = list
-          console.log(_self.formFilterData);
-          console.log(res.data);
 
 
         })
@@ -290,68 +298,79 @@ export default {
           console.log(err);
         });
 
-    
 
-  },
-  _goWarn() {
-    window.open(this.warnurl);
-  },
-  _release() {
-    this.releaseflag = true;
-  },
-  _changeSkin() {
-    this.themesflag = true;
-  },
-  changeSideBar() {
-    this.sideBarWidth = this.sideBarWidth == 0 ? 210 : 0;
-  },
-  loginOut() {
-    window.localStorage.removeItem('data-theme');
-    this.$keycloak.logout();
-  },
-  //换肤
-  getUser() {
 
-    let userids = window.localStorage.getItem('userID');
-    if (userids == null || userids == undefined) {
-      userids = this.$store.state.userInfo.userId;
-    }
-    this.$ajax({
-        method: "POST",
-        url: this.GLOBAL.skin.API_SKIN +"/BCM/skin/query",
-        data: {
-          userId: userids,
-          appId: 'DACM'
-        }
-      })
-      .then(res => {
-        if (res.data.success && res.data.data) {
-          let obj = {
-            "cnName": res.data.data.cnName,
-            "color": res.data.data.color,
-            "appId": 'DACM',
-            "userId": res.data.data.userId,
-            "userName": res.data.data.userName
+    },
+    _goWarn() {
+      window.open(this.warnurl);
+    },
+    _release() {
+      this.releaseflag = true;
+    },
+    _changeSkin() {
+      this.themesflag = true;
+    },
+    changeSideBar() {
+      this.sideBarWidth = this.sideBarWidth == 0 ? 210 : 0;
+    },
+    loginOut() {
+      window.localStorage.removeItem('data-theme');
+      this.$keycloak.logout();
+    },
+    //换肤
+    getUser() {
+
+      let userids = window.localStorage.getItem('userID');
+      if (userids == null || userids == undefined) {
+        userids = this.$store.state.userInfo.userId;
+      }
+      this.$ajax({
+          method: "POST",
+          url: this.GLOBAL.skin.API_SKIN + "/BCM/skin/query",
+          data: {
+            userId: userids,
+            appId: 'DACM'
           }
-          let values = '';
-          if (res.data.data.color == 'PURPLE') {
-            values = 'theme1';
+        })
+        .then(res => {
+          if (res.data.success && res.data.data) {
+            let obj = {
+              "cnName": res.data.data.cnName,
+              "color": res.data.data.color,
+              "appId": 'DACM',
+              "userId": res.data.data.userId,
+              "userName": res.data.data.userName
+            }
+            let values = '';
+            if (res.data.data.color == 'PURPLE') {
+              values = 'theme1';
+            }
+            if (res.data.data.color == 'GREEN') {
+              values = 'theme2';
+            }
+            if (res.data.data.color == 'BLUE') {
+              values = 'theme3';
+            }
+            if (res.data.data.color == 'GOLDEN') {
+              values = 'theme4';
+            }
+            window.localStorage.setItem('data-theme', values);
+            window.document.documentElement.setAttribute('data-theme', values);
+            this.$store.commit('setThemes', res.data.data.color);
+            obj = JSON.stringify(obj);
+            localStorage.setItem("userSet", obj);
+          } else {
+            let obj = {
+              "cnName": window.localStorage.getItem('userNames'),
+              "color": "DEFAULT",
+              "appId": 'DACM',
+              "userId": window.localStorage.getItem('userID'),
+              "userName": window.localStorage.getItem('userNames')
+            }
+            localStorage.setItem("userSet", JSON.stringify(obj));
+            this._getColor();
           }
-          if (res.data.data.color == 'GREEN') {
-            values = 'theme2';
-          }
-          if (res.data.data.color == 'BLUE') {
-            values = 'theme3';
-          }
-          if (res.data.data.color == 'GOLDEN') {
-            values = 'theme4';
-          }
-          window.localStorage.setItem('data-theme', values);
-          window.document.documentElement.setAttribute('data-theme', values);
-          this.$store.commit('setThemes', res.data.data.color);
-          obj = JSON.stringify(obj);
-          localStorage.setItem("userSet", obj);
-        } else {
+        }).catch(error => {
           let obj = {
             "cnName": window.localStorage.getItem('userNames'),
             "color": "DEFAULT",
@@ -361,104 +380,92 @@ export default {
           }
           localStorage.setItem("userSet", JSON.stringify(obj));
           this._getColor();
-        }
-      }).catch(error =>{
-        let obj = {
-            "cnName": window.localStorage.getItem('userNames'),
-            "color": "DEFAULT",
-            "appId": 'DACM',
-            "userId": window.localStorage.getItem('userID'),
-            "userName": window.localStorage.getItem('userNames')
-        }
-        localStorage.setItem("userSet", JSON.stringify(obj));
-        this._getColor();
-      })
-  },
-  goRoute: function(name) {
-    if (this.$store.state.queryParams[name]) {
-      var obj = {
-        resetData: name
-      };
-      this.$store.commit("resetQueryParam", obj);
-    }
-    this.$router.push({ name: name });
-  },
-  search: function() {
-    this.$root.eventHub.$emit("search", this.keyword);
-  },
-  breadcrumbChange: function(index, item) {
-    if (index != this.breadcrumb.length - 1) {
-      // var obj = {
-      // resetData:[]
-      // };
-      // for(var i = index+1;i<this.breadcrumb.length;i++){
-      // obj.resetData.push(this.breadcrumb[i].name)
-      // }
-      // this.$store.commit('resetQueryParam', obj);
-      this.$router.push({
-        name: item.name,
-        params: item.params,
-        query: item.query
-      });
-    }
-  },
-  getBreadcrumb() {
-    var routeName = this.$route.name;
-    if (
-      routeName == "dashboard" ||
-      routeName == "accessObjManage" ||
-      routeName == "accessObjInfo"
-    ) {
-      this.breadcrumb = [{
-        name: "dashboard",
-        breadcrumbName: "数据接入",
-        params: {},
-        query: this.$store.state.queryParams["dashboard"]
-      }];
-      if (this.$route.params.sourceId && this.$route.params.sourceName) {
-        this.breadcrumb.push({
-          name: "accessObjManage",
-          breadcrumbName: decodeURI(this.$route.params.sourceName),
-          params: {
-            sourceId: this.$route.params.sourceId,
-            sourceName: decodeURI(this.$route.params.sourceName),
-            type: this.$route.params.type
-          },
-          query: this.$store.state.queryParams["accessObjManage"]
+        })
+    },
+    goRoute: function(name) {
+      if (this.$store.state.queryParams[name]) {
+        var obj = {
+          resetData: name
+        };
+        this.$store.commit("resetQueryParam", obj);
+      }
+      this.$router.push({ name: name });
+    },
+    search: function() {
+      this.$root.eventHub.$emit("search", this.keyword);
+    },
+    breadcrumbChange: function(index, item) {
+      if (index != this.breadcrumb.length - 1) {
+        // var obj = {
+        // resetData:[]
+        // };
+        // for(var i = index+1;i<this.breadcrumb.length;i++){
+        // obj.resetData.push(this.breadcrumb[i].name)
+        // }
+        // this.$store.commit('resetQueryParam', obj);
+        this.$router.push({
+          name: item.name,
+          params: item.params,
+          query: item.query
         });
       }
-      if (this.$route.params.objId && this.$route.params.objName) {
-        this.breadcrumb.push({
-          name: "accessObjInfo",
-          breadcrumbName: decodeURI(this.$route.params.objName),
-          params: {
-            sourceId: this.$route.params.sourceId,
-            sourceName: decodeURI(this.$route.params.sourceName),
-            objId: this.$route.params.objId,
-            objName: decodeURI(this.$route.params.objName),
-            type: this.$route.params.type
-          }
-        });
-      }
-    } else {
-      var list = [];
-      this.$route.matched.forEach((item, index) => {
-        if (item.path != "") {
-          list.push({
-            name: this.$route.name,
-            breadcrumbName: this.$route.meta.title
+    },
+    getBreadcrumb() {
+      var routeName = this.$route.name;
+      if (
+        routeName == "dashboard" ||
+        routeName == "accessObjManage" ||
+        routeName == "accessObjInfo"
+      ) {
+        this.breadcrumb = [{
+          name: "dashboard",
+          breadcrumbName: "数据接入",
+          params: {},
+          query: this.$store.state.queryParams["dashboard"]
+        }];
+        if (this.$route.params.sourceId && this.$route.params.sourceName) {
+          this.breadcrumb.push({
+            name: "accessObjManage",
+            breadcrumbName: decodeURI(this.$route.params.sourceName),
+            params: {
+              sourceId: this.$route.params.sourceId,
+              sourceName: decodeURI(this.$route.params.sourceName),
+              type: this.$route.params.type
+            },
+            query: this.$store.state.queryParams["accessObjManage"]
           });
         }
-      });
-      this.$set(this.$data, "breadcrumb", list);
+        if (this.$route.params.objId && this.$route.params.objName) {
+          this.breadcrumb.push({
+            name: "accessObjInfo",
+            breadcrumbName: decodeURI(this.$route.params.objName),
+            params: {
+              sourceId: this.$route.params.sourceId,
+              sourceName: decodeURI(this.$route.params.sourceName),
+              objId: this.$route.params.objId,
+              objName: decodeURI(this.$route.params.objName),
+              type: this.$route.params.type
+            }
+          });
+        }
+      } else {
+        var list = [];
+        this.$route.matched.forEach((item, index) => {
+          if (item.path != "") {
+            list.push({
+              name: this.$route.name,
+              breadcrumbName: this.$route.meta.title
+            });
+          }
+        });
+        this.$set(this.$data, "breadcrumb", list);
+      }
+      //end of getBreadcrumb
     }
-    //end of getBreadcrumb
   }
-}
 };
 
 </script>
-
 <style rel="stylesheet/scss" lang="scss" scoped>
 @import "src/styles/variables.scss";
 @import "src/styles/mixin.scss";
@@ -488,6 +495,7 @@ export default {
   float: none;
   clear: both;
 }
+
 .enc-header .right-menu .el-button.moreSys:focus,
 .enc-header .right-menu .el-button.moreSys:hover {
   width: 66px;
@@ -497,9 +505,11 @@ export default {
   background-size: contain;
   float: left
 }
+
 .enc-header .right-menu .el-button.user {
   background: #479bd9 !important;
 }
+
 .enc-aside {
   width: 210px;
   @include aside-bg-color($enc-aside-background-theme);
@@ -527,6 +537,7 @@ export default {
     margin-top: 0px;
   }
 }
+
 .enc-search {
   float: right;
   margin-top: 3px;
@@ -568,6 +579,7 @@ export default {
     }
   }
 }
+
 .popup-menu {
   margin: 0;
   padding: 0;
@@ -584,9 +596,9 @@ export default {
     }
   }
 }
+
 </style>
 <style rel="stylesheet/scss" lang="scss">
-
 .moreSys {
   width: 66px;
   height: 66px;
