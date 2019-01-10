@@ -1,19 +1,16 @@
 <template>
   <div style="height:100%;" class="dashboard-container">
-     <div>
+    <div>
       <el-breadcrumb separator="/">
-            <el-breadcrumb-item :to="{ path: '/dashboard' }">
-              数据接入
-            </el-breadcrumb-item>
-            <el-breadcrumb-item>
-              {{ breadcrumbName}}
-            </el-breadcrumb-item>
+        <el-breadcrumb-item :to="{ path: '/dashboard' }">
+          数据接入
+        </el-breadcrumb-item>
+        <el-breadcrumb-item>
+          {{ breadcrumbName}}
+        </el-breadcrumb-item>
       </el-breadcrumb>
-      <form-fliter :ObjManage="ObjManage" v-if="cleanData" @highMore="moreHeight" @highSeaech="hightrue" 
-      v-bind:formCollapse="collapse" v-bind:dataObj="formFilterData" @doSearch="search" @formFilter="changeFormFilter" />
-
+      <form-fliter :ObjManage="ObjManage" v-if="cleanData" @highMore="moreHeight" @highSeaech="hightrue" v-bind:formCollapse="collapse" v-bind:dataObj="formFilterData" @doSearch="search" @formFilter="changeFormFilter" />
     </div>
-
     <div class="main main-content">
       <div class="moreSearch" style="margin-bottom:10px;">
         <div class="table-tools clearfix">
@@ -35,6 +32,12 @@
         <el-table-column prop="name" label="文件夹名" v-if="type=='ftp'" show-overflow-tooltip>
         </el-table-column>
         <el-table-column prop="extendParams.filePath" label="路径" v-if="type=='ftp'" show-overflow-tooltip>
+        </el-table-column>
+        <el-table-column label="是否包含子目录" v-if="type=='ftp'" width="160" show-overflow-tooltip>
+          <template slot-scope="scope">
+            <span v-if="scope.row.extendParams.isSubDirectory=='true'">是</span>
+            <span v-if="scope.row.extendParams.isSubDirectory=='false'">否</span>
+          </template>
         </el-table-column>
         <el-table-column label="是否删除文件" v-if="type=='ftp'" width="160" show-overflow-tooltip>
           <template slot-scope="scope">
@@ -170,7 +173,7 @@
                 <userSurvey :pdata="scope.row" @fre="loadTable()"></userSurvey>
               </div>
               <div class="survey" v-if="type!='mysql' && type!='oracle' && type!='sqlserver' && type!='postgresql'">
-                <el-tooltip class="item" effect="light" content="单表采集" placement="top">
+                <el-tooltip class="item" effect="light" content="单目录采集" placement="top">
                   <i class="enc-icon-danbiaocaiji" @click="setNoreVisible(scope.row,scope.$index)"></i>
                 </el-tooltip>
                 <!-- <norela-coll :pdata="scope.row" :type="type" @fre="loadTable()"></norela-coll> -->
@@ -204,7 +207,6 @@
     <!--  批量采集 -->
     <set-task v-if="showSetTask" class="right-btn" :rowList="rowList" :jrtype="type" @close="closeTask()" @fre="loadTask()"></set-task>
     <norela-coll v-if="showSetNore" @close="closeNore()" :pdata="noreData" :type="type" @fre="loadNore()"></norela-coll>
-
     <!-- 数据核验 -->
     <dialog-is-check v-if="dialogVisible" :msgCheck="msgCheck" @closeDiaChk="dialogVisible=false" title="数据核验" :types="type"></dialog-is-check>
   </div>
@@ -315,10 +317,10 @@ export default {
       return this.collapse ?
         window.innerHeight - 300 :
         window.innerHeight - 400 - 40 * this.moreData; */
-         if(window.innerHeight >768){
-          return window.innerHeight - 255;
-        }
-        return 520;
+      if (window.innerHeight > 768) {
+        return window.innerHeight - 255;
+      }
+      return 520;
 
     },
     headerHeight: function() {
@@ -495,7 +497,7 @@ export default {
       this.showSetTask = false;
       this.loadTable();
     },
-    loadNore(){
+    loadNore() {
       this.showSetNore = false;
       this.loadTable();
     },
