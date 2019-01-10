@@ -6,10 +6,11 @@
     </el-tooltip>
     <!--  <i class="el-icon-info" @click="dialogVisible = true">用户调研</i> -->
     <el-dialog title="核验报告" :visible.sync="dialogVisible" width="73%" :before-close="closeDialog">
-      <div class="title-gra plr30">
-        <span class="grab gra-l"></span>
-        <span class="grab gra-r"></span>
-      </div>
+        <div class="title-gra plr30">
+          <div class="grab gra-r">
+            <span class="grab gra-l"></span>
+          </div>
+        </div>
       <div class="proInfo-box bornone clearfix">
         <p style="text-align: center">{{name}}</p>
         <el-tooltip class="item" effect="light" content="刷新" placement="top">
@@ -334,7 +335,6 @@ export default {
 }
 
 .comTable {
-  padding: 20px 30px;
   .el-table .cell .el-button--primary {
     color: #fff;
     /*  background-color: #489bd9;
@@ -385,9 +385,6 @@ textarea {
 textarea {
   margin-left: 30px;
 }
-
-.title-gra {}
-
 .el-table .cell {
   white-space: nowrap;
 }

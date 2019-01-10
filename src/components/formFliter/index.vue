@@ -6,7 +6,7 @@
           <input type="text" v-model="keyword" placeholder="请输入查询条件" @keyup.enter="search"/>
         </div>
         <i v-if="this.$route.params.type=='ftp'||this.$route.params.type=='mongodb'"></i>
-        <span v-else @click="doCollapse">高级搜索 <i :class="collapse?'el-icon-caret-bottom':'el-icon-caret-top'"></i> </span>
+        <span v-else @click="doCollapse" @blur="handle">高级搜索 <i :class="collapse?'el-icon-caret-bottom':'el-icon-caret-top'"></i> </span>
         <el-button type="primary" class="doCearch" @click="search" >查询</el-button>
       </div>
 
@@ -96,8 +96,12 @@ export default {
   methods: {
     //高级搜索
     doCollapse() {
+      
       this.collapse = !this.collapse;
       this.$emit("highSeaech", this.collapse);
+    },
+    handle() {
+      console.log("1111111111111111111");
     },
     //搜索条件关闭
     delSelect(index, a) {
@@ -182,24 +186,29 @@ export default {
   }
 }
 .searchDiv {
+    float: right;
+    margin-top: -40px;
+    margin-right: 20px;
+    height: 40px;
+    padding: 2px 0 0 0;
   span {
     display: inline-block;
     font-size: 15px;
     cursor: pointer;
     width: 100px;
-    height: 30px;
+    height: 35px;
     border: 1px solid #C8CFD5;
     border-left: none;
-    line-height: 30px;
+    line-height: 36px;
     text-align: center;
     position: relative;
   }
 }
 .dataSearch {
   display: inline-block;
-  width: 210px;
-  height: 30px;
-  line-height: 30px;
+  width: 220px;
+  height: 35px;
+  line-height: 35px;
   border: 1px solid #C8CFD5;
   input {
     margin-left: 7px;
@@ -210,17 +219,22 @@ export default {
   }
   i {
     text-indent: 5px;
+    font-size: 21px;
   }
   ::-webkit-input-placeholder {
     color: #999;
+    font-size: 15px;
   } ///* 使用webkit内核的浏览器 */
   :-moz-placeholder {
     color: #999;
+    font-size: 15px;
   } ///* Firefox版本4-18 */
   ::-moz-placeholder {
+    font-size: 15px;
     color: #999;
   } ///* Firefox版本19+ */
   :-ms-input-placeholder {
+    font-size: 15px;
     color: #999;
   } ///* IE浏览器 */
 }
@@ -229,13 +243,21 @@ export default {
   margin-left: 15px;
   margin-top: 0;
   position: relative;
-  line-height: 12px;
+  line-height: 36px !important;
 }
 .el-form-item {
   margin-bottom: 10px;
 }
 .checkDiv {
-   margin-left: 27px;
+    position: absolute;
+    z-index: 1001;
+    border: 1px solid #EFF3F6;
+    border-radius: 0px;
+    background-color: #fff;
+    box-shadow: 0 2px 12px 0 rgba(0,0,0,.1);
+    box-sizing: border-box;
+    width: 800px;
+    right: 0px;
   .isSelect {
     width: 100%;
     max-height: 70px;

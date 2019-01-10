@@ -209,6 +209,7 @@ export default {
       this.$confirm('确认要恢复' + row.name + '吗?', '提示', {
         confirmButtonText: '恢复',
         cancelButtonText: '取消',
+        cancelButtonClass: "el-button--primary",
         type: 'warning'
       }).then(() => {
         var _self = this;
@@ -242,6 +243,7 @@ export default {
       this.$confirm('确认要删除' + row.name + '吗?', '提示', {
         confirmButtonText: '删除',
         cancelButtonText: '取消',
+        cancelButtonClass: "el-button--primary",
         type: 'warning'
       }).then(() => {
         var _self = this;

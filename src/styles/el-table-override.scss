@@ -24,10 +24,6 @@
   @include el-table-hover($el-table-td-hover);
 }
 
-.el-table--striped .el-table__body tr.el-table__row--striped td {
-  background: #e6e8ed;
-}
-
 .el-table td, .el-table th.is-leaf {
   border-bottom: 0;
 }

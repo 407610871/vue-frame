@@ -2,9 +2,10 @@
   <div class="taskMDialog" style="padding-bottom:15px;" >
     <el-dialog :title="reqObj.taskName" :close-on-click-modal="false" 
     :visible.sync="showInnerDialog" @closed="closeDia" class="task-Detail-dialog">
-      <div class="title-gra">
-        <span class="grab gra-l"></span>
-        <span class="grab gra-r"></span>
+      <div class="title-gra plr30">
+        <div class="grab gra-r">
+          <span class="grab gra-l"></span>
+        </div>
       </div>
       <el-form label-width="150px" class="demo-ruleForm">
         <span v-show="taskBaseInfo.status==1||taskBaseInfo.status==2" style="float:right;">当前状态:

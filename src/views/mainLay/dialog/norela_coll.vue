@@ -1,13 +1,14 @@
 <template>
   <div class="taskMDialog userSurveyDialog setTaskDia diaicon">
-    <!-- <el-tooltip class="item" effect="light" :content="titleContent" placement="top">
-      <i class="enc-icon-danbiaocaiji" @click="setVisible()"></i>
-    </el-tooltip> -->
+   <!--  <el-tooltip class="item" effect="light" :content="titleContent" placement="top">
+     <i class="enc-icon-danbiaocaiji" @click="setVisible()"></i>
+   </el-tooltip> -->
     <el-dialog :title="titleContent" :visible.sync="dialogVisible" width="73%" :before-close="closeDialog">
-      <div class="title-gra plr30">
-        <span class="grab gra-l"></span>
-        <span class="grab gra-r"></span>
-      </div>
+       <div class="title-gra plr30">
+          <div class="grab gra-r">
+            <span class="grab gra-l"></span>
+          </div>
+        </div>
       <div class="taskSteps plr30">
         <el-tabs v-model="activeName">
           <el-tab-pane name="first" disabled>
@@ -78,7 +79,7 @@ export default {
       this.$store.commit('setSchemaList', this.clear);
       this.$store.commit('setNoreData', this.clear);
       this.$store.commit('setClearStepsData', this.clear);
-       this.$emit('close');
+        this.$emit('close');
     },
     //步骤条
     handleClick(tab, event) {
@@ -180,6 +181,12 @@ export default {
   background: #f0f3f6;
   padding-top: 20px;
 }
+
+.plr30 {
+  padding-left: 30px;
+  padding-right: 30px;
+}
+
 .el-tabs__nav-wrap::after {
   background-color: none;
   opacity: 0;

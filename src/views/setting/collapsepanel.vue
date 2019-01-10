@@ -154,6 +154,7 @@ export default {
      this.$confirm('确认要删除吗?', '提示', {
         confirmButtonText: "确定",
         cancelButtonText: '取消',
+        cancelButtonClass: "el-button--primary",
         type: 'warning'
       }).then(() => {
         this.delectAjax(id);
@@ -163,6 +164,7 @@ export default {
       this.$confirm('确认要' + this.editTxt + '吗?', '提示', {
         confirmButtonText: this.editTxt,
         cancelButtonText: '取消',
+        cancelButtonClass: "el-button--primary",
         type: 'warning'
       }).then(() => {
         this.connectAjax();

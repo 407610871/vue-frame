@@ -2,10 +2,11 @@
   <div class="taskMDialog" >
     <el-dialog title="任务详情信息" :visible.sync="showInnerDialog" @closed="closeDia" 
     :close-on-click-modal="false" class="task-Detail-dialog"> 
-      <div class="title-gra">
-        <span class="grab gra-l"></span>
-        <span class="grab gra-r"></span>
-      </div>
+        <div class="title-gra plr30">
+          <div class="grab gra-r">
+            <span class="grab gra-l"></span>
+          </div>
+        </div>
       <el-form label-width="100px" class="demo-ruleForm">
         
         <!-- 任务基本信息 模块开始 -->

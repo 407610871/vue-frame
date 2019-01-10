@@ -21,7 +21,7 @@
             <el-checkbox v-model="userflag">用户标记</el-checkbox>
           </el-col>
           <el-col :span="24" v-show="userflag">
-            <el-col :span="24" class="surveybg sur plr30">
+            <el-col :span="24" class="surveybg plr30 sur">
               <el-form-item label="资源目录编号:">
                 <el-col :span="4" class="ml0">
                   <el-form-item prop="industry">
@@ -127,7 +127,7 @@
                 </el-form-item>
               </el-col>
             </el-col>
-            <el-col :span="10" class="plr30">
+            <el-col :span="10" class="plr30 sur">
               <el-form-item label="初始数据量:" prop="datanum">
                 <el-input v-model="ruleForm.datanum"></el-input>
               </el-form-item>
@@ -136,9 +136,9 @@
         </div>
       </div>
     </el-form>
-    <div class="btn tcenter">
-      <el-button type="primary" style="margin-top: 12px;" @click="pre('ruleForm')">下一步</el-button>
-      <el-button style="margin-top: 12px;" @click="close()">取消</el-button>
+    <div class="mr-btn">
+      <el-button type="primary" @click="close()">取消</el-button>
+      <el-button type="primary"  @click="pre('ruleForm')">下一步</el-button>
     </div>
   </div>
 </template>
@@ -837,6 +837,11 @@ export default {
 .surveybg {
   background: #f0f3f6;
   padding: 20px 20px 0;
+}
+
+.plr30 {
+  padding-left: 30px;
+  padding-right: 30px;
 }
 
 .demo-ruleForm {

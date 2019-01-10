@@ -1,7 +1,6 @@
 @import './variables.scss';
 @import './mixin.scss';
 .clearfix {
-    float: none;
     clear: both;
 }
 // header 布局
@@ -11,16 +10,21 @@
     line-height: 66px;
     background: #E6EAED;
   }
-//右侧图标
-.el-popover {
-    padding: 17px 27px;
-    color: #C8CFD5;
-    top: 66px !important;
-    right: 0;
-}
 .right-menu {
     float: right;
     height: 100%;
+    //右侧图标
+    .el-popover {
+        padding: 17px 0px;
+        color: #C8CFD5;
+        top: 66px !important;
+    }
+    .warn-popover li {
+        padding: 0 27px;
+        :hover{
+            background: #E6EAED;
+        }
+    }
     .el-button {
       width: 66px;
       height: 100%;
@@ -55,15 +59,14 @@
       }
     }
   }
-  
-  header {
+header {
     // 图标样式
     .enc-logo {
       display: inline-block;
       width: 210px;
       background: #d7dce0;
       height: 100%;
-      line-height: $enc-nav-header-height;
+      line-height: 66px;
       text-align: center;
       vertical-align: top;
       img {
@@ -100,7 +103,6 @@
       height: 66px;
       line-height: 66px;
       border-bottom: 2px solid transparent;
-      margin-left: 36px; 
       color: #425365;
     }
     .el-menu.el-menu--horizontal {
@@ -109,7 +111,6 @@
     .el-submenu {
       .el-submenu__title {
         color: #425365;
-        margin-left: 36px;
         i {
           margin-right: 7px;
           font-size: 24px;
@@ -127,6 +128,7 @@
       }
     }
   }
+
   //面包屑样式
   .el-breadcrumb {
     height: 40px;
@@ -139,10 +141,11 @@
   }
   // 内容整体高度
   .app-main {
-    height: calc(100vh - 129px);
+    height: calc(100vh - 66px);
     width: 100%;
     position: relative;
     overflow: hidden;
+    background: #fff;
   }
   // 内容区布局
   .main-content {
@@ -151,42 +154,50 @@
   }
   
   // 按钮样式
-  .el-button {
-    padding: 12px 20px;
+  .el-button--medium {
+    padding: 0 12px;
     font-size: 15px;
     border-radius: 0;
     height: 35px;
     line-height: 10px !important;
-    color: #fff !important;
-    @include el-button--primary($el-button-default);
-  }
-  .el-button--medium {
-    padding: 12px 20px;
-    font-size: 15px;
-    border-radius: 0;
-    height: 35px;
-    color: #fff;
     @include el-button--primary($el-button-default);
   }
   .el-button--primary {
-    padding: 12px 20px;
+    padding: 0 12px;
     font-size: 15px;
     border-radius: 0;
     height: 35px;
-    color: #fff;
-    @include el-button--primary($el-button-default);
-  }
-  
-  .el-button:hover, .el-button:focus {
     color: #fff !important;
+    line-height: 10px !important;
     @include el-button--primary($el-button-default);
   }
   .el-button--primary:hover {
     opacity: 0.5;
+    @include el-button--primary($el-button-default);
   }
   .el-button--medium:hover {
-    color: #fff;
     opacity: 0.5;
+    @include el-button--primary($el-button-default);
+  }
+  .el-button--medium:active, .el-button--primary:active{
+    opacity: 1;
+    background: #009DDF !important;
+    border-color:  #009DDF !important;
+  }
+  .el-button--primary:focus {
+    @include el-button--primary($el-button-default);
+  }
+  .el-button--medium:focus {
+    @include el-button--primary($el-button-default);
+  }
+  .el-button--primary.is-disabled, .el-button--primary.is-disabled:active, 
+  .el-button--primary.is-disabled:focus, .el-button--primary.is-disabled:hover {
+    opacity: 1;
+    background: #E6EAED !important;
+    border-color:  #E6EAED !important;
+  }
+  .el-button--small {
+    font-size: 14px;
   }
   
   // 滚动条
@@ -198,11 +209,11 @@
     overflow: hidden;
   }
   ::-webkit-scrollbar-thumb{
-    background: #929292;
+    @include el-bgcolor($el-page-theme);
     border-radius: 4px;
   }
-  ::-webkit-scrollbar-thumb:hover{
-    background: #929292;
+  ::-webkit-resizer {
+      display: none;
   }
   
   // 输入框
@@ -213,8 +224,6 @@
   }
   .el-form-item__label {
     line-height: 35px;
-    padding: 0;
-    padding-right: 20px;
   }
   // 下拉选择框
   .el-select .el-input__suffix {
@@ -243,8 +252,6 @@
   .el-dialog {
       min-width: 550px;
       min-height: 315px;
-      max-width: 1024px;
-      max-height: 768px;
   }
   .el-dialog .el-dialog__header {
     margin: 0 40px !important;
@@ -290,9 +297,6 @@
   }
   
   // 表格
-  .el-table__body-wrapper, .el-table__footer-wrapper, .el-table__header-wrapper {
-    height: 60px;
-  }
   .el-table__header {
     tr {
       height:60px;
@@ -309,7 +313,17 @@
   .el-table .cell, .el-table th div {
     padding-right: 12px;
   }
-  
+  .el-table, .el-table__expanded-cell {
+    background-color: #EFF3F6;
+  }
+  .el-table--striped .el-table__body tr.el-table__row--striped td {
+    background: #E6EAED;
+  }
+  .el-table--enable-row-hover .el-table__body tr:hover>td {
+    color: #fff;
+    @include el-table-hover($el-table-td-hover);
+  }
+
   // 左侧栏的收缩
   .sidebar-control-btn {
     display: block;
@@ -336,4 +350,22 @@
 .el-pagination.is-background .el-pager li:not(.disabled):hover {
     opacity: 0.3;
     @include el-bgcolor($el-page-theme);
+}
+.el-pager li {
+    height: 26px;
+    line-height: 26px;
+    border-radius: 0 !important; 
+}
+
+// 时间图标
+.el-date-editor .el-range__icon {
+    font-size: 21px;
+}
+// check-box 
+.el-checkbox__label {
+    padding-left: 7px;
+}
+// 图标hover
+[class*="enc-icon"]:hover, [class*="enc-icon"]:active{
+    color: #009DDF !important;
 }

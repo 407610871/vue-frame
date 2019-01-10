@@ -1,7 +1,7 @@
 <template>
   <div v-loading="loading" :element-loading-text="tips" class="task-template">
     <!-- 搜索栏 -->
-    <div class="el-breadcrumb" ref="searchArea">
+    <div class="count-container" ref="searchArea">
       <!-- 查询按钮 -->
       <div class="searchDiv">
         <div class="dataSearch">
@@ -166,7 +166,7 @@
             <el-checkbox label="1" name="status">运行</el-checkbox>
             <el-checkbox label="2" name="status">暂停</el-checkbox>
             <el-checkbox label="6" name="status">采集失败</el-checkbox>
-            <el-checkbox label="7" name="status">汇聚失败</el-checkbox>
+             <el-checkbox label="7" name="status">汇聚失败</el-checkbox>
             <el-checkbox label="4" name="status">完成</el-checkbox>
           </el-checkbox-group>
         </el-form-item>
@@ -188,16 +188,11 @@
         <el-button type="primary" @click="doMore('manager/taskOperate/batchConverge',1)">重新汇聚</el-button>
         <el-button type="primary" @click="doMore('manager/taskOperate/batchStart',2)">批量启动</el-button>
         <el-button type="primary" @click="doMore('manager/taskOperate/batchPause',3)">批量停止</el-button>
-        <div class="right-tools">
-          <el-tooltip class="item" effect="light" content="刷新" placement="top">
-            <a href="javascript:void(0)" v-on:click="refresh"><i class="enc-icon-shuaxin"></i></a>
-          </el-tooltip>
-        </div>
       </div>
     </div>
     <!-- 表格数据 -->
-    <div class="main-content">
-      <el-table border :row-class-name="tableRowClassName" ref="multipleTable" :data="tableData" tooltip-effect="light" :height="tableHeight" @select-all="selectAll" @select="select" @selection-change="handleSelectionChange">
+    <div class="mainTable">
+      <el-table border :row-class-name="tableRowClassName" ref="multipleTable" :data="tableData" tooltip-effect="light" :height="tableHeight" style="width: 100%;min-height:300px;" @select-all="selectAll" @select="select" @selection-change="handleSelectionChange">
         <el-table-column fixed type="selection" width="55"></el-table-column>
         <el-table-column fixed label="接入指示" width="100">
           <template slot-scope="scope">
@@ -249,7 +244,7 @@
             <el-button v-if="scope.row.status==1 || scope.row.status==5" type="text" size="small" @click="doRun(scope.$index, scope.row)">暂停</el-button>
             <el-button v-if="scope.row.status!=1" type="text" size="small" @click="doDel(scope.$index, scope.row)">删除</el-button>
             <el-button v-if="(scope.row.status==1||scope.row.status==2||scope.row.status==4)&&scope.row.isPeriod!=0" type="text" size="small" @click="doCheck(scope.$index, scope.row)">数据核验</el-button>
-            <el-button v-if="(scope.row.status==2||scope.row.status==4||scope.row.status==6||scope.row.status==7)&&scope.row.isPeriod!=0&&scope.row.ftpIsDelete!='true'" type="text" size="small" @click="doConverge(scope.$index, scope.row)">重新汇聚</el-button>
+            <el-button v-if="(scope.row.status==2||scope.row.status==4||scope.row.status==6||scope.row.status==7)&&scope.row.isPeriod!=0&&scope.row.ftpIsDelete!='true'" type="text" size="small" @click="doConverge(scope.$index, scope.row)">
           </template>
         </el-table-column>
       </el-table>
@@ -353,9 +348,7 @@ export default {
       return this.$store.state.deptId;
     },
     tableHeight: function() {
-      return this.collapse ?
-        window.innerHeight - this.searchHeight - 265 :
-        window.innerHeight - 305;
+      return window.innerHeight - this.searchHeight - 224;
     },
     pageSize() {
       return this.$store.state.pageSize;
@@ -480,7 +473,6 @@ export default {
     },
     //高级搜索
     doMoreSearch() {
-      this.collapse = !this.collapse;
       this.moreSearch = !this.moreSearch;
 
 
@@ -575,8 +567,6 @@ export default {
           }
         });
       }
-
-
     },
     //处理完毕
     doDel(index, row) {
@@ -652,7 +642,6 @@ export default {
             message: '已取消删除'
           });*/
       });
-
     },
     //运行、暂停
     doRun(index, row) {
@@ -868,9 +857,9 @@ export default {
                     i + 1 + "." + res.data.data.errorList[i] + "</br>";
                 }
                 _self.$alert(
-                  "操作成功！重新汇聚成功的任务如下：</br>" +
+                  "重新汇聚任务创建成功的任务如下：</br>" +
                   successHtml +
-                  "重新汇聚失败的任务如下：</br>" +
+                  "重新汇聚任务创建失败的任务如下：</br>" +
                   errorHtml,
                   "重新汇聚", {
                     dangerouslyUseHTMLString: true
@@ -1106,6 +1095,13 @@ export default {
   cursor: pointer;
 }
 
+.count-container {
+  background-color: #fff;
+  border-bottom: 1px solid #d9d9d9;
+  margin: 0 auto;
+  padding-top: 20px;
+}
+
 .timeSearch {
   float: left;
 }
@@ -1115,8 +1111,9 @@ export default {
 }
 
 .count-operate {
-  padding: 0 20px 0 20px;
-  margin: 20px auto;
+  width: 95%;
+  height: 50px;
+  margin: 0 auto;
   div {
     // width: 330px;
     float: right;
@@ -1136,49 +1133,24 @@ export default {
   float: right;
 }
 
-.el-form-item {
-  margin-bottom: 10px;
-}
-
-.el-message-box {
-  max-height: 50%;
-  overflow: auto;
-}
-
-.el-message-box__wrapper {
-  .el-message-box {
-    max-height: 50%;
-    overflow: auto;
-  }
-}
-
-.searchDiv {
-  span {
-    display: inline-block;
-    font-size: 15px;
-    cursor: pointer;
-    width: 100px;
-    height: 30px;
-    border: 1px solid #C8CFD5;
-    border-left: none;
-    line-height: 30px;
-    text-align: center;
-    position: relative;
-  }
+.mainTable {
+  width: 95%;
+  margin: 0 auto;
 }
 
 .dataSearch {
   display: inline-block;
   width: 210px;
   height: 30px;
-  line-height: 30px;
-  border: 1px solid #C8CFD5;
+  border: 1px solid #c9cdd0;
   input {
-    margin-left: 7px;
+    margin-left: 5px;
     width: 180px;
     background-color: transparent;
     border: 0 none;
     outline: 0 none;
+    height: 28px;
+    font-size: 14px;
   }
   i {
     text-indent: 5px;
@@ -1197,12 +1169,48 @@ export default {
   } ///* IE浏览器 */
 }
 
+.searchDiv {
+  width: 95%;
+  margin-left: 2.5%;
+  margin-bottom: 20px;
+  span {
+    display: inline-block;
+    font-size: 14px;
+    cursor: pointer;
+    width: 100px;
+    height: 30px;
+    border: 1px solid #c9cdd0;
+    border-left: none;
+    line-height: 30px;
+    text-align: center;
+    position: relative;
+    top: 1px;
+  }
+}
+
 .doCearch {
   display: inline-block;
+  height: 30px;
   margin-left: 15px;
   margin-top: 0;
   position: relative;
-  line-height: 12px;
+  line-height: 8px;
+}
+
+.el-form-item {
+  margin-bottom: 10px;
+}
+
+.el-message-box {
+  max-height: 50%;
+  overflow: auto;
+}
+
+.el-message-box__wrapper {
+  .el-message-box {
+    max-height: 50%;
+    overflow: auto;
+  }
 }
 
 .right-tools {

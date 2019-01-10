@@ -2,10 +2,11 @@
   <div class="taskMDialog increDia">
     <!-- <i class="el-icon-info" @click="innerVisible = true">选择</i> -->
     <el-dialog title="impala服务器信息" :visible.sync="innerVisible" width="60%" :before-close="closeDialog" append-to-body>
-      <div class="title-gra">
-        <span class="grab gra-l"></span>
-        <span class="grab gra-r"></span>
-      </div>
+        <div class="title-gra plr30">
+          <div class="grab gra-r">
+            <span class="grab gra-l"></span>
+          </div>
+        </div>
       <div class="daiInfo proInfo mt30" v-loading="loading">
         <div class="proInfo-box clearfix dataInfo-box">
           <div class="comTable">

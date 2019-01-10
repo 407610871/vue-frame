@@ -17,7 +17,7 @@
           <ul class="popup-menu warn-menu warn-popover">
             <li class="even-li">{{ userName }}</li>
             <li class="odd-li">{{ roleName }}</li>
-            <li class="" v-on:click="_changeSkin()">主题</li>
+            <li class="even-li" v-on:click="_changeSkin()">主题</li>
             <li class="theme-li"></li>
             <li class="even-li" v-on:click="loginOut()">退出</li>
           </ul>
@@ -29,9 +29,9 @@
         </el-popover>
         <el-popover placement="bottom-start" width="200" trigger="hover">
           <ul class="popup-menu warn-menu">
-            <li><a href="javascript:void(0)" v-on:click="goRoute('setting')">系统参数</a></li>
-            <li><a href="javascript:void(0)" v-on:click="goRoute('recyclingBins')">回收箱</a></li>
-            <li><a href="javascript:void(0)" @click="_release()">版本信息</a></li>
+            <li class="even-li"><a href="javascript:void(0)" v-on:click="goRoute('setting')">系统参数</a></li>
+            <li class="even-li"><a href="javascript:void(0)" v-on:click="goRoute('recyclingBins')">回收箱</a></li>
+            <li class="even-li"><a href="javascript:void(0)" @click="_release()">版本信息</a></li>
           </ul>
           <el-button slot="reference" class="moreSys">
             <span>
@@ -50,11 +50,12 @@
         </div>
       </el-aside>
       <el-main class="enc-main">
+        <!--
           <el-breadcrumb separator="/">
             <el-breadcrumb-item v-for="(item,index) in breadcrumb" :key="index">
               <a href="javascript:void(0)" v-on:click="breadcrumbChange(index,item)">{{item.breadcrumbName}}</a>
             </el-breadcrumb-item>
-          </el-breadcrumb>
+          </el-breadcrumb>-->
         <app-main ref="mainTable" />
       </el-main>
     </div>
@@ -601,7 +602,7 @@ export default {
 }
 
 .even-li {
-  color: #374673!important;
+  color: #425365 !important;
 }
 
 .odd-li {

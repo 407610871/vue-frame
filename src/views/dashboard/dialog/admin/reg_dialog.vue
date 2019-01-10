@@ -4,9 +4,10 @@
       <i @click="dialogVisible = true" class="enc-icon-zhuce table-action-btn" style="margin-right:15px; font-size:30px;"></i>
     </el-tooltip>
     <el-dialog title="接入数据源" :visible.sync="dialogVisible" width="72%" :before-close="closeDialog" class="reg-dialog" :close-on-click-modal="false">
-      <div class="title-gra">
-        <span class="grab gra-l"></span>
-        <span class="grab gra-r"></span>
+      <div class="title-gra plr30">
+          <div class="grab gra-r">
+            <span class="grab gra-l"></span>
+          </div>
       </div>
       <el-form :model="ruleForm" ref="ruleForm" label-width="100px" class="demo-ruleForm" :rules="formRules" v-loading="loading">
         <div class="daiInfo proInfo">
@@ -131,9 +132,9 @@
             <el-form-item class="my_form_item" label="接入源类型:" prop="syskind">
               <el-radio-group v-model="ruleForm.syskind" style="margin-top:-12px;">
                 <el-radio v-for="(item,index) in syskindList" :label="item.id" :key="item.id" v-if="index<5||accdiaFlag"><span>{{item.name}}</span><span v-if="item.id=='10010' || item.id=='10020'" class="enc-icon-beta betaspan"></span></el-radio>
-                 <span class="curspan" style="display:inline-block !important; font-size:14px;" @click="more(accdiaFlag)">{{accdiaName}}</span>
+                <span class="curspan" style="display:inline-block !important; font-size:14px;" @click="more(accdiaFlag)">{{accdiaName}}</span>
               </el-radio-group>
-             
+             <!--  <span class="curspan" @click="more(accdiaFlag)">{{accdiaName}}</span> -->
             </el-form-item>
             <div style="float:right;">
               <div style="text-align:right;margin-bottom:10px;">
@@ -211,7 +212,7 @@
                   </el-select>
                 </el-form-item>
               </el-col>
-              <el-col :span="24" v-if="ruleForm.syskind=='10023'" class="fileItem" :class="accdiaFlag==true?'ctips':''">
+             <el-col :span="24" v-if="ruleForm.syskind=='10023'" class="fileItem" :class="accdiaFlag==true?'ctips':''">
                 <el-form-item label="选择本地文件(仅支持txt,excel,csv文件):" prop="upfile">
                   <el-upload class="upload-demo" name="files" ref="upload" action :on-preview="handlePreview" :on-remove="handleRemove" :file-list="fileList" :auto-upload="false">
                     <el-button slot="trigger" size="small" type="primary">选择文件</el-button>
@@ -1277,7 +1278,6 @@ export default {
 
 .el-dialog .otherInfo .fileItem .el-form-item__label {
   width: 235px !important;
-  text-align:left;
 }
 .el-dialog .otherInfo .fileItem .el-form-item {
   height: auto !important;

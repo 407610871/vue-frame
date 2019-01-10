@@ -1,8 +1,16 @@
 <template>
   <div class="dashboard-container">
-    <form-fliter v-if="queryParamReady" @highMore="moreHeight" @highSeaech="hightrue" 
-    v-bind:formCollapse="collapse" v-bind:dataObj="formFilterData" @doSearch="search" @formFilter="changeFormFilter" />
-    <div class="main">
+    <div>
+      <el-breadcrumb separator="">
+            <el-breadcrumb-item>
+              数据接入
+            </el-breadcrumb-item>
+      </el-breadcrumb>
+      <form-fliter v-if="queryParamReady" @highMore="moreHeight" @highSeaech="hightrue" 
+      v-bind:formCollapse="collapse" v-bind:dataObj="formFilterData" @doSearch="search" @formFilter="changeFormFilter" />
+    </div>
+
+    <div class="main main-content">
       <div class="filter-container">
         <div class="count-container">
           <div class="count-title">
@@ -18,7 +26,7 @@
           </div>
         </div>
       </div>
-        <el-table v-loading="loading" :data="mainTableData" :height="tableHeight" stripe border style="width: 100%;" tooltip-effect="light">
+      <el-table v-loading="loading" :data="mainTableData" :height="tableHeight" stripe border style="width: 100%;" tooltip-effect="light">
           <el-table-column label="接入源名称" width="250" show-overflow-tooltip>
             <template slot-scope="scope">
               <a class="underdone" href="javascript:void(0)" v-on:click="goSubPage(scope.$index,scope.row.dataSourceName)">{{ scope.row.name }}</a>
@@ -111,9 +119,14 @@ export default {
       return this.$store.state.queryParams.dashboard;
     },
     tableHeight: function() {
-      return this.collapse ?
+     /**  return this.collapse ?
         window.innerHeight - 375 :
-        (window.innerHeight - 510 - 20 * this.moreData < 400 ? 300 : window.innerHeight - 510 - 20);
+        (window.innerHeight - 510 - 20 * this.moreData < 400 ? 300 : window.innerHeight - 510 - 20); */
+        console.log("window.innerHeight", window.innerHeight)
+        if(window.innerHeight >768){
+          return window.innerHeight - 335;
+        }
+        return 410;
     }
   },
   components: {
@@ -462,6 +475,7 @@ export default {
       this.$confirm("确认要复制" + row.name + "吗?", "提示", {
         confirmButtonText: "复制",
         cancelButtonText: "取消",
+        cancelButtonClass: "el-button--primary",
         type: "warning"
       }).then(() => {
         var _self = this;
@@ -491,6 +505,7 @@ export default {
       this.$confirm("确认要废止" + row.name + "吗?", "提示", {
         confirmButtonText: "废止",
         cancelButtonText: "取消",
+        cancelButtonClass: "el-button--primary",
         type: "warning"
       }).then(() => {
         var _self = this;
@@ -583,7 +598,7 @@ export default {
   height: 100%;
   .main {
     flex: 1;
-    overflow: auto;
+    overflow: hidden;
   }
   .filter-container {
     padding: 0 20px 0 20px;
