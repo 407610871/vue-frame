@@ -1,5 +1,6 @@
 FROM nginx:1.13
 
+ENV TIME_ZONE Asia/Shanghai
 RUN mkdir -p /var/static
 WORKDIR /var/static
 
