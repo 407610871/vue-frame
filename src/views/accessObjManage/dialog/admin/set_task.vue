@@ -21,10 +21,7 @@
               </div>
             </div>
             <user-surveybak :msg ="this.num" :batch="true" :info="rowList" @pre="next('second')" @closeuser="closeDialog()" ref="survey"></user-surveybak>
-            <!--  <div class="btn tcenter">
-             <el-button type="primary" style="margin-top: 12px;" @click="next('second')">下一步</el-button>
-             <el-button style="margin-top: 12px;" @click="closeDialog">取消</el-button>
-           </div> -->
+
           </el-tab-pane>
           <el-tab-pane name="second" disabled> <span slot="label"><i class="el-icon-circle">2</i> 批量匹配设置</span>
             <div class="daiInfo proInfo">
@@ -49,10 +46,6 @@
               </div>
             </div>
             <coll-task :msg="activeName" :rowList="rowList" @pre="next('third')" @fresh="fresh()"> </coll-task>
-            <!-- <div class="btn tcenter mt30">
-              <el-button type="primary" style="margin-top: 12px;" @click="next('third')">上一步</el-button>
-              <el-button type="primary" style="margin-top: 12px;">完成</el-button>
-            </div> -->
           </el-tab-pane>
         </el-tabs>
       </div>

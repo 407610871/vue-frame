@@ -5,10 +5,12 @@
       <i class="enc-icon-yonghutiaoyan" @click="dialogVisible = true"></i>
     </el-tooltip>
     <el-dialog title="用户标记" :visible.sync="dialogVisible" width="73%" :before-close="closeDialog">
-      <div class="title-gra">
-        <span class="grab gra-l"></span>
-        <span class="grab gra-r"></span>
+      <div class="title-gra plr30">
+          <div class="grab gra-r">
+            <span class="grab gra-l"></span>
+          </div>
       </div>
+
       <el-form :model="ruleForm" ref="ruleForm" label-width="100px" class="demo-ruleForm" :rules="formRules" v-loading="loading">
         <div class="daiInfo proInfo">
           <div class="proInfo-box bornone clearfix">

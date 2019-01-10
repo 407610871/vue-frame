@@ -3,10 +3,11 @@
   <el-button @click="dialogVisible = true" class="add-btn fr">批量采集</el-button>
    <!--  <i class="el-icon-info" @click="dialogVisible = true">设置通配符</i> -->
     <el-dialog title="批量接入任务向导" :visible.sync="dialogVisible" width="60%" :before-close="closeDialog">
-      <div class="title-gra plr30">
-        <span class="grab gra-l"></span>
-        <span class="grab gra-r"></span>
-      </div>
+       <div class="title-gra plr30">
+          <div class="grab gra-r">
+            <span class="grab gra-l"></span>
+          </div>
+        </div>
       <div class="taskSteps plr30">
         <el-tabs v-model="activeName">
           <el-tab-pane name="first" disabled>
