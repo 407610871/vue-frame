@@ -25,6 +25,7 @@
 
 .taskMDialog {
   text-align: left;
+  width:100%;
   .el-dialog {
     height: 600px;
     overflow: auto;
@@ -51,7 +52,6 @@
   }
 
   .el-dialog__body {
-    padding: 20px 40px 40px 40px;
     .daiInfo-title {
       border-bottom: 1px solid $border-color-dai;
       margin-bottom: 20px;

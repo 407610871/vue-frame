@@ -335,7 +335,6 @@ export default {
 }
 
 .comTable {
-  padding: 20px 30px;
   .el-table .cell .el-button--primary {
     color: #fff;
     /*  background-color: #489bd9;
