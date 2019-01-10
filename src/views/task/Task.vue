@@ -249,7 +249,7 @@
     </el-footer>
     <!-- 任务详情 -->
     <dialogTaskDetail :reqObj="reqObj" v-if="showTaskDetail" v-on:closeDia="showTaskDetail=false"></dialogTaskDetail>
-    <DialogIsCheck v-if="showTaskCheck" v-on:closeDiaChk="showTaskCheck=false" :msgCheck="check" :title="dialogIsCheckTitile"></DialogIsCheck>
+    <DialogIsCheck v-if="showTaskCheck" v-on:closeDiaChk="showTaskCheck=false" :msgCheck="check" :types="jrtype" :title="dialogIsCheckTitile"></DialogIsCheck>
   </div>
 </template>
 <script>
@@ -290,6 +290,7 @@ export default {
       selectionChangeData: [],
       mainTableDataTotal: 0,
       reqObj: "",
+      jrtype:'',
       pickerOptions: {
         disabledDate(time) {
           return time.getTime() > Date.now();
@@ -480,6 +481,7 @@ export default {
     //核验弹窗
     doCheck(index, row) {
       this.check = row;
+      this.jrtype = row.sourceType;
       this.showTaskCheck = true;
     },
     //重新汇聚
@@ -713,10 +715,37 @@ export default {
                   errorHtml +=
                     i + 1 + "." + res.data.data.errorList[i] + "</br>";
                 }
+                if (res.data.data.successList.length == 0 && res.data.data.errorList.length > 0) {
+                  _self.$alert(
+                    "重新汇聚任务创建失败的任务如下：</br>" +
+                    errorHtml,
+                    "重新汇聚", {
+                      dangerouslyUseHTMLString: true
+                    }
+                  );
+                } else if (res.data.data.errorList.length == 0 && res.data.data.successList.length > 0) {
+                  _self.$alert(
+                    "重新汇聚任务创建成功的任务如下：</br>" +
+                    successHtml +
+                    "重新汇聚", {
+                      dangerouslyUseHTMLString: true
+                    }
+                  );
+                } else {
+                  _self.$alert(
+                    "重新汇聚任务创建成功的任务如下：</br>" +
+                    successHtml +
+                    "重新汇聚任务创建失败的任务如下：</br>" +
+                    errorHtml,
+                    "重新汇聚", {
+                      dangerouslyUseHTMLString: true
+                    }
+                  );
+                }
                 _self.$alert(
-                  "操作成功！重新汇聚成功的任务如下：</br>" +
+                  "重新汇聚任务创建成功的任务如下：</br>" +
                   successHtml +
-                  "重新汇聚失败的任务如下：</br>" +
+                  "重新汇聚任务创建失败的任务如下：</br>" +
                   errorHtml,
                   "重新汇聚", {
                     dangerouslyUseHTMLString: true
@@ -882,15 +911,34 @@ export default {
                   errorHtml +=
                     i + 1 + "." + res.data.data.errorList[i] + "</br>";
                 }
-                _self.$alert(
-                  "操作成功！批量停止成功的任务如下：</br>" +
-                  successHtml +
-                  "批量停止失败的任务如下：</br>" +
-                  errorHtml,
-                  "批量停止", {
-                    dangerouslyUseHTMLString: true
-                  }
-                );
+                if (res.data.data.successList.length == 0 && res.data.data.errorList.length > 0) {
+                  _self.$alert(
+                    "批量停止失败的任务如下：</br>" +
+                    errorHtml,
+                    "批量停止", {
+                      dangerouslyUseHTMLString: true
+                    }
+                  );
+                } else if (res.data.data.errorList.length == 0 && res.data.data.successList.length > 0) {
+                  _self.$alert(
+                    "操作成功！批量停止成功的任务如下：</br>" +
+                    successHtml,
+                    "批量停止", {
+                      dangerouslyUseHTMLString: true
+                    }
+                  );
+                } else {
+                  _self.$alert(
+                    "操作成功！批量停止成功的任务如下：</br>" +
+                    successHtml +
+                    "批量停止失败的任务如下：</br>" +
+                    errorHtml,
+                    "批量停止", {
+                      dangerouslyUseHTMLString: true
+                    }
+                  );
+                }
+
                 _self.init();
               } else {
                 _self.$alert("批量停止失败", "批量停止", {
@@ -922,6 +970,7 @@ export default {
         }
       }
     }
+
   }
 };
 
