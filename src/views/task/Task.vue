@@ -498,45 +498,47 @@ export default {
         this.$ajax({
           method: 'get',
           url: this.GLOBAL.api.API_DACM + '/ctables/checkFtpTaskFileExist',
-          /*url: 'http://10.19.160.59:8080/DACM/ctables/checkFtpTaskFileExist',*/
+          //url: 'http://10.19.160.59:8080/DACM/ctables/checkFtpTaskFileExist',
           params: { 'taskId': row.taskInfoId },
         }).then(res => {
           _self.loading = false;
-          if (res.data.success) {
-            if (res.data.data.isExitFile == 'true') {
-              this.$ajax({
-                method: 'get',
-                url: this.GLOBAL.api.API_DACM + '/taskManager/deleteStatistic',
-                /*url:'http://10.19.160.213:8080/DACM/taskManager/deleteStatistic',*/
-                params: { 'taskInfoId': row.taskInfoId },
-              }).then(res => {
-                if (res.data.code == '0000') {
-                  this.$ajax
-                    .put(httpUrl + "manager/taskOperate/converge/" + row.taskInfoId)
-                    .then(function(res) {
-                      _self.loading = false;
-                      if (res.data.success) {
-                        _self.doMsg(
-                          "汇聚任务ID:" + row.taskInfoId + "重新汇聚任务创建成功！",
-                          "success"
-                        );
-                        _self.init();
-                      } else {
-                        _self.doMsg(res.data.message, "error");
-                      }
-                    });
-                } else {
-                  _self.loading = false;
-                  _self.doMsg(res.data.message, "error");
-                }
-              });
-            } else {
-              _self.doMsg(res.data.data.message, "success");
-            }
-
+          if (res.data.success && res.data.data.length>0) {
+            res.data.data.forEach(res=>{
+              if (res.isExitFile == 'true') {
+                this.$ajax({
+                  method: 'get',
+                  url: this.GLOBAL.api.API_DACM + '/taskManager/deleteStatistic',
+                  /*url:'http://10.19.160.213:8080/DACM/taskManager/deleteStatistic',*/
+                  params: { 'taskInfoId': row.taskInfoId },
+                }).then(res => {
+                  if (res.data.code == '0000') {
+                    this.$ajax
+                      .put(httpUrl + "manager/taskOperate/converge/" + row.taskInfoId)
+                      .then(function(res) {
+                        _self.loading = false;
+                        if (res.data.success) {
+                          _self.doMsg(
+                            "汇聚任务ID:" + row.taskInfoId + "重新汇聚任务创建成功！",
+                            "success"
+                          );
+                          _self.init();
+                        } else {
+                          _self.doMsg(res.data.message, "error");
+                        }
+                      });
+                  } else {
+                    _self.loading = false;
+                    _self.doMsg(res.data.message, "error");
+                  }
+                });
+              } else {
+                _self.loading = false;
+                _self.doMsg(res.message, "error");
+              }
+            })
           } else {
             _self.loading = false;
-            _self.doMsg(res.data.message, "success");
+            _self.doMsg(res.data.message, "error");
           }
         })
       } else {
@@ -901,31 +903,48 @@ export default {
       let rowNew = Array.from(row);
       if (a == 1) {
         // 先判断是否有ftp的数据
-        console.log("ftp=====",rowNew);
         let ftpData = rowNew.filter(res =>{
           return res.sourceType == 'ftp'
         })
         if(ftpData.length>0){
-          let apiData = [];
+          let taskInfoId = "";
           ftpData.forEach(res=>{
-           let api = _self.$ajax({
-              method: 'get',
-              //url: this.GLOBAL.api.API_DACM + '/ctables/checkFtpTaskFileExist',
-              url: 'http://10.19.160.59:8080/DACM/ctables/checkFtpTaskFileExist',
-              params: { 'taskId': res.taskInfoId },
-            });
-            apiData.push(api);
+            taskInfoId += res.taskInfoId + ",";
           })
-          if(apiData.length >0){
-            _self.$ajax.all(apiData).then(res=>{
-              console.log("res====",res);
-            })
-          }
+          taskInfoId = taskInfoId.substr(0, taskInfoId.length-1);
+          _self.$ajax({
+              method: 'get',
+              url: this.GLOBAL.api.API_DACM + '/ctables/checkFtpTaskFileExist',
+              //url: 'http://10.19.160.59:8080/DACM/ctables/checkFtpTaskFileExist',
+              params: { 'taskId': taskInfoId },
+            }).then(res=>{
+              if(res.data.success){
+                let ftpRespose = res.data.data.filter(val=>{
+                  return val.isExitFile == "false";
+                });
+                if(ftpRespose.length >0){
+                  let errerHtml = "";
+                  for (let j = 0; j < ftpRespose.length; j++) {
+                    errerHtml +=
+                      j +
+                      1 +
+                      ".汇聚任务：" + ftpRespose[j].taskId +
+                      "</br>";
+                  }
+                  this.$alert(
+                    "重新汇聚时，以下任务不能被汇聚,请重新选择：</br>" + errerHtml,
+                    "重新汇聚", {
+                      dangerouslyUseHTMLString: true
+                    }
+                  );
+                }else {
+                  _self.pLDataHandel(rowNew);
+                }
+              }
+            });
         } else {
           _self.pLDataHandel(rowNew);
         }
-
-
       } else if (a == 2) {
         //批量启动
         let errorData = [];
