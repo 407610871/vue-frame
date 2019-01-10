@@ -639,45 +639,8 @@ export default {
     selectAll(selection) {
       this.allSecectData[this.pageNum] = selection;
     },
-    //批量操作
-    doMore(url, a) {
-      let tableParams = [];
+    pLDataHandel(rowNew){
       let _self = this;
-      let row = [];
-      let row1 = Object.keys(this.allSecectData);
-      if (row1.length == 0) {
-        this.$alert("请选择相应的任务！", "提示", {
-          height: 50,
-          dangerouslyUseHTMLString: true
-        });
-        return;
-      }
-      for (let i = 0; i < row1.length; i++) {
-        if (this.allSecectData[row1[i]].length == 0 || row1.length == 0) {
-          this.$alert("请选择相应的任务！", "提示", {
-            dangerouslyUseHTMLString: true
-          });
-          return;
-        }
-      }
-
-      for (let i = 0; i < row1.length; i++) {
-        for (let j = 0; j < this.allSecectData[row1[i]].length; j++) {
-          row.push(this.allSecectData[row1[i]][j]);
-        }
-      }
-
-      tableParams = [];
-      for (let i = 0; i < row.length; i++) {
-        tableParams.push(row[i].taskInfoId);
-      }
-
-      let params = {
-        taskInfoIds: tableParams.join(",")
-      };
-
-      let rowNew = Array.from(row);
-      if (a == 1) {
         //批量汇聚
         let errorData = [];
         for (let i = 0; i < rowNew.length; i++) {
@@ -749,6 +712,72 @@ export default {
             }
           );
         }
+    },
+    //批量操作
+    doMore(url, a) {
+      let tableParams = [];
+      let _self = this;
+      let row = [];
+      let row1 = Object.keys(this.allSecectData);
+      if (row1.length == 0) {
+        this.$alert("请选择相应的任务！", "提示", {
+          height: 50,
+          dangerouslyUseHTMLString: true
+        });
+        return;
+      }
+      for (let i = 0; i < row1.length; i++) {
+        if (this.allSecectData[row1[i]].length == 0 || row1.length == 0) {
+          this.$alert("请选择相应的任务！", "提示", {
+            dangerouslyUseHTMLString: true
+          });
+          return;
+        }
+      }
+
+      for (let i = 0; i < row1.length; i++) {
+        for (let j = 0; j < this.allSecectData[row1[i]].length; j++) {
+          row.push(this.allSecectData[row1[i]][j]);
+        }
+      }
+
+      tableParams = [];
+      for (let i = 0; i < row.length; i++) {
+        tableParams.push(row[i].taskInfoId);
+      }
+
+      let params = {
+        taskInfoIds: tableParams.join(",")
+      };
+
+      let rowNew = Array.from(row);
+      if (a == 1) {
+        // 先判断是否有ftp的数据
+        console.log("ftp=====",rowNew);
+        let ftpData = rowNew.filter(res =>{
+          return res.sourceType == 'ftp'
+        })
+        if(ftpData.length>0){
+          let apiData = [];
+          ftpData.forEach(res=>{
+           let api = _self.$ajax({
+              method: 'get',
+              //url: this.GLOBAL.api.API_DACM + '/ctables/checkFtpTaskFileExist',
+              url: 'http://10.19.160.59:8080/DACM/ctables/checkFtpTaskFileExist',
+              params: { 'taskId': res.taskInfoId },
+            });
+            apiData.push(api);
+          })
+          if(apiData.length >0){
+            _self.$ajax.all(apiData).then(res=>{
+              console.log("res====",res);
+            })
+          }
+        } else {
+          _self.pLDataHandel(rowNew);
+        }
+
+
       } else if (a == 2) {
         //批量启动
         let errorData = [];
