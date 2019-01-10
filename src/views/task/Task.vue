@@ -249,7 +249,7 @@
             <el-button v-if="scope.row.status==1 || scope.row.status==5" type="text" size="small" @click="doRun(scope.$index, scope.row)">暂停</el-button>
             <el-button v-if="scope.row.status!=1" type="text" size="small" @click="doDel(scope.$index, scope.row)">删除</el-button>
             <el-button v-if="(scope.row.status==1||scope.row.status==2||scope.row.status==4)&&scope.row.isPeriod!=0" type="text" size="small" @click="doCheck(scope.$index, scope.row)">数据核验</el-button>
-            <el-button v-if="(scope.row.status==2||scope.row.status==4||scope.row.status==6||scope.row.status==7)&&scope.row.isPeriod!=0" type="text" size="small" @click="doConverge(scope.$index, scope.row)">重新汇聚</el-button>
+            <el-button v-if="(scope.row.status==2||scope.row.status==4||scope.row.status==6||scope.row.status==7)&&scope.row.isPeriod!=0&&scope.row.ftpIsDelete!='true'" type="text" size="small" @click="doConverge(scope.$index, scope.row)">重新汇聚</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -502,32 +502,80 @@ export default {
     doConverge(index, row) {
       let _self = this;
       _self.loading = true;
-      this.$ajax({
-        method: 'get',
-        url: this.GLOBAL.api.API_DACM + '/taskManager/deleteStatistic',
-        /*url:'http://10.19.160.213:8080/DACM/taskManager/deleteStatistic',*/
-        params: { 'taskInfoId': row.taskInfoId },
-      }).then(res => {
-        if (res.data.code == '0000') {
-          this.$ajax
-            .put(httpUrl + "manager/taskOperate/converge/" + row.taskInfoId)
-            .then(function(res) {
-              _self.loading = false;
-              if (res.data.success) {
-                _self.doMsg(
-                  "汇聚任务ID:"+row.taskInfoId+"重新汇聚任务创建成功！",
-                  "success"
-                );
-                _self.init();
-              } else {
-                _self.doMsg(res.data.message, "error");
-              }
-            });
-        } else {
+      if (row.sourceType == 'ftp') {
+        this.$ajax({
+          method: 'get',
+          url: this.GLOBAL.api.API_DACM + '/ctables/checkFtpTaskFileExist',
+          /*url: 'http://10.19.160.59:8080/DACM/ctables/checkFtpTaskFileExist',*/
+          params: { 'taskId': row.taskInfoId },
+        }).then(res => {
           _self.loading = false;
-          _self.doMsg(res.data.message, "error");
-        }
-      });
+          if (res.data.success) {
+            if (res.data.data.isExitFile == 'true') {
+              this.$ajax({
+                method: 'get',
+                url: this.GLOBAL.api.API_DACM + '/taskManager/deleteStatistic',
+                /*url:'http://10.19.160.213:8080/DACM/taskManager/deleteStatistic',*/
+                params: { 'taskInfoId': row.taskInfoId },
+              }).then(res => {
+                if (res.data.code == '0000') {
+                  this.$ajax
+                    .put(httpUrl + "manager/taskOperate/converge/" + row.taskInfoId)
+                    .then(function(res) {
+                      _self.loading = false;
+                      if (res.data.success) {
+                        _self.doMsg(
+                          "汇聚任务ID:" + row.taskInfoId + "重新汇聚任务创建成功！",
+                          "success"
+                        );
+                        _self.init();
+                      } else {
+                        _self.doMsg(res.data.message, "error");
+                      }
+                    });
+                } else {
+                  _self.loading = false;
+                  _self.doMsg(res.data.message, "error");
+                }
+              });
+            } else {
+              _self.doMsg(res.data.data.message, "success");
+            }
+
+          } else {
+            _self.loading = false;
+            _self.doMsg(res.data.message, "success");
+          }
+        })
+      } else {
+        this.$ajax({
+          method: 'get',
+          url: this.GLOBAL.api.API_DACM + '/taskManager/deleteStatistic',
+          /*url:'http://10.19.160.213:8080/DACM/taskManager/deleteStatistic',*/
+          params: { 'taskInfoId': row.taskInfoId },
+        }).then(res => {
+          if (res.data.code == '0000') {
+            this.$ajax
+              .put(httpUrl + "manager/taskOperate/converge/" + row.taskInfoId)
+              .then(function(res) {
+                _self.loading = false;
+                if (res.data.success) {
+                  _self.doMsg(
+                    "汇聚任务ID:" + row.taskInfoId + "重新汇聚任务创建成功！",
+                    "success"
+                  );
+                  _self.init();
+                } else {
+                  _self.doMsg(res.data.message, "error");
+                }
+              });
+          } else {
+            _self.loading = false;
+            _self.doMsg(res.data.message, "error");
+          }
+        });
+      }
+
 
     },
     //处理完毕
@@ -581,7 +629,7 @@ export default {
                     }
                   });
               }).catch(() => {
-                  window.open(_self.GLOBAL.dam.API_DAM);
+                window.open(_self.GLOBAL.dam.API_DAM);
               });
               /*_self.$confirm('当前任务的数据已在提供服务，请先到数据资产去废止数据。', '信息', {
                 confirmButtonText: '',
@@ -723,6 +771,28 @@ export default {
     selectAll(selection) {
       this.allSecectData[this.pageNum] = selection;
     },
+    //ftp汇聚
+    ftpColl(taskInfoId) {
+      this.$ajax({
+        method: 'get',
+        /*url: this.GLOBAL.api.API_DACM + '/taskManager/deleteStatistic',*/
+        url: 'http://10.19.160.59:8080/DACM/ctables/checkFtpTaskFileExist',
+        params: { 'taskId': taskInfoId },
+      }).then(res => {
+        this.loading = false;
+        if (res.data.success) {
+          if (res.data.data.isExitFile == 'true') {
+            return '1';
+          } else {
+            return '0';
+          }
+
+        } else {
+          this.loading = false;
+          return '0';
+        }
+      })
+    },
     //批量操作
     doMore(url, a) {
       let tableParams = [];
@@ -759,9 +829,7 @@ export default {
       let params = {
         taskInfoIds: tableParams.join(",")
       };
-      let hparams = {
-        taskInfoId: tableParams.join(",")
-      }
+
       let rowNew = Array.from(row);
       if (a == 1) {
         //批量汇聚
@@ -778,61 +846,44 @@ export default {
         if (errorData.length == 0) {
           _self.loading = true;
           _self.tips = "批量汇聚中...";
-          _self.$ajax({
-            method: "get",
-            url: this.GLOBAL.api.API_DACM + '/taskManager/deleteStatistic',
-            /*url:'http://10.19.160.213:8080/DACM/taskManager/deleteStatistic',*/
-            params: { 'taskInfoId': tableParams.join(",") }
-          }).then(res => {
-            if (res.data.code == '0000') {
-              _self
-                .$ajax({
-                  url: httpUrl + url,
-                  method: "POST",
-                  data: {},
-                  params: params
-                })
-                .then(function(res) {
-                  _self.loading = false;
-                  _self.tips = "";
-                  if (res.data.success) {
-                    let successHtml = "";
-                    let errorHtml = "";
-                    for (let i = 0; i < res.data.data.successList.length; i++) {
-                      successHtml +=
-                        i + 1 + "." + res.data.data.successList[i] + "</br>";
-                    }
-                    for (let i = 0; i < res.data.data.errorList.length; i++) {
-                      errorHtml +=
-                        i + 1 + "." + res.data.data.errorList[i] + "</br>";
-                    }
-                    _self.$alert(
-                      "重新汇聚任务创建成功的任务如下：</br>" +
-                      successHtml +
-                      "重新汇聚任务创建失败的任务如下：</br>" +
-                      errorHtml,
-                      "重新汇聚", {
-                        dangerouslyUseHTMLString: true
-                      }
-                    );
-                    _self.init();
-                  } else {
-                    _self.loading = false;
-                    _self.$alert("重新汇聚失败", "重新汇聚", {
-                      dangerouslyUseHTMLString: true
-                    });
-                  }
-                })
-                .catch(() => {});
-            } else {
+          _self
+            .$ajax({
+              url: httpUrl + url,
+              method: "POST",
+              data: {},
+              params: params
+            })
+            .then(function(res) {
               _self.loading = false;
-              _self.$alert(res.data.message, '信息', {
-                confirmButtonText: '确定',
-                callback: action => {}
-              });
-            }
-          });
-
+              _self.tips = "";
+              if (res.data.success) {
+                let successHtml = "";
+                let errorHtml = "";
+                for (let i = 0; i < res.data.data.successList.length; i++) {
+                  successHtml +=
+                    i + 1 + "." + res.data.data.successList[i] + "</br>";
+                }
+                for (let i = 0; i < res.data.data.errorList.length; i++) {
+                  errorHtml +=
+                    i + 1 + "." + res.data.data.errorList[i] + "</br>";
+                }
+                _self.$alert(
+                  "操作成功！重新汇聚成功的任务如下：</br>" +
+                  successHtml +
+                  "重新汇聚失败的任务如下：</br>" +
+                  errorHtml,
+                  "重新汇聚", {
+                    dangerouslyUseHTMLString: true
+                  }
+                );
+                _self.init();
+              } else {
+                _self.$alert("重新汇聚失败", "重新汇聚", {
+                  dangerouslyUseHTMLString: true
+                });
+              }
+            })
+            .catch(() => {});
         } else {
           let errerHtml = "";
           for (let j = 0; j < errorData.length; j++) {
@@ -914,6 +965,16 @@ export default {
                     }
                   );
                 }
+                /* _self.$alert(
+                   "操作成功！批量启动成功的任务如下：</br>" +
+                     successHtml +
+                     "批量启动失败的任务如下：</br>" +
+                     errorHtml,
+                   "批量启动",
+                   {
+                     dangerouslyUseHTMLString: true
+                   }
+                 );*/
                 _self.init();
               } else {
                 _self.$alert("批量启动失败", "批量启动", {

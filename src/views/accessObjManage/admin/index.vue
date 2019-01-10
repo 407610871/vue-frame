@@ -163,7 +163,7 @@
                 <userSurvey :pdata="scope.row" @fre="loadTable()"></userSurvey>
               </div>
               <div class="survey" v-if="type!='mysql' && type!='oracle' && type!='sqlserver' && type!='postgresql'">
-                <el-tooltip class="item" effect="light" content="单表采集" placement="top">
+                <el-tooltip class="item" effect="light" content="单目录采集" placement="top">
                   <i class="enc-icon-danbiaocaiji" @click="setNoreVisible(scope.row,scope.$index)"></i>
                 </el-tooltip>
                 <!--   -->
