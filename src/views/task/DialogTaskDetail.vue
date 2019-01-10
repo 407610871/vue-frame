@@ -266,6 +266,16 @@
     .task-Detail-dialog .select input{
       height:31px!important;
     }
+    .task-Detail-dialog {
+      .el-dialog {
+        min-width: 80%;
+        max-height: calc(100% - 50px);
+        overflow: auto;
+        margin-bottom: 25px;
+        margin-top: 25px!important;
+        height: 100%!important;
+      }
+    }
     </style>
 
     <style lang="scss" scoped>
