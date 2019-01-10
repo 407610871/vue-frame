@@ -760,7 +760,8 @@ export default {
                     "已经存在同IP地址同用户的数据源，确定保存?",
                     "信息", {
                       confirmButtonText: "确定",
-                      cancelButtonText: "取消"
+                      cancelButtonText: "取消",
+                      cancelButtonClass: "el-button--primary",
                     }
                   )
                   .then(() => {

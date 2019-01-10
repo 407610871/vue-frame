@@ -2,12 +2,12 @@
   <div style="height:100%;" class="dashboard-container">
     <div>
       <el-breadcrumb separator="/">
-        <el-breadcrumb-item :to="{ path: '/dashboard' }">
-          数据接入
-        </el-breadcrumb-item>
-        <el-breadcrumb-item>
-          {{ breadcrumbName}}
-        </el-breadcrumb-item>
+            <el-breadcrumb-item :to="{ path: '/dashboard' }">
+              数据接入
+            </el-breadcrumb-item>
+            <el-breadcrumb-item>
+              {{ breadcrumbName }}
+            </el-breadcrumb-item>
       </el-breadcrumb>
       <form-fliter :ObjManage="ObjManage" v-if="cleanData" @highMore="moreHeight" @highSeaech="hightrue" v-bind:formCollapse="collapse" v-bind:dataObj="formFilterData" @doSearch="search" @formFilter="changeFormFilter" />
     </div>
@@ -803,6 +803,7 @@ export default {
       this.$confirm('确认要删除此目录吗？', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
+        cancelButtonClass: "el-button--primary",
         type: 'warning'
       }).then(() => {
         let params = {

@@ -3,7 +3,7 @@
     <el-tooltip class="item" effect="light" content="选择路径" placement="top">
       <span class="upfilelogo diabtn tin-btn add-btn" @click="dialogVisible = true"></span>
     </el-tooltip>
-    <el-dialog title="选择路径" :visible.sync="dialogVisible" width="73%" :before-close="closeDialog">
+    <el-dialog title="选择路径" :visible.sync="dialogVisible" width="50%" :before-close="closeDialog">
         <div class="title-gra plr30">
           <div class="grab gra-r">
             <span class="grab gra-l"></span>
@@ -20,7 +20,7 @@
           </el-col>
           <el-col :span="24">
             <el-col :span="1" class="bank"  style="margin-left: 28px;">bank</el-col>
-            <el-col :span="8">
+            <el-col :span="12">
               <div class="path-box">
                 <el-tree show-checkbox node-key="id" :check-strictly="true" :props="defaultProps"
                  accordion @check-change="handleClick" @check="nodeClick" ref="treeForm" :load="loadNode1"
@@ -44,14 +44,12 @@
               <el-checkbox v-model="ruleForm.subDele" @change="selectChildrenNodes"></el-checkbox>包含子目录
             </el-col>
           </el-col>
-          <el-col :span="24" class="mt30 tcenter ftpbtn">
-            <el-form-item>
-              <el-button type="primary" size="small" @click="save()">保存</el-button>
-              <el-button @click="closeDialog()" size="small">关闭</el-button>
-            </el-form-item>
-          </el-col>
         </div>
       </el-form>
+      <div class="mr-btn">
+        <el-button type="primary" @click="closeDialog()">关闭</el-button>
+        <el-button type="primary" @click="save()">保存</el-button>
+      </div>
     </el-dialog>
   </div>
 </template>
@@ -357,7 +355,7 @@ export default {
 .path-box {
   border: 1px solid $border-color-dai;
   margin-left: 18px;
-  height: 280px;
+  height: 242px;
   overflow: auto;
 }
 

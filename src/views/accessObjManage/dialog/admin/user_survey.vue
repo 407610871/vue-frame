@@ -138,15 +138,13 @@
                 <el-input v-model="ruleForm.datanum"></el-input>
               </el-form-item>
             </el-col>
-            <el-col :span="24" class="tcenter mt30 sursavebtn">
-              <el-form-item>
-                <el-button type="primary" @click="submitForm('ruleForm')">完成</el-button>
-                <el-button @click="closeForm()">取消</el-button>
-              </el-form-item>
-            </el-col>
           </div>
         </div>
       </el-form>
+      <div class="mr-btn">
+        <el-button type="primary" @click="closeForm()">取消</el-button>
+        <el-button type="primary" @click="submitForm('ruleForm')">完成</el-button>    
+      </div>
     </el-dialog>
   </div>
 </template>

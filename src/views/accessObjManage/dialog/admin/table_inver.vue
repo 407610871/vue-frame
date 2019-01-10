@@ -11,7 +11,7 @@
             <span class="grab gra-l"></span>
           </div>
         </div>
-      <div class="proInfo-box bornone clearfix">
+      <div class="proInfo-box bornone clearfix" style="margin-bottom:20px;">
         <p style="text-align: center">{{name}}</p>
         <el-tooltip class="item" effect="light" content="刷新" placement="top">
           <a href="javascript:void(0)" class="refresha" v-on:click="_getTableNum"><i class="enc-icon-shuaxin"></i></a>

@@ -1,5 +1,5 @@
 <template>
-  <div class="taskMDialog userSurveyDialog">
+  <div class="taskMDialog userSurveyDialog" style="width:100%">
     <!--  <i class="el-icon-info" @click="dialogVisible = true">用户调研</i> -->
     <el-form :model="ruleForm" ref="ruleForm" label-width="90px" class="demo-ruleForm" :rules="formRules" v-loading="loading">
       <div class="daiInfo proInfo">

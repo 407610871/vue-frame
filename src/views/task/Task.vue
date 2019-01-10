@@ -575,6 +575,7 @@ export default {
       this.$confirm('确定删除该任务?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
+        cancelButtonClass: "el-button--primary",
         type: 'warning'
       }).then(() => {
         let _self = this;
@@ -602,6 +603,7 @@ export default {
               _self.$confirm('当前任务的数据已在提供服务，请先到数据资产去废止数据。', '提示', {
                 confirmButtonText: '仅删除任务',
                 cancelButtonText: '到数据资产',
+                cancelButtonClass: "el-button--primary",
                 type: 'warning'
               }).then(() => {
                 _self.loading = true;

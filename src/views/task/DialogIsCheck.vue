@@ -1,6 +1,7 @@
 <template>
-  <div class="taskMDialog" style="padding-bottom:15px;">
-    <el-dialog width="60%" :title="title" :visible.sync="showInnerDialog" class="check-data-dialog" @closed="closeDiaChk" :close-on-click-modal="false">
+  <div class="taskMDialog">
+    <el-dialog width="60%" :title="title" :visible.sync="showInnerDialog" class="check-data-dialog" 
+    @closed="closeDiaChk" :close-on-click-modal="false">
       <div slot="title">
         <span class="el-dialog__title">{{title}}</span>
         <div class="title-gra plr30">
@@ -623,17 +624,6 @@ h5 {
 
 </style>
 <style lang="scss">
-.check-data-dialog {
-  .el-dialog {
-    min-width: 860px;
-    max-height: calc(100% - 30vh);
-  }
-  .el-dialog__body {
-    max-height: calc(100% - 82px);
-    overflow: auto;
-  }
-}
-
 .el-picker-panel__icon-btn {
   color: #303133;
   &:hover {
