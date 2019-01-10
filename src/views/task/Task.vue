@@ -166,7 +166,7 @@
             <el-checkbox label="1" name="status">运行</el-checkbox>
             <el-checkbox label="2" name="status">暂停</el-checkbox>
             <el-checkbox label="6" name="status">采集失败</el-checkbox>
-             <el-checkbox label="7" name="status">汇聚失败</el-checkbox>
+            <el-checkbox label="7" name="status">汇聚失败</el-checkbox>
             <el-checkbox label="4" name="status">完成</el-checkbox>
           </el-checkbox-group>
         </el-form-item>
@@ -244,7 +244,7 @@
             <el-button v-if="scope.row.status==1 || scope.row.status==5" type="text" size="small" @click="doRun(scope.$index, scope.row)">暂停</el-button>
             <el-button v-if="scope.row.status!=1" type="text" size="small" @click="doDel(scope.$index, scope.row)">删除</el-button>
             <el-button v-if="(scope.row.status==1||scope.row.status==2||scope.row.status==4)&&scope.row.isPeriod!=0" type="text" size="small" @click="doCheck(scope.$index, scope.row)">数据核验</el-button>
-            <el-button v-if="(scope.row.status==2||scope.row.status==4||scope.row.status==6||scope.row.status==7)&&scope.row.isPeriod!=0&&scope.row.ftpIsDelete!='true'" type="text" size="small" @click="doConverge(scope.$index, scope.row)">
+            <el-button v-if="(scope.row.status==2||scope.row.status==4||scope.row.status==6||scope.row.status==7)&&scope.row.isPeriod!=0&&scope.row.ftpIsDelete!='true'" type="text" size="small" @click="doConverge(scope.$index, scope.row)"></el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -760,28 +760,6 @@ export default {
     selectAll(selection) {
       this.allSecectData[this.pageNum] = selection;
     },
-    //ftp汇聚
-    ftpColl(taskInfoId) {
-      this.$ajax({
-        method: 'get',
-        /*url: this.GLOBAL.api.API_DACM + '/taskManager/deleteStatistic',*/
-        url: 'http://10.19.160.59:8080/DACM/ctables/checkFtpTaskFileExist',
-        params: { 'taskId': taskInfoId },
-      }).then(res => {
-        this.loading = false;
-        if (res.data.success) {
-          if (res.data.data.isExitFile == 'true') {
-            return '1';
-          } else {
-            return '0';
-          }
-
-        } else {
-          this.loading = false;
-          return '0';
-        }
-      })
-    },
     //批量操作
     doMore(url, a) {
       let tableParams = [];
@@ -855,6 +833,33 @@ export default {
                 for (let i = 0; i < res.data.data.errorList.length; i++) {
                   errorHtml +=
                     i + 1 + "." + res.data.data.errorList[i] + "</br>";
+                }
+                if (res.data.data.successList.length == 0 && res.data.data.errorList.length > 0) {
+                  _self.$alert(
+                    "重新汇聚任务创建失败的任务如下：</br>" +
+                    errorHtml,
+                    "重新汇聚", {
+                      dangerouslyUseHTMLString: true
+                    }
+                  );
+                } else if (res.data.data.errorList.length == 0 && res.data.data.successList.length > 0) {
+                  _self.$alert(
+                    "重新汇聚任务创建成功的任务如下：</br>" +
+                    successHtml +
+                    "重新汇聚", {
+                      dangerouslyUseHTMLString: true
+                    }
+                  );
+                } else {
+                  _self.$alert(
+                    "重新汇聚任务创建成功的任务如下：</br>" +
+                    successHtml +
+                    "重新汇聚任务创建失败的任务如下：</br>" +
+                    errorHtml,
+                    "重新汇聚", {
+                      dangerouslyUseHTMLString: true
+                    }
+                  );
                 }
                 _self.$alert(
                   "重新汇聚任务创建成功的任务如下：</br>" +
@@ -1025,15 +1030,34 @@ export default {
                   errorHtml +=
                     i + 1 + "." + res.data.data.errorList[i] + "</br>";
                 }
-                _self.$alert(
-                  "操作成功！批量停止成功的任务如下：</br>" +
-                  successHtml +
-                  "批量停止失败的任务如下：</br>" +
-                  errorHtml,
-                  "批量停止", {
-                    dangerouslyUseHTMLString: true
-                  }
-                );
+                if (res.data.data.successList.length == 0 && res.data.data.errorList.length > 0) {
+                  _self.$alert(
+                    "批量停止失败的任务如下：</br>" +
+                    errorHtml,
+                    "批量停止", {
+                      dangerouslyUseHTMLString: true
+                    }
+                  );
+                } else if (res.data.data.errorList.length == 0 && res.data.data.successList.length > 0) {
+                  _self.$alert(
+                    "操作成功！批量停止成功的任务如下：</br>" +
+                    successHtml,
+                    "批量停止", {
+                      dangerouslyUseHTMLString: true
+                    }
+                  );
+                } else {
+                  _self.$alert(
+                    "操作成功！批量停止成功的任务如下：</br>" +
+                    successHtml +
+                    "批量停止失败的任务如下：</br>" +
+                    errorHtml,
+                    "批量停止", {
+                      dangerouslyUseHTMLString: true
+                    }
+                  );
+                }
+
                 _self.init();
               } else {
                 _self.$alert("批量停止失败", "批量停止", {
