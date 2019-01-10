@@ -222,15 +222,10 @@
             </el-col>
           </div>
         </div>
-        <div class="daiInfo reginfo">
-          <div class="daiInfo-box clearfix">
-            <el-form-item>
-              <el-col :span="24">
-                <el-button type="primary" size="small" @click="submitForm('ruleForm')">保存</el-button>
-                <el-button @click="closeDialog()" size="small">关闭</el-button>
-              </el-col>
-            </el-form-item>
-          </div>
+        <div class="mr-btn clearfix">
+          <el-button type="primary" @click="closeDialog()" size="small">关闭</el-button>
+          <el-button type="primary" @click="submitForm('ruleForm')">保存</el-button>
+            
         </div>
       </el-form>
     </el-dialog>
