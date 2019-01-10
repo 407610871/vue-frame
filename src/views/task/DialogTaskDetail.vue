@@ -255,7 +255,8 @@
         
       </el-form>
     </el-dialog>
-    <dialogIsCheck :msgCheck="reqObj" v-if="showCheckData" @closeDiaChk="closeDiaChk()"></dialogIsCheck>
+    <dialogIsCheck :msgCheck="reqObj" :types="jrtype" v-if="showCheckData" @closeDiaChk="closeDiaChk()"></dialogIsCheck>
+
   </div>
 </template>
 <style lang="scss">
@@ -351,6 +352,7 @@ export default {
       loading5:true,//数据核验日志信息的loading
       loading6:true,//数据预览的loading
       flagDesc:'',
+      jrtype:'',
       showInnerDialog: true,
       showCheckData:false,
       entFromCheck:false,//是否从数据核验处点击入口
@@ -730,6 +732,7 @@ export default {
     //数据核验按钮点击
     checkData(){ 
       //isTestLink控制是否展示数据核验弹框
+      this.jrtype = this.sourceBaseInfo.dbType;
       this.showCheckData = true;
       this.entFromCheck = false;
       //接入数据更新是否通过测试连接接口展示loading，这个时候是点击“数据核验”时加载的loading
