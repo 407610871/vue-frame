@@ -583,21 +583,40 @@ export default {
         this.$ajax.get(_self.GLOBAL.api.API_DACM + "/taskManager/verifyDelete/" + row.taskInfoId)
           .then(function(res) {
             if (res.data.code == '0000') {
-              this.$ajax
-                .put(httpUrl + "manager/taskOperate/delete/" + row.taskInfoId)
-                .then(function(res) {
-                  _self.loading = false;
-                  if (res.data.success) {
-                    // 调用/DACM/接口
-                    _self.$ajax.delete(
-                      window.ENV.API_DACM + deleteTask + row.taskInfoId
-                    );
-                    _self.doMsg("处理成功", "success");
-                    _self.init();
-                  } else {
-                    _self.doMsg(res.data.message, "error");
-                  }
-                });
+              _self.$confirm('当前任务的数据已经被废止，请选择任务的废止策略。', '提示', {
+                confirmButtonText: '仅删除任务',
+                cancelButtonText: '删除任务和数据',
+                type: 'warning'
+              }).then(() => {
+                this.$ajax
+                  .put(httpUrl + "manager/taskOperate/delete/" + row.taskInfoId)
+                  .then(function(res) {
+                    _self.loading = false;
+                    if (res.data.success) {
+                      _self.doMsg("处理成功", "success");
+                      _self.init();
+                    } else {
+                      _self.doMsg(res.data.message, "error");
+                    }
+                  });
+              }).catch(() => {
+                this.$ajax
+                  .put(httpUrl + "manager/taskOperate/delete/" + row.taskInfoId)
+                  .then(function(res) {
+                    _self.loading = false;
+                    if (res.data.success) {
+                      // 调用/DACM/接口
+                      _self.$ajax.delete(
+                        window.ENV.API_DACM + deleteTask + row.taskInfoId
+                      );
+                      _self.doMsg("处理成功", "success");
+                      _self.init();
+                    } else {
+                      _self.doMsg(res.data.message, "error");
+                    }
+                  });
+              });
+
             } else {
               _self.loading = false;
               _self.$confirm('当前任务的数据已在提供服务，请先到数据资产去废止数据。', '提示', {
@@ -612,10 +631,6 @@ export default {
                   .then(function(res) {
                     _self.loading = false;
                     if (res.data.success) {
-                      // 调用/DACM/接口
-                      _self.$ajax.delete(
-                        window.ENV.API_DACM + deleteTask + row.taskInfoId
-                      );
                       _self.doMsg("处理成功", "success");
                       _self.init();
                     } else {
