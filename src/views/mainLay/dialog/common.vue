@@ -1,7 +1,7 @@
 <script>
 /*const api = 'http://10.19.248.200:32661/DACM/';*/
 const api = window.ENV || {
-  API_DACM: "http://10.19.248.200:31701/DACM"
+  API_DACM: "http://10.19.248.200:31950/DACM"
 };
 const skin = window.ENV || {
   "API_SKIN":"http://10.19.248.200:32470",
