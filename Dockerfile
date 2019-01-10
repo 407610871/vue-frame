@@ -1,5 +1,5 @@
 FROM nginx:1.13
-
+ENV TZ=Asia/Shanghai
 RUN mkdir -p /var/static
 WORKDIR /var/static
 
