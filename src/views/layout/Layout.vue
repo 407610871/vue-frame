@@ -28,7 +28,7 @@
           </el-button>
         </el-popover>
         <el-popover placement="bottom-start" width="200" trigger="hover">
-          <ul class="popup-menu warn-menu">
+          <ul class="popup-menu warn-menu warn-popover">
             <li class="even-li"><a href="javascript:void(0)" v-on:click="goRoute('setting')">系统参数</a></li>
             <li class="even-li"><a href="javascript:void(0)" v-on:click="goRoute('recyclingBins')">回收箱</a></li>
             <li class="even-li"><a href="javascript:void(0)" @click="_release()">版本信息</a></li>
@@ -505,7 +505,6 @@ export default {
   background-size: contain;
   float: left
 }
-
 .enc-header .right-menu .el-button.user {
   background: #479bd9 !important;
 }
@@ -590,10 +589,6 @@ export default {
       width: 100%;
       height: 100%;
     }
-    a:hover,
-    a:active {
-      color: #069;
-    }
   }
 }
 
@@ -604,14 +599,19 @@ export default {
   height: 66px;
   float: left
 }
-
-.warn-popover li {
-  height: 30px;
-  line-height: 30px;
-  text-align: center;
-  list-style: none;
-  cursor: pointer;
-}
+  .warn-popover li{
+    background-color: #fff;
+    float: none;
+    height: 36px;
+    line-height: 36px;
+    font-size: 14px;
+    text-align: center;
+    margin: 12px 0;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    cursor: pointer;
+  }
 
 .even-li {
   color: #425365 !important;
@@ -620,8 +620,6 @@ export default {
 .odd-li {
   color: #c6c6c6!important;
   border-bottom: none;
-  margin-left: -15px;
-  margin-right: -15px;
 }
 
 .warn-popover .theme-li {

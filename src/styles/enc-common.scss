@@ -19,12 +19,6 @@
         color: #C8CFD5;
         top: 66px !important;
     }
-    .warn-popover li {
-        padding: 0 27px;
-        :hover{
-            background: #E6EAED;
-        }
-    }
     .el-button {
       width: 66px;
       height: 100%;
@@ -128,7 +122,13 @@ header {
       }
     }
   }
-
+  .el-popover {
+    padding: 0;
+  }
+  .warn-popover li:hover{
+    color: #fff !important;
+    @include el-table-hover($el-page-theme);
+  }
   //面包屑样式
   .el-breadcrumb {
     min-height: 40px;
