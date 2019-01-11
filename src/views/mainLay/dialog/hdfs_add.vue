@@ -1,6 +1,8 @@
 <template>
   <div class="taskMDialog">
-    <el-button type="primary" @click="dialogVisible = true">新增</el-button>
+    <div class="mr-btn">
+      <el-button type="primary"  @click="dialogVisible = true">新增</el-button>
+    </div>
     <el-dialog title="新增" :visible.sync="dialogVisible" width="73%" :before-close="closeDialog">
         <div class="title-gra plr30">
           <div class="grab gra-r">

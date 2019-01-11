@@ -590,7 +590,6 @@
   .dashboard-container {
     background: #fff;
     .filter-container {
-      padding-top: 40px;
       .right-tools {
         float: right;
         margin-right: 10px;

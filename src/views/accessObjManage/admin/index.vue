@@ -380,19 +380,12 @@ export default {
     //非关系型采集
     setNoreVisible(data) {
       let _self = this;
-      /* let saves = {
-         accessSysId: data.accessSysId,
-         filePath: data.extendParams.filePath,
-         isSubDirectory: data.extendParams.isSubDirectory
-       }*/
       _self.noreData = data;
-      console.log(_self.$route.params.type);
       if (_self.$route.params.type == 'ftp') {
         _self.loading = true;
         this
           .$ajax({
             methods: "get",
-            /*url: this.GLOBAL.api.API_DACM + getHdfsFormat,*/
             url: this.GLOBAL.api.API_DACM + '/ctables/checkFtpFileExist',
             params: {
               'accessSysId': data.accessSysId,
@@ -402,15 +395,10 @@ export default {
           })
           .then(res => {
             _self.loading = false;
-            //debugger;
             if (res.data.success) {
-              //console.log(res.data.data.isExitFile);
               if (res.data.data.isExitFile == 'true') {
-                //console.log("454");
                 _self.showSetNore = true;
-                //console.log(_self.showSetNore);
               } else {
-                console.log("56565");
                 _self.$alert(res.data.data.message, "提示", {
                   confirmButtonText: "确定",
                   callback: action => {
@@ -433,7 +421,6 @@ export default {
       }
     },
     editName(row, index) {
-      console.log(row);
       this.editingRow.index = index;
       this.editingRow.diyComments = row.diyComments;
       row.showEdit = !row.showEdit;
