@@ -346,10 +346,10 @@ export default {
               values = 'theme1';
             }
             if (res.data.data.color == 'GREEN') {
-              values = 'theme2';
+              values = 'theme3';
             }
             if (res.data.data.color == 'BLUE') {
-              values = 'theme3';
+              values = 'theme2';
             }
             if (res.data.data.color == 'GOLDEN') {
               values = 'theme4';

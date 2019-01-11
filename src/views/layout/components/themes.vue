@@ -62,9 +62,9 @@ export default {
       if (userProperty == 'theme1') {
         this.ruleForm.themeName = 'PURPLE';
       } else if (userProperty == 'theme2') {
-        this.ruleForm.themeName = 'GREEN';
-      } else if (userProperty == 'theme3') {
         this.ruleForm.themeName = 'BLUE';
+      } else if (userProperty == 'theme3') {
+        this.ruleForm.themeName = 'GREEN';
       } else if (userProperty == 'theme4') {
         this.ruleForm.themeName = 'GOLDEN';
       }
@@ -99,10 +99,10 @@ export default {
               if (_self.ruleForm.themeName == 'PURPLE') {
                 value = 'theme1';
               }
-              if (_self.ruleForm.themeName == 'GREEN') {
+              if (_self.ruleForm.themeName == 'BLUE') {
                 value = 'theme2';
               }
-              if (_self.ruleForm.themeName == 'BLUE') {
+              if (_self.ruleForm.themeName == 'GREEN') {
                 value = 'theme3';
               }
               if (_self.ruleForm.themeName == 'GOLDEN') {
@@ -129,10 +129,10 @@ export default {
                 value = 'theme1';
               }
               if (_self.ruleForm.themeName == 'GREEN') {
-                value = 'theme2';
+                value = 'theme3';
               }
               if (_self.ruleForm.themeName == 'BLUE') {
-                value = 'theme3';
+                value = 'theme2';
               }
               if (_self.ruleForm.themeName == 'GOLDEN') {
                 value = 'theme4';
@@ -160,7 +160,7 @@ export default {
 @import "@/assets/css/dialog.scss";
 
 span.DEFAULT {
-  background: #47505d;
+  background: #4A60A2;
 }
 
 span.PURPLE {
