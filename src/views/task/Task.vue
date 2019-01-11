@@ -2,11 +2,11 @@
   <div v-loading="loading" :element-loading-text="tips" class="task-template">
     <div>
       <el-breadcrumb separator="">
-            <el-breadcrumb-item>
-              汇聚任务
-            </el-breadcrumb-item>
+        <el-breadcrumb-item>
+          汇聚任务
+        </el-breadcrumb-item>
       </el-breadcrumb>
-          <!-- 搜索栏 -->
+      <!-- 搜索栏 -->
       <div class="" ref="searchArea">
         <!-- 查询按钮 -->
         <div class="searchDiv">
@@ -20,7 +20,6 @@
           </span>
           <el-button type="primary" class="doCearch" @click="search">查询</el-button>
         </div>
-
         <el-form ref="form" label-width="110px" class="checkDiv  task-query-form" v-if="moreSearch">
           <el-form-item label="任务类型:">
             <el-checkbox-group v-model="taskPeriodType">
@@ -57,137 +56,137 @@
       </div>
     </div>
     <div class="el-breadcrumb" style="text-align:right; padding-top:5px;" v-if="keyword!=''||taskPeriodType.length>0||status.length>0||priority.length>0||(time!=null && time.length>0)">
-      <el-form ref="form" label-width="0px" class="task-query-form" >
-          <el-form-item style="overflow: auto;">
-            <div  class="selected-task-type" style="display: inline-block;">
-              <span>已选查询条件:</span>
-            </div>
-            <div v-show="keyword!=''" class="selected-task-type" style="display: inline-block;">
-              <span>查询条件:</span>
-              <span>
+      <el-form ref="form" label-width="0px" class="task-query-form">
+        <el-form-item style="overflow: auto;">
+          <div class="selected-task-type" style="display: inline-block;">
+            <span>已选查询条件:</span>
+          </div>
+          <div v-show="keyword!=''" class="selected-task-type" style="display: inline-block;">
+            <span>查询条件:</span>
+            <span>
                 <em class="limtLength">{{keyword}}</em>
                 <span @click="keyword='';">
                   <i class="el-icon-error"></i>
                 </span>
-              </span>
-            </div>
-            <div v-show="taskPeriodType.length>0" class="selected-task-type" style="display: inline-block;">
-              <span>任务类型:</span>
-              <span v-show="taskPeriodType.indexOf('0')>-1">
+            </span>
+          </div>
+          <div v-show="taskPeriodType.length>0" class="selected-task-type" style="display: inline-block;">
+            <span>任务类型:</span>
+            <span v-show="taskPeriodType.indexOf('0')>-1">
                 实时
                 <span @click="pop('0',taskPeriodType);">
                   <i class="el-icon-error"></i>
                 </span>
-              </span>
-              <span v-show="taskPeriodType.indexOf('1')>-1">
+            </span>
+            <span v-show="taskPeriodType.indexOf('1')>-1">
                 周期间隔增量
                 <span @click="pop('1',taskPeriodType);">
                   <i class="el-icon-error"></i>
                 </span>
-              </span>
-              <span v-show="taskPeriodType.indexOf('2')>-1">
+            </span>
+            <span v-show="taskPeriodType.indexOf('2')>-1">
                 周期定时增量
                 <span @click="pop('2',taskPeriodType);">
                   <i class="el-icon-error"></i>
                 </span>
-              </span>
-              <span v-show="taskPeriodType.indexOf('3')>-1">
+            </span>
+            <span v-show="taskPeriodType.indexOf('3')>-1">
                 一次性接入
                 <span @click="pop('3',taskPeriodType);">
                   <i class="el-icon-error"></i>
                 </span>
-              </span>
-              <span v-show="taskPeriodType.indexOf('4')>-1">
+            </span>
+            <span v-show="taskPeriodType.indexOf('4')>-1">
                 周期间隔全量;
                 <span @click="pop('4',taskPeriodType);">
                   <i class="el-icon-error"></i>
                 </span>
-              </span>
-              <span v-show="taskPeriodType.indexOf('5')>-1">
+            </span>
+            <span v-show="taskPeriodType.indexOf('5')>-1">
                 周期定时全量
                 <span @click="pop('5',taskPeriodType);">
                   <i class="el-icon-error"></i>
                 </span>
-              </span>
-            </div>
-            <div v-show="status.length>0" class="selected-task-type" style="display: inline-block;">
-              <span>任务状态:</span>
-              <span v-show="status.indexOf('0')>-1">
+            </span>
+          </div>
+          <div v-show="status.length>0" class="selected-task-type" style="display: inline-block;">
+            <span>任务状态:</span>
+            <span v-show="status.indexOf('0')>-1">
                 新建
                 <span @click="pop('0',status);">
                   <i class="el-icon-error"></i>
                 </span>
-              </span>
-              <span v-show="status.indexOf('5')>-1">
+            </span>
+            <span v-show="status.indexOf('5')>-1">
                 准备中
                 <span @click="pop('5',status);">
                   <i class="el-icon-error"></i>
                 </span>
-              </span>
-              <span v-show="status.indexOf('1')>-1">
+            </span>
+            <span v-show="status.indexOf('1')>-1">
                 运行
                 <span @click="pop('1',status);">
                   <i class="el-icon-error"></i>
                 </span>
-              </span>
-              <span v-show="status.indexOf('2')>-1">
+            </span>
+            <span v-show="status.indexOf('2')>-1">
                 暂停
                 <span @click="pop('2',status);">
                   <i class="el-icon-error"></i>
                 </span>
-              </span>
-              <span v-show="status.indexOf('6')>-1">
+            </span>
+            <span v-show="status.indexOf('6')>-1">
                 采集失败
                 <span @click="pop('6',status);">
                   <i class="el-icon-error"></i>
                 </span>
-              </span>
-              <span v-show="status.indexOf('7')>-1">
+            </span>
+            <span v-show="status.indexOf('7')>-1">
                 汇聚失败
                 <span @click="pop('7',status);">
                   <i class="el-icon-error"></i>
                 </span>
-              </span>
-              <span v-show="status.indexOf('4')>-1">
+            </span>
+            <span v-show="status.indexOf('4')>-1">
                 完成
                 <span @click="pop('4',status);">
                   <i class="el-icon-error"></i>
                 </span>
-              </span>
-            </div>
-            <div v-show="priority.length>0" class="selected-task-type" style="display: inline-block;">
-              <span>任务优先级:</span>
-              <span v-show="priority.indexOf('1')>-1">
+            </span>
+          </div>
+          <div v-show="priority.length>0" class="selected-task-type" style="display: inline-block;">
+            <span>任务优先级:</span>
+            <span v-show="priority.indexOf('1')>-1">
                 高
                 <span @click="pop('1',priority);">
                   <i class="el-icon-error"></i>
                 </span>
-              </span>
-              <span v-show="priority.indexOf('2')>-1">
+            </span>
+            <span v-show="priority.indexOf('2')>-1">
                 中
                 <span @click="pop('2',priority);">
                   <i class="el-icon-error"></i>
                 </span>
-              </span>
-              <span v-show="priority.indexOf('3')>-1">
+            </span>
+            <span v-show="priority.indexOf('3')>-1">
                 低
                 <span @click="pop('3',priority);">
                   <i class="el-icon-error"></i>
                 </span>
-              </span>
-            </div>
-            <div v-show="time!=null && time.length>0" class="selected-task-type" style="display: inline-block;">
-              <span style="margin-right:10px;">任务开始时间:</span>
-              <span>
+            </span>
+          </div>
+          <div v-show="time!=null && time.length>0" class="selected-task-type" style="display: inline-block;">
+            <span style="margin-right:10px;">任务开始时间:</span>
+            <span>
                 {{time==null?'':time[0]}} - {{time==null?'':time[1]}}
                 <span @click="time=[]">
                   <i class="el-icon-error"></i>
                 </span>
-              </span>
-            </div>
-          </el-form-item>
-        </el-form>
-      </div>
+            </span>
+          </div>
+        </el-form-item>
+      </el-form>
+    </div>
     <!-- 操作按钮 -->
     <div class="count-operate main-content clearfix">
       <div>
@@ -195,18 +194,17 @@
         <el-button type="primary" @click="doMore('manager/taskOperate/batchStart',2)">批量启动</el-button>
         <el-button type="primary" @click="doMore('manager/taskOperate/batchPause',3)">批量停止</el-button>
         <div class="right-tools">
-            <el-tooltip class="item" effect="light" content="刷新" placement="top">
-              <a href="javascript:void(0)" v-on:click="refresh">
+          <el-tooltip class="item" effect="light" content="刷新" placement="top">
+            <a href="javascript:void(0)" v-on:click="refresh">
                 <i class="enc-icon-shuaxin"></i>
               </a>
-            </el-tooltip>
+          </el-tooltip>
         </div>
       </div>
     </div>
     <!-- 表格数据 -->
     <div class="mainTable main-content clearfix">
-      <el-table border :row-class-name="tableRowClassName" ref="multipleTable" :data="tableData" tooltip-effect="light" 
-      :height="tableHeight" style="width: 100%;min-height:300px;" @select-all="selectAll" @select="select" @selection-change="handleSelectionChange">
+      <el-table border :row-class-name="tableRowClassName" ref="multipleTable" :data="tableData" tooltip-effect="light" :height="tableHeight" style="width: 100%;min-height:300px;" @select-all="selectAll" @select="select" @selection-change="handleSelectionChange">
         <el-table-column fixed type="selection" width="55"></el-table-column>
         <el-table-column fixed label="接入指示" width="100">
           <template slot-scope="scope">
@@ -363,11 +361,11 @@ export default {
     },
     tableHeight: function() {
       //return window.innerHeight - this.searchHeight - 224;
-            if (window.innerHeight > 768) {
-                return window.innerHeight - 300;
-            } else {
-             return 440;
-            }     
+      if (window.innerHeight > 768) {
+        return window.innerHeight - 300;
+      } else {
+        return 440;
+      }
     },
     pageSize() {
       return this.$store.state.pageSize;
@@ -521,8 +519,8 @@ export default {
           params: { 'taskId': row.taskInfoId },
         }).then(res => {
           _self.loading = false;
-          if (res.data.success && res.data.data.length>0) {
-            res.data.data.forEach(res=>{
+          if (res.data.success && res.data.data.length > 0) {
+            res.data.data.forEach(res => {
               if (res.isExitFile == 'true') {
                 this.$ajax({
                   method: 'get',
@@ -798,106 +796,119 @@ export default {
     selectAll(selection) {
       this.allSecectData[this.pageNum] = selection;
     },
-    pLDataHandel(rowNew,params){
+    pLDataHandel(rowNew, params,tparams) {
       let _self = this;
-        //批量汇聚
-        let errorData = [];
-        for (let i = 0; i < rowNew.length; i++) {
-          if (
-            rowNew[i].status == 1 ||
-            rowNew[i].status == 0 ||
-            rowNew[i].isPeriod == 0
-          ) {
-            errorData.push(rowNew[i]);
-          }
+      //批量汇聚
+      let errorData = [];
+      for (let i = 0; i < rowNew.length; i++) {
+        if (
+          rowNew[i].status == 1 ||
+          rowNew[i].status == 0 ||
+          rowNew[i].isPeriod == 0
+        ) {
+          errorData.push(rowNew[i]);
         }
-        if (errorData.length == 0) {
-          _self.loading = true;
-          _self.tips = "批量汇聚中...";
-          _self
-            .$ajax({
-              url: httpUrl + 'manager/taskOperate/batchConverge',
-              method: "POST",
-              data: {},
-              params: params
-            })
-            .then(function(res) {
-              _self.loading = false;
-              _self.tips = "";
-              if (res.data.success) {
-                let successHtml = "";
-                let errorHtml = "";
-                for (let i = 0; i < res.data.data.successList.length; i++) {
-                  successHtml +=
-                    i + 1 + "." + res.data.data.successList[i] + "</br>";
-                }
-                for (let i = 0; i < res.data.data.errorList.length; i++) {
-                  errorHtml +=
-                    i + 1 + "." + res.data.data.errorList[i] + "</br>";
-                }
-                if (res.data.data.successList.length == 0 && res.data.data.errorList.length > 0) {
-                  _self.$alert(
-                    "重新汇聚任务创建失败的任务如下：</br>" +
-                    errorHtml,
-                    "重新汇聚", {
-                      dangerouslyUseHTMLString: true
-                    }
-                  );
-                } else if (res.data.data.errorList.length == 0 && res.data.data.successList.length > 0) {
-                  _self.$alert(
-                    "重新汇聚任务创建成功的任务如下：</br>" +
-                    successHtml +
-                    "重新汇聚", {
-                      dangerouslyUseHTMLString: true
-                    }
-                  );
-                } else {
-                  _self.$alert(
-                    "重新汇聚任务创建成功的任务如下：</br>" +
-                    successHtml +
-                    "重新汇聚任务创建失败的任务如下：</br>" +
-                    errorHtml,
-                    "重新汇聚", {
-                      dangerouslyUseHTMLString: true
-                    }
-                  );
-                }
-                /*_self.$alert(
-                  "重新汇聚任务创建成功的任务如下：</br>" +
-                  successHtml +
-                  "重新汇聚任务创建失败的任务如下：</br>" +
-                  errorHtml,
-                  "重新汇聚", {
-                    dangerouslyUseHTMLString: true
+      }
+      if (errorData.length == 0) {
+        _self.loading = true;
+        _self.tips = "批量汇聚中...";
+        this.$ajax({
+          method: 'get',
+          url: this.GLOBAL.api.API_DACM + '/taskManager/deleteStatistic',
+          /*url:'http://10.19.160.213:8080/DACM/taskManager/deleteStatistic',*/
+          params: tparams,
+        }).then(res => {
+          if (res.data.code == '0000') {
+            _self
+              .$ajax({
+                url: httpUrl + 'manager/taskOperate/batchConverge',
+                method: "POST",
+                data: {},
+                params: params
+              })
+              .then(function(res) {
+                _self.loading = false;
+                _self.tips = "";
+                if (res.data.success) {
+                  let successHtml = "";
+                  let errorHtml = "";
+                  for (let i = 0; i < res.data.data.successList.length; i++) {
+                    successHtml +=
+                      i + 1 + "." + res.data.data.successList[i] + "</br>";
                   }
-                );*/
-                _self.init();
-              } else {
-                _self.$alert("重新汇聚失败", "重新汇聚", {
-                  dangerouslyUseHTMLString: true
-                });
-              }
-            })
-            .catch(() => {});
-        } else {
-          let errerHtml = "";
-          for (let j = 0; j < errorData.length; j++) {
-            errerHtml +=
-              j +
-              1 +
-              "." +
-              errorData[j].taskName +
-              "：" +
-              errorData[j].taskInfoId +
-              "</br>";
+                  for (let i = 0; i < res.data.data.errorList.length; i++) {
+                    errorHtml +=
+                      i + 1 + "." + res.data.data.errorList[i] + "</br>";
+                  }
+                  if (res.data.data.successList.length == 0 && res.data.data.errorList.length > 0) {
+                    _self.$alert(
+                      "重新汇聚任务创建失败的任务如下：</br>" +
+                      errorHtml,
+                      "重新汇聚", {
+                        dangerouslyUseHTMLString: true
+                      }
+                    );
+                  } else if (res.data.data.errorList.length == 0 && res.data.data.successList.length > 0) {
+                    _self.$alert(
+                      "重新汇聚任务创建成功的任务如下：</br>" +
+                      successHtml +
+                      "重新汇聚", {
+                        dangerouslyUseHTMLString: true
+                      }
+                    );
+                  } else {
+                    _self.$alert(
+                      "重新汇聚任务创建成功的任务如下：</br>" +
+                      successHtml +
+                      "重新汇聚任务创建失败的任务如下：</br>" +
+                      errorHtml,
+                      "重新汇聚", {
+                        dangerouslyUseHTMLString: true
+                      }
+                    );
+                  }
+                  /*_self.$alert(
+                    "重新汇聚任务创建成功的任务如下：</br>" +
+                    successHtml +
+                    "重新汇聚任务创建失败的任务如下：</br>" +
+                    errorHtml,
+                    "重新汇聚", {
+                      dangerouslyUseHTMLString: true
+                    }
+                  );*/
+                  _self.init();
+                } else {
+                  _self.$alert("重新汇聚失败", "重新汇聚", {
+                    dangerouslyUseHTMLString: true
+                  });
+                }
+              })
+              .catch(() => {});
+          } else {
+            _self.loading = false;
+            _self.doMsg(res.data.message, "error");
           }
-          this.$alert(
-            "重新汇聚时，以下任务不能被汇聚,请重新选择：</br>" + errerHtml,
-            "重新汇聚", {
-              dangerouslyUseHTMLString: true
-            }
-          );
+        });
+
+      } else {
+        let errerHtml = "";
+        for (let j = 0; j < errorData.length; j++) {
+          errerHtml +=
+            j +
+            1 +
+            "." +
+            errorData[j].taskName +
+            "：" +
+            errorData[j].taskInfoId +
+            "</br>";
         }
+        this.$alert(
+          "重新汇聚时，以下任务不能被汇聚,请重新选择：</br>" + errerHtml,
+          "重新汇聚", {
+            dangerouslyUseHTMLString: true
+          }
+        );
+      }
     },
     //批量操作
     doMore(url, a) {
@@ -935,51 +946,53 @@ export default {
       let params = {
         taskInfoIds: tableParams.join(",")
       };
-
+      let tparams = {
+        taskInfoId :tableParams.join(",")
+      }
       let rowNew = Array.from(row);
       if (a == 1) {
         // 先判断是否有ftp的数据
-        let ftpData = rowNew.filter(res =>{
+        let ftpData = rowNew.filter(res => {
           return res.sourceType == 'ftp'
         })
-        if(ftpData.length>0){
+        if (ftpData.length > 0) {
           let taskInfoId = "";
-          ftpData.forEach(res=>{
+          ftpData.forEach(res => {
             taskInfoId += res.taskInfoId + ",";
           })
-          taskInfoId = taskInfoId.substr(0, taskInfoId.length-1);
+          taskInfoId = taskInfoId.substr(0, taskInfoId.length - 1);
           _self.$ajax({
-              method: 'get',
-              url: this.GLOBAL.api.API_DACM + '/ctables/checkFtpTaskFileExist',
-              //url: 'http://10.19.160.59:8080/DACM/ctables/checkFtpTaskFileExist',
-              params: { 'taskId': taskInfoId },
-            }).then(res=>{
-              if(res.data.success){
-                let ftpRespose = res.data.data.filter(val=>{
-                  return val.isExitFile == "false";
-                });
-                if(ftpRespose.length >0){
-                  let errerHtml = "";
-                  for (let j = 0; j < ftpRespose.length; j++) {
-                    errerHtml +=
-                      j +
-                      1 +
-                      ".汇聚任务：" + ftpRespose[j].taskId +
-                      "</br>";
-                  }
-                  this.$alert(
-                    "重新汇聚时，以下任务不能被汇聚,请重新选择：</br>" + errerHtml,
-                    "重新汇聚", {
-                      dangerouslyUseHTMLString: true
-                    }
-                  );
-                }else {
-                  _self.pLDataHandel(rowNew,params);
+            method: 'get',
+            url: this.GLOBAL.api.API_DACM + '/ctables/checkFtpTaskFileExist',
+            //url: 'http://10.19.160.59:8080/DACM/ctables/checkFtpTaskFileExist',
+            params: { 'taskId': taskInfoId },
+          }).then(res => {
+            if (res.data.success) {
+              let ftpRespose = res.data.data.filter(val => {
+                return val.isExitFile == "false";
+              });
+              if (ftpRespose.length > 0) {
+                let errerHtml = "";
+                for (let j = 0; j < ftpRespose.length; j++) {
+                  errerHtml +=
+                    j +
+                    1 +
+                    ".汇聚任务：" + ftpRespose[j].taskId +
+                    "</br>";
                 }
+                this.$alert(
+                  "重新汇聚时，以下任务不能被汇聚,请重新选择：</br>" + errerHtml,
+                  "重新汇聚", {
+                    dangerouslyUseHTMLString: true
+                  }
+                );
+              } else {
+                _self.pLDataHandel(rowNew, params,tparams);
               }
-            });
+            }
+          });
         } else {
-          _self.pLDataHandel(rowNew,params);
+          _self.pLDataHandel(rowNew, params,tparams);
         }
       } else if (a == 2) {
         //批量启动
@@ -1236,11 +1249,11 @@ export default {
 }
 
 .searchDiv {
-    float: right;
-    margin-top: -40px;
-    margin-right: 20px;
-    height: 40px;
-    padding: 2px 0 0 0;
+  float: right;
+  margin-top: -40px;
+  margin-right: 20px;
+  height: 40px;
+  padding: 2px 0 0 0;
   span {
     display: inline-block;
     font-size: 15px;
@@ -1254,6 +1267,7 @@ export default {
     position: relative;
   }
 }
+
 .dataSearch {
   display: inline-block;
   width: 220px;
@@ -1271,23 +1285,24 @@ export default {
     text-indent: 5px;
     font-size: 21px;
   }
-  ::-webkit-input-placeholder {
+   ::-webkit-input-placeholder {
     color: #999;
     font-size: 15px;
   } ///* 使用webkit内核的浏览器 */
-  :-moz-placeholder {
+   :-moz-placeholder {
     color: #999;
     font-size: 15px;
   } ///* Firefox版本4-18 */
-  ::-moz-placeholder {
+   ::-moz-placeholder {
     font-size: 15px;
     color: #999;
   } ///* Firefox版本19+ */
-  :-ms-input-placeholder {
+   :-ms-input-placeholder {
     font-size: 15px;
     color: #999;
   } ///* IE浏览器 */
 }
+
 .doCearch {
   display: inline-block;
   margin-left: 15px;
@@ -1295,18 +1310,20 @@ export default {
   position: relative;
   line-height: 36px !important;
 }
+
 .checkDiv {
-    padding-left: 20px;
-    position: absolute;
-    z-index: 1001;
-    border: 1px solid #EFF3F6;
-    border-radius: 0px;
-    background-color: #fff;
-    box-shadow: 0 2px 12px 0 rgba(0,0,0,.1);
-    box-sizing: border-box;
-    width: 800px;
-    right: 0px;
+  padding-left: 20px;
+  position: absolute;
+  z-index: 1001;
+  border: 1px solid #EFF3F6;
+  border-radius: 0px;
+  background-color: #fff;
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, .1);
+  box-sizing: border-box;
+  width: 800px;
+  right: 0px;
 }
+
 .el-form-item {
   margin-bottom: 0px;
   padding: 0px
