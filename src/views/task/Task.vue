@@ -11,14 +11,13 @@
         <!-- 查询按钮 -->
         <div class="searchDiv">
           <div class="dataSearch">
-            <i class="el-icon-search"></i>
-            <input type="text" v-model="keyword" placeholder="请输入查询条件" @keyup.13="search">
+            <el-input type="text" v-model="keyword" placeholder="请输入任务名称" @keyup.enter="search"/>
           </div>
+          <el-button type="primary" class="doCearch" icon="enc-icon-sousuo1" @click="search" ></el-button>
           <span @click="doMoreSearch">
             高级搜索
             <i :class="!moreSearch?'el-icon-caret-bottom':'el-icon-caret-top'"></i>
-          </span>
-          <el-button type="primary" class="doCearch" @click="search">查询</el-button>
+          </span>        
         </div>
         <el-form ref="form" label-width="110px" class="checkDiv  task-query-form" v-if="moreSearch">
           <el-form-item label="任务类型:">
@@ -1268,47 +1267,54 @@ export default {
   }
 }
 
+.searchDiv {
+    float: right;
+    margin-top: -41px;
+    margin-right: 20px;
+    height: 40px;
+  span {
+    display: inline-block;
+    font-size: 15px;
+    cursor: pointer;
+    width: 100px;
+    height: 35px;
+    border: 1px solid #c9cdd0;
+    border-left: none;
+    line-height: 35px;
+    text-align: center;
+    position: relative;
+  }
+}
 .dataSearch {
   display: inline-block;
   width: 220px;
-  height: 35px;
-  line-height: 35px;
-  border: 1px solid #C8CFD5;
-  input {
-    margin-left: 7px;
-    width: 180px;
-    background-color: transparent;
-    border: 0 none;
-    outline: 0 none;
-  }
-  i {
-    text-indent: 5px;
-    font-size: 21px;
-  }
-   ::-webkit-input-placeholder {
+  height: 40px;
+  line-height: 40px;
+  ::-webkit-input-placeholder {
     color: #999;
     font-size: 15px;
   } ///* 使用webkit内核的浏览器 */
-   :-moz-placeholder {
+  :-moz-placeholder {
     color: #999;
     font-size: 15px;
   } ///* Firefox版本4-18 */
-   ::-moz-placeholder {
+  ::-moz-placeholder {
     font-size: 15px;
     color: #999;
   } ///* Firefox版本19+ */
-   :-ms-input-placeholder {
+  :-ms-input-placeholder {
     font-size: 15px;
     color: #999;
   } ///* IE浏览器 */
 }
-
 .doCearch {
   display: inline-block;
-  margin-left: 15px;
   margin-top: 0;
   position: relative;
-  line-height: 36px !important;
+  i {
+    text-indent: 5px;
+    font-size: 21px;
+  }
 }
 
 .checkDiv {

@@ -186,19 +186,18 @@ export default {
 }
 .searchDiv {
     float: right;
-    margin-top: -40px;
+    margin-top: -41px;
     margin-right: 20px;
     height: 40px;
-    padding: 2px 0 0 0;
   span {
     display: inline-block;
     font-size: 15px;
     cursor: pointer;
     width: 100px;
     height: 35px;
-    border: 1px solid #C8CFD5;
+    border: 1px solid #c9cdd0;
     border-left: none;
-    line-height: 36px;
+    line-height: 35px;
     text-align: center;
     position: relative;
   }
@@ -208,11 +207,6 @@ export default {
   width: 220px;
   height: 40px;
   line-height: 40px;
- 
-  i {
-    text-indent: 5px;
-    font-size: 21px;
-  }
   ::-webkit-input-placeholder {
     color: #999;
     font-size: 15px;
@@ -234,7 +228,10 @@ export default {
   display: inline-block;
   margin-top: 0;
   position: relative;
-  line-height: 36px !important;
+  i {
+    text-indent: 5px;
+    font-size: 21px;
+  }
 }
 .el-form-item {
   margin-bottom: 10px;

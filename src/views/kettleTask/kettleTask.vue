@@ -9,12 +9,11 @@
           <!-- 搜索栏 -->
       <div class="" ref="searchArea">
         <div class="searchDiv">
-            <div class="dataSearch">
-                <i class="el-icon-search"></i>
-                <input type="text" v-model="taskName" placeholder="请输入任务名称" @keyup.13 = "search" />
-            </div>
-            <span  @click="doMoreSearch" >高级搜索 <i :class="!moreSearch?'el-icon-caret-bottom':'el-icon-caret-top'"></i>  </span>
-            <el-button type="primary" class="doCearch" @click="search">查询</el-button> 
+          <div class="dataSearch">
+            <el-input type="text" v-model="keyword" placeholder="请输入任务名称" @keyup.enter="search"/>
+          </div>
+          <el-button type="primary" class="doCearch" icon="enc-icon-sousuo1" @click="search" ></el-button>
+          <span  @click="doMoreSearch" >高级搜索 <i :class="!moreSearch?'el-icon-caret-bottom':'el-icon-caret-top'"></i>  </span>
         </div>
          <el-form ref="form"  label-width="110px" class="checkDiv formGroup" v-if="moreSearch">
             <el-form-item label="任务状态:">
@@ -353,19 +352,18 @@ export default {
 }
 .searchDiv {
     float: right;
-    margin-top: -40px;
+    margin-top: -41px;
     margin-right: 20px;
     height: 40px;
-    padding: 2px 0 0 0;
   span {
     display: inline-block;
     font-size: 15px;
     cursor: pointer;
     width: 100px;
     height: 35px;
-    border: 1px solid #C8CFD5;
+    border: 1px solid #c9cdd0;
     border-left: none;
-    line-height: 36px;
+    line-height: 35px;
     text-align: center;
     position: relative;
   }
@@ -373,20 +371,8 @@ export default {
 .dataSearch {
   display: inline-block;
   width: 220px;
-  height: 35px;
-  line-height: 35px;
-  border: 1px solid #C8CFD5;
-  input {
-    margin-left: 7px;
-    width: 180px;
-    background-color: transparent;
-    border: 0 none;
-    outline: 0 none;
-  }
-  i {
-    text-indent: 5px;
-    font-size: 21px;
-  }
+  height: 40px;
+  line-height: 40px;
   ::-webkit-input-placeholder {
     color: #999;
     font-size: 15px;
@@ -406,10 +392,12 @@ export default {
 }
 .doCearch {
   display: inline-block;
-  margin-left: 15px;
   margin-top: 0;
   position: relative;
-  line-height: 36px !important;
+  i {
+    text-indent: 5px;
+    font-size: 21px;
+  }
 }
 .checkDiv {
     padding-left: 20px;
