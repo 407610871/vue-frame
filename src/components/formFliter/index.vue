@@ -249,6 +249,7 @@ export default {
   margin-bottom: 10px;
 }
 .checkDiv {
+    padding-left:20px;
     position: absolute;
     z-index: 1001;
     border: 1px solid #EFF3F6;

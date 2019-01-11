@@ -1,71 +1,77 @@
 <template>
-  <div style="padding:20px; background: #fff; overflow-y:auto;" v-bind:style="{height:mainHeight}">
-    <div class="panel">
-      <div class="panel-title" style="margin-bottom:10px;">库区设置</div>
-      <collapsePanel @refresh="init" v-if="dataReady" v-bind:settingList="settingList" />
-    </div>
-    <div class="panel">
-      <div class="panel-title">外观</div>
-      <el-row :gutter="20">
-        <el-col :span="8">
-          <el-card class="theme-preview">
-            <img src="./../../static/img/1.jpg" />
-          </el-card>
-        </el-col>
-        <el-col :span="6">
-          <div class="theme-item">
-            <img  src="./../../static/img/1.jpg" /> 风格1
+  <div>
+    <el-breadcrumb separator="/">
+            <el-breadcrumb-item :to="{ path: '/dashboard' }">
+              库区设置
+            </el-breadcrumb-item>
+      </el-breadcrumb>
+    <div class="main-content" style="overflow-y:auto;" v-bind:style="{height:mainHeight}">
+      <div class="panel">
+        <collapsePanel @refresh="init" v-if="dataReady" v-bind:settingList="settingList" />
+      </div>
+      <div class="panel">
+        <div class="panel-title">外观</div>
+        <el-row :gutter="20">
+          <el-col :span="8">
+            <el-card class="theme-preview">
+              <img src="./../../static/img/1.jpg" />
+            </el-card>
+          </el-col>
+          <el-col :span="6">
+            <div class="theme-item">
+              <img  src="./../../static/img/1.jpg" /> 风格1
+            </div>
+          </el-col>
+          
+        </el-row>
+      </div>
+      <div class="panel">
+        <div class="panel-title">系统参数</div>
+        <el-form label-width="100px" class="setting-form">
+          <div class="proInfo-box clearfix">
+            <el-row :gutter="20">
+              <el-col :span="12">
+                <el-form-item label="行政区划">
+                  <el-col :span="11" class="col-inside">
+                    <el-select v-model="sysParam.province" placeholder="请选择省" @change="loadCity">
+                      <el-option :label="item.name" :value="item.code" v-for="(item,index) in provinceList" :key="index"></el-option>
+                    </el-select>
+                  </el-col>
+                  <el-col :span="2" style="text-align:center;" class="col-inside">-</el-col>
+                  <el-col :span="11" class="col-inside">
+                    <el-select v-model="sysParam.city" placeholder="请选择城市" @change="changeSet">
+                      <el-option :label="item.name" :value="item.code" v-for="(item,index) in cityList" :key="index"></el-option>
+                    </el-select>
+                  </el-col>
+                </el-form-item>
+              </el-col>
+              <el-col :span="12">
+                <el-form-item label="数据资源事权单位机构代码" label-width="180px">
+                  <el-input v-model="sysParam.mecodeOrg" @change="changeSet"></el-input>
+                </el-form-item>
+              </el-col>
+            </el-row>
+            <el-row :gutter="20">
+              <el-col :span="12">
+                <el-form-item label="每页展示条数">
+                  <el-select v-model="sysParam.pageLimit" value-key="pageLimit" placeholder="请选择条数" @change="changeSet">
+                    <el-option label="10条" value="10">10条</el-option>
+                    <el-option label="20条" value="20">20条</el-option>
+                    <el-option label="30条" value="30">30条</el-option>
+                    <el-option label="50条" value="50">50条</el-option>
+                    <el-option label="100条" value="100">100条</el-option>
+                  </el-select>
+                </el-form-item>
+              </el-col>
+              <el-col :span="12">
+                <el-form-item label="本地文件采集hdfs路径" label-width="180px">
+                  <el-input v-model="sysParam.hdfsPaOrg" @change="changeSet"></el-input>
+                </el-form-item>
+              </el-col>
+            </el-row>
           </div>
-        </el-col>
-        
-      </el-row>
-    </div>
-    <div class="panel">
-      <div class="panel-title">系统参数</div>
-      <el-form label-width="100px" class="setting-form">
-        <div class="proInfo-box clearfix">
-          <el-row :gutter="20">
-            <el-col :span="12">
-              <el-form-item label="行政区划">
-                <el-col :span="11" class="col-inside">
-                  <el-select v-model="sysParam.province" placeholder="请选择省" @change="loadCity">
-                    <el-option :label="item.name" :value="item.code" v-for="(item,index) in provinceList" :key="index"></el-option>
-                  </el-select>
-                </el-col>
-                <el-col :span="2" style="text-align:center;" class="col-inside">-</el-col>
-                <el-col :span="11" class="col-inside">
-                  <el-select v-model="sysParam.city" placeholder="请选择城市" @change="changeSet">
-                    <el-option :label="item.name" :value="item.code" v-for="(item,index) in cityList" :key="index"></el-option>
-                  </el-select>
-                </el-col>
-              </el-form-item>
-            </el-col>
-            <el-col :span="12">
-              <el-form-item label="数据资源事权单位机构代码" label-width="180px">
-                <el-input v-model="sysParam.mecodeOrg" @change="changeSet"></el-input>
-              </el-form-item>
-            </el-col>
-          </el-row>
-          <el-row :gutter="20">
-            <el-col :span="12">
-              <el-form-item label="每页展示条数">
-                <el-select v-model="sysParam.pageLimit" value-key="pageLimit" placeholder="请选择条数" @change="changeSet">
-                  <el-option label="10条" value="10">10条</el-option>
-                  <el-option label="20条" value="20">20条</el-option>
-                  <el-option label="30条" value="30">30条</el-option>
-                  <el-option label="50条" value="50">50条</el-option>
-                  <el-option label="100条" value="100">100条</el-option>
-                </el-select>
-              </el-form-item>
-            </el-col>
-            <el-col :span="12">
-              <el-form-item label="本地文件采集hdfs路径" label-width="180px">
-                <el-input v-model="sysParam.hdfsPaOrg" @change="changeSet"></el-input>
-              </el-form-item>
-            </el-col>
-          </el-row>
-        </div>
-      </el-form>
+        </el-form>
+      </div>
     </div>
   </div>
 </template>

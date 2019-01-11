@@ -26,7 +26,7 @@
 .taskMDialog {
   text-align: left;
   .el-dialog {
-    height: 600px;
+    max-height: 600px;
     overflow: auto;
     .el-dialog__header {
         padding: 20px 40px 0px 40px;

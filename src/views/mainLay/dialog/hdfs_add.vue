@@ -1,6 +1,6 @@
 <template>
   <div class="taskMDialog">
-    <el-button @click="dialogVisible = true" class="add-btn">新增</el-button>
+    <el-button type="primary" @click="dialogVisible = true">新增</el-button>
     <el-dialog title="新增" :visible.sync="dialogVisible" width="73%" :before-close="closeDialog">
         <div class="title-gra plr30">
           <div class="grab gra-r">
@@ -8,8 +8,6 @@
           </div>
         </div>
       <el-form :model="ruleForm" ref="ruleForm" label-width="100px" class="demo-ruleForm" :rules="formRules">
-        <div class="daiInfo proInfo">
-          <div class="proInfo-box dataInfo-box clearfix">
             <el-col :span="10">
               <el-form-item label="hdfs主机名:" prop="hdfsname" required>
                 <el-input v-model="ruleForm.hdfsname"></el-input>
@@ -34,8 +32,8 @@
             </el-col>
             <el-col :span="10">
               <el-form-item class="collbg" label="impala信息:" prop="iminfo">
-                <el-input v-model="ruleForm.iminfo" class="fl"></el-input>
-                <el-button type="primary" class="fl increbtn" @click="innerVisible = true">选择</el-button>
+                <el-input v-model="ruleForm.iminfo" style="width:50%"></el-input>
+                <el-button type="primary" @click="innerVisible = true">选择</el-button>
                 <impala-map :msg='innerVisible' :alincre="this.increArr" @showIncre="showIncrement()" @saveIncre="saveIncrement($event)"></impala-map>
               </el-form-item>
             </el-col>
@@ -45,6 +43,7 @@
                 <el-checkbox v-model="ruleForm.isha"></el-checkbox>
               </el-form-item>
             </el-col>
+            <div class="clearfix">
             <el-col :span="10" v-if="ruleForm.isha==true">
               <el-form-item label="备用节点IP:" prop="bakip">
                 <el-input v-model="ruleForm.bakip"></el-input>
@@ -56,13 +55,12 @@
                 <el-input v-model="ruleForm.bakport"></el-input>
               </el-form-item>
             </el-col>
-            <el-col :span="24" class="tcenter mt30">
-              <el-button type="primary" size="small" @click="submitForm('ruleForm')">保存</el-button>
-              <el-button @click="closeDialog()" size="small">关闭</el-button>
-            </el-col>
-          </div>
-        </div>
+            </div>
       </el-form>
+      <div  class="clearfix mr-btn">
+        <el-button type="primary" @click="closeDialog()">关闭</el-button>
+        <el-button type="primary" @click="submitForm('ruleForm')">保存</el-button>
+      </div>
     </el-dialog>
   </div>
 </template>
@@ -232,70 +230,3 @@ export default {
 };
 
 </script>
-<style lang="scss">
-@import "@/assets/css/base.scss";
-@import "@/assets/css/dialog.scss";
-.taskMDialog {
-  line-height: 1.5;
-}
-
-.el-select {
-  width: 100%;
-}
-
-.otherInfo .el-radio {
-  margin-bottom: 12px;
-  margin-top: 8px;
-  margin-left: 30px;
-}
-
-.test-btn {
-  .el-form-item--medium .el-form-item__content {
-    margin-left: 0px !important;
-  }
-}
-
-.el-radio+.el-radio {
-  margin-left: 19px;
-}
-
-.reginfo .el-form-item__content {
-  margin-left: 0px !important;
-  text-align: center;
-  margin-top: 30px;
-}
-
-.el-dialog .otherInfo .el-form-item__label {
-  width: 103px !important;
-}
-
-.otherInfo .el-form-item--medium .el-form-item__content {
-  margin-left: 103px !important;
-}
-
-.el-dialog .otherInfo .fileItem .el-form-item__label {
-  width: 235px !important;
-}
-
-.collbg {
-  .el-input,
-  .wildbg .el-select {
-    width: 50%;
-  }
-  .increbtn.el-button--medium {
-    padding: 6px 20px;
-    margin-top: 2px;
-    margin-left: 10px;
-  }
-}
-
-form {
-  padding-top: 20px;
-  padding-bottom: 20px;
-}
-
-.log-box {
-  background: #f2f2f3;
-}
-
-</style>
