@@ -179,10 +179,13 @@ header {
     opacity: 0.5;
     @include el-button--primary($el-button-default);
   }
+  .el-button--medium:active, .el-button--primary:active {
+  @include el-button--primary($el-button-default);
+}
   .el-button--medium:active, .el-button--primary:active{
     opacity: 1;
-    background: #009DDF !important;
-    border-color:  #009DDF !important;
+    background: #009DDF ;
+    border-color:  #009DDF ;
   }
   .el-button--primary:focus {
     @include el-button--primary($el-button-default);
@@ -369,3 +372,4 @@ header {
 [class*="enc-icon"]:hover, [class*="enc-icon"]:active{
     color: #009DDF !important;
 }
+
