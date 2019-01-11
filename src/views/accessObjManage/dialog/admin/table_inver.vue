@@ -2,7 +2,7 @@
   <div class="taskMDialog userSurveyDialog">
     <!--  <el-button class="diabtn tin-btn add-btn" @click="dialogVisible = true">核验报告</el-button> -->
     <el-tooltip class="item" effect="light" content="核验报告" placement="top">
-      <span class="dialogo diabtn tin-btn add-btn" @click="dialogVisible = true"></span>
+      <span class="icon-title enc-icon-heyanchakan diabtn tin-btn add-btn" @click="dialogVisible = true"></span>
     </el-tooltip>
     <!--  <i class="el-icon-info" @click="dialogVisible = true">用户调研</i> -->
     <el-dialog title="核验报告" :visible.sync="dialogVisible" width="73%" :before-close="closeDialog">
