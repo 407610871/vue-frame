@@ -62,10 +62,10 @@ export default {
       if (window.localStorage.getItem('data-theme') == 'theme1') {
         this.defaultColor = [];
         this.defaultColor = ['#000e6a', '#5567be', '#7385d8', '#91a4f2', "#47aa65", "#ffd866", "#66efff"];
-      } else if (window.localStorage.getItem('data-theme') == 'theme2') {
+      } else if (window.localStorage.getItem('data-theme') == 'theme3') {
         this.defaultColor = [];
         this.defaultColor = ['#448f6b', '#68a587', '#9ec5b2', '#dae9e1', '#91a4f2', "#47aa65", "#ffd866"];
-      } else if (window.localStorage.getItem('data-theme') == 'theme3') {
+      } else if (window.localStorage.getItem('data-theme') == 'theme2') {
         this.defaultColor = [];
         this.defaultColor = ['#1ca9de', '#48b9e4', '#89d2ee', '#d2eef8', '#91a4f2', "#47aa65", "#ffd866"];
       } else if (window.localStorage.getItem('data-theme') == 'theme4') {
