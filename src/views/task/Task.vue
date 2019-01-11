@@ -616,7 +616,7 @@ export default {
                     }
                   });
               }).catch(() => {
-                this.$ajax
+                _self.$ajax
                   .put(httpUrl + "manager/taskOperate/delete/" + row.taskInfoId)
                   .then(function(res) {
                     _self.loading = false;
