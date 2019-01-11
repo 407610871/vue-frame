@@ -246,7 +246,12 @@
   background: transparent;
 }
  */
-
+.icon-title {
+  font-size:30px;
+  display: inline-block;
+  font-size:30px;
+  cursor: pointer;
+}
 .tasktips {
   font-size: $font-size-small;
   color: red;
