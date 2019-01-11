@@ -71,7 +71,7 @@ spec:
           valueFrom:
             configMapKeyRef:
               name: sjsn-all-web-configmap
-              key: web-dam            
+              key: web-dam-front            
         - name: API_DAM
           value: 'http://$(NODE_IP):$(API_DAM_PORT)'          
         resources:
