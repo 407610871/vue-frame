@@ -606,9 +606,6 @@ export default {
     overflow: hidden;
   }
   .filter-container {
-    padding: 0 20px 0 20px;
-    margin: 20px auto;
-
     .count-container {
       .count-title {
         display: inline-block;

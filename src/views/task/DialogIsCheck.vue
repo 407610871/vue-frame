@@ -122,8 +122,8 @@
           </el-table-column>
           <el-table-column label="核验报告">
             <template slot-scope="scope">
-              <el-button @click="downTxt(scope.row.id)" class="export-btn" size="mini" v-if="scope.row.status == '1'">导出</el-button>
-              <el-button @click="downTxt(scope.row.id)" class="export-btn" size="mini" v-else disabled>导出</el-button>
+              <el-button @click="downTxt(scope.row.id)" type="text" size="small" v-if="scope.row.status == '1'">导出</el-button>
+              <el-button @click="downTxt(scope.row.id)" type="text" size="small" v-else disabled>导出</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -615,11 +615,6 @@ export default {
 h5 {
   font-size: 14px;
   margin-bottom: 10px;
-}
-
-.export-btn.el-button {
-  color: white!important;
- /*  background-color: #2f6ac5!important; */
 }
 
 </style>

@@ -2,11 +2,12 @@
   <div>
     <el-breadcrumb separator="/">
             <el-breadcrumb-item :to="{ path: '/dashboard' }">
-              库区设置
+              系统参数
             </el-breadcrumb-item>
       </el-breadcrumb>
     <div class="main-content" style="overflow-y:auto;" v-bind:style="{height:mainHeight}">
       <div class="panel">
+        <div class="panel-title">库区设置</div>
         <collapsePanel @refresh="init" v-if="dataReady" v-bind:settingList="settingList" />
       </div>
       <div class="panel">
