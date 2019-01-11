@@ -287,7 +287,7 @@ header {
     }
     .gra-r {
       width: 100% !important;
-      border-bottom: 4px solid #009DDF !important;
+      @include el-dialog-contanst($el-page-theme);      
     }
   }
   .plr30{
