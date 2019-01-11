@@ -155,7 +155,7 @@
 
  #NewAisdeTree .el-tree .el-tree-node__content:focus,
  #NewAisdeTree .el-tree .el-tree-node__content:hover {
-   @include el-color-ys($el-radio-btn);
+   @include el-color-ys($el-table-td-hover);
  }
 
  #NewAisdeTree .el-tree .el-checkbox__input.is-checked .el-checkbox__inner,
