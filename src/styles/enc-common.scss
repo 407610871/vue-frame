@@ -370,6 +370,6 @@ header {
 }
 // 图标hover
 [class*="enc-icon"]:hover, [class*="enc-icon"]:active{
-    color: #009DDF !important;
+     @include el-color($el-primary-theme);
 }
 
