@@ -2,14 +2,12 @@
   <div class="dashboard-container">
     <div>
       <el-breadcrumb separator="">
-            <el-breadcrumb-item>
-              数据接入
-            </el-breadcrumb-item>
+        <el-breadcrumb-item>
+          数据接入
+        </el-breadcrumb-item>
       </el-breadcrumb>
-      <form-fliter v-if="queryParamReady" @highMore="moreHeight" @highSeaech="hightrue" 
-      v-bind:formCollapse="collapse" v-bind:dataObj="formFilterData" @doSearch="search" @formFilter="changeFormFilter" />
+      <form-fliter v-if="queryParamReady" @highMore="moreHeight" @highSeaech="hightrue" v-bind:formCollapse="collapse" v-bind:dataObj="formFilterData" @doSearch="search" @formFilter="changeFormFilter" />
     </div>
-
     <div class="main main-content">
       <div class="filter-container">
         <div class="count-container">
@@ -27,41 +25,41 @@
         </div>
       </div>
       <el-table v-loading="loading" :data="mainTableData" :height="tableHeight" stripe border style="width: 100%;" tooltip-effect="light">
-          <el-table-column label="接入源名称" width="250" show-overflow-tooltip>
-            <template slot-scope="scope">
-              <a class="underdone" href="javascript:void(0)" v-on:click="goSubPage(scope.$index,scope.row.dataSourceName)">{{ scope.row.name }}</a>
-            </template>
-          </el-table-column>
-          <el-table-column prop="id" label="接入源ID" min-width="180">
-          </el-table-column>
-          <el-table-column prop="dataSourceName" label="接入源类型" min-width="140">
-          </el-table-column>
-          <el-table-column label="对接平台" min-width="140">
-            <template slot-scope="scope">
-              {{getPlatfrom(scope.row.platform)}}
-            </template>
-          </el-table-column>
-          <el-table-column label="接入数据来源" min-width="140">
-            <template slot-scope="scope">
-              {{getNetwork(scope.row.network)}}
-            </template>
-          </el-table-column>
-          <el-table-column prop="createTime" label="注册时间" min-width="160">
-          </el-table-column>
-          <el-table-column label="操作" min-width="140">
-            <template slot-scope="scope">
-              <div class="lofile">
-                <edit-dialog :acId="scope.row.id" @refreshTable="loadTable" @storeReady="storeReady"></edit-dialog>
-                <el-tooltip class="item" effect="light" content="复制" placement="top" v-if="scope.row.dataSourceName!='本地文件'">
-                  <i @click="handleCopy(scope.$index, scope.row)" class="enc-icon-fuzhi table-action-btn"></i>
-                </el-tooltip>
-                <el-tooltip class="item" effect="light" content="废止" placement="top">
-                  <i @click="handleDelete(scope.$index, scope.row)" class="enc-icon-feizhi table-action-btn"></i>
-                </el-tooltip>
-              </div>
-            </template>
-          </el-table-column>
-        </el-table> 
+        <el-table-column label="接入源名称" width="250" show-overflow-tooltip>
+          <template slot-scope="scope">
+            <a class="underdone" href="javascript:void(0)" v-on:click="goSubPage(scope.$index,scope.row.dataSourceName)">{{ scope.row.name }}</a>
+          </template>
+        </el-table-column>
+        <el-table-column prop="id" label="接入源ID" min-width="180">
+        </el-table-column>
+        <el-table-column prop="dataSourceName" label="接入源类型" min-width="140">
+        </el-table-column>
+        <el-table-column label="对接平台" min-width="140">
+          <template slot-scope="scope">
+            {{getPlatfrom(scope.row.platform)}}
+          </template>
+        </el-table-column>
+        <el-table-column label="接入数据来源" min-width="140">
+          <template slot-scope="scope">
+            {{getNetwork(scope.row.network)}}
+          </template>
+        </el-table-column>
+        <el-table-column prop="createTime" label="注册时间" min-width="160">
+        </el-table-column>
+        <el-table-column label="操作" min-width="140">
+          <template slot-scope="scope">
+            <div class="lofile">
+              <edit-dialog :acId="scope.row.id" @refreshTable="loadTable" @storeReady="storeReady"></edit-dialog>
+              <el-tooltip class="item" effect="light" content="复制" placement="top" v-if="scope.row.dataSourceName!='本地文件'">
+                <i @click="handleCopy(scope.$index, scope.row)" class="enc-icon-fuzhi table-action-btn"></i>
+              </el-tooltip>
+              <el-tooltip class="item" effect="light" content="废止" placement="top">
+                <i @click="handleDelete(scope.$index, scope.row)" class="enc-icon-feizhi table-action-btn"></i>
+              </el-tooltip>
+            </div>
+          </template>
+        </el-table-column>
+      </el-table>
     </div>
     <div class="enc-pagination">
       <el-pagination v-if="queryParamReady" style="float:right; margin:10px;" @current-change="goPage" background :page-size.sync="pageSize" :total="mainTableDataTotal" layout="prev, pager, next, jumper" :current-page.sync="currentPage">
@@ -119,14 +117,14 @@ export default {
       return this.$store.state.queryParams.dashboard;
     },
     tableHeight: function() {
-     /**  return this.collapse ?
-        window.innerHeight - 375 :
-        (window.innerHeight - 510 - 20 * this.moreData < 400 ? 300 : window.innerHeight - 510 - 20); */
-        console.log("window.innerHeight", window.innerHeight)
-        if(window.innerHeight >768){
-          return window.innerHeight - 335;
-        }
-        return 410;
+      /**  return this.collapse ?
+         window.innerHeight - 375 :
+         (window.innerHeight - 510 - 20 * this.moreData < 400 ? 300 : window.innerHeight - 510 - 20); */
+      console.log("window.innerHeight", window.innerHeight)
+      if (window.innerHeight > 768) {
+        return window.innerHeight - 335;
+      }
+      return 410;
     }
   },
   components: {
@@ -272,6 +270,7 @@ export default {
     },
     updataFliterItemList() {
       //console.log("454");
+      debugger;
       var _self = this;
       this.$ajax
         .get(window.ENV.API_DACM + sysdialect, {
@@ -293,7 +292,8 @@ export default {
         });
 
       var objNets = JSON.parse(localStorage.getItem("NetWork"));
-      if (objNets == null || objNets == undefined ||JSON.stringify(objNets) == "{}" ) {
+      console.log(objNets);
+      if (objNets.success==false || objNets == null || objNets == undefined || JSON.stringify(objNets) == "{}") {
         this.$ajax
           .get(window.ENV.API_DACM + "/commonInter/getListStaticDataOrder", {
             params: {
@@ -302,23 +302,27 @@ export default {
           })
           .then(function(res) {
             //  console.log(res)
-            var list = [];
-            if (res.data != undefined) {
-              let objNet = JSON.stringify(res.data);
-              window.localStorage.setItem('NetWork', objNet);
-              for (var value of res.data) {
-                list.push({
-                  id: value.sTATIC_CODE,
-                  name: value.sTATIC_NAME
+            if (res.data.success == false) {
+
+            } else {
+              var list = [];
+              if (res.data != undefined) {
+                let objNet = JSON.stringify(res.data);
+                window.localStorage.setItem('NetWork', objNet);
+                for (var value of res.data) {
+                  list.push({
+                    id: value.sTATIC_CODE,
+                    name: value.sTATIC_NAME
+                  });
+                }
+                _self.$store.commit("setFilterItmeList", {
+                  name: "network",
+                  data: list
                 });
+                _self.formFilterData[1].checkData = list
               }
-              _self.$store.commit("setFilterItmeList", {
-                name: "network",
-                data: list
-              });
-              _self.formFilterData[1].checkData = list
+              console.log(list);
             }
-            console.log(list);
           })
           .catch(function(err) {
             console.log(err);
@@ -331,32 +335,34 @@ export default {
           })
           .then(function(res) {
             //  console.log(res)
+            if (res.data.success == false) {
 
-            var list = [];
-            let objNet = JSON.stringify(res.data);
-            window.localStorage.setItem('ButtPlatForm', objNet);
-            for (var value of res.data) {
-              list.push({
-                id: value.sTATIC_CODE,
-                name: value.sTATIC_NAME
+            } else {
+              var list = [];
+              let objNet = JSON.stringify(res.data);
+              window.localStorage.setItem('ButtPlatForm', objNet);
+              for (var value of res.data) {
+                list.push({
+                  id: value.sTATIC_CODE,
+                  name: value.sTATIC_NAME
+                });
+              }
+              // console.log(list)
+
+              _self.$store.commit("setFilterItmeList", {
+                name: "platform",
+                data: list
               });
+              _self.formFilterData[2].checkData = list
+              console.log(_self.formFilterData);
+              console.log(res.data);
             }
-            // console.log(list)
-
-            _self.$store.commit("setFilterItmeList", {
-              name: "platform",
-              data: list
-            });
-            _self.formFilterData[2].checkData = list
-            console.log(_self.formFilterData);
-            console.log(res.data);
-
-
           })
           .catch(function(err) {
             console.log(err);
           });
       } else {
+        console.log(objNets);
         let netList = [];
         for (var value of objNets) {
           netList.push({
@@ -411,6 +417,7 @@ export default {
       this.$ajax
         .post(window.ENV.API_DACM + query, paramsObj)
         .then(function(res) {
+          _self.loading = false;
           if (res.data.code == "0000") {
             _self.mainTableData = res.data.data.list;
             _self.mainTableDataTotal = res.data.data.total;
@@ -687,9 +694,9 @@ export default {
   width: 70px;
   text-align: left;
   margin: 0 auto;
-    i {
-      font-size: 21px;
-    }
+  i {
+    font-size: 21px;
+  }
 }
 
 .underdone,

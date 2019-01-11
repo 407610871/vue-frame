@@ -792,7 +792,7 @@ export default {
     selectAll(selection) {
       this.allSecectData[this.pageNum] = selection;
     },
-    pLDataHandel(rowNew){
+    pLDataHandel(rowNew,params){
       let _self = this;
         //批量汇聚
         let errorData = [];
@@ -810,7 +810,7 @@ export default {
           _self.tips = "批量汇聚中...";
           _self
             .$ajax({
-              url: httpUrl + url,
+              url: httpUrl + 'manager/taskOperate/batchConverge',
               method: "POST",
               data: {},
               params: params
@@ -856,7 +856,7 @@ export default {
                     }
                   );
                 }
-                _self.$alert(
+                /*_self.$alert(
                   "重新汇聚任务创建成功的任务如下：</br>" +
                   successHtml +
                   "重新汇聚任务创建失败的任务如下：</br>" +
@@ -864,7 +864,7 @@ export default {
                   "重新汇聚", {
                     dangerouslyUseHTMLString: true
                   }
-                );
+                );*/
                 _self.init();
               } else {
                 _self.$alert("重新汇聚失败", "重新汇聚", {
@@ -968,12 +968,12 @@ export default {
                     }
                   );
                 }else {
-                  _self.pLDataHandel(rowNew);
+                  _self.pLDataHandel(rowNew,params);
                 }
               }
             });
         } else {
-          _self.pLDataHandel(rowNew);
+          _self.pLDataHandel(rowNew,params);
         }
       } else if (a == 2) {
         //批量启动
