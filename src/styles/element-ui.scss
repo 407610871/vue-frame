@@ -294,6 +294,10 @@
  .el-radio__input.is-disabled .el-radio__inner, .el-radio__input.is-disabled.is-checked .el-radio__inner {
        border-color: #e4e7ed !important;
  }
+ // 图标hover
+[class*="enc-icon"]:hover, [class*="enc-icon"]:active{
+     @include el-color($el-primary-theme);
+}
  /*滚动条样式*/
 
 /*  .main::-webkit-scrollbar {
