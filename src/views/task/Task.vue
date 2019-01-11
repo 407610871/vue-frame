@@ -56,7 +56,7 @@
         </el-form>
       </div>
     </div>
-    <div class="el-breadcrumb" style="text-align:right;" v-if="keyword!=''||taskPeriodType.length>0||status.length>0||priority.length>0||(time!=null && time.length>0)">
+    <div class="el-breadcrumb" style="text-align:right; padding-top:5px;" v-if="keyword!=''||taskPeriodType.length>0||status.length>0||priority.length>0||(time!=null && time.length>0)">
       <el-form ref="form" label-width="0px" class="task-query-form" >
           <el-form-item style="overflow: auto;">
             <div  class="selected-task-type" style="display: inline-block;">
@@ -205,7 +205,8 @@
     </div>
     <!-- 表格数据 -->
     <div class="mainTable main-content clearfix">
-      <el-table border :row-class-name="tableRowClassName" ref="multipleTable" :data="tableData" tooltip-effect="light" :height="tableHeight" style="width: 100%;min-height:300px;" @select-all="selectAll" @select="select" @selection-change="handleSelectionChange">
+      <el-table border :row-class-name="tableRowClassName" ref="multipleTable" :data="tableData" tooltip-effect="light" 
+      :height="tableHeight" style="width: 100%;min-height:300px;" @select-all="selectAll" @select="select" @selection-change="handleSelectionChange">
         <el-table-column fixed type="selection" width="55"></el-table-column>
         <el-table-column fixed label="接入指示" width="100">
           <template slot-scope="scope">
@@ -216,7 +217,7 @@
         </el-table-column>
         <el-table-column prop="taskInfoId" fixed label="ID" width="100" :show-overflow-tooltip="true">
           <template slot-scope="scope">
-            <el-button @click="doDetail(scope.$index, scope.row)" style="text-decoration: underline;">{{scope.row.taskInfoId}}</el-button>
+            <el-button @click="doDetail(scope.$index, scope.row)" type="text" size="small" style="text-decoration: underline;">{{scope.row.taskInfoId}}</el-button>
           </template>
         </el-table-column>
         <el-table-column prop="sourceDBName" label="接入源名称" width="200" :show-overflow-tooltip="true"></el-table-column>
@@ -251,7 +252,7 @@
           </template>
         </el-table-column>
         <el-table-column prop="joinDataNum" label="已接入数据量" :show-overflow-tooltip="true" width="150"></el-table-column>
-        <el-table-column label="操作" width="200">
+        <el-table-column label="操作" width="260">
           <template slot-scope="scope">
             <el-button v-if="scope.row.status==0||scope.row.status==2" type="text" size="small" @click="doRun(scope.$index, scope.row)">运行</el-button>
             <el-button v-if="scope.row.status==1 || scope.row.status==5" type="text" size="small" @click="doRun(scope.$index, scope.row)">暂停</el-button>
@@ -361,7 +362,12 @@ export default {
       return this.$store.state.deptId;
     },
     tableHeight: function() {
-      return window.innerHeight - this.searchHeight - 224;
+      //return window.innerHeight - this.searchHeight - 224;
+            if (window.innerHeight > 768) {
+                return window.innerHeight - 300;
+            } else {
+             return 440;
+            }     
     },
     pageSize() {
       return this.$store.state.pageSize;
@@ -1302,7 +1308,8 @@ export default {
     right: 0px;
 }
 .el-form-item {
-  margin-bottom: 10px;
+  margin-bottom: 0px;
+  padding: 0px
 }
 
 .el-message-box {

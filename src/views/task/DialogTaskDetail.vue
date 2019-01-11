@@ -259,28 +259,9 @@
 
   </div>
 </template>
-<style lang="scss">
-    .task-Detail-dialog .proInfo-box .el-form-item--medium .el-form-item__content{
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-    .task-Detail-dialog .select input{
-      height:31px!important;
-    }
-    .task-Detail-dialog {
-      .el-dialog {
-        min-width: 80%;
-        max-height: calc(100% - 50px);
-        overflow: auto;
-        margin-bottom: 25px;
-        margin-top: 25px!important;
-        height: 100%!important;
-      }
-    }
-    </style>
 
-    <style lang="scss" scoped>
+
+<style lang="scss" scoped>
     .el-radio+.el-radio {
       margin-left: 19px;
     }

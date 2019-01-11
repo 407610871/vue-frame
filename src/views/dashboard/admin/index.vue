@@ -269,8 +269,6 @@ export default {
       this.collapse = !this.collapse;
     },
     updataFliterItemList() {
-      //console.log("454");
-      debugger;
       var _self = this;
       this.$ajax
         .get(window.ENV.API_DACM + sysdialect, {
@@ -553,7 +551,6 @@ export default {
       this.setStore(fliterParams);
     },
     storeReady: function() {
-      //debugger;
       var fliterItemList = this.$store.state.fliterItemList;
       if (
         fliterItemList.network.ready &&

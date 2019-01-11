@@ -176,9 +176,10 @@
    /* @include el-color($el-sub-title-i); */
  }
 
+ /**
  .icon-span {
    @include el-color($el-kittle-icon-span);
- }
+ } */
 
  .el-loading-spinner .path {
    @include el-loading-spinner($el-radio-btn);
