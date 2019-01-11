@@ -400,4 +400,10 @@ export default {
   margin-right: 30px;
 }
 
+.is-disabled {
+  .el-checkbox__input.is-checked .el-checkbox__inner, .el-checkbox__input.is-indeterminate .el-checkbox__inner {
+    background-color:#908c8c;
+    border-color:#908c8c;
+  }
+}
 </style>

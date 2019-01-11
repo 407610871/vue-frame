@@ -291,7 +291,8 @@ export default {
 
       var objNets = JSON.parse(localStorage.getItem("NetWork"));
       console.log(objNets);
-      if (objNets.success==false || objNets == null || objNets == undefined || JSON.stringify(objNets) == "{}") {
+      objNets = null;
+      if (objNets == null) {
         this.$ajax
           .get(window.ENV.API_DACM + "/commonInter/getListStaticDataOrder", {
             params: {

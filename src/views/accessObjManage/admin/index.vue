@@ -173,7 +173,7 @@
                 <userSurvey :pdata="scope.row" @fre="loadTable()"></userSurvey>
               </div>
               <div class="survey" v-if="type!='mysql' && type!='oracle' && type!='sqlserver' && type!='postgresql'">
-                <el-tooltip class="item" effect="light" :content="type==ftp?'单目录采集':'单表采集'" placement="top">
+                <el-tooltip class="item" effect="light" :content="type=='ftp'?'单目录采集':'单表采集'" placement="top">
                   <i class="enc-icon-danbiaocaiji" @click="setNoreVisible(scope.row,scope.$index)"></i>
                 </el-tooltip>
                 <!-- <norela-coll :pdata="scope.row" :type="type" @fre="loadTable()"></norela-coll> -->
@@ -329,7 +329,9 @@ export default {
       return this.$route.params.type;
     },
     breadcrumbName() {
-      return decodeURI(this.$route.params.sourceName);
+      if(this.$route.params.sourceName!=undefined){
+       return decodeURI(this.$route.params.sourceName); 
+      }
     }
 
   },
