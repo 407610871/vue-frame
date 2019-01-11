@@ -6,8 +6,26 @@
           数据接入
         </el-breadcrumb-item>
       </el-breadcrumb>
-      <form-fliter v-if="queryParamReady" @highMore="moreHeight" @highSeaech="hightrue" v-bind:formCollapse="collapse" v-bind:dataObj="formFilterData" @doSearch="search" @formFilter="changeFormFilter" />
+      <form-fliter v-if="queryParamReady" @highMore="moreHeight" @highSeaech="hightrue" 
+      v-bind:formCollapse="collapse" v-bind:key_word="key_word" v-bind:deleteData="deleteData" v-bind:dataObj="formFilterData" @doSearch="search" @formFilter="changeFormFilter" />
     </div>
+    <!--
+    <div class="el-breadcrumb" ng-if="false">
+          <el-form>
+            <el-form-item class="isSelect" label="已筛选条件：" v-show="majorData.keyword!=''||majorData.formSeledShow.dataSourceName.length!=0
+            ||majorData.formSeledShow.network.length!=0||majorData.formSeledShow.platform.length!=0
+            ||majorData.formSeledShow.objectType.length!=0||majorData.formSeledShow.dataRange.length!=0">
+              <div class="look" v-show="majorData.keyword!=''">
+                    查询条件：<span class="lookstyle searchStyle">{{majorData.keyword}}</span> 
+                    <i style="margin-left: 5px;cursor: pointer;" class="el-icon-error" @click="key_wordDelete"></i>
+              </div>
+              <div class="look" v-show="majorData.formSeledShow[item.id].length!=0" v-for="(item,index1) in majorData.dataObj" :key="index1">{{item.name}}
+                <span   class="lookstyle" v-for="(item1,index) in majorData.formSeledShow[item.id]" :key="index"> {{item1.name}} <i  class="el-icon-error" @click="delSelect(index,index1)"></i>
+                </span>
+              </div>
+            </el-form-item>
+          </el-form>
+    </div>-->
     <div class="main main-content">
       <div class="filter-container">
         <div class="count-container">
@@ -109,7 +127,9 @@ export default {
         list: []
       },
       formFilterData: [],
-      pageSize: "20"
+      pageSize: "20",
+      key_word:"",
+      deleteData:{}
     };
   },
   computed: {
@@ -125,6 +145,10 @@ export default {
         return window.innerHeight - 335;
       }
       return 410;
+    },
+    majorData() {
+      console.log("this.$store.state.majorData",this.$store.state.majorData)
+      return this.$store.state.majorData;
     }
   },
   components: {
@@ -591,6 +615,15 @@ export default {
         }
       }
       return "未知类型";
+    },
+    delSelect(id, index) {
+      this.deleteData = {
+         id,
+         index
+      }
+    },
+    key_wordDelete(){
+      this.key_word = "";
     }
   }
 };

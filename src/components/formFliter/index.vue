@@ -72,10 +72,28 @@ export default {
       type: Boolean,
       required: false,
       default: true
-    }
+    },
+    key_word: [String],
+    deleteData: [Object]
+
   },
   computed: {},
-  watch: {},
+  watch: {
+    keyword(newValue, oldValue){
+      let map = {
+        dataObj: this.dataObj,
+        formSeledShow: this.formSeledShow,
+        keyword: newValue
+      }
+      this.$store.commit("setMajorData",map);
+    },
+    key_word(newValue, oldValue){
+      this.keyword = newValue;
+    },
+    deleteData(newValue, oldValue) {
+      this.delSelect(newValue.id, newValue.index);
+    }
+  },
   created() {
     for (let i = 0; i < this.dataObj.length; i++) {
       this.doMoreArray.push(false);
@@ -157,6 +175,12 @@ export default {
           }
         }
       }
+      let map = {
+        dataObj: this.dataObj,
+        formSeledShow: this.formSeledShow,
+        keyword: this.keyword
+      }
+      this.$store.commit("setMajorData",map);
     },
 
     getFormSeled: function() {
