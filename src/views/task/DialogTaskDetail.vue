@@ -24,7 +24,7 @@
           <div class="daiInfo-title proInfo-title">
             <h2>接入基本信息</h2>
           </div>
-          <div class="proInfo-box clearfix">
+          <div class="proInfo-box plr20 clearfix">
             <el-col :span="10">
               <el-form-item label="接入源名称:" :title="sourceBaseInfo.resourceName">
                 <span>{{sourceBaseInfo.resourceName}}</span>
@@ -316,7 +316,9 @@
     .select{
       width: 70%;
     }
-
+    .plr20 {
+      padding:0 20px;
+    }
 </style>
 <script>
 import axios from "axios";
