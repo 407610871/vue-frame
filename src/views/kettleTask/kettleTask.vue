@@ -10,51 +10,50 @@
       <div class="" ref="searchArea">
         <div class="searchDiv">
           <div class="dataSearch">
-            <el-input type="text" v-model="keyword" placeholder="请输入任务名称" @keyup.enter="search"/>
+            <el-input type="text" v-model="taskName" placeholder="请输入任务名称" @keyup.enter="search"/>
           </div>
           <el-button type="primary" class="doCearch" icon="enc-icon-sousuo1" @click="search" ></el-button>
           <span  @click="doMoreSearch" >高级搜索 <i :class="!moreSearch?'el-icon-caret-bottom':'el-icon-caret-top'"></i>  </span>
         </div>
-         <el-form ref="form"  label-width="110px" class="checkDiv formGroup" v-if="moreSearch">
-            <el-form-item label="任务状态:">
-                <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>
-                <el-checkbox-group v-model="status" @change="handleCheckedCitiesChange">
-                    <el-checkbox name="status" v-for="item in checkStatus" :label="item.label" :key="item.label">{{item.name}}</el-checkbox>
-                </el-checkbox-group>
-            </el-form-item>
-            <el-form-item label="任务开始时间:">  
-                <el-date-picker
-                v-model="time"
-                :picker-options="pickerOptions"
-                type="datetimerange"
-                start-placeholder="开始时间"
-                end-placeholder="结束时间"
-                value-format="yyyy-MM-dd HH:mm:ss"
-                :default-time="['12:00:00']">
-                </el-date-picker>
-            </el-form-item>
-        </el-form>
+        <div  class="checkDiv formGroup" v-if="moreSearch" @mouseleave="mouseleave()">
+            <el-form ref="form"  label-width="110px">
+                <el-form-item label="任务状态:">
+                    <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>
+                    <el-checkbox-group v-model="status" @change="handleCheckedCitiesChange">
+                        <el-checkbox name="status" v-for="item in checkStatus" :label="item.label" :key="item.label">{{item.name}}</el-checkbox>
+                    </el-checkbox-group>
+                </el-form-item>
+                <el-form-item label="任务开始时间:">  
+                    <el-date-picker
+                    v-model="time"
+                    :picker-options="pickerOptions"
+                    type="datetimerange"
+                    start-placeholder="开始时间"
+                    end-placeholder="结束时间"
+                    value-format="yyyy-MM-dd HH:mm:ss"
+                    :default-time="['12:00:00']">
+                    </el-date-picker>
+                </el-form-item>
+            </el-form>
+        </div>
       </div>
     </div>
     <div class="el-breadcrumb" style="text-align:right;" ref="searchArea" v-if="taskName!='' || status.length || time.length">
         <el-form label-width="0px" class="formGroupSelect">
             <el-form-item>
-                <div class="selected-task-type"> <span>已选查询条件:</span></div>
+                <div class="selected-task-type"></div>
                 <div v-show="taskName!=''" class="selected-task-type">
-                    <span>查询条件:</span>
                     <span><em class="limtLength">{{taskName}}</em><i class="el-icon-error" @click="taskName = ''"></i></span>
                 </div>
                 <div v-show="status.length>0" class="selected-task-type">
-                    <span>任务状态:</span>
-                    <span v-show="status.indexOf('Paused')>-1">暂停<span @click="pop('Paused',status);"><i class="el-icon-error"></i></span></span>
-                    <span v-show="status.indexOf('create')>-1">新建<span @click="pop('create',status);"><i class="el-icon-error"></i></span></span>
-                    <span v-show="status.indexOf('Finished (with errors)')>-1">失败<span @click="pop('Finished (with errors)',status);"><i class="el-icon-error"></i></span></span>
-                    <span v-show="status.indexOf('Running')>-1">运行<span @click="pop('Running',status);"><i class="el-icon-error"></i></span></span>
-                    <span v-show="status.indexOf('Finished')>-1">完成<span @click="pop('Finished',status);"><i class="el-icon-error"></i></span></span>
+                    <span v-show="status.indexOf('Paused')>-1">暂停<span @click="pop('Paused',status);"><i class="enc-icon-guanbi"></i></span></span>
+                    <span v-show="status.indexOf('create')>-1">新建<span @click="pop('create',status);"><i class="enc-icon-guanbi"></i></span></span>
+                    <span v-show="status.indexOf('Finished (with errors)')>-1">失败<span @click="pop('Finished (with errors)',status);"><i class="enc-icon-guanbi"></i></span></span>
+                    <span v-show="status.indexOf('Running')>-1">运行<span @click="pop('Running',status);"><i class="enc-icon-guanbi"></i></span></span>
+                    <span v-show="status.indexOf('Finished')>-1">完成<span @click="pop('Finished',status);"><i class="enc-icon-guanbi"></i></span></span>
                 </div>
                 <div v-show="time!=null && time.length>0" class="selected-task-type">
-                    <span style="margin-right:10px;">任务开始时间:</span>
-                    <span>{{time==null?'':time[0]}} - {{time==null?'':time[1]}}<span @click="time=[]"><i class="el-icon-error"></i></span></span>
+                    <span>{{time==null?'':time[0]}} - {{time==null?'':time[1]}}<span @click="time=[]"><i class="enc-icon-guanbi"></i></span></span>
                 </div>
             </el-form-item>
         </el-form>
@@ -295,6 +294,9 @@ export default {
             this.moreSearch=!this.moreSearch;
             //this.status=[];
         },
+        mouseleave() {
+            this.moreSearch = !this.moreSearch;
+        }
     },
     filters:{
         formatDateTime(val){

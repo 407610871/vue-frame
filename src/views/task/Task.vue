@@ -19,158 +19,155 @@
             <i :class="!moreSearch?'el-icon-caret-bottom':'el-icon-caret-top'"></i>
           </span>
         </div>
-        <el-form ref="form" label-width="110px" class="checkDiv  task-query-form" v-if="moreSearch">
-          <el-form-item label="任务类型:">
-            <el-checkbox-group v-model="taskPeriodType">
-              <el-checkbox label="0" name="taskPeriodType">实时</el-checkbox>
-              <el-checkbox label="1" name="taskPeriodType">周期间隔增量</el-checkbox>
-              <el-checkbox label="2" name="taskPeriodType">周期定时增量</el-checkbox>
-              <el-checkbox label="3" name="taskPeriodType">一次性接入</el-checkbox>
-              <el-checkbox label="4" name="taskPeriodType">周期间隔全量</el-checkbox>
-              <el-checkbox label="5" name="taskPeriodType">周期定时全量</el-checkbox>
-            </el-checkbox-group>
-          </el-form-item>
-          <el-form-item label="任务状态:">
-            <el-checkbox-group v-model="status">
-              <el-checkbox label="0" name="status">新建</el-checkbox>
-              <el-checkbox label="5" name="status">准备中</el-checkbox>
-              <el-checkbox label="1" name="status">运行</el-checkbox>
-              <el-checkbox label="2" name="status">暂停</el-checkbox>
-              <el-checkbox label="6" name="status">采集失败</el-checkbox>
-              <el-checkbox label="7" name="status">汇聚失败</el-checkbox>
-              <el-checkbox label="4" name="status">完成</el-checkbox>
-            </el-checkbox-group>
-          </el-form-item>
-          <el-form-item label="任务优先级:">
-            <el-checkbox-group v-model="priority">
-              <el-checkbox label="1" name="priority">高</el-checkbox>
-              <el-checkbox label="2" name="priority">中</el-checkbox>
-              <el-checkbox label="3" name="priority">低</el-checkbox>
-            </el-checkbox-group>
-          </el-form-item>
-          <el-form-item label="任务开始时间:">
-            <el-date-picker v-model="time" :picker-options="pickerOptions" type="datetimerange" start-placeholder="开始时间" end-placeholder="结束时间" value-format="yyyy-MM-dd HH:mm:ss" :default-time="['12:00:00']"></el-date-picker>
-          </el-form-item>
-        </el-form>
+        <div class="checkDiv  task-query-form" v-if="moreSearch" @mouseleave="mouseleave()" >
+          <el-form ref="form" label-width="110px" >
+            <el-form-item label="任务类型:">
+              <el-checkbox-group v-model="taskPeriodType">
+                <el-checkbox label="0" name="taskPeriodType">实时</el-checkbox>
+                <el-checkbox label="1" name="taskPeriodType">周期间隔增量</el-checkbox>
+                <el-checkbox label="2" name="taskPeriodType">周期定时增量</el-checkbox>
+                <el-checkbox label="3" name="taskPeriodType">一次性接入</el-checkbox>
+                <el-checkbox label="4" name="taskPeriodType">周期间隔全量</el-checkbox>
+                <el-checkbox label="5" name="taskPeriodType">周期定时全量</el-checkbox>
+              </el-checkbox-group>
+            </el-form-item>
+            <el-form-item label="任务状态:">
+              <el-checkbox-group v-model="status">
+                <el-checkbox label="0" name="status">新建</el-checkbox>
+                <el-checkbox label="5" name="status">准备中</el-checkbox>
+                <el-checkbox label="1" name="status">运行</el-checkbox>
+                <el-checkbox label="2" name="status">暂停</el-checkbox>
+                <el-checkbox label="6" name="status">采集失败</el-checkbox>
+                <el-checkbox label="7" name="status">汇聚失败</el-checkbox>
+                <el-checkbox label="4" name="status">完成</el-checkbox>
+              </el-checkbox-group>
+            </el-form-item>
+            <el-form-item label="任务优先级:">
+              <el-checkbox-group v-model="priority">
+                <el-checkbox label="1" name="priority">高</el-checkbox>
+                <el-checkbox label="2" name="priority">中</el-checkbox>
+                <el-checkbox label="3" name="priority">低</el-checkbox>
+              </el-checkbox-group>
+            </el-form-item>
+            <el-form-item label="任务开始时间:">
+              <el-date-picker v-model="time" :picker-options="pickerOptions" type="datetimerange" start-placeholder="开始时间" end-placeholder="结束时间" value-format="yyyy-MM-dd HH:mm:ss" :default-time="['12:00:00']"></el-date-picker>
+            </el-form-item>
+          </el-form>
+        </div>
       </div>
     </div>
     <div class="el-breadcrumb" style="text-align:right; padding-top:5px;" v-if="keyword!=''||taskPeriodType.length>0||status.length>0||priority.length>0||(time!=null && time.length>0)">
       <el-form ref="form" label-width="0px" class="task-query-form">
         <el-form-item style="overflow: auto;">
           <div class="selected-task-type" style="display: inline-block;">
-            <span>已选查询条件:</span>
           </div>
           <div v-show="keyword!=''" class="selected-task-type" style="display: inline-block;">
-            <span>查询条件:</span>
             <span>
                 <em class="limtLength">{{keyword}}</em>
                 <span @click="keyword='';">
-                  <i class="el-icon-error"></i>
+                  <i class="enc-icon-guanbi"></i>
                 </span>
             </span>
           </div>
           <div v-show="taskPeriodType.length>0" class="selected-task-type" style="display: inline-block;">
-            <span>任务类型:</span>
             <span v-show="taskPeriodType.indexOf('0')>-1">
                 实时
                 <span @click="pop('0',taskPeriodType);">
-                  <i class="el-icon-error"></i>
+                  <i class="enc-icon-guanbi"></i>
                 </span>
             </span>
             <span v-show="taskPeriodType.indexOf('1')>-1">
                 周期间隔增量
                 <span @click="pop('1',taskPeriodType);">
-                  <i class="el-icon-error"></i>
+                  <i class="enc-icon-guanbi"></i>
                 </span>
             </span>
             <span v-show="taskPeriodType.indexOf('2')>-1">
                 周期定时增量
                 <span @click="pop('2',taskPeriodType);">
-                  <i class="el-icon-error"></i>
+                  <i class="enc-icon-guanbi"></i>
                 </span>
             </span>
             <span v-show="taskPeriodType.indexOf('3')>-1">
                 一次性接入
                 <span @click="pop('3',taskPeriodType);">
-                  <i class="el-icon-error"></i>
+                  <i class="enc-icon-guanbi"></i>
                 </span>
             </span>
             <span v-show="taskPeriodType.indexOf('4')>-1">
                 周期间隔全量;
                 <span @click="pop('4',taskPeriodType);">
-                  <i class="el-icon-error"></i>
+                  <i class="enc-icon-guanbi"></i>
                 </span>
             </span>
             <span v-show="taskPeriodType.indexOf('5')>-1">
                 周期定时全量
                 <span @click="pop('5',taskPeriodType);">
-                  <i class="el-icon-error"></i>
+                  <i class="enc-icon-guanbi"></i>
                 </span>
             </span>
           </div>
           <div v-show="status.length>0" class="selected-task-type" style="display: inline-block;">
-            <span>任务状态:</span>
             <span v-show="status.indexOf('0')>-1">
                 新建
                 <span @click="pop('0',status);">
-                  <i class="el-icon-error"></i>
+                  <i class="enc-icon-guanbi"></i>
                 </span>
             </span>
             <span v-show="status.indexOf('5')>-1">
                 准备中
                 <span @click="pop('5',status);">
-                  <i class="el-icon-error"></i>
+                  <i class="enc-icon-guanbi"></i>
                 </span>
             </span>
             <span v-show="status.indexOf('1')>-1">
                 运行
                 <span @click="pop('1',status);">
-                  <i class="el-icon-error"></i>
+                  <i class="enc-icon-guanbi"></i>
                 </span>
             </span>
             <span v-show="status.indexOf('2')>-1">
                 暂停
                 <span @click="pop('2',status);">
-                  <i class="el-icon-error"></i>
+                  <i class="enc-icon-guanbi"></i>
                 </span>
             </span>
             <span v-show="status.indexOf('6')>-1">
                 采集失败
                 <span @click="pop('6',status);">
-                  <i class="el-icon-error"></i>
+                  <i class="enc-icon-guanbi"></i>
                 </span>
             </span>
             <span v-show="status.indexOf('7')>-1">
                 汇聚失败
                 <span @click="pop('7',status);">
-                  <i class="el-icon-error"></i>
+                  <i class="enc-icon-guanbi"></i>
                 </span>
             </span>
             <span v-show="status.indexOf('4')>-1">
                 完成
                 <span @click="pop('4',status);">
-                  <i class="el-icon-error"></i>
+                  <i class="enc-icon-guanbi"></i>
                 </span>
             </span>
           </div>
           <div v-show="priority.length>0" class="selected-task-type" style="display: inline-block;">
-            <span>任务优先级:</span>
             <span v-show="priority.indexOf('1')>-1">
                 高
                 <span @click="pop('1',priority);">
-                  <i class="el-icon-error"></i>
+                  <i class="enc-icon-guanbi"></i>
                 </span>
             </span>
             <span v-show="priority.indexOf('2')>-1">
                 中
                 <span @click="pop('2',priority);">
-                  <i class="el-icon-error"></i>
+                  <i class="enc-icon-guanbi"></i>
                 </span>
             </span>
             <span v-show="priority.indexOf('3')>-1">
                 低
                 <span @click="pop('3',priority);">
-                  <i class="el-icon-error"></i>
+                  <i class="enc-icon-guanbi"></i>
                 </span>
             </span>
           </div>
@@ -179,7 +176,7 @@
             <span>
                 {{time==null?'':time[0]}} - {{time==null?'':time[1]}}
                 <span @click="time=[]">
-                  <i class="el-icon-error"></i>
+                  <i class="enc-icon-guanbi"></i>
                 </span>
             </span>
           </div>
@@ -496,9 +493,6 @@ export default {
     //高级搜索
     doMoreSearch() {
       this.moreSearch = !this.moreSearch;
-
-
-
     },
     //详情
     doDetail(index, row) {
@@ -1214,6 +1208,9 @@ export default {
           );
         }
       }
+    },
+    mouseleave() {
+      this.moreSearch = !this.moreSearch;
     }
   }
 };
