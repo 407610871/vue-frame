@@ -372,4 +372,7 @@ header {
 [class*="enc-icon"]:hover, [class*="enc-icon"]:active{
      @include el-icon-color($el-kittle-icon-span);
 }
+.el-radio-button--medium .el-radio-button__inner {
+  border-radius: 0px !important;
+}
 
