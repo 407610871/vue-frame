@@ -624,7 +624,10 @@ export default {
   watch: {
     tableParams(newVal, oldVal) {
       if (JSON.stringify(newVal) != JSON.stringify(oldVal)) {
-        if (newVal.deptId == oldVal.deptId) {
+        if(newVal.deptId==undefined){
+            this.loadTable();
+        }
+        else if (newVal.deptId == oldVal.deptId) {
           //判断高级搜索的词不会进入
           this.loadTable();
         }
