@@ -6,7 +6,7 @@
       </div>
       <nav-menu />
       <div class="right-menu">
-        <el-popover placement="bottom-start" width="200" trigger="hover">
+        <el-popover placement="bottom" width="200" trigger="hover">
           <ul class="popup-menu warn-menu warn-popover">
             <li class="even-li" v-on:click="_goWarn()">告警中心</li>
           </ul>
@@ -16,7 +16,7 @@
             </span>
           </el-button>
         </el-popover>
-        <el-popover placement="bottom-start" width="200" trigger="hover">
+        <el-popover placement="bottom" width="200" trigger="hover">
           <ul class="popup-menu warn-menu warn-popover">
             <li class="even-li">{{ userName }}</li>
             <li class="odd-li">{{ roleName }}</li>
@@ -30,7 +30,7 @@
             </span>
           </el-button>
         </el-popover>
-        <el-popover placement="bottom-start" width="200" trigger="hover">
+        <el-popover placement="bottom" width="200" trigger="hover">
           <ul class="popup-menu warn-menu warn-popover">
             <li class="even-li"><a href="javascript:void(0)" v-on:click="goRoute('setting')">系统参数</a></li>
             <li class="even-li"><a href="javascript:void(0)" v-on:click="goRoute('recyclingBins')">回收箱</a></li>
