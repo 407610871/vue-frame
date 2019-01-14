@@ -29,7 +29,7 @@
     max-height: 600px;
     overflow: auto;
     .el-dialog__header {
-        padding: 20px 40px 0px 40px;
+      padding: 20px 40px 0px 40px;
       .el-dialog__title {
         font-size: $font-size-medium;
         @include el-color($color-text-title);
@@ -109,9 +109,11 @@
 .mt25 {
   margin-top: 25px;
 }
+
 .mt50 {
-  margin-top:50px;
+  margin-top: 50px;
 }
+
 .mb20 {
   margin-bottom: 20px;
 }
@@ -195,6 +197,11 @@
   border: none !important;
 }
 
+.cutoff-line {
+  border-bottom: 1px solid #c9cdd0;
+  margin-bottom: 20px;
+}
+
 
 
 /* treeStyle */
@@ -222,6 +229,7 @@
 
 
 
+
 /* .el-dialog::-webkit-scrollbar-thumb {
   background: #50609c;
   border-radius: 4px;
@@ -246,12 +254,14 @@
   background: transparent;
 }
  */
+
 .icon-title {
-  font-size:30px;
+  font-size: 30px;
   display: inline-block;
-  font-size:30px;
+  font-size: 30px;
   cursor: pointer;
 }
+
 .tasktips {
   font-size: $font-size-small;
   color: red;
@@ -273,6 +283,7 @@
 .el-tabs__item.is-active i {
   @include el-backcolor($color-background-tabs);
 }
+
 
 
 
@@ -306,40 +317,48 @@
 .topInver .el-dialog__title {
   font-size: $font-size-medium;
   @include el-color($color-text-title);
-} 
-.el-container .el-form-item.is-success .el-input__inner, .el-form-item.is-success .el-input__inner:focus, .el-form-item.is-success .el-textarea__inner, .el-form-item.is-success .el-textarea__inner:focus {
-   @include el-color($el-input-success);
 }
+
+.el-container .el-form-item.is-success .el-input__inner,
+.el-form-item.is-success .el-input__inner:focus,
+.el-form-item.is-success .el-textarea__inner,
+.el-form-item.is-success .el-textarea__inner:focus {
+  @include el-color($el-input-success);
+}
+
 .enc-icon-zhuce:hover {
   @include el-color($tree-tools-background-theme);
 }
 
-@media screen and (max-width: 1399px){
+@media screen and (max-width: 1399px) {
   .task-Detail-dialog {
-  .el-dialog{
-        width: 80%;
-        height:480px;
+    .el-dialog {
+      width: 80%;
+      height: 480px;
     }
-}
-}
-@media screen and (min-width: 1400px){
-  .task-Detail-dialog {
-  .el-dialog{
-        width: 60%;
-        height:600px;
-    }
-}
-}
-.task-Detail-dialog {
-.el-dialog{
-      overflow:auto;
-      .el-tabs__nav{
-        text-align:left;
-      }
   }
 }
-  .refresha {
-    i {
-      @include el-color ($el-radio-btn);
+
+@media screen and (min-width: 1400px) {
+  .task-Detail-dialog {
+    .el-dialog {
+      width: 60%;
+      height: 600px;
     }
-  } 
+  }
+}
+
+.task-Detail-dialog {
+  .el-dialog {
+    overflow: auto;
+    .el-tabs__nav {
+      text-align: left;
+    }
+  }
+}
+
+.refresha {
+  i {
+    @include el-color ($el-radio-btn);
+  }
+}
