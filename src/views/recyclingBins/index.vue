@@ -91,6 +91,11 @@ export default {
       if (this.queryParamReady) {
          this.loadTable(this.$store.state.deptId);
       }
+    },
+    $route(to, form) {
+      if (to.name == "recyclingBins") {
+        this.storeReady();
+      }
     }
   },
   created() {
