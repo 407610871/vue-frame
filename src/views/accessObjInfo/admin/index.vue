@@ -174,14 +174,10 @@
         return this.$store.state.pageSize;
       },
       tableHeight: function() {
-        /** 
-        return this.collapse ?
-          window.innerHeight - 300 :
-          window.innerHeight - 400 - 40 * this.moreData; */
         if (window.innerHeight > 768) {
           return window.innerHeight - 240;
         }
-        return 490;
+        return 560;
       },
     },
     components: {
