@@ -288,8 +288,8 @@
       </div>
     </el-form>
     <div class="mr-btn">
-      <el-button type="primary"  @click="pre()">上一步</el-button>
-      <el-button type="primary"  @click="finish()">完成</el-button>
+      <el-button type="primary" @click="pre()">上一步</el-button>
+      <el-button type="primary" @click="finish()">完成</el-button>
     </div>
   </div>
 </template>
@@ -398,7 +398,7 @@ export default {
     },
     //连接成功回调方法
     websocketonopen() {
-            console.log(`websocket已连接`);
+      console.log(`websocket已连接`);
 
     },
 
@@ -519,7 +519,7 @@ export default {
 
     },
     pre() {
-      this.$store.commit ('setNums',false);
+      this.$store.commit('setNums', false);
       this._reveAcmode();
       this.$emit('pre');
     },
@@ -571,7 +571,7 @@ export default {
     },
     finish() {
       //间隔执行
-      this.$store.commit ('setNums',false);
+      this.$store.commit('setNums', false);
       var pollIntervalMs = -1;
       var actech = 'JDBC';
       //this.cleanData();
@@ -591,14 +591,13 @@ export default {
           }
         }
         if (this.ruleForm.jday !== '' && this.ruleForm.jday !== undefined) {
-          if (this.ruleForm.jday == '0'&&(this.ruleForm.jhour=='0'||this.ruleForm.jhour=='')&&(this.ruleForm.jmin==''||this.ruleForm.jmin=='0')) {
+          if (this.ruleForm.jday == '0' && (this.ruleForm.jhour == '0' || this.ruleForm.jhour == '') && (this.ruleForm.jmin == '' || this.ruleForm.jmin == '0')) {
             this.$message.warning('请输入正确的间隔时间');
             return false;
-          }
-          else{
+          } else {
             jday = this.ruleForm.jday;
           }
-          
+
         }
         if (this.ruleForm.jhour !== '' && this.ruleForm.jhour !== undefined) {
           jhour = this.ruleForm.jhour;
@@ -740,60 +739,88 @@ export default {
             tABLE_ID: this.pdata.id,
             dATA_UPDATE_MODE: this.$store.state.modeStyle
           }
+          this.$ajax({
+            method: "post",
+            url: this.GLOBAL.api.API_DACM + '/task/updateSourceConfig',
+            /* url: 'http://10.19.160.168:8080/DACM/task/updateSourceConfig',*/
+            data: save
 
+          }).then(res => {
+            this.loading = false;
+            if (res.data.success) {
+              let ctips = '采集任务启动成功！';
+              if (this.ruleForm.taskSubMode == "false") {
+                ctips = '采集任务创建成功！';
+              }
+              this.$alert(ctips, '信息', {
+                confirmButtonText: '确定',
+                callback: action => {
+                  this.isregin = false;
+                  this.$emit('fresh');
+                }
+              });
+            } else {
+              this.$alert(res.data.message, '信息', {
+                confirmButtonText: '确定',
+                callback: action => {
+
+                }
+              });
+            }
+          })
         } else {
           this.userLabel = this.$store.state.userList;
           this.userLabel.dATA_UPDATE_MODE = this.$store.state.modeStyle;
+          this.$ajax({
+            method: 'post',
+            url: this.GLOBAL.api.API_DACM + '/dataTable/inputSurvey',
+            data: this.userLabel
+          }).then(res => {
 
-        }
-        this.$ajax({
-          method: 'post',
-          url: this.GLOBAL.api.API_DACM + '/dataTable/inputSurvey',
-          data: this.userLabel
-        }).then(res => {
+            if (res.data.success) {
+              this.$ajax({
+                method: "post",
+                url: this.GLOBAL.api.API_DACM + '/task/updateSourceConfig',
+                /* url: 'http://10.19.160.168:8080/DACM/task/updateSourceConfig',*/
+                data: save
 
-          if (res.data.success) {
-            this.$ajax({
-              method: "post",
-              url: this.GLOBAL.api.API_DACM + '/task/updateSourceConfig',
-              /* url: 'http://10.19.160.168:8080/DACM/task/updateSourceConfig',*/
-              data: save
+              }).then(res => {
+                this.loading = false;
+                if (res.data.success) {
+                  let ctips = '采集任务启动成功！';
+                  if (this.ruleForm.taskSubMode == "false") {
+                    ctips = '采集任务创建成功！';
+                  }
+                  this.$alert(ctips, '信息', {
+                    confirmButtonText: '确定',
+                    callback: action => {
+                      this.isregin = false;
+                      this.$emit('fresh');
+                    }
+                  });
+                } else {
+                  this.$alert(res.data.message, '信息', {
+                    confirmButtonText: '确定',
+                    callback: action => {
 
-            }).then(res => {
-              this.loading = false;
-              if (res.data.success) {
-                let ctips = '采集任务启动成功！';
-                if (this.ruleForm.taskSubMode == "false") {
-                  ctips = '采集任务创建成功！';
+                    }
+                  });
                 }
-                this.$alert(ctips, '信息', {
-                  confirmButtonText: '确定',
-                  callback: action => {
-                    this.isregin = false;
-                    this.$emit('fresh');
-                  }
-                });
-              } else {
-                this.$alert(res.data.message, '信息', {
-                  confirmButtonText: '确定',
-                  callback: action => {
-
-                  }
-                });
-              }
-            })
-          } else {
+              })
+            } else {
+              this.loading = false;
+              this.$alert('用户标记失败', '信息', {
+                confirmButtonText: '确定'
+              });
+            }
+          }, (res) => {
             this.loading = false;
             this.$alert('用户标记失败', '信息', {
               confirmButtonText: '确定'
             });
-          }
-        }, (res) => {
-          this.loading = false;
-          this.$alert('用户标记失败', '信息', {
-            confirmButtonText: '确定'
-          });
-        })
+          })
+        }
+       
       } else {
         //注册
         var save = {
@@ -815,63 +842,90 @@ export default {
         }
         this.loading = true;
         if (this.$store.state.isSign == "false" || this.$store.state.isSign == false) {
-
-
           this.userLabel = {
             tABLE_ID: this.pdata.id,
             dATA_UPDATE_MODE: this.$store.state.modeStyle
           }
+          this.$ajax({
+            method: "post",
+            url: this.GLOBAL.api.API_DACM + '/task/saveHeliumTask',
+            data: save
+
+          }).then(res => {
+            this.loading = false;
+            if (res.data.success) {
+              this.websock.send(JSON.stringify(res.data.data));
+              let ctips = '采集任务启动成功！';
+              if (this.ruleForm.taskSubMode == "false") {
+                ctips = '采集任务创建成功！';
+              }
+              this.$alert(ctips, '信息', {
+                confirmButtonText: '确定',
+                callback: action => {
+                  this.$emit('fresh');
+                }
+              });
+            } else {
+              this.$alert(res.data.message, '信息', {
+                confirmButtonText: '确定',
+                callback: action => {
+
+                }
+              });
+            }
+          })
         } else {
           this.userLabel = this.$store.state.userList;
           this.userLabel.dATA_UPDATE_MODE = this.$store.state.modeStyle;
-        }
-        this.$ajax({
-          method: 'post',
-          url: this.GLOBAL.api.API_DACM + '/dataTable/inputSurvey',
-          data: this.userLabel
-        }).then(res => {
+          this.$ajax({
+            method: 'post',
+            url: this.GLOBAL.api.API_DACM + '/dataTable/inputSurvey',
+            data: this.userLabel
+          }).then(res => {
 
-          if (res.data.success) {
-            this.$ajax({
-              method: "post",
-              url: this.GLOBAL.api.API_DACM + '/task/saveHeliumTask',
-              data: save
+            if (res.data.success) {
+              this.$ajax({
+                method: "post",
+                url: this.GLOBAL.api.API_DACM + '/task/saveHeliumTask',
+                data: save
 
-            }).then(res => {
-              this.loading = false;
-              if (res.data.success) {
-                this.websock.send(JSON.stringify(res.data.data));
-                let ctips = '采集任务启动成功！';
-                if (this.ruleForm.taskSubMode == "false") {
-                  ctips = '采集任务创建成功！';
+              }).then(res => {
+                this.loading = false;
+                if (res.data.success) {
+                  this.websock.send(JSON.stringify(res.data.data));
+                  let ctips = '采集任务启动成功！';
+                  if (this.ruleForm.taskSubMode == "false") {
+                    ctips = '采集任务创建成功！';
+                  }
+                  this.$alert(ctips, '信息', {
+                    confirmButtonText: '确定',
+                    callback: action => {
+                      this.$emit('fresh');
+                    }
+                  });
+                } else {
+                  this.$alert(res.data.message, '信息', {
+                    confirmButtonText: '确定',
+                    callback: action => {
+
+                    }
+                  });
                 }
-                this.$alert(ctips, '信息', {
-                  confirmButtonText: '确定',
-                  callback: action => {
-                    this.$emit('fresh');
-                  }
-                });
-              } else {
-                this.$alert(res.data.message, '信息', {
-                  confirmButtonText: '确定',
-                  callback: action => {
-
-                  }
-                });
-              }
-            })
-          } else {
+              })
+            } else {
+              this.loading = false;
+              this.$alert('用户标记失败', '信息', {
+                confirmButtonText: '确定'
+              });
+            }
+          }, (res) => {
             this.loading = false;
             this.$alert('用户标记失败', '信息', {
               confirmButtonText: '确定'
             });
-          }
-        }, (res) => {
-          this.loading = false;
-          this.$alert('用户标记失败', '信息', {
-            confirmButtonText: '确定'
-          });
-        })
+          })
+        }
+
       }
     },
     _getAcmode() {
@@ -935,10 +989,10 @@ export default {
 
       }).then(res => {
         if (res.data.success) {
-         
+
           var data = res.data.data;
           if (data != undefined) {
-             this.editfalg = true;
+            this.editfalg = true;
             this.ruleForm.accessPri = data.priority; //优先级
             this.yid = data.incrementColumnId; //增量字段的id
             //增量字段

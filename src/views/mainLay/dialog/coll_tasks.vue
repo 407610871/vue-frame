@@ -272,8 +272,8 @@
       </div>
     </el-form>
     <div class="mr-btn">
-      <el-button type="primary"  @click="pre()">上一步</el-button>
-      <el-button type="primary"  @click="finish()">完成</el-button>
+      <el-button type="primary" @click="pre()">上一步</el-button>
+      <el-button type="primary" @click="finish()">完成</el-button>
     </div>
   </div>
 </template>
@@ -331,7 +331,7 @@ export default {
     closeDialog() {
       this.dialogVisible = false;
       this.$refs['ruleForm'].resetFields();
-                  this.websocketclose();
+      this.websocketclose();
 
     },
 
@@ -339,7 +339,7 @@ export default {
     closeForm() {
       this.dialogVisible = false;
       this.$refs['ruleForm'].resetFields();
-                  this.websocketclose();
+      this.websocketclose();
 
     },
     //增量字段弹框的再次打开
@@ -449,11 +449,10 @@ export default {
           }
         }
         if (this.ruleForm.jday !== '' && this.ruleForm.jday != undefined) {
-         if (this.ruleForm.jday == '0'&&(this.ruleForm.jhour=='0'||this.ruleForm.jhour=='')&&(this.ruleForm.jmin==''||this.ruleForm.jmin=='0')) {
+          if (this.ruleForm.jday == '0' && (this.ruleForm.jhour == '0' || this.ruleForm.jhour == '') && (this.ruleForm.jmin == '' || this.ruleForm.jmin == '0')) {
             this.$message.warning('请输入正确的间隔时间');
             return false;
-          }
-          else{
+          } else {
             jday = this.ruleForm.jday;
           }
         }
@@ -593,6 +592,37 @@ export default {
         saves = this.$store.state.userList;
         saves.dATA_UPDATE_MODE = this.$store.state.modeStyle;
         saves.tABLE_ID = this.accId;
+        this.$ajax({
+          method: "post",
+          /* url:'http://10.19.160.168:8080/DACM/task/saveRegexHeliumTask',*/
+          url: this.GLOBAL.api.API_DACM + '/task/saveRegexHeliumTask',
+          // headers:{
+          //   'Content-Type':'application/json;charset=utf-8',
+          // },
+          data: save
+
+        }).then(res => {
+          this.loading = false;
+          if (res.data.success) {
+            let ctips = '采集任务启动成功！';
+            if (this.ruleForm.taskSubMode == "false") {
+              ctips = '采集任务创建成功！';
+            }
+            this.$alert(ctips, '信息', {
+              confirmButtonText: '确定',
+              callback: action => {
+                this.$emit('fresh');
+              }
+            });
+          } else {
+            this.$alert('采集任务启动失败！', '信息', {
+              confirmButtonText: '确定',
+              callback: action => {
+
+              }
+            });
+          }
+        })
       } else {
         saves = this.$store.state.userList;
         saves.dATA_UPDATE_MODE = this.$store.state.modeStyle;
@@ -600,58 +630,58 @@ export default {
         saves.isBatch = true;
         saves.regexInfo = this.$store.state.regInfo.baseEnd;
         saves.tableCommonName = this.$store.state.regInfo.baseStart;
+        this.$ajax({
+          method: 'post',
+          url: this.GLOBAL.api.API_DACM + '/dataTable/inputSurvey',
+          data: saves
+        }).then(res => {
 
-      }
-      this.$ajax({
-        method: 'post',
-        url: this.GLOBAL.api.API_DACM + '/dataTable/inputSurvey',
-        data: saves
-      }).then(res => {
+          if (res.data.success) {
+            this.$ajax({
+              method: "post",
+              /* url:'http://10.19.160.168:8080/DACM/task/saveRegexHeliumTask',*/
+              url: this.GLOBAL.api.API_DACM + '/task/saveRegexHeliumTask',
+              // headers:{
+              //   'Content-Type':'application/json;charset=utf-8',
+              // },
+              data: save
 
-        if (res.data.success) {
-          this.$ajax({
-            method: "post",
-            /* url:'http://10.19.160.168:8080/DACM/task/saveRegexHeliumTask',*/
-            url: this.GLOBAL.api.API_DACM + '/task/saveRegexHeliumTask',
-            // headers:{
-            //   'Content-Type':'application/json;charset=utf-8',
-            // },
-            data: save
+            }).then(res => {
+              this.loading = false;
+              if (res.data.success) {
+                let ctips = '采集任务启动成功！';
+                if (this.ruleForm.taskSubMode == "false") {
+                  ctips = '采集任务创建成功！';
+                }
+                this.$alert(ctips, '信息', {
+                  confirmButtonText: '确定',
+                  callback: action => {
+                    this.$emit('fresh');
+                  }
+                });
+              } else {
+                this.$alert('采集任务启动失败！', '信息', {
+                  confirmButtonText: '确定',
+                  callback: action => {
 
-          }).then(res => {
-            this.loading = false;
-            if (res.data.success) {
-              let ctips = '采集任务启动成功！';
-              if (this.ruleForm.taskSubMode == "false") {
-                ctips = '采集任务创建成功！';
+                  }
+                });
               }
-              this.$alert(ctips, '信息', {
-                confirmButtonText: '确定',
-                callback: action => {
-                  this.$emit('fresh');
-                }
-              });
-            } else {
-              this.$alert('采集任务启动失败！', '信息', {
-                confirmButtonText: '确定',
-                callback: action => {
-
-                }
-              });
-            }
-          })
-        } else {
+            })
+          } else {
+            this.loading = false;
+            this.$alert('用户标记失败', '信息', {
+              confirmButtonText: '确定'
+            });
+          }
+        }, (res) => {
           this.loading = false;
           this.$alert('用户标记失败', '信息', {
             confirmButtonText: '确定'
           });
-        }
-      }, (res) => {
-        this.loading = false;
-        this.$alert('用户标记失败', '信息', {
-          confirmButtonText: '确定'
-        });
-      })
+        })
+      }
+
     },
     formateTime(day, hour, min) {
       return parseInt(day * 86400000 + hour * 3600000 + min * 60000);
