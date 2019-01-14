@@ -9,7 +9,7 @@
       v-loading="loading"
     >
       <div class="daiInfo proInfo">
-        <div class="proInfo-box clearfix">
+        <div class="proInfo-box bornone clearfix">
           <el-col :span="24">
             <el-col :span="10" class="hd30">
               <el-form-item label="接入目的库:" prop="dLibrary">
@@ -58,7 +58,7 @@
               </el-radio-group>
             </el-form-item>
           </el-col>
-          <el-col :span="24">
+          <el-col :span="24" class="cutoff-line">
             <el-form-item label="任务提交方式:" prop="taskSubMode">
               <el-radio-group v-model="ruleForm.taskSubMode" :disabled="taskStatus">
                 <el-radio label="true">自动提交</el-radio>

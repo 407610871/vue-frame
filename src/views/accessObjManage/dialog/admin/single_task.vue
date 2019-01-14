@@ -65,6 +65,7 @@ export default {
       this.dialogVisible = false;
       this.activeName = 'first';
       this.$store.commit("setMode", "");
+      this.$store.commit("setSchemaList",[]);
       //this.$refs.survey._clearForm();
     },
     //步骤条

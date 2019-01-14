@@ -46,11 +46,11 @@
                   </el-col>
                 </el-form-item>
               </el-col>
-              <el-col :span="12">
+              <!-- <el-col :span="12">
                 <el-form-item label="数据资源事权单位机构代码" label-width="180px">
                   <el-input v-model="sysParam.mecodeOrg" @change="changeSet"></el-input>
                 </el-form-item>
-              </el-col>
+              </el-col> -->
             </el-row>
             <el-row :gutter="20">
               <el-col :span="12">

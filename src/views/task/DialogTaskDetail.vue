@@ -8,7 +8,7 @@
         </div>
       </div>
       <el-form label-width="150px" class="demo-ruleForm">
-        <span v-show="taskBaseInfo.status==1||taskBaseInfo.status==2||(taskBaseInfo.status==5&&taskBaseInfo.startTime!=''&&taskBaseInfo.startTime!='undefined')" style="float:right;">当前状态:
+        <span v-show="taskBaseInfo.status==1||taskBaseInfo.status==2||(taskBaseInfo.status==5&&reqObj.startTime!=''&&reqObj.startTime!='undefined')" style="float:right;">当前状态:
           <el-select v-model="flagDesc" :disabled="loading3" placeholder="请选择" @change="changeStatus" class="select">
             <el-option
               v-for="(item,index) in operateList"
@@ -532,6 +532,7 @@ export default {
       str = str+(minine==0?"":minine+"分钟");
       return str;
     },
+
     //将corn表达式转换成周期
     translatePeriodFromCorn(str,timeType){
       // str="0,5 5 15 ? ? 2 ";
@@ -543,18 +544,18 @@ export default {
         return "每月"+day+"号"+hour+"时"+min+"分";
       }else if(timeType==3){//周
         var en2cnMap = {
-          1: '周天',
-          2: '周一',
-          3: '周二',
-          4: '周三',
-          5: '周四',
-          6: '周五',
-          7: '周六'
+          SUN: '周天',
+          MON: '周一',
+          TUE: '周二',
+          WED: '周三',
+          THU: '周四',
+          FRI: '周五',
+          SAT: '周六'
         }
         let day = en2cnMap[result[5]];
         let hour = result[2]>9?result[2]:'0'+result[2];
         let min = result[1]>9?result[1]:'0'+result[1];
-        return "每"+day+"号"+hour+"时"+min+"分";
+        return "每"+day+hour+"时"+min+"分";
       }else if(timeType==4){//天
         let hour = result[2]>9?result[2]:'0'+result[2];
         let min = result[1]>9?result[1]:'0'+result[1];
@@ -670,7 +671,7 @@ export default {
             that.newWorkTrans(that.taskBaseInfo.networkStatus,response.data.data.speed,true);
             //可操作类型
             let t=that.taskBaseInfo.status;
-            that.flagDesc=(t==0||t==1)?'run':'stop';
+            that.flagDesc=(t==0||t==1||t==5)?'run':'stop';
             //that.reqObj.status = t;
             that.taskBaseInfo.statusDesc = that.reqObj.status==1 ? "运行" : statusMap[that.taskBaseInfo.status];
             if(that.flagDesc=='stop'){

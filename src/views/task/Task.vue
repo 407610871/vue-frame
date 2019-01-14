@@ -11,13 +11,13 @@
         <!-- 查询按钮 -->
         <div class="searchDiv">
           <div class="dataSearch">
-            <el-input type="text" v-model="keyword" placeholder="请输入任务名称" @keyup.enter="search"/>
+            <el-input type="text" v-model="keyword" placeholder="请输入任务名称" @keyup.enter="search" />
           </div>
-          <el-button type="primary" class="doCearch" icon="enc-icon-sousuo1" @click="search" ></el-button>
+          <el-button type="primary" class="doCearch" icon="enc-icon-sousuo1" @click="search"></el-button>
           <span @click="doMoreSearch">
             高级搜索
             <i :class="!moreSearch?'el-icon-caret-bottom':'el-icon-caret-top'"></i>
-          </span>        
+          </span>
         </div>
         <el-form ref="form" label-width="110px" class="checkDiv  task-query-form" v-if="moreSearch">
           <el-form-item label="任务类型:">
@@ -600,11 +600,13 @@ export default {
           .then(function(res) {
             if (res.data.code == '0000') {
               _self.$confirm('当前任务的数据已经被废止，请选择任务的废止策略。', '提示', {
-                confirmButtonText: '仅删除任务',
-                cancelButtonText: '删除任务和数据',
+               /* confirmButtonText: '仅删除任务',*/
+               confirmButtonText: '删除任务和数据',
+               /* cancelButtonText: '删除任务和数据',*/
+               cancelButtonText: '取消',
                 type: 'warning'
               }).then(() => {
-                this.$ajax
+                /*_self.$ajax
                   .put(httpUrl + "manager/taskOperate/delete/" + row.taskInfoId)
                   .then(function(res) {
                     _self.loading = false;
@@ -614,9 +616,8 @@ export default {
                     } else {
                       _self.doMsg(res.data.message, "error");
                     }
-                  });
-              }).catch(() => {
-                _self.$ajax
+                  });*/
+                   _self.$ajax
                   .put(httpUrl + "manager/taskOperate/delete/" + row.taskInfoId)
                   .then(function(res) {
                     _self.loading = false;
@@ -631,18 +632,38 @@ export default {
                       _self.doMsg(res.data.message, "error");
                     }
                   });
+              }).catch(() => {
+                /*_self.$ajax
+                  .put(httpUrl + "manager/taskOperate/delete/" + row.taskInfoId)
+                  .then(function(res) {
+                    _self.loading = false;
+                    if (res.data.success) {
+                      // 调用/DACM/接口
+                      _self.$ajax.delete(
+                        window.ENV.API_DACM + deleteTask + row.taskInfoId
+                      );
+                      _self.doMsg("处理成功", "success");
+                      _self.init();
+                    } else {
+                      _self.doMsg(res.data.message, "error");
+                    }
+                  });*/
               });
 
             } else {
               _self.loading = false;
               _self.$confirm('当前任务的数据已在提供服务，请先到数据资产去废止数据。', '提示', {
-                confirmButtonText: '仅删除任务',
-                cancelButtonText: '到数据资产',
+                distinguishCancelAndClose: true,
+                /*confirmButtonText: '仅删除任务',*/
+                confirmButtonText: '到数据资产',
+               /* cancelButtonText: '到数据资产',*/
+               cancelButtonText: '取消',
                 cancelButtonClass: "el-button--primary",
                 type: 'warning'
               }).then(() => {
-                _self.loading = true;
-                this.$ajax
+                window.open(_self.GLOBAL.dam.API_DAM);
+                /*_self.loading = true;
+                _self.$ajax
                   .put(httpUrl + "manager/taskOperate/delete/" + row.taskInfoId)
                   .then(function(res) {
                     _self.loading = false;
@@ -652,9 +673,12 @@ export default {
                     } else {
                       _self.doMsg(res.data.message, "error");
                     }
-                  });
-              }).catch(() => {
-                window.open(_self.GLOBAL.dam.API_DAM);
+                  });*/
+              }).catch(action => {
+                /*if (action === 'cancel') {
+                  window.open(_self.GLOBAL.dam.API_DAM);
+                }*/
+
               });
               /*_self.$confirm('当前任务的数据已在提供服务，请先到数据资产去废止数据。', '信息', {
                 confirmButtonText: '',
@@ -795,7 +819,7 @@ export default {
     selectAll(selection) {
       this.allSecectData[this.pageNum] = selection;
     },
-    pLDataHandel(rowNew, params,tparams) {
+    pLDataHandel(rowNew, params, tparams) {
       let _self = this;
       //批量汇聚
       let errorData = [];
@@ -946,7 +970,7 @@ export default {
         taskInfoIds: tableParams.join(",")
       };
       let tparams = {
-        taskInfoId :tableParams.join(",")
+        taskInfoId: tableParams.join(",")
       }
       let rowNew = Array.from(row);
       if (a == 1) {
@@ -986,12 +1010,12 @@ export default {
                   }
                 );
               } else {
-                _self.pLDataHandel(rowNew, params,tparams);
+                _self.pLDataHandel(rowNew, params, tparams);
               }
             }
           });
         } else {
-          _self.pLDataHandel(rowNew, params,tparams);
+          _self.pLDataHandel(rowNew, params, tparams);
         }
       } else if (a == 2) {
         //批量启动
@@ -1268,10 +1292,10 @@ export default {
 }
 
 .searchDiv {
-    float: right;
-    margin-top: -41px;
-    margin-right: 20px;
-    height: 40px;
+  float: right;
+  margin-top: -41px;
+  margin-right: 20px;
+  height: 40px;
   span {
     display: inline-block;
     font-size: 15px;
@@ -1285,28 +1309,30 @@ export default {
     position: relative;
   }
 }
+
 .dataSearch {
   display: inline-block;
   width: 220px;
   height: 40px;
   line-height: 40px;
-  ::-webkit-input-placeholder {
+   ::-webkit-input-placeholder {
     color: #999;
     font-size: 15px;
   } ///* 使用webkit内核的浏览器 */
-  :-moz-placeholder {
+   :-moz-placeholder {
     color: #999;
     font-size: 15px;
   } ///* Firefox版本4-18 */
-  ::-moz-placeholder {
+   ::-moz-placeholder {
     font-size: 15px;
     color: #999;
   } ///* Firefox版本19+ */
-  :-ms-input-placeholder {
+   :-ms-input-placeholder {
     font-size: 15px;
     color: #999;
   } ///* IE浏览器 */
 }
+
 .doCearch {
   display: inline-block;
   margin-top: 0;

@@ -6,13 +6,16 @@
       </div>
       <nav-menu />
       <div class="right-menu">
-        <el-tooltip class="item" effect="light" content="告警中心" placement="bottom">
-          <el-button class="warncon" v-on:click="_goWarn()">
+        <el-popover placement="bottom-start" width="200" trigger="hover">
+          <ul class="popup-menu warn-menu warn-popover">
+            <li class="even-li" v-on:click="_goWarn()">告警中心</li>
+          </ul>
+          <el-button slot="reference" class="moreSys" >
             <span>
               <img :src="warnicon">
             </span>
           </el-button>
-        </el-tooltip>
+        </el-popover>
         <el-popover placement="bottom-start" width="200" trigger="hover">
           <ul class="popup-menu warn-menu warn-popover">
             <li class="even-li">{{ userName }}</li>
@@ -503,6 +506,7 @@ export default {
   background-size: contain;
   float: left
 }
+
 .enc-header .right-menu .el-button.user {
   background: #479bd9 !important;
 }
@@ -597,19 +601,20 @@ export default {
   height: 66px;
   float: left
 }
-  .warn-popover li{
-    background-color: #fff;
-    float: none;
-    height: 36px;
-    line-height: 36px;
-    font-size: 14px;
-    text-align: center;
-    margin: 12px 0;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    overflow: hidden;
-    cursor: pointer;
-  }
+
+.warn-popover li {
+  background-color: #fff;
+  float: none;
+  height: 36px;
+  line-height: 36px;
+  font-size: 14px;
+  text-align: center;
+  margin: 12px 0;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  cursor: pointer;
+}
 
 .even-li {
   color: #425365 !important;
