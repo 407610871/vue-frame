@@ -600,11 +600,13 @@ export default {
           .then(function(res) {
             if (res.data.code == '0000') {
               _self.$confirm('当前任务的数据已经被废止，请选择任务的废止策略。', '提示', {
-                confirmButtonText: '仅删除任务',
-                cancelButtonText: '删除任务和数据',
+               /* confirmButtonText: '仅删除任务',*/
+               confirmButtonText: '删除任务和数据',
+               /* cancelButtonText: '删除任务和数据',*/
+               cancelButtonText: '取消',
                 type: 'warning'
               }).then(() => {
-                _self.$ajax
+                /*_self.$ajax
                   .put(httpUrl + "manager/taskOperate/delete/" + row.taskInfoId)
                   .then(function(res) {
                     _self.loading = false;
@@ -614,9 +616,8 @@ export default {
                     } else {
                       _self.doMsg(res.data.message, "error");
                     }
-                  });
-              }).catch(() => {
-                _self.$ajax
+                  });*/
+                   _self.$ajax
                   .put(httpUrl + "manager/taskOperate/delete/" + row.taskInfoId)
                   .then(function(res) {
                     _self.loading = false;
@@ -631,18 +632,37 @@ export default {
                       _self.doMsg(res.data.message, "error");
                     }
                   });
+              }).catch(() => {
+                /*_self.$ajax
+                  .put(httpUrl + "manager/taskOperate/delete/" + row.taskInfoId)
+                  .then(function(res) {
+                    _self.loading = false;
+                    if (res.data.success) {
+                      // 调用/DACM/接口
+                      _self.$ajax.delete(
+                        window.ENV.API_DACM + deleteTask + row.taskInfoId
+                      );
+                      _self.doMsg("处理成功", "success");
+                      _self.init();
+                    } else {
+                      _self.doMsg(res.data.message, "error");
+                    }
+                  });*/
               });
 
             } else {
               _self.loading = false;
               _self.$confirm('当前任务的数据已在提供服务，请先到数据资产去废止数据。', '提示', {
                 distinguishCancelAndClose: true,
-                confirmButtonText: '仅删除任务',
-                cancelButtonText: '到数据资产',
+                /*confirmButtonText: '仅删除任务',*/
+                confirmButtonText: '到数据资产',
+               /* cancelButtonText: '到数据资产',*/
+               cancelButtonText: '取消',
                 cancelButtonClass: "el-button--primary",
                 type: 'warning'
               }).then(() => {
-                _self.loading = true;
+                window.open(_self.GLOBAL.dam.API_DAM);
+                /*_self.loading = true;
                 _self.$ajax
                   .put(httpUrl + "manager/taskOperate/delete/" + row.taskInfoId)
                   .then(function(res) {
@@ -653,11 +673,11 @@ export default {
                     } else {
                       _self.doMsg(res.data.message, "error");
                     }
-                  });
+                  });*/
               }).catch(action => {
-                if (action === 'cancel') {
+                /*if (action === 'cancel') {
                   window.open(_self.GLOBAL.dam.API_DAM);
-                }
+                }*/
 
               });
               /*_self.$confirm('当前任务的数据已在提供服务，请先到数据资产去废止数据。', '信息', {
