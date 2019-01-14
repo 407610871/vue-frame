@@ -11,8 +11,8 @@
       </span>
     </div>
 
-    <div class="checkDiv" @mouseleave="mouseleave()"
-       v-show="!collapse"
+    <div class="checkDiv" 
+       v-show="!collapse" @mouseleave="mouseleave()"
     >
       <el-form-item class="checkDivItem"
        v-for="(item,indexs) in dataObj"
@@ -331,8 +331,11 @@ export default {
     overflow-y: auto;
     width: 80%;
     float: left;
-    .el-checkbox + .el-checkbox {
+    .el-checkbox {
       margin-left: 15px;
+    }
+    + .el-checkbox{
+       margin-left: 0px;
     }
   }
   .moreSeclect {
