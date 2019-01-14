@@ -546,7 +546,7 @@ export default {
         return "每月"+day+"号"+hour+"时"+min+"分";
       }else if(timeType==3){//周
         var en2cnMap = {
-          SUN: '周天',
+          SUN: '周日',
           MON: '周一',
           TUE: '周二',
           WED: '周三',
