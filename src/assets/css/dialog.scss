@@ -204,6 +204,7 @@
 
 
 
+
 /* treeStyle */
 
 .tleft {
@@ -226,6 +227,7 @@
   cursor: pointer;
   margin-left: 10px;
 }
+
 
 
 
@@ -287,6 +289,7 @@
 
 
 
+
 /* 任务中心 */
 
 .taskMDialog .checkBtn {
@@ -326,8 +329,16 @@
   @include el-color($el-input-success);
 }
 
-.enc-icon-zhuce:hover {
-  @include el-color($tree-tools-background-theme);
+.enc-icon-zhuce:hover,
+.enc-icon-zhuce:active {
+  color: #fff !important;
+}
+
+.enc-icon-zhuce {
+  margin-right: 7px;
+  font-size: 27px;
+  line-height: 22px;
+  vertical-align: text-top;
 }
 
 @media screen and (max-width: 1399px) {
