@@ -11,7 +11,7 @@
       </span>
     </div>
 
-    <div class="checkDiv"
+    <div class="checkDiv" @mouseleave="mouseleave()"
        v-show="!collapse"
     >
       <el-form-item class="checkDivItem"
@@ -223,6 +223,9 @@ export default {
           this.$set(this.formSeled, value.id, value.seledData);
         }
       }
+    },
+    mouseleave() {
+      this.collapse = !this.collapse;
     }
   }
 };
