@@ -6,7 +6,7 @@
         <span class="grab gra-r"></span>
       </div>
       <el-form label-width="150px" class="demo-ruleForm">
-        <span v-show="taskBaseInfo.status==1||taskBaseInfo.status==2||(taskBaseInfo.status==5&&taskBaseInfo.startTime!=undefined&&taskBaseInfo.startTime!='')" style="float:right;">当前状态:
+        <span v-show="taskBaseInfo.status==1||taskBaseInfo.status==2||(taskBaseInfo.status==5&&reqObj.startTime!=undefined&&reqObj.startTime!='')" style="float:right;">当前状态:
           <el-select v-model="flagDesc" :disabled="loading3" placeholder="请选择" @change="changeStatus" class="select">
             <el-option
               v-for="(item,index) in operateList"
@@ -689,7 +689,7 @@ export default {
             that.newWorkTrans(that.taskBaseInfo.networkStatus, response.data.data.speed, true);
             //可操作类型
             let t = that.taskBaseInfo.status;
-            that.flagDesc = (t == 0 || t == 1) ? 'run' : 'stop';
+            that.flagDesc = (t == 0 || t == 1|| t == 5) ? 'run' : 'stop';
             //that.reqObj.status = t;
             that.taskBaseInfo.statusDesc = that.reqObj.status == 1 ? "运行" : statusMap[that.taskBaseInfo.status];
             if (that.flagDesc == 'stop') {
