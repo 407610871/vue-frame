@@ -207,9 +207,15 @@
         <el-table-column fixed type="selection" width="55"></el-table-column>
         <el-table-column fixed label="接入指示" width="100">
           <template slot-scope="scope">
-            <i v-if="scope.row.networkStatus==0" class="indicate" style="backgroundColor:green" title="数据源连接正常"></i>
-            <i v-else-if="scope.row.networkStatus==1" class="indicate" style="backgroundColor:yellow" title="数据源链接不稳定"></i>
-            <i v-else-if="scope.row.networkStatus==2" class="indicate" style="backgroundColor:red" title="数据源不通"></i>
+            <el-tooltip class="item" effect="light" content="数据源连接正常" placement="top" v-if="scope.row.networkStatus==0">
+              <i  class="indicate" style="backgroundColor:green"></i>
+            </el-tooltip>
+            <el-tooltip class="item" effect="light" content="数据源链接不稳定" placement="top" v-else-if="scope.row.networkStatus==1">
+              <i  class="indicate" style="backgroundColor:yellow"></i>
+            </el-tooltip>
+            <el-tooltip class="item" effect="light" content="数据源不通" placement="top" v-else-if="scope.row.networkStatus==2">
+              <i  class="indicate" style="backgroundColor:red"> </i>
+            </el-tooltip>
           </template>
         </el-table-column>
         <el-table-column prop="taskInfoId" fixed label="ID" width="100" :show-overflow-tooltip="true">
@@ -600,10 +606,10 @@ export default {
           .then(function(res) {
             if (res.data.code == '0000') {
               _self.$confirm('当前任务的数据已经被废止，请选择任务的废止策略。', '提示', {
-               /* confirmButtonText: '仅删除任务',*/
-               confirmButtonText: '删除任务和数据',
-               /* cancelButtonText: '删除任务和数据',*/
-               cancelButtonText: '取消',
+                /* confirmButtonText: '仅删除任务',*/
+                confirmButtonText: '删除任务和数据',
+                /* cancelButtonText: '删除任务和数据',*/
+                cancelButtonText: '取消',
                 type: 'warning'
               }).then(() => {
                 /*_self.$ajax
@@ -617,7 +623,7 @@ export default {
                       _self.doMsg(res.data.message, "error");
                     }
                   });*/
-                   _self.$ajax
+                _self.$ajax
                   .put(httpUrl + "manager/taskOperate/delete/" + row.taskInfoId)
                   .then(function(res) {
                     _self.loading = false;
@@ -656,8 +662,8 @@ export default {
                 distinguishCancelAndClose: true,
                 /*confirmButtonText: '仅删除任务',*/
                 confirmButtonText: '到数据资产',
-               /* cancelButtonText: '到数据资产',*/
-               cancelButtonText: '取消',
+                /* cancelButtonText: '到数据资产',*/
+                cancelButtonText: '取消',
                 cancelButtonClass: "el-button--primary",
                 type: 'warning'
               }).then(() => {

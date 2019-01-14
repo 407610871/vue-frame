@@ -108,6 +108,8 @@ export default {
   margin: 10px 0;
   font-size: 12px;
   color: #666;
+  height: 27px;
+  overflow: hidden;
   text-align: left;
   .item-label {
     display: inline-block;
