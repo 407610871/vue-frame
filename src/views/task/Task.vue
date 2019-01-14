@@ -1324,7 +1324,7 @@ export default {
 }
 
 .checkDiv {
-  padding-left: 20px;
+  padding: 30px;
   position: absolute;
   z-index: 1001;
   border: 1px solid #EFF3F6;
@@ -1334,11 +1334,6 @@ export default {
   box-sizing: border-box;
   width: 800px;
   right: 0px;
-}
-
-.el-form-item {
-  margin-bottom: 0px;
-  padding: 0px
 }
 
 .el-message-box {
@@ -1400,6 +1395,9 @@ export default {
   .task-query-form .el-checkbox {
     width: auto;
     margin-left: 15px;
+  }
+  .el-breadcrumb .el-form-item {
+    margin-bottom: 0px !important;
   }
 }
 
