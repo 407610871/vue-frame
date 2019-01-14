@@ -33,6 +33,14 @@ export default {
       return this.formCollapse ? 1 : 3;
     }
   },
+  watch: {
+    $route(to, form) {
+      if (to.name == "recyclingBins") {
+        this.formSeled = {};
+        this.getFormSeled();
+      }
+    }
+  },
   mounted() {
     this.getFormSeled();
   },
@@ -45,9 +53,7 @@ export default {
       for (var value of this.dataObj) {
         obj[value.id] = value.seledData;
       }
-      this.formSeled = obj;
-     
-           
+      this.formSeled = obj;     
     }
   }
 };
