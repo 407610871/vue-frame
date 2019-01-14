@@ -85,6 +85,7 @@ export default {
        this.setMatchType(this.clear);
        this.setRegInfo(this.regClear);
        this.setSchemaList(this.clear);
+       this.$store.commit ("setIsSign",false);
        this.$emit('close');
       //this.$refs['ruleForm'].resetFields();
     },
