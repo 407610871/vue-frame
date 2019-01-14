@@ -17,9 +17,9 @@
     </div>
     <div
       class="el-breadcrumb"
-      v-show="majorData.keyword!=''||majorData.formSeledShow.dataSourceName.length!=0
+      v-show=" majorData.keyword!=''||(majorData.formSeledShow && (majorData.formSeledShow.dataSourceName.length!=0
             ||majorData.formSeledShow.network.length!=0||majorData.formSeledShow.platform.length!=0
-            ||majorData.formSeledShow.objectType.length!=0||majorData.formSeledShow.dataRange.length!=0"
+            ||majorData.formSeledShow.objectType.length!=0||majorData.formSeledShow.dataRange.length!=0))"
     >
       <el-form>
         <el-form-item class="isSelect">
