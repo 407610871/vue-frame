@@ -9,7 +9,6 @@
         @highMore="moreHeight"
         @highSeaech="hightrue"
         v-bind:formCollapse="collapse"
-        v-bind:key_word="key_word"
         v-bind:deleteData="deleteData"
         v-bind:dataObj="formFilterData"
         @doSearch="search"
@@ -25,7 +24,7 @@
       <el-form>
         <el-form-item class="isSelect">
           <div v-show="majorData.keyword!=''">
-            <span class="lookstyle">{{majorData.keyword}} <i class="enc-icon-guanbi" @click="key_word=''"></i></span>
+            <span class="lookstyle">{{majorData.keyword}} <i class="enc-icon-guanbi" @click="deleteKeyWord"></i></span>
             
           </div>
           <div
@@ -667,6 +666,15 @@ export default {
         id,
         index
       };
+    },
+    deleteKeyWord() {
+      this.key_word = "";
+      let map = {
+        dataObj: this.$store.state.majorData.dataObj,
+        formSeledShow: this.$store.state.majorData.formSeledShow,
+        keyword: ""
+      };
+      this.$store.commit("setMajorData", map);
     }
   }
 };

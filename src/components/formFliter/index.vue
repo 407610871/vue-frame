@@ -98,12 +98,16 @@ export default {
       required: false,
       default: true
     },
-    key_word: [String],
     deleteData: [Object]
   },
-  computed: {},
+  computed: {
+    key_word(){
+      return this.$store.state.majorData.keyword;
+    }
+  },
   watch: {
     keyword(newValue, oldValue) {
+      
       let map = {
         dataObj: this.dataObj,
         formSeledShow: this.formSeledShow,
@@ -115,6 +119,7 @@ export default {
       this.delSelect(newValue.id, newValue.index);
     },
     key_word(newValue, oldValue) {
+      console.log("11111111111111", newValue);
       this.keyword = newValue;
       let map = {
         dataObj: this.dataObj,
@@ -131,6 +136,7 @@ export default {
     }
     this.getFormSeled();
     this.getFormSeledShow();
+    console.log("this.$store.state.queryParams[this.$route.name].condition",this.$store.state.queryParams[this.$route.name].condition)
     this.keyword =
       this.$store.state.queryParams[this.$route.name].condition || "";
   },

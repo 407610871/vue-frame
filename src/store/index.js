@@ -103,7 +103,11 @@ const store = new Vuex.Store({
     userThemes: '',
     thirdStepsData: {},
     clearStepsData: "",
-    majorData: {}
+    majorData: {
+      dataObj: "",
+      formSeledShow: "",
+      keyword: ""
+    }
   },
   mutations: {
     setUserInfo(state, obj) {
