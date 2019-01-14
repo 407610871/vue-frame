@@ -1,7 +1,7 @@
 <template>
   <div class="taskMDialog">
     <el-tooltip class="item" effect="light" content="选择路径" placement="top">
-      <span class="upfilelogo diabtn tin-btn add-btn" @click="dialogVisible = true"></span>
+      <span class="icon-title enc-icon-fuwujiankong diabtn tin-btn add-btn" @click="dialogVisible = true"></span>
     </el-tooltip>
     <el-dialog title="选择路径" :visible.sync="dialogVisible" width="73%" :before-close="closeDialog">
       <div class="title-gra">
@@ -400,5 +400,10 @@ export default {
   cursor: pointer;
   margin-right: 30px;
 }
-
+.is-disabled {
+  .el-checkbox__input.is-checked .el-checkbox__inner, .el-checkbox__input.is-indeterminate .el-checkbox__inner {
+    background-color:#908c8c;
+    border-color:#908c8c;
+  }
+}
 </style>

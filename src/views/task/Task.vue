@@ -741,7 +741,7 @@ export default {
                     }
                   );
                 }
-                _self.$alert(
+               /* _self.$alert(
                   "重新汇聚任务创建成功的任务如下：</br>" +
                   successHtml +
                   "重新汇聚任务创建失败的任务如下：</br>" +
@@ -749,7 +749,7 @@ export default {
                   "重新汇聚", {
                     dangerouslyUseHTMLString: true
                   }
-                );
+                );*/
                 _self.init();
               } else {
                 _self.$alert("重新汇聚失败", "重新汇聚", {

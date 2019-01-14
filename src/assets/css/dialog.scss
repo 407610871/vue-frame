@@ -282,7 +282,11 @@
   @include el-backcolor($color-background-tabs);
 }
 
-
+.icon-title {
+  display: inline-block;
+  font-size: 30px;
+  cursor: pointer;
+}
 
 /* 任务中心 */
 
@@ -367,3 +371,4 @@
       @include el-color ($el-radio-btn);
     }
   } 
+
