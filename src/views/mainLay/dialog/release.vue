@@ -99,7 +99,7 @@ export default {
       versionDate: '',
       loading:false,
       versionData: [
-        '1.1.0','1.0.1','1.0.0'
+        '1.1.1','1.1.0','1.0.1','1.0.0'
       ],
       tableData: [],
       changeData: [],
@@ -108,7 +108,7 @@ export default {
     };
   },
   mounted(){
-   this._getVersion('1.1.0');
+   this._getVersion('1.1.1');
   },
   methods: {
     //关闭对话框
@@ -120,7 +120,7 @@ export default {
     handleClick(tab, event){
       /* console.log(tab, event);*/
       if(tab.label=='当前'){
-        this._getVersion('1.1.0');
+        this._getVersion('1.1.1');
       }
       else{
         this._getVersion(tab.label);
