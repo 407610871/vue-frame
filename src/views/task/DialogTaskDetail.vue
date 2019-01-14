@@ -1,7 +1,7 @@
 <template>
   <div class="taskMDialog" style="padding-bottom:15px;" >
     <el-dialog :title="reqObj.taskName" :close-on-click-modal="false" 
-    :visible.sync="showInnerDialog" @closed="closeDia" class="task-Detail-dialog">
+    :visible.sync="showInnerDialog" @closed="closeDia" :height="600" width="65%">
       <div class="title-gra plr30">
         <div class="grab gra-r">
           <span class="grab gra-l"></span>
@@ -255,7 +255,7 @@
         
       </el-form>
     </el-dialog>
-    <dialogIsCheck :msgCheck="reqObj" :types="jrtype" v-if="showCheckData" @closeDiaChk="closeDiaChk()"></dialogIsCheck>
+    <dialogIsCheck :msgCheck="reqObj" :title="'数据校验'" :types="jrtype" v-if="showCheckData" @closeDiaChk="closeDiaChk()"></dialogIsCheck>
 
   </div>
 </template>

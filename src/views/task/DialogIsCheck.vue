@@ -1,6 +1,6 @@
 <template>
   <div class="taskMDialog">
-    <el-dialog width="60%" :title="title" :visible.sync="showInnerDialog" class="check-data-dialog" 
+    <el-dialog width="65%" :title="title" :visible.sync="showInnerDialog" class="check-data-dialog" 
     @closed="closeDiaChk" :close-on-click-modal="false">
       <div slot="title">
         <span class="el-dialog__title">{{title}}</span>
@@ -16,7 +16,7 @@
           校验设置：
           <el-radio v-model="radio" label="0" @change="checkChange" style="color:rgb(96, 98, 102);">全量核验</el-radio>
           <el-radio v-model="radio" label="1" @change="checkChange" style="color:rgb(96, 98, 102);" :disabled="!this.queryTargetColumnList.length||types=='mongodb'||types=='ftp'" v-show="types!='mongodb'&&types!='ftp'">根据时间范围核验</el-radio>
-          <el-button type="" size="small" class="checkBtn" @click="doCheck">{{status}}</el-button>
+          <el-button type="primary" size="small" class="checkBtn" @click="doCheck">{{status}}</el-button>
           <div class="">
             <div class="range">
               <span style="color:rgb(96, 98, 102);">核验误差范围:&nbsp;&nbsp;</span>
@@ -100,33 +100,35 @@
           </div>
         </transition>
         <h5>核验历史记录：</h5>
-        <el-table :data="resDataHistory" class="check-history-table" stripe border>
-          <el-table-column prop="accessCheckTime" label="核验时间">
-          </el-table-column>
-          <el-table-column label="核验方式">
-            <template slot-scope="scope">
-              <span v-if="scope.row.config_key == '0'">全量核验</span>
-              <span v-if="scope.row.config_key == '1'">时间范围</span>
-            </template>
-          </el-table-column>
-          <el-table-column label="核验误差">
-            <template slot-scope="scope">
-              <span>{{scope.row.config_range | percentFormat}}</span>
-            </template>
-          </el-table-column>
-          <el-table-column label="核验结果">
-            <template slot-scope="scope">
-              <span v-if="scope.row.testresults_manual_check_result == '1'">失败</span>
-              <span v-else>成功</span>
-            </template>
-          </el-table-column>
-          <el-table-column label="核验报告">
-            <template slot-scope="scope">
-              <el-button @click="downTxt(scope.row.id)" type="text" size="small" v-if="scope.row.status == '1'">导出</el-button>
-              <el-button @click="downTxt(scope.row.id)" type="text" size="small" v-else disabled>导出</el-button>
-            </template>
-          </el-table-column>
-        </el-table>
+        <div class="comTable"> 
+          <el-table :data="resDataHistory"  stripe border>
+            <el-table-column prop="accessCheckTime" label="核验时间">
+            </el-table-column>
+            <el-table-column label="核验方式">
+              <template slot-scope="scope">
+                <span v-if="scope.row.config_key == '0'">全量核验</span>
+                <span v-if="scope.row.config_key == '1'">时间范围</span>
+              </template>
+            </el-table-column>
+            <el-table-column label="核验误差">
+              <template slot-scope="scope">
+                <span>{{scope.row.config_range | percentFormat}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column label="核验结果">
+              <template slot-scope="scope">
+                <span v-if="scope.row.testresults_manual_check_result == '1'">失败</span>
+                <span v-else>成功</span>
+              </template>
+            </el-table-column>
+            <el-table-column label="核验报告">
+              <template slot-scope="scope">
+                <el-button @click="downTxt(scope.row.id)" type="primary" size="small" v-if="scope.row.status == '1'">导出</el-button>
+                <el-button @click="downTxt(scope.row.id)" type="primary"  size="small" v-else disabled>导出</el-button>
+              </template>
+            </el-table-column>
+          </el-table>
+        </div>
       </div>
     </el-dialog>
   </div>
@@ -623,32 +625,6 @@ h5 {
   color: #303133;
   &:hover {
     color: #303133;
-  }
-}
-
-.check-history-table {
-  width: 100%;
-  th>.cell {
-    line-height: normal;
-    font-size: 14px;
-  }
-  td {
-    padding: 5px 0;
-  }
-  td>.cell {
-    line-height: normal;
-    font-size: 12px;
-  }
-  thead {
-    //color: #333;
-    //background-color: #FFF;
-  }
-  th.is-leaf {
-    border-bottom: 1px solid #dcdddd;
-  }
-  .el-table__body tr:hover>td {
-    background-color: #e6eaed!important;
-    color: #333;
   }
 }
 

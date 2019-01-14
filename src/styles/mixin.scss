@@ -370,3 +370,18 @@
     border-bottom: 4px solid $el-primary-theme4;
   }
 }
+@mixin el-icon-color($color) {
+  color: $color;
+  [data-theme='theme1'] & {
+    color: $el-kittle-icon-span1;
+  }
+  [data-theme='theme2'] & {
+    color: $el-kittle-icon-span2;
+  }
+  [data-theme='theme3'] & {
+    color: $el-kittle-icon-span3;
+  }
+  [data-theme='theme4'] & {
+    color: $el-kittle-icon-span4;
+  }
+}

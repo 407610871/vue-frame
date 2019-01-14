@@ -84,7 +84,6 @@ export default {
       return this.collapse ? window.innerHeight - 226-63 : window.innerHeight - 305-63;
     },
     headerHeight: function() {
-      // return this.collapse?'50px':'130px';
     }
   },
   watch: {
@@ -98,10 +97,8 @@ export default {
     this.$root.eventHub.$on('search', (keyword) => {
       this.search(keyword);
     });
-    //console.log(this.$store.state.queryParams.recyclingBins);
   },
   mounted() {
-    console.log(this.$store.state.queryParams[this.$route.name].deptId);
     this.$root.eventHub.$emit(
       "selTreeNode",
       this.$store.state.queryParams[this.$route.name].deptId
@@ -111,12 +108,9 @@ export default {
     //this.setCount();
     //从create移过来
     this.$root.eventHub.$on("selDept", ids => {
-      console.log("545454");
       this.setStore({
         deptId: ids
       });
-      //this.setCount(ids);
-      //this.loadTable(ids);
     });
     this.storeReady();
   },
@@ -167,14 +161,12 @@ export default {
       paramsObj.platform = this.tableParams.platform;
       paramsObj.deptIds = ids;
       this.$ajax.post(window.ENV.API_DACM + '/caccess/query', paramsObj).then(function(res) {
-          // console.log('tableLoaded:dashboard');
           if (res.data.success) {
             _self.mainTableData = res.data.data.list;
             _self.mainTableDataTotal = res.data.data.total;
             _self.currentPage = _self.tableParams.pageNum;
             _self.pageShow = true;
           } else {
-            // console.log(res.data.code)
             _self.mainTableData = [];
             _self.pageShow = false;
             _self.$alert('字段废止数据源列表失败', '提示', {
@@ -187,7 +179,6 @@ export default {
           _self.mainTableData = [];
           _self.pageShow = false;
           _self.loading = false;
-          console.log(err)
           _self.$alert('字段废止数据源列表失败', '提示', {
             confirmButtonText: '确定'
           });
@@ -210,7 +201,6 @@ export default {
             if (res.data.success) {
               _self.loadTable(_self.$store.state.deptId);
             } else {
-              // console.log(res.data.code)
               _self.$alert('恢复失败', '提示', {
                 confirmButtonText: '确定'
               });
@@ -220,7 +210,6 @@ export default {
           .catch(function(err) {
             _self.currentPage = _self.tableParams.pageNum;
             _self.loading = false;
-            console.log(err)
             _self.$alert('恢复失败', '提示', {
               confirmButtonText: '确定'
             });
@@ -244,7 +233,6 @@ export default {
             if (res.data.success) {
               _self.loadTable(_self.$store.state.deptId);
             } else {
-              // console.log(res.data.code)
               _self.$alert('删除失败', '提示', {
                 confirmButtonText: '确定'
               });
@@ -254,7 +242,6 @@ export default {
           .catch(function(err) {
             _self.currentPage = _self.tableParams.pageNum;
             _self.loading = false;
-            console.log(err)
             _self.$alert('删除失败', '提示', {
               confirmButtonText: '确定'
             });
@@ -262,8 +249,6 @@ export default {
       });
     },
     setStore: function(obj) {
-      console.log("1213212");
-      console.log(JSON.parse(JSON.stringify(obj)))
       let storeData = JSON.parse(JSON.stringify(this.$store.state.queryParams[this.$route.name]));
       for (var i in obj) {
         storeData[i] = obj[i];

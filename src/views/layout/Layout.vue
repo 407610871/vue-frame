@@ -236,7 +236,6 @@ export default {
         .then(function(res) {
           //  console.log(res)
           if (res.data.success == false) {} else {
-            console.log("******65656");
             var list = [];
             if (res.data != undefined) {
               let objNet = JSON.stringify(res.data);
@@ -253,7 +252,6 @@ export default {
               });
               _self.formFilterData[1].checkData = list
             }
-            console.log(list);
           }
 
         })

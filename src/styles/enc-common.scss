@@ -370,6 +370,6 @@ header {
 }
 // 图标hover
 [class*="enc-icon"]:hover, [class*="enc-icon"]:active{
-     @include el-color($el-primary-theme);
+     @include el-icon-color($el-kittle-icon-span);
 }
 
