@@ -400,7 +400,7 @@ export default {
   }
 }
 .checkDiv {
-    padding-left: 20px;
+    padding: 20px;
     position: absolute;
     z-index: 1001;
     border: 1px solid #EFF3F6;
@@ -436,5 +436,8 @@ export default {
     color: #FFF;
     border-color: #85ce61;
     background-color: #85ce61;
+}
+.el-breadcrumb .el-form-item {
+    margin-bottom: 0px !important;
 }
 </style>

@@ -29,7 +29,7 @@
             <el-col :span="10">
               <el-form-item label="接入数据来源:" prop="resource"> 
                 <el-select v-model="ruleForm.resource" placeholder="请选择">
-                  <el-option :label="item.sTATIC_NAME" :value="item.sTATIC_CODE" :key="item.sTATIC_CODE" v-for="item in SJLY"></el-option>
+                  <el-option :label="item.sTATIC_NAME" :value="item.sTATIC_CODE" :key="index" v-for="(item, index) in SJLY"></el-option>
                 </el-select>
               </el-form-item>
             </el-col>
@@ -92,7 +92,7 @@
             <el-col :span="10">
               <el-form-item label="对接部门:" prop="dockpart">
                 <el-select v-model="ruleForm.dockpart" placeholder="请选择">
-                  <el-option :label="item.name" :value="item.id" :key="item.id" v-for="item in DJBM"></el-option>
+                  <el-option v-for="(item, index) in DJBM" :label="item.name" :value="item.id" :key="index" ></el-option>
                 </el-select>
               </el-form-item>
             </el-col>
@@ -100,7 +100,7 @@
             <el-col :span="10">
               <el-form-item label="对接平台:" prop="dockPlat">
                 <el-select v-model="ruleForm.dockPlat" placeholder="请选择">
-                  <el-option :label="item.sTATIC_NAME" :value="item.sTATIC_CODE" :key="item.sTATIC_CODE" v-for="item in DJPT"></el-option>
+                  <el-option v-for="(item, index) in DJPT" :label="item.sTATIC_NAME" :value="item.sTATIC_CODE" :key="index" ></el-option>
                 </el-select>
               </el-form-item>
             </el-col>
@@ -109,7 +109,7 @@
                 <el-col :span="24">
                   <el-form-item prop="authorf">
                     <el-select v-model="ruleForm.authorf" placeholder="请选择">
-                      <el-option :label="item.sTATIC_NAME" :value="item.sTATIC_CODE" :key="item.sTATIC_CODE" v-for="item in SSJZ"></el-option>
+                      <el-option :label="item.sTATIC_NAME" :value="item.sTATIC_CODE" :key="index" v-for="(item, index) in SSJZ"></el-option>
                     </el-select>
                   </el-form-item>
                 </el-col>
@@ -131,7 +131,7 @@
           <div class="daiInfo-box clearfix">
             <el-form-item class="my_form_item" label="接入源类型:" prop="syskind">
               <el-radio-group v-model="ruleForm.syskind" style="margin-top:-12px;">
-                <el-radio v-for="(item,index) in syskindList" :label="item.id" :key="item.id" v-if="index<5||accdiaFlag"><span>{{item.name}}</span><span v-if="item.id=='10010' || item.id=='10020'" class="enc-icon-beta betaspan"></span></el-radio>
+                <el-radio v-for="(item,index) in syskindList" :label="item.id" :key="index" v-if="index<5||accdiaFlag"><span>{{item.name}}</span><span v-if="item.id=='10010' || item.id=='10020'" class="enc-icon-beta betaspan"></span></el-radio>
                 <span class="curspan" style="display:inline-block !important; font-size:14px;" @click="more(accdiaFlag)">{{accdiaName}}</span>
               </el-radio-group>
              <!--  <span class="curspan" @click="more(accdiaFlag)">{{accdiaName}}</span> -->
