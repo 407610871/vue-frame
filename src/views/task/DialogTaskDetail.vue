@@ -320,6 +320,13 @@
       padding:0 20px;
     }
 </style>
+<style>
+    .daiInfo-tabs .el-tabs__nav {
+      float: none;
+      text-align: left !important;
+    }
+</style>
+
 <script>
 import axios from "axios";
 import DialogIsCheck from "./DialogIsCheck";
