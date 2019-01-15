@@ -325,7 +325,7 @@ export default {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         cancelButtonClass: "el-button--primary",
-        type: "info"
+        type: "warning"
       })
         .then(() => {
           this.loading = true;
