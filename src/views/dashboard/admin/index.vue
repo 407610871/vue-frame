@@ -726,7 +726,7 @@ export default {
 
       .countData {
         display: inline-block;
-        margin: 10px 5%;
+        margin: 10px 4%;
         width: 25%;
       }
 

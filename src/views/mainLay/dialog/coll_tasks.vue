@@ -39,7 +39,7 @@
               </el-radio-group>
             </el-form-item>
           </el-col>
-          <el-col :span="24" class="cutoff-line">
+          <el-col :span="24" :class="ruleForm.accessMode=='2'?'':'cutoff-line'">
             <el-form-item label="任务提交方式:" prop="taskSubMode">
               <el-radio-group v-model="ruleForm.taskSubMode">
                 <el-radio label="true">自动提交</el-radio>
