@@ -19,8 +19,8 @@
             <i :class="!moreSearch?'el-icon-caret-bottom':'el-icon-caret-top'"></i>
           </span>
         </div>
-        <div class="checkDiv  task-query-form" v-if="moreSearch" @mouseleave="mouseleave()" >
-          <el-form ref="form" label-width="110px" >
+        <div class="checkDiv  task-query-form" v-if="moreSearch" @mouseleave="mouseleave()">
+          <el-form ref="form" label-width="110px">
             <el-form-item label="任务类型:">
               <el-checkbox-group v-model="taskPeriodType">
                 <el-checkbox label="0" name="taskPeriodType">实时</el-checkbox>
@@ -50,7 +50,9 @@
               </el-checkbox-group>
             </el-form-item>
             <el-form-item label="任务开始时间:">
-              <el-date-picker v-model="time" :picker-options="pickerOptions" type="datetimerange" start-placeholder="开始时间" end-placeholder="结束时间" value-format="yyyy-MM-dd HH:mm:ss" :default-time="['12:00:00']"></el-date-picker>
+              <div @mouseleave="mouseleave()">
+                <el-date-picker v-model="time" :picker-options="pickerOptions" type="datetimerange" start-placeholder="开始时间" end-placeholder="结束时间" value-format="yyyy-MM-dd HH:mm:ss" :default-time="['12:00:00']"></el-date-picker>
+              </div>
             </el-form-item>
           </el-form>
         </div>
@@ -205,13 +207,13 @@
         <el-table-column fixed label="接入指示" width="100">
           <template slot-scope="scope">
             <el-tooltip class="item" effect="light" content="数据源连接正常" placement="top" v-if="scope.row.networkStatus==0">
-              <i  class="indicate" style="backgroundColor:green"></i>
+              <i class="indicate" style="backgroundColor:green"></i>
             </el-tooltip>
             <el-tooltip class="item" effect="light" content="数据源链接不稳定" placement="top" v-else-if="scope.row.networkStatus==1">
-              <i  class="indicate" style="backgroundColor:yellow"></i>
+              <i class="indicate" style="backgroundColor:yellow"></i>
             </el-tooltip>
             <el-tooltip class="item" effect="light" content="数据源不通" placement="top" v-else-if="scope.row.networkStatus==2">
-              <i  class="indicate" style="backgroundColor:red"> </i>
+              <i class="indicate" style="backgroundColor:red"> </i>
             </el-tooltip>
           </template>
         </el-table-column>
