@@ -67,7 +67,7 @@
   font-weight: 700;
 }
 .el-date-table td.end-date span, .el-date-table td.start-date span{
-   color:#fff;
+   color:#fff !important;
    @include el-bgcolor($el-radio-btn);
 }
 .el-button--text{
