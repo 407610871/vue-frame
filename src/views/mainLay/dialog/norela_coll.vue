@@ -66,6 +66,8 @@ export default {
       this.activeName = 'first';
       this.$store.commit('setSchemaList', this.clear);
       this.$store.commit('setNoreData', this.clear);
+       this.$store.commit('setSchemaList', this.clear);
+      
       this.$emit('fre');
       this.dialogVisible = false;
 

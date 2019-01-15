@@ -83,7 +83,7 @@ export default {
       this.activeName = 'first';
       this.$store.commit("setMode", "");
       this.dialogVisible = false;
-
+this.$store.commit("setSchemaList",[]);
     }
   },
   components: {
