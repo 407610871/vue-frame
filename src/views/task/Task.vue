@@ -50,13 +50,16 @@
               </el-checkbox-group>
             </el-form-item>
             <el-form-item label="任务开始时间:">
-              <el-date-picker v-model="time" :picker-options="pickerOptions" type="datetimerange" start-placeholder="开始时间" end-placeholder="结束时间" value-format="yyyy-MM-dd HH:mm:ss" :default-time="['12:00:00']"></el-date-picker>
+              <div @mouseleave="mouseleave()">
+                <el-date-picker v-model="time" :picker-options="pickerOptions" type="datetimerange" start-placeholder="开始时间" end-placeholder="结束时间" value-format="yyyy-MM-dd HH:mm:ss" :default-time="['12:00:00']"></el-date-picker>
+              </div>
             </el-form-item>
           </el-form>
         </div>
       </div>
     </div>
-    <div class="el-breadcrumb" style="text-align:right; padding-top:5px;" v-if="keyword!=''||taskPeriodType.length>0||status.length>0||priority.length>0||(time!=null && time.length>0)">
+    <div class="el-breadcrumb" style="text-align:right; padding-top:5px;" 
+    v-if="keyword!=''||taskPeriodType.length>0||status.length>0||priority.length>0||(time!=null && time.length>0)">
       <el-form ref="form" label-width="0px" class="task-query-form">
         <el-form-item style="overflow: auto;">
           <div class="selected-task-type" style="display: inline-block;">
@@ -172,7 +175,6 @@
             </span>
           </div>
           <div v-show="time!=null && time.length>0" class="selected-task-type" style="display: inline-block;">
-            <span style="margin-right:10px;">任务开始时间:</span>
             <span>
                 {{time==null?'':time[0]}} - {{time==null?'':time[1]}}
                 <span @click="time=[]">
