@@ -592,7 +592,7 @@ export default {
       if (window.innerHeight > 768) {
         return window.innerHeight - 275;
       }
-      return 490;
+      return 470;
     },
     headerHeight: function() {
       return this.collapse ? "50px" : "85px";

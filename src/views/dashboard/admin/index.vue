@@ -15,6 +15,7 @@
         @formFilter="changeFormFilter"
       />
     </div>
+    <!--
     <div
       class="el-breadcrumb"
       v-show=" majorData.keyword!=''||(majorData.formSeledShow && (majorData.formSeledShow.dataSourceName.length!=0
@@ -43,7 +44,19 @@
           </div>
         </el-form-item>
       </el-form>
+    </div> -->
+    <div class="el-breadcrumb" style="display: flex;justify-content: flex-end; flex-wrap: wrap;" v-show="key_word!='' || majorData.length>0">
+      <div v-show="key_word!=''">
+        <span class="lookstyle">{{key_word}} <i class="enc-icon-guanbi" @click="deleteKeyWord"></i></span>    
+      </div>
+      <div v-for="(item, index) in majorData" :key="index">
+        <span class="lookstyle">
+          {{item.name}}
+          <i class="enc-icon-guanbi" @click="delSelect(item.index2,item.index1)"></i>
+        </span>
+      </div>
     </div>
+
     <div class="main main-content">
       <div class="filter-container">
         <div class="count-container">
@@ -190,11 +203,25 @@ export default {
       if (window.innerHeight > 768) {
         return window.innerHeight - 325;
       }
-      return 440;
+      return 360;
     },
     majorData() {
       this.key_word = this.$store.state.majorData.keyword;
-      return this.$store.state.majorData;
+      let majorSelectData = [];
+      this.$store.state.majorData.dataObj.forEach((v1, index1) =>{
+        let data = this.$store.state.majorData.formSeledShow[v1.id];
+        data.forEach((v2,index2)=>{
+          let map = {
+            id: v2.id,
+            name: v2.name,
+            index1: index1,
+            index2: index2,
+          }
+          majorSelectData.push(map)
+        })
+
+      })
+      return majorSelectData;
     }
   },
   components: {
@@ -355,11 +382,9 @@ export default {
           }
         })
         .catch(function(err) {
-          console.log(err);
         });
 
       var objNets = JSON.parse(localStorage.getItem("NetWork"));
-      console.log(objNets);
       objNets = null;
       if (objNets == null) {
         this.$ajax
@@ -369,9 +394,7 @@ export default {
             }
           })
           .then(function(res) {
-            //  console.log(res)
-            if (res.data.success == false) {
-            } else {
+            if (res.data.success) {
               var list = [];
               if (res.data != undefined) {
                 let objNet = JSON.stringify(res.data);
@@ -388,7 +411,6 @@ export default {
                 });
                 _self.formFilterData[1].checkData = list;
               }
-              console.log(list);
             }
           })
           .catch(function(err) {
@@ -401,9 +423,7 @@ export default {
             }
           })
           .then(function(res) {
-            //  console.log(res)
-            if (res.data.success == false) {
-            } else {
+           if (res.data.success) {
               var list = [];
               let objNet = JSON.stringify(res.data);
               window.localStorage.setItem("ButtPlatForm", objNet);
@@ -413,22 +433,16 @@ export default {
                   name: value.sTATIC_NAME
                 });
               }
-              // console.log(list)
-
               _self.$store.commit("setFilterItmeList", {
                 name: "platform",
                 data: list
               });
               _self.formFilterData[2].checkData = list;
-              console.log(_self.formFilterData);
-              console.log(res.data);
             }
           })
           .catch(function(err) {
-            console.log(err);
           });
       } else {
-        console.log(objNets);
         let netList = [];
         for (var value of objNets) {
           netList.push({
@@ -784,17 +798,6 @@ export default {
   padding-right: 20px;
 }
 
-</style>
-<style>
-  .el-breadcrumb .el-form-item__content {
-    display: flex !important;
-    height: 40px;
-    line-height: 40px !important;
-    justify-content: flex-end;
-  }
-  .el-breadcrumb .el-form-item {
-    margin-bottom: 0px !important;
-  }
 </style>
 
 

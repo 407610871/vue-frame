@@ -119,7 +119,6 @@ export default {
       this.delSelect(newValue.id, newValue.index);
     },
     key_word(newValue, oldValue) {
-      console.log("11111111111111", newValue);
       this.keyword = newValue;
       let map = {
         dataObj: this.dataObj,

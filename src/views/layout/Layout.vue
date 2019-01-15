@@ -268,7 +268,6 @@ export default {
           }
         })
         .then(function(res) {
-          //  console.log(res)
           if (res.data.success == false) {
 
           } else {
@@ -281,8 +280,6 @@ export default {
                 name: value.sTATIC_NAME
               });
             }
-            // console.log(list)
-
             _self.$store.commit("setFilterItmeList", {
               name: "platform",
               data: list
@@ -291,16 +288,10 @@ export default {
             console.log(_self.formFilterData);
             console.log(res.data);
           }
-
-
-
         })
         .catch(function(err) {
           console.log(err);
         });
-
-
-
     },
     _goWarn() {
       window.open(this.warnurl);
