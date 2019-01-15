@@ -601,7 +601,7 @@ export default {
         this.$ajax.get(_self.GLOBAL.api.API_DACM + "/taskManager/verifyDelete/" + row.taskInfoId)
           .then(function(res) {
             if (res.data.code == '0000') {
-              _self.$confirm('当前任务的数据以及废止，请确认是否要删除任务和对应汇聚数据。', '提示', {
+              _self.$confirm('当前任务的数据已经废止，请确认是否要删除任务和对应汇聚数据。', '提示', {
                 /* confirmButtonText: '仅删除任务',*/
                 confirmButtonText: '删除任务和数据',
                 /* cancelButtonText: '删除任务和数据',*/
