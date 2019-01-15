@@ -15,7 +15,7 @@
           <el-button type="primary" class="doCearch" icon="enc-icon-sousuo1" @click="search" ></el-button>
           <span  @click="doMoreSearch" >高级搜索 <i :class="!moreSearch?'el-icon-caret-bottom':'el-icon-caret-top'"></i>  </span>
         </div>
-        <div  class="checkDiv formGroup" v-if="moreSearch" @mouseleave="mouseleave()">
+        <div  class="checkDiv" v-if="moreSearch" @mouseleave="mouseleave()">
             <el-form ref="form"  label-width="110px">
                 <el-form-item label="任务状态:">
                     <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>
@@ -40,12 +40,12 @@
         </div>
       </div>
     </div>
-    <div class="el-breadcrumb" style="text-align:right;" ref="searchArea" v-if="taskName!='' || status.length || time.length">
+    <div class="el-breadcrumb el-breadcrumb-kellte" ref="searchArea" v-if="taskName!='' || status.length || time.length">
         <el-form label-width="0px" class="formGroupSelect">
             <el-form-item>
                 <div class="selected-task-type"></div>
                 <div v-show="taskName!=''" class="selected-task-type">
-                    <span><em class="limtLength">{{taskName}}</em><i class="el-icon-error" @click="taskName = ''"></i></span>
+                    <span><em class="limtLength">{{taskName}}</em><i class="enc-icon-guanbi" @click="taskName = ''"></i></span>
                 </div>
                 <div v-show="status.length>0" class="selected-task-type">
                     <span v-show="status.indexOf('Paused')>-1">暂停<span @click="pop('Paused',status);"><i class="enc-icon-guanbi"></i></span></span>
@@ -59,9 +59,9 @@
                 </div>
             </el-form-item>
         </el-form>
-
     </div>
-        <el-table class="main-content" :data="tableData"  style="width: 100%" :height="tableHeight" stripe border tooltip-effect="light">
+
+    <el-table class="main-content" :data="tableData"  style="width: 100%" :height="tableHeight" stripe border tooltip-effect="light">
             <el-table-column label="序号" type="index" width="100"></el-table-column>
             <el-table-column label="任务名称" prop="taskName" :show-overflow-tooltip='true' min-width="100"></el-table-column>
             <el-table-column label="任务类型"  prop="taskType" width="100"></el-table-column>
@@ -86,16 +86,16 @@
             </el-table-column>
             <el-table-column label="操作" width="200">
                 <template slot-scope="scope">
-                    <span v-if="scope.row.status == 'Running'" class="icon-span-disabled enc-icon-feizhi"></span>
-                    <span v-else class="icon-span enc-icon-qidongyunhang1" title="启动" @click="doStart(scope.row)"></span>
+                    <span v-if="scope.row.status == 'Running'" class="kettle-icon-span-disabled enc-icon-feizhi"></span>
+                    <span v-else class="kettle-icon-span enc-icon-qidongyunhang1" title="启动" @click="doStart(scope.row)"></span>
                     <span v-if="scope.row.status == 'create'" class="icon-span-disabled enc-icon-heyanchakan"></span>
-                    <span v-else class="icon-span enc-icon-heyanchakan" title="查看" @click="doView(scope.row)"></span>
+                    <span v-else class="kettle-icon-span enc-icon-heyanchakan" title="查看" @click="doView(scope.row)"></span>
                     <span v-if="scope.row.status == 'Running'" class="icon-span-disabled enc-icon-shanchu"></span>
-                    <span v-else class="icon-span enc-icon-shanchu" title="删除" @click="doDelete(scope.row)"></span>
+                    <span v-else class="kettle-icon-span enc-icon-shanchu" title="删除" @click="doDelete(scope.row)"></span>
                 </template>
             </el-table-column>
-        </el-table>
-        <div class="enc-pagination">
+    </el-table>
+    <div class="enc-pagination">
             <el-pagination  style="float:right; margin:10px;"
             @current-change="handleCurrentChange"
             background
@@ -104,7 +104,8 @@
             :total="totalPage"
             layout="prev, pager, next, jumper">
             </el-pagination>
-        </div>
+    </div>
+    
     <dialogTaskView :reqObj="reqObj" v-if="showTaskView" v-on:closeDia="showTaskView=false"></dialogTaskView>
 </div>
 </template>
@@ -337,14 +338,11 @@ export default {
     overflow:auto;
     padding-top: 5px;
 }
-.formGroup{
-    padding-left:27px;
-}
+
 .selected-task-type{
     display:inline-block;
     span{
-        margin-right: 10px;
-        color: #425365;
+        margin-right: 20px;
         &first-child{
             font-weight: 600;
         }
@@ -404,7 +402,7 @@ export default {
   }
 }
 .checkDiv {
-    padding: 20px;
+    padding: 30px;
     position: absolute;
     z-index: 1001;
     border: 1px solid #EFF3F6;
@@ -416,16 +414,16 @@ export default {
     right: 0px;
 }
 
-.el-checkbox-group{
+.checkDiv .el-checkbox-group{
     display:inline-block;
-    margin-left:30px;
+    margin-left:20px;
 }
-.icon-span{
+.kettle-icon-span{
     font-size:21px;
     cursor:pointer;
     margin-right:5px;
 }
-.icon-span-disabled{
+.kettle-icon-span-disabled{
     font-size:21px;
     color:#ccc;
     cursor: not-allowed;
@@ -434,14 +432,11 @@ export default {
 .finished-fail{
     color:red;
 }
-</style>
-<style lang="scss">
-.search-btn.el-button:focus, .search-btn.el-button:hover {
-    color: #FFF;
-    border-color: #85ce61;
-    background-color: #85ce61;
-}
-.el-breadcrumb .el-form-item {
-    margin-bottom: 0px !important;
-}
+
+.el-breadcrumb-kellte {
+    text-align: right;
+    .el-form-item {
+        margin-bottom: 0px !important;
+    }
+} 
 </style>

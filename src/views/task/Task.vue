@@ -1278,26 +1278,6 @@ export default {
 
 .searchDiv {
   float: right;
-  margin-top: -40px;
-  margin-right: 20px;
-  height: 40px;
-  padding: 2px 0 0 0;
-  span {
-    display: inline-block;
-    font-size: 15px;
-    cursor: pointer;
-    width: 100px;
-    height: 35px;
-    border: 1px solid #C8CFD5;
-    border-left: none;
-    line-height: 36px;
-    text-align: center;
-    position: relative;
-  }
-}
-
-.searchDiv {
-  float: right;
   margin-top: -41px;
   margin-right: 20px;
   height: 40px;

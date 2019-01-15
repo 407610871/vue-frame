@@ -104,8 +104,14 @@ const store = new Vuex.Store({
     thirdStepsData: {},
     clearStepsData: "",
     majorData: {
-      dataObj: "",
-      formSeledShow: "",
+      dataObj: [],
+      formSeledShow: {
+        objectType: [],
+        dataRange: [],
+        platform: [],
+        network: [],
+        dataSourceName: []
+      },
       keyword: ""
     }
   },
