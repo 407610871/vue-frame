@@ -628,7 +628,7 @@ h5 {
   }
 }
 .manual_check_result .el-radio {
-  line-height: 1px;
+  line-height: 1;
 }
 
 </style>
