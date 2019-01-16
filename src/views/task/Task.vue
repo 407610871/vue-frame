@@ -635,6 +635,7 @@ export default {
                     }
                   });
               }).catch(() => {
+                 _self.loading = false;
                 /*_self.$ajax
                   .put(httpUrl + "manager/taskOperate/delete/" + row.taskInfoId)
                   .then(function(res) {
@@ -663,6 +664,7 @@ export default {
                 cancelButtonClass: "el-button--primary",
                 type: 'warning'
               }).then(() => {
+                _self.loading = false;
                 window.open(_self.GLOBAL.dam.API_DAM);
                 /*_self.loading = true;
                 _self.$ajax
@@ -677,6 +679,7 @@ export default {
                     }
                   });*/
               }).catch(action => {
+                 _self.loading = false;
                 /*if (action === 'cancel') {
                   window.open(_self.GLOBAL.dam.API_DAM);
                 }*/
