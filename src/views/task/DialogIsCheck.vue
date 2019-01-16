@@ -627,5 +627,8 @@ h5 {
     color: #303133;
   }
 }
+.manual_check_result .el-radio {
+  line-height: 1px;
+}
 
 </style>
