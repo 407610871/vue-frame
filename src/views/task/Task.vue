@@ -506,7 +506,23 @@ export default {
     //核验弹窗
     doCheck(index, row) {
       this.check = row;
-      this.showTaskCheck = true;
+      //运行时弹出确认框
+      if (row.status == '1') {
+        this.$confirm('当前任务正在运行中， 数据核验结果可能不精准，请确认是否要继续数据核验?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          cancelButtonClass: "el-button--primary",
+          type: 'warning'
+        }).then(() => {
+         this.showTaskCheck = true;
+        }).catch(()=>{
+          
+        })
+      }
+      else{
+        this.showTaskCheck = true;
+      }
+      
     },
     //重新汇聚
     doConverge(index, row) {
@@ -635,7 +651,7 @@ export default {
                     }
                   });
               }).catch(() => {
-                 _self.loading = false;
+                _self.loading = false;
                 /*_self.$ajax
                   .put(httpUrl + "manager/taskOperate/delete/" + row.taskInfoId)
                   .then(function(res) {
@@ -679,7 +695,7 @@ export default {
                     }
                   });*/
               }).catch(action => {
-                 _self.loading = false;
+                _self.loading = false;
                 /*if (action === 'cancel') {
                   window.open(_self.GLOBAL.dam.API_DAM);
                 }*/
