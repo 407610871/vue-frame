@@ -63,7 +63,7 @@
           </div>
           <div class="proInfo-box bornone clearfix" id="yzwthxz">
             <h2>已知问题和限制</h2>
-            <div class="proInfo-box comTable retable bornone clearfix">
+            <div class="proInfo-box comTable rectable bornone clearfix">
               <el-table :data="knownData" stripe style="width: 100%">
                 <el-table-column label="编号" width="80">
                   <template slot-scope="scope">
@@ -305,12 +305,21 @@ export default {
   text-align: center;
 }
 
+.rectable .el-table td:nth-child(1) .cell {
+  text-align: center;
+}
+
+.rectable .el-table .cell {
+  text-align: left;
+  white-space: normal;
+}
+
 .retable .el-table .cell {
   text-align: center;
   white-space: normal;
 }
 
-.retable .el-table th>.cell {
+.retable .el-table th>.cell,.rectable .el-table th>.cell {
   text-align: center
 }
 
@@ -325,7 +334,8 @@ export default {
 }
 
 .retable {
-  .el-table__row td:nth-child(3) .cell {
+  .el-table__row td:nth-child(3) .cell,
+  .el-table__row td:nth-child(5) .cell {
     text-align: left;
   }
 }

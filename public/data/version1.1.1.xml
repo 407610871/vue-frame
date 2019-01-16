@@ -5,8 +5,7 @@
         <name>清单特性</name>
         <item>
             <Introduction>功能优化</Introduction>
-            <content>UI标准统一，包含：页面布局规范，字体规范，色彩规范，按钮，图表以及弹层
-            </content>
+            <content>UI标准统一，包含：页面布局规范，字体规范，色彩规范，按钮，图表以及弹层</content>
             <sysName>用户界面</sysName>
             <remark></remark>
         </item>
@@ -43,6 +42,13 @@
         <item>
             <Introduction>功能优化</Introduction>
             <content>优化：SJGC-582/SJGC-583／YANSHOU-38／YANSHOU-47／YANSHOU-62</content>
+            <sysName>数据工厂</sysName>
+            <remark></remark>
+        </item>
+        <item>
+            <Introduction>Connector优化</Introduction>
+            <content>1)ftp文件清理功能重构；2)MongoDB时间类型定制化format:YYYY-MM-DD HH24:Mi:SS；3)所有类型任务间隔执行统一为等待下一周期执行；4)任务pause状态下保留任务meta信息； 5)实时任务启停时间重构
+            </content>
             <sysName>数据工厂</sysName>
             <remark></remark>
         </item>
