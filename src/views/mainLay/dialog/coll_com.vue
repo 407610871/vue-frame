@@ -9,7 +9,7 @@
       v-loading="loading"
     >
       <div class="daiInfo proInfo">
-        <div class="proInfo-box clearfix">
+        <div class="proInfo-box bornone clearfix">
           <el-col :span="24">
             <el-col :span="10" class="hd30">
               <el-form-item label="接入目的库:" prop="dLibrary">
@@ -58,7 +58,7 @@
               </el-radio-group>
             </el-form-item>
           </el-col>
-          <el-col :span="24">
+          <el-col :span="24" :class="(ruleForm.accessMode=='2'||ruleForm.accessMode=='0')?'':'cutoff-line'">
             <el-form-item label="任务提交方式:" prop="taskSubMode">
               <el-radio-group v-model="ruleForm.taskSubMode" :disabled="taskStatus">
                 <el-radio label="true">自动提交</el-radio>
@@ -355,9 +355,9 @@
         </div>
       </div>
     </el-form>
-    <div class="btn tcenter mt30">
-      <el-button type="primary" style="margin-top: 12px;" @click="pre()">上一步</el-button>
-      <el-button type="primary" style="margin-top: 12px;" @click="finish()">完成</el-button>
+    <div class="mr-btn">
+      <el-button type="primary"  @click="pre()">上一步</el-button>
+      <el-button type="primary"  @click="finish()">完成</el-button>
     </div>
   </div>
 </template>
@@ -1148,12 +1148,6 @@ export default {
   background: #f0f3f6;
   padding-top: 20px;
 }
-
-.plr30 {
-  padding-left: 30px;
-  padding-right: 30px;
-}
-
 .increbtn.el-button--medium {
   padding: 7px 20px;
   margin-left: 10px;

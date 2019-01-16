@@ -26,9 +26,9 @@
         </el-table-column>
       </el-table>
     </div>
-    <div class="btn tcenter mt30">
-      <el-button type="primary" style="margin-top: 12px;" @click="pre()">上一步</el-button>
-      <el-button type="primary" style="margin-top: 12px;" @click="next()">下一步</el-button>
+    <div class="mr-btn">
+      <el-button type="primary"  @click="pre()">上一步</el-button>
+      <el-button type="primary"  @click="next()">下一步</el-button>
     </div>
   </div>
 </template>
@@ -385,13 +385,6 @@ this.schemaMappingDTOList = [];
 
 .el-dialog .otherInfo .fileItem .el-form-item__label {
   width: 235px !important;
-}
-
-
-
-.plr30 {
-  padding-left: 30px;
-  padding-right: 30px;
 }
 
 .typeMapDia {

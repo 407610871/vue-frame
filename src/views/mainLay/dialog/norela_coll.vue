@@ -4,10 +4,11 @@
      <i class="enc-icon-danbiaocaiji" @click="setVisible()"></i>
    </el-tooltip> -->
     <el-dialog :title="titleContent" :visible.sync="dialogVisible" width="73%" :before-close="closeDialog">
-      <div class="title-gra plr30">
-        <span class="grab gra-l"></span>
-        <span class="grab gra-r"></span>
-      </div>
+       <div class="title-gra plr30">
+          <div class="grab gra-r">
+            <span class="grab gra-l"></span>
+          </div>
+        </div>
       <div class="taskSteps plr30">
         <el-tabs v-model="activeName">
           <el-tab-pane name="first" disabled>
@@ -65,6 +66,8 @@ export default {
       this.activeName = 'first';
       this.$store.commit('setSchemaList', this.clear);
       this.$store.commit('setNoreData', this.clear);
+       this.$store.commit('setSchemaList', this.clear);
+      
       this.$emit('fre');
       this.dialogVisible = false;
 

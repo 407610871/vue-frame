@@ -176,6 +176,7 @@ export default {
         _self.$confirm('确认要修改此部门节点吗?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
+          cancelButtonClass: "el-button--primary",
           type: 'warning'
         }).then(() => {
           _self.$ajax.post(window.ENV.API_DACM + '/deptInfo/updateDeptInfo?id=' + _self.editingNode.id + '&deptName=' + _self.itemTxt).then(function(res) {
@@ -208,6 +209,7 @@ export default {
         this.$confirm('确认要删除此部门节点吗?', '提示', {
           confirmButtonText: '删除',
           cancelButtonText: '取消',
+          cancelButtonClass: "el-button--primary",
           type: 'warning'
         }).then(() => {
           this.delNodeAjax();
@@ -402,8 +404,6 @@ export default {
   width: 210px;
   height: 40px;
   line-height: 40px;
-  padding-left: 10px;
-  /* background-color: #5F6676; */
   @include tree-tools-bg-color($tree-tools-background-theme);
   border-bottom: 1px solid #414650;
   text-align: right;

@@ -1,53 +1,130 @@
 <template>
   <div class="dashboard-container">
-    <div class="main">
+    <div>
+      <el-breadcrumb separator>
+        <el-breadcrumb-item>数据接入</el-breadcrumb-item>
+      </el-breadcrumb>
+      <form-fliter
+        v-if="queryParamReady"
+        @highMore="moreHeight"
+        @highSeaech="hightrue"
+        v-bind:formCollapse="collapse"
+        v-bind:deleteData="deleteData"
+        v-bind:dataObj="formFilterData"
+        @doSearch="search"
+        @formFilter="changeFormFilter"
+      />
+    </div>
+    <!--
+    <div
+      class="el-breadcrumb"
+      v-show=" majorData.keyword!=''||(majorData.formSeledShow && (majorData.formSeledShow.dataSourceName.length!=0
+            ||majorData.formSeledShow.network.length!=0||majorData.formSeledShow.platform.length!=0
+            ||majorData.formSeledShow.objectType.length!=0||majorData.formSeledShow.dataRange.length!=0))"
+    >
+      <el-form>
+        <el-form-item class="isSelect">
+          <div v-show="majorData.keyword!=''">
+            <span class="lookstyle">{{majorData.keyword}} <i class="enc-icon-guanbi" @click="deleteKeyWord"></i></span>
+            
+          </div>
+          <div
+            v-show="majorData.formSeledShow[item.id].length!=0"
+            v-for="(item,index1) in majorData.dataObj"
+            :key="index1"
+          >
+            <span
+              class="lookstyle"
+              v-for="(item1,index) in majorData.formSeledShow[item.id]"
+              :key="index"
+            >
+              {{item1.name}}
+              <i class="enc-icon-guanbi" @click="delSelect(index,index1)"></i>
+            </span>
+          </div>
+        </el-form-item>
+      </el-form>
+    </div> -->
+    <div class="el-breadcrumb" style="display: flex;justify-content: flex-end; flex-wrap: wrap;" v-show="key_word!='' || majorData.length>0">
+      <div v-show="key_word!=''">
+        <span class="lookstyle">{{key_word}} <i class="enc-icon-guanbi" @click="deleteKeyWord"></i></span>    
+      </div>
+      <div v-for="(item, index) in majorData" :key="index">
+        <span class="lookstyle">
+          {{item.name}}
+          <i class="enc-icon-guanbi" @click="delSelect(item.index2,item.index1)"></i>
+        </span>
+      </div>
+    </div>
+
+    <div class="main main-content">
       <div class="filter-container">
-        <form-fliter style="padding-top: 20px" v-if="queryParamReady" @highMore="moreHeight" @highSeaech="hightrue" v-bind:formCollapse="collapse" v-bind:dataObj="formFilterData" @doSearch="search" @formFilter="changeFormFilter" />
         <div class="count-container">
           <div class="count-title">
             <label>数据源注册总数</label>
             <div class="all-number">{{countTotal}}</div>
           </div>
           <div class="line"></div>
-          <dataCount v-bind:dataObj="count1Data" class="countData" />
+          <dataCount v-bind:dataObj="count1Data" class="countData"/>
           <div class="line"></div>
-          <dataCount v-bind:dataObj="count2Data" class="countData" />
+          <dataCount v-bind:dataObj="count2Data" class="countData"/>
           <div class="regbtn fr">
-            <reg-dialog @refreshTable="loadTable" @storeReady="storeReady" @refreshCount="countTotal++"></reg-dialog>
+            <reg-dialog
+              @refreshTable="loadTable"
+              @storeReady="storeReady"
+              @refreshCount="countTotal++"
+            ></reg-dialog>
           </div>
         </div>
       </div>
-      <el-table v-loading="loading" :data="mainTableData" :height="tableHeight" stripe border style="width: 100%;" tooltip-effect="light">
+      <el-table
+        v-loading="loading"
+        :data="mainTableData"
+        :height="tableHeight"
+        stripe
+        border
+        style="width: 100%;"
+        tooltip-effect="light"
+      >
         <el-table-column label="接入源名称" width="250" show-overflow-tooltip>
           <template slot-scope="scope">
-            <a class="underdone" href="javascript:void(0)" v-on:click="goSubPage(scope.$index,scope.row.dataSourceName)">{{ scope.row.name }}</a>
+            <a
+              class="underdone"
+              href="javascript:void(0)"
+              v-on:click="goSubPage(scope.$index,scope.row.dataSourceName)"
+            >{{ scope.row.name }}</a>
           </template>
         </el-table-column>
-        <el-table-column prop="id" label="接入源ID" min-width="180">
-        </el-table-column>
-        <el-table-column prop="dataSourceName" label="接入源类型" min-width="140">
-        </el-table-column>
+        <el-table-column prop="id" label="接入源ID" min-width="180"></el-table-column>
+        <el-table-column prop="dataSourceName" label="接入源类型" min-width="140"></el-table-column>
         <el-table-column label="对接平台" min-width="140">
-          <template slot-scope="scope">
-            {{getPlatfrom(scope.row.platform)}}
-          </template>
+          <template slot-scope="scope">{{getPlatfrom(scope.row.platform)}}</template>
         </el-table-column>
         <el-table-column label="接入数据来源" min-width="140">
-          <template slot-scope="scope">
-            {{getNetwork(scope.row.network)}}
-          </template>
+          <template slot-scope="scope">{{getNetwork(scope.row.network)}}</template>
         </el-table-column>
-        <el-table-column prop="createTime" label="注册时间" min-width="160">
-        </el-table-column>
+        <el-table-column prop="createTime" label="注册时间" min-width="160"></el-table-column>
         <el-table-column label="操作" min-width="140">
           <template slot-scope="scope">
             <div class="lofile">
               <edit-dialog :acId="scope.row.id" @refreshTable="loadTable" @storeReady="storeReady"></edit-dialog>
-              <el-tooltip class="item" effect="light" content="复制" placement="top" v-if="scope.row.dataSourceName!='本地文件'">
-                <i @click="handleCopy(scope.$index, scope.row)" class="enc-icon-fuzhi table-action-btn"></i>
+              <el-tooltip
+                class="item"
+                effect="light"
+                content="复制"
+                placement="top"
+                v-if="scope.row.dataSourceName!='本地文件'"
+              >
+                <i
+                  @click="handleCopy(scope.$index, scope.row)"
+                  class="enc-icon-fuzhi table-action-btn"
+                ></i>
               </el-tooltip>
               <el-tooltip class="item" effect="light" content="废止" placement="top">
-                <i @click="handleDelete(scope.$index, scope.row)" class="enc-icon-feizhi table-action-btn"></i>
+                <i
+                  @click="handleDelete(scope.$index, scope.row)"
+                  class="enc-icon-feizhi table-action-btn"
+                ></i>
               </el-tooltip>
             </div>
           </template>
@@ -55,8 +132,16 @@
       </el-table>
     </div>
     <div class="enc-pagination">
-      <el-pagination v-if="queryParamReady" style="float:right; margin:10px;" @current-change="goPage" background :page-size.sync="pageSize" :total="mainTableDataTotal" layout="prev, pager, next, jumper" :current-page.sync="currentPage">
-      </el-pagination>
+      <el-pagination
+        v-if="queryParamReady"
+        style="float:right; margin:10px;"
+        @current-change="goPage"
+        background
+        :page-size.sync="pageSize"
+        :total="mainTableDataTotal"
+        layout="prev, pager, next, jumper"
+        :current-page.sync="currentPage"
+      ></el-pagination>
     </div>
   </div>
 </template>
@@ -102,7 +187,9 @@ export default {
         list: []
       },
       formFilterData: [],
-      pageSize: "20"
+      pageSize: "20",
+      key_word: "",
+      deleteData: {}
     };
   },
   computed: {
@@ -110,9 +197,31 @@ export default {
       return this.$store.state.queryParams.dashboard;
     },
     tableHeight: function() {
-      return this.collapse ?
-        window.innerHeight - 400 :
-        (window.innerHeight - 540 - 40 * this.moreData < 400 ? 300 : window.innerHeight - 540 - 40);
+      /**  return this.collapse ?
+         window.innerHeight - 375 :
+         (window.innerHeight - 510 - 20 * this.moreData < 400 ? 300 : window.innerHeight - 510 - 20); */
+      if (window.innerHeight > 768) {
+        return window.innerHeight - 325;
+      }
+      return 360;
+    },
+    majorData() {
+      this.key_word = this.$store.state.majorData.keyword;
+      let majorSelectData = [];
+      this.$store.state.majorData.dataObj.forEach((v1, index1) =>{
+        let data = this.$store.state.majorData.formSeledShow[v1.id];
+        data.forEach((v2,index2)=>{
+          let map = {
+            id: v2.id,
+            name: v2.name,
+            index1: index1,
+            index2: index2,
+          }
+          majorSelectData.push(map)
+        })
+
+      })
+      return majorSelectData;
     }
   },
   components: {
@@ -127,7 +236,7 @@ export default {
         this.setCount(this.$store.state.deptId);
         this.loadTable(this.$store.state.deptId);
       }
-    },
+    }
   },
   created() {
     this.storeReady();
@@ -157,39 +266,38 @@ export default {
     hightrue: function(a) {
       this.collapse = a;
     },
-    setCount(id) { //此处vuex获取的值，比$root慢
+    setCount(id) {
+      //此处vuex获取的值，比$root慢
       var ids = [];
-      id ? ids = id : ids = this.tableParams.deptId;
+      id ? (ids = id) : (ids = this.tableParams.deptId);
       var _self = this;
       _self.loading = true;
       var paramsObj = {
         domain: "0",
         _: new Date().getTime()
       };
-      paramsObj.condition = this.tableParams.condition ?
-        this.tableParams.condition :
-        "";
-      paramsObj.network = this.tableParams.network ?
-        this.tableParams.network : [];
-      paramsObj.dataSourceName = this.tableParams.dataSourceName ?
-        this.tableParams.dataSourceName : [];
-      paramsObj.platform = this.tableParams.platform ?
-        this.tableParams.platform : [];
+      paramsObj.condition = this.tableParams.condition
+        ? this.tableParams.condition
+        : "";
+      paramsObj.network = this.tableParams.network
+        ? this.tableParams.network
+        : [];
+      paramsObj.dataSourceName = this.tableParams.dataSourceName
+        ? this.tableParams.dataSourceName
+        : [];
+      paramsObj.platform = this.tableParams.platform
+        ? this.tableParams.platform
+        : [];
       paramsObj.deptIds = ids;
 
       var _self = this;
       this.$ajax
-        .post(
-          window.ENV.API_DACM + dataAccessStatistics,
-          paramsObj
-        )
+        .post(window.ENV.API_DACM + dataAccessStatistics, paramsObj)
         .then(function(res) {
           if (res.data.success) {
-
             if (res.data.data.discontinuousPercentage) {
               _self.count1Data.total = res.data.data.dPercentage;
               _self.count1Data.list = res.data.data.discontinuousPercentage;
-
             } else {
               _self.count1Data.total = "未查询到数据";
               _self.count1Data.list = [];
@@ -215,17 +323,18 @@ export default {
         });
     },
     setFliter(data) {
-
       var queryParams = this.$store.state.queryParams[this.$route.name];
 
-      var dataSourceName = queryParams.dataSourceName ?
-        queryParams.dataSourceName : [];
+      var dataSourceName = queryParams.dataSourceName
+        ? queryParams.dataSourceName
+        : [];
       var network = queryParams.network ? queryParams.network : [];
       var platform = queryParams.platform ? queryParams.platform : [];
       network == true ? [] : network;
       platform == true ? [] : platform;
       dataSourceName == true ? [] : dataSourceName;
-      this.formFilterData = [{
+      this.formFilterData = [
+        {
           name: "接入源类型：",
           id: "dataSourceName",
           type: "checkbox",
@@ -248,8 +357,7 @@ export default {
           checkData: this.$store.state.fliterItemList.platform.data,
           seledData: platform,
           limit: 4
-        },
-
+        }
       ];
       this.queryParamReady = true;
     },
@@ -257,7 +365,6 @@ export default {
       this.collapse = !this.collapse;
     },
     updataFliterItemList() {
-      //console.log("454");
       var _self = this;
       this.$ajax
         .get(window.ENV.API_DACM + sysdialect, {
@@ -271,15 +378,15 @@ export default {
               name: "dataSourceName",
               data: res.data.data
             });
-            _self.formFilterData[0].checkData = list
+            _self.formFilterData[0].checkData = list;
           }
         })
         .catch(function(err) {
-          console.log(err);
         });
 
       var objNets = JSON.parse(localStorage.getItem("NetWork"));
-      if (objNets == null || objNets == undefined ||JSON.stringify(objNets) == "{}" ) {
+      objNets = null;
+      if (objNets == null) {
         this.$ajax
           .get(window.ENV.API_DACM + "/commonInter/getListStaticDataOrder", {
             params: {
@@ -287,24 +394,24 @@ export default {
             }
           })
           .then(function(res) {
-            //  console.log(res)
-            var list = [];
-            if (res.data != undefined) {
-              let objNet = JSON.stringify(res.data);
-              window.localStorage.setItem('NetWork', objNet);
-              for (var value of res.data) {
-                list.push({
-                  id: value.sTATIC_CODE,
-                  name: value.sTATIC_NAME
+            if (res.data.success) {
+              var list = [];
+              if (res.data != undefined) {
+                let objNet = JSON.stringify(res.data);
+                window.localStorage.setItem("NetWork", objNet);
+                for (var value of res.data) {
+                  list.push({
+                    id: value.sTATIC_CODE,
+                    name: value.sTATIC_NAME
+                  });
+                }
+                _self.$store.commit("setFilterItmeList", {
+                  name: "network",
+                  data: list
                 });
+                _self.formFilterData[1].checkData = list;
               }
-              _self.$store.commit("setFilterItmeList", {
-                name: "network",
-                data: list
-              });
-              _self.formFilterData[1].checkData = list
             }
-            console.log(list);
           })
           .catch(function(err) {
             console.log(err);
@@ -316,31 +423,24 @@ export default {
             }
           })
           .then(function(res) {
-            //  console.log(res)
-
-            var list = [];
-            let objNet = JSON.stringify(res.data);
-            window.localStorage.setItem('ButtPlatForm', objNet);
-            for (var value of res.data) {
-              list.push({
-                id: value.sTATIC_CODE,
-                name: value.sTATIC_NAME
+           if (res.data.success) {
+              var list = [];
+              let objNet = JSON.stringify(res.data);
+              window.localStorage.setItem("ButtPlatForm", objNet);
+              for (var value of res.data) {
+                list.push({
+                  id: value.sTATIC_CODE,
+                  name: value.sTATIC_NAME
+                });
+              }
+              _self.$store.commit("setFilterItmeList", {
+                name: "platform",
+                data: list
               });
+              _self.formFilterData[2].checkData = list;
             }
-            // console.log(list)
-
-            _self.$store.commit("setFilterItmeList", {
-              name: "platform",
-              data: list
-            });
-            _self.formFilterData[2].checkData = list
-            console.log(_self.formFilterData);
-            console.log(res.data);
-
-
           })
           .catch(function(err) {
-            console.log(err);
           });
       } else {
         let netList = [];
@@ -369,11 +469,11 @@ export default {
         });
         _self.formFilterData[2].checkData = butList;
       }
-
     },
-    loadTable: function(id) { //此处vuex获取的值，比$root慢
+    loadTable: function(id) {
+      //此处vuex获取的值，比$root慢
       var ids = [];
-      id ? ids = id : ids = this.tableParams.deptId;
+      id ? (ids = id) : (ids = this.tableParams.deptId);
       var _self = this;
       _self.loading = true;
       this.pageSize = this.$store.state.pageSize;
@@ -383,20 +483,24 @@ export default {
         domain: "0",
         _: new Date().getTime()
       };
-      paramsObj.condition = this.tableParams.condition ?
-        this.tableParams.condition :
-        "";
-      paramsObj.network = this.tableParams.network ?
-        this.tableParams.network : [];
-      paramsObj.dataSourceName = this.tableParams.dataSourceName ?
-        this.tableParams.dataSourceName : [];
-      paramsObj.platform = this.tableParams.platform ?
-        this.tableParams.platform : [];
+      paramsObj.condition = this.tableParams.condition
+        ? this.tableParams.condition
+        : "";
+      paramsObj.network = this.tableParams.network
+        ? this.tableParams.network
+        : [];
+      paramsObj.dataSourceName = this.tableParams.dataSourceName
+        ? this.tableParams.dataSourceName
+        : [];
+      paramsObj.platform = this.tableParams.platform
+        ? this.tableParams.platform
+        : [];
       paramsObj.deptIds = ids;
       _self.updataFliterItemList();
       this.$ajax
         .post(window.ENV.API_DACM + query, paramsObj)
         .then(function(res) {
+          _self.loading = false;
           if (res.data.code == "0000") {
             _self.mainTableData = res.data.data.list;
             _self.mainTableDataTotal = res.data.data.total;
@@ -445,9 +549,9 @@ export default {
         resetData: "accessObjManage"
       });
       var dataSourceName =
-        this.mainTableData[index].dataSourceName == "本地文件" ?
-        "file" :
-        this.mainTableData[index].dataSourceName;
+        this.mainTableData[index].dataSourceName == "本地文件"
+          ? "file"
+          : this.mainTableData[index].dataSourceName;
       this.$router.push({
         name: "accessObjManage",
         params: {
@@ -461,6 +565,7 @@ export default {
       this.$confirm("确认要复制" + row.name + "吗?", "提示", {
         confirmButtonText: "复制",
         cancelButtonText: "取消",
+        cancelButtonClass: "el-button--primary",
         type: "warning"
       }).then(() => {
         var _self = this;
@@ -477,7 +582,6 @@ export default {
             });
             _self.loadTable();
             _self.countTotal++;
-
           })
           .catch(function(err) {
             _self.$alert("复制失败", "提示", {
@@ -490,6 +594,7 @@ export default {
       this.$confirm("确认要废止" + row.name + "吗?", "提示", {
         confirmButtonText: "废止",
         cancelButtonText: "取消",
+        cancelButtonClass: "el-button--primary",
         type: "warning"
       }).then(() => {
         var _self = this;
@@ -530,7 +635,6 @@ export default {
       this.setStore(fliterParams);
     },
     storeReady: function() {
-      //debugger;
       var fliterItemList = this.$store.state.fliterItemList;
       if (
         fliterItemList.network.ready &&
@@ -570,10 +674,24 @@ export default {
         }
       }
       return "未知类型";
+    },
+    delSelect(id, index) {
+      this.deleteData = {
+        id,
+        index
+      };
+    },
+    deleteKeyWord() {
+      this.key_word = "";
+      let map = {
+        dataObj: this.$store.state.majorData.dataObj,
+        formSeledShow: this.$store.state.majorData.formSeledShow,
+        keyword: ""
+      };
+      this.$store.commit("setMajorData", map);
     }
   }
 };
-
 </script>
 <style lang="scss" scoped>
 .dashboard-container {
@@ -582,16 +700,10 @@ export default {
   height: 100%;
   .main {
     flex: 1;
-    overflow: auto;
+    overflow: hidden;
   }
   .filter-container {
-    padding-top: 5px;
-    background: #fff;
-
     .count-container {
-      border-bottom: 1px solid #d9d9d9;
-      margin: 0 20px 10px 20px;
-
       .count-title {
         display: inline-block;
         margin: 10px 5% 10px 40px;
@@ -614,7 +726,7 @@ export default {
 
       .countData {
         display: inline-block;
-        margin: 10px 5%;
+        margin: 10px 4%;
         width: 25%;
       }
 
@@ -630,10 +742,6 @@ export default {
         margin-top: 25px;
         padding-right: 20px;
       }
-    }
-
-    form {
-      padding-top: 0; // margin-right: 100px;
     }
 
     .el-form-item {
@@ -674,6 +782,9 @@ export default {
   width: 70px;
   text-align: left;
   margin: 0 auto;
+  i {
+    font-size: 21px;
+  }
 }
 
 .underdone,
@@ -682,4 +793,11 @@ export default {
   text-decoration: underline;
 }
 
+.lookstyle {
+  font-weight: normal;
+  padding-right: 20px;
+}
+
 </style>
+
+

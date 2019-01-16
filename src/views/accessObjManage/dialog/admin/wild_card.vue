@@ -96,9 +96,9 @@
         </div>
       </div>
     </el-form>
-    <div class="btn tcenter">
-      <el-button type="primary" style="margin-top: 12px;" @click="pres()">上一步</el-button>
-      <el-button type="primary" style="margin-top: 12px;" @click="nre()">下一步</el-button>
+    <div class="mr-btn">
+      <el-button type="primary"  @click="pres()">上一步</el-button>
+      <el-button type="primary"  @click="nre()">下一步</el-button>
     </div>
   </div>
 </template>
@@ -454,11 +454,6 @@ export default {
 .surveybg {
   background: #f0f3f6;
   padding-top: 20px;
-}
-
-.plr30 {
-  padding-left: 30px;
-  padding-right: 30px;
 }
 
 .mtsItem {

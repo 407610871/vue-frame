@@ -3,10 +3,11 @@
   <el-button @click="dialogVisible = true" class="add-btn fr">批量采集</el-button>
    <!--  <i class="el-icon-info" @click="dialogVisible = true">设置通配符</i> -->
     <el-dialog title="批量接入任务向导" :visible.sync="dialogVisible" width="60%" :before-close="closeDialog">
-      <div class="title-gra plr30">
-        <span class="grab gra-l"></span>
-        <span class="grab gra-r"></span>
-      </div>
+       <div class="title-gra plr30">
+          <div class="grab gra-r">
+            <span class="grab gra-l"></span>
+          </div>
+        </div>
       <div class="taskSteps plr30">
         <el-tabs v-model="activeName">
           <el-tab-pane name="first" disabled>
@@ -17,9 +18,10 @@
               </div>
             </div>
             <user-surveybak></user-surveybak>
-            <div class="btn tcenter">
-              <el-button type="primary" style="margin-top: 12px;" @click="next('second')">下一步</el-button>
-              <el-button style="margin-top: 12px;" @click="closeDialog">取消</el-button>
+            <div class="mr-btn">
+              <el-button type="primary"  @click="closeDialog">取消</el-button>
+              <el-button type="primary"  @click="next('second')">下一步</el-button>
+              
             </div>
           </el-tab-pane>
           <el-tab-pane name="second" disabled> <span slot="label"><i class="el-icon-circle">2</i> 批量匹配设置</span>
@@ -29,9 +31,9 @@
               </div>
             </div>
             <wild-card></wild-card>
-            <div class="btn tcenter">
-             <el-button type="primary" style="margin-top: 12px;" @click="next('first')">上一步</el-button>
-              <el-button type="primary" style="margin-top: 12px;" @click="next('third')">下一步</el-button>
+            <div class="mr-btn">
+             <el-button type="primary"  @click="next('first')">上一步</el-button>
+              <el-button type="primary" @click="next('third')">下一步</el-button>
              
             </div>
           </el-tab-pane>
@@ -42,9 +44,9 @@
               </div>
             </div>
             <type-map></type-map>
-            <div class="btn tcenter mt30">
-            <el-button type="primary" style="margin-top: 12px;" @click="next('second')">上一步</el-button>
-              <el-button type="primary" style="margin-top: 12px;" @click="next('fourth')">下一步</el-button>
+            <div class="mr-btn">
+            <el-button type="primary" @click="next('second')">上一步</el-button>
+              <el-button type="primary" @click="next('fourth')">下一步</el-button>
               
             </div>
           </el-tab-pane>
@@ -54,9 +56,9 @@
               </div>
             </div>
             <coll-task></coll-task>
-            <div class="btn tcenter mt30">
-              <el-button type="primary" style="margin-top: 12px;" @click="next('third')">上一步</el-button>
-              <el-button type="primary" style="margin-top: 12px;">完成</el-button>
+            <div class="mr-btn">
+              <el-button type="primary"  @click="next('third')">上一步</el-button>
+              <el-button type="primary" >完成</el-button>
             </div></el-tab-pane>
         </el-tabs>
       </div>
@@ -163,12 +165,6 @@ export default {
   background: #f0f3f6;
   padding-top: 20px;
 }
-
-.plr30 {
-  padding-left: 30px;
-  padding-right: 30px;
-}
-
 .el-tabs__nav-wrap::after {
   background-color: none;
   opacity: 0;

@@ -116,22 +116,11 @@
   background-color: #489bd9;
 }
 
-.el-button--medium {
-  padding: 10px 20px;
-  font-size: 14px;
-  border-radius: 0;
-}
-
 .el-button--primary {
   color: #fff;
   @include el-button--primary($el-primary-theme);
 }
 
-.el-button:focus, .el-button:hover {
-  color: #489bd9;
-  border-color: #c9cdd0;
-  background-color: #f0f3f6;
-}
 .el-select-dropdown__item.selected{
   @include el-color($el-select-dropdown-selected);
 }

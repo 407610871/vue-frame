@@ -1,12 +1,16 @@
 <template>
   <div>
-    <el-container style="height:100%;" class="dashboard-container" v-loading="loading">
+    <el-breadcrumb separator="/">
+      <el-breadcrumb-item :to="{ path: '/dashboard' }">
+              回收箱
+      </el-breadcrumb-item>
+    </el-breadcrumb>
+    <el-container class="dashboard-container main-content" v-loading="loading">
       <div class="filter-container" :height="headerHeight">
-        <a v-on:click="collapseExpand" class="right-btn collapse-btn"><i :class="{'el-icon-circle-plus':collapse,'el-icon-remove':!collapse}"></i></a>
+        <a v-on:click="collapseExpand" class="right-btn collapse-btn"><i :class="{'enc-icon-zhankai':collapse,'enc-icon-shousuo':!collapse}"></i></a>
         <formFliter v-if="queryParamReady" v-bind:formCollapse="collapse" v-bind:dataObj="formFilterData" @formFilter="changeFormFilter" />
       </div>
-      <el-main style="padding-bottom:0; padding-top:0;">
-        <el-table :data="mainTableData" stripe :height="tableHeight" border style="width: 100%" tooltip-effect="light">
+        <el-table :data="mainTableData" stripe :height="tableHeight" border style="width: 100%; margin-top:20px;" tooltip-effect="light">
           <el-table-column label="接入源名称" width="180" show-overflow-tooltip>
             <template slot-scope="scope">
               <a href="javascript:void(0)">{{ scope.row.name }}</a>
@@ -32,16 +36,15 @@
             <template slot-scope="scope">
               <div>
                 <el-tooltip class="item" effect="light" content="恢复" placement="top">
-                  <i @click="recordRecover(scope.$index, scope.row)" class="el-icon-back table-action-btn"></i>
+                  <i @click="recordRecover(scope.$index, scope.row)" class="enc-icon-huifu table-action-btn"></i>
                 </el-tooltip>
                 <el-tooltip class="item" effect="light" content="删除" placement="top">
-                  <i @click="recordDelete(scope.$index, scope.row)" class="el-icon-close table-action-btn"></i>
+                  <i @click="recordDelete(scope.$index, scope.row)" class="enc-icon-shanchu"></i>
                 </el-tooltip>
               </div>
             </template>
           </el-table-column>
         </el-table>
-      </el-main>
       <el-footer>
         <div class="enc-pagination">
           <el-pagination v-if="queryParamReady" v-show="pageShow" style="float:right; margin:10px;" @current-change="goPage" background :page-size="pageSize" :total="mainTableDataTotal" layout="prev, pager, next, jumper" :current-page.sync="currentPage">
@@ -49,21 +52,10 @@
         </div>
       </el-footer>
     </el-container>
-    <!--el-dialog
-      :title="dialogTitle"
-      :visible.sync="dialogVisible"
-      width="30%">
-      <add1 :dialogRouter="myDialogRouter" />
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="dialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
-      </span>
-    </el-dialog-->
   </div>
 </template>
 <script>
 import { mapState } from 'vuex'
-import add1 from './dialog/'
 import formFliter from './../../components/formFliter2'
 
 export default {
@@ -78,14 +70,10 @@ export default {
       mainTableDataTotal: 1,
       pageSize: 20,
       pageShow: true,
-      //dialogVisible:false,
-      //myDialogRouter:'adminAdd',
-      //dialogTitle:'新增',
       formFilterData: []
     }
   },
   components: {
-    add1,
     formFliter
   },
   computed: {
@@ -93,10 +81,9 @@ export default {
       return this.$store.state.queryParams.recyclingBins
     },
     tableHeight: function() {
-      return this.collapse ? window.innerHeight - 226 : window.innerHeight - 305;
+      return this.collapse ? window.innerHeight - 226-63 : window.innerHeight - 305-63;
     },
     headerHeight: function() {
-      // return this.collapse?'50px':'130px';
     }
   },
   watch: {
@@ -110,10 +97,8 @@ export default {
     this.$root.eventHub.$on('search', (keyword) => {
       this.search(keyword);
     });
-    //console.log(this.$store.state.queryParams.recyclingBins);
   },
   mounted() {
-    console.log(this.$store.state.queryParams[this.$route.name].deptId);
     this.$root.eventHub.$emit(
       "selTreeNode",
       this.$store.state.queryParams[this.$route.name].deptId
@@ -123,12 +108,9 @@ export default {
     //this.setCount();
     //从create移过来
     this.$root.eventHub.$on("selDept", ids => {
-      console.log("545454");
       this.setStore({
         deptId: ids
       });
-      //this.setCount(ids);
-      //this.loadTable(ids);
     });
     this.storeReady();
   },
@@ -179,14 +161,12 @@ export default {
       paramsObj.platform = this.tableParams.platform;
       paramsObj.deptIds = ids;
       this.$ajax.post(window.ENV.API_DACM + '/caccess/query', paramsObj).then(function(res) {
-          // console.log('tableLoaded:dashboard');
           if (res.data.success) {
             _self.mainTableData = res.data.data.list;
             _self.mainTableDataTotal = res.data.data.total;
             _self.currentPage = _self.tableParams.pageNum;
             _self.pageShow = true;
           } else {
-            // console.log(res.data.code)
             _self.mainTableData = [];
             _self.pageShow = false;
             _self.$alert('字段废止数据源列表失败', '提示', {
@@ -199,7 +179,6 @@ export default {
           _self.mainTableData = [];
           _self.pageShow = false;
           _self.loading = false;
-          console.log(err)
           _self.$alert('字段废止数据源列表失败', '提示', {
             confirmButtonText: '确定'
           });
@@ -209,6 +188,7 @@ export default {
       this.$confirm('确认要恢复' + row.name + '吗?', '提示', {
         confirmButtonText: '恢复',
         cancelButtonText: '取消',
+        cancelButtonClass: "el-button--primary",
         type: 'warning'
       }).then(() => {
         var _self = this;
@@ -221,7 +201,6 @@ export default {
             if (res.data.success) {
               _self.loadTable(_self.$store.state.deptId);
             } else {
-              // console.log(res.data.code)
               _self.$alert('恢复失败', '提示', {
                 confirmButtonText: '确定'
               });
@@ -231,7 +210,6 @@ export default {
           .catch(function(err) {
             _self.currentPage = _self.tableParams.pageNum;
             _self.loading = false;
-            console.log(err)
             _self.$alert('恢复失败', '提示', {
               confirmButtonText: '确定'
             });
@@ -242,6 +220,7 @@ export default {
       this.$confirm('确认要删除' + row.name + '吗?', '提示', {
         confirmButtonText: '删除',
         cancelButtonText: '取消',
+        cancelButtonClass: "el-button--primary",
         type: 'warning'
       }).then(() => {
         var _self = this;
@@ -254,7 +233,6 @@ export default {
             if (res.data.success) {
               _self.loadTable(_self.$store.state.deptId);
             } else {
-              // console.log(res.data.code)
               _self.$alert('删除失败', '提示', {
                 confirmButtonText: '确定'
               });
@@ -264,7 +242,6 @@ export default {
           .catch(function(err) {
             _self.currentPage = _self.tableParams.pageNum;
             _self.loading = false;
-            console.log(err)
             _self.$alert('删除失败', '提示', {
               confirmButtonText: '确定'
             });
@@ -272,8 +249,6 @@ export default {
       });
     },
     setStore: function(obj) {
-      console.log("1213212");
-      console.log(JSON.parse(JSON.stringify(obj)))
       let storeData = JSON.parse(JSON.stringify(this.$store.state.queryParams[this.$route.name]));
       for (var i in obj) {
         storeData[i] = obj[i];
@@ -342,45 +317,26 @@ export default {
 .dashboard-container {
   background-color: #fff;
   .filter-container {
-    padding-top: 10px;
-    background: #fff;
-    .right-tools {
-      float: right;
-      margin-right: 10px;
-      a {
-        font-size: 26px;
-        color: #479ad8;
-         :hover,
-         :active {
-          color: #f93;
-        }
-      }
-    }
-    form {
-      padding-top: 0;
-      margin-right: 100px;
-    }
-    .el-form-item {
-      margin-bottom: 2px;
-    }
     .right-btn {
       float: right;
     }
     .collapse-btn {
-      margin: 5px 20px 0 0;
-      color: #069;
-      font-size: 22px;
+      font-size: 30px;
+      i {
+        font-size: 26px;
+      }
     }
-  }
-  .table-container {
-    padding: 32px;
   }
   .enc-pagination {
     float: right;
   }
   .cell i {
     cursor: pointer;
+    font-size: 18px;
   }
+}
+.table-action-btn {
+  margin-right:10px;
 }
 
 </style>

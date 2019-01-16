@@ -1,10 +1,11 @@
 <template>
   <div class="taskMDialog" style="padding-bottom:15px;">
     <el-dialog :title="reqObj.taskName" :close-on-click-modal="false" :visible.sync="showInnerDialog" @closed="closeDia" class="task-Detail-dialog">
-      <div class="title-gra">
-        <span class="grab gra-l"></span>
-        <span class="grab gra-r"></span>
-      </div>
+        <div class="title-gra plr30">
+          <div class="grab gra-r">
+            <span class="grab gra-l"></span>
+          </div>
+        </div>
       <el-form label-width="150px" class="demo-ruleForm">
         <!-- <span style="float:right">当前状态:
           <el-select v-model="flagDesc" :disabled="loading3" placeholder="请选择" @change="changeStatus" class="select">

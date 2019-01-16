@@ -2,10 +2,11 @@
   <div class="taskMDialog edit_dialog1">
     <i class="el-icon-info" @click="dialogVisible = true">修改</i>
     <el-dialog title="接入数据源" :visible.sync="dialogVisible" width="60%" :before-close="closeDialog">
-      <div class="title-gra">
-        <span class="grab gra-l"></span>
-        <span class="grab gra-r"></span>
-      </div>
+        <div class="title-gra plr30">
+          <div class="grab gra-r">
+            <span class="grab gra-l"></span>
+          </div>
+        </div>
       <el-form :model="ruleForm" ref="ruleForm" label-width="100px" class="demo-ruleForm" :rules="formRules">
         <div class="daiInfo proInfo">
           <div class="daiInfo-title proInfo-title">
@@ -271,17 +272,11 @@
             </el-col>
           </div>
         </div>
-        <div class="daiInfo reginfo">
-          <div class="daiInfo-box clearfix">
-            <el-form-item>
-              <el-col :span="24">
-                <el-button type="primary" size="small" @click="submitForm('ruleForm')">保存</el-button>
-                <el-button @click="closeForm()" size="small">关闭</el-button>
-              </el-col>
-            </el-form-item>
-          </div>
-        </div>
       </el-form>
+        <div class="clearfix mr-btn">
+          <el-button type="primary" @click="closeForm()">关闭</el-button>
+          <el-button type="primary" @click="submitForm('ruleForm')">保存</el-button>
+        </div>
     </el-dialog>
   </div>
 </template>

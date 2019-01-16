@@ -4,10 +4,11 @@
       <i @click="dialogVisible = true" class="enc-icon-bianji table-action-btn"></i>
     </el-tooltip>
     <el-dialog title="接入数据源" :visible.sync="dialogVisible" width="72%" :before-close="closeDialog" class="edit-dialog">
-      <div class="title-gra">
-        <span class="grab gra-l"></span>
-        <span class="grab gra-r"></span>
-      </div>
+        <div class="title-gra plr30">
+          <div class="grab gra-r">
+            <span class="grab gra-l"></span>
+          </div>
+        </div>
       <el-form :model="ruleForm" ref="ruleForm" label-width="100px" class="demo-ruleForm" :rules="formRules" v-loading="loading">
         <div class="daiInfo proInfo">
           <div class="daiInfo-title proInfo-title">
@@ -130,11 +131,11 @@
                 <el-radio v-for="item in syskindList" :label="item.id" :key="item.id" disabled><span>{{item.name}}</span><span v-if="item.id=='10010' || item.id=='10020'" class="enc-icon-beta betaspan"></span></el-radio>
               </el-radio-group>
             </el-form-item>
-            <el-button type="primary" v-if="ruleForm.syskind!=''&&ruleForm.syskind!='10023'" @click="testForm('ruleForm')" v-loading.fullscreen.lock="fullscreenLoading">测试连接</el-button>
+            <el-button  type="primary" v-if="ruleForm.syskind!=''&&ruleForm.syskind!='10023'" @click="testForm('ruleForm')" v-loading.fullscreen.lock="fullscreenLoading">测试连接</el-button>
             <el-row>
               <el-col style="text-align:right;margin-bottom:10px;" class="ctips">
                 <el-col :span="15" class="tleft">
-                  <span class="tleft cred">tips:数据源连接更新仅适用于数据源用户信息变更或数据源无变更迁移</span>
+                  <span class="tleft cred ">tips:数据源连接更新仅适用于数据源用户信息变更或数据源无变更迁移</span>
                 </el-col>
                 <p v-if="isDisableClassFlag" class="isRed">*修改接入源设置需测试连接</p>
               </el-col>
@@ -214,18 +215,13 @@
             </el-col>
           </div>
         </div>
-        <div class="daiInfo reginfo">
-          <div class="daiInfo-box clearfix">
-            <el-form-item>
-              <el-col :span="24">
-                <el-button v-if="isDisableClassFlag" type="primary" size="small" class="isDisable" disabled>保存</el-button>
-                <el-button v-if="!isDisableClassFlag" type="primary" size="small" @click="submitForm('ruleForm')" :class="{ isDisable: isDisableClassFlag }">保存</el-button>
-                <el-button @click="closeForm()" size="small">关闭</el-button>
-              </el-col>
-            </el-form-item>
-          </div>
-        </div>
       </el-form>
+      <div class="clearfix mr-btn">
+        <el-button type="primary" @click="closeForm()">关闭</el-button>
+        <el-button v-if="isDisableClassFlag" type="primary" class="isDisable" disabled>保存</el-button>
+        <el-button v-if="!isDisableClassFlag" type="primary" @click="submitForm('ruleForm')"
+         :class="{ isDisable: isDisableClassFlag }">保存</el-button>
+      </div>
     </el-dialog>
   </div>
 </template>
@@ -239,7 +235,7 @@ export default {
         callback();
       } else {
         const isPhone = /^([0-9]{3,4}-)?[0-9]{7,8}$/;
-        const isMob = /^((\+?86)|(\(\+86\)))?(13[012356789][0-9]{8}|15[012356789][0-9]{8}|18[02356789][0-9]{8}|17[02356789][0-9]{8}|147[0-9]{8}|1349[0-9]{7})$/;
+        const isMob = /^((\+?86)|(\(\+86\)))?(13[012356789][0-9]{8}|15[012356789][0-9]{8}|18[012356789][0-9]{8}|17[02356789][0-9]{8}|147[0-9]{8}|1349[0-9]{7})$/;
         if (rule.required) {
           if (value == "") {
             callback(new Error("请输入正确的号码"));
@@ -719,6 +715,7 @@ export default {
               this.$confirm('已经存在同IP地址同用户的数据源，确定保存?', '信息', {
                 confirmButtonText: '确定',
                 cancelButtonText: '取消',
+                cancelButtonClass: "el-button--primary",
               }).then(() => {
                 this.loading = true;
                 this.$ajax({
@@ -756,6 +753,7 @@ export default {
               this.$confirm('确认保存修改?', '信息', {
                 confirmButtonText: '确定',
                 cancelButtonText: '取消',
+                cancelButtonClass: "el-button--primary",
               }).then(() => {
                 this.loading = true;
                 this.$ajax({
@@ -1005,7 +1003,7 @@ export default {
   }
   .my_form_item{
     margin-bottom:-10px;
-    width: 84%;
+    width: 87%;
     display: inline-block;
     label{
       text-align: left;

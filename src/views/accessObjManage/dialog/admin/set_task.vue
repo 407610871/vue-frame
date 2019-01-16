@@ -6,10 +6,11 @@
    </el-tooltip> -->
     <!--  <i class="el-icon-info" @click="dialogVisible = true">设置通配符</i> -->
     <el-dialog title="批量接入任务向导" :visible.sync="dialogVisible" width="73%" :before-close="closeDialog" :close-on-click-modal="false">
-      <div class="title-gra plr30">
-        <span class="grab gra-l"></span>
-        <span class="grab gra-r"></span>
-      </div>
+        <div class="title-gra plr30">
+          <div class="grab gra-r">
+            <span class="grab gra-l"></span>
+          </div>
+        </div>
       <div class="taskSteps plr30">
         <el-tabs v-model="activeName">
           <el-tab-pane name="first" disabled>
@@ -20,10 +21,7 @@
               </div>
             </div>
             <user-surveybak :msg ="this.num" :batch="true" :info="rowList" @pre="next('second')" @closeuser="closeDialog()" ref="survey"></user-surveybak>
-            <!--  <div class="btn tcenter">
-             <el-button type="primary" style="margin-top: 12px;" @click="next('second')">下一步</el-button>
-             <el-button style="margin-top: 12px;" @click="closeDialog">取消</el-button>
-           </div> -->
+
           </el-tab-pane>
           <el-tab-pane name="second" disabled> <span slot="label"><i class="el-icon-circle">2</i> 批量匹配设置</span>
             <div class="daiInfo proInfo">
@@ -48,10 +46,6 @@
               </div>
             </div>
             <coll-task :msg="activeName" :rowList="rowList" @pre="next('third')" @fresh="fresh()"> </coll-task>
-            <!-- <div class="btn tcenter mt30">
-              <el-button type="primary" style="margin-top: 12px;" @click="next('third')">上一步</el-button>
-              <el-button type="primary" style="margin-top: 12px;">完成</el-button>
-            </div> -->
           </el-tab-pane>
         </el-tabs>
       </div>
@@ -91,6 +85,7 @@ export default {
        this.setMatchType(this.clear);
        this.setRegInfo(this.regClear);
        this.setSchemaList(this.clear);
+       this.$store.commit ("setIsSign",false);
        this.$emit('close');
       //this.$refs['ruleForm'].resetFields();
     },
@@ -214,11 +209,6 @@ export default {
 .surveybg {
   background: #f0f3f6;
   padding-top: 20px;
-}
-
-.plr30 {
-  padding-left: 30px;
-  padding-right: 30px;
 }
 
 .el-tabs__nav-wrap::after {

@@ -5,8 +5,9 @@
     </el-tooltip>
     <el-dialog title="单表采集任务向导"   :visible.sync="dialogVisible" width="73%" :before-close="closeDialog" class="single-task-dialog" :close-on-click-modal="false">
       <div class="title-gra plr30">
-        <span class="grab gra-l"></span>
-        <span class="grab gra-r"></span>
+        <div class="grab gra-r">
+          <span class="grab gra-l"></span>
+        </div>
       </div>
       <div class="taskSteps plr30">
         <el-tabs v-model="activeName">
@@ -64,6 +65,8 @@ export default {
       this.dialogVisible = false;
       this.activeName = 'first';
       this.$store.commit("setMode", "");
+      this.$store.commit ("setIsSign",false);
+      this.$store.commit("setSchemaList",[]);
       //this.$refs.survey._clearForm();
     },
     //步骤条
@@ -80,7 +83,7 @@ export default {
       this.activeName = 'first';
       this.$store.commit("setMode", "");
       this.dialogVisible = false;
-
+this.$store.commit("setSchemaList",[]);
     }
   },
   components: {
@@ -160,12 +163,6 @@ export default {
   background: #f0f3f6;
   padding: 20px 20px 0;
 }
-
-.plr30 {
-  padding-left: 30px;
-  padding-right: 30px;
-}
-
 .el-tabs__nav-wrap::after {
   background-color: none;
   opacity: 0;

@@ -14,19 +14,7 @@ export default {
   computed: {
     key() {
       return this.$route.fullPath
-      // return this.$store.state.routeFlag[this.$route.name]
     }
   }
 }
 </script>
-
-<style scoped>
-.app-main {
-  /*84 = navbar + tags-view = 50 +34 */
-  height: calc(100vh - 113px);
-  width: 100%;
-  position: relative;
-  overflow: hidden;
-  background: #eff3f6;
-}
-</style>

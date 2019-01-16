@@ -1,25 +1,26 @@
 <template>
   <el-container>
-    <el-header height="66px" class="enc-header">
+    <el-header class="enc-header">
       <div class="enc-logo">
         <img :src="logo" alt>
       </div>
       <nav-menu />
-      <div class="right-menu clearfix">
-        <el-tooltip class="item" effect="light" content="告警中心" placement="bottom">
-          <el-button class="warncon" v-on:click="_goWarn()">
+      <div class="right-menu">
+        <el-popover placement="bottom" width="200" trigger="hover">
+          <ul class="popup-menu warn-menu warn-popover">
+            <li class="even-li" v-on:click="_goWarn()">告警中心</li>
+          </ul>
+          <el-button slot="reference" class="moreSys" >
             <span>
               <img :src="warnicon">
             </span>
           </el-button>
-        </el-tooltip>
-        <release v-if="releaseflag" v-on:closeDia="releaseflag=false"></release>
-        <Themes v-if="themesflag" v-on:closeDia="themesflag=false"></Themes>
-        <el-popover placement="bottom-start" width="200" trigger="hover">
+        </el-popover>
+        <el-popover placement="bottom" width="200" trigger="hover">
           <ul class="popup-menu warn-menu warn-popover">
             <li class="even-li">{{ userName }}</li>
             <li class="odd-li">{{ roleName }}</li>
-            <li class="" v-on:click="_changeSkin()">主题</li>
+            <li class="even-li" v-on:click="_changeSkin()">主题</li>
             <li class="theme-li"></li>
             <li class="even-li" v-on:click="loginOut()">退出</li>
           </ul>
@@ -29,11 +30,11 @@
             </span>
           </el-button>
         </el-popover>
-        <el-popover placement="bottom-start" width="200" trigger="hover">
-          <ul class="popup-menu warn-menu">
-            <li><a href="javascript:void(0)" v-on:click="goRoute('setting')">系统参数</a></li>
-            <li><a href="javascript:void(0)" v-on:click="goRoute('recyclingBins')">回收箱</a></li>
-            <li><a href="javascript:void(0)" @click="_release()">版本信息</a></li>
+        <el-popover placement="bottom" width="200" trigger="hover">
+          <ul class="popup-menu warn-menu warn-popover">
+            <li class="even-li"><a href="javascript:void(0)" v-on:click="goRoute('setting')">系统参数</a></li>
+            <li class="even-li"><a href="javascript:void(0)" v-on:click="goRoute('recyclingBins')">回收箱</a></li>
+            <li class="even-li"><a href="javascript:void(0)" @click="_release()">版本信息</a></li>
           </ul>
           <el-button slot="reference" class="moreSys">
             <span>
@@ -43,7 +44,7 @@
         </el-popover>
       </div>
     </el-header>
-    <div style="display:flex; height: calc(100vh - 66px);">
+    <div style="display:flex; height: calc(100vh - 66px);" class="clearfix">
       <el-aside :width="sideBarWidth+'px'" class="enc-aside">
         <new-aside-tree></new-aside-tree>
         <div class="sidebar-control-btn" v-bind:style="{'left':sideBarWidth+'px'}" v-on:click="changeSideBar">
@@ -52,16 +53,17 @@
         </div>
       </el-aside>
       <el-main class="enc-main">
-        <div class="enc-sub-header">
+        <!--
           <el-breadcrumb separator="/">
             <el-breadcrumb-item v-for="(item,index) in breadcrumb" :key="index">
               <a href="javascript:void(0)" v-on:click="breadcrumbChange(index,item)">{{item.breadcrumbName}}</a>
             </el-breadcrumb-item>
-          </el-breadcrumb>
-        </div>
+          </el-breadcrumb>-->
         <app-main ref="mainTable" />
       </el-main>
     </div>
+    <release v-if="releaseflag" v-on:closeDia="releaseflag=false"></release>
+    <Themes v-if="themesflag" v-on:closeDia="themesflag=false"></Themes>
   </el-container>
 </template>
 <script>
@@ -236,23 +238,25 @@ export default {
         })
         .then(function(res) {
           //  console.log(res)
-          var list = [];
-          if (res.data != undefined) {
-            let objNet = JSON.stringify(res.data);
-            window.localStorage.setItem('NetWork', objNet);
-            for (var value of res.data) {
-              list.push({
-                id: value.sTATIC_CODE,
-                name: value.sTATIC_NAME
+          if (res.data.success == false) {} else {
+            var list = [];
+            if (res.data != undefined) {
+              let objNet = JSON.stringify(res.data);
+              window.localStorage.setItem('NetWork', objNet);
+              for (var value of res.data) {
+                list.push({
+                  id: value.sTATIC_CODE,
+                  name: value.sTATIC_NAME
+                });
+              }
+              _self.$store.commit("setFilterItmeList", {
+                name: "network",
+                data: list
               });
+              _self.formFilterData[1].checkData = list
             }
-            _self.$store.commit("setFilterItmeList", {
-              name: "network",
-              data: list
-            });
-            _self.formFilterData[1].checkData = list
           }
-          console.log(list);
+
         })
         .catch(function(err) {
           console.log(err);
@@ -264,95 +268,101 @@ export default {
           }
         })
         .then(function(res) {
-          //  console.log(res)
+          if (res.data.success == false) {
 
-          var list = [];
-          let objNet = JSON.stringify(res.data);
-          window.localStorage.setItem('ButtPlatForm', objNet);
-          for (var value of res.data) {
-            list.push({
-              id: value.sTATIC_CODE,
-              name: value.sTATIC_NAME
+          } else {
+            var list = [];
+            let objNet = JSON.stringify(res.data);
+            window.localStorage.setItem('ButtPlatForm', objNet);
+            for (var value of res.data) {
+              list.push({
+                id: value.sTATIC_CODE,
+                name: value.sTATIC_NAME
+              });
+            }
+            _self.$store.commit("setFilterItmeList", {
+              name: "platform",
+              data: list
             });
+            _self.formFilterData[2].checkData = list
+            console.log(_self.formFilterData);
+            console.log(res.data);
           }
-          // console.log(list)
-
-          _self.$store.commit("setFilterItmeList", {
-            name: "platform",
-            data: list
-          });
-          _self.formFilterData[2].checkData = list
-          console.log(_self.formFilterData);
-          console.log(res.data);
-
-
         })
         .catch(function(err) {
           console.log(err);
         });
+    },
+    _goWarn() {
+      window.open(this.warnurl);
+    },
+    _release() {
+      this.releaseflag = true;
+    },
+    _changeSkin() {
+      this.themesflag = true;
+    },
+    changeSideBar() {
+      this.sideBarWidth = this.sideBarWidth == 0 ? 210 : 0;
+    },
+    loginOut() {
+      window.localStorage.removeItem('data-theme');
+      this.$keycloak.logout();
+    },
+    //换肤
+    getUser() {
 
-    
-
-  },
-  _goWarn() {
-    window.open(this.warnurl);
-  },
-  _release() {
-    this.releaseflag = true;
-  },
-  _changeSkin() {
-    this.themesflag = true;
-  },
-  changeSideBar() {
-    this.sideBarWidth = this.sideBarWidth == 0 ? 210 : 0;
-  },
-  loginOut() {
-    window.localStorage.removeItem('data-theme');
-    this.$keycloak.logout();
-  },
-  //换肤
-  getUser() {
-
-    let userids = window.localStorage.getItem('userID');
-    if (userids == null || userids == undefined) {
-      userids = this.$store.state.userInfo.userId;
-    }
-    this.$ajax({
-        method: "POST",
-        url: this.GLOBAL.skin.API_SKIN +"/BCM/skin/query",
-        data: {
-          userId: userids,
-          appId: 'DACM'
-        }
-      })
-      .then(res => {
-        if (res.data.success && res.data.data) {
-          let obj = {
-            "cnName": res.data.data.cnName,
-            "color": res.data.data.color,
-            "appId": 'DACM',
-            "userId": res.data.data.userId,
-            "userName": res.data.data.userName
+      let userids = window.localStorage.getItem('userID');
+      if (userids == null || userids == undefined) {
+        userids = this.$store.state.userInfo.userId;
+      }
+      this.$ajax({
+          method: "POST",
+          url: this.GLOBAL.skin.API_SKIN + "/BCM/skin/query",
+          data: {
+            userId: userids,
+            appId: 'DACM'
           }
-          let values = '';
-          if (res.data.data.color == 'PURPLE') {
-            values = 'theme1';
+        })
+        .then(res => {
+          if (res.data.success && res.data.data) {
+            let obj = {
+              "cnName": res.data.data.cnName,
+              "color": res.data.data.color,
+              "appId": 'DACM',
+              "userId": res.data.data.userId,
+              "userName": res.data.data.userName
+            }
+            let values = '';
+            if (res.data.data.color == 'PURPLE') {
+              values = 'theme1';
+            }
+            if (res.data.data.color == 'GREEN') {
+              values = 'theme3';
+            }
+            if (res.data.data.color == 'BLUE') {
+              values = 'theme2';
+            }
+            if (res.data.data.color == 'GOLDEN') {
+              values = 'theme4';
+            }
+            window.localStorage.setItem('data-theme', values);
+            window.document.documentElement.setAttribute('data-theme', values);
+            this.$store.commit('setThemes', res.data.data.color);
+            obj = JSON.stringify(obj);
+            localStorage.setItem("userSet", obj);
+          } else {
+            let obj = {
+              "cnName": window.localStorage.getItem('userNames'),
+              "color": "DEFAULT",
+              "appId": 'DACM',
+              "userId": window.localStorage.getItem('userID'),
+              "userName": window.localStorage.getItem('userNames')
+            }
+            localStorage.setItem("userSet", JSON.stringify(obj));
+            this._getColor();
           }
-          if (res.data.data.color == 'GREEN') {
-            values = 'theme2';
-          }
-          if (res.data.data.color == 'BLUE') {
-            values = 'theme3';
-          }
-          if (res.data.data.color == 'GOLDEN') {
-            values = 'theme4';
-          }
-          window.localStorage.setItem('data-theme', values);
-          window.document.documentElement.setAttribute('data-theme', values);
-          this.$store.commit('setThemes', res.data.data.color);
-          obj = JSON.stringify(obj);
-          localStorage.setItem("userSet", obj);
-        } else {
+        }).catch(error => {
           let obj = {
             "cnName": window.localStorage.getItem('userNames'),
             "color": "DEFAULT",
@@ -362,90 +372,89 @@ export default {
           }
           localStorage.setItem("userSet", JSON.stringify(obj));
           this._getColor();
-        }
-      })
-  },
-  goRoute: function(name) {
-    if (this.$store.state.queryParams[name]) {
-      var obj = {
-        resetData: name
-      };
-      this.$store.commit("resetQueryParam", obj);
-    }
-    this.$router.push({ name: name });
-  },
-  search: function() {
-    this.$root.eventHub.$emit("search", this.keyword);
-  },
-  breadcrumbChange: function(index, item) {
-    if (index != this.breadcrumb.length - 1) {
-      // var obj = {
-      // resetData:[]
-      // };
-      // for(var i = index+1;i<this.breadcrumb.length;i++){
-      // obj.resetData.push(this.breadcrumb[i].name)
-      // }
-      // this.$store.commit('resetQueryParam', obj);
-      this.$router.push({
-        name: item.name,
-        params: item.params,
-        query: item.query
-      });
-    }
-  },
-  getBreadcrumb() {
-    var routeName = this.$route.name;
-    if (
-      routeName == "dashboard" ||
-      routeName == "accessObjManage" ||
-      routeName == "accessObjInfo"
-    ) {
-      this.breadcrumb = [{
-        name: "dashboard",
-        breadcrumbName: "数据接入",
-        params: {},
-        query: this.$store.state.queryParams["dashboard"]
-      }];
-      if (this.$route.params.sourceId && this.$route.params.sourceName) {
-        this.breadcrumb.push({
-          name: "accessObjManage",
-          breadcrumbName: decodeURI(this.$route.params.sourceName),
-          params: {
-            sourceId: this.$route.params.sourceId,
-            sourceName: decodeURI(this.$route.params.sourceName),
-            type: this.$route.params.type
-          },
-          query: this.$store.state.queryParams["accessObjManage"]
+        })
+    },
+    goRoute: function(name) {
+      if (this.$store.state.queryParams[name]) {
+        var obj = {
+          resetData: name
+        };
+        this.$store.commit("resetQueryParam", obj);
+      }
+      this.$router.push({ name: name });
+    },
+    search: function() {
+      this.$root.eventHub.$emit("search", this.keyword);
+    },
+    breadcrumbChange: function(index, item) {
+      if (index != this.breadcrumb.length - 1) {
+        // var obj = {
+        // resetData:[]
+        // };
+        // for(var i = index+1;i<this.breadcrumb.length;i++){
+        // obj.resetData.push(this.breadcrumb[i].name)
+        // }
+        // this.$store.commit('resetQueryParam', obj);
+        this.$router.push({
+          name: item.name,
+          params: item.params,
+          query: item.query
         });
       }
-      if (this.$route.params.objId && this.$route.params.objName) {
-        this.breadcrumb.push({
-          name: "accessObjInfo",
-          breadcrumbName: decodeURI(this.$route.params.objName),
-          params: {
-            sourceId: this.$route.params.sourceId,
-            sourceName: decodeURI(this.$route.params.sourceName),
-            objId: this.$route.params.objId,
-            objName: decodeURI(this.$route.params.objName),
-            type: this.$route.params.type
-          }
-        });
-      }
-    } else {
-      var list = [];
-      this.$route.matched.forEach((item, index) => {
-        if (item.path != "") {
-          list.push({
-            name: this.$route.name,
-            breadcrumbName: this.$route.meta.title
+    },
+    getBreadcrumb() {
+      var routeName = this.$route.name;
+      if (
+        routeName == "dashboard" ||
+        routeName == "accessObjManage" ||
+        routeName == "accessObjInfo"
+      ) {
+        this.breadcrumb = [{
+          name: "dashboard",
+          breadcrumbName: "数据接入",
+          params: {},
+          query: this.$store.state.queryParams["dashboard"]
+        }];
+        if (this.$route.params.sourceId && this.$route.params.sourceName) {
+          this.breadcrumb.push({
+            name: "accessObjManage",
+            breadcrumbName: decodeURI(this.$route.params.sourceName),
+            params: {
+              sourceId: this.$route.params.sourceId,
+              sourceName: decodeURI(this.$route.params.sourceName),
+              type: this.$route.params.type
+            },
+            query: this.$store.state.queryParams["accessObjManage"]
           });
         }
-      });
-      this.$set(this.$data, "breadcrumb", list);
+        if (this.$route.params.objId && this.$route.params.objName) {
+          this.breadcrumb.push({
+            name: "accessObjInfo",
+            breadcrumbName: decodeURI(this.$route.params.objName),
+            params: {
+              sourceId: this.$route.params.sourceId,
+              sourceName: decodeURI(this.$route.params.sourceName),
+              objId: this.$route.params.objId,
+              objName: decodeURI(this.$route.params.objName),
+              type: this.$route.params.type
+            }
+          });
+        }
+      } else {
+        var list = [];
+        this.$route.matched.forEach((item, index) => {
+          if (item.path != "") {
+            list.push({
+              name: this.$route.name,
+              breadcrumbName: this.$route.meta.title
+            });
+          }
+        });
+        this.$set(this.$data, "breadcrumb", list);
+      }
+      //end of getBreadcrumb
     }
-    //end of getBreadcrumb
   }
-}
 };
 
 </script>
@@ -459,9 +468,6 @@ export default {
 .warncon {
   width: 66px;
   height: 66px;
-  /*  background: url("../../assets/images/warnicon.png");
- background-repeat: no-repeat;
- background-size: contain; */
   float: left
 }
 
@@ -477,63 +483,23 @@ export default {
   width: 100%;
 }
 
-.enc-logo {
-  display: inline-block;
-  width: 210px;
-  background: #d7dce0;
-  height: 100%;
-  line-height: $enc-nav-header-height;
-  text-align: center;
-  vertical-align: top;
-  img {
-    width: 159px;
-    vertical-align: middle;
-  }
-}
-
 .clearfix {
   float: none;
   clear: both;
 }
 
-.enc-header {
-  padding: 0;
-  height: $enc-nav-header-height;
-  line-height: $enc-nav-header-height;
-  background: #e6eaed;
+.enc-header .right-menu .el-button.moreSys:focus,
+.enc-header .right-menu .el-button.moreSys:hover {
+  width: 66px;
+  height: 66px;
+  background: url("../../assets/images/moreicon.png");
+  background-repeat: no-repeat;
+  background-size: contain;
+  float: left
+}
 
-  .right-menu {
-    float: right;
-    height: 100%;
-    .el-button {
-      width: 66px;
-      height: 100%;
-      margin: 0;
-      border-radius: 0;
-      border: 0;
-      padding: 0;
-      float: left;
-
-      &.user {
-        background: #cac fd5;
-        vertical-align: top;
-      }
-      &.setting {
-        background: #50609c;
-        vertical-align: top;
-        i {
-          color: #fff;
-        }
-      }
-      &.document {
-        background: #479bd9;
-        vertical-align: top;
-        i {
-          color: #fff;
-        }
-      }
-    }
-  }
+.enc-header .right-menu .el-button.user {
+  background: #479bd9 !important;
 }
 
 .enc-aside {
@@ -562,11 +528,6 @@ export default {
   .enc-sub-header {
     margin-top: 0px;
   }
-}
-
-.el-breadcrumb {
-  line-height: $enc-nav-sub-header-height;
-  text-indent: 0;
 }
 
 .enc-search {
@@ -621,114 +582,38 @@ export default {
       width: 100%;
       height: 100%;
     }
-    a:hover,
-    a:active {
-      color: #069;
-    }
-  }
-}
-
-.sidebar-control-btn {
-  display: block;
-  position: absolute;
-  z-index: 1000;
-  top: 50%;
-  margin-top: -15px;
-  width: 8px;
-  height: 30px;
-  border: 1px solid #ccc;
-  background-color: #fff;
-  cursor: pointer;
-  color: #999;
-  font-size: 12px;
-  line-height: 26px;
-  i {
-    margin-left: -3px;
-  }
-}
-
-@media screen and (max-width: 1280px) {
-  .enc-logo {
-    line-height: 50px;
-  }
-
-  .el-header {
-    .right-menu {
-      .el-button {
-        width: 60px;
-        height: 60px;
-      }
-    }
   }
 }
 
 </style>
 <style rel="stylesheet/scss" lang="scss">
-.enc-header {
-  .right-menu {
-    .el-button {
-      &.user {
-        i {
-          font-size: 32px;
-          color: #fff !important;
-        }
-      }
-      &.setting {
-        i {
-          font-size: 32px;
-          color: #fff;
-        }
-      }
-      &.document {
-        i {
-          font-size: 32px;
-          color: #fff;
-        }
-      }
-    }
-  }
-}
-
-.enc-header .right-menu .el-button.user {
-  background: #479bd9 !important;
-}
-
 .moreSys {
   width: 66px;
   height: 66px;
-  /* background: url("../../assets/images/moreicon.png");
-  background-repeat: no-repeat;
-  background-size: contain; */
-  float: left
-}
-
-.enc-header .right-menu .el-button.moreSys:focus,
-.enc-header .right-menu .el-button.moreSys:hover {
-  width: 66px;
-  height: 66px;
-  background: url("../../assets/images/moreicon.png");
-  background-repeat: no-repeat;
-  background-size: contain;
   float: left
 }
 
 .warn-popover li {
-  height: 30px;
-  line-height: 30px;
+  background-color: #fff;
+  float: none;
+  height: 36px;
+  line-height: 36px;
+  font-size: 14px;
   text-align: center;
-  list-style: none;
+  margin: 12px 0;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
   cursor: pointer;
 }
 
 .even-li {
-  color: #374673!important;
+  color: #425365 !important;
 }
 
 .odd-li {
   color: #c6c6c6!important;
   border-bottom: none;
-  margin-left: -15px;
-  margin-right: -15px;
 }
 
 .warn-popover .theme-li {

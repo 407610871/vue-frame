@@ -2,10 +2,11 @@
   <div class="taskMDialog increDia">
     <!-- <i class="el-icon-info" @click="innerVisible = true">选择</i> -->
     <el-dialog title="impala服务器信息" :visible.sync="innerVisible" width="60%" :before-close="closeDialog" append-to-body>
-      <div class="title-gra">
-        <span class="grab gra-l"></span>
-        <span class="grab gra-r"></span>
-      </div>
+        <div class="title-gra plr30">
+          <div class="grab gra-r">
+            <span class="grab gra-l"></span>
+          </div>
+        </div>
       <div class="daiInfo proInfo mt30" v-loading="loading">
         <div class="proInfo-box clearfix dataInfo-box">
           <div class="comTable">
@@ -157,36 +158,14 @@ export default {
 .el-dialog__header {
   margin: 0 20px;
   padding: 20px 10px 0px;
-
   .el-dialog__title {
     font-size: $font-size-medium;
-   /*  color: $color-text-title; */
   }
 }
 
 .el-dialog__title {
   font-size: $font-size-medium;
-  /* color: $color-text-title; */
 }
-.taskMDialog {
-  .title-gra {
-  margin-bottom: 20px;
-  .grab {
-    height: 4px;
-    display: inline-block;
-  }
-  .gra-l {
-    width: 30%;
-    /* background: $color-background-lp; */
-  }
-  .gra-r {
-    width: 70%;
-    /* background: $color-background-rp; */
-  }
-}
-}
-
-
 .el-dialog__body {
   padding-top: 0px;
   padding-left: 30px;

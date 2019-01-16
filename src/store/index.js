@@ -102,7 +102,18 @@ const store = new Vuex.Store({
     },
     userThemes: '',
     thirdStepsData: {},
-    clearStepsData: ""
+    clearStepsData: "",
+    majorData: {
+      dataObj: [],
+      formSeledShow: {
+        objectType: [],
+        dataRange: [],
+        platform: [],
+        network: [],
+        dataSourceName: []
+      },
+      keyword: ""
+    }
   },
   mutations: {
     setUserInfo(state, obj) {
@@ -219,6 +230,9 @@ const store = new Vuex.Store({
     },
     setClearStepsData(state, obj) {
       state.clearStepsData = obj;
+    },
+    setMajorData(state, obj) {
+      state.majorData = obj;
     }
   },
   modules: {

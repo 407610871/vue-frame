@@ -2,10 +2,11 @@
   <div class="taskMDialog release">
     <el-button @click="dialogVisible = true" class="setting" icon="enc-icon-setting"></el-button>
     <el-dialog :title="versionDes + '  '+ versionDate" :visible.sync="dialogVisible" width="60%" :before-close="closeDialog">
-      <div class="title-gra">
-        <span class="grab gra-l"></span>
-        <span class="grab gra-r"></span>
-      </div>
+        <div class="title-gra plr30">
+          <div class="grab gra-r">
+            <span class="grab gra-l"></span>
+          </div>
+        </div>
       <div class="proInfo-box clearfix">
         <ul class="directory">
           <li><a href="#txqd">特性清单</a></li>

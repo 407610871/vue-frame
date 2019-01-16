@@ -1,26 +1,26 @@
 <template>
-  <div>
-    <el-container style="height:100%;" class="dashboard-container" v-loading="loading">
-      <el-header class="filter-container" height="86px">
-        <div class="right-tools" v-if="tabPosition == 'metadataManage'">
-          <el-tooltip class="item" effect="light" content="导入" placement="top">
-            <a href="javascript:void(0)" v-on:click="importData"><i class="enc-icon-daochu"></i></a>
-          </el-tooltip>
-          <el-tooltip class="item" effect="light" content="导出" placement="top">
-            <a href="javascript:void(0)" v-on:click="exportData"><i class="enc-icon-daoru"></i></a>
-          </el-tooltip>
-          <el-tooltip class="item" effect="light" content="刷新" placement="top">
-            <a href="javascript:void(0)" v-on:click="refresh"><i class="enc-icon-shuaxin"></i></a>
-          </el-tooltip>
+  <div  class="main-content" v-loading="loading">
+    <el-container  class="dashboard-container">
+      <el-main>
+        <div class="filter-container">
+          <div class="right-tools"  v-if="tabPosition == 'metadataManage'">
+            <el-tooltip class="item" effect="light" content="导入" placement="top">
+              <a href="javascript:void(0)" v-on:click="importData"><i class="enc-icon-daochu"></i></a>
+            </el-tooltip>
+            <el-tooltip class="item" effect="light" content="导出" placement="top">
+              <a href="javascript:void(0)" v-on:click="exportData"><i class="enc-icon-daoru"></i></a>
+            </el-tooltip>
+            <el-tooltip class="item" effect="light" content="刷新" placement="top">
+              <a href="javascript:void(0)" v-on:click="refresh"><i class="enc-icon-shuaxin"></i></a>
+            </el-tooltip>
+          </div>
+          <input type="file" id="file" name="inputFile" ref="inputer" v-on:change="importAjax" style="display:none"/>
+          <el-radio-group v-model="tabPosition" @change="listAjax">
+            <el-radio-button label="metadataManage">元数据管理</el-radio-button>
+            <el-radio-button label="dataPreview">数据预览</el-radio-button>
+          </el-radio-group>
         </div>
-        <input type="file" id="file" name="inputFile" ref="inputer" v-on:change="importAjax" style="display:none"/>
-        <el-radio-group v-model="tabPosition" style="margin-bottom: 30px;" @change="listAjax">
-          <el-radio-button label="metadataManage">元数据管理</el-radio-button>
-          <el-radio-button label="dataPreview">数据预览</el-radio-button>
-        </el-radio-group>
-      </el-header>
-      <el-main style="padding:0;">
-        <el-container style="height:100%;" class="dashboard-container" v-show="tabPosition == 'metadataManage'">
+        <el-container class="dashboard-container" v-show="tabPosition == 'metadataManage'">
           <el-main style="padding-bottom:0;">
             <el-table :data="mainTableData1" stripe :height="tableHeight" border style="width: 100%" id="mainTable2" tooltip-effect="light" :row-class-name="tableRowClassName">
               <el-table-column label="字段中文名" width="180" show-overflow-tooltip>
@@ -75,7 +75,7 @@
             </div>
           </el-footer>
         </el-container>
-        <el-container style="height:100%;" class="dashboard-container" v-show="tabPosition != 'metadataManage'">
+        <el-container class="dashboard-container" v-show="tabPosition != 'metadataManage'">
           <el-main style="padding-bottom:0;">
               <search-condition :filtercolumnList = "filtercolumnList" :searchFormItem = "item" :NOIndex="index" :searchForm="searchForm" v-for="(item,index) in searchForm" :key="index" @searchAll="searchAll" ref="searchForm"></search-condition>
               <el-row class="btn-area">
@@ -121,7 +121,6 @@
         currentPage1: 1,
 				pageSize:20,
         pageShow: true,
-        tableHeight: window.innerHeight - 280,
         mainTableReady: true,
         mainTableData1: [],
         mainTableData2: [],
@@ -173,6 +172,12 @@
       },
       storeCount(){
         return this.$store.state.pageSize;
+      },
+      tableHeight: function() {
+        if (window.innerHeight > 768) {
+          return window.innerHeight - 240;
+        }
+        return 560;
       },
     },
     components: {
@@ -588,19 +593,16 @@
 </style>
   <style rel="stylesheet/scss" lang="scss" scoped>
   .dashboard-container {
-    background: #fff;
+    .el-main {
+      padding: 0px;
+    }
     .filter-container {
-      padding-top: 40px;
+      margin-bottom: 20px;
       .right-tools {
         float: right;
         margin-right: 10px;
         a {
           font-size: 26px;
-         /*  color: #479ad8; */
-           /* :hover,
-           :active {
-           color: #f93;
-                     } */
           i {
             font-size: 32px;
           }

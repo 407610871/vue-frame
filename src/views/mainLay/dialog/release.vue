@@ -5,10 +5,11 @@
     </el-tooltip> -->
    <!--  <a href="javascript:void(0)" @click="dialogVisible = true" >版本信息</a> -->
     <el-dialog :title="versionDes + '  '+ versionDate" :visible.sync="dialogVisible" width="73%" :before-close="closeDialog">
-      <div class="title-gra">
-        <span class="grab gra-l"></span>
-        <span class="grab gra-r"></span>
-      </div>
+        <div class="title-gra plr30">
+          <div class="grab gra-r">
+            <span class="grab gra-l"></span>
+          </div>
+        </div>
       <el-col :span="4">
         <el-tabs tab-position="left" style="height: 200px;" @tab-click="handleClick">
           <el-tab-pane v-for="(item, index) in versionData" :key="index" :label="item"></el-tab-pane>
@@ -98,7 +99,7 @@ export default {
       versionDate: '',
       loading:false,
       versionData: [
-        '当前','1.1.0','1.0.1','1.0.0'
+        '1.1.1','1.1.0','1.0.1','1.0.0'
       ],
       tableData: [],
       changeData: [],
@@ -107,7 +108,7 @@ export default {
     };
   },
   mounted(){
-   this._getVersion('1.1.0');
+   this._getVersion('1.1.1');
   },
   methods: {
     //关闭对话框
@@ -119,7 +120,7 @@ export default {
     handleClick(tab, event){
       /* console.log(tab, event);*/
       if(tab.label=='当前'){
-        this._getVersion('1.1.0');
+        this._getVersion('1.1.1');
       }
       else{
         this._getVersion(tab.label);
