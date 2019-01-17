@@ -4,11 +4,11 @@
       <span class="icon-title enc-icon-fuwushouquan diabtn tin-btn add-btn" @click="dialogVisible = true"></span>
     </el-tooltip>
     <el-dialog title="选择路径" :visible.sync="dialogVisible" width="50%" :before-close="closeDialog">
-        <div class="title-gra plr30">
-          <div class="grab gra-r">
-            <span class="grab gra-l"></span>
-          </div>
+      <div class="title-gra plr30">
+        <div class="grab gra-r">
+          <span class="grab gra-l"></span>
         </div>
+      </div>
       <el-form :model="ruleForm" ref="ruleForm" label-width="100px" class="demo-ruleForm" :rules="formRules" v-loading="loading">
         <div class="daiInfo ftpInfo clearfix">
           <el-col :span="24">
@@ -19,30 +19,36 @@
             </el-col>
           </el-col>
           <el-col :span="24">
-            <el-col :span="1" class="bank"  style="margin-left: 28px;">bank</el-col>
+            <el-col :span="1" class="bank" style="margin-left: 28px;">bank</el-col>
             <el-col :span="12">
               <div class="path-box">
-                <el-tree show-checkbox node-key="id" :check-strictly="true" :props="defaultProps"
-                 accordion @check-change="handleClick" @check="nodeClick" ref="treeForm" :load="loadNode1"
-                  :data="tData" lazy :default-checked-keys="checkData" @node-expand="handleNodeExpand">
+                <el-tree show-checkbox node-key="id" :check-strictly="true" :props="defaultProps" accordion @check-change="handleClick" @check="nodeClick" ref="treeForm" :load="loadNode1" :data="tData" lazy :default-checked-keys="checkData" @node-expand="handleNodeExpand">
                 </el-tree>
               </div>
             </el-col>
           </el-col>
           <el-col :span="24" class="tip-box">
-            <el-col :span="1" class="bank"  style="margin-left: 28px;">bank</el-col>
+            <el-col :span="1" class="bank" style="margin-left: 28px;">bank</el-col>
             <el-col :span="6">
               <el-checkbox v-model="ruleForm.delete"></el-checkbox>采集后源文件是否需要删除
             </el-col>
-            <el-col :span="8">
-              <span class="ftp-tip">*暂不支持中文路径采集</span>
-            </el-col>
+            <!--  <el-col :span="8">
+             <span class="ftp-tip">*暂不支持中文路径采集</span>
+           </el-col> -->
           </el-col>
           <el-col :span="24" class="tip-box">
             <el-col :span="1" class="bank" style="margin-left: 28px;">bank</el-col>
             <el-col :span="6">
               <el-checkbox v-model="ruleForm.subDele" @change="selectChildrenNodes"></el-checkbox>包含子目录
             </el-col>
+          </el-col>
+          <el-col :span="24" class="tip-box">
+            <el-col :span="1" class="bank" style="margin-left: 28px;">bank</el-col>
+            <span class="ftp-tip">*FTP采集不支持中文路径采集</span>
+          </el-col>
+          <el-col :span="24" class="tip-box mt10">
+            <el-col :span="1" class="bank" style="margin-left: 28px;">bank</el-col>
+            <span class="ftp-tip">*若选择采集后源文件删除,对应任务的重新汇聚和数据核验将不支持</span>
           </el-col>
         </div>
       </el-form>
@@ -90,7 +96,7 @@ export default {
         isLeaf: 'leaf',
         disabled: 'chkDisabled'
       },
-      childrenData:[],
+      childrenData: [],
       checkStrictly: true,
       parentId: ""
     };
@@ -108,7 +114,7 @@ export default {
     },
     //实现树的单选
     handleClick(data, checked, node) {
-      
+
     },
     //树的点击
     nodeClick(data, node) {
@@ -125,39 +131,39 @@ export default {
       this.ruleForm.ftpurl = data.linkPath;
       this.ruleForm.ftpId = data.id;
       this.againData = data;
-      if(this.ruleForm.subDele && data.childNodes){
+      if (this.ruleForm.subDele && data.childNodes) {
         this.childrenDataHandel(data, true);
       }
     },
     // 节点展开事件
-    handleNodeExpand(data,node) {
+    handleNodeExpand(data, node) {
       this.childrenData = data;
       data.expanded = node.expanded;
       data.childNodes = node.childNodes;
       this.parentId = data.id;
       this.parentHandel(node);
       console.log(this.againData.id, this.parentId);
-      if(this.ruleForm.subDele && data.childNodes && this.parentId===this.againData.id){
+      if (this.ruleForm.subDele && data.childNodes && this.parentId === this.againData.id) {
         this.childrenDataHandel(data, true);
       }
     },
-    parentHandel(node){
-      if(node.parent && node.parent.parent !=null){
-        if(node.label !== this.againData.label){
+    parentHandel(node) {
+      if (node.parent && node.parent.parent != null) {
+        if (node.label !== this.againData.label) {
           this.parentId = node.parent.data.id;
           return this.parentHandel(node.parent);
-        }else{
+        } else {
           this.parentId = node.data.id;
         }
       }
     },
-    selectChildrenNodes(val){
-      if(this.againData.childNodes){
+    selectChildrenNodes(val) {
+      if (this.againData.childNodes) {
         this.childrenDataHandel(this.againData, val);
       }
     },
     //树选中结果的处理
-    selectDataHandel(data, checked, node){
+    selectDataHandel(data, checked, node) {
       if (this.againData.id != undefined) {
         for (let i = 0; i < this.disaData.length; i++) {
           if (this.disaData[i].id == this.againData.id) {
@@ -176,16 +182,16 @@ export default {
       this.$refs.treeForm.setCheckedNodes(this.disaData);
     },
     //勾选了包含子目录测处理结果 
-    childrenDataHandel(data, type){
-      data.childNodes.forEach(res =>{
-          res.checked = type;
-        if(res.childNodes){
+    childrenDataHandel(data, type) {
+      data.childNodes.forEach(res => {
+        res.checked = type;
+        if (res.childNodes) {
           this.childNodesHandel(res, type);
         }
-      })  
+      })
     },
-    childNodesHandel(res, type){
-      res.childNodes.forEach( res =>{
+    childNodesHandel(res, type) {
+      res.childNodes.forEach(res => {
         res.checked = type;
         return this.childNodesHandel(res, type);
       })
@@ -240,7 +246,7 @@ export default {
     //懒加载
     loadNode1(node, resolve) {
       let _self = this;
-      if (node.level !== 0){
+      if (node.level !== 0) {
         var params = {
           accessSysId: this.$route.params.sourceId,
           linkPath: node.data.linkPath
@@ -393,17 +399,19 @@ export default {
   width: 33px;
   height: 33px;
   -webkit-mask: url('../../../assets/images/dn.svg');
-  mask:url('../../../assets/images/dn.svg');
-  background-color:#000;
+  mask: url('../../../assets/images/dn.svg');
+  background-color: #000;
   display: inline-block;
   cursor: pointer;
   margin-right: 30px;
 }
 
 .is-disabled {
-  .el-checkbox__input.is-checked .el-checkbox__inner, .el-checkbox__input.is-indeterminate .el-checkbox__inner {
-    background-color:#908c8c;
-    border-color:#908c8c;
+  .el-checkbox__input.is-checked .el-checkbox__inner,
+  .el-checkbox__input.is-indeterminate .el-checkbox__inner {
+    background-color: #908c8c;
+    border-color: #908c8c;
   }
 }
+
 </style>
