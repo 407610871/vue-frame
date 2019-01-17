@@ -405,6 +405,10 @@
           this.getFiltercolumnList();
           this.dataPreviewContentAjax();
         }
+
+        else{
+        this.$refs.searchForm[0].clsFiltercolumn();
+        }
       },
 
       metadataManageAjax(){
