@@ -506,23 +506,70 @@ export default {
     //核验弹窗
     doCheck(index, row) {
       this.check = row;
-      //运行时弹出确认框
-      if (row.status == '1') {
-        this.$confirm('当前任务正在运行中， 数据核验结果可能不精准，请确认是否要继续数据核验?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          cancelButtonClass: "el-button--primary",
-          type: 'warning'
-        }).then(() => {
-         this.showTaskCheck = true;
-        }).catch(()=>{
-          
-        })
+      //ftp的核验
+      if (row.sourceType == 'ftp') {
+        var _self = this;
+        _self.loading = true;
+        _self.$ajax({
+          methods: "get",
+          url: _self.GLOBAL.api.API_DACM + "/ctables/checkFtpFileExist",
+          params: {
+            accessSysId: row.accessSysId,
+            filePath: row.dataTableName,
+            isSubDirectory: row.isSubDirectory
+          }
+        }).then(res => {
+          _self.loading = false;
+          if (res.data.success) {
+            if (res.data.data.isExitFile == "true") {
+              //运行时弹出确认框
+              if (row.status == '1') {
+                _self.$confirm('当前任务正在运行中， 数据核验结果可能不精准，请确认是否要继续数据核验?', '提示', {
+                  confirmButtonText: '确定',
+                  cancelButtonText: '取消',
+                  cancelButtonClass: "el-button--primary",
+                  type: 'warning'
+                }).then(() => {
+                  _self.showTaskCheck = true;
+                }).catch(() => {
+
+                })
+              } else {
+                _self.showTaskCheck = true;
+              }
+            } else {
+              _self.$alert(res.data.data.message, "提示", {
+                confirmButtonText: "确定",
+                callback: action => {}
+              });
+              return false;
+            }
+          } else {
+            _self.$alert(res.data.message, "提示", {
+              confirmButtonText: "确定",
+              callback: action => {}
+            });
+          }
+        });
+      } else {
+        //运行时弹出确认框
+        if (row.status == '1') {
+          this.$confirm('当前任务正在运行中， 数据核验结果可能不精准，请确认是否要继续数据核验?', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            cancelButtonClass: "el-button--primary",
+            type: 'warning'
+          }).then(() => {
+            this.showTaskCheck = true;
+          }).catch(() => {
+
+          })
+        } else {
+          this.showTaskCheck = true;
+        }
       }
-      else{
-        this.showTaskCheck = true;
-      }
-      
+
+
     },
     //重新汇聚
     doConverge(index, row) {
