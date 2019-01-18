@@ -9,7 +9,7 @@
       </div>
       <el-form label-width="150px" class="demo-ruleForm">
         <span v-show="taskBaseInfo.status==1||taskBaseInfo.status==2||(taskBaseInfo.status==5&&reqObj.startTime!=''&&reqObj.startTime!='undefined')" style="float:right;">当前状态:
-          <el-select v-model="flagDesc" :disabled="loading3" placeholder="请选择" @change="changeStatus" class="select">
+          <el-select v-model="flagDesc" :disabled="loading3" placeholder="请选择" @change="changeStatus" class="select taskselect">
             <el-option
               v-for="(item,index) in operateList"
               :key="index"
@@ -62,7 +62,7 @@
               <el-col :span="12">
                 <el-col :span="20">
                   <el-form-item label="接入对象:">
-                    <div style="height:80px;width:100%;overflow:auto;">
+                    <div style="height:80px;width:100%;overflow:auto; border:1px solid #c9cdd0;">
                       <span style="display:block" v-for="(item, index) in sourceBaseInfo.sourceObjNameList" :key="index"
                       v-show="item.type=='TABLE'||item.type=='VIEW'"
                       >{{item.type=="TABLE"?'表':'视图'}}:{{item.tableName}}</span>
@@ -262,6 +262,9 @@
 
 
 <style lang="scss" scoped>
+    
+
+    
     .el-radio+.el-radio {
       margin-left: 19px;
     }
@@ -319,12 +322,16 @@
     .plr20 {
       padding:0 20px;
     }
+
 </style>
 <style>
     .daiInfo-tabs .el-tabs__nav {
       float: none;
       text-align: left !important;
     }
+          .taskselect .el-input__inner {
+        height: 35px !important;
+      }
 </style>
 
 <script>
