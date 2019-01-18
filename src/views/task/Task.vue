@@ -11,7 +11,7 @@
         <!-- 查询按钮 -->
         <div class="searchDiv">
           <div class="dataSearch">
-            <el-input type="text" v-model="keyword" placeholder="请输入任务名称" @keyup.enter="search" />
+            <el-input type="text" v-model="keyword" placeholder="请输入任务信息" @keyup.enter.native="search" />
           </div>
           <el-button type="primary" class="doCearch" icon="enc-icon-sousuo1" @click="search"></el-button>
           <span @click="doMoreSearch">
