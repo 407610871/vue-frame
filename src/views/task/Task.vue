@@ -1444,5 +1444,7 @@ export default {
     margin-bottom: 0px !important;
   }
 }
-
+.main-content {
+  width:100%;
+}
 </style>
