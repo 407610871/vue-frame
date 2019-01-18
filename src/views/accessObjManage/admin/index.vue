@@ -2,7 +2,7 @@
   <div style="height:100%;" class="dashboard-container">
     <div>
       <el-breadcrumb separator="/">
-        <el-breadcrumb-item :to="{ path: '/dashboard' }">数据接入</el-breadcrumb-item>
+        <el-breadcrumb-item :to="{path: '/dashboard'}">数据接入</el-breadcrumb-item>
         <el-breadcrumb-item>{{ breadcrumbName }}</el-breadcrumb-item>
       </el-breadcrumb>
       <form-fliter
@@ -474,7 +474,7 @@
 </template>
 <script>
 import { mapState } from "vuex";
-import formFliter from "./../../../components/formFliter";
+import formFliter from "./../../../components/formFliterDetail/index.vue";
 import userSurvey from "@/views/accessObjManage/dialog/admin/user_survey";
 import setTask from "@/views/accessObjManage/dialog/admin/set_task";
 import singleTask from "@/views/accessObjManage/dialog/admin/single_task";
@@ -606,8 +606,8 @@ export default {
       }
     },
     majorData() {
-      this.key_word = this.$store.state.majorData.keyword;
-      return this.$store.state.majorData;
+      this.key_word = this.$store.state.detailMajorData.keyword;
+      return this.$store.state.detailMajorData;
     }
   },
   components: {
@@ -638,12 +638,7 @@ export default {
       this.searchParams.condition = "";
       this.searchParams.objectType = [];
       this.searchParams.dataRange = [];
-      let map = {
-        dataObj: [],
-        formSeledShow: {},
-        keyword: ""
-      };
-      this.$store.commit("setMajorData", map);
+
     }
   },
   mounted() {
@@ -1097,11 +1092,11 @@ export default {
     deleteKeyWord() {
       this.key_word = "";
       let map = {
-        dataObj: this.$store.state.majorData.dataObj,
-        formSeledShow: this.$store.state.majorData.formSeledShow,
+        dataObj: this.$store.state.detailMajorData.dataObj,
+        formSeledShow: this.$store.state.detailMajorData.formSeledShow,
         keyword: ""
       };
-      this.$store.commit("setMajorData", map);
+      this.$store.commit("setDetailMajorData", map);
     }
   }
 };

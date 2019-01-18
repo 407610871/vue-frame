@@ -11,6 +11,7 @@
         v-bind:formCollapse="collapse"
         v-bind:deleteData="deleteData"
         v-bind:dataObj="formFilterData"
+        v-bind:key_word="key_word"
         @doSearch="search"
         @formFilter="changeFormFilter"
       />
@@ -44,10 +45,17 @@
           </div>
         </el-form-item>
       </el-form>
-    </div> -->
-    <div class="el-breadcrumb" style="display: flex;justify-content: flex-end; flex-wrap: wrap;" v-show="key_word!='' || majorData.length>0">
+    </div>-->
+    <div
+      class="el-breadcrumb"
+      style="display: flex;justify-content: flex-end; flex-wrap: wrap;"
+      v-show="key_word!='' || majorData.length>0"
+    >
       <div v-show="key_word!=''">
-        <span class="lookstyle">{{key_word}} <i class="enc-icon-guanbi" @click="deleteKeyWord"></i></span>    
+        <span class="lookstyle">
+          {{key_word}}
+          <i class="enc-icon-guanbi" @click="deleteKeyWord"></i>
+        </span>
       </div>
       <div v-for="(item, index) in majorData" :key="index">
         <span class="lookstyle">
@@ -208,19 +216,18 @@ export default {
     majorData() {
       this.key_word = this.$store.state.majorData.keyword;
       let majorSelectData = [];
-      this.$store.state.majorData.dataObj.forEach((v1, index1) =>{
+      this.$store.state.majorData.dataObj.forEach((v1, index1) => {
         let data = this.$store.state.majorData.formSeledShow[v1.id];
-        data.forEach((v2,index2)=>{
+        data.forEach((v2, index2) => {
           let map = {
             id: v2.id,
             name: v2.name,
             index1: index1,
-            index2: index2,
-          }
-          majorSelectData.push(map)
-        })
-
-      })
+            index2: index2
+          };
+          majorSelectData.push(map);
+        });
+      });
       return majorSelectData;
     }
   },
@@ -235,12 +242,6 @@ export default {
       if (to.name == "dashboard") {
         this.setCount(this.$store.state.deptId);
         this.loadTable(this.$store.state.deptId);
-        let map = {
-          dataObj: [],
-          formSeledShow: {},
-          keyword: ""
-        };
-        this.$store.commit("setMajorData", map);
       }
     }
   },
@@ -387,8 +388,7 @@ export default {
             _self.formFilterData[0].checkData = list;
           }
         })
-        .catch(function(err) {
-        });
+        .catch(function(err) {});
 
       var objNets = JSON.parse(localStorage.getItem("NetWork"));
       objNets = null;
@@ -429,7 +429,7 @@ export default {
             }
           })
           .then(function(res) {
-           if (res.data.success) {
+            if (res.data.success) {
               var list = [];
               let objNet = JSON.stringify(res.data);
               window.localStorage.setItem("ButtPlatForm", objNet);
@@ -446,8 +446,7 @@ export default {
               _self.formFilterData[2].checkData = list;
             }
           })
-          .catch(function(err) {
-          });
+          .catch(function(err) {});
       } else {
         let netList = [];
         for (var value of objNets) {
@@ -803,7 +802,5 @@ export default {
   font-weight: normal;
   padding-right: 20px;
 }
-
 </style>
-
 
