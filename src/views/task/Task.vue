@@ -253,7 +253,11 @@
             <span v-else-if="scope.row.status==5">准备中</span>
           </template>
         </el-table-column>
-        <el-table-column prop="joinDataNum" label="已接入数据量" :show-overflow-tooltip="true" width="150"></el-table-column>
+        <el-table-column  label="已接入数据量" :show-overflow-tooltip="true" width="150">
+           <template slot-scope="scope">
+             <span>{{scope.row.status=='0'?'':scope.row.joinDataNum}}</span>
+           </template>
+        </el-table-column>
         <el-table-column label="操作" width="260">
           <template slot-scope="scope">
             <el-button v-if="scope.row.status==0||scope.row.status==2" type="text" size="small" @click="doRun(scope.$index, scope.row)">运行</el-button>
