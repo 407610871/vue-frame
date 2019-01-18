@@ -43,6 +43,11 @@
               </el-radio-group>
             </el-form-item>
           </el-col>
+          <el-col :span="24" :class="ruleForm.history==true?'cutoff-line':''" v-show="this.ruleForm.accessMode=='0'">
+            <el-form-item label="历史记录:" prop="history">
+              <el-checkbox v-model="ruleForm.history">包含历史记录 <span class="ml10">(勾选此项,对应的历史记录也将同步全量采集)</span></el-checkbox>
+            </el-form-item>
+          </el-col>
           <el-col :span="24" v-show="ruleForm.accessMode=='1'">
             <el-col :span="6">
               <el-form-item label="接入起始点:">
@@ -51,6 +56,15 @@
             </el-col>
             <el-col :span="18">
               <span class="ml25 tasktips">tips:仅支持以下三种类型:(自增变量(整型),自增时间戳(long型),自增时间戳(字符型,varchar))</span>
+            </el-col>
+          </el-col>
+          <el-col :span="24">
+            <el-col :span="10" class="collbg" v-if="this.ruleForm.accessMode=='1'||(this.ruleForm.history==true&&this.ruleForm.accessMode=='0')">
+              <el-form-item label="增量字段:" prop="increment">
+                <el-input v-model="ruleForm.increment" class="fl"></el-input>
+                <el-button type="primary" class="fl increbtn" @click="innerVisible = true">选择</el-button>
+                <incre-map :msg='innerVisible' :incid="pdata.id" :yid="yid" :alincre="this.increArr" @showIncre="showIncrement()" @saveIncre="saveIncrement($event)"></incre-map>
+              </el-form-item>
             </el-col>
           </el-col>
           <el-col :span="24" v-show="ruleForm.accessMode=='0'&&this.$route.params.type=='oracle'">
@@ -67,15 +81,6 @@
             <el-col :span="6">
               <el-form-item label="密码:" prop="password">
                 <el-input v-model="ruleForm.password" class="fl"></el-input>
-              </el-form-item>
-            </el-col>
-          </el-col>
-          <el-col :span="24">
-            <el-col :span="10" class="collbg" v-if="this.ruleForm.accessMode=='1'">
-              <el-form-item label="增量字段:" prop="increment">
-                <el-input v-model="ruleForm.increment" class="fl"></el-input>
-                <el-button type="primary" class="fl increbtn" @click="innerVisible = true">选择</el-button>
-                <incre-map :msg='innerVisible' :incid="pdata.id" :yid="yid" :alincre="this.increArr" @showIncre="showIncrement()" @saveIncre="saveIncrement($event)"></incre-map>
               </el-form-item>
             </el-col>
           </el-col>
@@ -355,6 +360,7 @@ export default {
         dthour: '',
         dtmin: '',
         accessPri: '1', //优先级
+        history: false, //历史记录
         taskSubMode: 'true' //提交方式
       },
       formRules: {
@@ -574,6 +580,7 @@ export default {
       this.$store.commit('setNums', false);
       var pollIntervalMs = -1;
       var actech = 'JDBC';
+      var includeHistoryData = '';
       //this.cleanData();
       if (this.ruleForm.cycleSet == '0' && this.ruleForm.accessMode != "0" && this.ruleForm.accessMode != "2") {
         let jday = 0;;
@@ -688,6 +695,15 @@ export default {
         }
         ctt = '0';
         actech = this.$route.params.type;
+        if (this.ruleForm.history == true) {
+          includeHistoryData = '1';
+          if (this.increArr.id == undefined) {
+            this.$message.warning('请选择增量字段');
+            return false;
+          }
+        } else if (this.ruleForm.history == false) {
+          includeHistoryData = '0';
+        }
       }
       if (this.ruleForm.accessMode == "2") { //实时
         ctt = '3'
@@ -731,6 +747,7 @@ export default {
           "xStreamUsername": this.ruleForm.userName,
           "xStreamPassword": this.ruleForm.password,
           "jobType": actech,
+          "includeHistoryData": includeHistoryData
         }
         this.loading = true;
         if (this.$store.state.isSign == "false" || this.$store.state.isSign == false) {
@@ -820,7 +837,7 @@ export default {
             });
           })
         }
-       
+
       } else {
         //注册
         var save = {
@@ -838,7 +855,8 @@ export default {
           "startLocation": this.ruleForm.startLocation,
           "xStreamServiceName": this.ruleForm.xStreamServiceName,
           "xStreamUsername": this.ruleForm.userName,
-          "xStreamPassword": this.ruleForm.password
+          "xStreamPassword": this.ruleForm.password,
+          "includeHistoryData": includeHistoryData
         }
         this.loading = true;
         if (this.$store.state.isSign == "false" || this.$store.state.isSign == false) {
@@ -1066,6 +1084,11 @@ export default {
             this.taskInfoId = data.task_info_id;
             this.isregin = true;
             this.ruleForm.xStreamServiceName = data.xStreamServiceName;
+            if (data.includeHistoryData == '1') {
+              this.ruleForm.history = true;
+            } else {
+              data.includeHistoryData = false;
+            }
             this.ruleForm.userName = data.xStreamUsername;
             this.ruleForm.password = data.xStreamPassword;
           }

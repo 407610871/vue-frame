@@ -385,7 +385,8 @@ export default {
         _self.loading = true;
         this.$ajax({
           methods: "get",
-          url: this.GLOBAL.api.API_DACM + "/ctables/checkFtpFileExist",
+          /*url: this.GLOBAL.api.API_DACM + "/ctables/checkFtpFileExist",*/
+          url:'http://10.19.160.59:8080/DACM/ctables/checkFtpFileExist',
           params: {
             accessSysId: data.accessSysId,
             filePath: data.extendParams.filePath,
@@ -394,15 +395,24 @@ export default {
         }).then(res => {
           _self.loading = false;
           if (res.data.success) {
-            if (res.data.data.isExitFile == "true") {
-              _self.showSetNore = true;
+            if (res.data.data.isExitChineseName == 'false') {
+              if (res.data.data.isExitFile == "true") {
+                _self.showSetNore = true;
+              } else {
+                _self.$alert(res.data.data.message, "提示", {
+                  confirmButtonText: "确定",
+                  callback: action => {}
+                });
+                return false;
+              }
             } else {
-              _self.$alert(res.data.data.message, "提示", {
+              _self.$alert('当前系统不支持中文目录,仅支持英文和数字,请修改后再提交采集任务', "提示", {
                 confirmButtonText: "确定",
                 callback: action => {}
               });
               return false;
             }
+
           } else {
             _self.$alert(res.data.message, "提示", {
               confirmButtonText: "确定",
