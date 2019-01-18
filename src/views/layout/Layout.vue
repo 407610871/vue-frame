@@ -379,7 +379,7 @@ export default {
         var obj = {
           resetData: name
         };
-        this.$store.commit("resetQueryParam", obj);
+        //this.$store.commit("resetQueryParam", obj);
       }
       this.$router.push({ name: name });
     },

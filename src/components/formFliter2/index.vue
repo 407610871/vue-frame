@@ -1,11 +1,11 @@
 
 <template> 
 <el-form label-width="150px" class="form-fliter" :style="{height:formHeight}"> 
-<el-form-item v-for="(item,indexs) in dataObj" :label="item.name" v-if='indexs<formHeight'> 
+<el-form-item v-for="(item,indexs) in dataObj" :key="indexs" :label="item.name" v-if='indexs<formHeight'> 
 
-<el-radio v-if="item.type=='radio'" v-for="subItem in item.checkData" v-model="formSeled[item.id]" :label="subItem.id" :key="subItem.id" @change="formFilter">{{subItem.name}}</el-radio> 
+<el-radio v-if="item.type=='radio'" v-for="(subItem, index) in item.checkData" v-model="formSeled[item.id]" :label="subItem.id" :key="index" @change="formFilter">{{subItem.name}}</el-radio> 
 <el-checkbox-group v-if="item.type=='checkbox'" v-model="formSeled[item.id]" @change="formFilter"> 
-<el-checkbox    v-for="(subItem) in item.checkData" :label="subItem.id" :key="subItem.id" >{{subItem.name}}</el-checkbox> 
+<el-checkbox    v-for="(subItem ,index) in item.checkData" :label="subItem.id" :key="index" >{{subItem.name}}</el-checkbox> 
 </el-checkbox-group> 
 </el-form-item> 
 </el-form> 
@@ -31,14 +31,6 @@ export default {
   computed: {
     formHeight: function() {
       return this.formCollapse ? 1 : 3;
-    }
-  },
-  watch: {
-    $route(to, form) {
-      if (to.name == "recyclingBins") {
-        this.formSeled = {};
-        this.getFormSeled();
-      }
     }
   },
   mounted() {
