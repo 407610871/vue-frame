@@ -8,7 +8,7 @@
       <div class ref="searchArea">
         <div class="searchDiv">
           <div class="dataSearch">
-            <el-input type="text" v-model="taskName" placeholder="请输入任务名称" @keyup.enter.native="search"/>
+            <el-input type="text" v-model="taskName" placeholder="请输入查询条件" @keyup.enter.native="search"/>
           </div>
           <el-button type="primary" class="doCearch" icon="enc-icon-sousuo1" @click="search"></el-button>
           <span @click="doMoreSearch">高级搜索
