@@ -1,105 +1,112 @@
 <template>
-  <div  class="main-content" v-loading="loading">
-    <el-container  class="dashboard-container">
-      <el-main>
-        <div class="filter-container">
-          <div class="right-tools"  v-if="tabPosition == 'metadataManage'">
-            <el-tooltip class="item" effect="light" content="导入" placement="top">
-              <a href="javascript:void(0)" v-on:click="importData"><i class="enc-icon-daochu"></i></a>
-            </el-tooltip>
-            <el-tooltip class="item" effect="light" content="导出" placement="top">
-              <a href="javascript:void(0)" v-on:click="exportData"><i class="enc-icon-daoru"></i></a>
-            </el-tooltip>
-            <el-tooltip class="item" effect="light" content="刷新" placement="top">
-              <a href="javascript:void(0)" v-on:click="refresh"><i class="enc-icon-shuaxin"></i></a>
-            </el-tooltip>
-          </div>
-          <input type="file" id="file" name="inputFile" ref="inputer" v-on:change="importAjax" style="display:none"/>
-          <el-radio-group v-model="tabPosition" @change="listAjax">
-            <el-radio-button label="metadataManage">元数据管理</el-radio-button>
-            <el-radio-button label="dataPreview">数据预览</el-radio-button>
-          </el-radio-group>
-        </div>
-        <el-container class="dashboard-container" v-show="tabPosition == 'metadataManage'">
-          <el-main style="padding-bottom:0;">
-            <el-table :data="mainTableData1" stripe :height="tableHeight" border style="width: 100%" id="mainTable2" tooltip-effect="light" :row-class-name="tableRowClassName">
-              <el-table-column label="字段中文名" width="180" show-overflow-tooltip>
-                <template slot-scope="scope">
-                  <div>
-                    <el-tooltip class="item" effect="light" content="修改" placement="top">
-                      <i @click="editName(scope.row,scope.$index)" class="el-icon-edit-outline table-action-btn" v-show="!scope.row.showEdit" />
-                    </el-tooltip>
-                    <span v-show="!scope.row.showEdit">{{ scope.row.diyComments }}</span>
-                    <input type="text" v-model="editingRow.diyComments" v-show="scope.row.showEdit" @blur="changeName(scope.$index, scope.row)" />
-                  </div>
-                </template>
-              </el-table-column>
-              <el-table-column prop="name" label="字段名" width="180">
-              </el-table-column>
-              <el-table-column prop="datatype" label="字段类型" min-width="160">
-              </el-table-column>
-              <el-table-column prop="length" label="字段长度" min-width="160">
-              </el-table-column>
-              <el-table-column prop="isNull" label="是否为空" min-width="160">
-                <template slot-scope="scope">
-                  <span v-if="scope.row.isNull!='N'">是</span>
-                  <span v-if="scope.row.isNull=='N'">否</span>
-                </template>
-              </el-table-column>
-              <el-table-column label="是否为主键" min-width="160">
-                <template slot-scope="scope">
-                  <span v-if="scope.row.primaryKey">是</span>
-                  <span v-if="!scope.row.primaryKey">否</span>
-                </template>
-              </el-table-column>
-              <el-table-column label="是否为索引" min-width="160">
-                <template slot-scope="scope">
-                  <span v-if="scope.row.index">是</span>
-                  <span v-if="!scope.row.index">否</span>
-                </template>
-              </el-table-column>
-              <el-table-column prop="comments" label="描述" show-overflow-tooltip>
-              </el-table-column>
-              <el-table-column label="是否为增量" min-width="160">
-                <template slot-scope="scope">
-                  <span v-if="scope.row.isIncremental == '1'">是</span>
-                  <span v-if="scope.row.isIncremental == '0'">否</span>
-                </template>
-              </el-table-column>
-            </el-table>
-          </el-main>
-          <el-footer>
-            <div class="enc-pagination">
-              <el-pagination v-if="mainTableReady" v-show="pageShow" style="float:right; margin:10px;" @current-change="goPage" background :page-size="pageSize" :total="mainTableDataTotal1" layout="prev, pager, next, jumper" :current-page.sync="currentPage1">
-              </el-pagination>
+  <div>
+      <el-breadcrumb separator="/">
+        <el-breadcrumb-item :to="{ path: '/dashboard' }">数据接入</el-breadcrumb-item>
+        <el-breadcrumb-item><a @click="goToDetail">{{sourceName }}</a></el-breadcrumb-item>
+        <el-breadcrumb-item>{{objName }}</el-breadcrumb-item>
+      </el-breadcrumb>
+    <div  class="main-content" v-loading="loading">
+      <el-container  class="dashboard-container">
+        <el-main>
+          <div class="filter-container">
+            <div class="right-tools"  v-if="tabPosition == 'metadataManage'">
+              <el-tooltip class="item" effect="light" content="导入" placement="top">
+                <a href="javascript:void(0)" v-on:click="importData"><i class="enc-icon-daochu"></i></a>
+              </el-tooltip>
+              <el-tooltip class="item" effect="light" content="导出" placement="top">
+                <a href="javascript:void(0)" v-on:click="exportData"><i class="enc-icon-daoru"></i></a>
+              </el-tooltip>
+              <el-tooltip class="item" effect="light" content="刷新" placement="top">
+                <a href="javascript:void(0)" v-on:click="refresh"><i class="enc-icon-shuaxin"></i></a>
+              </el-tooltip>
             </div>
-          </el-footer>
-        </el-container>
-        <el-container class="dashboard-container" v-show="tabPosition != 'metadataManage'">
-          <el-main style="padding-bottom:0;">
-              <search-condition :filtercolumnList = "filtercolumnList" :searchFormItem = "item" :NOIndex="index" :searchForm="searchForm" v-for="(item,index) in searchForm" :key="index" @searchAll="searchAll" ref="searchForm"></search-condition>
-              <el-row class="btn-area">
-                <el-col><el-button type="primary" size="mini" @click="addCondition">增加搜索条件</el-button></el-col>
-              </el-row>
-            <el-table :data="mainTableData2" stripe  :height="tableHeight" border style="width: 100%" tooltip-effect="light">
-              <el-table-column v-for="(val, key, index) in data2Columns" v-if="index<6" :prop="key" :label="getLabel(key)" width="width" :key="index">
-              </el-table-column>
-							<el-table-column label="描述">
-								<template slot-scope="scope">
-									<el-popover placement="left-start" width="400" trigger="hover">
-										<ul class="popup-menu">
-											<li v-for="(val, key, index) in data2Columns" :key="index">{{key}}：{{scope.row[key]}}</li>
-										</ul>
-										<a slot="reference" href="javascript:void(0)">更多详情<i class="el-icon-caret-bottom"></i></a> 
-									</el-popover>
-								</template>
-							</el-table-column>
-            </el-table>
-          </el-main>
-        </el-container>
-      </el-main>
-    </el-container>
-    <data-import v-if="importList.ready" :importList="importList" @closeImport="closeImport"></data-import>
+            <input type="file" id="file" name="inputFile" ref="inputer" v-on:change="importAjax" style="display:none"/>
+            <el-radio-group v-model="tabPosition" @change="listAjax">
+              <el-radio-button label="metadataManage">元数据管理</el-radio-button>
+              <el-radio-button label="dataPreview">数据预览</el-radio-button>
+            </el-radio-group>
+          </div>
+          <el-container class="dashboard-container" v-show="tabPosition == 'metadataManage'">
+            <el-main style="padding-bottom:0;">
+              <el-table :data="mainTableData1" stripe :height="tableHeight" border style="width: 100%" id="mainTable2" tooltip-effect="light" :row-class-name="tableRowClassName">
+                <el-table-column label="字段中文名" width="180" show-overflow-tooltip>
+                  <template slot-scope="scope">
+                    <div>
+                      <el-tooltip class="item" effect="light" content="修改" placement="top">
+                        <i @click="editName(scope.row,scope.$index)" class="el-icon-edit-outline table-action-btn" v-show="!scope.row.showEdit" />
+                      </el-tooltip>
+                      <span v-show="!scope.row.showEdit">{{ scope.row.diyComments }}</span>
+                      <input type="text" v-model="editingRow.diyComments" v-show="scope.row.showEdit" @blur="changeName(scope.$index, scope.row)" />
+                    </div>
+                  </template>
+                </el-table-column>
+                <el-table-column prop="name" label="字段名" width="180">
+                </el-table-column>
+                <el-table-column prop="datatype" label="字段类型" min-width="160">
+                </el-table-column>
+                <el-table-column prop="length" label="字段长度" min-width="160">
+                </el-table-column>
+                <el-table-column prop="isNull" label="是否为空" min-width="160">
+                  <template slot-scope="scope">
+                    <span v-if="scope.row.isNull!='N'">是</span>
+                    <span v-if="scope.row.isNull=='N'">否</span>
+                  </template>
+                </el-table-column>
+                <el-table-column label="是否为主键" min-width="160">
+                  <template slot-scope="scope">
+                    <span v-if="scope.row.primaryKey">是</span>
+                    <span v-if="!scope.row.primaryKey">否</span>
+                  </template>
+                </el-table-column>
+                <el-table-column label="是否为索引" min-width="160">
+                  <template slot-scope="scope">
+                    <span v-if="scope.row.index">是</span>
+                    <span v-if="!scope.row.index">否</span>
+                  </template>
+                </el-table-column>
+                <el-table-column prop="comments" label="描述" show-overflow-tooltip>
+                </el-table-column>
+                <el-table-column label="是否为增量" min-width="160">
+                  <template slot-scope="scope">
+                    <span v-if="scope.row.isIncremental == '1'">是</span>
+                    <span v-if="scope.row.isIncremental == '0'">否</span>
+                  </template>
+                </el-table-column>
+              </el-table>
+            </el-main>
+            <el-footer>
+              <div class="enc-pagination">
+                <el-pagination v-if="mainTableReady" v-show="pageShow" style="float:right; margin:10px;" @current-change="goPage" background :page-size="pageSize" :total="mainTableDataTotal1" layout="prev, pager, next, jumper" :current-page.sync="currentPage1">
+                </el-pagination>
+              </div>
+            </el-footer>
+          </el-container>
+          <el-container class="dashboard-container" v-show="tabPosition != 'metadataManage'">
+            <el-main style="padding-bottom:0;">
+                <search-condition :filtercolumnList = "filtercolumnList" :searchFormItem = "item" :NOIndex="index" :searchForm="searchForm" v-for="(item,index) in searchForm" :key="index" @searchAll="searchAll" ref="searchForm"></search-condition>
+                <el-row class="btn-area">
+                  <el-col><el-button type="primary" size="mini" @click="addCondition">增加搜索条件</el-button></el-col>
+                </el-row>
+              <el-table :data="mainTableData2" stripe  :height="tableHeight" border style="width: 100%" tooltip-effect="light">
+                <el-table-column v-for="(val, key, index) in data2Columns" v-if="index<6" :prop="key" :label="getLabel(key)" width="width" :key="index">
+                </el-table-column>
+                <el-table-column label="描述">
+                  <template slot-scope="scope">
+                    <el-popover placement="left-start" width="400" trigger="hover">
+                      <ul class="popup-menu">
+                        <li v-for="(val, key, index) in data2Columns" :key="index">{{key}}：{{scope.row[key]}}</li>
+                      </ul>
+                      <a slot="reference" href="javascript:void(0)">更多详情<i class="el-icon-caret-bottom"></i></a> 
+                    </el-popover>
+                  </template>
+                </el-table-column>
+              </el-table>
+            </el-main>
+          </el-container>
+        </el-main>
+      </el-container>
+      <data-import v-if="importList.ready" :importList="importList" @closeImport="closeImport"></data-import>
+    </div>
   </div>
   </template>
   <script>
@@ -145,7 +152,7 @@
           accessSysDialectId: '',
           filePath: ''
         },
-        flagInterval: null
+        flagInterval: null,
       }
     },
     computed: {
@@ -175,10 +182,16 @@
       },
       tableHeight: function() {
         if (window.innerHeight > 768) {
-          return window.innerHeight - 240;
+          return window.innerHeight - 284;
         }
-        return 560;
+        return 520;
       },
+      sourceName() {
+        return decodeURI(this.$route.params.sourceName);
+      },
+      objName() {
+        return decodeURI(this.$route.params.objName);
+      }
     },
     components: {
       dataImport,
@@ -197,7 +210,7 @@
         this.setStore({
           tabPosition: newVal
         });
-      },
+      }
     },
     mounted() {
       this.$root.eventHub.$emit(
@@ -576,7 +589,17 @@
           data: storeData
         });
       },
-    
+      goToDetail() {
+        let  params = {
+          sourceId: this.$route.params.sourceId,
+          sourceName: this.$route.params.sourceName,
+          type: this.$route.params.type
+        }
+         this.$router.push({
+           name: "accessObjManage",
+            params: params
+         })
+      }
     }
   }
 

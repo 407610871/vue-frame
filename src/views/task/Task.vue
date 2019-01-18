@@ -11,7 +11,7 @@
         <!-- 查询按钮 -->
         <div class="searchDiv">
           <div class="dataSearch">
-            <el-input type="text" v-model="keyword" placeholder="请输入任务名称" @keyup.enter="search" />
+            <el-input type="text" v-model="keyword" placeholder="请输入查询条件" @keyup.enter.native="search" />
           </div>
           <el-button type="primary" class="doCearch" icon="enc-icon-sousuo1" @click="search"></el-button>
           <span @click="doMoreSearch">
@@ -253,7 +253,11 @@
             <span v-else-if="scope.row.status==5">准备中</span>
           </template>
         </el-table-column>
-        <el-table-column prop="joinDataNum" label="已接入数据量" :show-overflow-tooltip="true" width="150"></el-table-column>
+        <el-table-column  label="已接入数据量" :show-overflow-tooltip="true" width="150">
+           <template slot-scope="scope">
+             <span>{{scope.row.status=='0'?'':scope.row.joinDataNum}}</span>
+           </template>
+        </el-table-column>
         <el-table-column label="操作" width="260">
           <template slot-scope="scope">
             <el-button v-if="scope.row.status==0||scope.row.status==2" type="text" size="small" @click="doRun(scope.$index, scope.row)">运行</el-button>
@@ -1491,5 +1495,7 @@ export default {
     margin-bottom: 0px !important;
   }
 }
-
+.main-content {
+  width:100%;
+}
 </style>

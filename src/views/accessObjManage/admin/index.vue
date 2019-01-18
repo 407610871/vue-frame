@@ -2,20 +2,23 @@
   <div style="height:100%;" class="dashboard-container">
     <div>
       <el-breadcrumb separator="/">
-        <el-breadcrumb-item :to="{ path: '/dashboard' }">数据接入</el-breadcrumb-item>
+        <el-breadcrumb-item :to="{path: '/dashboard'}">数据接入</el-breadcrumb-item>
         <el-breadcrumb-item>{{ breadcrumbName }}</el-breadcrumb-item>
       </el-breadcrumb>
       <form-fliter :ObjManage="ObjManage" v-if="cleanData" @highMore="moreHeight" @highSeaech="hightrue" v-bind:formCollapse="collapse" v-bind:dataObj="formFilterData" v-bind:key_word="key_word" v-bind:deleteData="deleteData" @doSearch="search" @formFilter="changeFormFilter" />
     </div>
-    <div class="el-breadcrumb" v-show="majorData.keyword!=''||majorData.formSeledShow.dataSourceName.length!=0
+    <div
+      class="el-breadcrumb"
+      v-show="majorData.keyword!=''||( Object.keys(majorData.formSeledShow).length!=0 && (majorData.formSeledShow.dataSourceName.length!=0
             ||majorData.formSeledShow.network.length!=0||majorData.formSeledShow.platform.length!=0
-            ||majorData.formSeledShow.objectType.length!=0||majorData.formSeledShow.dataRange.length!=0">
+            ||majorData.formSeledShow.objectType.length!=0||majorData.formSeledShow.dataRange.length!=0))"
+    >
       <el-form>
         <el-form-item class="isSelect">
           <div v-show="majorData.keyword!=''">
             <span class="lookstyle">
               {{majorData.keyword}}
-              <i class="enc-icon-guanbi" @click="key_word=''"></i>
+              <i class="enc-icon-guanbi" @click="deleteKeyWord"></i>
             </span>
           </div>
           <div v-show="majorData.formSeledShow[item.id].length!=0" v-for="(item,index1) in majorData.dataObj" :key="index1">
@@ -205,7 +208,7 @@
 </template>
 <script>
 import { mapState } from "vuex";
-import formFliter from "./../../../components/formFliter";
+import formFliter from "./../../../components/formFliterDetail/index.vue";
 import userSurvey from "@/views/accessObjManage/dialog/admin/user_survey";
 import setTask from "@/views/accessObjManage/dialog/admin/set_task";
 import singleTask from "@/views/accessObjManage/dialog/admin/single_task";
@@ -335,8 +338,8 @@ export default {
       }
     },
     majorData() {
-      this.key_word = this.$store.state.majorData.keyword;
-      return this.$store.state.majorData;
+      this.key_word = this.$store.state.detailMajorData.keyword;
+      return this.$store.state.detailMajorData;
     }
   },
   components: {
@@ -366,6 +369,7 @@ export default {
       this.searchParams.condition = "";
       this.searchParams.objectType = [];
       this.searchParams.dataRange = [];
+
     }
   },
   mounted() {
@@ -386,6 +390,7 @@ export default {
         this.$ajax({
           methods: "get",
           url: this.GLOBAL.api.API_DACM + "/ctables/checkFtpFileExist",
+         /* url:'http://10.19.160.59:8080/DACM/ctables/checkFtpFileExist',*/
           params: {
             accessSysId: data.accessSysId,
             filePath: data.extendParams.filePath,
@@ -394,15 +399,24 @@ export default {
         }).then(res => {
           _self.loading = false;
           if (res.data.success) {
-            if (res.data.data.isExitFile == "true") {
-              _self.showSetNore = true;
+            if (res.data.data.isExitChineseName == 'false') {
+              if (res.data.data.isExitFile == "true") {
+                _self.showSetNore = true;
+              } else {
+                _self.$alert(res.data.data.message, "提示", {
+                  confirmButtonText: "确定",
+                  callback: action => {}
+                });
+                return false;
+              }
             } else {
-              _self.$alert(res.data.data.message, "提示", {
+              _self.$alert('当前系统不支持中文目录,仅支持英文和数字,请修改后再提交采集任务', "提示", {
                 confirmButtonText: "确定",
                 callback: action => {}
               });
               return false;
             }
+
           } else {
             _self.$alert(res.data.message, "提示", {
               confirmButtonText: "确定",
@@ -848,6 +862,15 @@ export default {
         id,
         index
       };
+    },
+    deleteKeyWord() {
+      this.key_word = "";
+      let map = {
+        dataObj: this.$store.state.detailMajorData.dataObj,
+        formSeledShow: this.$store.state.detailMajorData.formSeledShow,
+        keyword: ""
+      };
+      this.$store.commit("setDetailMajorData", map);
     }
   }
 };

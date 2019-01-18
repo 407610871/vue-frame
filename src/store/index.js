@@ -113,6 +113,17 @@ const store = new Vuex.Store({
         dataSourceName: []
       },
       keyword: ""
+    },
+    detailMajorData: {
+      dataObj: [],
+      formSeledShow: {
+        objectType: [],
+        dataRange: [],
+        platform: [],
+        network: [],
+        dataSourceName: []
+      },
+      keyword: ""
     }
   },
   mutations: {
@@ -233,6 +244,9 @@ const store = new Vuex.Store({
     },
     setMajorData(state, obj) {
       state.majorData = obj;
+    },
+    setDetailMajorData(state, obj) {
+      state.detailMajorData = obj;
     }
   },
   modules: {

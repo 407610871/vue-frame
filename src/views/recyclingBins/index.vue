@@ -91,6 +91,9 @@ export default {
       if (this.queryParamReady) {
          this.loadTable(this.$store.state.deptId);
       }
+    },
+    $route(to, form) {
+      this.storeReady();
     }
   },
   created() {
@@ -116,7 +119,7 @@ export default {
   },
   methods: {
     setFliter(data) {
-      var queryParams = this.$store.state.queryParams[this.$route.name];
+      var queryParams = this.$store.state.queryParams["recyclingBins"];
       var network = queryParams.network ? queryParams.network : [];
       var dataSourceName = queryParams.dataSourceName ? queryParams.dataSourceName : [];
       var platform = queryParams.platform ? queryParams.platform : [];
@@ -254,7 +257,7 @@ export default {
         storeData[i] = obj[i];
       }
       this.$store.commit('setQueryParams', {
-        name: this.$route.name,
+        name: "recyclingBins",
         data: storeData
       });
     },
