@@ -12,8 +12,7 @@
       <el-form :model="ruleForm" ref="ruleForm" label-width="100px" class="demo-ruleForm" :rules="formRules" v-loading="loading">
         <div class="daiInfo ftpInfo clearfix">
           <el-col :span="24">
-           <el-col :span="1" class="bank" style="margin-left: 28px;">bank</el-col>
-            <el-col :span="8">
+            <el-col :span="8" style="margin-left:-17px;">
               <el-form-item label="路径:" prop="ftpurl">
                 <el-input v-model="ruleForm.ftpurl" readonly></el-input>
               </el-form-item>
