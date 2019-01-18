@@ -385,8 +385,8 @@ export default {
         _self.loading = true;
         this.$ajax({
           methods: "get",
-          /*url: this.GLOBAL.api.API_DACM + "/ctables/checkFtpFileExist",*/
-          url:'http://10.19.160.59:8080/DACM/ctables/checkFtpFileExist',
+          url: this.GLOBAL.api.API_DACM + "/ctables/checkFtpFileExist",
+         /* url:'http://10.19.160.59:8080/DACM/ctables/checkFtpFileExist',*/
           params: {
             accessSysId: data.accessSysId,
             filePath: data.extendParams.filePath,
