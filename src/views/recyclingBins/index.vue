@@ -5,7 +5,7 @@
               回收箱
       </el-breadcrumb-item>
     </el-breadcrumb>
-    <el-container class="dashboard-container main-content" v-loading="loading">
+    <div class="dashboard-container main-content" v-loading="loading">
       <div class="filter-container" :height="headerHeight">
         <a v-on:click="collapseExpand" class="right-btn collapse-btn"><i :class="{'enc-icon-zhankai':collapse,'enc-icon-shousuo':!collapse}"></i></a>
         <formFliter v-if="queryParamReady" v-bind:formCollapse="collapse" v-bind:dataObj="formFilterData" @formFilter="changeFormFilter" />
@@ -51,7 +51,7 @@
           </el-pagination>
         </div>
       </el-footer>
-    </el-container>
+    </div>
   </div>
 </template>
 <script>
