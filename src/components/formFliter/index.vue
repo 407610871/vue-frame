@@ -2,7 +2,7 @@
   <el-form label-width="120px" class="form-fliter" @submit.native.prevent>
     <div class="searchDiv">
       <div class="dataSearch">
-        <el-input type="text" v-model="keyword" placeholder="请输入查询条件" @keyup.enter="search"/>
+        <el-input type="text" v-model="keyword" placeholder="请输入查询条件" @keyup.enter.native="search"/>
       </div>
       <el-button type="primary" class="doCearch" icon="enc-icon-sousuo1" @click="search"></el-button>
       <i v-if="this.$route.params.type=='ftp'||this.$route.params.type=='mongodb'"></i>
@@ -173,6 +173,7 @@ export default {
     },
     //查询按钮
     search() {
+      console.log("22212221",22112121);
       this.$emit("formFilter", this.formSeled);
       this.$emit("doSearch", this.keyword);
     },

@@ -20,16 +20,16 @@
     </div>
     <div
       class="el-breadcrumb"
-      v-show="majorData.keyword!=''||majorData.formSeledShow.dataSourceName.length!=0
+      v-show="majorData.keyword!=''||( Object.keys(majorData.formSeledShow).length!=0 && (majorData.formSeledShow.dataSourceName.length!=0
             ||majorData.formSeledShow.network.length!=0||majorData.formSeledShow.platform.length!=0
-            ||majorData.formSeledShow.objectType.length!=0||majorData.formSeledShow.dataRange.length!=0"
+            ||majorData.formSeledShow.objectType.length!=0||majorData.formSeledShow.dataRange.length!=0))"
     >
       <el-form>
         <el-form-item class="isSelect">
           <div v-show="majorData.keyword!=''">
             <span class="lookstyle">
               {{majorData.keyword}}
-              <i class="enc-icon-guanbi" @click="key_word=''"></i>
+              <i class="enc-icon-guanbi" @click="deleteKeyWord"></i>
             </span>
           </div>
           <div
@@ -638,6 +638,12 @@ export default {
       this.searchParams.condition = "";
       this.searchParams.objectType = [];
       this.searchParams.dataRange = [];
+      let map = {
+        dataObj: [],
+        formSeledShow: {},
+        keyword: ""
+      };
+      this.$store.commit("setMajorData", map);
     }
   },
   mounted() {
@@ -1087,6 +1093,15 @@ export default {
         id,
         index
       };
+    },
+    deleteKeyWord() {
+      this.key_word = "";
+      let map = {
+        dataObj: this.$store.state.majorData.dataObj,
+        formSeledShow: this.$store.state.majorData.formSeledShow,
+        keyword: ""
+      };
+      this.$store.commit("setMajorData", map);
     }
   }
 };

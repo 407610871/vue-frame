@@ -235,6 +235,12 @@ export default {
       if (to.name == "dashboard") {
         this.setCount(this.$store.state.deptId);
         this.loadTable(this.$store.state.deptId);
+        let map = {
+          dataObj: [],
+          formSeledShow: {},
+          keyword: ""
+        };
+        this.$store.commit("setMajorData", map);
       }
     }
   },
