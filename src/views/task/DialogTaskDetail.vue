@@ -262,62 +262,67 @@
   border-radius: 6px;
 }
 
-.dataViews-table {
-  height: 200px;
-  overflow: auto;
-}
+<style lang="scss" scoped>
+    
 
-.dataViews-table th,
-td {
-  text-align: center;
-  vertical-align: middle;
-  height: 30px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  border-bottom: 1px solid #e4e7ed;
-}
-
-.dataViews-table .table-tr-line {
-  margin-bottom: 10px;
-}
-
-.dataCheck-tab {
-  padding-left: 12px;
-  padding-top: 12px;
-  height: 200px;
-  overflow: auto;
-}
-
-.dataCheck-tab .logItem span {
-  display: inline-block;
-  margin-top: 2px;
-  margin-bottom: 2px;
-}
-
-.dataCheck-tab .logItem .logItem-line {
-  width: 100%;
-  border-bottom: 1px solid #e4e7ed;
-}
-
-.dataCheck-tab .lab {
-  letter-spacing: 6px;
-}
-
-.tips-none {
-  text-align: center;
-  margin-top: 40px;
-  font-size: 16px;
-  color: #a7a2a2;
-}
-
-.select {
-  width: 70%;
-}
-
-.plr20 {
-  padding: 0 20px;
-}
+    
+    .el-radio+.el-radio {
+      margin-left: 19px;
+    }
+    .label-color{
+      display: inline-block;
+      margin-right: 8px;
+      width: 12px;
+      height: 12px;
+      border-radius: 6px;
+    }
+    .dataViews-table{
+      height: 200px;
+      overflow: auto;
+    }
+    .dataViews-table th,td{
+      text-align: center;
+      vertical-align: middle;
+      height: 30px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      border-bottom: 1px solid #e4e7ed;
+    }
+    .dataViews-table .table-tr-line{
+      margin-bottom: 10px;
+    }
+    .dataCheck-tab{
+      padding-left: 12px;
+      padding-top: 12px;
+      height: 200px;
+      overflow: auto;
+    }
+    .dataCheck-tab .logItem span{
+      display: inline-block;
+      margin-top: 2px;
+      margin-bottom: 2px;
+      
+    }
+    .dataCheck-tab .logItem .logItem-line{
+      width: 100%;
+      border-bottom: 1px solid #e4e7ed;
+    }
+    .dataCheck-tab .lab{
+      letter-spacing: 6px;
+    }
+    .tips-none{
+      text-align: center;
+      margin-top: 40px;
+      font-size: 16px;
+      color: #a7a2a2;
+    }
+    .select{
+      width: 70%;
+    }
+    .plr20 {
+      padding:0 20px;
+    }
 
 </style>
 <style>
@@ -329,6 +334,9 @@ td {
 .taskselect .el-input__inner {
   height: 35px !important;
 }
+          .taskselect .el-input__inner {
+        height: 35px !important;
+      }
 </style>
 <script>
 import axios from "axios";

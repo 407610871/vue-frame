@@ -210,7 +210,7 @@ export default {
   margin-right: 10px !important;
 }
 
-.el-radio {
+.proInfo-box .el-radio {
   line-height: 30px;
 }
 
