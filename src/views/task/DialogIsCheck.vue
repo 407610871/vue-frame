@@ -611,7 +611,7 @@ export default {
   height: 16px;
   display: inline-block;
   background-size: 100% 100%;
-  margin-left: 10px;
+  
 }
 
 h5 {
