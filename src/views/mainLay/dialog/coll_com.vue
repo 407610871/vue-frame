@@ -45,7 +45,7 @@
           </el-col>
           <el-col :span="24" :class="ruleForm.history==true?'cutoff-line':''" v-show="this.ruleForm.accessMode=='0'">
             <el-form-item label="历史记录:" prop="history">
-              <el-checkbox v-model="ruleForm.history">包含历史记录 <span class="ml10">(勾选此项,对应的历史记录也将同步全量采集)</span></el-checkbox>
+              <el-checkbox v-model="ruleForm.history" :disabled="gethis">包含历史记录 <span class="ml10">(勾选此项,对应的历史记录也将同步全量采集)</span></el-checkbox>
             </el-form-item>
           </el-col>
           <el-col :span="24" v-show="ruleForm.accessMode=='1'&&this.$route.params.type != 'mongodb'&&this.$route.params.type != 'ftp'">
@@ -298,7 +298,7 @@ export default {
       isregin: false,
       taskStatus: false,
       appId: "",
-
+      gethis: false,
       taskInfoId: "",
       accId: "",
       yid: "", //反写的增量字段id
@@ -607,7 +607,7 @@ export default {
         actech = this.$route.params.type;
         if (this.ruleForm.history == true) {
           includeHistoryData = '1';
-          
+
         } else if (this.ruleForm.history == false) {
           includeHistoryData = '0';
         }
@@ -903,6 +903,7 @@ export default {
               this.ruleForm.taskSubMode = "true";
               this.taskStatus = true;
             }
+            this.gethis = true;
             this.increArr.id = data.incrementColumnId;
             this.increArr.name = data.incrementColumn;
             this.increArr.datatype = data.incrementColumnDataType;
