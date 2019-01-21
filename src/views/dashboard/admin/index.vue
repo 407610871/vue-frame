@@ -76,7 +76,7 @@
           <dataCount v-bind:dataObj="count1Data" class="countData"/>
           <div class="line"></div>
           <dataCount v-bind:dataObj="count2Data" class="countData"/>
-          <div class="regbtn fr">
+          <div class="regbtn">
             <reg-dialog
               @refreshTable="loadTable"
               @storeReady="storeReady"
@@ -709,43 +709,37 @@ export default {
   }
   .filter-container {
     .count-container {
+      display: flex;
+      justify-content: center;
       .count-title {
-        display: inline-block;
-        margin: 10px 5% 10px 40px;
-        width: 8%;
+        width: 15%;
         text-align: center;
-
         label {
           display: inline-block;
           margin-bottom: 10px;
           color: #999;
           font-size: 14px;
         }
-
         .all-number {
           /* color: #425365; */
           font-size: 24px;
           font-weight: bold;
         }
       }
-
       .countData {
-        display: inline-block;
-        margin: 10px 4%;
-        width: 25%;
+        width: 30%;
       }
-
       .line {
-        display: inline-block;
-        margin: 32px 0 12px 0;
+        margin: 12px 30px 0 30px;
         height: 30px;
         width: 2px;
         background-color: #999;
         border-radius: 2px;
       }
       .regbtn {
-        margin-top: 25px;
-        padding-right: 20px;
+        text-align: right;
+        width:20%;
+        margin-top: 15px;
       }
     }
 
