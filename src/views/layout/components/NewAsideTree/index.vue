@@ -15,7 +15,7 @@
     <el-dialog title="请输入部门节点名称" :visible.sync="dialogVisible" width="30%" class="input-dialog">
       <el-input style="margin-top:10px;" type="text" v-model="itemTxt" />
       <span slot="footer" class="dialog-footer">
-        <el-button @click="dialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="dialogVisible = false">取 消</el-button>
         <el-button type="primary" @click="nodeAJax">确 定</el-button>
       </span>
     </el-dialog>

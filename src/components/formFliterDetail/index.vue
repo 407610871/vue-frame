@@ -5,7 +5,8 @@
         <el-input type="text" v-model="keyword" placeholder="请输入查询条件" @keyup.enter.native="search"/>
       </div>
       <el-button type="primary" class="doCearch" icon="enc-icon-sousuo1" @click="search"></el-button>
-      <span @click="doCollapse">高级搜索
+      <i v-if="this.$route.params.type=='ftp'||this.$route.params.type=='mongodb'"></i>
+      <span v-else @click="doCollapse">高级搜索
         <i :class="collapse?'el-icon-caret-bottom':'el-icon-caret-top'"></i>
       </span>
     </div>
@@ -101,17 +102,18 @@ export default {
   },
   computed: {
     key_word(){
-      return this.$store.state.majorData.keyword;
+      return this.$store.state.detailMajorData.keyword;
     }
   },
   watch: {
     keyword(newValue, oldValue) {
+      
       let map = {
         dataObj: this.dataObj,
         formSeledShow: this.formSeledShow,
         keyword: newValue
       };
-      this.$store.commit("setMajorData", map);
+      this.$store.commit("setDetailMajorData", map);
     },
     deleteData(newValue, oldValue) {
       this.delSelect(newValue.id, newValue.index);
@@ -123,7 +125,7 @@ export default {
         formSeledShow: this.formSeledShow,
         keyword: newValue
       };
-      this.$store.commit("setMajorData", map);
+      this.$store.commit("setDetailMajorData", map);
     }
   },
   created() {
@@ -203,7 +205,7 @@ export default {
         formSeledShow: this.formSeledShow,
         keyword: this.keyword
       };
-      this.$store.commit("setMajorData", map);
+      this.$store.commit("setDetailMajorData", map);
     },
 
     getFormSeled: function() {

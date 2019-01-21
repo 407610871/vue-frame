@@ -5,7 +5,7 @@
               回收箱
       </el-breadcrumb-item>
     </el-breadcrumb>
-    <el-container class="dashboard-container main-content" v-loading="loading">
+    <div class="dashboard-container main-content" v-loading="loading">
       <div class="filter-container" :height="headerHeight">
         <a v-on:click="collapseExpand" class="right-btn collapse-btn"><i :class="{'enc-icon-zhankai':collapse,'enc-icon-shousuo':!collapse}"></i></a>
         <formFliter v-if="queryParamReady" v-bind:formCollapse="collapse" v-bind:dataObj="formFilterData" @formFilter="changeFormFilter" />
@@ -51,7 +51,7 @@
           </el-pagination>
         </div>
       </el-footer>
-    </el-container>
+    </div>
   </div>
 </template>
 <script>
@@ -91,6 +91,9 @@ export default {
       if (this.queryParamReady) {
          this.loadTable(this.$store.state.deptId);
       }
+    },
+    $route(to, form) {
+      this.storeReady();
     }
   },
   created() {
@@ -116,7 +119,7 @@ export default {
   },
   methods: {
     setFliter(data) {
-      var queryParams = this.$store.state.queryParams[this.$route.name];
+      var queryParams = this.$store.state.queryParams["recyclingBins"];
       var network = queryParams.network ? queryParams.network : [];
       var dataSourceName = queryParams.dataSourceName ? queryParams.dataSourceName : [];
       var platform = queryParams.platform ? queryParams.platform : [];
@@ -254,7 +257,7 @@ export default {
         storeData[i] = obj[i];
       }
       this.$store.commit('setQueryParams', {
-        name: this.$route.name,
+        name: "recyclingBins",
         data: storeData
       });
     },

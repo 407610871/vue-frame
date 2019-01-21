@@ -138,7 +138,7 @@ export default {
         _self.$store.commit("setPageReady");
       })
       .catch(function(err) {
-        console.log(err);
+        //console.log(err);
         _self.$store.commit("setPageReady");
       });
     _self.updataFliterItemList();
@@ -228,7 +228,7 @@ export default {
           }
         })
         .catch(function(err) {
-          console.log(err);
+          //console.log(err);
         });
       this.$ajax
         .get(window.ENV.API_DACM + "/commonInter/getListStaticDataOrder", {
@@ -259,7 +259,7 @@ export default {
 
         })
         .catch(function(err) {
-          console.log(err);
+          //console.log(err);
         });
       this.$ajax
         .get(window.ENV.API_DACM + "/commonInter/getListStaticDataOrder", {
@@ -285,12 +285,12 @@ export default {
               data: list
             });
             _self.formFilterData[2].checkData = list
-            console.log(_self.formFilterData);
-            console.log(res.data);
+            //console.log(_self.formFilterData);
+            //console.log(res.data);
           }
         })
         .catch(function(err) {
-          console.log(err);
+         // console.log(err);
         });
     },
     _goWarn() {
@@ -379,7 +379,7 @@ export default {
         var obj = {
           resetData: name
         };
-        this.$store.commit("resetQueryParam", obj);
+        //this.$store.commit("resetQueryParam", obj);
       }
       this.$router.push({ name: name });
     },

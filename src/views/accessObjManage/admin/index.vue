@@ -2,7 +2,7 @@
   <div style="height:100%;" class="dashboard-container">
     <div>
       <el-breadcrumb separator="/">
-        <el-breadcrumb-item :to="{ path: '/dashboard' }">数据接入</el-breadcrumb-item>
+        <el-breadcrumb-item :to="{path: '/dashboard'}">数据接入</el-breadcrumb-item>
         <el-breadcrumb-item>{{ breadcrumbName }}</el-breadcrumb-item>
       </el-breadcrumb>
       <form-fliter
@@ -20,16 +20,16 @@
     </div>
     <div
       class="el-breadcrumb"
-      v-show="majorData.keyword!=''||majorData.formSeledShow.dataSourceName.length!=0
+      v-show="majorData.keyword!=''||( Object.keys(majorData.formSeledShow).length!=0 && (majorData.formSeledShow.dataSourceName.length!=0
             ||majorData.formSeledShow.network.length!=0||majorData.formSeledShow.platform.length!=0
-            ||majorData.formSeledShow.objectType.length!=0||majorData.formSeledShow.dataRange.length!=0"
+            ||majorData.formSeledShow.objectType.length!=0||majorData.formSeledShow.dataRange.length!=0))"
     >
       <el-form>
         <el-form-item class="isSelect">
           <div v-show="majorData.keyword!=''">
             <span class="lookstyle">
               {{majorData.keyword}}
-              <i class="enc-icon-guanbi" @click="key_word=''"></i>
+              <i class="enc-icon-guanbi" @click="deleteKeyWord"></i>
             </span>
           </div>
           <div
@@ -414,7 +414,7 @@
                     || (type=='oracle'&&scope.row.accessConnectorSource!=undefined&&scope.row.accessConnectorSource.isPeriod!='0'&&(scope.row.extendParams.taskStatus=='1'||scope.row.extendParams.taskStatus=='2'||scope.row.extendParams.taskStatus=='4'))
                     || (type=='postgresql'&&scope.row.accessConnectorSource!=undefined&&scope.row.accessConnectorSource.isPeriod!='0'&&(scope.row.extendParams.taskStatus=='1'||scope.row.extendParams.taskStatus=='2'||scope.row.extendParams.taskStatus=='4')) 
                     || (type=='sqlserver'&&scope.row.accessConnectorSource!=undefined&&scope.row.accessConnectorSource.isPeriod!='0'&&(scope.row.extendParams.taskStatus=='1'||scope.row.extendParams.taskStatus=='2'||scope.row.extendParams.taskStatus=='4'))
-                    ||(type=='ftp'&&scope.row.accessConnectorSource!=undefined&&scope.row.accessConnectorSource.isPeriod!='0'&&(scope.row.extendParams.taskStatus=='1'||scope.row.extendParams.taskStatus=='2'||scope.row.extendParams.taskStatus=='4'))
+                    ||(type=='ftp'&&scope.row.accessConnectorSource!=undefined&&scope.row.accessConnectorSource.isPeriod!='0'&&(scope.row.extendParams.taskStatus=='1'||scope.row.extendParams.taskStatus=='2'||scope.row.extendParams.taskStatus=='4')&&scope.row.extendParams.isdelet=='false')
                     ||(type=='mongodb'&&scope.row.accessConnectorSource!=undefined&&scope.row.accessConnectorSource.isPeriod!='0'&&(scope.row.extendParams.taskStatus=='1'||scope.row.extendParams.taskStatus=='2'||scope.row.extendParams.taskStatus=='4'))"
               >
                 <el-tooltip class="item" effect="light" content="数据核验" placement="top">
@@ -474,7 +474,7 @@
 </template>
 <script>
 import { mapState } from "vuex";
-import formFliter from "./../../../components/formFliter";
+import formFliter from "./../../../components/formFliterDetail/index.vue";
 import userSurvey from "@/views/accessObjManage/dialog/admin/user_survey";
 import setTask from "@/views/accessObjManage/dialog/admin/set_task";
 import singleTask from "@/views/accessObjManage/dialog/admin/single_task";
@@ -606,8 +606,8 @@ export default {
       }
     },
     majorData() {
-      this.key_word = this.$store.state.majorData.keyword;
-      return this.$store.state.majorData;
+      this.key_word = this.$store.state.detailMajorData.keyword;
+      return this.$store.state.detailMajorData;
     }
   },
   components: {
@@ -638,6 +638,7 @@ export default {
       this.searchParams.condition = "";
       this.searchParams.objectType = [];
       this.searchParams.dataRange = [];
+
     }
   },
   mounted() {
@@ -1087,6 +1088,15 @@ export default {
         id,
         index
       };
+    },
+    deleteKeyWord() {
+      this.key_word = "";
+      let map = {
+        dataObj: this.$store.state.detailMajorData.dataObj,
+        formSeledShow: this.$store.state.detailMajorData.formSeledShow,
+        keyword: ""
+      };
+      this.$store.commit("setDetailMajorData", map);
     }
   }
 };
