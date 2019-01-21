@@ -83,6 +83,7 @@ const store = new Vuex.Store({
     isSign: false, //采集中的数据标记是否保存
     jrstyle: '', //用户标记的接入方式
     nums: 0, //映射关系
+    hisdis:false,//历史记录
     userInfo: {
       userName: "",
       roleName: "",
@@ -235,6 +236,11 @@ const store = new Vuex.Store({
     setNums(state, obj) {
       state.nums = true;
       state.nums = obj;
+    },
+    //历史记录
+    setHis(state,obj){
+      state.hisdis = false;
+      state.hisdis = obj;
     },
     setThirdStepsData(state, obj) {
       state.thirdStepsData = obj;
