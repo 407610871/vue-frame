@@ -45,7 +45,7 @@
           </el-col>
           <el-col :span="24" :class="ruleForm.history==true?'cutoff-line':''" v-show="this.ruleForm.accessMode=='0'">
             <el-form-item label="历史记录:" prop="history">
-              <el-checkbox v-model="ruleForm.history" :disabled="hisdis">包含历史记录 <span class="ml10">(勾选此项,对应的历史记录也将同步全量采集)</span></el-checkbox>
+              <el-checkbox v-model="ruleForm.history" :disabled="gethis==true?true:hisdis">包含历史记录 <span class="ml10">(勾选此项,对应的历史记录也将同步全量采集)</span></el-checkbox>
             </el-form-item>
           </el-col>
           <el-col :span="24" v-show="ruleForm.accessMode=='1'">
@@ -59,10 +59,11 @@
             </el-col>
           </el-col>
           <el-col :span="24">
-            <el-col :span="10" class="collbg" v-if="this.ruleForm.accessMode=='1'||(this.ruleForm.history==true&&this.ruleForm.accessMode=='0')">
+            <el-col :span="10" class="collbg" v-if="this.ruleForm.accessMode=='1'||((this.ruleForm.history==true||this.gethis==true)&&this.ruleForm.accessMode=='0')">
+
               <el-form-item label="增量字段:" prop="increment">
-                <el-input v-model="ruleForm.increment" class="fl"></el-input>
-                <el-button type="primary" class="fl increbtn" @click="innerVisible = true">选择</el-button>
+                <el-input v-model="ruleForm.increment" class="fl" :disabled="this.ruleForm.accessMode=='0'&&gethis==true"></el-input>
+                <el-button type="primary" class="fl increbtn" @click="innerVisible = true" v-if="!(this.ruleForm.accessMode=='0'&&gethis==true)">选择</el-button>
                 <incre-map :msg='innerVisible' :incid="pdata.id" :yid="yid" :alincre="this.increArr" @showIncre="showIncrement()" @saveIncre="saveIncrement($event)"></incre-map>
               </el-form-item>
             </el-col>
@@ -322,6 +323,7 @@ export default {
       showflag: false,
       increArr: {},
       monthData: [],
+      gethis:false,
       isdisable: false,
       minData: [],
       hourData: [],
@@ -1015,6 +1017,7 @@ export default {
             this.yid = data.incrementColumnId; //增量字段的id
             //增量字段
             this.isdisable = true;
+            this.gethis = true;
             this.ruleForm.increment = data.incrementColumn;
             this.increArr = {};
             if (data.taskStatus == '0') {
