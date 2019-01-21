@@ -68,7 +68,7 @@
     <div class="main main-content">
       <div class="filter-container">
         <div class="count-container">
-          <div class="count-title">
+          <div class="count-title" style="position: relative; bottom: 15px;">
             <label>数据源注册总数</label>
             <div class="all-number">{{countTotal}}</div>
           </div>
