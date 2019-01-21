@@ -139,6 +139,7 @@ export default {
       this.$ajax.get(`/data/version${url}.xml`).then(function(res) {
           _self.loading = false;
           var jsonObj = _self.$x2js.xml2js(res.data);
+          console.log("new x2js()=====", _self.$x2js.xml2js(res.data));
           _self.tableData = jsonObj.note.specialityList.item;
           _self.changeData = jsonObj.note.changeList.item;
           _self.finishData = jsonObj.note.finishedPunchList.item;
