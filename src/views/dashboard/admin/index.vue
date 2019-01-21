@@ -68,7 +68,7 @@
     <div class="main main-content">
       <div class="filter-container">
         <div class="count-container">
-          <div class="count-title" style="position: relative; bottom: 15px;">
+          <div class="count-title">
             <label>数据源注册总数</label>
             <div class="all-number">{{countTotal}}</div>
           </div>
@@ -730,7 +730,7 @@ export default {
         width: 30%;
       }
       .line {
-        margin: 12px 30px 0 30px;
+        margin: 20px 30px 0 30px;
         height: 30px;
         width: 2px;
         background-color: #999;
