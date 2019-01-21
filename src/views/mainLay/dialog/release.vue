@@ -89,6 +89,9 @@
 /*import version from '@/views/mainLay/dialog/release_version'*/
 // import versionBank from '@/views/mainLay/release/data/version1.2.2.xml'
 /*console.log(versionBank);*/
+
+import xml2js from 'xml2js';
+console.log("xml2js==",xml2js);
 export default {
   name: "taskMDialog",
   data: function() {
@@ -139,7 +142,9 @@ export default {
       this.$ajax.get(`/data/version${url}.xml`).then(function(res) {
           _self.loading = false;
           var jsonObj = _self.$x2js.xml2js(res.data);
-          console.log("new x2js()=====", _self.$x2js.xml2js(res.data));
+           xml2js.parseString(res.data, function(err, data){
+             console.log("1111111111",data)
+           })
           _self.tableData = jsonObj.note.specialityList.item;
           _self.changeData = jsonObj.note.changeList.item;
           _self.finishData = jsonObj.note.finishedPunchList.item;
