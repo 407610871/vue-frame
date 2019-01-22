@@ -140,11 +140,12 @@ export default {
       this.loading = true;
       let _self = this;
       this.$ajax.get(`/data/version${url}.xml`).then(function(res) {
+          console.log("res.data===============", res.data);
           _self.loading = false;
           var jsonObj = _self.$x2js.xml2js(res.data);
-           xml2js.parseString(res.data, function(err, data){
-             console.log("1111111111",data)
-           })
+          xml2js.parseString(res.data, function(err, data){
+            console.log("1111111111",data);
+          })
           _self.tableData = jsonObj.note.specialityList.item;
           _self.changeData = jsonObj.note.changeList.item;
           _self.finishData = jsonObj.note.finishedPunchList.item;
