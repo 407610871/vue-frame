@@ -84,14 +84,12 @@
     </el-dialog>
   </div>
 </template>
-<script type="text/javascript" src="../release/js/xml2json.min.js"></script>
 <script>
 /*import version from '@/views/mainLay/dialog/release_version'*/
 // import versionBank from '@/views/mainLay/release/data/version1.2.2.xml'
 /*console.log(versionBank);*/
 
 import xml2js from 'xml2js';
-console.log("xml2js==",xml2js);
 export default {
   name: "taskMDialog",
   data: function() {
@@ -140,22 +138,19 @@ export default {
       this.loading = true;
       let _self = this;
       this.$ajax.get(`/data/version${url}.xml`).then(function(res) {
-          console.log("res.data===============", res.data);
           _self.loading = false;
-          var jsonObj = _self.$x2js.xml2js(res.data);
-          xml2js.parseString(res.data, function(err, data){
-            console.log("1111111111",data);
+          //var jsonObj = _self.$x2js.xml2js(res.data);
+          xml2js.parseString(res.data, function(err, jsonObj){
+            _self.tableData = jsonObj.note.specialityList[0].item;
+            _self.changeData = jsonObj.note.changeList[0].item;
+            _self.finishData = jsonObj.note.finishedPunchList[0].item;
+            _self.knownData = Array.isArray(jsonObj.note.questionList[0].item) ? jsonObj.note.questionList[0].item : 
+            [jsonObj.note.questionList[0].item];
+            _self.versionDes = jsonObj.note.name;
+            _self.versionDate = jsonObj.note.date;
           })
-          _self.tableData = jsonObj.note.specialityList.item;
-          _self.changeData = jsonObj.note.changeList.item;
-          _self.finishData = jsonObj.note.finishedPunchList.item;
-          _self.knownData = Array.isArray(jsonObj.note.questionList.item) ? jsonObj.note.questionList.item : [jsonObj.note.questionList.item];
-          _self.versionDes = jsonObj.note.name;
-          _self.versionDate = jsonObj.note.date;
-
         })
         .catch(function(err) {
-          console.log(err)
           _self.loading = false;
         });
     }
