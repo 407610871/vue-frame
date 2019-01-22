@@ -399,7 +399,7 @@ export default {
         }).then(res => {
           _self.loading = false;
           if (res.data.success) {
-            if (res.data.data.isExitChineseName == 'false') {
+            if (res.data.data.isExitChineseName == 'false'||res.data.data.isExitChineseName==undefined) {
               if (res.data.data.isExitFile == "true") {
                 _self.showSetNore = true;
               } else {

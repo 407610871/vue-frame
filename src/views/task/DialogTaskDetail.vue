@@ -1,23 +1,13 @@
 <template>
   <div class="taskMDialog" style="padding-bottom:15px;">
-    <el-dialog
-      :title="reqObj.taskName"
-      :close-on-click-modal="false"
-      :visible.sync="showInnerDialog"
-      @closed="closeDia"
-      :height="600"
-      width="65%"
-    >
+    <el-dialog :title="reqObj.taskName" :close-on-click-modal="false" :visible.sync="showInnerDialog" @closed="closeDia" :height="600" width="65%">
       <div class="title-gra plr30">
         <div class="grab gra-r">
           <span class="grab gra-l"></span>
         </div>
       </div>
       <el-form label-width="150px" class="demo-ruleForm">
-        <span
-          v-show="taskBaseInfo.status==1||taskBaseInfo.status==2||(taskBaseInfo.status==5&&reqObj.startTime!=''&&reqObj.startTime!='undefined')"
-          style="float:right;"
-        >当前状态:
+        <span v-show="taskBaseInfo.status==1||taskBaseInfo.status==2||(taskBaseInfo.status==5&&reqObj.startTime!=''&&reqObj.startTime!='undefined')" style="float:right;">当前状态:
           <el-select
             v-model="flagDesc"
             :disabled="loading3"
@@ -78,15 +68,8 @@
                 <el-col :span="20">
                   <el-form-item label="接入对象:">
                     <div style="height:80px;width:70%;overflow:auto;" :class="sourceBaseInfo.sourceObjNameList.length>1?'jrborder':''">
-                      <span
-                        style="display:block"
-                        v-for="(item, index) in sourceBaseInfo.sourceObjNameList"
-                        :key="index"
-                        v-show="item.type=='TABLE'||item.type=='VIEW'"
-                      >{{item.type=="TABLE"?'表':'视图'}}:{{item.tableName}}</span>
-                      <span
-                        v-show="sourceBaseInfo.sourceObjNameStr!=''"
-                      >{{sourceBaseInfo.sourceObjNameStr}}</span>
+                      <span style="display:block" v-for="(item, index) in sourceBaseInfo.sourceObjNameList" :key="index" v-show="item.type=='TABLE'||item.type=='VIEW'">{{item.type=="TABLE"?'表':'视图'}}:{{item.tableName}}</span>
+                      <span v-show="sourceBaseInfo.sourceObjNameStr!=''">{{sourceBaseInfo.sourceObjNameStr}}</span>
                     </div>
                   </el-form-item>
                 </el-col>
@@ -121,17 +104,9 @@
                 <span>{{sourceDataInfo.writeNum||'0'}}</span>
               </el-form-item>
             </el-col>
-            <el-col
-              :span="4"
-              :class="{bank:!((reqObj.status==1||reqObj.status==2||reqObj.status==4)&&reqObj.isPeriod!=0)}"
-            >
+            <el-col :span="4" :class="{bank:!((reqObj.status==1||reqObj.status==2||reqObj.status==4)&&reqObj.isPeriod!=0)}">
               {{((reqObj.status==1||reqObj.status==2||reqObj.status==4)&&reqObj.isPeriod!=0)?' ':'bank'}}
-              <el-button
-                v-show="(reqObj.status==1||reqObj.status==2||reqObj.status==4)&&reqObj.isPeriod!=0"
-                type="primary"
-                size="small"
-                @click="checkData"
-              >数据核验</el-button>
+              <el-button v-show="(reqObj.status==1||reqObj.status==2||reqObj.status==4)&&reqObj.isPeriod!=0" type="primary" size="small" @click="checkData">数据核验</el-button>
             </el-col>
             <el-col :span="10">
               <el-form-item label="剩余数据量预估:">
@@ -169,8 +144,7 @@
             <el-col :span="17">
               <el-form-item label="任务指示灯:">
                 <div class="item-label">
-                  <span class="label-color" v-bind:style="lightBackground"></span>
-                  {{taskBaseInfo.newWorkDesc}}
+                  <span class="label-color" v-bind:style="lightBackground"></span> {{taskBaseInfo.newWorkDesc}}
                 </div>
               </el-form-item>
             </el-col>
@@ -209,16 +183,7 @@
             <el-tabs type="border-card" style="height:265px;">
               <el-tab-pane label="汇聚任务日志信息" v-if="taskLog!=''">
                 <div class="dataCheck-tab" v-loading="loading4">
-                  <textarea
-                    v-show="taskLog!=''"
-                    name
-                    id
-                    cols="30"
-                    rows="12"
-                    disabled="disabled"
-                    style="resize:none;width: 100%; height: 180px;border:none;background:inherit"
-                    v-model="taskLog"
-                  ></textarea>
+                  <textarea v-show="taskLog!=''" name id cols="30" rows="12" disabled="disabled" style="resize:none;width: 100%; height: 180px;border:none;background:inherit" v-model="taskLog"></textarea>
                   <div class="tips-none" v-show="taskLog==''">暂无数据</div>
                 </div>
               </el-tab-pane>
@@ -278,11 +243,7 @@
                     </thead>
                     <tbody>
                       <tr v-for="(item, index) in dataViewsList" :key="index">
-                        <td
-                          v-for="(keyitem, index) in keyList"
-                          :key="index"
-                          :title="item[index]"
-                        >{{item[index]}}</td>
+                        <td v-for="(keyitem, index) in keyList" :key="index" :title="item[index]">{{item[index]}}</td>
                       </tr>
                     </tbody>
                   </table>
@@ -297,17 +258,11 @@
         <!-- 任务基本信息 模块结束 -->
       </el-form>
     </el-dialog>
-    <dialogIsCheck
-      :msgCheck="reqObj"
-      :title="'数据校验'"
-      :types="jrtype"
-      v-if="showCheckData"
-      @closeDiaChk="closeDiaChk()"
-    ></dialogIsCheck>
+    <dialogIsCheck :msgCheck="reqObj" :title="'数据校验'" :types="jrtype" v-if="showCheckData" @closeDiaChk="closeDiaChk()"></dialogIsCheck>
   </div>
 </template>
 <style lang="scss" scoped>
-.el-radio + .el-radio {
+.el-radio+.el-radio {
   margin-left: 19px;
 }
 
@@ -318,9 +273,11 @@
   height: 12px;
   border-radius: 6px;
 }
-.el-radio + .el-radio {
+
+.el-radio+.el-radio {
   margin-left: 19px;
 }
+
 .label-color {
   display: inline-block;
   margin-right: 8px;
@@ -328,10 +285,12 @@
   height: 12px;
   border-radius: 6px;
 }
+
 .dataViews-table {
   height: 200px;
   overflow: auto;
 }
+
 .dataViews-table th,
 td {
   text-align: center;
@@ -342,54 +301,67 @@ td {
   white-space: nowrap;
   border-bottom: 1px solid #e4e7ed;
 }
+
 .dataViews-table .table-tr-line {
   margin-bottom: 10px;
 }
+
 .dataCheck-tab {
   padding-left: 12px;
   padding-top: 12px;
   height: 200px;
   overflow: auto;
 }
+
 .dataCheck-tab .logItem span {
   display: inline-block;
   margin-top: 2px;
   margin-bottom: 2px;
 }
+
 .dataCheck-tab .logItem .logItem-line {
   width: 100%;
   border-bottom: 1px solid #e4e7ed;
 }
+
 .dataCheck-tab .lab {
   letter-spacing: 6px;
 }
+
 .tips-none {
   text-align: center;
   margin-top: 40px;
   font-size: 16px;
   color: #a7a2a2;
 }
+
 .select {
   width: 70%;
 }
+
 .plr20 {
   padding: 0 20px;
 }
+
 </style>
 <style>
 .daiInfo-tabs .el-tabs__nav {
   float: none;
   text-align: left !important;
 }
+
 .jrborder {
-  border:1px solid #c9cdd0;
+  border: 1px solid #c9cdd0;
 }
+
 .taskselect .el-input__inner {
   height: 35px !important;
 }
+
 .taskselect .el-input__inner {
   height: 35px !important;
 }
+
 </style>
 <script>
 import axios from "axios";
@@ -521,9 +493,9 @@ export default {
       axios
         .put(
           this.httpUrl +
-            "manager/taskOperate/" +
-            statusKey[0][this.flagDesc] +
-            this.reqObj.taskInfoId
+          "manager/taskOperate/" +
+          statusKey[0][this.flagDesc] +
+          this.reqObj.taskInfoId
         )
         .then(res => {
           res = res.data;
@@ -775,9 +747,9 @@ export default {
           } else {
             that.taskBaseInfo = response.data.data;
             //创建人
-            that.taskBaseInfo.creater = that.taskBaseInfo.creater
-              ? that.taskBaseInfo.creater.split("/")[1]
-              : "";
+            that.taskBaseInfo.creater = that.taskBaseInfo.creater ?
+              that.taskBaseInfo.creater.split("/")[1] :
+              "";
             let statusMap = {
               0: "创建",
               1: "运行",
@@ -798,9 +770,9 @@ export default {
             that.flagDesc = t == 0 || t == 1 || t == 5 ? "run" : "stop";
             //that.reqObj.status = t;
             that.taskBaseInfo.statusDesc =
-              that.reqObj.status == 1
-                ? "运行"
-                : statusMap[that.taskBaseInfo.status];
+              that.reqObj.status == 1 ?
+              "运行" :
+              statusMap[that.taskBaseInfo.status];
             if (that.flagDesc == "stop") {
               that.operateList[1].disabled = false;
               that.operateList[0].disabled = true;
@@ -845,13 +817,46 @@ export default {
     //数据核验按钮点击
     checkData() {
       //isTestLink控制是否展示数据核验弹框
-      this.jrtype = this.sourceBaseInfo.dbType;
-      this.showCheckData = true;
-      this.entFromCheck = false;
-      //接入数据更新是否通过测试连接接口展示loading，这个时候是点击“数据核验”时加载的loading
-      this.isCheckLoading = false;
-      this.loading3 = false;
-      //this.testConnect();
+      var _self = this;
+       _self.isCheckLoading = true;
+      _self.jrtype = _self.sourceBaseInfo.dbType;
+      if (_self.jrtype == 'ftp') {
+        _self.$ajax({
+          method: 'get',
+          url: _self.GLOBAL.api.API_DACM + '/ctables/checkFtpTaskFileExist',
+          //url: 'http://10.19.160.59:8080/DACM/ctables/checkFtpTaskFileExist',
+          params: { 'taskId': _self.reqObj.taskInfoId },
+        }).then(res => {
+          _self.loading = false;
+          if (res.data.success && res.data.data.length > 0) {
+            res.data.data.forEach(res => {
+              if (res.isExitFile == 'true') {
+                _self.showCheckData = true;
+                _self.entFromCheck = false;
+                //接入数据更新是否通过测试连接接口展示loading，这个时候是点击“数据核验”时加载的loading
+                _self.isCheckLoading = false;
+                _self.loading3 = false;
+              } else {
+                _self.isCheckLoading = false;
+                _self.loading3 = false;
+                _self.doMsg(res.message, "error");
+              }
+            })
+          } else {
+            _self.isCheckLoading = false;
+            _self.loading3 = false;
+            _self.doMsg(res.data.message, "error");
+          }
+        })
+      } else {
+        _self.showCheckData = true;
+        _self.entFromCheck = false;
+        //接入数据更新是否通过测试连接接口展示loading，这个时候是点击“数据核验”时加载的loading
+        _self.isCheckLoading = false;
+        _self.loading3 = false;
+        //this.testConnect();
+      }
+
     },
     //点击测试连接按钮，进行接口条用
     testConnect() {
@@ -905,8 +910,8 @@ export default {
       axios
         .put(
           that.httpUrl +
-            "manager/taskOperate/dataInfo/" +
-            that.reqObj.taskInfoId
+          "manager/taskOperate/dataInfo/" +
+          that.reqObj.taskInfoId
         )
         .then(function(res) {
           if (res.data == undefined || res.data == null || res.data === "") {
@@ -934,8 +939,8 @@ export default {
       axios
         .put(
           that.httpUrl +
-            "manager/taskOperate/taskLogInfo/" +
-            that.reqObj.taskInfoId
+          "manager/taskOperate/taskLogInfo/" +
+          that.reqObj.taskInfoId
         )
         .then(function(res) {
           //判断响应是否异常
@@ -946,9 +951,9 @@ export default {
             );
           } else {
             that.taskLog =
-              (res.data.data.logInfo || "") == ""
-                ? ""
-                : `\t${res.data.data.logInfo}`;
+              (res.data.data.logInfo || "") == "" ?
+              "" :
+              `\t${res.data.data.logInfo}`;
           }
           that.loading4 = false;
         })
@@ -991,8 +996,8 @@ export default {
       axios
         .put(
           that.httpUrl +
-            "manager/taskOperate/dataPreview/" +
-            that.reqObj.taskInfoId
+          "manager/taskOperate/dataPreview/" +
+          that.reqObj.taskInfoId
         )
         .then(function(res) {
           if (res.data.code != "200" && res.data.code != "0000") {
@@ -1053,4 +1058,5 @@ export default {
     }
   }
 };
+
 </script>
