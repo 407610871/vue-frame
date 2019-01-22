@@ -1,9 +1,5 @@
 <template>
   <div class="taskMDialog release">
-    <!-- <el-tooltip class="item" effect="light" content="版本信息" placement="bottom">
-      <el-button @click="dialogVisible = true" class="document" icon="enc-icon-documents"></el-button>
-    </el-tooltip> -->
-    <!--  <a href="javascript:void(0)" @click="dialogVisible = true" >版本信息</a> -->
     <el-dialog :title="versionDes + '  '+ versionDate" :visible.sync="dialogVisible" width="73%" :before-close="closeDialog">
       <div class="title-gra plr30">
         <div class="grab gra-r">
@@ -13,10 +9,6 @@
       <el-col :span="4">
         <el-tabs tab-position="left" style="height: 200px;" @tab-click="handleClick">
           <el-tab-pane v-for="(item, index) in versionData" :key="index" :label="item"></el-tab-pane>
-          <!-- <el-tab-pane label="用户管理"></el-tab-pane>
-          <el-tab-pane label="配置管理"></el-tab-pane>
-          <el-tab-pane label="角色管理"></el-tab-pane>
-          <el-tab-pane label="定时任务补偿"></el-tab-pane> -->
         </el-tabs>
       </el-col>
       <el-col :span="20" class="release-box release-ver-con">
@@ -50,15 +42,13 @@
           <div class="proInfo-box clearfix" id="zdbglb">
             <h2>重大更新列表</h2>
             <ul class="imlist">
-              <!--  <li v-if="changeData.length==0">N/A</li> -->
-              <li v-for="item in changeData">{{item.content}}</li>
+              <li v-for="(item, index) in changeData" :key="index">{{item.content}}</li>
             </ul>
           </div>
           <div class="proInfo-box clearfix" id="wtjjqd">
             <h2>解决问题清单</h2>
             <ul class="imlist">
-              <!--  <li v-if="finishData.length==0">N/A</li> -->
-              <li v-for="item in finishData">{{item.content}}</li>
+              <li v-for="(item, index) in finishData" :key="index">{{item.content}}</li>
             </ul>
           </div>
           <div class="proInfo-box bornone clearfix" id="yzwthxz">
@@ -85,9 +75,6 @@
   </div>
 </template>
 <script>
-/*import version from '@/views/mainLay/dialog/release_version'*/
-// import versionBank from '@/views/mainLay/release/data/version1.2.2.xml'
-/*console.log(versionBank);*/
 
 import xml2js from 'xml2js';
 export default {
@@ -115,16 +102,13 @@ export default {
     closeDialog() {
       this.$emit('closeDia', );
       this.dialogVisible = false;
-
     },
     handleClick(tab, event) {
-      /* console.log(tab, event);*/
       if (tab.label == '当前') {
         this._getVersion('1.1.1');
       } else {
         this._getVersion(tab.label);
       }
-
     },
     //版本信息滚动
     goAnchor(selector) {
@@ -139,7 +123,6 @@ export default {
       let _self = this;
       this.$ajax.get(`/data/version${url}.xml`).then(function(res) {
           _self.loading = false;
-          //var jsonObj = _self.$x2js.xml2js(res.data);
           xml2js.parseString(res.data, function(err, jsonObj){
             _self.tableData = jsonObj.note.specialityList[0].item;
             _self.changeData = jsonObj.note.changeList[0].item;
@@ -290,7 +273,6 @@ export default {
 .release .directory ul li {
   display: inline-block !important;
 }
-
 
 @media screen and ( max-width: 1280px) {
   .taskMDialog {
