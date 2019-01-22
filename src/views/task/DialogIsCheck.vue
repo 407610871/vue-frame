@@ -42,7 +42,7 @@
               <li :title="resData.source_tableNum">{{resData.source_tableNum||"无"}}</li>
              <li v-if="resData.sourceMatchTables==undefined||resData.sourceMatchTables==null" :title="resData.source_tableName">{{resData.source_tableName||"无"}}</li>
               <li v-else style="height:80px;width:100%;overflow:auto;" class="jrborder">
-                 <span style="display:block" v-for="(item, index) in resData.sourceMatchTables.split(',')" :key="index">{{item}}</span>
+                 <span style="display:block" v-for="(item, index) in resData.sourceMatchTables.split('*')" :key="index">{{item}}</span>
               </li>
             </ul>
           </div>
