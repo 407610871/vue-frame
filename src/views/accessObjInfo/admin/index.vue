@@ -24,7 +24,7 @@
               </el-tooltip>
               <el-tooltip class="item" effect="light" content="刷新" placement="top">
                 <a href="javascript:void(0)" v-on:click="refresh">
-                  <i class="enc-icon-shuaxin"></i>
+                  <i class="enc-icon-shuaxinRF"></i>
                 </a>
               </el-tooltip>
             </div>
