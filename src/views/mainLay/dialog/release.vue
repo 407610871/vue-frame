@@ -2,9 +2,14 @@
   <div class="taskMDialog release">
     <!-- <el-tooltip class="item" effect="light" content="版本信息" placement="bottom">
       <el-button @click="dialogVisible = true" class="document" icon="enc-icon-documents"></el-button>
-    </el-tooltip> -->
+    </el-tooltip>-->
     <!--  <a href="javascript:void(0)" @click="dialogVisible = true" >版本信息</a> -->
-    <el-dialog :title="versionDes + '  '+ versionDate" :visible.sync="dialogVisible" width="73%" :before-close="closeDialog">
+    <el-dialog
+      :title="versionDes + '  '+ versionDate"
+      :visible.sync="dialogVisible"
+      width="73%"
+      :before-close="closeDialog"
+    >
       <div class="title-gra plr30">
         <div class="grab gra-r">
           <span class="grab gra-l"></span>
@@ -16,16 +21,24 @@
           <!-- <el-tab-pane label="用户管理"></el-tab-pane>
           <el-tab-pane label="配置管理"></el-tab-pane>
           <el-tab-pane label="角色管理"></el-tab-pane>
-          <el-tab-pane label="定时任务补偿"></el-tab-pane> -->
+          <el-tab-pane label="定时任务补偿"></el-tab-pane>-->
         </el-tabs>
       </el-col>
       <el-col :span="20" class="release-box release-ver-con">
         <div class="proInfo-box release-Info bornone clearfix">
           <ul class="directory">
-            <li><a href="javascript:void(0)" @click="goAnchor('txqd')">特性清单</a></li>
-            <li><a href="javascript:void(0)" @click="goAnchor('zdbglb')">重大变更列表</a></li>
-            <li><a href="javascript:void(0)" @click="goAnchor('wtjjqd')">解决问题清单</a></li>
-            <li><a href="javascript:void(0)" @click="goAnchor('yzwthxz')">已知问题和限制</a></li>
+            <li>
+              <a href="javascript:void(0)" @click="goAnchor('txqd')">特性清单</a>
+            </li>
+            <li>
+              <a href="javascript:void(0)" @click="goAnchor('zdbglb')">重大变更列表</a>
+            </li>
+            <li>
+              <a href="javascript:void(0)" @click="goAnchor('wtjjqd')">解决问题清单</a>
+            </li>
+            <li>
+              <a href="javascript:void(0)" @click="goAnchor('yzwthxz')">已知问题和限制</a>
+            </li>
           </ul>
           <div class="daiInfo-title proInfo-title" id="txqd">
             <h2>特性清单</h2>
@@ -37,14 +50,10 @@
                   <span>{{scope.$index}}</span>
                 </template>
               </el-table-column>
-              <el-table-column prop="Introduction" label="特性名称">
-              </el-table-column>
-              <el-table-column prop="content" label="具体描述" width="350" class="tleft">
-              </el-table-column>
-              <el-table-column prop="sysName" label="子系统/产品">
-              </el-table-column>
-              <el-table-column prop="remark" label="备注">
-              </el-table-column>
+              <el-table-column prop="Introduction" label="特性名称"></el-table-column>
+              <el-table-column prop="content" label="具体描述" width="350" class="tleft"></el-table-column>
+              <el-table-column prop="sysName" label="子系统/产品"></el-table-column>
+              <el-table-column prop="remark" label="备注"></el-table-column>
             </el-table>
           </div>
           <div class="proInfo-box clearfix" id="zdbglb">
@@ -70,12 +79,9 @@
                     <span>{{scope.$index}}</span>
                   </template>
                 </el-table-column>
-                <el-table-column prop="content" label="问题描述" width="350">
-                </el-table-column>
-                <el-table-column prop="Influence" label="影响" width="150">
-                </el-table-column>
-                <el-table-column prop="Solve" label="权变解决方法">
-                </el-table-column>
+                <el-table-column prop="content" label="问题描述" width="350"></el-table-column>
+                <el-table-column prop="Influence" label="影响" width="150"></el-table-column>
+                <el-table-column prop="Solve" label="权变解决方法"></el-table-column>
               </el-table>
             </div>
           </div>
@@ -84,22 +90,18 @@
     </el-dialog>
   </div>
 </template>
-<script type="text/javascript" src="../release/js/xml2json.min.js"></script>
+
 <script>
-/*import version from '@/views/mainLay/dialog/release_version'*/
-// import versionBank from '@/views/mainLay/release/data/version1.2.2.xml'
-/*console.log(versionBank);*/
+import xml2js from "xml2js";
 export default {
   name: "taskMDialog",
   data: function() {
     return {
       dialogVisible: true,
-      versionDes: '',
-      versionDate: '',
+      versionDes: "",
+      versionDate: "",
       loading: false,
-      versionData: [
-        '1.1.1', '1.1.0', '1.0.1', '1.0.0'
-      ],
+      versionData: ["1.1.1", "1.1.0", "1.0.1", "1.0.0"],
       tableData: [],
       changeData: [],
       finishData: [],
@@ -107,23 +109,20 @@ export default {
     };
   },
   mounted() {
-    this._getVersion('1.1.1');
+    this._getVersion("1.1.1");
   },
   methods: {
     //关闭对话框
     closeDialog() {
-      this.$emit('closeDia', );
+      this.$emit("closeDia");
       this.dialogVisible = false;
-
     },
     handleClick(tab, event) {
-      /* console.log(tab, event);*/
-      if (tab.label == '当前') {
-        this._getVersion('1.1.1');
+      if (tab.label == "当前") {
+        this._getVersion("1.1.1");
       } else {
         this._getVersion(tab.label);
       }
-
     },
     //版本信息滚动
     goAnchor(selector) {
@@ -131,37 +130,34 @@ export default {
     },
     //滚动
     godToId(ID) {
-      $('html,body').animate({ scrollTop: $("#" + ID).offset().top }, 500);
+      $("html,body").animate({ scrollTop: $("#" + ID).offset().top }, 500);
     },
     _getVersion(url) {
       this.loading = true;
       let _self = this;
-      this.$ajax.get(`/data/version${url}.xml`).then(function(res) {
+      this.$ajax
+        .get(`/data/version${url}.xml`)
+        .then(function(res) {
           _self.loading = false;
-          var jsonObj = _self.$x2js.xml2js(res.data);
-          _self.tableData = jsonObj.note.specialityList.item;
-          _self.changeData = jsonObj.note.changeList.item;
-          _self.finishData = jsonObj.note.finishedPunchList.item;
-          _self.knownData = Array.isArray(jsonObj.note.questionList.item) ? jsonObj.note.questionList.item : [jsonObj.note.questionList.item];
-          _self.versionDes = jsonObj.note.name;
-          _self.versionDate = jsonObj.note.date;
-
+          xml2js.parseString(res.data, function(err, jsonObj) {
+            _self.tableData = jsonObj.note.specialityList[0].item;
+            _self.changeData = jsonObj.note.changeList[0].item;
+            _self.finishData = jsonObj.note.finishedPunchList[0].item;
+            _self.knownData = Array.isArray(jsonObj.note.questionList[0].item)
+              ? jsonObj.note.questionList[0].item
+              : [jsonObj.note.questionList[0].item];
+            _self.versionDes = jsonObj.note.name;
+            _self.versionDate = jsonObj.note.date;
+          });
         })
         .catch(function(err) {
-          console.log(err)
           _self.loading = false;
         });
     }
   },
-  components: {
-
-  },
-  watch: {
-
-  }
-
+  components: {},
+  watch: {}
 };
-
 </script>
 <style lang="scss">
 @import "@/assets/css/base.scss";
@@ -195,7 +191,7 @@ export default {
   }
 }
 
-.el-radio+.el-radio {
+.el-radio + .el-radio {
   margin-left: 19px;
 }
 
@@ -281,7 +277,6 @@ export default {
 }
 
 .release-box {
-
   padding-left: 0px;
 }
 
@@ -289,8 +284,7 @@ export default {
   display: inline-block !important;
 }
 
-
-@media screen and ( max-width: 1280px) {
+@media screen and (max-width: 1280px) {
   .taskMDialog {
     vertical-align: top;
   }
@@ -319,8 +313,9 @@ export default {
   white-space: normal;
 }
 
-.retable .el-table th>.cell,.rectable .el-table th>.cell {
-  text-align: center
+.retable .el-table th > .cell,
+.rectable .el-table th > .cell {
+  text-align: center;
 }
 
 .release {
@@ -339,5 +334,4 @@ export default {
     text-align: left;
   }
 }
-
 </style>

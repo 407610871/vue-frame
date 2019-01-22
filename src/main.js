@@ -25,9 +25,7 @@ import "./registerServiceWorker";
 
 //展宏加入
 import axios from "axios";
-//x2js
-import x2js from "x2js"; //xml数据处理插件
-Vue.prototype.$x2js = new x2js(); //创建x2js对象，挂到vue原型上
+
 Vue.prototype.GLOBAL = global_; //挂载到Vue实例上面
 Vue.prototype.$ajax = axios;
 Vue.prototype.$ajax.interceptors.request.use(

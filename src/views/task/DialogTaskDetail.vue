@@ -61,7 +61,7 @@
               <el-col :span="12">
                 <el-col :span="20">
                   <el-form-item label="接入对象:">
-                    <div style="height:80px;width:100%;overflow:auto;border:1px solid #c9cdd0;">
+                    <div style="height:80px;width:70%;overflow:auto;" :class="sourceBaseInfo.sourceObjNameList.length>1?'jrborder':''">
                       <span style="display:block" v-for="(item, index) in sourceBaseInfo.sourceObjNameList" :key="index" v-show="item.type=='TABLE'||item.type=='VIEW'">{{item.type=="TABLE"?'表':'视图'}}:{{item.tableName}}</span>
                       <span v-show="sourceBaseInfo.sourceObjNameStr!=''">{{sourceBaseInfo.sourceObjNameStr}}</span>
                     </div>
@@ -325,7 +325,9 @@ td {
   float: none;
   text-align: left !important;
 }
-
+.jrborder {
+  border:1px solid #c9cdd0;
+}
 .taskselect .el-input__inner {
   height: 35px !important;
 }
