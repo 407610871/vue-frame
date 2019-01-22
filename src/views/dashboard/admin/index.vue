@@ -1,6 +1,6 @@
 <template>
   <div class="dashboard-container">
-    <div>
+    <div data-scrollbar>
       <el-breadcrumb separator>
         <el-breadcrumb-item>数据接入</el-breadcrumb-item>
       </el-breadcrumb>
@@ -157,7 +157,6 @@
 import { mapState } from "vuex";
 import dataCount from "./../../../components/dataCountNew";
 import formFliter from "./../../../components/formFliter";
-
 import regDialog from "./../dialog/admin/reg_dialog";
 import editDialog from "./../dialog/admin/edit_dialog";
 import {
