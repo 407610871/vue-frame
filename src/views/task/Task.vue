@@ -260,11 +260,13 @@
         </el-table-column>
         <el-table-column label="操作" width="260">
           <template slot-scope="scope">
-            <el-button v-if="scope.row.status==0||scope.row.status==2" type="text" size="small" @click="doRun(scope.$index, scope.row)">运行</el-button>
-            <el-button v-if="scope.row.status==1 || scope.row.status==5" type="text" size="small" @click="doRun(scope.$index, scope.row)">暂停</el-button>
-            <el-button v-if="scope.row.status!=1" type="text" size="small" @click="doDel(scope.$index, scope.row)">删除</el-button>
-            <el-button v-if="(scope.row.status==1||scope.row.status==2||scope.row.status==4)&&scope.row.isPeriod!=0&&scope.row.ftpIsDelete!='true'" type="text" size="small" @click="doCheck(scope.$index, scope.row)">数据核验</el-button>
-            <el-button v-if="(scope.row.status==2||scope.row.status==4||scope.row.status==6||scope.row.status==7)&&scope.row.isPeriod!=0&&scope.row.ftpIsDelete!='true'" type="text" size="small" @click="doConverge(scope.$index, scope.row)">重新汇聚</el-button>
+            <div class="el-tleft">
+            <el-button v-if="scope.row.status==0||scope.row.status==2" type="text" size="small" @click="doRun(scope.$index, scope.row)"><el-tooltip class="item" effect="light" content="运行" placement="top"><i class="enc-icon-qidongyunhang1"></i></el-tooltip></el-button>
+            <el-button v-if="scope.row.status==1 || scope.row.status==5" type="text" size="small" @click="doRun(scope.$index, scope.row)"><el-tooltip class="item" effect="light" content="暂停" placement="top"><i class="enc-icon-zanting"></i></el-tooltip></el-button>
+            <el-button v-if="scope.row.status!=1" type="text" size="small" @click="doDel(scope.$index, scope.row)"><el-tooltip class="item" effect="light" content="删除" placement="top"><i class="enc-icon-shanchu"></i></el-tooltip></el-button>
+            <el-button v-if="(scope.row.status==1||scope.row.status==2||scope.row.status==4)&&scope.row.isPeriod!=0&&scope.row.ftpIsDelete!='true'" type="text" size="small" @click="doCheck(scope.$index, scope.row)"><el-tooltip class="item" effect="light" content="数据核验" placement="top"><i class="enc-icon-shujuheyan"></i></el-tooltip></el-button>
+            <el-button v-if="(scope.row.status==2||scope.row.status==4||scope.row.status==6||scope.row.status==7)&&scope.row.isPeriod!=0&&scope.row.ftpIsDelete!='true'" type="text" size="small" @click="doConverge(scope.$index, scope.row)"><el-tooltip class="item" effect="light" content="重新汇聚" placement="top"><i class="enc-icon-huiju"></i></el-tooltip></el-button>
+            </div>
           </template>
         </el-table-column>
       </el-table>
@@ -1497,5 +1499,15 @@ export default {
 }
 .main-content {
   width:100%;
+}
+.task-template {
+  .el-table .cell .el-button i {
+    font-size:20px;
+  }
+  .el-tleft {
+    /* width:100px;
+    text-align: left;
+    margin:auto; */
+  }
 }
 </style>
