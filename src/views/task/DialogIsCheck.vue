@@ -34,7 +34,7 @@
               <li>源库：</li>
              
               <li>源端数据量：</li>
-               <li>{{types=='ftp'?'源端文件：':'源端表：'}}</li>
+               <li>{{types=='ftp'?'源端对象：':'源端表：'}}</li>
             </ul>
             <ul>
               <li :title="resData.source_library">{{resData.source_library||"无"}}</li>
@@ -432,7 +432,7 @@ export default {
                 source_sqls = res.data.source_sql;
               }
               this.loginfo = `源库：${res.data.source_library}\n
-源表：${res.data.source_tableName}\n
+${this.types=='ftp'?'源端对象':'源表'}：${res.data.source_tableName}\n
 执行结果：${res.data.source_tableNum}\n
 数据核验查询语句：${source_sqls}\n
 \n

@@ -26,7 +26,7 @@
             <el-table :data="tableData" stripe style="width: 100%">
               <el-table-column label="编号" width="80">
                 <template slot-scope="scope">
-                  <span>{{scope.$index}}</span>
+                  <span>{{scope.$index+1}}</span>
                 </template>
               </el-table-column>
               <el-table-column prop="Introduction" label="特性名称">
@@ -57,7 +57,7 @@
               <el-table :data="knownData" stripe style="width: 100%">
                 <el-table-column label="编号" width="80">
                   <template slot-scope="scope">
-                    <span>{{scope.$index}}</span>
+                    <span>{{scope.$index+1}}</span>
                   </template>
                 </el-table-column>
                 <el-table-column prop="content" label="问题描述" width="350">
