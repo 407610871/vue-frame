@@ -17,7 +17,7 @@
                   </el-col>
                   <el-col :span="4" class="bank">bank</el-col>
                   <el-col :span="6">
-                    <el-radio :label="1" :disabled="!this.queryTargetColumnList.length">根据时间范围核验</el-radio>
+                    <el-radio :label="1" :disabled="!this.queryTargetColumnList.length" v-show="this.$route.params.type!='mongodb'">根据时间范围核验</el-radio>
                   </el-col>
                   <el-col :span="10">
                     <el-button type="primary" size="small" @click="inverCheck()">开始核验</el-button>
