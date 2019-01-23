@@ -32,20 +32,19 @@
     </div>
     <div class="main main-content">
       <div class="moreSearch" style="margin-bottom:10px;">
-        <div class="table-tools clearfix">
+        <div class="table-tools">
           <el-tooltip v-if="type=='mysql'|| type=='oracle'|| type=='postgresql' || type=='sqlserver' || type=='file'" 
           class="item" effect="light" content="批量采集" placement="top" style="margin-right:10px;">
-            <!--<span class="icon-title enc-icon-piliangcaiji right-btn" @click="showTask()"></span>-->
              <el-button @click="updataSource" type="primary" icon="icon-title enc-icon-piliangcaiji">
               批量采集</el-button>
           </el-tooltip>
           
           <table-inver v-if="type=='mysql'|| type=='oracle'|| type=='postgresql' || type=='sqlserver'||type=='mongodb'" 
-              class="right-btn" :pdata="tablePa" ></table-inver>
-          <path-ftp class="right-btn" @refresh="loadTable" v-if="type=='ftp'" ></path-ftp>
+               :pdata="tablePa" ></table-inver>
+          <path-ftp  @refresh="loadTable" v-if="type=='ftp'" ></path-ftp>
 
           <el-tooltip v-if="type=='mysql'|| type=='oracle'|| type=='postgresql' || type=='sqlserver'||type=='mongodb'" 
-          class="item" effect="light" content="接入源更新" placement="top" style="margin-right:10px;">
+          class="item" effect="light" content="接入源更新" placement="top">
             <el-button @click="updataSource" type="primary" icon="icon-title enc-icon-jieruyuangengxin">
              接入源更新</el-button>
           </el-tooltip>
@@ -926,17 +925,6 @@ export default {
       font-size: 22px;
     }
   }
-  .moreSearch {
-    .table-tools {
-      padding-top: 10px;
-      height: 55px;
-      display: flex;
-      justify-content: flex-end;
-      .right-btn {
-        float: right;
-      }
-    }
-  }
   .table-container {
     padding: 32px;
   }
@@ -1022,3 +1010,4 @@ export default {
 }
 
 </style>
+

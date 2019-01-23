@@ -15,7 +15,7 @@
               <el-tooltip class="item" effect="light" content="导入" placement="top">
                 <el-button type="primary" v-on:click="importData" icon="icon-title enc-icon-daoru">导入</el-button>
               </el-tooltip>
-              <el-tooltip class="item" effect="light" content="导出" placement="top">
+              <el-tooltip class="item" effect="light" content="导出" placement="top" >
                 <el-button type="primary" v-on:click="exportData" icon="icon-title enc-icon-daochu">导出</el-button>
               </el-tooltip>
               <el-tooltip class="item" effect="light" content="刷新" placement="top">
@@ -721,6 +721,9 @@ export default {
     margin-left: 0 !important;
   }
 }
+.right-tools .el-button--primary span , .right-tools .el-button--medium span {
+  float:right;
+}
 </style>
   <style rel="stylesheet/scss" lang="scss" scoped>
 .dashboard-container {
@@ -731,13 +734,6 @@ export default {
     margin-bottom: 20px;
     .right-tools {
       float: right;
-      margin-right: 10px;
-      a {
-        font-size: 26px;
-        i {
-          font-size: 32px;
-        }
-      }
     }
     form {
       margin-right: 100px;

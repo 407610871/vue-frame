@@ -155,11 +155,6 @@ header {
   }
   
   // 按钮样式
-  .el-button {
-    span{
-      float: right;
-    }
-  }
   .el-button--medium {
     padding: 0 12px;
     font-size: 15px;
@@ -382,3 +377,11 @@ header {
   border-radius: 0px !important;
 }
 
+.table-tools {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 20px
+}
+.table-tools .el-button--primary span , .table-tools .el-button--medium span {
+  float:right;
+}
