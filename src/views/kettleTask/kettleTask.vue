@@ -419,9 +419,9 @@ export default {
     font-size: 15px;
     cursor: pointer;
     width: 100px;
-    height: 35px;
+    height: 36px;
     border: 1px solid #c9cdd0;
-    border-left: none;
+    margin-left: 5px;
     line-height: 35px;
     text-align: center;
     position: relative;

@@ -1353,26 +1353,6 @@ export default {
 
 .searchDiv {
   float: right;
-  margin-top: -40px;
-  margin-right: 20px;
-  height: 40px;
-  padding: 2px 0 0 0;
-  span {
-    display: inline-block;
-    font-size: 15px;
-    cursor: pointer;
-    width: 100px;
-    height: 35px;
-    border: 1px solid #C8CFD5;
-    border-left: none;
-    line-height: 36px;
-    text-align: center;
-    position: relative;
-  }
-}
-
-.searchDiv {
-  float: right;
   margin-top: -41px;
   margin-right: 20px;
   height: 40px;
@@ -1381,9 +1361,9 @@ export default {
     font-size: 15px;
     cursor: pointer;
     width: 100px;
-    height: 35px;
+    height: 36px;
     border: 1px solid #c9cdd0;
-    border-left: none;
+    margin-left: 5px;
     line-height: 35px;
     text-align: center;
     position: relative;
@@ -1505,7 +1485,7 @@ export default {
 }
 .task-template {
   .el-table .cell .el-button i {
-    font-size:20px;
+    font-size: 21px;
   }
   .el-tleft {
     /* width:100px;

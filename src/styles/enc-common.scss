@@ -106,9 +106,11 @@ header {
     .el-submenu {
       .el-submenu__title {
         color: #425365;
+        .enc-icon-renwuzhongxin{
+          font-size: 24px;
+        }
         i {
           margin-right: 7px;
-          font-size: 24px;
           color: #425365;
         }
       }

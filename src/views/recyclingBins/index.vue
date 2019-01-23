@@ -36,10 +36,10 @@
             <template slot-scope="scope">
               <div>
                 <el-tooltip class="item" effect="light" content="恢复" placement="top">
-                  <i @click="recordRecover(scope.$index, scope.row)" class="enc-icon-huifu table-action-btn"></i>
+                  <i @click="recordRecover(scope.$index, scope.row)" class="enc-icon-huifu1 icon-title"></i>
                 </el-tooltip>
                 <el-tooltip class="item" effect="light" content="删除" placement="top">
-                  <i @click="recordDelete(scope.$index, scope.row)" class="enc-icon-shanchu"></i>
+                  <i @click="recordDelete(scope.$index, scope.row)" class="icon-title enc-icon-shanchu"></i>
                 </el-tooltip>
               </div>
             </template>
@@ -329,10 +329,6 @@ export default {
   }
   .enc-pagination {
     float: right;
-  }
-  .cell i {
-    cursor: pointer;
-    font-size: 18px;
   }
 }
 .table-action-btn {

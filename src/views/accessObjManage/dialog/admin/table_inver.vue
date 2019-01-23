@@ -1,25 +1,24 @@
 <template>
   <div class="taskMDialog userSurveyDialog">
-    <!--  <el-button class="diabtn tin-btn add-btn" @click="dialogVisible = true">核验报告</el-button> -->
     <el-tooltip class="item" effect="light" content="核验报告" placement="top" style="margin-right:10px;">
-      <!--<span class="icon-title enc-icon-heyanchakan diabtn tin-btn add-btn " @click="dialogVisible = true"></span>-->
       <el-button type="primary" @click="dialogVisible = true" icon=" icon-title enc-icon-heyanchakan">
         核验报告
       </el-button>
     </el-tooltip>
-    <!--  <i class="el-icon-info" @click="dialogVisible = true">用户调研</i> -->
     <el-dialog title="核验报告" :visible.sync="dialogVisible" width="73%" :before-close="closeDialog">
         <div class="title-gra plr30">
           <div class="grab gra-r">
             <span class="grab gra-l"></span>
           </div>
         </div>
-      <div class="proInfo-box bornone clearfix" style="margin-bottom:20px;">
+      <div class="proInfo-box bornone clearfix" style="margin-bottom:20px; text-align:right">
         <p style="text-align: center">{{name}}</p>
         <el-tooltip class="item" effect="light" content="刷新" placement="top">
-          <a href="javascript:void(0)" class="refresha" v-on:click="_getTableNum"><i class="enc-icon-shuaxin"></i></a>
+          <el-button type="primary" v-on:click="_getTableNum" icon="icon-title enc-icon-shuaxin"> 刷新</el-button>
         </el-tooltip>
-        <el-button size="mini" type="primary" @click="downTable()" class="dowBtn">导出报告</el-button>
+        <el-tooltip class="item" effect="light" content="导出报告" placement="top">
+          <el-button type="primary" @click="downTable()" icon="icon-title enc-icon-daochu" >导出报告</el-button>
+        </el-tooltip>
       </div>
       <div class="proInfo-box" v-loading="loading2">
         <div class="comTable">

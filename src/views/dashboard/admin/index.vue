@@ -112,7 +112,7 @@
           <template slot-scope="scope">{{getNetwork(scope.row.network)}}</template>
         </el-table-column>
         <el-table-column prop="createTime" label="注册时间" min-width="160"></el-table-column>
-        <el-table-column label="操作" min-width="140">
+        <el-table-column label="操作" min-width="160">
           <template slot-scope="scope">
             <div class="lofile">
               <edit-dialog :acId="scope.row.id" @refreshTable="loadTable" @storeReady="storeReady"></edit-dialog>
@@ -774,7 +774,7 @@ export default {
 
   .table-action-btn {
     display: inline-block;
-    font-size: 16px;
+    font-size: 20px;
     margin: 0 5px;
   }
 
@@ -784,12 +784,9 @@ export default {
 }
 
 .lofile {
-  width: 70px;
+  width: 80px;
   text-align: left;
   margin: 0 auto;
-  i {
-    font-size: 21px;
-  }
 }
 
 .underdone,
@@ -801,6 +798,11 @@ export default {
 .lookstyle {
   font-weight: normal;
   padding-right: 20px;
+}
+</style>
+<style>
+.lofile i{
+  font-size: 20px;
 }
 </style>
 
