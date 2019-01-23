@@ -1,6 +1,6 @@
 <template>
   <div class="dashboard-container">
-    <div data-scrollbar>
+    <div>
       <el-breadcrumb separator>
         <el-breadcrumb-item>数据接入</el-breadcrumb-item>
       </el-breadcrumb>
@@ -68,7 +68,7 @@
     <div class="main main-content">
       <div class="filter-container">
         <div class="count-container">
-          <div class="count-title">
+           <div class="count-title" style="position: relative; bottom: 15px;">
             <label>数据源注册总数</label>
             <div class="all-number">{{countTotal}}</div>
           </div>
@@ -76,7 +76,7 @@
           <dataCount v-bind:dataObj="count1Data" class="countData"/>
           <div class="line"></div>
           <dataCount v-bind:dataObj="count2Data" class="countData"/>
-          <div class="regbtn">
+          <div class="regbtn fr">
             <reg-dialog
               @refreshTable="loadTable"
               @storeReady="storeReady"
@@ -157,6 +157,7 @@
 import { mapState } from "vuex";
 import dataCount from "./../../../components/dataCountNew";
 import formFliter from "./../../../components/formFliter";
+
 import regDialog from "./../dialog/admin/reg_dialog";
 import editDialog from "./../dialog/admin/edit_dialog";
 import {
@@ -708,37 +709,43 @@ export default {
   }
   .filter-container {
     .count-container {
-      display: flex;
-      justify-content: center;
       .count-title {
-        width: 15%;
+        display: inline-block;
+        margin: 10px 5% 10px 40px;
+        width: 8%;
         text-align: center;
+
         label {
           display: inline-block;
           margin-bottom: 10px;
           color: #999;
           font-size: 14px;
         }
+
         .all-number {
           /* color: #425365; */
           font-size: 24px;
           font-weight: bold;
         }
       }
+
       .countData {
-        width: 30%;
+        display: inline-block;
+        margin: 10px 4%;
+        width: 25%;
       }
+
       .line {
-        margin: 20px 30px 0 30px;
+        display: inline-block;
+        margin: 32px 0 12px 0;
         height: 30px;
         width: 2px;
         background-color: #999;
         border-radius: 2px;
       }
       .regbtn {
-        text-align: right;
-        width:20%;
-        margin-top: 15px;
+        margin-top: 25px;
+        padding-right: 20px;
       }
     }
 
