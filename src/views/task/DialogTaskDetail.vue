@@ -818,7 +818,7 @@ export default {
     checkData() {
       //isTestLink控制是否展示数据核验弹框
       var _self = this;
-       _self.isCheckLoading = true;
+      _self.isCheckLoading = true;
       _self.jrtype = _self.sourceBaseInfo.dbType;
       if (_self.jrtype == 'ftp') {
         _self.$ajax({
@@ -831,11 +831,30 @@ export default {
           if (res.data.success && res.data.data.length > 0) {
             res.data.data.forEach(res => {
               if (res.isExitFile == 'true') {
-                _self.showCheckData = true;
-                _self.entFromCheck = false;
-                //接入数据更新是否通过测试连接接口展示loading，这个时候是点击“数据核验”时加载的loading
-                _self.isCheckLoading = false;
-                _self.loading3 = false;
+                if (_self.taskBaseInfo.statusDesc == '运行') {
+                  _self.$confirm('当前任务正在运行中， 数据核验结果可能不精准，请确认是否要继续数据核验?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    cancelButtonClass: "el-button--primary",
+                    type: 'warning'
+                  }).then(() => {
+                    _self.showCheckData = true;
+                    _self.entFromCheck = false;
+                    //接入数据更新是否通过测试连接接口展示loading，这个时候是点击“数据核验”时加载的loading
+                    _self.isCheckLoading = false;
+                    _self.loading3 = false;
+                  }).catch(() => {
+                    _self.isCheckLoading = false;
+                    _self.loading3 = false;
+                  })
+                } else {
+                  _self.showCheckData = true;
+                  _self.entFromCheck = false;
+                  //接入数据更新是否通过测试连接接口展示loading，这个时候是点击“数据核验”时加载的loading
+                  _self.isCheckLoading = false;
+                  _self.loading3 = false;
+                }
+
               } else {
                 _self.isCheckLoading = false;
                 _self.loading3 = false;
