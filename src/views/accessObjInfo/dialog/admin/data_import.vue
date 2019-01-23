@@ -1,12 +1,16 @@
 <template>
+<div class="taskMDialog">
   <el-dialog title="导入" width="60%" :visible.sync="dialogVisible">
-    <el-container style="height:100%;" class="dashboard-container">
-			<el-main style="padding-bottom:0;">
+		<div class="title-gra plr30">
+      <div class="grab gra-r">
+        <span class="grab gra-l"></span>
+      </div>
+    </div>
+			<div style="padding-bottom:0;">
 				<el-table
 					:data="importList.data"
 					stripe
 					height="300"
-					border
 					style="width:100%"
 					tooltip-effect="light"
 					>
@@ -62,13 +66,13 @@
                 </template>
 					</el-table-column>
 				</el-table>
-				<div style="margin:20px; text-align:right;">
-					<el-button @click="cancel">取消</el-button>
-					<el-button @click="importCommit">确认导入</el-button>
+				<div class="mr-btn">
+					<el-button type="primary" @click="cancel">取消</el-button>
+					<el-button type="primary" @click="importCommit">确认导入</el-button>
 				</div>
-			</el-main>
-		</el-container>
+			</div>
   </el-dialog>
+</div>
 </template>
 <script>
 export default {
