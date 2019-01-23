@@ -188,16 +188,18 @@
     <!-- 操作按钮 -->
     <div class="count-operate main-content clearfix">
       <div>
-        <el-button type="primary" @click="doMore('manager/taskOperate/batchConverge',1)">重新汇聚</el-button>
-        <el-button type="primary" @click="doMore('manager/taskOperate/batchStart',2)">批量启动</el-button>
-        <el-button type="primary" @click="doMore('manager/taskOperate/batchPause',3)">批量停止</el-button>
-        <div class="right-tools">
-          <el-tooltip class="item" effect="light" content="刷新" placement="top">
-            <a href="javascript:void(0)" v-on:click="refresh">
-                <i class="enc-icon-shuaxinRF"></i>
-              </a>
-          </el-tooltip>
-        </div>
+        <el-tooltip class="item" effect="light" content="重新汇聚" placement="top">
+         <el-button type="primary" icon="icon-title enc-icon-huiju" @click="doMore('manager/taskOperate/batchConverge',1)">重新汇聚</el-button>
+        </el-tooltip>
+        <el-tooltip class="item" effect="light" content="批量启动" placement="top">
+         <el-button type="primary" icon="icon-title enc-icon-qidongyunhang1" @click="doMore('manager/taskOperate/batchStart',2)">批量启动</el-button>
+        </el-tooltip>
+        <el-tooltip class="item" effect="light" content="批量停止" placement="top">
+          <el-button type="primary" icon="icon-title enc-icon-zanting"  @click="doMore('manager/taskOperate/batchPause',3)">批量停止</el-button>
+        </el-tooltip>
+        <el-tooltip class="item" effect="light" content="刷新" placement="top">
+          <el-button type="primary" icon="icon-title enc-icon-shuaxin" @click="refresh">刷新</el-button>
+        </el-tooltip>
       </div>
     </div>
     <!-- 表格数据 -->
@@ -219,7 +221,8 @@
         </el-table-column>
         <el-table-column prop="taskInfoId" fixed label="ID" width="100" :show-overflow-tooltip="true">
           <template slot-scope="scope">
-            <el-button @click="doDetail(scope.$index, scope.row)" type="text" size="small" style="text-decoration: underline;">{{scope.row.taskInfoId}}</el-button>
+            <el-button @click="doDetail(scope.$index, scope.row)" type="text" size="small" style="text-decoration: underline;">
+              {{scope.row.taskInfoId}}</el-button>
           </template>
         </el-table-column>
         <el-table-column prop="sourceDBName" label="接入源名称" width="200" :show-overflow-tooltip="true"></el-table-column>

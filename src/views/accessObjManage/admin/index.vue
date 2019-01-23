@@ -33,13 +33,21 @@
     <div class="main main-content">
       <div class="moreSearch" style="margin-bottom:10px;">
         <div class="table-tools clearfix">
-          <el-tooltip v-if="type=='mysql'|| type=='oracle'|| type=='postgresql' || type=='sqlserver'||type=='mongodb'" class="item" effect="light" content="接入源更新" placement="top">
-            <span class="icon-title enc-icon-jieruyuangengxin right-btn" v-on:click="updataSource" style="margin-left:10px; margin-right: 50px;float:right"></span>
+          <el-tooltip v-if="type=='mysql'|| type=='oracle'|| type=='postgresql' || type=='sqlserver' || type=='file'" 
+          class="item" effect="light" content="批量采集" placement="top" style="margin-right:10px;">
+            <!--<span class="icon-title enc-icon-piliangcaiji right-btn" @click="showTask()"></span>-->
+             <el-button @click="updataSource" type="primary" icon="icon-title enc-icon-piliangcaiji">
+              批量采集</el-button>
           </el-tooltip>
-          <table-inver v-if="type=='mysql'|| type=='oracle'|| type=='postgresql' || type=='sqlserver'||type=='mongodb'" class="right-btn" :pdata="tablePa" style="float:right"></table-inver>
-          <path-ftp class="right-btn" @refresh="loadTable" v-if="type=='ftp'" style="float:right"></path-ftp>
-          <el-tooltip v-if="type=='mysql'|| type=='oracle'|| type=='postgresql' || type=='sqlserver' || type=='file'" class="item" effect="light" content="批量采集" placement="top" style="float:right;">
-            <span class="icon-title enc-icon-piliangcaiji right-btn" @click="showTask()"></span>
+          
+          <table-inver v-if="type=='mysql'|| type=='oracle'|| type=='postgresql' || type=='sqlserver'||type=='mongodb'" 
+              class="right-btn" :pdata="tablePa" ></table-inver>
+          <path-ftp class="right-btn" @refresh="loadTable" v-if="type=='ftp'" ></path-ftp>
+
+          <el-tooltip v-if="type=='mysql'|| type=='oracle'|| type=='postgresql' || type=='sqlserver'||type=='mongodb'" 
+          class="item" effect="light" content="接入源更新" placement="top" style="margin-right:10px;">
+            <el-button @click="updataSource" type="primary" icon="icon-title enc-icon-jieruyuangengxin">
+             接入源更新</el-button>
           </el-tooltip>
         </div>
       </div>
@@ -918,13 +926,12 @@ export default {
       font-size: 22px;
     }
   }
-  .main-container {
-    padding-bottom: 0;
-    padding-top: 0;
+  .moreSearch {
     .table-tools {
       padding-top: 10px;
       height: 55px;
-      border-top: 1px solid #eee;
+      display: flex;
+      justify-content: flex-end;
       .right-btn {
         float: right;
       }
@@ -994,12 +1001,6 @@ export default {
 .underdone:focus,
 .underdone:hover {
   text-decoration: underline;
-}
-
-.icon-title {
-  font-size: 30px;
-  display: inline-block;
-  cursor: pointer;
 }
 
 .lookstyle {

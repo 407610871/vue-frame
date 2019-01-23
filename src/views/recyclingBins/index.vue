@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-breadcrumb separator="/">
-      <el-breadcrumb-item :to="{ path: '/dashboard' }">
+      <el-breadcrumb-item>
               回收箱
       </el-breadcrumb-item>
     </el-breadcrumb>
@@ -13,7 +13,7 @@
         <el-table :data="mainTableData" stripe :height="tableHeight" border style="width: 100%; margin-top:20px;" tooltip-effect="light">
           <el-table-column label="接入源名称" width="180" show-overflow-tooltip>
             <template slot-scope="scope">
-              <a href="javascript:void(0)">{{ scope.row.name }}</a>
+              {{ scope.row.name }}
             </template>
           </el-table-column>
           <el-table-column prop="id" label="接入源ID" width="180">

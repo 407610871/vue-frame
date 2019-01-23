@@ -1,7 +1,7 @@
 <template>
   <div class="taskMDialog">
     <el-tooltip class="item" effect="light" content="选择路径" placement="top">
-      <span class="icon-title enc-icon-fuwushouquan diabtn tin-btn add-btn" @click="dialogVisible = true"></span>
+      <el-button type="primary" icon="icon-title enc-icon-fuwushouquan" @click="dialogVisible = true">选择路径</el-button>
     </el-tooltip>
     <el-dialog title="选择路径" :visible.sync="dialogVisible" width="50%" :before-close="closeDialog">
       <div class="title-gra plr30">

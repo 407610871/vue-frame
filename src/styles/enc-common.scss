@@ -155,12 +155,17 @@ header {
   }
   
   // 按钮样式
+  .el-button {
+    span{
+      float: right;
+    }
+  }
   .el-button--medium {
     padding: 0 12px;
     font-size: 15px;
     border-radius: 0;
     height: 35px;
-    line-height: 10px !important;
+    line-height: 10px;
     @include el-button--primary($el-button-default);
   }
   .el-button--primary {
@@ -169,7 +174,7 @@ header {
     border-radius: 0;
     height: 35px;
     color: #fff !important;
-    line-height: 10px !important;
+    line-height: 10px;
     @include el-button--primary($el-button-default);
   }
   .el-button--primary:hover {

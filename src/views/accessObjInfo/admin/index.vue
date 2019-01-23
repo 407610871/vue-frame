@@ -13,19 +13,13 @@
           <div class="filter-container">
             <div class="right-tools" v-if="tabPosition == 'metadataManage'">
               <el-tooltip class="item" effect="light" content="导入" placement="top">
-                <a href="javascript:void(0)" v-on:click="importData">
-                  <i class="enc-icon-daochu"></i>
-                </a>
+                <el-button type="primary" v-on:click="importData" icon="icon-title enc-icon-daoru">导入</el-button>
               </el-tooltip>
               <el-tooltip class="item" effect="light" content="导出" placement="top">
-                <a href="javascript:void(0)" v-on:click="exportData">
-                  <i class="enc-icon-daoru"></i>
-                </a>
+                <el-button type="primary" v-on:click="exportData" icon="icon-title enc-icon-daochu">导出</el-button>
               </el-tooltip>
               <el-tooltip class="item" effect="light" content="刷新" placement="top">
-                <a href="javascript:void(0)" v-on:click="refresh">
-                  <i class="enc-icon-shuaxinRF"></i>
-                </a>
+                <el-button type="primary" v-on:click="refresh" icon="icon-title enc-icon-shuaxin">刷新</el-button>
               </el-tooltip>
             </div>
             <input
