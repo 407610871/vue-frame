@@ -309,7 +309,7 @@ export default {
         dLibrary: "", //接入目的库
         tablename: "", //建立的表名
         accessMode: "1", //接入方式
-        increment: "id", //增量字段
+        increment: "_id", //增量字段
         actech: "JDBC", //采集技术
         cycleSet: "0", //周期设置
         jday: "", //间隔执行天数
@@ -894,7 +894,7 @@ export default {
             this.yid = data.incrementColumnId; //增量字段的id
             //增量字段
             this.isdisable = true;
-            this.ruleForm.increment = "id";
+            this.ruleForm.increment = "_id";
             this.increArr = {};
             if (data.taskStatus == "0") {
               this.ruleForm.taskSubMode = "false";
