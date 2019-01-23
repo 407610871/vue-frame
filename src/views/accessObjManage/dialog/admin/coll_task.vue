@@ -59,7 +59,7 @@
             </el-col>
           </el-col>
           <el-col :span="24">
-            <el-col :span="10" class="collbg" v-if="this.ruleForm.accessMode=='1'||((this.ruleForm.history==true||this.gethis==true)&&this.ruleForm.accessMode=='0')">
+            <el-col :span="10" class="collbg" v-if="this.ruleForm.accessMode=='1'||((this.ruleForm.history==true)&&this.ruleForm.accessMode=='0')">
 
               <el-form-item label="增量字段:" prop="increment">
                 <el-input v-model="ruleForm.increment" class="fl" :disabled="this.ruleForm.accessMode=='0'&&gethis==true"></el-input>
@@ -1017,7 +1017,7 @@ export default {
             this.yid = data.incrementColumnId; //增量字段的id
             //增量字段
             this.isdisable = true;
-            this.gethis = true;
+            
             this.ruleForm.increment = data.incrementColumn;
             this.increArr = {};
             if (data.taskStatus == '0') {
@@ -1089,8 +1089,10 @@ export default {
             this.ruleForm.xStreamServiceName = data.xStreamServiceName;
             if (data.includeHistoryData == '1') {
               this.ruleForm.history = true;
+              this.gethis = true;
             } else {
               data.includeHistoryData = false;
+              this.gethis = true;
             }
             this.ruleForm.userName = data.xStreamUsername;
             this.ruleForm.password = data.xStreamPassword;
