@@ -10,7 +10,7 @@
         <a v-on:click="collapseExpand" class="right-btn collapse-btn"><i :class="{'enc-icon-zhankai':collapse,'enc-icon-shousuo':!collapse}"></i></a>
         <formFliter v-if="queryParamReady" v-bind:formCollapse="collapse" v-bind:dataObj="formFilterData" @formFilter="changeFormFilter" />
       </div>
-        <el-table :data="mainTableData" stripe :height="tableHeight" border style="width: 100%; margin-top:20px;" tooltip-effect="light">
+        <el-table :data="mainTableData" stripe :height="tableHeight"  style="width: 100%; margin-top:20px;" tooltip-effect="light">
           <el-table-column label="接入源名称" width="180" show-overflow-tooltip>
             <template slot-scope="scope">
               {{ scope.row.name }}

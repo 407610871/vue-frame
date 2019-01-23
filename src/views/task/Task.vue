@@ -204,7 +204,7 @@
     </div>
     <!-- 表格数据 -->
     <div class="mainTable main-content clearfix">
-      <el-table border :row-class-name="tableRowClassName" ref="multipleTable" :data="tableData" tooltip-effect="light" :height="tableHeight" style="width: 100%;min-height:300px;" @select-all="selectAll" @select="select" @selection-change="handleSelectionChange">
+      <el-table :row-class-name="tableRowClassName" ref="multipleTable" :data="tableData" tooltip-effect="light" :height="tableHeight" style="width: 100%;min-height:300px;" @select-all="selectAll" @select="select" @selection-change="handleSelectionChange">
         <el-table-column fixed type="selection" width="55"></el-table-column>
         <el-table-column fixed label="接入指示" width="100">
           <template slot-scope="scope">

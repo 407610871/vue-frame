@@ -41,12 +41,10 @@
                 :data="mainTableData1"
                 stripe
                 :height="tableHeight"
-                border
                 style="width: 100%"
                 id="mainTable2"
                 tooltip-effect="light"
-                :row-class-name="tableRowClassName"
-              >
+                :row-class-name="tableRowClassName">
                 <el-table-column label="字段中文名" width="180" show-overflow-tooltip>
                   <template slot-scope="scope">
                     <div>
@@ -134,10 +132,8 @@
                 :data="mainTableData2"
                 stripe
                 :height="tableHeight"
-                border
                 style="width: 100%"
-                tooltip-effect="light"
-              >
+                tooltip-effect="light">
                 <el-table-column
                   v-for="(val, key, index) in data2Columns"
                   v-if="index<6"

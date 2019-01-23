@@ -90,7 +90,6 @@
         :data="mainTableData"
         :height="tableHeight"
         stripe
-        border
         style="width: 100%;"
         tooltip-effect="light"
       >

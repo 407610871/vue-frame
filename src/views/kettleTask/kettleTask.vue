@@ -108,7 +108,6 @@
       style="width: 100%"
       :height="tableHeight"
       stripe
-      border
       tooltip-effect="light"
     >
       <el-table-column label="序号" type="index" width="100"></el-table-column>

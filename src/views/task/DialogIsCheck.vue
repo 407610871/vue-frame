@@ -102,7 +102,7 @@
         </transition>
         <h5>核验历史记录：</h5>
         <div class="comTable">
-          <el-table :data="resDataHistory" stripe border>
+          <el-table :data="resDataHistory" stripe>
             <el-table-column prop="accessCheckTime" label="核验时间"></el-table-column>
             <el-table-column label="核验方式">
               <template slot-scope="scope">
