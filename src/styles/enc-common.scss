@@ -178,23 +178,20 @@ header {
     opacity: 0.5;
     @include el-button--primary($el-button-default);
   }
-  .el-button--medium:hover {
-    opacity: 0.5;
-    @include el-button--primary($el-button-default);
-  }
-  .el-button--medium:active, .el-button--primary:active {
-  @include el-button--primary($el-button-default);
-}
-  .el-button--medium:active, .el-button--primary:active{
-    opacity: 1;
-    background: #009DDF ;
-    border-color:  #009DDF ;
-  }
   .el-button--primary:focus {
     @include el-button--primary($el-button-default);
   }
   .el-button--medium:focus {
     @include el-button--primary($el-button-default);
+  }
+  .el-button--medium:hover {
+    opacity: 0.5;
+    @include el-button--primary($el-button-default);
+  }
+  .el-button--medium:active, .el-button--primary:active{
+    opacity: 1;
+    background: #009DDF ;
+    border-color:  #009DDF ;
   }
   .el-button--primary.is-disabled, .el-button--primary.is-disabled:active, 
   .el-button--primary.is-disabled:focus, .el-button--primary.is-disabled:hover {
