@@ -894,7 +894,7 @@ export default {
             this.yid = data.incrementColumnId; //增量字段的id
             //增量字段
             this.isdisable = true;
-            this.ruleForm.increment = data.incrementColumn;
+            this.ruleForm.increment = "id";
             this.increArr = {};
             if (data.taskStatus == "0") {
               this.ruleForm.taskSubMode = "false";
