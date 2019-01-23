@@ -254,6 +254,7 @@ export default {
   width: 220px;
   height: 40px;
   line-height: 40px;
+  margin-right: 5px;
   ::-webkit-input-placeholder {
     color: #999;
     font-size: 15px;
