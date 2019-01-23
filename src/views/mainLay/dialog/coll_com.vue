@@ -967,6 +967,7 @@ export default {
           }
           this.loading = false;
         } else {
+          this.loading = false; 
           this.editfalg = false;
         }
       });
