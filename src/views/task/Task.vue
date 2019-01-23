@@ -187,7 +187,7 @@
     </div>
     <!-- 操作按钮 -->
     <div class="count-operate main-content clearfix">
-      <div>
+      <div class="task-btn">
         <el-tooltip class="item" effect="light" content="重新汇聚" placement="top">
          <el-button type="primary" icon="icon-title enc-icon-huiju" @click="doMore('manager/taskOperate/batchConverge',1)">重新汇聚</el-button>
         </el-tooltip>
@@ -1492,5 +1492,8 @@ export default {
     text-align: left;
     margin:auto; */
   }
+}
+.task-btn .el-button--primary span, .task-btn .el-button--medium span {
+  float: right;
 }
 </style>
