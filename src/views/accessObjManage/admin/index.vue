@@ -7,12 +7,9 @@
       </el-breadcrumb>
       <form-fliter :ObjManage="ObjManage" v-if="cleanData" @highMore="moreHeight" @highSeaech="hightrue" v-bind:formCollapse="collapse" v-bind:dataObj="formFilterData" v-bind:key_word="key_word" v-bind:deleteData="deleteData" @doSearch="search" @formFilter="changeFormFilter" />
     </div>
-    <div
-      class="el-breadcrumb"
-      v-show="majorData.keyword!=''||( Object.keys(majorData.formSeledShow).length!=0 && (majorData.formSeledShow.dataSourceName.length!=0
+    <div class="el-breadcrumb" v-show="majorData.keyword!=''||( Object.keys(majorData.formSeledShow).length!=0 && (majorData.formSeledShow.dataSourceName.length!=0
             ||majorData.formSeledShow.network.length!=0||majorData.formSeledShow.platform.length!=0
-            ||majorData.formSeledShow.objectType.length!=0||majorData.formSeledShow.dataRange.length!=0))"
-    >
+            ||majorData.formSeledShow.objectType.length!=0||majorData.formSeledShow.dataRange.length!=0))">
       <el-form>
         <el-form-item class="isSelect">
           <div v-show="majorData.keyword!=''">
@@ -33,24 +30,19 @@
     <div class="main main-content">
       <div class="moreSearch" style="margin-bottom:10px;">
         <div class="table-tools">
-          <el-tooltip v-if="type=='mysql'|| type=='oracle'|| type=='postgresql' || type=='sqlserver' || type=='file'" 
-          class="item" effect="light" content="批量采集" placement="top" style="margin-right:10px;">
-             <el-button @click="updataSource" type="primary" icon="icon-title enc-icon-piliangcaiji">
+          <el-tooltip v-if="type=='mysql'|| type=='oracle'|| type=='postgresql' || type=='sqlserver' || type=='file'" class="item" effect="light" content="批量采集" placement="top" style="margin-right:10px;">
+            <el-button @click="updataSource" type="primary" icon="icon-title enc-icon-piliangcaiji">
               批量采集</el-button>
           </el-tooltip>
-          
-          <table-inver v-if="type=='mysql'|| type=='oracle'|| type=='postgresql' || type=='sqlserver'||type=='mongodb'" 
-               :pdata="tablePa" ></table-inver>
-          <path-ftp  @refresh="loadTable" v-if="type=='ftp'" ></path-ftp>
-
-          <el-tooltip v-if="type=='mysql'|| type=='oracle'|| type=='postgresql' || type=='sqlserver'||type=='mongodb'" 
-          class="item" effect="light" content="接入源更新" placement="top">
+          <table-inver v-if="type=='mysql'|| type=='oracle'|| type=='postgresql' || type=='sqlserver'||type=='mongodb'" :pdata="tablePa"></table-inver>
+          <path-ftp @refresh="loadTable" v-if="type=='ftp'"></path-ftp>
+          <el-tooltip v-if="type=='mysql'|| type=='oracle'|| type=='postgresql' || type=='sqlserver'||type=='mongodb'" class="item" effect="light" content="接入源更新" placement="top">
             <el-button @click="updataSource" type="primary" icon="icon-title enc-icon-jieruyuangengxin">
-             接入源更新</el-button>
+              接入源更新</el-button>
           </el-tooltip>
         </div>
       </div>
-      <el-table ref="multipleTable" :height="tableHeight" v-loading="loading" :data="mainTableData" stripe  style="width: 100%; margin-top:10px;" tooltip-effect="light" :row-class-name="tableRowClassName" @selection-change="handleSelectionChange">
+      <el-table ref="multipleTable" :height="tableHeight" v-loading="loading" :data="mainTableData" stripe style="width: 100%; margin-top:10px;" tooltip-effect="light" :row-class-name="tableRowClassName" @selection-change="handleSelectionChange">
         <el-table-column type="selection"></el-table-column>
         <!-- ftp -->
         <el-table-column label="状态" v-if="type=='ftp'||type=='mongodb'" show-overflow-tooltip>
@@ -393,11 +385,18 @@ export default {
       let _self = this;
       _self.noreData = data;
       if (_self.$route.params.type == "ftp") {
+        if (/.*[\u4e00-\u9fa5]+.*$/.test(data.extendParams.filePath)) {
+          _self.$alert('当前系统不支持中文目录,仅支持英文和数字,请修改后再提交采集任务', "提示", {
+            confirmButtonText: "确定",
+            callback: action => {}
+          });
+          return false;
+        }
         _self.loading = true;
         this.$ajax({
           methods: "get",
           url: this.GLOBAL.api.API_DACM + "/ctables/checkFtpFileExist",
-         /* url:'http://10.19.160.59:8080/DACM/ctables/checkFtpFileExist',*/
+          /* url:'http://10.19.160.59:8080/DACM/ctables/checkFtpFileExist',*/
           params: {
             accessSysId: data.accessSysId,
             filePath: data.extendParams.filePath,
@@ -406,7 +405,7 @@ export default {
         }).then(res => {
           _self.loading = false;
           if (res.data.success) {
-            if (res.data.data.isExitChineseName == 'false'||res.data.data.isExitChineseName==undefined) {
+            if (res.data.data.isExitChineseName == 'false' || res.data.data.isExitChineseName == undefined) {
               if (res.data.data.isExitFile == "true") {
                 _self.showSetNore = true;
               } else {
@@ -1010,4 +1009,3 @@ export default {
 }
 
 </style>
-
