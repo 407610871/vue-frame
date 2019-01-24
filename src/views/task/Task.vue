@@ -591,7 +591,7 @@ export default {
           //url: 'http://10.19.160.59:8080/DACM/ctables/checkFtpTaskFileExist',
           params: { 'taskId': row.taskInfoId },
         }).then(res => {
-          _self.loading = false;
+          //_self.loading = false;
           if (res.data.success && res.data.data.length > 0) {
             res.data.data.forEach(res => {
               if (res.isExitFile == 'true') {
@@ -613,6 +613,7 @@ export default {
                           );
                           _self.init();
                         } else {
+                          _self.loading = false;
                           _self.doMsg(res.data.message, "error");
                         }
                       });
