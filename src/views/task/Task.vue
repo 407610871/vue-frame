@@ -51,7 +51,7 @@
             </el-form-item>
             <el-form-item label="任务开始时间:">
               <div @mouseleave="mouseleave()" style="margin-left:15px;">
-                <el-date-picker v-model="time" :picker-options="pickerOptions" type="datetimerange" start-placeholder="开始时间" end-placeholder="结束时间" value-format="yyyy-MM-dd HH:mm:ss" :default-time="['12:00:00']"></el-date-picker>
+                <el-date-picker v-model="time" :picker-options="pickerOptions" type="datetimerange" start-placeholder="开始时间" end-placeholder="结束时间" value-format="yyyy-MM-dd HH:mm:ss" :default-time="['00:00:00','00:00:00']"></el-date-picker>
               </div>
             </el-form-item>
           </el-form>
@@ -591,7 +591,7 @@ export default {
           //url: 'http://10.19.160.59:8080/DACM/ctables/checkFtpTaskFileExist',
           params: { 'taskId': row.taskInfoId },
         }).then(res => {
-          _self.loading = false;
+          //_self.loading = false;
           if (res.data.success && res.data.data.length > 0) {
             res.data.data.forEach(res => {
               if (res.isExitFile == 'true') {
@@ -613,6 +613,7 @@ export default {
                           );
                           _self.init();
                         } else {
+                          _self.loading = false;
                           _self.doMsg(res.data.message, "error");
                         }
                       });

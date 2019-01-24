@@ -142,6 +142,7 @@ export default {
         let _self = this;
         if (res.data.success == "true" || res.data.success == true) {
           res.data = res.data.data;
+          _self.ruleForm.range = res.data.config_range==undefined?'':res.data.config_range;
           _self.queryTargetColumnList = res.data.listIncrementCon;
           if (_self.queryTargetColumnList.length != 0 && _self.queryTargetColumnList.length != undefined) {
             _self.ruleForm.queryTargetColumn = _self.queryTargetColumnList[0];
@@ -161,7 +162,7 @@ export default {
             }
             //不知道这个的展示有没有什么限制，所以暂时先不作什么限制
 
-            _self.ruleForm.range = res.data.config_range;
+            _self.ruleForm.range = res.data.config_range==undefined?'':res.data.config_range;
             _self.ruleForm.queryTargetColumn = res.data.queryTargetColumn;
 
           }
