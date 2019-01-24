@@ -259,7 +259,9 @@ export default {
       return decodeURI(this.$route.params.sourceName);
     },
     objName() {
-      return decodeURI(this.$route.params.objName);
+      if(this.$route.params.objName!=undefined){
+        return decodeURI(this.$route.params.objName);
+      }
     }
   },
   components: {

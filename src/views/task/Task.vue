@@ -51,7 +51,7 @@
             </el-form-item>
             <el-form-item label="任务开始时间:">
               <div @mouseleave="mouseleave()" style="margin-left:15px;">
-                <el-date-picker v-model="time" :picker-options="pickerOptions" type="datetimerange" start-placeholder="开始时间" end-placeholder="结束时间" value-format="yyyy-MM-dd HH:mm:ss" :default-time="['12:00:00']"></el-date-picker>
+                <el-date-picker v-model="time" :picker-options="pickerOptions" type="datetimerange" start-placeholder="开始时间" end-placeholder="结束时间" value-format="yyyy-MM-dd HH:mm:ss" :default-time="['00:00:00','00:00:00']"></el-date-picker>
               </div>
             </el-form-item>
           </el-form>
