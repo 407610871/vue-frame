@@ -365,9 +365,15 @@ export default {
     },
     $route(to, from) {
       this.cleanData = false;
-      this.searchParams.condition = "";
-      this.searchParams.objectType = [];
-      this.searchParams.dataRange = [];
+      if (to.fullPath.indexOf('accessObjManage') != -1) {
+        this.cleanData = true;
+
+      } else {
+        this.searchParams.condition = "";
+        this.searchParams.objectType = [];
+        this.searchParams.dataRange = [];
+      }
+
 
     }
   },

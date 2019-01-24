@@ -6,7 +6,7 @@
             <span class="grab gra-l"></span>
           </div>
         </div>
-      <el-form :model="ruleForm" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+      <el-form :model="ruleForm" ref="ruleForm" label-width="100px" class="demo-ruleForm" v-loading="loading">
         <div class="proInfo-box clearfix">
           <el-col :span="24">
             <el-form-item label="核验设置:" class="radiow100">
@@ -58,6 +58,7 @@ export default {
   data: function() {
     return {
       innerVisible: this.msg,
+      loading:false,
       result: '0',
       queryTargetColumnList: [],
       ruleForm: {
@@ -116,6 +117,7 @@ export default {
           this.$alert(res.data.data.message, "核验结果", {
             confirmButtonText: "确定",
             callback: action => {
+             
               this.$emit('saveIncre');
               this.innerVisible = false;
             }
@@ -129,6 +131,7 @@ export default {
     },
     //查询表数据
     _checkData() {
+      this.loading = true;
       this.$ajax({
         method: "GET",
         url: this.GLOBAL.api.API_DACM + '/ccheckData/tableNum',
@@ -139,7 +142,9 @@ export default {
           taskId: this.taskId
         }
       }).then(res => {
+
         let _self = this;
+         _self.loading = false;
         if (res.data.success == "true" || res.data.success == true) {
           res.data = res.data.data;
           _self.ruleForm.range = res.data.config_range==undefined?'':res.data.config_range;
