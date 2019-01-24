@@ -18,7 +18,7 @@
         <div class="checkDiv" v-if="moreSearch" @mouseleave="mouseleave()">
           <el-form ref="form" label-width="110px">
             <el-form-item label="任务状态:">
-              <el-checkbox
+              <el-checkbox style="margin-left:20px;"
                 :indeterminate="isIndeterminate"
                 v-model="checkAll"
                 @change="handleCheckAllChange"
@@ -33,7 +33,7 @@
               </el-checkbox-group>
             </el-form-item>
             <el-form-item label="任务开始时间:">
-              <div @mouseleave="mouseleave()">
+              <div @mouseleave="mouseleave()" style="margin-left:20px;">
                 <el-date-picker
                   v-model="time"
                   :picker-options="pickerOptions"
@@ -467,7 +467,7 @@ export default {
   background-color: #fff;
   box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
   box-sizing: border-box;
-  width: 800px;
+  width: 700px;
   right: 0px;
 }
 
