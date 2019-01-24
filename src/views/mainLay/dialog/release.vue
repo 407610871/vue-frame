@@ -6,7 +6,7 @@
           <span class="grab gra-l"></span>
         </div>
       </div>
-      <el-col :span="4">
+      <el-col :span="4" class="regdia">
         <el-tabs tab-position="left" style="height: 200px;" @tab-click="handleClick">
           <el-tab-pane v-for="(item, index) in versionData" :key="index" :label="item"></el-tab-pane>
         </el-tabs>
@@ -167,7 +167,9 @@ export default {
   max-height: 600px;
   height: 600px;
 }
-
+.regdia .el-tabs--left .el-tabs__item.is-left {
+ text-align: inherit;
+}
 .otherInfo .el-radio {
   margin-bottom: 12px;
   margin-top: 8px;
