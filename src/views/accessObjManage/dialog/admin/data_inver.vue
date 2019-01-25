@@ -269,7 +269,7 @@ export default {
             this.setTimer();
             this.status = '核验中'
           } else {
-            this.$alert("还未核验暂无数据,请核验", "核验结果", {
+            this.$alert("还未核验暂无数据，请核验", "核验结果", {
               confirmButtonText: "确定"
             });
           }
@@ -383,7 +383,7 @@ export default {
             }
           });
         } else {
-          this.$alert("核验请求失败！", "核验结果", {
+          this.$alert(res.data.data.message, "核验结果", {
             confirmButtonText: "确定"
           });
         }

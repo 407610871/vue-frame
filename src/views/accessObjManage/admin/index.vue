@@ -338,6 +338,10 @@ export default {
     },
     majorData() {
       this.key_word = this.$store.state.detailMajorData.keyword;
+      console.log(this.$store.state.detailMajorData.keyword);
+      console.log("hhh");
+      console.log(this.$store.state.detailMajorData);
+      console.log("aaa");
       return this.$store.state.detailMajorData;
     }
   },
@@ -365,9 +369,9 @@ export default {
     },
     $route(to, from) {
       this.cleanData = false;
+      debugger;
       if (to.fullPath.indexOf('accessObjManage') != -1) {
         this.cleanData = true;
-
       } else {
         this.searchParams.condition = "";
         this.searchParams.objectType = [];
@@ -392,7 +396,7 @@ export default {
       _self.noreData = data;
       if (_self.$route.params.type == "ftp") {
         if (/.*[\u4e00-\u9fa5]+.*$/.test(data.extendParams.filePath)) {
-          _self.$alert('当前系统不支持中文目录,仅支持英文和数字,请修改后再提交采集任务', "提示", {
+          _self.$alert('当前系统不支持中文目录，仅支持英文和数字，请修改后再提交采集任务', "提示", {
             confirmButtonText: "确定",
             callback: action => {}
           });
@@ -422,7 +426,7 @@ export default {
                 return false;
               }
             } else {
-              _self.$alert('当前系统不支持中文目录,仅支持英文和数字,请修改后再提交采集任务', "提示", {
+              _self.$alert('当前系统不支持中文目录，仅支持英文和数字，请修改后再提交采集任务', "提示", {
                 confirmButtonText: "确定",
                 callback: action => {}
               });
@@ -467,9 +471,21 @@ export default {
           _self.loading = false;
           if (res.data.success) {
             if (res.data.data.isExitFile == "true") {
-              _self.dialogVisible = true;
-              _self.msgCheck.taskInfoId = row.accessConnectorSource.taskInfoId;
-              _self.msgCheck.targetTableName = row.name;
+              if (row.extendParams.taskStatus == '1') {
+                _self.$confirm('当前任务正在运行中， 数据核验结果可能不精准，请确认是否要继续数据核验？', '提示', {
+                  confirmButtonText: '确定',
+                  cancelButtonText: '取消',
+                  cancelButtonClass: "el-button--primary",
+                  type: 'warning'
+                }).then(() => {
+                  _self.dialogVisible = true;
+                  _self.msgCheck.taskInfoId = row.accessConnectorSource.taskInfoId;
+                  _self.msgCheck.targetTableName = row.name;
+                }).catch(() => {
+
+                })
+              }
+
             } else {
               _self.$alert(res.data.data.message, "提示", {
                 confirmButtonText: "确定",
@@ -485,9 +501,25 @@ export default {
           }
         });
       } else {
-        _self.dialogVisible = true;
-        _self.msgCheck.taskInfoId = row.accessConnectorSource.taskInfoId;
-        _self.msgCheck.targetTableName = row.name;
+        if (row.extendParams.taskStatus == '1') {
+          _self.$confirm('当前任务正在运行中， 数据核验结果可能不精准，请确认是否要继续数据核验？', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            cancelButtonClass: "el-button--primary",
+            type: 'warning'
+          }).then(() => {
+            _self.dialogVisible = true;
+            _self.msgCheck.taskInfoId = row.accessConnectorSource.taskInfoId;
+            _self.msgCheck.targetTableName = row.name;
+          }).catch(() => {
+
+          })
+        } else {
+          _self.dialogVisible = true;
+          _self.msgCheck.taskInfoId = row.accessConnectorSource.taskInfoId;
+          _self.msgCheck.targetTableName = row.name;
+        }
+
       }
 
     },

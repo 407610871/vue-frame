@@ -832,7 +832,7 @@ export default {
             res.data.data.forEach(res => {
               if (res.isExitFile == 'true') {
                 if (_self.taskBaseInfo.statusDesc == '运行') {
-                  _self.$confirm('当前任务正在运行中， 数据核验结果可能不精准，请确认是否要继续数据核验?', '提示', {
+                  _self.$confirm('当前任务正在运行中， 数据核验结果可能不精准，请确认是否要继续数据核验？', '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
                     cancelButtonClass: "el-button--primary",
@@ -868,12 +868,29 @@ export default {
           }
         })
       } else {
-        _self.showCheckData = true;
-        _self.entFromCheck = false;
-        //接入数据更新是否通过测试连接接口展示loading，这个时候是点击“数据核验”时加载的loading
-        _self.isCheckLoading = false;
-        _self.loading3 = false;
-        //this.testConnect();
+        if (_self.taskBaseInfo.statusDesc == '运行') {
+          _self.$confirm('当前任务正在运行中， 数据核验结果可能不精准，请确认是否要继续数据核验？', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            cancelButtonClass: "el-button--primary",
+            type: 'warning'
+          }).then(() => {
+            _self.showCheckData = true;
+            _self.entFromCheck = false;
+            //接入数据更新是否通过测试连接接口展示loading，这个时候是点击“数据核验”时加载的loading
+            _self.isCheckLoading = false;
+            _self.loading3 = false;
+          }).catch(() => {
+            _self.isCheckLoading = false;
+            _self.loading3 = false;
+          })
+        } else {
+          _self.showCheckData = true;
+          _self.entFromCheck = false;
+          //接入数据更新是否通过测试连接接口展示loading，这个时候是点击“数据核验”时加载的loading
+          _self.isCheckLoading = false;
+          _self.loading3 = false;
+        }
       }
 
     },

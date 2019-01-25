@@ -533,7 +533,7 @@ export default {
             if (res.data.data.isExitFile == "true") {
               //运行时弹出确认框
               if (row.status == '1') {
-                _self.$confirm('当前任务正在运行中， 数据核验结果可能不精准，请确认是否要继续数据核验?', '提示', {
+                _self.$confirm('当前任务正在运行中， 数据核验结果可能不精准，请确认是否要继续数据核验？', '提示', {
                   confirmButtonText: '确定',
                   cancelButtonText: '取消',
                   cancelButtonClass: "el-button--primary",
@@ -563,7 +563,7 @@ export default {
       } else {
         //运行时弹出确认框
         if (row.status == '1') {
-          this.$confirm('当前任务正在运行中， 数据核验结果可能不精准，请确认是否要继续数据核验?', '提示', {
+          this.$confirm('当前任务正在运行中， 数据核验结果可能不精准，请确认是否要继续数据核验？', '提示', {
             confirmButtonText: '确定',
             cancelButtonText: '取消',
             cancelButtonClass: "el-button--primary",
@@ -1004,7 +1004,7 @@ export default {
             "</br>";
         }
         this.$alert(
-          "重新汇聚时，以下任务不能被汇聚,请重新选择：</br>" + errerHtml,
+          "重新汇聚时，以下任务不能被汇聚，请重新选择：</br>" + errerHtml,
           "重新汇聚", {
             dangerouslyUseHTMLString: true
           }
@@ -1082,7 +1082,7 @@ export default {
                     "</br>";
                 }
                 this.$alert(
-                  "重新汇聚时，以下任务不能被汇聚,请重新选择：</br>" + errerHtml,
+                  "重新汇聚时，以下任务不能被汇聚，请重新选择：</br>" + errerHtml,
                   "重新汇聚", {
                     dangerouslyUseHTMLString: true
                   }
@@ -1190,7 +1190,7 @@ export default {
               "</br>";
           }
           this.$alert(
-            "批量启动时，以下任务不能被启动,请重新选择：</br>" + errerHtml,
+            "批量启动时，以下任务不能被启动，请重新选择：</br>" + errerHtml,
             "批量启动", {
               dangerouslyUseHTMLString: true
             }
@@ -1279,7 +1279,7 @@ export default {
               "</br>";
           }
           this.$alert(
-            "批量停止时，以下任务不能被停止,请重新选择：</br>" + errerHtml,
+            "批量停止时，以下任务不能被停止，请重新选择：</br>" + errerHtml,
             "提示", {
               dangerouslyUseHTMLString: true
             }
