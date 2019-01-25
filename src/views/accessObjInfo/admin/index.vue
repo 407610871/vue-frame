@@ -699,7 +699,8 @@ export default {
       let params = {
         sourceId: this.$route.params.sourceId,
         sourceName: this.$route.params.sourceName,
-        type: this.$route.params.type
+        type: this.$route.params.type,
+        backType: true,
       };
       this.$router.push({
         name: "accessObjManage",

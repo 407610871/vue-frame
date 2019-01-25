@@ -5,7 +5,10 @@
         <el-breadcrumb-item :to="{path: '/dashboard'}">数据接入</el-breadcrumb-item>
         <el-breadcrumb-item>{{ breadcrumbName }}</el-breadcrumb-item>
       </el-breadcrumb>
-      <form-fliter :ObjManage="ObjManage" v-if="cleanData" @highMore="moreHeight" @highSeaech="hightrue" v-bind:formCollapse="collapse" v-bind:dataObj="formFilterData" v-bind:key_word="key_word" v-bind:deleteData="deleteData" @doSearch="search" @formFilter="changeFormFilter" />
+      <form-fliter v-if="cleanData" @highMore="moreHeight" @highSeaech="hightrue" 
+      v-bind:formCollapse="collapse" v-bind:dataObj="formFilterData" 
+      v-bind:key_word="key_word" v-bind:deleteData="deleteData" @doSearch="search" 
+      @formFilter="changeFormFilter" />
     </div>
     <div class="el-breadcrumb" v-show="majorData.keyword!=''||( Object.keys(majorData.formSeledShow).length!=0 && (majorData.formSeledShow.dataSourceName.length!=0
             ||majorData.formSeledShow.network.length!=0||majorData.formSeledShow.platform.length!=0
@@ -338,10 +341,6 @@ export default {
     },
     majorData() {
       this.key_word = this.$store.state.detailMajorData.keyword;
-      console.log(this.$store.state.detailMajorData.keyword);
-      console.log("hhh");
-      console.log(this.$store.state.detailMajorData);
-      console.log("aaa");
       return this.$store.state.detailMajorData;
     }
   },
@@ -369,7 +368,6 @@ export default {
     },
     $route(to, from) {
       this.cleanData = false;
-      //debugger;
       if (to.fullPath.indexOf('accessObjManage') != -1) {
         this.cleanData = true;
       } else {
@@ -377,8 +375,9 @@ export default {
         this.searchParams.objectType = [];
         this.searchParams.dataRange = [];
       }
-
-
+      if(this.$route.params.backType){
+        this.setFliter();
+      }
     }
   },
   mounted() {
@@ -694,11 +693,12 @@ export default {
     },
     setStore: function(obj) {
       let storeData = JSON.parse(
-        JSON.stringify(this.$store.state.queryParams[this.$route.name])
+        JSON.stringify(this.$store.state.queryParams["accessObjManage"])
       );
       for (var i in obj) {
         storeData[i] = obj[i];
       }
+      console.log("12222222222222222222222222222222")
       this.$store.commit("setQueryParams", {
         name: this.$route.name,
         data: storeData
@@ -822,7 +822,8 @@ export default {
       }
     },
     setFliter() {
-      var queryParams = this.$store.state.queryParams[this.$route.name];
+      var queryParams = this.$store.state.queryParams["accessObjManage"];
+      console.log("11122222sfasdfasdf",queryParams);
       let objectType = queryParams.objectType ? queryParams.objectType : [];
       let dataRange = queryParams.dataRange ? queryParams.dataRange : [];
       objectType == true ? [] : objectType;
