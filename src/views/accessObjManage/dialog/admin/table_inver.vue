@@ -47,7 +47,8 @@
             </el-table-column>
             <el-table-column label="操作" width="220">
               <template slot-scope="scope">
-                <el-button size="mini" type="primary" v-if="scope.row.status=='0'" class="fl" style="margin-left:15px; margin-right:10px">核验中</el-button>
+                <el-button size="mini" type="primary" v-if="scope.row.status=='0'" class="fl" style="margin-left:15px; margin-right:10px;background: #8a8885;
+    border-color: #8a8885;cursor: inherit;">核验中</el-button>
                 <el-button v-if="scope.row.status=='1'" size="mini" type="primary" @click="startDaver(scope.row.taskId)" class="fl" style="margin-left:15px; margin-right:25px">核验</el-button>
                 <data-top :msg='innerVisible' :taskId='taskId' @showIncre="showInver()" @saveIncre="saveInver($event)"></data-top>
                 <el-button size="mini" type="primary" class="fl" @click="checkLog(scope.row.id,scope.$index)">查看日志</el-button>

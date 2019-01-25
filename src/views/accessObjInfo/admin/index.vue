@@ -256,7 +256,10 @@ export default {
       return 520;
     },
     sourceName() {
-      return decodeURI(this.$route.params.sourceName);
+      if(this.$route.params.sourceName!=undefined){
+        return decodeURI(this.$route.params.sourceName);
+      }
+      
     },
     objName() {
       if(this.$route.params.objName!=undefined){
