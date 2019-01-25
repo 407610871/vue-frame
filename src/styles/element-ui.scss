@@ -159,13 +159,13 @@
 
  #NewAisdeTree .el-tree .el-tree-node__content:focus,
  #NewAisdeTree .el-tree .el-tree-node__content:hover {
-   @include el-color-ys($el-table-td-hover);
+   @include el-color-ys($el-table-hover-theme);
  }
 
  #NewAisdeTree .el-tree .el-checkbox__input.is-checked .el-checkbox__inner,
  #NewAisdeTree .el-tree .el-checkbox__input.is-indeterminate .el-checkbox__inner {
-   @include el-bgcolor($el-radio-btn);
-   @include el-border-color($el-radio-btn);
+   @include el-bgcolor($el-table-hover-theme);
+   @include el-border-color($el-table-hover-theme);
  }
 
  .el-tabs--border-card>.el-tabs__header .el-tabs__item.is-active {
