@@ -134,13 +134,13 @@ export default {
       this.doMore.push(false);
     }
     this.getFormSeled();
-    this.getFormSeledShow();
+    if(!this.$route.params.backType){
+      this.getFormSeledShow();
+    }
     this.keyword =
       this.$store.state.queryParams[this.$route.name].condition || "";
   },
   mounted() {
-    this.getFormSeled();
-    this.getFormSeledShow();
   },
 
   methods: {
@@ -153,6 +153,12 @@ export default {
     delSelect(index, a) {
       this.formSeledShow[this.dataObj[a].id].splice(index, 1);
       this.formSeled[this.dataObj[a].id].splice(index, 1);
+      let map = {
+        dataObj: this.dataObj,
+        formSeledShow: this.formSeledShow,
+        keyword: this.keyword
+      };
+      this.$store.commit("setDetailMajorData", map);
     },
     //更多收起功能
     domoreSeclect(index) {
@@ -209,7 +215,7 @@ export default {
     },
 
     getFormSeled: function() {
-      if (this.ObjManage) {
+      if (!this.$route.params.backType) {
         //进入数据源展示搜索条件清空
         this.keyword = "";
         this.formSeledShow.objectType = [];
@@ -217,6 +223,7 @@ export default {
         this.formSeled.objectType = [];
         this.formSeled.dataRange = [];
       } else {
+        console.log("11122222",this.dataObj);
         for (var value of this.dataObj) {
           this.$set(this.formSeled, value.id, value.seledData);
         }
