@@ -369,7 +369,7 @@ export default {
     },
     $route(to, from) {
       this.cleanData = false;
-      debugger;
+      //debugger;
       if (to.fullPath.indexOf('accessObjManage') != -1) {
         this.cleanData = true;
       } else {

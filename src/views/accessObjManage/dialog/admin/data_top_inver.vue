@@ -146,6 +146,7 @@ export default {
 
         let _self = this;
         _self.ruleForm.range = '';
+         _self.ruleForm.startTime = [];
          _self.loading = false;
         if (res.data.success == "true" || res.data.success == true) {
           res.data = res.data.data;
