@@ -31,7 +31,7 @@
       <div class="moreSearch" style="margin-bottom:10px;">
         <div class="table-tools">
           <el-tooltip v-if="type=='mysql'|| type=='oracle'|| type=='postgresql' || type=='sqlserver' || type=='file'" class="item" effect="light" content="批量采集" placement="top" style="margin-right:10px;">
-            <el-button @click="updataSource" type="primary" icon="icon-title enc-icon-piliangcaiji">
+            <el-button @click="showTask" type="primary" icon="icon-title enc-icon-piliangcaiji">
               批量采集</el-button>
           </el-tooltip>
           <table-inver v-if="type=='mysql'|| type=='oracle'|| type=='postgresql' || type=='sqlserver'||type=='mongodb'" :pdata="tablePa"></table-inver>
