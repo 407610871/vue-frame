@@ -77,6 +77,7 @@ export default {
   methods: {
     //关闭对话框
     closeDialog() {
+      this.ruleForm.range = '';
       this.$emit('showIncre');
       this.innerVisible = false;
 
@@ -117,13 +118,13 @@ export default {
           this.$alert(res.data.data.message, "核验结果", {
             confirmButtonText: "确定",
             callback: action => {
-             
+              this.ruleForm.range = '';
               this.$emit('saveIncre');
               this.innerVisible = false;
             }
           });
         } else {
-          this.$alert("核验请求失败！", "核验结果", {
+          this.$alert(res.data.data.message, "核验结果", {
             confirmButtonText: "确定"
           });
         }
@@ -144,6 +145,7 @@ export default {
       }).then(res => {
 
         let _self = this;
+        _self.ruleForm.range = '';
          _self.loading = false;
         if (res.data.success == "true" || res.data.success == true) {
           res.data = res.data.data;
