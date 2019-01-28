@@ -10,7 +10,7 @@
       </span>
     </div>
 
-    <div class="checkDiv" :style="{'margin-top': distance }" v-show="!collapse" @mouseleave="mouseleave">
+    <div class="checkDiv" :style="{'margin-top': distance }" v-show="!collapse" @mouseleave="mouseleave($event)">
       <el-form-item class="checkDivItem"
        v-for="(item,indexs) in dataObj"
         :label="item.name"
@@ -236,8 +236,11 @@ export default {
         }
       }
     },
-    mouseleave() {
-      this.collapse = true;
+    mouseleave(e) {
+      var o = e.relatedTarget || e.toElement;
+      if(o && o !=null){
+        this.collapse = !this.collapse;
+      }  
     }
   }
 };
