@@ -78,6 +78,7 @@ export default {
     //关闭对话框
     closeDialog() {
       this.ruleForm.range = '';
+      this.ruleForm.setVer = 0;
       this.$emit('showIncre');
       this.innerVisible = false;
 
@@ -119,6 +120,7 @@ export default {
             confirmButtonText: "确定",
             callback: action => {
               this.ruleForm.range = '';
+              this.ruleForm.setVer = 0,
               this.$emit('saveIncre');
               this.innerVisible = false;
             }
