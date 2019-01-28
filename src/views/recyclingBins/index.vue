@@ -2,49 +2,49 @@
   <div>
     <el-breadcrumb separator="/">
       <el-breadcrumb-item>
-              回收箱
+        回收箱
       </el-breadcrumb-item>
     </el-breadcrumb>
     <div class="dashboard-container main-content" v-loading="loading">
       <div class="filter-container" :height="headerHeight">
         <a v-on:click="collapseExpand" class="right-btn collapse-btn"><i :class="{'enc-icon-zhankai':collapse,'enc-icon-shousuo':!collapse}"></i></a>
-        <formFliter v-if="queryParamReady" v-bind:formCollapse="collapse" v-bind:dataObj="formFilterData" @formFilter="changeFormFilter" />
+        <formFliter v-if="queryParamReady" ref="formFliters" v-bind:formCollapse="collapse" v-bind:dataObj="formFilterData" @formFilter="changeFormFilter" />
       </div>
-        <el-table :data="mainTableData" stripe :height="tableHeight"  style="width: 100%; margin-top:20px;" tooltip-effect="light">
-          <el-table-column label="接入源名称" width="180" show-overflow-tooltip>
-            <template slot-scope="scope">
-              {{ scope.row.name }}
-            </template>
-          </el-table-column>
-          <el-table-column prop="id" label="接入源ID" width="180">
-          </el-table-column>
-          <el-table-column prop="dataSourceName" label="接入源类型">
-          </el-table-column>
-          <el-table-column label="对接平台">
-            <template slot-scope="scope">
-              {{getPlatfrom(scope.row.platform)}}
-            </template>
-          </el-table-column>
-          <el-table-column label="接入数据来源">
-            <template slot-scope="scope">
-              {{getNetwork(scope.row.network)}}
-            </template>
-          </el-table-column>
-          <el-table-column prop="createTime" label="注册时间">
-          </el-table-column>
-          <el-table-column label="操作">
-            <template slot-scope="scope">
-              <div>
-                <el-tooltip class="item" effect="light" content="恢复" placement="top">
-                  <i @click="recordRecover(scope.$index, scope.row)" class="enc-icon-huifu1 icon-title"></i>
-                </el-tooltip>
-                <el-tooltip class="item" effect="light" content="删除" placement="top">
-                  <i @click="recordDelete(scope.$index, scope.row)" class="icon-title enc-icon-shanchu"></i>
-                </el-tooltip>
-              </div>
-            </template>
-          </el-table-column>
-        </el-table>
+      <el-table :data="mainTableData" stripe :height="tableHeight" style="width: 100%; margin-top:20px;" tooltip-effect="light">
+        <el-table-column label="接入源名称" width="180" show-overflow-tooltip>
+          <template slot-scope="scope">
+            {{ scope.row.name }}
+          </template>
+        </el-table-column>
+        <el-table-column prop="id" label="接入源ID" width="180">
+        </el-table-column>
+        <el-table-column prop="dataSourceName" label="接入源类型">
+        </el-table-column>
+        <el-table-column label="对接平台">
+          <template slot-scope="scope">
+            {{getPlatfrom(scope.row.platform)}}
+          </template>
+        </el-table-column>
+        <el-table-column label="接入数据来源">
+          <template slot-scope="scope">
+            {{getNetwork(scope.row.network)}}
+          </template>
+        </el-table-column>
+        <el-table-column prop="createTime" label="注册时间">
+        </el-table-column>
+        <el-table-column label="操作">
+          <template slot-scope="scope">
+            <div>
+              <el-tooltip class="item" effect="light" content="恢复" placement="top">
+                <i @click="recordRecover(scope.$index, scope.row)" class="enc-icon-huifu1 icon-title"></i>
+              </el-tooltip>
+              <el-tooltip class="item" effect="light" content="删除" placement="top">
+                <i @click="recordDelete(scope.$index, scope.row)" class="icon-title enc-icon-shanchu"></i>
+              </el-tooltip>
+            </div>
+          </template>
+        </el-table-column>
+      </el-table>
       <el-footer>
         <div class="enc-pagination">
           <el-pagination v-if="queryParamReady" v-show="pageShow" style="float:right; margin:10px;" @current-change="goPage" background :page-size="pageSize" :total="mainTableDataTotal" layout="prev, pager, next, jumper" :current-page.sync="currentPage">
@@ -81,15 +81,35 @@ export default {
       return this.$store.state.queryParams.recyclingBins
     },
     tableHeight: function() {
-      return this.collapse ? window.innerHeight - 226-63 : window.innerHeight - 305-63;
+      return this.collapse ? window.innerHeight - 226 - 63 : window.innerHeight - 305 - 63;
     },
-    headerHeight: function() {
-    }
+    headerHeight: function() {}
   },
   watch: {
     tableParams(newVal, oldVal) {
       if (this.queryParamReady) {
-         this.loadTable(this.$store.state.deptId);
+        this.loadTable(this.$store.state.deptId);
+      }
+    },
+    $route(to, from) {
+      if(to.fullPath.indexOf('recyclingBins')!=-1){
+        this.loadTable(this.$store.state.deptId);
+      }
+      if (from.fullPath.indexOf('recyclingBins') != -1) {
+        //console.log("4545");
+        var data = {
+          dataSourceName: [],
+          network: [],
+          platform: [],
+          deptId: [],
+          condition: '',
+          pageNum: 1,
+          timeFlag: 0
+        }
+
+        this.$store.commit('setQueryParams',{name:'recyclingBins',data:data} );
+        //console.log(this.$store.state.queryParams.recyclingBins);
+        this.$refs.formFliters.clearFormFilter();//调用子组件的方法
       }
     }
   },
@@ -104,7 +124,7 @@ export default {
       this.$store.state.queryParams[this.$route.name].deptId
     );
     this.$root.eventHub.$emit("setActiveNav", 1);
-    
+
     //this.setCount();
     //从create移过来
     this.$root.eventHub.$on("selDept", ids => {
@@ -117,6 +137,11 @@ export default {
   methods: {
     setFliter(data) {
       var queryParams = this.$store.state.queryParams[this.$route.name];
+      //console.log(queryParams);
+      //console.log("38417827341823");
+      if(queryParams.dataSourceName==true||queryParams.dataSourceName==false){
+        queryParams.dataSourceName = [];
+      }
       var network = queryParams.network ? queryParams.network : [];
       var dataSourceName = queryParams.dataSourceName ? queryParams.dataSourceName : [];
       var platform = queryParams.platform ? queryParams.platform : [];
@@ -145,8 +170,8 @@ export default {
       this.collapse = !this.collapse;
     },
     loadTable: function(id) {
-      var ids=[];
-     id?ids=id:ids=this.tableParams.deptId;
+      var ids = [];
+      id ? ids = id : ids = this.tableParams.deptId;
       var _self = this;
       _self.loading = true;
       _self.pageSize = this.$store.state.pageSize;
@@ -331,8 +356,9 @@ export default {
     float: right;
   }
 }
+
 .table-action-btn {
-  margin-right:10px;
+  margin-right: 10px;
 }
 
 </style>
