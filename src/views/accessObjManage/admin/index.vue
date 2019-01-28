@@ -617,7 +617,7 @@ export default {
         })
         .then(res => {
           _self.cleanData = true;
-
+          
           if (res.data.success) {
             var data = res.data.data.list;
             if (this.$route.params.type == "ftp") {
