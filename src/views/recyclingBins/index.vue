@@ -112,11 +112,11 @@ export default {
         this.$refs.formFliters.clearFormFilter();//调用子组件的方法
       }
     },
-   /* $route(to, form) {
+    $route(to, form) {
       if (to.name == "recyclingBins") {
         this.loadTable(this.$store.state.deptId);
       }
-    }*/
+    }
   },
   created() {
     this.$root.eventHub.$on('search', (keyword) => {
