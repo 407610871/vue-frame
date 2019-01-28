@@ -47,6 +47,7 @@
       </el-form>
     </div>-->
     <div
+      id="enc-breadcrumb-js"
       class="el-breadcrumb"
       style="display: flex;justify-content: flex-end; flex-wrap: wrap;"
       v-show="key_word!='' || majorData.length>0"

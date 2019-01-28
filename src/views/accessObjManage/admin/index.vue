@@ -10,7 +10,7 @@
       v-bind:key_word="key_word" v-bind:deleteData="deleteData" @doSearch="search" 
       @formFilter="changeFormFilter" />
     </div>
-    <div class="el-breadcrumb" v-show="majorData.keyword!=''||( Object.keys(majorData.formSeledShow).length!=0 && (majorData.formSeledShow.dataSourceName.length!=0
+    <div id="enc-detail-js" class="el-breadcrumb" v-show="majorData.keyword!=''||( Object.keys(majorData.formSeledShow).length!=0 && (majorData.formSeledShow.dataSourceName.length!=0
             ||majorData.formSeledShow.network.length!=0||majorData.formSeledShow.platform.length!=0
             ||majorData.formSeledShow.objectType.length!=0||majorData.formSeledShow.dataRange.length!=0))">
       <el-form>

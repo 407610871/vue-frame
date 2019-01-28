@@ -10,9 +10,7 @@
       </span>
     </div>
 
-    <div class="checkDiv" 
-       v-show="!collapse" @mouseleave="mouseleave()"
-    >
+    <div class="checkDiv" :style="{'margin-top': distance }" v-show="!collapse" @mouseleave="mouseleave">
       <el-form-item class="checkDivItem"
        v-for="(item,indexs) in dataObj"
         :label="item.name"
@@ -102,6 +100,29 @@ export default {
   computed: {
     key_word(){
       return this.$store.state.majorData.keyword;
+    },
+    distance() {
+      let keyWord = this.$store.state.majorData.keyword;
+      let majorSelectData = [];
+      this.$store.state.majorData.dataObj.forEach((v1, index1) => {
+        let data = this.$store.state.majorData.formSeledShow[v1.id];
+        data.forEach((v2, index2) => {
+          let map = {
+            id: v2.id,
+            name: v2.name,
+            index1: index1,
+            index2: index2
+          };
+          majorSelectData.push(map);
+        });
+      });
+      if(keyWord || majorSelectData.length>0){
+        let a = document.getElementById("enc-breadcrumb-js");
+        if(a && a!=null){
+          return a.offsetHeight + 5 +'px';
+        }
+      }
+      return '0px';
     }
   },
   watch: {
@@ -136,11 +157,6 @@ export default {
     this.keyword =
       this.$store.state.queryParams[this.$route.name].condition || "";
   },
-  mounted() {
-    this.getFormSeled();
-    this.getFormSeledShow();
-  },
-
   methods: {
     //高级搜索
     doCollapse() {
@@ -221,7 +237,7 @@ export default {
       }
     },
     mouseleave() {
-      this.collapse = !this.collapse;
+      this.collapse = true;
     }
   }
 };
@@ -350,5 +366,8 @@ export default {
       cursor: pointer;
     }
   }
+}
+.check-active {
+  margin-top:45px;
 }
 </style>

@@ -15,7 +15,7 @@
             <i :class="!moreSearch?'el-icon-caret-bottom':'el-icon-caret-top'"></i>
           </span>
         </div>
-        <div class="checkDiv" v-if="moreSearch" @mouseleave="mouseleave()">
+        <div class="checkDiv" :style="{'margin-top':ditailDistance}"  v-if="moreSearch" @mouseleave="mouseleave()">
           <el-form ref="form" label-width="110px">
             <el-form-item label="任务状态:">
               <el-checkbox style="margin-left:20px;"
@@ -49,7 +49,7 @@
         </div>
       </div>
     </div>
-    <div
+    <div id="kettleTask-js"
       class="el-breadcrumb el-breadcrumb-kellte"
       ref="searchArea"
       v-if="taskName!='' || status.length || time.length"
@@ -231,6 +231,17 @@ export default {
     },
     pageSize() {
       return this.$store.state.pageSize;
+    },
+    ditailDistance() {
+      if(this.taskName!='' || this.status.length || this.time.length){
+        let a = document.getElementById("kettleTask-js");
+        if(a && a!=null){
+          return a.offsetHeight + 5 +"px";
+        }else {
+          return "45px";
+        }
+      }
+      return "0px";
     }
   },
   watch: {
