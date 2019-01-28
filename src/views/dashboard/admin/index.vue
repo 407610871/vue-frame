@@ -68,7 +68,7 @@
     <div class="main main-content">
       <div class="filter-container">
         <div class="count-container">
-           <div class="count-title" style="position: relative; bottom: 15px;">
+          <div class="count-title" style="position: relative; bottom: 15px;">
             <label>数据源注册总数</label>
             <div class="all-number">{{countTotal}}</div>
           </div>
@@ -194,7 +194,7 @@ export default {
         list: []
       },
       formFilterData: [],
-      pageSize: "20",
+      pageSize: 20,
       key_word: "",
       deleteData: {}
     };
@@ -245,7 +245,7 @@ export default {
     }
   },
   created() {
-    this.storeReady();
+    //this.storeReady();
   },
   mounted() {
     this.$root.eventHub.$emit(
@@ -370,6 +370,57 @@ export default {
     collapseExpand: function() {
       this.collapse = !this.collapse;
     },
+    //将相关的接口进行并发处理, 表格列表中的数据依赖network 和ButtPlatForm
+    getAllRalationApi(paramsObj) {
+      let api1 = this.$ajax.get(window.ENV.API_DACM + sysdialect, {
+        params: { type: 0 }
+      }); //部门
+      let api2 = this.$ajax.get(
+        window.ENV.API_DACM + "/commonInter/getListStaticDataOrder",
+        { params: { dictCode: "NetWork" } }
+      );
+      let api3 = this.$ajax.get(
+        window.ENV.API_DACM + "/commonInter/getListStaticDataOrder",
+        { params: { dictCode: "ButtPlatForm" } }
+      );
+      this.$ajax.all([api1, api2, api3]).then(res => {
+        res.forEach((val, index) => {
+          if (index == 0 && val.data.success) {
+            this.$store.commit("setFilterItmeList", {
+              name: "dataSourceName",
+              data: val.data.data
+            });
+          } else if (index == 1 && val.data && val.data.length > 0) {
+            let list = [];
+            for (var value of val.data) {
+              list.push({
+                id: value.sTATIC_CODE,
+                name: value.sTATIC_NAME
+              });
+            }
+            this.$store.commit("setFilterItmeList", {
+              name: "network",
+              data: list
+            });
+            this.formFilterData[1].checkData = list;
+          } else if (index == 2 && val.data && val.data.length > 0) {
+            let list = [];
+            for (var value of val.data) {
+              list.push({
+                id: value.sTATIC_CODE,
+                name: value.sTATIC_NAME
+              });
+            }
+            this.$store.commit("setFilterItmeList", {
+              name: "platform",
+              data: list
+            });
+            this.formFilterData[2].checkData = list;
+          }
+        });
+        this.getDataList(paramsObj);
+      });
+    },
     updataFliterItemList() {
       var _self = this;
       this.$ajax
@@ -419,7 +470,6 @@ export default {
             }
           })
           .catch(function(err) {
-            console.log(err);
           });
         this.$ajax
           .get(window.ENV.API_DACM + "/commonInter/getListStaticDataOrder", {
@@ -480,7 +530,7 @@ export default {
       id ? (ids = id) : (ids = this.tableParams.deptId);
       var _self = this;
       _self.loading = true;
-      this.pageSize = this.$store.state.pageSize;
+      this.pageSize = Number(this.$store.state.pageSize);
       var paramsObj = {
         pageSize: this.$store.state.pageSize,
         pageNum: this.tableParams.pageNum,
@@ -500,8 +550,14 @@ export default {
         ? this.tableParams.platform
         : [];
       paramsObj.deptIds = ids;
-      _self.updataFliterItemList();
-      this.$ajax
+      //_self.updataFliterItemList();
+      _self.getAllRalationApi(paramsObj);
+      
+    },
+    // 列表数据接口
+    getDataList(paramsObj) {
+      var _self = this;
+      _self.$ajax
         .post(window.ENV.API_DACM + query, paramsObj)
         .then(function(res) {
           _self.loading = false;
@@ -619,7 +675,6 @@ export default {
             }
           })
           .catch(function(err) {
-            console.log(err);
             _self.$alert("废止失败", "提示", {
               confirmButtonText: "确定"
             });
@@ -800,7 +855,7 @@ export default {
 }
 </style>
 <style>
-.lofile i{
+.lofile i {
   font-size: 20px;
 }
 </style>

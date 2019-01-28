@@ -698,7 +698,6 @@ export default {
       for (var i in obj) {
         storeData[i] = obj[i];
       }
-      console.log("12222222222222222222222222222222")
       this.$store.commit("setQueryParams", {
         name: this.$route.name,
         data: storeData
@@ -823,7 +822,6 @@ export default {
     },
     setFliter() {
       var queryParams = this.$store.state.queryParams["accessObjManage"];
-      console.log("11122222sfasdfasdf",queryParams);
       let objectType = queryParams.objectType ? queryParams.objectType : [];
       let dataRange = queryParams.dataRange ? queryParams.dataRange : [];
       objectType == true ? [] : objectType;

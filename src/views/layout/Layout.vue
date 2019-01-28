@@ -164,9 +164,6 @@ export default {
       _self.roleName = usrObj.roleName;
       _self.getUser();
     }, 1000)
-    // this.$root.eventHub.$on("updataFliterItemList", () => {
-    //   this.updataFliterItemList();
-    // });
   },
   watch: {
     $route(to, from) {
