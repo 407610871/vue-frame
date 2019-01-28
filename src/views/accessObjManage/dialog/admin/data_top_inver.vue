@@ -78,6 +78,7 @@ export default {
     //关闭对话框
     closeDialog() {
       this.ruleForm.range = '';
+      this.ruleForm.setVer = 0;
       this.$emit('showIncre');
       this.innerVisible = false;
 
