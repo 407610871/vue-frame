@@ -40,7 +40,7 @@
       <el-pagination style="float:right; margin:10px;" @current-change="goPage" background :page-size="pageSize" :total="total" layout="prev, pager, next, jumper" :current-page.sync="currentPage">
       </el-pagination>
     </div>
-    <div class="clearfix" style="margin-top:20px;">
+    <div class="clearfix">
       <hdfs-add :msg="1" @refresh="refresh()"></hdfs-add>
     </div>
   </div>

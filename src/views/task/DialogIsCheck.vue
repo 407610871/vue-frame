@@ -118,6 +118,7 @@
             <el-table-column label="核验结果">
               <template slot-scope="scope">
                 <span v-if="scope.row.testresults_manual_check_result == '1'">失败</span>
+                <span v-else-if="scope.row.testresults_manual_check_result == undefined||scope.row.testresults_manual_check_result == null">核验中</span>
                 <span v-else>成功</span>
               </template>
             </el-table-column>

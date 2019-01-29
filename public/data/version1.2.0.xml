@@ -23,7 +23,7 @@
 		</item>
 		<item>
 			<Introduction>功能优化</Introduction>
-			<content>优化：一次性采集任务在运行和暂停状态时，屏蔽数据核验功能（YANSHOU-61）</content>
+			<content>优化：一次性采集任务在运行和暂停状态时，数据核验功能提示用户，由于任务在运行状态，核验结果可能不精准（YANSHOU-61）</content>
 			<sysName>数据汇聚</sysName>
 			<remark></remark>
 		</item>
