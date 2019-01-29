@@ -34,7 +34,7 @@
               <li>源库：</li>
              
               <li>源端数据量：</li>
-               <li>{{types=='ftp'?'源端对象：':'源端表：'}}</li>
+               <li>{{types=='ftp'?'源端对象：':'源对象：'}}</li>
             </ul>
             <ul>
               <li :title="resData.source_library">{{resData.source_library||"无"}}</li>
@@ -297,6 +297,7 @@ export default {
             //  let loadingInstance = Loading.service({text:"核验中，请稍等...",target:document.getElementsByName("el-dialog")});
           } else if (res.data.status == "0") {
             //   this.loading = true;
+             this.range = res.data.config_range;
             this.setTimer();
             this.status = "核验中";
           }

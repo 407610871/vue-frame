@@ -19,7 +19,7 @@
             <i :class="!moreSearch?'el-icon-caret-bottom':'el-icon-caret-top'"></i>
           </span>
         </div>
-        <div class="checkDiv  task-query-form" :style="{'margin-top':ditailDistance}" v-if="moreSearch" @mouseleave="mouseleave($event)">
+        <div class="checkDiv  task-query-form" v-if="moreSearch" @mouseleave="mouseleave()">
           <el-form ref="form" label-width="110px">
             <el-form-item label="任务类型:">
               <el-checkbox-group v-model="taskPeriodType">
@@ -51,14 +51,14 @@
             </el-form-item>
             <el-form-item label="任务开始时间:">
               <div @mouseleave="mouseleave()" style="margin-left:15px;">
-                <el-date-picker v-model="time" @change="datachange" :picker-options="pickerOptions" type="datetimerange" start-placeholder="开始时间" end-placeholder="结束时间" value-format="yyyy-MM-dd HH:mm:ss" :default-time="['00:00:00','23:59:59']"></el-date-picker>
+                <el-date-picker v-model="time" :picker-options="pickerOptions" type="datetimerange" start-placeholder="开始时间" end-placeholder="结束时间" value-format="yyyy-MM-dd HH:mm:ss" :default-time="timeDefaultShow"></el-date-picker>
               </div>
             </el-form-item>
           </el-form>
         </div>
       </div>
     </div>
-    <div id="task-js" class="el-breadcrumb" style="text-align:right; padding-top:5px;" v-if="keyword!=''||taskPeriodType.length>0||status.length>0||priority.length>0||(time!=null && time.length>0)">
+    <div class="el-breadcrumb" style="text-align:right; padding-top:5px;" v-if="keyword!=''||taskPeriodType.length>0||status.length>0||priority.length>0||(time!=null && time.length>0)">
       <el-form ref="form" label-width="0px" class="task-query-form">
         <el-form-item style="overflow: auto;">
           <div class="selected-task-type" style="display: inline-block;">
@@ -174,6 +174,7 @@
             </span>
           </div>
           <div v-show="time!=null && time.length>0" class="selected-task-type" style="display: inline-block;">
+            <span style="margin-right:10px;">任务开始时间:</span>
             <span>
                 {{time==null?'':time[0]}} - {{time==null?'':time[1]}}
                 <span @click="time=[]">
@@ -316,6 +317,7 @@ var tableZC;
 export default {
   name: "task",
   data() {
+    var that = this;
     return {
       tips: "",
       loading: false,
@@ -338,22 +340,23 @@ export default {
       isDeleted: 0,
       tableData: [],
       selectionChangeData: [],
+      timeDefaultShow:['00:00:00','23:59:59'],
+      
       mainTableDataTotal: 0,
       reqObj: "",
       pickerOptions: {
         disabledDate(time) {
           if (new Date(time.getTime()).toDateString() === new Date().toDateString()) {
             //今天
-            if(time.getTime() > Date.now()){
+            if (time.getTime() > Date.now()) {
               //time.$emit('pick', ['00:00:00', Date.now()]);
-              time.setTime( new Date());
+              time.setTime(new Date());
             }
           }
           return time.getTime() > Date.now();
-        }
+        },
       },
-      searchHeight: 71,
-      distance: false
+      searchHeight: 71
     };
   },
 
@@ -407,17 +410,6 @@ export default {
     },
     pageSize() {
       return this.$store.state.pageSize;
-    },
-    ditailDistance() {
-      if(this.keyword!=''||this.taskPeriodType.length>0||this.status.length>0||this.priority.length>0||(this.time!=null && this.time.length>0)){
-        let a = document.getElementById("task-js");
-        if(a && a!=null){
-          return a.offsetHeight + 5 +"px";
-        }else {
-          return "45px";
-        }
-      }
-      return "0px";
     }
   },
   filters: {
@@ -440,10 +432,6 @@ export default {
     DialogTaskDetail
   },
   methods: {
-    
-    datachange(){
-      console.log("234234234")
-    },
     formatDate(now) {
       var year = now.getFullYear();
       var month = now.getMonth() + 1;
@@ -469,7 +457,9 @@ export default {
       }
     },
     getSearchArea() {
-
+      this.$nextTick(() => {
+        this.searchHeight = this.$refs.searchArea.clientHeight;
+      });
     },
     pop: function(val, arr) {
       if (arr.indexOf(val) > -1) {
@@ -1334,11 +1324,8 @@ export default {
         }
       }
     },
-    mouseleave(e) {
-      var o = e.relatedTarget || e.toElement;
-      if(o && o !=null){
-        this.moreSearch = !this.moreSearch;
-      }  
+    mouseleave() {
+      this.moreSearch = !this.moreSearch;
     }
   }
 };

@@ -9,7 +9,7 @@
             <span class="grab gra-l"></span>
           </div>
         </div>
-      <el-form :model="ruleForm" ref="ruleForm" label-width="100px" class="demo-ruleForm" :rules="formRules">
+      <el-form :model="ruleForm" ref="ruleForm" label-width="100px" class="demo-ruleForm" :rules="formRules" v-loading="loading">
             <el-col :span="10">
               <el-form-item label="hdfs主机名:" prop="hdfsname" required>
                 <el-input v-model="ruleForm.hdfsname"></el-input>
@@ -89,6 +89,7 @@ export default {
     return {
       dialogVisible: false,
       innerVisible: false,
+      loading:false,
       increArr: [],
       sys_impala_id:'',
       ruleForm: {
@@ -126,6 +127,7 @@ export default {
     //关闭对话框
     closeDialog() {
       this.dialogVisible = false;
+      this.$emit("closeDiaChk");
       this.$refs['ruleForm'].resetFields();
     },
     //增量字段弹框的再次打开
@@ -181,6 +183,7 @@ export default {
                 confirmButtonText: '确定',
                 callback: action => {
                   this.$refs['ruleForm'].resetFields();
+                  this.$emit("closeDiaChk");
                   this.$emit('refresh');
                   this.dialogVisible = false;
                 }
@@ -198,6 +201,7 @@ export default {
     },
     //获取预设接口
     _getProData() {
+      this.loading = true;
       this.$ajax({
         method: "get",
         url: `${this.GLOBAL.api.API_DACM}/caccesssysRelationWorkInfo/presetData`,
@@ -205,6 +209,7 @@ export default {
         //   'Content-Type':'application/json;charset=utf-8',
         // },
       }).then(res => {
+        this.loading = false;
         if (res.data.result) {
           this.ruleForm.hdfsname = res.data.ip;
           this.ruleForm.hdfsport = res.data.port;
