@@ -340,6 +340,8 @@ export default {
       isDeleted: 0,
       tableData: [],
       selectionChangeData: [],
+      timeDefaultShow:['00:00:00','23:59:59'],
+      
       mainTableDataTotal: 0,
       reqObj: "",
       pickerOptions: {
@@ -353,25 +355,6 @@ export default {
           }
           return time.getTime() > Date.now();
         },
-        onPick(time) {
-          if (time.maxDate != null) {
-            var myDate = new Date();
-            var mydates = myDate.getHours() + ':' + myDate.getMinutes() + ':' + myDate.getSeconds();
-            //that.$set(that.timeDefaultShow, 1, mydates);
-            if (new Date(time.maxDate).toDateString() === new Date().toDateString()) {
-              that.$set(that.timeDefaultShow, 1, mydates);
-              that.$nextTick(function(){
-                 //that.$set(that.timeDefaultShow, 1, mydates);
-              })
-            } else {
-              that.$nextTick(function(){
-                //that.$set(that.timeDefaultShow, 1, '23:59:59');
-              })
-              
-            }
-          }
-
-        }
       },
       searchHeight: 71
     };
@@ -413,14 +396,6 @@ export default {
   computed: {
     dialogIsCheckTitile() {
       return `表${this.check.taskName}数据核验`;
-    },
-    timeDefaultShow() {
-      var times = [];
-      var myDate = new Date();
-      var mydates = myDate.getHours() + ':' + myDate.getMinutes() + ':' + myDate.getSeconds();
-      console.log(mydates);
-      times = ['00:00:00', mydates];
-      return times;
     },
     departmentId: function() {
       return this.$store.state.deptId;
