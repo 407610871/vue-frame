@@ -230,7 +230,7 @@
         <el-table-column prop="dataTableName" label="接入对象" width="200" :show-overflow-tooltip="true"></el-table-column>
         <el-table-column prop="targetDBName" label="目标库" width="200" :show-overflow-tooltip="true"></el-table-column>
         <el-table-column prop="targetTableName" label="目标表" width="200" :show-overflow-tooltip="true"></el-table-column>
-        <el-table-column label="任务开始时间" prop="startTime" width="150" show-overflow-tooltip>
+        <el-table-column label="任务开始时间" prop="startTime" width="200" show-overflow-tooltip>
           <template slot-scope="scope">
               {{scope.row.status==5 ? '' : scope.row.startTime | formateDateTime }}
           </template>
@@ -264,7 +264,7 @@
             <span>{{scope.row.status=='0'?'':scope.row.joinDataNum}}</span>
           </template>
         </el-table-column>
-        <el-table-column label="操作" width="260">
+        <el-table-column label="操作" width="180">
           <template slot-scope="scope">
             <div class="el-tleft">
                <el-tooltip  v-if="scope.row.status==0||scope.row.status==2" class="item" effect="light" content="运行" placement="top">
