@@ -1,43 +1,46 @@
 <template>
   <div>
-    <div class="collapsepanel" v-if="pageReady" v-for="(item,index) in storageList" v-show="index>=pageSize*(pageNum-1) && index<pageSize*pageNum">
-      <div class="collapsepanel-title" v-show="index != activeIndex" v-on:click="activeIndex = index">{{item.storageName}}<i class="el-icon-arrow-right"></i></div>
-      <el-row :gutter="20" v-show="index == activeIndex">
-        <el-col :span="4">
-          <div class="grid-content">
-            <div class="collapsepanel-subtitle">{{item.storageName}}</div>
-          </div>
-        </el-col>
-        <el-col :span="11" class="setinfo">
-          <div class="grid-content">
-            <p>
-              <span class="title1">{{item.name}}</span>
-              <br /> hdfs主机名:{{item.name}}
-              <br /> 端口号：{{item.port}}
-              <br /> hdfs.url：{{item.url}}
-              <br /> 备用节点字符串：{{item.bak}}
-              <br /> 根目录：{{item.root}}
-              <br /> impala服务器地址：{{item.impalaPath}}
-            </p>
-          </div>
-        </el-col>
-        <el-col :span="9" class="collapsepanel-tools">
-          <div class="grid-content collaspe-btn">
-            <div class="edithdd" style="display: inline-block; margin-left:10px; margin-right: 10px;line-height: 2;margin-bottom: 12px;">
-              <hdfs-edit :indexEq="index" :ownId="item.storageId" @refresh="refreshs(index)" ></hdfs-edit>
+    <div class="collapsepanel" v-if="pageReady && storageList.length>=pageSize*(pageNum-1) && storageList.length<pageSize*pageNum" >
+      <div v-for="(item,index) in storageList" :key="index"> 
+        <div class="collapsepanel-title" v-show="index != activeIndex"
+        v-on:click="activeIndex = index">{{item.storageName}}<i class="el-icon-arrow-right"></i></div>
+        <el-row :gutter="20" v-show="index == activeIndex">
+          <el-col :span="4">
+            <div class="grid-content">
+              <div class="collapsepanel-subtitle">{{item.storageName}}</div>
             </div>
-            <el-button type="primary" @click="setConnect" :id="item.storageId" :disabled="item.storageId == seledId">关联</el-button>
-            <el-button type="primary" @click="setDelete" :id="item.storageId" :disabled="item.storageId != seledId">取消关联</el-button>
+          </el-col>
+          <el-col :span="11" class="setinfo">
+            <div class="grid-content">
+              <p>
+                <span class="title1">{{item.name}}</span>
+                <br /> hdfs主机名:{{item.name}}
+                <br /> 端口号：{{item.port}}
+                <br /> hdfs.url：{{item.url}}
+                <br /> 备用节点字符串：{{item.bak}}
+                <br /> 根目录：{{item.root}}
+                <br /> impala服务器地址：{{item.impalaPath}}
+              </p>
+            </div>
+          </el-col>
+          <el-col :span="9" class="collapsepanel-tools ">
+            <div class="grid-content collaspe-btn clearfix">
+              <div class="edithdd" style="display: inline-block; margin-left:10px; margin-right: 10px;line-height: 2;margin-bottom: 12px;">
+                <hdfs-edit :indexEq="index" :ownId="item.storageId" @refresh="refreshs(index)" ></hdfs-edit>
+              </div>
+              <el-button type="primary" @click="setConnect" :id="item.storageId" :disabled="item.storageId == seledId">关联</el-button>
+              <el-button type="primary" @click="setDelete" :id="item.storageId" :disabled="item.storageId != seledId">取消关联</el-button>
               <el-button type="primary" @click="setDeleted" :id="item.storageId"  :disabled="item.storageId == seledId">删除</el-button>
-          </div>
-        </el-col>
+            </div>
+          </el-col>
       </el-row>
+      </div>
     </div>
     <div class="enc-pagination" v-if="pageSize<total && pageReady">
       <el-pagination style="float:right; margin:10px;" @current-change="goPage" background :page-size="pageSize" :total="total" layout="prev, pager, next, jumper" :current-page.sync="currentPage">
       </el-pagination>
     </div>
-    <div class="regbtn">
+    <div class="regbtn clearfix">
       <hdfs-add :msg="1" @refresh="refresh()"></hdfs-add>
     </div>
   </div>

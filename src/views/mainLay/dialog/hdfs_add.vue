@@ -1,9 +1,9 @@
 <template>
-  <div class="taskMDialog">
-    <div style="margin-top:20px;">
-     <el-button type="primary"  @click="dialogVisible = true">新增</el-button>
+  <div>
+    <div class="mr-btn clearfix">
+      <el-button type="primary"  @click="dialogVisible = true">新增</el-button>
     </div>
-    <el-dialog title="新增" :visible.sync="dialogVisible" width="73%" :before-close="closeDialog">
+    <el-dialog title="新增" :visible.sync="dialogVisible" width="60%" :before-close="closeDialog">
         <div class="title-gra plr30">
           <div class="grab gra-r">
             <span class="grab gra-l"></span>
@@ -29,7 +29,7 @@
             <el-col :span="4" class="bank">bank</el-col>
             <el-col :span="10">
               <el-form-item label="连接串:" prop="connetstr">
-                <el-input v-model="'hdfs://'+ruleForm.hdfsname + ':' + ruleForm.hdfsport" disabled></el-input>
+                <el-input v-model="defaultUrl" disabled></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="10">
@@ -101,7 +101,6 @@ export default {
         isha: true,
         bakip: '',
         bakport: ''
-
       },
       formRules: {
         hdfsname: [
@@ -121,8 +120,7 @@ export default {
         ],
 
       },
-
-      // msgId:this.dialogMsg?this.dialogMsg[1]:''
+      defaultUrl: "",
     };
   },
   methods: {
@@ -188,8 +186,6 @@ export default {
                   this.$emit("closeDiaChk");
                   this.$emit('refresh');
                   this.dialogVisible = false;
-                 
-
                 }
               });
             } else {
@@ -205,7 +201,6 @@ export default {
     },
     //获取预设接口
     _getProData() {
-      console.log(this.GLOBAL);
       this.loading = true;
       this.$ajax({
         method: "get",
@@ -218,6 +213,7 @@ export default {
         if (res.data.result) {
           this.ruleForm.hdfsname = res.data.ip;
           this.ruleForm.hdfsport = res.data.port;
+          this.defaultUrl = 'hdfs://'+ this.ruleForm.hdfsname + ':' + this.ruleForm.hdfsport
         }
       })
     }
