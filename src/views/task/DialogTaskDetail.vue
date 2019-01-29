@@ -236,18 +236,12 @@
               <el-tab-pane class="test" label="数据预览">
                 <!-- 数据预览 表格开始 -->
                 <!-- 数据预览表头不确定，根据接口返回的list集合对象里的key值来确定，所以采用如下写法实现 -->
-                <div class="dataViews-table" v-loading="loading6">
-                  <table style="width:100%;">
-                    <thead>
-                      <th v-for="(val, index) in keyList" :key="index" style="min-width:100px">{{val}}</th>
-                    </thead>
-                    <tbody>
-                      <tr v-for="(item, index) in dataViewsList" :key="index">
-                        <td v-for="(keyitem, index) in keyList" :key="index" :title="item[index]" style="min-width:100px">{{item[index]}}</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                  <div class="tips-none" v-show="dataViewsList.length==0">暂无数据</div>
+                <div v-loading="loading6">
+                  <el-table stripe tooltip-effect="light" :data="dataViewsList" :height="200" style="width: 100%;">
+                      <div v-for="(val, index) in keyList" :key="index">
+                        <el-table-column :prop="val.prop" :label="val.label" show-overflow-tooltip></el-table-column>
+                      </div>
+                  </el-table>
                 </div>
                 <!-- 数据预览 表格结束 -->
               </el-tab-pane>
@@ -284,26 +278,6 @@
   width: 12px;
   height: 12px;
   border-radius: 6px;
-}
-
-.dataViews-table {
-  height: 200px;
-  overflow: auto;
-}
-
-.dataViews-table th,
-td {
-  text-align: center;
-  vertical-align: middle;
-  height: 30px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  border-bottom: 1px solid #e4e7ed;
-}
-
-.dataViews-table .table-tr-line {
-  margin-bottom: 10px;
 }
 
 .dataCheck-tab {
@@ -422,7 +396,7 @@ export default {
       },
       //数据预览列表集合
       dataViewsList: [],
-      keyList: {},
+      keyList: [],
       //数据核验日志集合
       dataCheckList: [],
       //任务指示灯背景颜色
@@ -1043,22 +1017,21 @@ export default {
             );
           } else if (res.data.data.length != 0) {
             that.dataViewsList = res.data.data;
-            that.keyList = {};
-            let newMap = {};
+            that.keyList = [];
             for (var p in that.dataViewsList[0]) {
               let value = that.dataViewsList[0][p];
               let headerValue = p.split("/")[0];
-              //let headerKey = p.split('/')[1];
-              that.keyList[headerValue] = headerValue;
-              //newMap[headerKey] = value;
+              let newMap = {
+                label: headerValue,
+                prop: headerValue
+              };
+              that.keyList.push(newMap);
             }
-            //that.dataViewsList.shift(0);
-            //that.dataViewsList.unshift(newMap);
+            console.log("that.keyList===",that.keyList)
           }
           that.loading6 = false;
         })
         .catch(function(err) {
-          console.log(err);
           that.loading6 = false;
         });
     },

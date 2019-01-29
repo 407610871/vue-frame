@@ -204,7 +204,9 @@
     </div>
     <!-- 表格数据 -->
     <div class="mainTable main-content clearfix">
-      <el-table :row-class-name="tableRowClassName" ref="multipleTable" :data="tableData" tooltip-effect="light" :height="tableHeight" style="width: 100%;min-height:300px;" @select-all="selectAll" @select="select" @selection-change="handleSelectionChange">
+      <el-table :row-class-name="tableRowClassName" ref="multipleTable" :data="tableData" 
+      tooltip-effect="light" :height="tableHeight" style="width: 100%;min-height:300px;"
+      @select-all="selectAll" @select="select" @selection-change="handleSelectionChange">
         <el-table-column fixed type="selection" width="55"></el-table-column>
         <el-table-column fixed label="接入指示" width="100">
           <template slot-scope="scope">
@@ -229,10 +231,12 @@
         <el-table-column prop="dataTableName" label="接入对象" width="200" :show-overflow-tooltip="true"></el-table-column>
         <el-table-column prop="targetDBName" label="目标库" width="200" :show-overflow-tooltip="true"></el-table-column>
         <el-table-column prop="targetTableName" label="目标表" width="200" :show-overflow-tooltip="true"></el-table-column>
-        <el-table-column label="任务开始时间" width="150" :show-overflow-tooltip="true">
-          <template slot-scope="scope">{{scope.row.status==5 ? '' : scope.row.startTime | formateDateTime }}</template>
+        <el-table-column label="任务开始时间" prop="startTime" width="200" show-overflow-tooltip>
+          <template slot-scope="scope">
+              {{scope.row.status==5 ? '' : scope.row.startTime | formateDateTime }}
+          </template>
         </el-table-column>
-        <el-table-column label="任务结束时间" width="150" :show-overflow-tooltip="true">
+        <el-table-column label="任务结束时间" width="200" show-overflow-tooltip>
           <template slot-scope="scope">{{(scope.row.status==5||(scope.row.status==1&&scope.row.isPeriod=='3')) ? '' : scope.row.endTime | formateDateTime}}</template>
         </el-table-column>
         <el-table-column label="任务类型" width="130" :show-overflow-tooltip="true">
@@ -261,24 +265,28 @@
             <span>{{scope.row.status=='0'?'':scope.row.joinDataNum}}</span>
           </template>
         </el-table-column>
-        <el-table-column label="操作" width="260">
+        <el-table-column label="操作" width="180">
           <template slot-scope="scope">
             <div class="el-tleft">
-              <el-button v-if="scope.row.status==0||scope.row.status==2" type="text" size="small" @click="doRun(scope.$index, scope.row)">
-                <el-tooltip class="item" effect="light" content="运行" placement="top"><i class="enc-icon-qidongyunhang1"></i></el-tooltip>
-              </el-button>
-              <el-button v-if="scope.row.status==1 || scope.row.status==5" type="text" size="small" @click="doRun(scope.$index, scope.row)">
-                <el-tooltip class="item" effect="light" content="暂停" placement="top"><i class="enc-icon-zanting"></i></el-tooltip>
-              </el-button>
-              <el-button v-if="scope.row.status!=1" type="text" size="small" @click="doDel(scope.$index, scope.row)">
-                <el-tooltip class="item" effect="light" content="删除" placement="top"><i class="enc-icon-shanchu"></i></el-tooltip>
-              </el-button>
-              <el-button v-if="(scope.row.status==1||scope.row.status==2||scope.row.status==4)&&scope.row.isPeriod!=0&&scope.row.ftpIsDelete!='true'" type="text" size="small" @click="doCheck(scope.$index, scope.row)">
-                <el-tooltip class="item" effect="light" content="数据核验" placement="top"><i class="enc-icon-shujuheyan"></i></el-tooltip>
-              </el-button>
-              <el-button v-if="(scope.row.status==2||scope.row.status==4||scope.row.status==6||scope.row.status==7)&&scope.row.isPeriod!=0&&scope.row.ftpIsDelete!='true'" type="text" size="small" @click="doConverge(scope.$index, scope.row)">
-                <el-tooltip class="item" effect="light" content="重新汇聚" placement="top"><i class="enc-icon-huiju"></i></el-tooltip>
-              </el-button>
+               <el-tooltip  v-if="scope.row.status==0||scope.row.status==2" class="item" effect="light" content="运行" placement="top">
+                 <i class="enc-icon-qidongyunhang1" @click="doRun(scope.$index, scope.row)">
+                 </i>
+               </el-tooltip>
+
+              <el-tooltip  v-if="scope.row.status==1 || scope.row.status==5" class="item" effect="light" content="暂停" placement="top">
+                <i class="enc-icon-zanting" @click="doRun(scope.$index, scope.row)"></i>
+              </el-tooltip>
+              <el-tooltip v-if="scope.row.status!=1" class="item" effect="light" content="删除" placement="top">
+                <i class="enc-icon-shanchu" @click="doDel(scope.$index, scope.row)"></i>
+              </el-tooltip>
+              <el-tooltip v-if="(scope.row.status==1||scope.row.status==2||scope.row.status==4)&&scope.row.isPeriod!=0&&scope.row.ftpIsDelete!='true'"  
+              class="item" effect="light" content="数据核验" placement="top">
+                <i class="enc-icon-shujuheyan" @click="doCheck(scope.$index, scope.row)"></i>
+              </el-tooltip>
+              <el-tooltip  v-if="(scope.row.status==2||scope.row.status==4||scope.row.status==6||scope.row.status==7)&&scope.row.isPeriod!=0&&scope.row.ftpIsDelete!='true'" 
+                class="item" effect="light" content="重新汇聚" placement="top">
+                <i class="enc-icon-huiju" @click="doConverge(scope.$index, scope.row)"></i>
+              </el-tooltip>
             </div>
           </template>
         </el-table-column>
@@ -1556,5 +1564,10 @@ export default {
 .task-btn .el-button--medium span {
   float: right;
 }
-
+.el-tleft {
+  i{
+    font-size: 24px;
+    padding-right:10px;
+  }
+}
 </style>
