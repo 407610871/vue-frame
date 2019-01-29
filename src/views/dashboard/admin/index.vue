@@ -692,6 +692,7 @@ export default {
     .count-container {
         display: flex;
         align-items: center;
+        margin-bottom: 20px;
       .count-title {
         display: inline-block;
         width: 20%;
