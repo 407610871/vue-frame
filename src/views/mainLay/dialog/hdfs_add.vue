@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="mr-btn clearfix">
+    <div>
       <el-button type="primary"  @click="dialogVisible = true">新增</el-button>
     </div>
     <el-dialog title="新增" :visible.sync="dialogVisible" width="60%" :before-close="closeDialog">
