@@ -4,17 +4,7 @@
       <el-breadcrumb separator>
         <el-breadcrumb-item>数据接入</el-breadcrumb-item>
       </el-breadcrumb>
-      <form-fliter
-        v-if="queryParamReady"
-        @highMore="moreHeight"
-        @highSeaech="hightrue"
-        v-bind:formCollapse="collapse"
-        v-bind:deleteData="deleteData"
-        v-bind:dataObj="formFilterData"
-        v-bind:key_word="key_word"
-        @doSearch="search"
-        @formFilter="changeFormFilter"
-      />
+      <form-fliter v-if="queryParamReady" @highMore="moreHeight" @highSeaech="hightrue" v-bind:formCollapse="collapse" v-bind:deleteData="deleteData" v-bind:dataObj="formFilterData" v-bind:key_word="key_word" @doSearch="search" @formFilter="changeFormFilter" />
     </div>
     <!--
     <div
@@ -46,12 +36,7 @@
         </el-form-item>
       </el-form>
     </div>-->
-    <div
-      id="enc-breadcrumb-js"
-      class="el-breadcrumb"
-      style="display: flex;justify-content: flex-end; flex-wrap: wrap;"
-      v-show="key_word!='' || majorData.length>0"
-    >
+    <div id="enc-breadcrumb-js" class="el-breadcrumb" style="display: flex;justify-content: flex-end; flex-wrap: wrap;" v-show="key_word!='' || majorData.length>0">
       <div v-show="key_word!=''">
         <span class="lookstyle">
           {{key_word}}
@@ -65,7 +50,6 @@
         </span>
       </div>
     </div>
-
     <div class="main main-content">
       <div class="filter-container">
         <div class="count-container">
@@ -74,33 +58,18 @@
             <div class="all-number">{{countTotal}}</div>
           </div>
           <div class="line"></div>
-          <dataCount v-bind:dataObj="count1Data" class="countData"/>
+          <dataCount v-bind:dataObj="count1Data" class="countData" />
           <div class="line"></div>
-          <dataCount v-bind:dataObj="count2Data" class="countData"/>
+          <dataCount v-bind:dataObj="count2Data" class="countData" />
           <div class="regbtn fr">
-            <reg-dialog
-              @refreshTable="loadTable"
-              @storeReady="storeReady"
-              @refreshCount="countTotal++"
-            ></reg-dialog>
+            <reg-dialog @refreshTable="loadTable" @storeReady="storeReady" @refreshCount="countTotal++"></reg-dialog>
           </div>
         </div>
       </div>
-      <el-table
-        v-loading="loading"
-        :data="mainTableData"
-        :height="tableHeight"
-        stripe
-        style="width: 100%;"
-        tooltip-effect="light"
-      >
+      <el-table v-loading="loading" :data="mainTableData" :height="tableHeight" stripe style="width: 100%;" tooltip-effect="light">
         <el-table-column label="接入源名称" width="250" show-overflow-tooltip>
           <template slot-scope="scope">
-            <a
-              class="underdone"
-              href="javascript:void(0)"
-              v-on:click="goSubPage(scope.$index,scope.row.dataSourceName)"
-            >{{ scope.row.name }}</a>
+            <a class="underdone" href="javascript:void(0)" v-on:click="goSubPage(scope.$index,scope.row.dataSourceName)">{{ scope.row.name }}</a>
           </template>
         </el-table-column>
         <el-table-column prop="id" label="接入源ID" min-width="180"></el-table-column>
@@ -116,23 +85,11 @@
           <template slot-scope="scope">
             <div class="lofile">
               <edit-dialog :acId="scope.row.id" @refreshTable="loadTable" @storeReady="storeReady"></edit-dialog>
-              <el-tooltip
-                class="item"
-                effect="light"
-                content="复制"
-                placement="top"
-                v-if="scope.row.dataSourceName!='本地文件'"
-              >
-                <i
-                  @click="handleCopy(scope.$index, scope.row)"
-                  class="enc-icon-fuzhi table-action-btn"
-                ></i>
+              <el-tooltip class="item" effect="light" content="复制" placement="top" v-if="scope.row.dataSourceName!='本地文件'">
+                <i @click="handleCopy(scope.$index, scope.row)" class="enc-icon-fuzhi table-action-btn"></i>
               </el-tooltip>
               <el-tooltip class="item" effect="light" content="废止" placement="top">
-                <i
-                  @click="handleDelete(scope.$index, scope.row)"
-                  class="enc-icon-feizhi table-action-btn"
-                ></i>
+                <i @click="handleDelete(scope.$index, scope.row)" class="enc-icon-feizhi table-action-btn"></i>
               </el-tooltip>
             </div>
           </template>
@@ -140,16 +97,7 @@
       </el-table>
     </div>
     <div class="enc-pagination">
-      <el-pagination
-        v-if="queryParamReady"
-        style="float:right; margin:10px;"
-        @current-change="goPage"
-        background
-        :page-size.sync="pageSize"
-        :total="mainTableDataTotal"
-        layout="prev, pager, next, jumper"
-        :current-page.sync="currentPage"
-      ></el-pagination>
+      <el-pagination v-if="queryParamReady" style="float:right; margin:10px;" @current-change="goPage" background :page-size.sync="pageSize" :total="mainTableDataTotal" layout="prev, pager, next, jumper" :current-page.sync="currentPage"></el-pagination>
     </div>
   </div>
 </template>
@@ -202,6 +150,7 @@ export default {
   },
   computed: {
     tableParams: function() {
+      console.log(this.$store.state.queryParams.dashboard);
       return this.$store.state.queryParams.dashboard;
     },
     tableHeight: function() {
@@ -261,6 +210,7 @@ export default {
       this.setStore({
         deptId: ids
       });
+      this.tableParams.pageNum = 1;
       this.setCount(ids);
       this.loadTable(ids);
     });
@@ -283,18 +233,15 @@ export default {
         domain: "0",
         _: new Date().getTime()
       };
-      paramsObj.condition = this.tableParams.condition
-        ? this.tableParams.condition
-        : "";
-      paramsObj.network = this.tableParams.network
-        ? this.tableParams.network
-        : [];
-      paramsObj.dataSourceName = this.tableParams.dataSourceName
-        ? this.tableParams.dataSourceName
-        : [];
-      paramsObj.platform = this.tableParams.platform
-        ? this.tableParams.platform
-        : [];
+      paramsObj.condition = this.tableParams.condition ?
+        this.tableParams.condition :
+        "";
+      paramsObj.network = this.tableParams.network ?
+        this.tableParams.network : [];
+      paramsObj.dataSourceName = this.tableParams.dataSourceName ?
+        this.tableParams.dataSourceName : [];
+      paramsObj.platform = this.tableParams.platform ?
+        this.tableParams.platform : [];
       paramsObj.deptIds = ids;
 
       var _self = this;
@@ -332,16 +279,14 @@ export default {
     setFliter(data) {
       var queryParams = this.$store.state.queryParams[this.$route.name];
 
-      var dataSourceName = queryParams.dataSourceName
-        ? queryParams.dataSourceName
-        : [];
+      var dataSourceName = queryParams.dataSourceName ?
+        queryParams.dataSourceName : [];
       var network = queryParams.network ? queryParams.network : [];
       var platform = queryParams.platform ? queryParams.platform : [];
       network == true ? [] : network;
       platform == true ? [] : platform;
       dataSourceName == true ? [] : dataSourceName;
-      this.formFilterData = [
-        {
+      this.formFilterData = [{
           name: "接入源类型：",
           id: "dataSourceName",
           type: "checkbox",
@@ -377,12 +322,10 @@ export default {
         params: { type: 0 }
       }); //部门
       let api2 = this.$ajax.get(
-        window.ENV.API_DACM + "/commonInter/getListStaticDataOrder",
-        { params: { dictCode: "NetWork" } }
+        window.ENV.API_DACM + "/commonInter/getListStaticDataOrder", { params: { dictCode: "NetWork" } }
       );
       let api3 = this.$ajax.get(
-        window.ENV.API_DACM + "/commonInter/getListStaticDataOrder",
-        { params: { dictCode: "ButtPlatForm" } }
+        window.ENV.API_DACM + "/commonInter/getListStaticDataOrder", { params: { dictCode: "ButtPlatForm" } }
       );
       this.$ajax.all([api1, api2, api3]).then(res => {
         res.forEach((val, index) => {
@@ -470,8 +413,7 @@ export default {
               }
             }
           })
-          .catch(function(err) {
-          });
+          .catch(function(err) {});
         this.$ajax
           .get(window.ENV.API_DACM + "/commonInter/getListStaticDataOrder", {
             params: {
@@ -538,22 +480,19 @@ export default {
         domain: "0",
         _: new Date().getTime()
       };
-      paramsObj.condition = this.tableParams.condition
-        ? this.tableParams.condition
-        : "";
-      paramsObj.network = this.tableParams.network
-        ? this.tableParams.network
-        : [];
-      paramsObj.dataSourceName = this.tableParams.dataSourceName
-        ? this.tableParams.dataSourceName
-        : [];
-      paramsObj.platform = this.tableParams.platform
-        ? this.tableParams.platform
-        : [];
+      paramsObj.condition = this.tableParams.condition ?
+        this.tableParams.condition :
+        "";
+      paramsObj.network = this.tableParams.network ?
+        this.tableParams.network : [];
+      paramsObj.dataSourceName = this.tableParams.dataSourceName ?
+        this.tableParams.dataSourceName : [];
+      paramsObj.platform = this.tableParams.platform ?
+        this.tableParams.platform : [];
       paramsObj.deptIds = ids;
       //_self.updataFliterItemList();
       _self.getAllRalationApi(paramsObj);
-      
+
     },
     // 列表数据接口
     getDataList(paramsObj) {
@@ -610,9 +549,9 @@ export default {
         resetData: "accessObjManage"
       });
       var dataSourceName =
-        this.mainTableData[index].dataSourceName == "本地文件"
-          ? "file"
-          : this.mainTableData[index].dataSourceName;
+        this.mainTableData[index].dataSourceName == "本地文件" ?
+        "file" :
+        this.mainTableData[index].dataSourceName;
       this.$router.push({
         name: "accessObjManage",
         params: {
@@ -752,6 +691,7 @@ export default {
     }
   }
 };
+
 </script>
 <style lang="scss" scoped>
 .dashboard-container {
@@ -854,10 +794,11 @@ export default {
   font-weight: normal;
   padding-right: 20px;
 }
+
 </style>
 <style>
 .lofile i {
   font-size: 20px;
 }
-</style>
 
+</style>

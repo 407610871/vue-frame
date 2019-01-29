@@ -75,6 +75,7 @@ export default {
       },
       clsFiltercolumn(){
         this.$refs.searchFormItem.clearValidate();
+        this.count = '';
       },
       changeFiltercolumn(){
         if(!this.searchFormItem.filtercolumn){
