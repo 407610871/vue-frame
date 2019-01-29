@@ -181,6 +181,13 @@ export default {
       "selTreeNode",
       this.$store.state.queryParams[this.$route.name].deptId
     );
+    this.tableParams.condition = '';
+    this.tableParams.dataRange = [];
+    this.tableParams.dataSourceName = [];
+    this.tableParams.deptId = [];
+    this.tableParams.network = [];
+    this.tableParams.objectType =[];
+    this.tableParams.platform = [];
     this.$root.eventHub.$emit("setActiveNav", 1);
     this.storeReady();
     this.setCount(this.$store.state.deptId);
