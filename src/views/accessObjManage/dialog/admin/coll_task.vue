@@ -768,7 +768,7 @@ export default {
             this.loading = false;
             if (res.data.success) {
               let ctips = '采集任务启动成功！';
-              if (this.$route.params.type == 'oracle' || this.ruleForm.taskSubMode == "false") {
+              if (this.ruleForm.taskSubMode == "false") {
                 ctips = '采集任务创建成功！';
               }
               this.$alert(ctips, '信息', {
