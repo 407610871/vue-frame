@@ -187,7 +187,7 @@
                   <div class="tips-none" v-show="taskLog==''">暂无数据</div>
                 </div>
               </el-tab-pane>
-              <el-tab-pane label="数据核验日志信息">
+              <el-tab-pane label="数据核验日志信息" v-if="(reqObj.status==1||reqObj.status==2||reqObj.status==4)&&reqObj.isPeriod!=0">
                 <div class="dataCheck-tab" v-loading="loading5">
                   <div class="logItem" v-for="(item, index) in dataCheckList" :key="index">
                     <span class="lab">源库：</span>
