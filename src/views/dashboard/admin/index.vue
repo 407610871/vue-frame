@@ -184,7 +184,6 @@ export default {
     this.tableParams.condition = '';
     this.tableParams.dataRange = [];
     this.tableParams.dataSourceName = [];
-    this.tableParams.deptId = [];
     this.tableParams.network = [];
     this.tableParams.objectType =[];
     this.tableParams.platform = [];
