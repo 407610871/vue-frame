@@ -132,7 +132,6 @@ export default {
     },
     //增量字段弹框的再次打开
     showIncrement() {
-
       this.innerVisible = false;
     },
     saveIncrement(value) {
@@ -205,9 +204,6 @@ export default {
       this.$ajax({
         method: "get",
         url: `${this.GLOBAL.api.API_DACM}/caccesssysRelationWorkInfo/presetData`,
-        // headers:{
-        //   'Content-Type':'application/json;charset=utf-8',
-        // },
       }).then(res => {
         this.loading = false;
         if (res.data.result) {
@@ -215,6 +211,8 @@ export default {
           this.ruleForm.hdfsport = res.data.port;
           this.defaultUrl = 'hdfs://'+ this.ruleForm.hdfsname + ':' + this.ruleForm.hdfsport
         }
+      }).catch( err=>{
+        this.loading = false;
       })
     }
   },
