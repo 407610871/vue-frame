@@ -40,14 +40,14 @@
       <div class="filter-container">
         <div class="count-container">
           <div class="count-title">
-            <label>数据源注册总数</label>
-            <div class="all-number">{{countTotal}}</div>
+              <label>数据源注册总数</label>
+              <div class="all-number">{{countTotal}}</div>
           </div>
           <div class="line"></div>
           <dataCount v-bind:dataObj="count1Data" class="countData"/>
           <div class="line"></div>
           <dataCount v-bind:dataObj="count2Data" class="countData"/>
-          <div>
+          <div class="regbtn">
             <reg-dialog
               @refreshTable="loadTable"
               @storeReady="storeReady"
@@ -735,14 +735,11 @@ export default {
   .filter-container {
     .count-container {
         display: flex;
-        justify-content: center;
         align-items: center;
       .count-title {
         display: inline-block;
-        margin: 10px 5% 10px 40px;
-        width: 8%;
+        width: 20%;
         text-align: center;
-
         label {
           display: inline-block;
           margin-bottom: 10px;
@@ -751,7 +748,6 @@ export default {
         }
 
         .all-number {
-          /* color: #425365; */
           font-size: 24px;
           font-weight: bold;
         }
@@ -765,15 +761,14 @@ export default {
 
       .line {
         display: inline-block;
-        margin: 32px 0 12px 0;
         height: 30px;
         width: 2px;
         background-color: #999;
         border-radius: 2px;
       }
       .regbtn {
-        margin-top: 25px;
-        padding-right: 20px;
+        width: 10%;
+        text-align: center
       }
     }
 

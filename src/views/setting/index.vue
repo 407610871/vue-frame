@@ -1,10 +1,10 @@
 <template>
   <div>
     <el-breadcrumb separator="/">
-            <el-breadcrumb-item :to="{ path: '/dashboard' }">
-              系统参数
-            </el-breadcrumb-item>
-      </el-breadcrumb>
+      <el-breadcrumb-item :to="{ path: '/dashboard' }">
+        系统参数
+      </el-breadcrumb-item>
+    </el-breadcrumb>
     <div class="main-content" style="overflow-y:auto;" v-bind:style="{height:mainHeight}">
       <div class="panel">
         <div class="panel-title">库区设置</div>
@@ -64,11 +64,6 @@
                   </el-select>
                 </el-form-item>
               </el-col>
-              <!-- <el-col :span="12">
-                <el-form-item label="本地文件采集hdfs路径" label-width="180px">
-                  <el-input v-model="sysParam.hdfsPaOrg" @change="changeSet"></el-input>
-                </el-form-item>
-              </el-col> -->
             </el-row>
           </div>
         </el-form>
@@ -139,7 +134,6 @@ export default {
       }).then(function(res) {
         if (res.data.result == 'succeed') {
           var list = [];
-          console.log(res.data.storages);
           for (var value of res.data.storages) {
             var config = JSON.parse(value.config);
             var IPindex = config['hdfs.url'].split('//')[1].indexOf(':');
@@ -176,17 +170,13 @@ export default {
               list: list
             }
           }
-          console.log('settingList');
-          console.log(_self.settingList);
           _self.dataReady = true;
         } else {
-          console.log(res.code);
           _self.$alert('获取系统库区设置失败', '提示', {
             confirmButtonText: '确定'
           });
         }
       }).catch(function(err) {
-        console.log(err);
         _self.$alert('获取系统库区设置失败', '提示', {
           confirmButtonText: '确定'
         });
@@ -195,7 +185,6 @@ export default {
 
       const promist0 = new Promise((resolve, reject) => {
         this.$ajax.get(window.ENV.API_DACM + '/commonInter/getAreas', {
-          // this.$ajax.get('./getProvinceList', {
           params: {
             parentid: 0
           }
@@ -209,7 +198,6 @@ export default {
             });
           }
         }, (err) => {
-          console.log(err)
           reject(err);
           _self.$alert('获取行政区划失败', '提示', {
             confirmButtonText: '确定'
@@ -228,7 +216,6 @@ export default {
             reject(res);
           }
         }, (err) => {
-          console.log(err)
           reject(err);
           _self.$alert('获取系统参数失败', '提示', {
             confirmButtonText: '确定'
@@ -253,7 +240,6 @@ export default {
               var position = JSON.parse(value.name)[0];
               _self.sysParam.province = position.pro;
               var city = position.city
-              // _self.$ajax.get('./getCityList',{
               _self.$ajax.get(window.ENV.API_DACM + '/commonInter/getAreas', {
                   params: {
                     parentid: _self.sysParam.province
@@ -292,7 +278,6 @@ export default {
         return; //这个是通过选择省份重置的
       }
       var paramsList = JSON.parse(JSON.stringify(this.configs));
-      console.log(paramsList);
       for (var value of paramsList) {
         switch (value.key.trim()) {
           case '数据资源事权单位机构代码':
@@ -327,19 +312,11 @@ export default {
             break;
         }
       }
-      console.log('==================');
       var _self = this;
-      /*_self.$ajax.post('http://10.19.160.176:8080/DACM/caccesssysRelationWorkInfo/saveSystemSet',JSON.stringify({
-      // _self.$ajax.post('http://10.19.160.175:8080/DACM/caccesssysRelationWorkInfo/saveSystemSet',
-                // JSON.stringify(paramsList)
-                paramsList
-            ).then(function(res){*/
       _self.$ajax({
-          // url: 'http://10.19.160.175:8080/DACM/caccesssysRelationWorkInfo/saveSystemSet',
           url: window.ENV.API_DACM + '/caccesssysRelationWorkInfo/saveSystemSet',
           method: 'post',
           data: paramsList,
-          // headers: {'Content-Type': 'application/x-www-form-urlencoded'}
         }).then(function(res) {
           if (res.data.result == "succeed") {
             _self.$alert('设置成功', '提示', {
@@ -376,7 +353,6 @@ export default {
           }
         })
         .catch(function(err) {
-          console.log(err);
           _self.$alert('修改系统设置失败', '提示', {
             confirmButtonText: '确定'
           }).then(() => {
@@ -412,7 +388,6 @@ export default {
     margin-bottom: 0;
   }
 }
-
 .grid-content {
   min-height: 36px;
 }
