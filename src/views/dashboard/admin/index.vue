@@ -690,12 +690,12 @@ export default {
   .filter-container {
     .count-container {
         display: flex;
-        align-items: center;
         margin-bottom: 20px;
       .count-title {
         display: inline-block;
         width: 20%;
         text-align: center;
+        margin-top: 10px;
         label {
           display: inline-block;
           margin-bottom: 10px;
@@ -721,10 +721,12 @@ export default {
         width: 2px;
         background-color: #999;
         border-radius: 2px;
+        margin-top: 2%;
       }
       .regbtn {
         width: 10%;
-        text-align: center
+        text-align: center;
+        margin-top: 2%;
       }
     }
 
