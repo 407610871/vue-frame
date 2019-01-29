@@ -16,36 +16,6 @@
         @formFilter="changeFormFilter"
       />
     </div>
-    <!--
-    <div
-      class="el-breadcrumb"
-      v-show=" majorData.keyword!=''||(majorData.formSeledShow && (majorData.formSeledShow.dataSourceName.length!=0
-            ||majorData.formSeledShow.network.length!=0||majorData.formSeledShow.platform.length!=0
-            ||majorData.formSeledShow.objectType.length!=0||majorData.formSeledShow.dataRange.length!=0))"
-    >
-      <el-form>
-        <el-form-item class="isSelect">
-          <div v-show="majorData.keyword!=''">
-            <span class="lookstyle">{{majorData.keyword}} <i class="enc-icon-guanbi" @click="deleteKeyWord"></i></span>
-            
-          </div>
-          <div
-            v-show="majorData.formSeledShow[item.id].length!=0"
-            v-for="(item,index1) in majorData.dataObj"
-            :key="index1"
-          >
-            <span
-              class="lookstyle"
-              v-for="(item1,index) in majorData.formSeledShow[item.id]"
-              :key="index"
-            >
-              {{item1.name}}
-              <i class="enc-icon-guanbi" @click="delSelect(index,index1)"></i>
-            </span>
-          </div>
-        </el-form-item>
-      </el-form>
-    </div>-->
     <div
       id="enc-breadcrumb-js"
       class="el-breadcrumb"
@@ -69,7 +39,7 @@
     <div class="main main-content">
       <div class="filter-container">
         <div class="count-container">
-          <div class="count-title" style="position: relative; bottom: 15px;">
+          <div class="count-title">
             <label>数据源注册总数</label>
             <div class="all-number">{{countTotal}}</div>
           </div>
@@ -77,7 +47,7 @@
           <dataCount v-bind:dataObj="count1Data" class="countData"/>
           <div class="line"></div>
           <dataCount v-bind:dataObj="count2Data" class="countData"/>
-          <div class="regbtn fr">
+          <div>
             <reg-dialog
               @refreshTable="loadTable"
               @storeReady="storeReady"
@@ -764,6 +734,9 @@ export default {
   }
   .filter-container {
     .count-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
       .count-title {
         display: inline-block;
         margin: 10px 5% 10px 40px;
