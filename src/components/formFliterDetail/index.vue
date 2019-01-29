@@ -6,18 +6,19 @@
       </div>
       <el-button type="primary" class="doCearch" icon="enc-icon-sousuo1" @click="search"></el-button>
       <i v-if="this.$route.params.type=='ftp'||this.$route.params.type=='mongodb'"></i>
-      <span v-else @click="doCollapse">高级搜索
+      <span v-else @click="doCollapse">
+        高级搜索
         <i :class="collapse?'el-icon-caret-bottom':'el-icon-caret-top'"></i>
       </span>
     </div>
 
-    <div class="checkDiv" 
-       v-show="!collapse" @mouseleave="mouseleave()"
-    >
-      <el-form-item class="checkDivItem"
-       v-for="(item,indexs) in dataObj"
+    <div class="checkDiv" :style="{'margin-top': distanceDatial }" v-show="!collapse" @mouseleave="mouseleave($event)">
+      <el-form-item
+        class="checkDivItem"
+        v-for="(item,indexs) in dataObj"
         :label="item.name"
-        :key="indexs" >
+        :key="indexs"
+      >
         <el-checkbox-group
           v-if="item.type=='checkbox'"
           v-model="formSeled[item.id]"
@@ -43,14 +44,16 @@
           v-if="item.checkData.length>dataObj[indexs].limit&&item.checkData.length>5"
           class="moreSeclect"
           @click="domoreSeclect(indexs)"
-        >更多
+        >
+          更多
           <i :class="!doMoreArray[indexs]?'el-icon-caret-bottom':'el-icon-caret-top'"></i>
         </span>
         <span
           v-else-if="item.checkData.length<=dataObj[indexs].limit&&item.checkData.length>5"
           class="moreSeclect"
           @click="domoreSeclect(indexs)"
-        >收起
+        >
+          收起
           <i :class="!doMoreArray[indexs]?'el-icon-caret-bottom':'el-icon-caret-top'"></i>
         </span>
       </el-form-item>
@@ -101,13 +104,30 @@ export default {
     deleteData: [Object]
   },
   computed: {
-    key_word(){
+    key_word() {
       return this.$store.state.detailMajorData.keyword;
+    },
+    distanceDatial() {
+      let majorData = this.$store.state.detailMajorData;
+      if (
+        majorData.keyword != "" ||
+        (Object.keys(majorData.formSeledShow).length != 0 &&
+          (majorData.formSeledShow.dataSourceName.length != 0 ||
+            majorData.formSeledShow.network.length != 0 ||
+            majorData.formSeledShow.platform.length != 0 ||
+            majorData.formSeledShow.objectType.length != 0 ||
+            majorData.formSeledShow.dataRange.length != 0))
+      ) {
+        let a = document.getElementById("enc-detail-js");
+        if (a && a != null) {
+          return a.offsetHeight + 5 + "px";
+        }
+      }
+      return "0px";
     }
   },
   watch: {
     keyword(newValue, oldValue) {
-      
       let map = {
         dataObj: this.dataObj,
         formSeledShow: this.formSeledShow,
@@ -134,14 +154,13 @@ export default {
       this.doMore.push(false);
     }
     this.getFormSeled();
-    if(!this.$route.params.backType){
+    if (!this.$route.params.backType) {
       this.getFormSeledShow();
     }
     this.keyword =
       this.$store.state.queryParams[this.$route.name].condition || "";
   },
-  mounted() {
-  },
+  mounted() {},
 
   methods: {
     //高级搜索
@@ -223,21 +242,22 @@ export default {
         this.formSeled.objectType = [];
         this.formSeled.dataRange = [];
       } else {
-        console.log("11122222",this.dataObj);
         for (var value of this.dataObj) {
           this.$set(this.formSeled, value.id, value.seledData);
         }
       }
     },
-    mouseleave() {
-      this.collapse = !this.collapse;
+    mouseleave(e) {
+      var o = e.relatedTarget || e.toElement;
+      if(o && o !=null){
+        this.collapse = !this.collapse;
+      }  
     }
   }
 };
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
-
 .searchDiv {
   float: right;
   margin-top: -41px;
@@ -340,8 +360,8 @@ export default {
     .el-checkbox {
       margin-left: 15px;
     }
-    + .el-checkbox{
-       margin-left: 0px;
+    + .el-checkbox {
+      margin-left: 0px;
     }
   }
   .moreSeclect {

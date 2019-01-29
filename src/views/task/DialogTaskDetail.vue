@@ -1,6 +1,6 @@
 <template>
   <div class="taskMDialog" style="padding-bottom:15px;">
-    <el-dialog :title="reqObj.taskName" :close-on-click-modal="false" :visible.sync="showInnerDialog" @closed="closeDia" :height="600" width="65%">
+    <el-dialog :title="reqObj.taskName" :close-on-click-modal="false" :visible.sync="showInnerDialog" @closed="closeDia" width="75%">
       <div class="title-gra plr30">
         <div class="grab gra-r">
           <span class="grab gra-l"></span>
@@ -239,11 +239,11 @@
                 <div class="dataViews-table" v-loading="loading6">
                   <table style="width:100%;">
                     <thead>
-                      <th v-for="(val, index) in keyList" :key="index">{{val}}</th>
+                      <th v-for="(val, index) in keyList" :key="index" style="min-width:100px">{{val}}</th>
                     </thead>
                     <tbody>
                       <tr v-for="(item, index) in dataViewsList" :key="index">
-                        <td v-for="(keyitem, index) in keyList" :key="index" :title="item[index]">{{item[index]}}</td>
+                        <td v-for="(keyitem, index) in keyList" :key="index" :title="item[index]" style="min-width:100px">{{item[index]}}</td>
                       </tr>
                     </tbody>
                   </table>

@@ -19,7 +19,7 @@
             <i :class="!moreSearch?'el-icon-caret-bottom':'el-icon-caret-top'"></i>
           </span>
         </div>
-        <div class="checkDiv  task-query-form" v-if="moreSearch" @mouseleave="mouseleave()">
+        <div class="checkDiv  task-query-form" :style="{'margin-top':ditailDistance}" v-if="moreSearch" @mouseleave="mouseleave($event)">
           <el-form ref="form" label-width="110px">
             <el-form-item label="任务类型:">
               <el-checkbox-group v-model="taskPeriodType">
@@ -58,7 +58,7 @@
         </div>
       </div>
     </div>
-    <div class="el-breadcrumb" style="text-align:right; padding-top:5px;" v-if="keyword!=''||taskPeriodType.length>0||status.length>0||priority.length>0||(time!=null && time.length>0)">
+    <div id="task-js" class="el-breadcrumb" style="text-align:right; padding-top:5px;" v-if="keyword!=''||taskPeriodType.length>0||status.length>0||priority.length>0||(time!=null && time.length>0)">
       <el-form ref="form" label-width="0px" class="task-query-form">
         <el-form-item style="overflow: auto;">
           <div class="selected-task-type" style="display: inline-block;">
@@ -174,7 +174,6 @@
             </span>
           </div>
           <div v-show="time!=null && time.length>0" class="selected-task-type" style="display: inline-block;">
-            <span style="margin-right:10px;">任务开始时间:</span>
             <span>
                 {{time==null?'':time[0]}} - {{time==null?'':time[1]}}
                 <span @click="time=[]">
@@ -345,7 +344,8 @@ export default {
           return time.getTime() > Date.now();
         }
       },
-      searchHeight: 71
+      searchHeight: 71,
+      distance: false
     };
   },
 
@@ -399,6 +399,17 @@ export default {
     },
     pageSize() {
       return this.$store.state.pageSize;
+    },
+    ditailDistance() {
+      if(this.keyword!=''||this.taskPeriodType.length>0||this.status.length>0||this.priority.length>0||(this.time!=null && this.time.length>0)){
+        let a = document.getElementById("task-js");
+        if(a && a!=null){
+          return a.offsetHeight + 5 +"px";
+        }else {
+          return "45px";
+        }
+      }
+      return "0px";
     }
   },
   filters: {
@@ -450,9 +461,7 @@ export default {
       }
     },
     getSearchArea() {
-      this.$nextTick(() => {
-        this.searchHeight = this.$refs.searchArea.clientHeight;
-      });
+
     },
     pop: function(val, arr) {
       if (arr.indexOf(val) > -1) {
@@ -1317,8 +1326,11 @@ export default {
         }
       }
     },
-    mouseleave() {
-      this.moreSearch = !this.moreSearch;
+    mouseleave(e) {
+      var o = e.relatedTarget || e.toElement;
+      if(o && o !=null){
+        this.moreSearch = !this.moreSearch;
+      }  
     }
   }
 };
