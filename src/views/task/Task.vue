@@ -51,7 +51,7 @@
             </el-form-item>
             <el-form-item label="任务开始时间:">
               <div @mouseleave="mouseleave()" style="margin-left:15px;">
-                <el-date-picker v-model="time" :picker-options="pickerOptions" type="datetimerange" start-placeholder="开始时间" end-placeholder="结束时间" value-format="yyyy-MM-dd HH:mm:ss" :default-time="['00:00:00','23:59:59']"></el-date-picker>
+                <el-date-picker v-model="time" @change="datachange" :picker-options="pickerOptions" type="datetimerange" start-placeholder="开始时间" end-placeholder="结束时间" value-format="yyyy-MM-dd HH:mm:ss" :default-time="['00:00:00','23:59:59']"></el-date-picker>
               </div>
             </el-form-item>
           </el-form>
@@ -189,13 +189,13 @@
     <div class="count-operate main-content clearfix">
       <div class="task-btn">
         <el-tooltip class="item" effect="light" content="重新汇聚" placement="top">
-         <el-button type="primary" icon="icon-title enc-icon-huiju" @click="doMore('manager/taskOperate/batchConverge',1)">重新汇聚</el-button>
+          <el-button type="primary" icon="icon-title enc-icon-huiju" @click="doMore('manager/taskOperate/batchConverge',1)">重新汇聚</el-button>
         </el-tooltip>
         <el-tooltip class="item" effect="light" content="批量启动" placement="top">
-         <el-button type="primary" icon="icon-title enc-icon-qidongyunhang1" @click="doMore('manager/taskOperate/batchStart',2)">批量启动</el-button>
+          <el-button type="primary" icon="icon-title enc-icon-qidongyunhang1" @click="doMore('manager/taskOperate/batchStart',2)">批量启动</el-button>
         </el-tooltip>
         <el-tooltip class="item" effect="light" content="批量停止" placement="top">
-          <el-button type="primary" icon="icon-title enc-icon-zanting"  @click="doMore('manager/taskOperate/batchPause',3)">批量停止</el-button>
+          <el-button type="primary" icon="icon-title enc-icon-zanting" @click="doMore('manager/taskOperate/batchPause',3)">批量停止</el-button>
         </el-tooltip>
         <el-tooltip class="item" effect="light" content="刷新" placement="top">
           <el-button type="primary" icon="icon-title enc-icon-shuaxin" @click="refresh">刷新</el-button>
@@ -256,19 +256,29 @@
             <span v-else-if="scope.row.status==5">准备中</span>
           </template>
         </el-table-column>
-        <el-table-column  label="已接入数据量" :show-overflow-tooltip="true" width="150">
-           <template slot-scope="scope">
-             <span>{{scope.row.status=='0'?'':scope.row.joinDataNum}}</span>
-           </template>
+        <el-table-column label="已接入数据量" :show-overflow-tooltip="true" width="150">
+          <template slot-scope="scope">
+            <span>{{scope.row.status=='0'?'':scope.row.joinDataNum}}</span>
+          </template>
         </el-table-column>
         <el-table-column label="操作" width="260">
           <template slot-scope="scope">
             <div class="el-tleft">
-            <el-button v-if="scope.row.status==0||scope.row.status==2" type="text" size="small" @click="doRun(scope.$index, scope.row)"><el-tooltip class="item" effect="light" content="运行" placement="top"><i class="enc-icon-qidongyunhang1"></i></el-tooltip></el-button>
-            <el-button v-if="scope.row.status==1 || scope.row.status==5" type="text" size="small" @click="doRun(scope.$index, scope.row)"><el-tooltip class="item" effect="light" content="暂停" placement="top"><i class="enc-icon-zanting"></i></el-tooltip></el-button>
-            <el-button v-if="scope.row.status!=1" type="text" size="small" @click="doDel(scope.$index, scope.row)"><el-tooltip class="item" effect="light" content="删除" placement="top"><i class="enc-icon-shanchu"></i></el-tooltip></el-button>
-            <el-button v-if="(scope.row.status==1||scope.row.status==2||scope.row.status==4)&&scope.row.isPeriod!=0&&scope.row.ftpIsDelete!='true'" type="text" size="small" @click="doCheck(scope.$index, scope.row)"><el-tooltip class="item" effect="light" content="数据核验" placement="top"><i class="enc-icon-shujuheyan"></i></el-tooltip></el-button>
-            <el-button v-if="(scope.row.status==2||scope.row.status==4||scope.row.status==6||scope.row.status==7)&&scope.row.isPeriod!=0&&scope.row.ftpIsDelete!='true'" type="text" size="small" @click="doConverge(scope.$index, scope.row)"><el-tooltip class="item" effect="light" content="重新汇聚" placement="top"><i class="enc-icon-huiju"></i></el-tooltip></el-button>
+              <el-button v-if="scope.row.status==0||scope.row.status==2" type="text" size="small" @click="doRun(scope.$index, scope.row)">
+                <el-tooltip class="item" effect="light" content="运行" placement="top"><i class="enc-icon-qidongyunhang1"></i></el-tooltip>
+              </el-button>
+              <el-button v-if="scope.row.status==1 || scope.row.status==5" type="text" size="small" @click="doRun(scope.$index, scope.row)">
+                <el-tooltip class="item" effect="light" content="暂停" placement="top"><i class="enc-icon-zanting"></i></el-tooltip>
+              </el-button>
+              <el-button v-if="scope.row.status!=1" type="text" size="small" @click="doDel(scope.$index, scope.row)">
+                <el-tooltip class="item" effect="light" content="删除" placement="top"><i class="enc-icon-shanchu"></i></el-tooltip>
+              </el-button>
+              <el-button v-if="(scope.row.status==1||scope.row.status==2||scope.row.status==4)&&scope.row.isPeriod!=0&&scope.row.ftpIsDelete!='true'" type="text" size="small" @click="doCheck(scope.$index, scope.row)">
+                <el-tooltip class="item" effect="light" content="数据核验" placement="top"><i class="enc-icon-shujuheyan"></i></el-tooltip>
+              </el-button>
+              <el-button v-if="(scope.row.status==2||scope.row.status==4||scope.row.status==6||scope.row.status==7)&&scope.row.isPeriod!=0&&scope.row.ftpIsDelete!='true'" type="text" size="small" @click="doConverge(scope.$index, scope.row)">
+                <el-tooltip class="item" effect="light" content="重新汇聚" placement="top"><i class="enc-icon-huiju"></i></el-tooltip>
+              </el-button>
             </div>
           </template>
         </el-table-column>
@@ -325,6 +335,13 @@ export default {
       reqObj: "",
       pickerOptions: {
         disabledDate(time) {
+          if (new Date(time.getTime()).toDateString() === new Date().toDateString()) {
+            //今天
+            if(time.getTime() > Date.now()){
+              //time.$emit('pick', ['00:00:00', Date.now()]);
+              time.setTime( new Date());
+            }
+          }
           return time.getTime() > Date.now();
         }
       },
@@ -404,6 +421,19 @@ export default {
     DialogTaskDetail
   },
   methods: {
+    
+    datachange(){
+      console.log("234234234")
+    },
+    formatDate(now) {
+      var year = now.getFullYear();
+      var month = now.getMonth() + 1;
+      var date = now.getDate();
+      var hour = now.getHours();
+      var minute = now.getMinutes();
+      var second = now.getSeconds();
+      return "20" + year + "-" + month + "-" + date + " " + hour + ":" + minute + ":" + second;
+    },
     removeCla() {
       this.tableData.forEach(item => {
         if (item.zc == 1) item.zc = 0;
@@ -1482,9 +1512,11 @@ export default {
     margin-bottom: 0px !important;
   }
 }
+
 .main-content {
-  width:100%;
+  width: 100%;
 }
+
 .task-template {
   .el-table .cell .el-button i {
     font-size: 21px;
@@ -1495,7 +1527,10 @@ export default {
     margin:auto; */
   }
 }
-.task-btn .el-button--primary span, .task-btn .el-button--medium span {
+
+.task-btn .el-button--primary span,
+.task-btn .el-button--medium span {
   float: right;
 }
+
 </style>
