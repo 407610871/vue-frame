@@ -116,6 +116,7 @@ export default {
       if (to.name == "recyclingBins") {
         this.loadTable(this.$store.state.deptId);
       }
+      this.storeReady();
     }
   },
   created() {
@@ -304,7 +305,8 @@ export default {
       this.setStore(fliterParams);
     },
     storeReady: function() {
-      var fliterItemList = this.$store.state.fliterItemList
+      var fliterItemList = this.$store.state.fliterItemList;
+      console.log(fliterItemList);
       if (fliterItemList.network.ready && fliterItemList.dataSourceName.ready && fliterItemList.platform.ready && this.$store.state.pageReady) {
         this.setFliter(fliterItemList);
         this.loadTable(this.$store.state.deptId);
