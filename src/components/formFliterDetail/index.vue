@@ -359,7 +359,7 @@ export default {
     float: left;
     .el-checkbox {
       margin-left: 15px;
-      margin-right: 0px;
+      margin-right: 0px !important;
     }
     + .el-checkbox {
       margin-left: 0px;

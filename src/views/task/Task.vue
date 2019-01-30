@@ -1517,7 +1517,7 @@ export default {
   .task-query-form .el-checkbox {
     width: auto;
     margin-left: 15px;
-    margin-right: 0px;
+    margin-right: 0px !important;
   }
   .el-breadcrumb .el-form-item {
     margin-bottom: 0px !important;

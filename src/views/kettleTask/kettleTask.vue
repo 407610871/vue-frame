@@ -490,7 +490,7 @@ export default {
 }
 .checkDiv .el-checkbox {
   margin-left:15px;
-  margin-right: 0px;
+  margin-right: 0px !important;
 }
 .kettle-icon-span {
   font-size: 21px;
