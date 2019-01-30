@@ -40,11 +40,11 @@
               <li :title="resData.source_library">{{resData.source_library||"无"}}</li>
              
               <li :title="resData.source_tableNum">{{resData.source_tableNum||"无"}}</li>
-             <li v-if="resData.sourceMatchTables==undefined||resData.sourceMatchTables==null" :title="resData.source_tableName" :class="resData.source_tableName!=undefined&&resData.source_tableName.indexOf('*')!=-1?'sourceStyle':''">
-                <span v-if="resData.source_tableName==undefined||resData.source_tableName.indexOf('*')==-1">{{resData.source_tableName||"无"}}</span>
-                <span v-else style="display:block" v-for="(item,index) in resData.source_tableName.split('*')" :key="index">{{item}}</span>
+             <li v-if="resData.sourceMatchTables==undefined||resData.sourceMatchTables==null" :title="resData.source_tableName" :class="resData.source_tableName!=undefined&&resData.source_tableName.indexOf('*')!=-1&&resData.status=='1'?'sourceStyle':''">
+                <span v-if="(resData.source_tableName==undefined||resData.source_tableName.indexOf('*')==-1)&&resData.status=='1'">{{resData.source_tableName||"无"}}</span>
+                <span v-else-if="resData.status=='1'" style="display:block" v-for="(item,index) in resData.source_tableName.split('*')" :key="index">{{item}}</span>
              </li>
-              <li v-else style="height:80px;width:100%;overflow:auto;" class="jrborder">
+              <li v-else-if="resData.status=='1'" style="height:80px;width:100%;overflow:auto;" class="jrborder">
                  <span style="display:block" v-for="(item, index) in resData.sourceMatchTables.split('*')" :key="index">{{item}}</span>
               </li>
             </ul>
