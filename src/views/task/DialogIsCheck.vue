@@ -22,7 +22,7 @@
             </div>
             <div class="time" v-show="timeCheck">
               <el-date-picker size="small" :picker-options="pickerOptions" v-model="startTime" type="daterange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" value-format="yyyy-MM-dd"></el-date-picker>
-              <el-select v-model="queryTargetColumn" placeholder="选择核验时间字段" style="width:160px;margin-left:5px;">
+              <el-select v-model="queryTargetColumn" placeholder="选择核验时间字段" style="width:160px;margin-left:5px;top:-3px;" class="timeselect">
                 <el-option v-for="item in queryTargetColumnList" :key="item" :label="item" :value="item"></el-option>
               </el-select>
             </div>
@@ -671,5 +671,15 @@ h5 {
 .manual_check_result .el-radio {
   line-height: 1;
 }
-
+.timeselect .el-input--medium .el-input__inner {
+  height: 32px;
+  line-height: 32px;
+}
+.timeselect .el-select .el-input__suffix {
+  top:2px;
+}
+.timeselect .el-input--medium .el-input__inner {
+  height: 32px;
+  line-height: 32px;
+}
 </style>
