@@ -115,6 +115,12 @@ export default {
         _self.loading = false;
         if (res.data.success) {
           _self.tableData = res.data.data.list;
+          if(_self.tableData.length==0){
+            _self.$store.commit('setHis',true);
+          }
+          else {
+            _self.$store.commit('setHis',false);
+          }
           for (let j = 0; j < _self.tableData.length; j++) {
             _self.schemaMappingDTOList.push({
               "newColumnName": _self.tableData[j].name.toLowerCase(),

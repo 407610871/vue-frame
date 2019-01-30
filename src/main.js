@@ -25,7 +25,6 @@ import "./registerServiceWorker";
 
 //展宏加入
 import axios from "axios";
-
 Vue.prototype.GLOBAL = global_; //挂载到Vue实例上面
 Vue.prototype.$ajax = axios;
 Vue.prototype.$ajax.interceptors.request.use(

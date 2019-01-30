@@ -4,49 +4,10 @@
       <el-breadcrumb separator>
         <el-breadcrumb-item>数据接入</el-breadcrumb-item>
       </el-breadcrumb>
-      <form-fliter
-        v-if="queryParamReady"
-        @highMore="moreHeight"
-        @highSeaech="hightrue"
-        v-bind:formCollapse="collapse"
-        v-bind:deleteData="deleteData"
-        v-bind:dataObj="formFilterData"
-        v-bind:key_word="key_word"
-        @doSearch="search"
-        @formFilter="changeFormFilter"
-      />
+      <form-fliter v-if="queryParamReady" @highMore="moreHeight" @highSeaech="hightrue" v-bind:formCollapse="collapse" v-bind:deleteData="deleteData" v-bind:dataObj="formFilterData" v-bind:key_word="key_word" @doSearch="search" @formFilter="changeFormFilter" />
     </div>
-    <!--
     <div
-      class="el-breadcrumb"
-      v-show=" majorData.keyword!=''||(majorData.formSeledShow && (majorData.formSeledShow.dataSourceName.length!=0
-            ||majorData.formSeledShow.network.length!=0||majorData.formSeledShow.platform.length!=0
-            ||majorData.formSeledShow.objectType.length!=0||majorData.formSeledShow.dataRange.length!=0))"
-    >
-      <el-form>
-        <el-form-item class="isSelect">
-          <div v-show="majorData.keyword!=''">
-            <span class="lookstyle">{{majorData.keyword}} <i class="enc-icon-guanbi" @click="deleteKeyWord"></i></span>
-            
-          </div>
-          <div
-            v-show="majorData.formSeledShow[item.id].length!=0"
-            v-for="(item,index1) in majorData.dataObj"
-            :key="index1"
-          >
-            <span
-              class="lookstyle"
-              v-for="(item1,index) in majorData.formSeledShow[item.id]"
-              :key="index"
-            >
-              {{item1.name}}
-              <i class="enc-icon-guanbi" @click="delSelect(index,index1)"></i>
-            </span>
-          </div>
-        </el-form-item>
-      </el-form>
-    </div>-->
-    <div
+      id="enc-breadcrumb-js"
       class="el-breadcrumb"
       style="display: flex;justify-content: flex-end; flex-wrap: wrap;"
       v-show="key_word!='' || majorData.length>0"
@@ -64,19 +25,18 @@
         </span>
       </div>
     </div>
-
     <div class="main main-content">
       <div class="filter-container">
         <div class="count-container">
-           <div class="count-title" style="position: relative; bottom: 15px;">
-            <label>数据源注册总数</label>
-            <div class="all-number">{{countTotal}}</div>
+          <div class="count-title">
+              <label>数据源注册总数</label>
+              <div class="all-number">{{countTotal}}</div>
           </div>
           <div class="line"></div>
-          <dataCount v-bind:dataObj="count1Data" class="countData"/>
+          <dataCount v-bind:dataObj="count1Data" class="countData" />
           <div class="line"></div>
           <dataCount v-bind:dataObj="count2Data" class="countData"/>
-          <div class="regbtn fr">
+          <div class="regbtn">
             <reg-dialog
               @refreshTable="loadTable"
               @storeReady="storeReady"
@@ -85,22 +45,10 @@
           </div>
         </div>
       </div>
-      <el-table
-        v-loading="loading"
-        :data="mainTableData"
-        :height="tableHeight"
-        stripe
-        border
-        style="width: 100%;"
-        tooltip-effect="light"
-      >
+      <el-table v-loading="loading" :data="mainTableData" :height="tableHeight" stripe style="width: 100%;" tooltip-effect="light">
         <el-table-column label="接入源名称" width="250" show-overflow-tooltip>
           <template slot-scope="scope">
-            <a
-              class="underdone"
-              href="javascript:void(0)"
-              v-on:click="goSubPage(scope.$index,scope.row.dataSourceName)"
-            >{{ scope.row.name }}</a>
+            <a class="underdone" href="javascript:void(0)" v-on:click="goSubPage(scope.$index,scope.row.dataSourceName)">{{ scope.row.name }}</a>
           </template>
         </el-table-column>
         <el-table-column prop="id" label="接入源ID" min-width="180"></el-table-column>
@@ -112,27 +60,15 @@
           <template slot-scope="scope">{{getNetwork(scope.row.network)}}</template>
         </el-table-column>
         <el-table-column prop="createTime" label="注册时间" min-width="160"></el-table-column>
-        <el-table-column label="操作" min-width="140">
+        <el-table-column label="操作" min-width="160">
           <template slot-scope="scope">
             <div class="lofile">
               <edit-dialog :acId="scope.row.id" @refreshTable="loadTable" @storeReady="storeReady"></edit-dialog>
-              <el-tooltip
-                class="item"
-                effect="light"
-                content="复制"
-                placement="top"
-                v-if="scope.row.dataSourceName!='本地文件'"
-              >
-                <i
-                  @click="handleCopy(scope.$index, scope.row)"
-                  class="enc-icon-fuzhi table-action-btn"
-                ></i>
+              <el-tooltip class="item" effect="light" content="复制" placement="top" v-if="scope.row.dataSourceName!='本地文件'">
+                <i @click="handleCopy(scope.$index, scope.row)" class="enc-icon-fuzhi table-action-btn"></i>
               </el-tooltip>
               <el-tooltip class="item" effect="light" content="废止" placement="top">
-                <i
-                  @click="handleDelete(scope.$index, scope.row)"
-                  class="enc-icon-feizhi table-action-btn"
-                ></i>
+                <i @click="handleDelete(scope.$index, scope.row)" class="enc-icon-feizhi table-action-btn"></i>
               </el-tooltip>
             </div>
           </template>
@@ -140,16 +76,7 @@
       </el-table>
     </div>
     <div class="enc-pagination">
-      <el-pagination
-        v-if="queryParamReady"
-        style="float:right; margin:10px;"
-        @current-change="goPage"
-        background
-        :page-size.sync="pageSize"
-        :total="mainTableDataTotal"
-        layout="prev, pager, next, jumper"
-        :current-page.sync="currentPage"
-      ></el-pagination>
+      <el-pagination v-if="queryParamReady" style="float:right; margin:10px;" @current-change="goPage" background :page-size.sync="pageSize" :total="mainTableDataTotal" layout="prev, pager, next, jumper" :current-page.sync="currentPage"></el-pagination>
     </div>
   </div>
 </template>
@@ -195,13 +122,14 @@ export default {
         list: []
       },
       formFilterData: [],
-      pageSize: "20",
+      pageSize: 20,
       key_word: "",
       deleteData: {}
     };
   },
   computed: {
     tableParams: function() {
+      console.log(this.$store.state.queryParams.dashboard);
       return this.$store.state.queryParams.dashboard;
     },
     tableHeight: function() {
@@ -246,13 +174,19 @@ export default {
     }
   },
   created() {
-    this.storeReady();
+    //this.storeReady();
   },
   mounted() {
     this.$root.eventHub.$emit(
       "selTreeNode",
       this.$store.state.queryParams[this.$route.name].deptId
     );
+    this.tableParams.condition = '';
+    this.tableParams.dataRange = [];
+    this.tableParams.dataSourceName = [];
+    this.tableParams.network = [];
+    this.tableParams.objectType =[];
+    this.tableParams.platform = [];
     this.$root.eventHub.$emit("setActiveNav", 1);
     this.storeReady();
     this.setCount(this.$store.state.deptId);
@@ -261,6 +195,7 @@ export default {
       this.setStore({
         deptId: ids
       });
+      this.tableParams.pageNum = 1;
       this.setCount(ids);
       this.loadTable(ids);
     });
@@ -283,18 +218,15 @@ export default {
         domain: "0",
         _: new Date().getTime()
       };
-      paramsObj.condition = this.tableParams.condition
-        ? this.tableParams.condition
-        : "";
-      paramsObj.network = this.tableParams.network
-        ? this.tableParams.network
-        : [];
-      paramsObj.dataSourceName = this.tableParams.dataSourceName
-        ? this.tableParams.dataSourceName
-        : [];
-      paramsObj.platform = this.tableParams.platform
-        ? this.tableParams.platform
-        : [];
+      paramsObj.condition = this.tableParams.condition ?
+        this.tableParams.condition :
+        "";
+      paramsObj.network = this.tableParams.network ?
+        this.tableParams.network : [];
+      paramsObj.dataSourceName = this.tableParams.dataSourceName ?
+        this.tableParams.dataSourceName : [];
+      paramsObj.platform = this.tableParams.platform ?
+        this.tableParams.platform : [];
       paramsObj.deptIds = ids;
 
       var _self = this;
@@ -332,16 +264,14 @@ export default {
     setFliter(data) {
       var queryParams = this.$store.state.queryParams[this.$route.name];
 
-      var dataSourceName = queryParams.dataSourceName
-        ? queryParams.dataSourceName
-        : [];
+      var dataSourceName = queryParams.dataSourceName ?
+        queryParams.dataSourceName : [];
       var network = queryParams.network ? queryParams.network : [];
       var platform = queryParams.platform ? queryParams.platform : [];
       network == true ? [] : network;
       platform == true ? [] : platform;
       dataSourceName == true ? [] : dataSourceName;
-      this.formFilterData = [
-        {
+      this.formFilterData = [{
           name: "接入源类型：",
           id: "dataSourceName",
           type: "checkbox",
@@ -370,6 +300,55 @@ export default {
     },
     collapseExpand: function() {
       this.collapse = !this.collapse;
+    },
+    //将相关的接口进行并发处理, 表格列表中的数据依赖network 和ButtPlatForm
+    getAllRalationApi(paramsObj) {
+      let api1 = this.$ajax.get(window.ENV.API_DACM + sysdialect, {
+        params: { type: 0 }
+      }); //部门
+      let api2 = this.$ajax.get(
+        window.ENV.API_DACM + "/commonInter/getListStaticDataOrder", { params: { dictCode: "NetWork" } }
+      );
+      let api3 = this.$ajax.get(
+        window.ENV.API_DACM + "/commonInter/getListStaticDataOrder", { params: { dictCode: "ButtPlatForm" } }
+      );
+      this.$ajax.all([api1, api2, api3]).then(res => {
+        res.forEach((val, index) => {
+          if (index == 0 && val.data.success) {
+            this.$store.commit("setFilterItmeList", {
+              name: "dataSourceName",
+              data: val.data.data
+            });
+          } else if (index == 1 && val.data && val.data.length > 0) {
+            let list = [];
+            for (var value of val.data) {
+              list.push({
+                id: value.sTATIC_CODE,
+                name: value.sTATIC_NAME
+              });
+            }
+            this.$store.commit("setFilterItmeList", {
+              name: "network",
+              data: list
+            });
+            this.formFilterData[1].checkData = list;
+          } else if (index == 2 && val.data && val.data.length > 0) {
+            let list = [];
+            for (var value of val.data) {
+              list.push({
+                id: value.sTATIC_CODE,
+                name: value.sTATIC_NAME
+              });
+            }
+            this.$store.commit("setFilterItmeList", {
+              name: "platform",
+              data: list
+            });
+            this.formFilterData[2].checkData = list;
+          }
+        });
+        this.getDataList(paramsObj);
+      });
     },
     updataFliterItemList() {
       var _self = this;
@@ -419,9 +398,7 @@ export default {
               }
             }
           })
-          .catch(function(err) {
-            console.log(err);
-          });
+          .catch(function(err) {});
         this.$ajax
           .get(window.ENV.API_DACM + "/commonInter/getListStaticDataOrder", {
             params: {
@@ -481,28 +458,31 @@ export default {
       id ? (ids = id) : (ids = this.tableParams.deptId);
       var _self = this;
       _self.loading = true;
-      this.pageSize = this.$store.state.pageSize;
+      this.pageSize = Number(this.$store.state.pageSize);
       var paramsObj = {
         pageSize: this.$store.state.pageSize,
         pageNum: this.tableParams.pageNum,
         domain: "0",
         _: new Date().getTime()
       };
-      paramsObj.condition = this.tableParams.condition
-        ? this.tableParams.condition
-        : "";
-      paramsObj.network = this.tableParams.network
-        ? this.tableParams.network
-        : [];
-      paramsObj.dataSourceName = this.tableParams.dataSourceName
-        ? this.tableParams.dataSourceName
-        : [];
-      paramsObj.platform = this.tableParams.platform
-        ? this.tableParams.platform
-        : [];
+      paramsObj.condition = this.tableParams.condition ?
+        this.tableParams.condition :
+        "";
+      paramsObj.network = this.tableParams.network ?
+        this.tableParams.network : [];
+      paramsObj.dataSourceName = this.tableParams.dataSourceName ?
+        this.tableParams.dataSourceName : [];
+      paramsObj.platform = this.tableParams.platform ?
+        this.tableParams.platform : [];
       paramsObj.deptIds = ids;
-      _self.updataFliterItemList();
-      this.$ajax
+      //_self.updataFliterItemList();
+      _self.getAllRalationApi(paramsObj);
+
+    },
+    // 列表数据接口
+    getDataList(paramsObj) {
+      var _self = this;
+      _self.$ajax
         .post(window.ENV.API_DACM + query, paramsObj)
         .then(function(res) {
           _self.loading = false;
@@ -554,9 +534,9 @@ export default {
         resetData: "accessObjManage"
       });
       var dataSourceName =
-        this.mainTableData[index].dataSourceName == "本地文件"
-          ? "file"
-          : this.mainTableData[index].dataSourceName;
+        this.mainTableData[index].dataSourceName == "本地文件" ?
+        "file" :
+        this.mainTableData[index].dataSourceName;
       this.$router.push({
         name: "accessObjManage",
         params: {
@@ -620,7 +600,6 @@ export default {
             }
           })
           .catch(function(err) {
-            console.log(err);
             _self.$alert("废止失败", "提示", {
               confirmButtonText: "确定"
             });
@@ -697,6 +676,7 @@ export default {
     }
   }
 };
+
 </script>
 <style lang="scss" scoped>
 .dashboard-container {
@@ -709,12 +689,13 @@ export default {
   }
   .filter-container {
     .count-container {
+        display: flex;
+        margin-bottom: 20px;
       .count-title {
         display: inline-block;
-        margin: 10px 5% 10px 40px;
-        width: 8%;
+        width: 20%;
         text-align: center;
-
+        margin-top: 10px;
         label {
           display: inline-block;
           margin-bottom: 10px;
@@ -723,7 +704,6 @@ export default {
         }
 
         .all-number {
-          /* color: #425365; */
           font-size: 24px;
           font-weight: bold;
         }
@@ -737,15 +717,16 @@ export default {
 
       .line {
         display: inline-block;
-        margin: 32px 0 12px 0;
         height: 30px;
         width: 2px;
         background-color: #999;
         border-radius: 2px;
+        margin-top: 2%;
       }
       .regbtn {
-        margin-top: 25px;
-        padding-right: 20px;
+        width: 10%;
+        text-align: center;
+        margin-top: 2%;
       }
     }
 
@@ -774,7 +755,7 @@ export default {
 
   .table-action-btn {
     display: inline-block;
-    font-size: 16px;
+    font-size: 20px;
     margin: 0 5px;
   }
 
@@ -784,12 +765,9 @@ export default {
 }
 
 .lofile {
-  width: 70px;
+  width: 80px;
   text-align: left;
   margin: 0 auto;
-  i {
-    font-size: 21px;
-  }
 }
 
 .underdone,
@@ -802,5 +780,11 @@ export default {
   font-weight: normal;
   padding-right: 20px;
 }
-</style>
 
+</style>
+<style>
+.lofile i {
+  font-size: 20px;
+}
+
+</style>

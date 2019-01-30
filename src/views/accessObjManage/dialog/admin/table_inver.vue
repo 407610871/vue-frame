@@ -1,22 +1,24 @@
 <template>
   <div class="taskMDialog userSurveyDialog">
-    <!--  <el-button class="diabtn tin-btn add-btn" @click="dialogVisible = true">核验报告</el-button> -->
-    <el-tooltip class="item" effect="light" content="核验报告" placement="top">
-      <span class="icon-title enc-icon-heyanchakan diabtn tin-btn add-btn " @click="dialogVisible = true"></span>
+    <el-tooltip class="item" effect="light" content="核验报告" placement="top" style="margin-right:10px;">
+      <el-button type="primary" @click="dialogVisible = true" icon=" icon-title enc-icon-heyanchakan">
+        核验报告
+      </el-button>
     </el-tooltip>
-    <!--  <i class="el-icon-info" @click="dialogVisible = true">用户调研</i> -->
     <el-dialog title="核验报告" :visible.sync="dialogVisible" width="73%" :before-close="closeDialog">
-        <div class="title-gra plr30">
-          <div class="grab gra-r">
-            <span class="grab gra-l"></span>
-          </div>
+      <div class="title-gra plr30">
+        <div class="grab gra-r">
+          <span class="grab gra-l"></span>
         </div>
-      <div class="proInfo-box bornone clearfix" style="margin-bottom:20px;">
+      </div>
+      <div class="proInfo-box bornone clearfix" style="margin-bottom:20px; text-align:right">
         <p style="text-align: center">{{name}}</p>
         <el-tooltip class="item" effect="light" content="刷新" placement="top">
-          <a href="javascript:void(0)" class="refresha" v-on:click="_getTableNum"><i class="enc-icon-shuaxin"></i></a>
+          <el-button type="primary" v-on:click="_getTableNum" icon="icon-title enc-icon-shuaxin"> 刷新</el-button>
         </el-tooltip>
-        <el-button size="mini" type="primary" @click="downTable()" class="dowBtn">导出报告</el-button>
+        <el-tooltip class="item" effect="light" content="导出报告" placement="top">
+          <el-button type="primary" @click="downTable()" icon="icon-title enc-icon-daochu">导出报告</el-button>
+        </el-tooltip>
       </div>
       <div class="proInfo-box" v-loading="loading2">
         <div class="comTable">
@@ -43,10 +45,11 @@
                 <span v-if="scope.row.testresults_result!=undefined">{{scope.row.testresults_result=="1"?'不一致':'一致'}}</span>
               </template>
             </el-table-column>
-            <el-table-column label="操作" width="180" class="clearfix">
+            <el-table-column label="操作" width="220">
               <template slot-scope="scope">
-                <el-button size="mini" type="info" v-if="scope.row.status=='0'" class="fl mr5">核验中</el-button>
-                <el-button v-if="scope.row.status=='1'" size="mini" type="primary" @click="startDaver(scope.row.taskId)" class="fl mr10">核验</el-button>
+                <el-button size="mini" type="primary" v-if="scope.row.status=='0'" class="fl" style="margin-left:15px; margin-right:10px;background: #8a8885;
+    border-color: #8a8885;cursor: inherit;">核验中</el-button>
+                <el-button v-if="scope.row.status=='1'" size="mini" type="primary" @click="startDaver(scope.row.taskId,scope.row)" class="fl" style="margin-left:15px; margin-right:25px">核验</el-button>
                 <data-top :msg='innerVisible' :taskId='taskId' @showIncre="showInver()" @saveIncre="saveInver($event)"></data-top>
                 <el-button size="mini" type="primary" class="fl" @click="checkLog(scope.row.id,scope.$index)">查看日志</el-button>
               </template>
@@ -138,10 +141,25 @@ export default {
       })
     },
     //开始核验
-    startDaver(value) {
+    startDaver(value, data) {
       console.log(value);
-      this.taskId = value;
-      this.innerVisible = true;
+      if (data.taskStatus == '1') {
+        this.$confirm('当前任务正在运行中， 数据核验结果可能不精准，请确认是否要继续数据核验？', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          cancelButtonClass: "el-button--primary",
+          type: 'warning'
+        }).then(() => {
+          this.taskId = value;
+          this.innerVisible = true;
+        }).catch(() => {
+
+        })
+      } else {
+        this.taskId = value;
+        this.innerVisible = true;
+      }
+
     },
     //查询日志
     checkLog(value, tindex) {
@@ -385,6 +403,7 @@ textarea {
 textarea {
   margin-left: 30px;
 }
+
 .el-table .cell {
   white-space: nowrap;
 }
@@ -414,12 +433,14 @@ textarea {
   margin: 10px 30px 0;
   text-align: right;
 }
+
 .refresha {
   float: right;
-  margin-top:-39px;
+  margin-top: -39px;
   margin-right: 142px;
-   i {
-    font-size:30px;
-   }
+  i {
+    font-size: 30px;
+  }
 }
+
 </style>

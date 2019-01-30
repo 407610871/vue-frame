@@ -106,9 +106,11 @@ header {
     .el-submenu {
       .el-submenu__title {
         color: #425365;
+        .enc-icon-renwuzhongxin{
+          font-size: 24px;
+        }
         i {
           margin-right: 7px;
-          font-size: 24px;
           color: #425365;
         }
       }
@@ -160,7 +162,7 @@ header {
     font-size: 15px;
     border-radius: 0;
     height: 35px;
-    line-height: 10px !important;
+    line-height: 10px;
     @include el-button--primary($el-button-default);
   }
   .el-button--primary {
@@ -169,30 +171,27 @@ header {
     border-radius: 0;
     height: 35px;
     color: #fff !important;
-    line-height: 10px !important;
+    line-height: 10px;
     @include el-button--primary($el-button-default);
   }
   .el-button--primary:hover {
     opacity: 0.5;
     @include el-button--primary($el-button-default);
   }
-  .el-button--medium:hover {
-    opacity: 0.5;
-    @include el-button--primary($el-button-default);
-  }
-  .el-button--medium:active, .el-button--primary:active {
-  @include el-button--primary($el-button-default);
-}
-  .el-button--medium:active, .el-button--primary:active{
-    opacity: 1;
-    background: #009DDF ;
-    border-color:  #009DDF ;
-  }
   .el-button--primary:focus {
     @include el-button--primary($el-button-default);
   }
   .el-button--medium:focus {
     @include el-button--primary($el-button-default);
+  }
+  .el-button--medium:hover {
+    opacity: 0.5;
+    @include el-button--primary($el-button-default);
+  }
+  .el-button--medium:active, .el-button--primary:active{
+    opacity: 1;
+    background: #009DDF ;
+    border-color:  #009DDF ;
   }
   .el-button--primary.is-disabled, .el-button--primary.is-disabled:active, 
   .el-button--primary.is-disabled:focus, .el-button--primary.is-disabled:hover {
@@ -377,3 +376,11 @@ header {
   border-radius: 0px !important;
 }
 
+.table-tools {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 20px
+}
+.table-tools .el-button--primary span , .table-tools .el-button--medium span {
+  float:right;
+}

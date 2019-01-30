@@ -10,9 +10,7 @@
       </span>
     </div>
 
-    <div class="checkDiv" 
-       v-show="!collapse" @mouseleave="mouseleave()"
-    >
+    <div class="checkDiv" :style="{'margin-top': distance }" v-show="!collapse" @mouseleave="mouseleave($event)">
       <el-form-item class="checkDivItem"
        v-for="(item,indexs) in dataObj"
         :label="item.name"
@@ -102,6 +100,29 @@ export default {
   computed: {
     key_word(){
       return this.$store.state.majorData.keyword;
+    },
+    distance() {
+      let keyWord = this.$store.state.majorData.keyword;
+      let majorSelectData = [];
+      this.$store.state.majorData.dataObj.forEach((v1, index1) => {
+        let data = this.$store.state.majorData.formSeledShow[v1.id];
+        data.forEach((v2, index2) => {
+          let map = {
+            id: v2.id,
+            name: v2.name,
+            index1: index1,
+            index2: index2
+          };
+          majorSelectData.push(map);
+        });
+      });
+      if(keyWord || majorSelectData.length>0){
+        let a = document.getElementById("enc-breadcrumb-js");
+        if(a && a!=null){
+          return a.offsetHeight + 5 +'px';
+        }
+      }
+      return '0px';
     }
   },
   watch: {
@@ -136,11 +157,6 @@ export default {
     this.keyword =
       this.$store.state.queryParams[this.$route.name].condition || "";
   },
-  mounted() {
-    this.getFormSeled();
-    this.getFormSeledShow();
-  },
-
   methods: {
     //高级搜索
     doCollapse() {
@@ -220,8 +236,11 @@ export default {
         }
       }
     },
-    mouseleave() {
-      this.collapse = !this.collapse;
+    mouseleave(e) {
+      var o = e.relatedTarget || e.toElement;
+      if(o && o !=null){
+        this.collapse = !this.collapse;
+      }  
     }
   }
 };
@@ -239,12 +258,12 @@ export default {
     font-size: 15px;
     cursor: pointer;
     width: 100px;
-    height: 35px;
+    height: 36px;
     border: 1px solid #c9cdd0;
-    border-left: none;
     line-height: 35px;
     text-align: center;
     position: relative;
+    margin-left: 5px;
   }
 }
 .dataSearch {
@@ -252,6 +271,7 @@ export default {
   width: 220px;
   height: 40px;
   line-height: 40px;
+  margin-right: 5px;
   ::-webkit-input-placeholder {
     color: #999;
     font-size: 15px;
@@ -288,7 +308,7 @@ export default {
   background-color: #fff;
   box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
   box-sizing: border-box;
-  width: 800px;
+  width: 700px;
   right: 0px;
   .isSelect {
     width: 100%;
@@ -329,6 +349,7 @@ export default {
     float: left;
     .el-checkbox {
       margin-left: 15px;
+      margin-right: 0px;
     }
     + .el-checkbox{
        margin-left: 0px;
@@ -349,5 +370,8 @@ export default {
       cursor: pointer;
     }
   }
+}
+.check-active {
+  margin-top:45px;
 }
 </style>

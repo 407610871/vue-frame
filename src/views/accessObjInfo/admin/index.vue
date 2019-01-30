@@ -13,19 +13,13 @@
           <div class="filter-container">
             <div class="right-tools" v-if="tabPosition == 'metadataManage'">
               <el-tooltip class="item" effect="light" content="导入" placement="top">
-                <a href="javascript:void(0)" v-on:click="importData">
-                  <i class="enc-icon-daochu"></i>
-                </a>
+                <el-button type="primary" v-on:click="importData" icon="icon-title enc-icon-daoru">导入</el-button>
               </el-tooltip>
-              <el-tooltip class="item" effect="light" content="导出" placement="top">
-                <a href="javascript:void(0)" v-on:click="exportData">
-                  <i class="enc-icon-daoru"></i>
-                </a>
+              <el-tooltip class="item" effect="light" content="导出" placement="top" >
+                <el-button type="primary" v-on:click="exportData" icon="icon-title enc-icon-daochu">导出</el-button>
               </el-tooltip>
               <el-tooltip class="item" effect="light" content="刷新" placement="top">
-                <a href="javascript:void(0)" v-on:click="refresh">
-                  <i class="enc-icon-shuaxin"></i>
-                </a>
+                <el-button type="primary" v-on:click="refresh" icon="icon-title enc-icon-shuaxin">刷新</el-button>
               </el-tooltip>
             </div>
             <input
@@ -47,12 +41,10 @@
                 :data="mainTableData1"
                 stripe
                 :height="tableHeight"
-                border
                 style="width: 100%"
                 id="mainTable2"
                 tooltip-effect="light"
-                :row-class-name="tableRowClassName"
-              >
+                :row-class-name="tableRowClassName">
                 <el-table-column label="字段中文名" width="180" show-overflow-tooltip>
                   <template slot-scope="scope">
                     <div>
@@ -140,10 +132,8 @@
                 :data="mainTableData2"
                 stripe
                 :height="tableHeight"
-                border
                 style="width: 100%"
-                tooltip-effect="light"
-              >
+                tooltip-effect="light">
                 <el-table-column
                   v-for="(val, key, index) in data2Columns"
                   v-if="index<6"
@@ -266,10 +256,15 @@ export default {
       return 520;
     },
     sourceName() {
-      return decodeURI(this.$route.params.sourceName);
+      if(this.$route.params.sourceName!=undefined){
+        return decodeURI(this.$route.params.sourceName);
+      }
+      
     },
     objName() {
-      return decodeURI(this.$route.params.objName);
+      if(this.$route.params.objName!=undefined){
+        return decodeURI(this.$route.params.objName);
+      }
     }
   },
   components: {
@@ -489,20 +484,15 @@ export default {
         method: "GET",
         responseType: "blob"
       }).then(res => {
-        var blob = new Blob([res.data], {
-          type:
-            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8"
-        }); //application/vnd.openxmlformats-officedocument.spreadsheetml.sheet这里表示xlsx类型
+          var userAgent = navigator.userAgent; //取得浏览器的userAgent字符串  
+          var isIE = userAgent.indexOf("compatible") > -1 && userAgent.indexOf("MSIE") > -1; //判断是否IE<11浏览器  
+          var isEdge = userAgent.indexOf("Edge") > -1 && !isIE; //判断是否IE的Edge浏览器  
+          var isIE11 = userAgent.indexOf('Trident') > -1 && userAgent.indexOf("rv:11.0") > -1;
 
-        var userAgent = navigator.userAgent; //取得浏览器的userAgent字符串
-        var isIE =
-          userAgent.indexOf("compatible") > -1 &&
-          userAgent.indexOf("MSIE") > -1; //判断是否IE<11浏览器
-        var isEdge = userAgent.indexOf("Edge") > -1 && !isIE; //判断是否IE的Edge浏览器
-        var isIE11 =
-          userAgent.indexOf("Trident") > -1 &&
-          userAgent.indexOf("rv:11.0") > -1;
-
+          var blob = new Blob([res.data], {
+            type:
+              "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8"
+          }); 
         if (isIE || isEdge || isIE11) {
           window.navigator.msSaveOrOpenBlob(
             blob,
@@ -521,12 +511,13 @@ export default {
           window.URL.revokeObjectURL(href); //释放掉blob对象
         }
       });
-      /*window.open(this.exportUrl);*/
     },
     listAjax(val) {
       if (val == "dataPreview") {
         this.getFiltercolumnList();
         this.dataPreviewContentAjax();
+      } else {
+        this.$refs.searchForm[0].clsFiltercolumn();
       }
     },
 
@@ -708,7 +699,8 @@ export default {
       let params = {
         sourceId: this.$route.params.sourceId,
         sourceName: this.$route.params.sourceName,
-        type: this.$route.params.type
+        type: this.$route.params.type,
+        backType: true,
       };
       this.$router.push({
         name: "accessObjManage",
@@ -731,6 +723,9 @@ export default {
     margin-left: 0 !important;
   }
 }
+.right-tools .el-button--primary span , .right-tools .el-button--medium span {
+  float:right;
+}
 </style>
   <style rel="stylesheet/scss" lang="scss" scoped>
 .dashboard-container {
@@ -741,13 +736,6 @@ export default {
     margin-bottom: 20px;
     .right-tools {
       float: right;
-      margin-right: 10px;
-      a {
-        font-size: 26px;
-        i {
-          font-size: 32px;
-        }
-      }
     }
     form {
       margin-right: 100px;

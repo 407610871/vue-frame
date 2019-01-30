@@ -40,12 +40,22 @@ export default {
     formFilter: function() {
       this.$emit("formFilter", this.formSeled);
     },
+    clearFormFilter: function() {
+      //console.log("abc");
+      this.formSeled.dataSourceName = [];
+      this.formSeled.network = [];
+      this.formSeled.platform = [];
+      //this.formSeled = {};
+    },
     getFormSeled: function() {
+      //console.log(this.dataObj);
       var obj = {};
       for (var value of this.dataObj) {
         obj[value.id] = value.seledData;
       }
-      this.formSeled = obj;     
+      this.formSeled = obj;
+      //console.log("chen");
+      //console.log(obj);
     }
   }
 };

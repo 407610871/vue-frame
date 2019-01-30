@@ -66,7 +66,7 @@
           <div class="daiInfo-title">
             <h2>对接方信息</h2>
           </div>
-          <div class="daiInfo-box clearfix">
+          <div class="clearfix">
             <el-col :span="10">
               <el-col :span="16">
                 <el-form-item label="数据所属部门:">

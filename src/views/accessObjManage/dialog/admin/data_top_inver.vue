@@ -6,7 +6,7 @@
             <span class="grab gra-l"></span>
           </div>
         </div>
-      <el-form :model="ruleForm" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+      <el-form :model="ruleForm" ref="ruleForm" label-width="100px" class="demo-ruleForm" v-loading="loading">
         <div class="proInfo-box clearfix">
           <el-col :span="24">
             <el-form-item label="核验设置:" class="radiow100">
@@ -17,7 +17,7 @@
                   </el-col>
                   <el-col :span="4" class="bank">bank</el-col>
                   <el-col :span="6">
-                    <el-radio :label="1" :disabled="!this.queryTargetColumnList.length">根据时间范围核验</el-radio>
+                    <el-radio :label="1" :disabled="!this.queryTargetColumnList.length" v-show="this.$route.params.type!='mongodb'">根据时间范围核验</el-radio>
                   </el-col>
                   <el-col :span="10">
                     <el-button type="primary" size="small" @click="inverCheck()">开始核验</el-button>
@@ -58,6 +58,7 @@ export default {
   data: function() {
     return {
       innerVisible: this.msg,
+      loading:false,
       result: '0',
       queryTargetColumnList: [],
       ruleForm: {
@@ -76,6 +77,8 @@ export default {
   methods: {
     //关闭对话框
     closeDialog() {
+      this.ruleForm.range = '';
+      this.ruleForm.setVer = 0;
       this.$emit('showIncre');
       this.innerVisible = false;
 
@@ -116,12 +119,14 @@ export default {
           this.$alert(res.data.data.message, "核验结果", {
             confirmButtonText: "确定",
             callback: action => {
+              this.ruleForm.range = '';
+              this.ruleForm.setVer = 0,
               this.$emit('saveIncre');
               this.innerVisible = false;
             }
           });
         } else {
-          this.$alert("核验请求失败！", "核验结果", {
+          this.$alert(res.data.data.message, "核验结果", {
             confirmButtonText: "确定"
           });
         }
@@ -129,6 +134,7 @@ export default {
     },
     //查询表数据
     _checkData() {
+      this.loading = true;
       this.$ajax({
         method: "GET",
         url: this.GLOBAL.api.API_DACM + '/ccheckData/tableNum',
@@ -139,9 +145,14 @@ export default {
           taskId: this.taskId
         }
       }).then(res => {
+
         let _self = this;
+        _self.ruleForm.range = '';
+         _self.ruleForm.startTime = [];
+         _self.loading = false;
         if (res.data.success == "true" || res.data.success == true) {
           res.data = res.data.data;
+          _self.ruleForm.range = res.data.config_range==undefined?'':res.data.config_range;
           _self.queryTargetColumnList = res.data.listIncrementCon;
           if (_self.queryTargetColumnList.length != 0 && _self.queryTargetColumnList.length != undefined) {
             _self.ruleForm.queryTargetColumn = _self.queryTargetColumnList[0];
@@ -161,7 +172,7 @@ export default {
             }
             //不知道这个的展示有没有什么限制，所以暂时先不作什么限制
 
-            _self.ruleForm.range = res.data.config_range;
+            _self.ruleForm.range = res.data.config_range==undefined?'':res.data.config_range;
             _self.ruleForm.queryTargetColumn = res.data.queryTargetColumn;
 
           }
@@ -210,7 +221,7 @@ export default {
   margin-right: 10px !important;
 }
 
-.el-radio {
+.proInfo-box .el-radio {
   line-height: 30px;
 }
 

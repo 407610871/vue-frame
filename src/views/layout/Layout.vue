@@ -25,9 +25,7 @@
             <li class="even-li" v-on:click="loginOut()">退出</li>
           </ul>
           <el-button slot="reference" class="moreSys">
-            <span>
-              <img :src="usericon">
-            </span>
+            <i class="enc-icon-user" style="font-size: 32px; color: #fff;"></i>
           </el-button>
         </el-popover>
         <el-popover placement="bottom" width="200" trigger="hover">
@@ -166,9 +164,6 @@ export default {
       _self.roleName = usrObj.roleName;
       _self.getUser();
     }, 1000)
-    // this.$root.eventHub.$on("updataFliterItemList", () => {
-    //   this.updataFliterItemList();
-    // });
   },
   watch: {
     $route(to, from) {
@@ -290,7 +285,7 @@ export default {
           }
         })
         .catch(function(err) {
-         // console.log(err);
+          //console.log(err);
         });
     },
     _goWarn() {
@@ -492,10 +487,6 @@ export default {
 .enc-header .right-menu .el-button.moreSys:hover {
   width: 66px;
   height: 66px;
-  background: url("../../assets/images/moreicon.png");
-  background-repeat: no-repeat;
-  background-size: contain;
-  float: left
 }
 
 .enc-header .right-menu .el-button.user {

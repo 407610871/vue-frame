@@ -21,7 +21,6 @@
       </div>
     </el-dialog>
 </template>
-<script type="text/javascript" src="../release/js/xml2json.min.js"></script>
 <script>
 export default {
   name: "taskMDialog",

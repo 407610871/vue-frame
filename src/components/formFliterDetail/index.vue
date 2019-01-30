@@ -6,18 +6,19 @@
       </div>
       <el-button type="primary" class="doCearch" icon="enc-icon-sousuo1" @click="search"></el-button>
       <i v-if="this.$route.params.type=='ftp'||this.$route.params.type=='mongodb'"></i>
-      <span v-else @click="doCollapse">高级搜索
+      <span v-else @click="doCollapse">
+        高级搜索
         <i :class="collapse?'el-icon-caret-bottom':'el-icon-caret-top'"></i>
       </span>
     </div>
 
-    <div class="checkDiv" 
-       v-show="!collapse" @mouseleave="mouseleave()"
-    >
-      <el-form-item class="checkDivItem"
-       v-for="(item,indexs) in dataObj"
+    <div class="checkDiv" :style="{'margin-top': distanceDatial }" v-show="!collapse" @mouseleave="mouseleave($event)">
+      <el-form-item
+        class="checkDivItem"
+        v-for="(item,indexs) in dataObj"
         :label="item.name"
-        :key="indexs" >
+        :key="indexs"
+      >
         <el-checkbox-group
           v-if="item.type=='checkbox'"
           v-model="formSeled[item.id]"
@@ -43,14 +44,16 @@
           v-if="item.checkData.length>dataObj[indexs].limit&&item.checkData.length>5"
           class="moreSeclect"
           @click="domoreSeclect(indexs)"
-        >更多
+        >
+          更多
           <i :class="!doMoreArray[indexs]?'el-icon-caret-bottom':'el-icon-caret-top'"></i>
         </span>
         <span
           v-else-if="item.checkData.length<=dataObj[indexs].limit&&item.checkData.length>5"
           class="moreSeclect"
           @click="domoreSeclect(indexs)"
-        >收起
+        >
+          收起
           <i :class="!doMoreArray[indexs]?'el-icon-caret-bottom':'el-icon-caret-top'"></i>
         </span>
       </el-form-item>
@@ -101,13 +104,30 @@ export default {
     deleteData: [Object]
   },
   computed: {
-    key_word(){
+    key_word() {
       return this.$store.state.detailMajorData.keyword;
+    },
+    distanceDatial() {
+      let majorData = this.$store.state.detailMajorData;
+      if (
+        majorData.keyword != "" ||
+        (Object.keys(majorData.formSeledShow).length != 0 &&
+          (majorData.formSeledShow.dataSourceName.length != 0 ||
+            majorData.formSeledShow.network.length != 0 ||
+            majorData.formSeledShow.platform.length != 0 ||
+            majorData.formSeledShow.objectType.length != 0 ||
+            majorData.formSeledShow.dataRange.length != 0))
+      ) {
+        let a = document.getElementById("enc-detail-js");
+        if (a && a != null) {
+          return a.offsetHeight + 5 + "px";
+        }
+      }
+      return "0px";
     }
   },
   watch: {
     keyword(newValue, oldValue) {
-      
       let map = {
         dataObj: this.dataObj,
         formSeledShow: this.formSeledShow,
@@ -134,14 +154,13 @@ export default {
       this.doMore.push(false);
     }
     this.getFormSeled();
-    this.getFormSeledShow();
+    if (!this.$route.params.backType) {
+      this.getFormSeledShow();
+    }
     this.keyword =
       this.$store.state.queryParams[this.$route.name].condition || "";
   },
-  mounted() {
-    this.getFormSeled();
-    this.getFormSeledShow();
-  },
+  mounted() {},
 
   methods: {
     //高级搜索
@@ -153,6 +172,12 @@ export default {
     delSelect(index, a) {
       this.formSeledShow[this.dataObj[a].id].splice(index, 1);
       this.formSeled[this.dataObj[a].id].splice(index, 1);
+      let map = {
+        dataObj: this.dataObj,
+        formSeledShow: this.formSeledShow,
+        keyword: this.keyword
+      };
+      this.$store.commit("setDetailMajorData", map);
     },
     //更多收起功能
     domoreSeclect(index) {
@@ -209,7 +234,7 @@ export default {
     },
 
     getFormSeled: function() {
-      if (this.ObjManage) {
+      if (!this.$route.params.backType) {
         //进入数据源展示搜索条件清空
         this.keyword = "";
         this.formSeledShow.objectType = [];
@@ -222,15 +247,17 @@ export default {
         }
       }
     },
-    mouseleave() {
-      this.collapse = !this.collapse;
+    mouseleave(e) {
+      var o = e.relatedTarget || e.toElement;
+      if(o && o !=null){
+        this.collapse = !this.collapse;
+      }  
     }
   }
 };
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
-
 .searchDiv {
   float: right;
   margin-top: -41px;
@@ -243,7 +270,7 @@ export default {
     width: 100px;
     height: 35px;
     border: 1px solid #c9cdd0;
-    border-left: none;
+    margin-left: 5px;
     line-height: 35px;
     text-align: center;
     position: relative;
@@ -254,6 +281,7 @@ export default {
   width: 220px;
   height: 40px;
   line-height: 40px;
+  margin-right: 5px;
   ::-webkit-input-placeholder {
     color: #999;
     font-size: 15px;
@@ -290,7 +318,7 @@ export default {
   background-color: #fff;
   box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
   box-sizing: border-box;
-  width: 800px;
+  width: 700px;
   right: 0px;
   .isSelect {
     width: 100%;
@@ -331,9 +359,10 @@ export default {
     float: left;
     .el-checkbox {
       margin-left: 15px;
+      margin-right: 0px;
     }
-    + .el-checkbox{
-       margin-left: 0px;
+    + .el-checkbox {
+      margin-left: 0px;
     }
   }
   .moreSeclect {

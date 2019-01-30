@@ -1,8 +1,7 @@
 <template>
   <div class="taskMDialog icon-dai regcon reg_dialog1">
     <el-tooltip class="item" effect="light" content="注册" placement="top">
-     <!--  <i @click="dialogVisible = true" class="enc-icon-zhuce table-action-btn" style="margin-right:15px; font-size:30px;"></i> -->
-     <button @click="dialogVisible = true" type="button" class="el-button el-button--primary el-button--medium"><i class="enc-icon-zhuce table-action-btn"></i><span>注册</span></button>
+     <el-button icon="enc-icon-zhuce icon-title" @click="dialogVisible = true" type="primary" >注册</el-button>
     </el-tooltip>
     <el-dialog title="接入数据源" :visible.sync="dialogVisible" width="72%" :before-close="closeDialog" class="reg-dialog" :close-on-click-modal="false">
       <div class="title-gra plr30">
@@ -67,7 +66,7 @@
           <div class="daiInfo-title">
             <h2>对接方信息</h2>
           </div>
-          <div class="daiInfo-box clearfix">
+          <div class="clearfix">
             <el-col :span="10">
               <el-col :span="16">
                 <el-form-item label="数据所属部门:">

@@ -19,7 +19,7 @@
             <i :class="!moreSearch?'el-icon-caret-bottom':'el-icon-caret-top'"></i>
           </span>
         </div>
-        <div class="checkDiv  task-query-form" v-if="moreSearch" @mouseleave="mouseleave()">
+        <div class="checkDiv  task-query-form" v-if="moreSearch" @mouseleave="mouseleave($event)">
           <el-form ref="form" label-width="110px">
             <el-form-item label="任务类型:">
               <el-checkbox-group v-model="taskPeriodType">
@@ -50,8 +50,8 @@
               </el-checkbox-group>
             </el-form-item>
             <el-form-item label="任务开始时间:">
-              <div @mouseleave="mouseleave()">
-                <el-date-picker v-model="time" :picker-options="pickerOptions" type="datetimerange" start-placeholder="开始时间" end-placeholder="结束时间" value-format="yyyy-MM-dd HH:mm:ss" :default-time="['12:00:00']"></el-date-picker>
+              <div @mouseleave="mouseleave($event)" style="margin-left:15px;">
+                <el-date-picker v-model="time" :picker-options="pickerOptions" type="datetimerange" start-placeholder="开始时间" end-placeholder="结束时间" value-format="yyyy-MM-dd HH:mm:ss" :default-time="timeDefaultShow"></el-date-picker>
               </div>
             </el-form-item>
           </el-form>
@@ -187,22 +187,26 @@
     </div>
     <!-- 操作按钮 -->
     <div class="count-operate main-content clearfix">
-      <div>
-        <el-button type="primary" @click="doMore('manager/taskOperate/batchConverge',1)">重新汇聚</el-button>
-        <el-button type="primary" @click="doMore('manager/taskOperate/batchStart',2)">批量启动</el-button>
-        <el-button type="primary" @click="doMore('manager/taskOperate/batchPause',3)">批量停止</el-button>
-        <div class="right-tools">
-          <el-tooltip class="item" effect="light" content="刷新" placement="top">
-            <a href="javascript:void(0)" v-on:click="refresh">
-                <i class="enc-icon-shuaxin"></i>
-              </a>
-          </el-tooltip>
-        </div>
+      <div class="task-btn">
+        <el-tooltip class="item" effect="light" content="重新汇聚" placement="top">
+          <el-button type="primary" icon="icon-title enc-icon-huiju" @click="doMore('manager/taskOperate/batchConverge',1)">重新汇聚</el-button>
+        </el-tooltip>
+        <el-tooltip class="item" effect="light" content="批量启动" placement="top">
+          <el-button type="primary" icon="icon-title enc-icon-qidongyunhang1" @click="doMore('manager/taskOperate/batchStart',2)">批量启动</el-button>
+        </el-tooltip>
+        <el-tooltip class="item" effect="light" content="批量停止" placement="top">
+          <el-button type="primary" icon="icon-title enc-icon-zanting" @click="doMore('manager/taskOperate/batchPause',3)">批量停止</el-button>
+        </el-tooltip>
+        <el-tooltip class="item" effect="light" content="刷新" placement="top">
+          <el-button type="primary" icon="icon-title enc-icon-shuaxin" @click="refresh">刷新</el-button>
+        </el-tooltip>
       </div>
     </div>
     <!-- 表格数据 -->
     <div class="mainTable main-content clearfix">
-      <el-table border :row-class-name="tableRowClassName" ref="multipleTable" :data="tableData" tooltip-effect="light" :height="tableHeight" style="width: 100%;min-height:300px;" @select-all="selectAll" @select="select" @selection-change="handleSelectionChange">
+      <el-table :row-class-name="tableRowClassName" ref="multipleTable" :data="tableData" 
+      tooltip-effect="light" :height="tableHeight" style="width: 100%;min-height:300px;"
+      @select-all="selectAll" @select="select" @selection-change="handleSelectionChange">
         <el-table-column fixed type="selection" width="55"></el-table-column>
         <el-table-column fixed label="接入指示" width="100">
           <template slot-scope="scope">
@@ -219,17 +223,20 @@
         </el-table-column>
         <el-table-column prop="taskInfoId" fixed label="ID" width="100" :show-overflow-tooltip="true">
           <template slot-scope="scope">
-            <el-button @click="doDetail(scope.$index, scope.row)" type="text" size="small" style="text-decoration: underline;">{{scope.row.taskInfoId}}</el-button>
+            <el-button @click="doDetail(scope.$index, scope.row)" type="text" size="small" style="text-decoration: underline;">
+              {{scope.row.taskInfoId}}</el-button>
           </template>
         </el-table-column>
         <el-table-column prop="sourceDBName" label="接入源名称" width="200" :show-overflow-tooltip="true"></el-table-column>
         <el-table-column prop="dataTableName" label="接入对象" width="200" :show-overflow-tooltip="true"></el-table-column>
         <el-table-column prop="targetDBName" label="目标库" width="200" :show-overflow-tooltip="true"></el-table-column>
         <el-table-column prop="targetTableName" label="目标表" width="200" :show-overflow-tooltip="true"></el-table-column>
-        <el-table-column label="任务开始时间" width="150" :show-overflow-tooltip="true">
-          <template slot-scope="scope">{{scope.row.status==5 ? '' : scope.row.startTime | formateDateTime }}</template>
+        <el-table-column label="任务开始时间" prop="startTime" width="200" show-overflow-tooltip>
+          <template slot-scope="scope">
+              {{scope.row.status==5 ? '' : scope.row.startTime | formateDateTime }}
+          </template>
         </el-table-column>
-        <el-table-column label="任务结束时间" width="150" :show-overflow-tooltip="true">
+        <el-table-column label="任务结束时间" width="200" show-overflow-tooltip>
           <template slot-scope="scope">{{(scope.row.status==5||(scope.row.status==1&&scope.row.isPeriod=='3')) ? '' : scope.row.endTime | formateDateTime}}</template>
         </el-table-column>
         <el-table-column label="任务类型" width="130" :show-overflow-tooltip="true">
@@ -253,18 +260,34 @@
             <span v-else-if="scope.row.status==5">准备中</span>
           </template>
         </el-table-column>
-        <el-table-column  label="已接入数据量" :show-overflow-tooltip="true" width="150">
-           <template slot-scope="scope">
-             <span>{{scope.row.status=='0'?'':scope.row.joinDataNum}}</span>
-           </template>
-        </el-table-column>
-        <el-table-column label="操作" width="260">
+        <el-table-column label="已接入数据量" :show-overflow-tooltip="true" width="150">
           <template slot-scope="scope">
-            <el-button v-if="scope.row.status==0||scope.row.status==2" type="text" size="small" @click="doRun(scope.$index, scope.row)">运行</el-button>
-            <el-button v-if="scope.row.status==1 || scope.row.status==5" type="text" size="small" @click="doRun(scope.$index, scope.row)">暂停</el-button>
-            <el-button v-if="scope.row.status!=1" type="text" size="small" @click="doDel(scope.$index, scope.row)">删除</el-button>
-            <el-button v-if="(scope.row.status==1||scope.row.status==2||scope.row.status==4)&&scope.row.isPeriod!=0&&scope.row.ftpIsDelete!='true'" type="text" size="small" @click="doCheck(scope.$index, scope.row)">数据核验</el-button>
-            <el-button v-if="(scope.row.status==2||scope.row.status==4||scope.row.status==6||scope.row.status==7)&&scope.row.isPeriod!=0&&scope.row.ftpIsDelete!='true'" type="text" size="small" @click="doConverge(scope.$index, scope.row)">重新汇聚</el-button>
+            <span>{{scope.row.status=='0'?'':scope.row.joinDataNum}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="操作" width="180">
+          <template slot-scope="scope">
+            <div class="el-tleft">
+               <el-tooltip  v-if="scope.row.status==0||scope.row.status==2" class="item" effect="light" content="运行" placement="top">
+                 <i class="enc-icon-qidongyunhang1" @click="doRun(scope.$index, scope.row)">
+                 </i>
+               </el-tooltip>
+
+              <el-tooltip  v-if="scope.row.status==1 || scope.row.status==5" class="item" effect="light" content="暂停" placement="top">
+                <i class="enc-icon-zanting" @click="doRun(scope.$index, scope.row)"></i>
+              </el-tooltip>
+              <el-tooltip v-if="scope.row.status!=1" class="item" effect="light" content="删除" placement="top">
+                <i class="enc-icon-shanchu" @click="doDel(scope.$index, scope.row)"></i>
+              </el-tooltip>
+              <el-tooltip v-if="(scope.row.status==1||scope.row.status==2||scope.row.status==4)&&scope.row.isPeriod!=0&&scope.row.ftpIsDelete!='true'"  
+              class="item" effect="light" content="数据核验" placement="top">
+                <i class="enc-icon-shujuheyan" @click="doCheck(scope.$index, scope.row)"></i>
+              </el-tooltip>
+              <el-tooltip  v-if="(scope.row.status==2||scope.row.status==4||scope.row.status==6||scope.row.status==7)&&scope.row.isPeriod!=0&&scope.row.ftpIsDelete!='true'" 
+                class="item" effect="light" content="重新汇聚" placement="top">
+                <i class="enc-icon-huiju" @click="doConverge(scope.$index, scope.row)"></i>
+              </el-tooltip>
+            </div>
           </template>
         </el-table-column>
       </el-table>
@@ -294,6 +317,7 @@ var tableZC;
 export default {
   name: "task",
   data() {
+    var that = this;
     return {
       tips: "",
       loading: false,
@@ -316,12 +340,21 @@ export default {
       isDeleted: 0,
       tableData: [],
       selectionChangeData: [],
+      timeDefaultShow:['00:00:00','23:59:59'],
+      
       mainTableDataTotal: 0,
       reqObj: "",
       pickerOptions: {
         disabledDate(time) {
+          if (new Date(time.getTime()).toDateString() === new Date().toDateString()) {
+            //今天
+            if (time.getTime() > Date.now()) {
+              //time.$emit('pick', ['00:00:00', Date.now()]);
+              time.setTime(new Date());
+            }
+          }
           return time.getTime() > Date.now();
-        }
+        },
       },
       searchHeight: 71
     };
@@ -399,6 +432,15 @@ export default {
     DialogTaskDetail
   },
   methods: {
+    formatDate(now) {
+      var year = now.getFullYear();
+      var month = now.getMonth() + 1;
+      var date = now.getDate();
+      var hour = now.getHours();
+      var minute = now.getMinutes();
+      var second = now.getSeconds();
+      return "20" + year + "-" + month + "-" + date + " " + hour + ":" + minute + ":" + second;
+    },
     removeCla() {
       this.tableData.forEach(item => {
         if (item.zc == 1) item.zc = 0;
@@ -510,23 +552,70 @@ export default {
     //核验弹窗
     doCheck(index, row) {
       this.check = row;
-      //运行时弹出确认框
-      if (row.status == '1') {
-        this.$confirm('当前任务正在运行中， 数据核验结果可能不精准，请确认是否要继续数据核验?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          cancelButtonClass: "el-button--primary",
-          type: 'warning'
-        }).then(() => {
-         this.showTaskCheck = true;
-        }).catch(()=>{
-          
-        })
+      //ftp的核验
+      if (row.sourceType == 'ftp') {
+        var _self = this;
+        _self.loading = true;
+        _self.$ajax({
+          methods: "get",
+          url: _self.GLOBAL.api.API_DACM + "/ctables/checkFtpFileExist",
+          params: {
+            accessSysId: row.accessSysId,
+            filePath: row.dataTableName,
+            isSubDirectory: row.isSubDirectory
+          }
+        }).then(res => {
+          _self.loading = false;
+          if (res.data.success) {
+            if (res.data.data.isExitFile == "true") {
+              //运行时弹出确认框
+              if (row.status == '1') {
+                _self.$confirm('当前任务正在运行中， 数据核验结果可能不精准，请确认是否要继续数据核验？', '提示', {
+                  confirmButtonText: '确定',
+                  cancelButtonText: '取消',
+                  cancelButtonClass: "el-button--primary",
+                  type: 'warning'
+                }).then(() => {
+                  _self.showTaskCheck = true;
+                }).catch(() => {
+
+                })
+              } else {
+                _self.showTaskCheck = true;
+              }
+            } else {
+              _self.$alert(res.data.data.message, "提示", {
+                confirmButtonText: "确定",
+                callback: action => {}
+              });
+              return false;
+            }
+          } else {
+            _self.$alert(res.data.message, "提示", {
+              confirmButtonText: "确定",
+              callback: action => {}
+            });
+          }
+        });
+      } else {
+        //运行时弹出确认框
+        if (row.status == '1') {
+          this.$confirm('当前任务正在运行中， 数据核验结果可能不精准，请确认是否要继续数据核验？', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            cancelButtonClass: "el-button--primary",
+            type: 'warning'
+          }).then(() => {
+            this.showTaskCheck = true;
+          }).catch(() => {
+
+          })
+        } else {
+          this.showTaskCheck = true;
+        }
       }
-      else{
-        this.showTaskCheck = true;
-      }
-      
+
+
     },
     //重新汇聚
     doConverge(index, row) {
@@ -539,7 +628,7 @@ export default {
           //url: 'http://10.19.160.59:8080/DACM/ctables/checkFtpTaskFileExist',
           params: { 'taskId': row.taskInfoId },
         }).then(res => {
-          _self.loading = false;
+          //_self.loading = false;
           if (res.data.success && res.data.data.length > 0) {
             res.data.data.forEach(res => {
               if (res.isExitFile == 'true') {
@@ -561,6 +650,7 @@ export default {
                           );
                           _self.init();
                         } else {
+                          _self.loading = false;
                           _self.doMsg(res.data.message, "error");
                         }
                       });
@@ -951,7 +1041,7 @@ export default {
             "</br>";
         }
         this.$alert(
-          "重新汇聚时，以下任务不能被汇聚,请重新选择：</br>" + errerHtml,
+          "重新汇聚时，以下任务不能被汇聚，请重新选择：</br>" + errerHtml,
           "重新汇聚", {
             dangerouslyUseHTMLString: true
           }
@@ -1029,7 +1119,7 @@ export default {
                     "</br>";
                 }
                 this.$alert(
-                  "重新汇聚时，以下任务不能被汇聚,请重新选择：</br>" + errerHtml,
+                  "重新汇聚时，以下任务不能被汇聚，请重新选择：</br>" + errerHtml,
                   "重新汇聚", {
                     dangerouslyUseHTMLString: true
                   }
@@ -1137,7 +1227,7 @@ export default {
               "</br>";
           }
           this.$alert(
-            "批量启动时，以下任务不能被启动,请重新选择：</br>" + errerHtml,
+            "批量启动时，以下任务不能被启动，请重新选择：</br>" + errerHtml,
             "批量启动", {
               dangerouslyUseHTMLString: true
             }
@@ -1226,7 +1316,7 @@ export default {
               "</br>";
           }
           this.$alert(
-            "批量停止时，以下任务不能被停止,请重新选择：</br>" + errerHtml,
+            "批量停止时，以下任务不能被停止，请重新选择：</br>" + errerHtml,
             "提示", {
               dangerouslyUseHTMLString: true
             }
@@ -1234,8 +1324,11 @@ export default {
         }
       }
     },
-    mouseleave() {
-      this.moreSearch = !this.moreSearch;
+    mouseleave(e) {
+      var o = e.relatedTarget || e.toElement;
+      if(o && o !=null){
+        this.moreSearch = !this.moreSearch;
+      } 
     }
   }
 };
@@ -1301,26 +1394,6 @@ export default {
 
 .searchDiv {
   float: right;
-  margin-top: -40px;
-  margin-right: 20px;
-  height: 40px;
-  padding: 2px 0 0 0;
-  span {
-    display: inline-block;
-    font-size: 15px;
-    cursor: pointer;
-    width: 100px;
-    height: 35px;
-    border: 1px solid #C8CFD5;
-    border-left: none;
-    line-height: 36px;
-    text-align: center;
-    position: relative;
-  }
-}
-
-.searchDiv {
-  float: right;
   margin-top: -41px;
   margin-right: 20px;
   height: 40px;
@@ -1329,9 +1402,9 @@ export default {
     font-size: 15px;
     cursor: pointer;
     width: 100px;
-    height: 35px;
+    height: 36px;
     border: 1px solid #c9cdd0;
-    border-left: none;
+    margin-left: 5px;
     line-height: 35px;
     text-align: center;
     position: relative;
@@ -1343,6 +1416,7 @@ export default {
   width: 220px;
   height: 40px;
   line-height: 40px;
+  margin-right: 5px;
    ::-webkit-input-placeholder {
     color: #999;
     font-size: 15px;
@@ -1380,7 +1454,7 @@ export default {
   background-color: #fff;
   box-shadow: 0 2px 12px 0 rgba(0, 0, 0, .1);
   box-sizing: border-box;
-  width: 800px;
+  width: 700px;
   right: 0px;
 }
 
@@ -1443,12 +1517,36 @@ export default {
   .task-query-form .el-checkbox {
     width: auto;
     margin-left: 15px;
+    margin-right: 0px;
   }
   .el-breadcrumb .el-form-item {
     margin-bottom: 0px !important;
   }
 }
+
 .main-content {
-  width:100%;
+  width: 100%;
+}
+
+.task-template {
+  .el-table .cell .el-button i {
+    font-size: 21px;
+  }
+  .el-tleft {
+    /* width:100px;
+    text-align: left;
+    margin:auto; */
+  }
+}
+
+.task-btn .el-button--primary span,
+.task-btn .el-button--medium span {
+  float: right;
+}
+.el-tleft {
+  i{
+    font-size: 24px;
+    padding-right:10px;
+  }
 }
 </style>

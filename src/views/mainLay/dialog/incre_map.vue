@@ -1,6 +1,5 @@
 <template>
   <div class="taskMDialog increDia">
-    <!-- <i class="el-icon-info" @click="innerVisible = true">选择</i> -->
     <el-dialog title="增量字段选择" :visible.sync="innerVisible" width="60%" :before-close="closeDialog" append-to-body>
         <div class="title-gra plr30">
           <div class="grab gra-r">
@@ -8,26 +7,11 @@
           </div>
         </div>
       <div class="daiInfo proInfo">
-       <!--  <div class="daiInfo-title proInfo-title clearfix">
-         <el-col :span="24">
-           <el-col :span="6">
-             <h2>增量字段选择</h2>
-           </el-col>
-           <el-col :span="13" class="bank">bank</el-col>
-           <el-col :span="4">
-             <el-form-item class="clearfix">
-               <el-input placeholder="请输入内容"></el-input>
-             </el-form-item>
-             <el-input v-model=""></el-input>
-           </el-col>
-         </el-col>
-       </div> -->
         <div class="proInfo-box clearfix">
           <div class="comTable">
             <el-table :data="tableData" stripe height="250" :span-method="arraySpanMethod">
               <el-table-column label="增量字段选择" width="180">
                 <template slot-scope="scope">
-                  <!-- class="textRadio" -->
                   <el-radio @change.native="getCurrentRow(scope.row)" :label="scope.$index" v-model="radio" class="textRadio" v-if="scope.$index!=flag">&nbsp;</el-radio>
                 </template>
               </el-table-column>
@@ -42,13 +26,11 @@
               </el-table-column>
             </el-table>
           </div>
-          <el-form-item>
-            <el-col :span="24" class="tcenter">
-              <el-button type="primary" size="small" @click="save('')">保存</el-button>
-              <el-button @click="closeDialog()" size="small">关闭</el-button>
-            </el-col>
-          </el-form-item>
         </div>
+      </div>
+      <div class="mr-btn">
+        <el-button type="primary" @click="closeDialog()">关闭</el-button>
+        <el-button type="primary"   @click="save('')">保存</el-button>
       </div>
     </el-dialog>
   </div>

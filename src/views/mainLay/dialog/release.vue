@@ -1,44 +1,23 @@
 <template>
   <div class="taskMDialog release">
-    <!-- <el-tooltip class="item" effect="light" content="版本信息" placement="bottom">
-      <el-button @click="dialogVisible = true" class="document" icon="enc-icon-documents"></el-button>
-    </el-tooltip>-->
-    <!--  <a href="javascript:void(0)" @click="dialogVisible = true" >版本信息</a> -->
-    <el-dialog
-      :title="versionDes + '  '+ versionDate"
-      :visible.sync="dialogVisible"
-      width="73%"
-      :before-close="closeDialog"
-    >
+    <el-dialog :title="versionDes + '  '+ versionDate" :visible.sync="dialogVisible" width="73%" :before-close="closeDialog">
       <div class="title-gra plr30">
         <div class="grab gra-r">
           <span class="grab gra-l"></span>
         </div>
       </div>
-      <el-col :span="4">
+      <el-col :span="4" class="regdia">
         <el-tabs tab-position="left" style="height: 200px;" @tab-click="handleClick">
           <el-tab-pane v-for="(item, index) in versionData" :key="index" :label="item"></el-tab-pane>
-          <!-- <el-tab-pane label="用户管理"></el-tab-pane>
-          <el-tab-pane label="配置管理"></el-tab-pane>
-          <el-tab-pane label="角色管理"></el-tab-pane>
-          <el-tab-pane label="定时任务补偿"></el-tab-pane>-->
         </el-tabs>
       </el-col>
       <el-col :span="20" class="release-box release-ver-con">
         <div class="proInfo-box release-Info bornone clearfix">
           <ul class="directory">
-            <li>
-              <a href="javascript:void(0)" @click="goAnchor('txqd')">特性清单</a>
-            </li>
-            <li>
-              <a href="javascript:void(0)" @click="goAnchor('zdbglb')">重大变更列表</a>
-            </li>
-            <li>
-              <a href="javascript:void(0)" @click="goAnchor('wtjjqd')">解决问题清单</a>
-            </li>
-            <li>
-              <a href="javascript:void(0)" @click="goAnchor('yzwthxz')">已知问题和限制</a>
-            </li>
+            <li><a href="javascript:void(0)" @click="goAnchor('txqd')">特性清单</a></li>
+            <li><a href="javascript:void(0)" @click="goAnchor('zdbglb')">重大变更列表</a></li>
+            <li><a href="javascript:void(0)" @click="goAnchor('wtjjqd')">解决问题清单</a></li>
+            <li><a href="javascript:void(0)" @click="goAnchor('yzwthxz')">已知问题和限制</a></li>
           </ul>
           <div class="daiInfo-title proInfo-title" id="txqd">
             <h2>特性清单</h2>
@@ -47,27 +26,29 @@
             <el-table :data="tableData" stripe style="width: 100%">
               <el-table-column label="编号" width="80">
                 <template slot-scope="scope">
-                  <span>{{scope.$index}}</span>
+                  <span>{{scope.$index+1}}</span>
                 </template>
               </el-table-column>
-              <el-table-column prop="Introduction" label="特性名称"></el-table-column>
-              <el-table-column prop="content" label="具体描述" width="350" class="tleft"></el-table-column>
-              <el-table-column prop="sysName" label="子系统/产品"></el-table-column>
-              <el-table-column prop="remark" label="备注"></el-table-column>
+              <el-table-column prop="Introduction" label="特性名称">
+              </el-table-column>
+              <el-table-column prop="content" label="具体描述" width="350" class="tleft">
+              </el-table-column>
+              <el-table-column prop="sysName" label="子系统/产品">
+              </el-table-column>
+              <el-table-column prop="remark" label="备注">
+              </el-table-column>
             </el-table>
           </div>
           <div class="proInfo-box clearfix" id="zdbglb">
             <h2>重大更新列表</h2>
             <ul class="imlist">
-              <!--  <li v-if="changeData.length==0">N/A</li> -->
-              <li v-for="item in changeData">{{item.content}}</li>
+              <li v-for="(item, index) in changeData" :key="index">{{item.content}}</li>
             </ul>
           </div>
           <div class="proInfo-box clearfix" id="wtjjqd">
             <h2>解决问题清单</h2>
             <ul class="imlist">
-              <!--  <li v-if="finishData.length==0">N/A</li> -->
-              <li v-for="item in finishData">{{item.content}}</li>
+              <li v-for="(item, index) in finishData" :key="index">{{item.content}}</li>
             </ul>
           </div>
           <div class="proInfo-box bornone clearfix" id="yzwthxz">
@@ -76,12 +57,15 @@
               <el-table :data="knownData" stripe style="width: 100%">
                 <el-table-column label="编号" width="80">
                   <template slot-scope="scope">
-                    <span>{{scope.$index}}</span>
+                    <span>{{scope.$index+1}}</span>
                   </template>
                 </el-table-column>
-                <el-table-column prop="content" label="问题描述" width="350"></el-table-column>
-                <el-table-column prop="Influence" label="影响" width="150"></el-table-column>
-                <el-table-column prop="Solve" label="权变解决方法"></el-table-column>
+                <el-table-column prop="content" label="问题描述" width="350">
+                </el-table-column>
+                <el-table-column prop="Influence" label="影响" width="150">
+                </el-table-column>
+                <el-table-column prop="Solve" label="权变解决方法">
+                </el-table-column>
               </el-table>
             </div>
           </div>
@@ -90,18 +74,20 @@
     </el-dialog>
   </div>
 </template>
-
 <script>
-import xml2js from "xml2js";
+
+import xml2js from 'xml2js';
 export default {
   name: "taskMDialog",
   data: function() {
     return {
       dialogVisible: true,
-      versionDes: "",
-      versionDate: "",
+      versionDes: '',
+      versionDate: '',
       loading: false,
-      versionData: ["1.1.1", "1.1.0", "1.0.1", "1.0.0"],
+      versionData: [
+        '1.2.0','1.1.1', '1.1.0', '1.0.1', '1.0.0'
+      ],
       tableData: [],
       changeData: [],
       finishData: [],
@@ -109,17 +95,17 @@ export default {
     };
   },
   mounted() {
-    this._getVersion("1.1.1");
+    this._getVersion('1.2.0');
   },
   methods: {
     //关闭对话框
     closeDialog() {
-      this.$emit("closeDia");
+      this.$emit('closeDia', );
       this.dialogVisible = false;
     },
     handleClick(tab, event) {
-      if (tab.label == "当前") {
-        this._getVersion("1.1.1");
+      if (tab.label == '当前') {
+        this._getVersion('1.2.0');
       } else {
         this._getVersion(tab.label);
       }
@@ -130,34 +116,37 @@ export default {
     },
     //滚动
     godToId(ID) {
-      $("html,body").animate({ scrollTop: $("#" + ID).offset().top }, 500);
+      $('html,body').animate({ scrollTop: $("#" + ID).offset().top }, 500);
     },
     _getVersion(url) {
       this.loading = true;
       let _self = this;
-      this.$ajax
-        .get(`/data/version${url}.xml`)
-        .then(function(res) {
+      this.$ajax.get(`/data/version${url}.xml`).then(function(res) {
           _self.loading = false;
-          xml2js.parseString(res.data, function(err, jsonObj) {
+          xml2js.parseString(res.data, function(err, jsonObj){
             _self.tableData = jsonObj.note.specialityList[0].item;
             _self.changeData = jsonObj.note.changeList[0].item;
             _self.finishData = jsonObj.note.finishedPunchList[0].item;
-            _self.knownData = Array.isArray(jsonObj.note.questionList[0].item)
-              ? jsonObj.note.questionList[0].item
-              : [jsonObj.note.questionList[0].item];
+            _self.knownData = Array.isArray(jsonObj.note.questionList[0].item) ? jsonObj.note.questionList[0].item : 
+            [jsonObj.note.questionList[0].item];
             _self.versionDes = jsonObj.note.name;
             _self.versionDate = jsonObj.note.date;
-          });
+          })
         })
         .catch(function(err) {
           _self.loading = false;
         });
     }
   },
-  components: {},
-  watch: {}
+  components: {
+
+  },
+  watch: {
+
+  }
+
 };
+
 </script>
 <style lang="scss">
 @import "@/assets/css/base.scss";
@@ -178,7 +167,9 @@ export default {
   max-height: 600px;
   height: 600px;
 }
-
+.regdia .el-tabs--left .el-tabs__item.is-left {
+ text-align: inherit;
+}
 .otherInfo .el-radio {
   margin-bottom: 12px;
   margin-top: 8px;
@@ -191,7 +182,7 @@ export default {
   }
 }
 
-.el-radio + .el-radio {
+.el-radio+.el-radio {
   margin-left: 19px;
 }
 
@@ -277,6 +268,7 @@ export default {
 }
 
 .release-box {
+
   padding-left: 0px;
 }
 
@@ -284,7 +276,7 @@ export default {
   display: inline-block !important;
 }
 
-@media screen and (max-width: 1280px) {
+@media screen and ( max-width: 1280px) {
   .taskMDialog {
     vertical-align: top;
   }
@@ -313,9 +305,8 @@ export default {
   white-space: normal;
 }
 
-.retable .el-table th > .cell,
-.rectable .el-table th > .cell {
-  text-align: center;
+.retable .el-table th>.cell,.rectable .el-table th>.cell {
+  text-align: center
 }
 
 .release {
@@ -334,4 +325,5 @@ export default {
     text-align: left;
   }
 }
+
 </style>

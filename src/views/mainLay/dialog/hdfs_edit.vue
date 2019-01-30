@@ -1,7 +1,7 @@
 <template>
-  <div class="taskMDialog">
+  <div class="taskMDialog ">
     <el-button @click="dialogVisible = true" class="add-btn" type="primary">修改</el-button>
-    <el-dialog title="修改" :visible.sync="dialogVisible" width="73%" :before-close="closeDialog">
+    <el-dialog title="修改" :visible.sync="dialogVisible" width="60%" :before-close="closeDialog">
         <div class="title-gra plr30">
           <div class="grab gra-r">
             <span class="grab gra-l"></span>
@@ -27,7 +27,7 @@
             <el-col :span="4" class="bank">bank</el-col>
             <el-col :span="10">
               <el-form-item label="连接串:" prop="connetstr">
-                <el-input v-model="'hdfs://'+ruleForm.hdfsname + ':' + ruleForm.hdfsport" disabled></el-input>
+                <el-input v-model="defaultUrl" disabled></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="10">
@@ -118,8 +118,7 @@ export default {
         ],
 
       },
-
-      // msgId:this.dialogMsg?this.dialogMsg[1]:''
+      defaultUrl: "",
     };
   },
   methods: {
@@ -200,9 +199,6 @@ export default {
       this.$ajax({
         method: "get",
         url: this.GLOBAL.api.API_DACM + '/caccesssysRelationWorkInfo/getStorages',
-        // headers:{
-        //   'Content-Type':'application/json;charset=utf-8',
-        // },
         params: {
           pid: 2,
           nodeId: 2
@@ -221,6 +217,7 @@ export default {
           var hPort = URL.substring(Iindex + 1, URL.length);
           this.ruleForm.hdfsname = hName;
           this.ruleForm.hdfsport = hPort;
+          this.defaultUrl = 'hdfs://' + this.ruleForm.hdfsname + ':' + this.ruleForm.hdfsport;
           if (config["hdfs.url"].indexOf(',') != -1) {
             var bakurl = config["hdfs.url"].split(',')[1];
             bakurl = bakurl.substring(7, bakurl.length);
@@ -229,15 +226,9 @@ export default {
             var hdfsPort = bakurl.substring(IPindex + 1, bakurl.length);
             this.ruleForm.bakip = hdfsName;
             this.ruleForm.bakport = hdfsPort
-
             //impala信息
           } else {
             this.ruleForm.isha = false;
-
-            /*  $(".bakip").hide();
-              $('#subdirectory').removeAttr('checked');
-              flag = false;
-              form.render();*/
           }
         }
       })

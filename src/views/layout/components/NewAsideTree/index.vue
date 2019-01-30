@@ -52,13 +52,8 @@ export default {
     }
   },
   created() {
-    console.log("setTree");
-    console.log(this.$store.state.deptId);
     this.$root.eventHub.$on('selTreeNode', (ids) => {
-      console.log("tree");
       this.checkedDepts = this.$store.state.deptId;
-      console.log(this.checkedDepts);
-      console.log("node");
     });
     let that = this;
     let pathname = window.location.pathname;
@@ -82,10 +77,6 @@ export default {
           if (res.data.success) {
             _self.data = res.data.datas;
             _self.dataReady = true;
-
-            // _self.$root.eventHub.$on('selDeptTree', (ids)=>{
-            // _self.$refs.tree.setCheckedKeys(ids)
-            // });
           } else {
             console.log(res.code);
             _self.$alert('加载部门节点失败', '提示', {
@@ -94,7 +85,6 @@ export default {
           }
         })
         .catch(function(err) {
-          console.log(err)
           _self.$alert('加载部门节点失败', '提示', {
             confirmButtonText: '确定'
           });
@@ -144,13 +134,9 @@ export default {
         if (len == 0) {
           level = 0;
         } else {
-          console.log("level-----", level);
           level = Number(_self.editingNode.children[len - 1].level) + 1;
         }
         this.$ajax.post(window.ENV.API_DACM + '/deptInfo/insertDeptInfo?pid=' + this.editingNode.id + '&deptName=' + this.itemTxt + '&level=' + level).then(function(res) {
-            // this.$ajax.post('./addDept').then(function(res){
-            console.log('addsuccess');
-            console.log(res);
             if (res.data.success == "true") {
               _self.dialogVisible = false;
               const newChild = { id: res.data.id, deptName: _self.itemTxt, level: level, children: [] };
@@ -160,14 +146,12 @@ export default {
               _self.editingNode.children.push(newChild);
 
             } else {
-              console.log(res.data.message)
               _self.$alert(res.data.message, '提示', {
                 confirmButtonText: '确定'
               });
             }
           })
           .catch(function(err) {
-            console.log(err)
             _self.$alert('添加部门节点失败', '提示', {
               confirmButtonText: '确定'
             });
@@ -180,20 +164,16 @@ export default {
           type: 'warning'
         }).then(() => {
           _self.$ajax.post(window.ENV.API_DACM + '/deptInfo/updateDeptInfo?id=' + _self.editingNode.id + '&deptName=' + _self.itemTxt).then(function(res) {
-              // this.$ajax.post('./success').then(function(res){
-              console.log('editsuccess');
               if (res.data.success == "true") {
                 _self.dialogVisible = false;
                 _self.editingNode.deptName = _self.itemTxt;
               } else {
-                console.log(res.data.code)
                 _self.$alert(res.data.message, '提示', {
                   confirmButtonText: '确定'
                 });
               }
             })
             .catch(function(err) {
-              console.log(err)
               _self.$alert('修改部门节点失败', '提示', {
                 confirmButtonText: '确定'
               });
@@ -221,9 +201,7 @@ export default {
     delNodeAjax() {
       var _self = this;
       const promise0 = new Promise((resolve, reject) => {
-        /* this.$ajax.post(window.ENV.API_DACM + '/deptInfo/delDeptInfo?id=' + this.editingNode.id).then(function(res) {*/
         this.$ajax.post(window.ENV.API_DACM + '/deptInfo/queryDeptInfo?id=' + _self.editingNode.id).then(function(res) {
-          console.log(res);
           if (res.data.success) {
             resolve();
           } else {
@@ -257,14 +235,12 @@ export default {
                 _self.$router.push({ name: 'dashboard' });
               }
             } else {
-              console.log(res.data.code)
               _self.$alert('删除部门节点失败', '提示', {
                 confirmButtonText: '确定'
               });
             }
           })
           .catch(function(err) {
-            console.log(err)
             _self.$alert('删除部门节点失败', '提示', {
               confirmButtonText: '确定'
             });
@@ -312,46 +288,6 @@ export default {
       } else {
         this.$refs.tree.setCheckedKeys(deptIds)
       }
-      // var listCount = this.$refs.tree.getCheckedNodes();
-      // var deptIdsCount = this.$refs.tree.getCheckedKeys();
-
-      // var targetList = [];
-      // if(deptIdsCount.length==0){
-      // targetList.push(1);
-      // }else{
-      // for(var value of listCount){
-      // if(value.children.length==0){
-      // targetList.push(value.id)
-      // }else{
-      // var factorialCount = (function f(nodeList,level){
-      // var flag = true;
-      // for(var value of nodeList){
-      // if(deptIdsCount.indexOf(value.id) == -1){
-      // return false;
-      // }else{
-      // if(value.children.length>0){
-      // flag = f(value.children,level+1);
-      // if(!flag){
-      // return false;
-      // }
-      // }
-      // }
-      // }
-      // if(flag){
-      // return true;
-      // }
-      // });
-      // var anotherFactorial=factorialCount;  
-      // factorialCount=null;  
-      // if(anotherFactorial(value.children)){
-      // targetList.push(value.id)
-      // }
-      // }
-      // }
-      // }
-
-      //console.log(targetList);
-      // this.$store.commit('setDeptIdLess',targetList);
 
       this.$store.commit('selDept', deptIds);
       this.$root.eventHub.$emit('selDept', deptIds);
@@ -374,9 +310,7 @@ export default {
       var _self = this;
       this.$ajax.post(window.ENV.API_DACM + '/deptInfo/updateDeptLevel', list).then(function(res) {
           if (res.data.success) {
-            console.log('move success!')
           } else {
-            console.log(res.data.code)
             _self.$alert('移动部门节点失败', '提示', {
               confirmButtonText: '确定'
             }).then(() => {
@@ -452,5 +386,7 @@ export default {
 .el-tree>.el-tree-node {
   display: inline-block !important;
 }
-
+.el-tree-node__label {
+  font-size: 15px;
+}
 </style>

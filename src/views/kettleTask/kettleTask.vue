@@ -15,10 +15,10 @@
             <i :class="!moreSearch?'el-icon-caret-bottom':'el-icon-caret-top'"></i>
           </span>
         </div>
-        <div class="checkDiv" v-if="moreSearch" @mouseleave="mouseleave()">
+        <div class="checkDiv" :style="{'margin-top':ditailDistance}"  v-if="moreSearch" @mouseleave="mouseleave($event)">
           <el-form ref="form" label-width="110px">
             <el-form-item label="任务状态:">
-              <el-checkbox
+              <el-checkbox style="margin-left:20px;"
                 :indeterminate="isIndeterminate"
                 v-model="checkAll"
                 @change="handleCheckAllChange"
@@ -33,7 +33,7 @@
               </el-checkbox-group>
             </el-form-item>
             <el-form-item label="任务开始时间:">
-              <div @mouseleave="mouseleave()">
+              <div @mouseleave="mouseleave($event)" style="margin-left:20px;">
                 <el-date-picker
                   v-model="time"
                   :picker-options="pickerOptions"
@@ -49,7 +49,7 @@
         </div>
       </div>
     </div>
-    <div
+    <div id="kettleTask-js"
       class="el-breadcrumb el-breadcrumb-kellte"
       ref="searchArea"
       v-if="taskName!='' || status.length || time.length"
@@ -108,7 +108,6 @@
       style="width: 100%"
       :height="tableHeight"
       stripe
-      border
       tooltip-effect="light"
     >
       <el-table-column label="序号" type="index" width="100"></el-table-column>
@@ -232,6 +231,17 @@ export default {
     },
     pageSize() {
       return this.$store.state.pageSize;
+    },
+    ditailDistance() {
+      if(this.taskName!='' || this.status.length || this.time.length){
+        let a = document.getElementById("kettleTask-js");
+        if(a && a!=null){
+          return a.offsetHeight + 5 +"px";
+        }else {
+          return "45px";
+        }
+      }
+      return "0px";
     }
   },
   watch: {
@@ -368,8 +378,11 @@ export default {
       this.collapse = !this.collapse;
       this.moreSearch = !this.moreSearch;
     },
-    mouseleave() {
-      this.moreSearch = !this.moreSearch;
+    mouseleave(e) {
+      var o = e.relatedTarget || e.toElement;
+      if(o && o !=null){
+        this.moreSearch = !this.moreSearch;
+      } 
     }
   },
   filters: {
@@ -419,9 +432,9 @@ export default {
     font-size: 15px;
     cursor: pointer;
     width: 100px;
-    height: 35px;
+    height: 36px;
     border: 1px solid #c9cdd0;
-    border-left: none;
+    margin-left: 5px;
     line-height: 35px;
     text-align: center;
     position: relative;
@@ -432,6 +445,7 @@ export default {
   width: 220px;
   height: 40px;
   line-height: 40px;
+  margin-right: 5px;
   ::-webkit-input-placeholder {
     color: #999;
     font-size: 15px;
@@ -467,13 +481,16 @@ export default {
   background-color: #fff;
   box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
   box-sizing: border-box;
-  width: 800px;
+  width: 700px;
   right: 0px;
 }
 
 .checkDiv .el-checkbox-group {
   display: inline-block;
-  margin-left: 20px;
+}
+.checkDiv .el-checkbox {
+  margin-left:15px;
+  margin-right: 0px;
 }
 .kettle-icon-span {
   font-size: 21px;

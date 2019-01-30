@@ -1,30 +1,13 @@
 <template>
   <div class="taskMDialog collTaskDia">
-    <el-form
-      :model="ruleForm"
-      ref="ruleForm"
-      label-width="100px"
-      class="demo-ruleForm"
-      :rules="formRules"
-      v-loading="loading"
-    >
+    <el-form :model="ruleForm" ref="ruleForm" label-width="100px" class="demo-ruleForm" :rules="formRules" v-loading="loading">
       <div class="daiInfo proInfo">
         <div class="proInfo-box bornone clearfix">
           <el-col :span="24">
             <el-col :span="10" class="hd30">
               <el-form-item label="接入目的库:" prop="dLibrary">
-                <el-select
-                  v-model="ruleForm.dLibrary"
-                  placeholder="请选择"
-                  :disabled="isdisable"
-                  style="height:30px !important;"
-                >
-                  <el-option
-                    v-for="(item,index) in treeData"
-                    :label="item.label"
-                    :value="item.storageId"
-                    :key="index"
-                  ></el-option>
+                <el-select v-model="ruleForm.dLibrary" placeholder="请选择" :disabled="isdisable" style="height:30px !important;">
+                  <el-option v-for="(item,index) in treeData" :label="item.label" :value="item.storageId" :key="index"></el-option>
                 </el-select>
               </el-form-item>
             </el-col>
@@ -34,18 +17,12 @@
           <el-col :span="24">
             <el-form-item label="接入方式:" prop="accessMode">
               <el-radio-group v-model="ruleForm.accessMode" :disabled="isdisable">
-                <el-radio
-                  label="1"
-                  v-if="this.$route.params.type=='oracle'||this.$route.params.type == 'mongodb' 
-                ||this.$route.params.type == 'ftp'"
-                >增量接入</el-radio>
+                <el-radio label="1" v-if="this.$route.params.type=='oracle'||this.$route.params.type == 'mongodb' 
+                ||this.$route.params.type == 'ftp'">增量接入</el-radio>
                 <el-radio label="3" v-if="this.$route.params.type=='oracle'">全量接入</el-radio>
                 <el-radio label="0" v-if="this.$route.params.type != 'ftp'">实时接入</el-radio>
-                <el-radio
-                  label="2"
-                  v-if="this.$route.params.type=='ftp' || this.$route.params.type=='oracle' ||
-                   this.$route.params.type=='mongodb'"
-                >一次性接入</el-radio>
+                <el-radio label="2" v-if="this.$route.params.type=='ftp' || this.$route.params.type=='oracle' ||
+                   this.$route.params.type=='mongodb'">一次性接入</el-radio>
               </el-radio-group>
             </el-form-item>
           </el-col>
@@ -66,10 +43,12 @@
               </el-radio-group>
             </el-form-item>
           </el-col>
-          <el-col
-            :span="24"
-            v-show="ruleForm.accessMode=='1'&&this.$route.params.type != 'mongodb'&&this.$route.params.type != 'ftp'"
-          >
+          <el-col :span="24" :class="ruleForm.history==true?'cutoff-line':''" v-show="this.ruleForm.accessMode=='0'">
+            <el-form-item label="历史记录:" prop="history">
+              <el-checkbox v-model="ruleForm.history" :disabled="gethis">包含历史记录 <span class="ml10">(勾选此项,对应的历史记录也将同步全量采集)</span></el-checkbox>
+            </el-form-item>
+          </el-col>
+          <el-col :span="24" v-show="ruleForm.accessMode=='1'&&this.$route.params.type != 'mongodb'&&this.$route.params.type != 'ftp'">
             <el-col :span="6">
               <el-form-item label="接入起始点:">
                 <el-input v-model="ruleForm.startLocation" class="fl"></el-input>
@@ -87,22 +66,9 @@
             </el-col>
           </el-col>
           <el-col :span="24">
-            <el-col
-              :span="10"
-              class="collbg"
-              v-if="ruleForm.accessMode!='0'&&this.$route.params.type != 'mongodb'&&this.$route.params.type != 'ftp'"
-            >
+            <el-col :span="10" class="collbg" v-if="ruleForm.history==true&&this.ruleForm.accessMode=='0'">
               <el-form-item label="增量字段:" prop="increment">
-                <el-input v-model="ruleForm.increment" class="fl"></el-input>
-                <el-button type="primary" class="fl increbtn" @click="innerVisible = true">选择</el-button>
-                <incre-map
-                  :msg="innerVisible"
-                  :incid="rowList.id"
-                  :yid="yid"
-                  :alincre="this.increArr"
-                  @showIncre="showIncrement()"
-                  @saveIncre="saveIncrement($event)"
-                ></incre-map>
+                <el-input v-model="ruleForm.increment" class="fl" disabled></el-input>
               </el-form-item>
             </el-col>
           </el-col>
@@ -133,12 +99,7 @@
                     <el-col :span="4">
                       <el-form-item>
                         <el-select v-model="ruleForm.jhour" placeholder="请选择">
-                          <el-option
-                            v-for="(index,item) in hourData"
-                            :key="index"
-                            :label="item"
-                            :value="item"
-                          ></el-option>
+                          <el-option v-for="(index,item) in hourData" :key="index" :label="item" :value="item"></el-option>
                         </el-select>
                       </el-form-item>
                     </el-col>
@@ -150,12 +111,7 @@
                     <el-col :span="4">
                       <el-form-item>
                         <el-select v-model="ruleForm.jmin" placeholder="请选择">
-                          <el-option
-                            v-for="(index,item) in minData"
-                            :key="index"
-                            :label="item"
-                            :value="item"
-                          ></el-option>
+                          <el-option v-for="(index,item) in minData" :key="index" :label="item" :value="item"></el-option>
                         </el-select>
                       </el-form-item>
                     </el-col>
@@ -166,10 +122,7 @@
                     </el-col>
                   </el-col>
                 </el-col>
-                <el-col
-                  :span="24"
-                  v-if="this.$route.params.type != 'mongodb'&&this.$route.params.type != 'ftp'"
-                >
+                <el-col :span="24" v-if="this.$route.params.type != 'mongodb'&&this.$route.params.type != 'ftp'">
                   <el-col :span="1" class="bank">bank</el-col>
                   <el-col :span="4" class="line40">
                     <el-radio label="1" v-model="ruleForm.cycleSet">定时执行</el-radio>
@@ -188,12 +141,7 @@
                         <el-col :span="4">
                           <el-form-item>
                             <el-select v-model="ruleForm.dfmon" placeholder="请选择">
-                              <el-option
-                                v-for="(index,item) in monthData"
-                                :key="index"
-                                :label="item"
-                                :value="item"
-                              ></el-option>
+                              <el-option v-for="(index,item) in monthData" :key="index" :label="item" :value="item"></el-option>
                             </el-select>
                           </el-form-item>
                         </el-col>
@@ -205,12 +153,7 @@
                         <el-col :span="4">
                           <el-form-item>
                             <el-select v-model="ruleForm.dfhour" placeholder="请选择">
-                              <el-option
-                                v-for="(index,item) in hourData"
-                                :key="index"
-                                :label="item"
-                                :value="item"
-                              ></el-option>
+                              <el-option v-for="(index,item) in hourData" :key="index" :label="item" :value="item"></el-option>
                             </el-select>
                           </el-form-item>
                         </el-col>
@@ -222,12 +165,7 @@
                         <el-col :span="4">
                           <el-form-item>
                             <el-select v-model="ruleForm.dfmin" placeholder="请选择">
-                              <el-option
-                                v-for="(index,item) in minData"
-                                :key="index"
-                                :label="item"
-                                :value="item"
-                              ></el-option>
+                              <el-option v-for="(index,item) in minData" :key="index" :label="item" :value="item"></el-option>
                             </el-select>
                           </el-form-item>
                         </el-col>
@@ -256,24 +194,14 @@
                         <el-col :span="4">
                           <el-form-item>
                             <el-select v-model="ruleForm.dsweek" placeholder="请选择">
-                              <el-option
-                                v-for="item in weekData"
-                                :label="item.name"
-                                :value="item.val"
-                                :key="item.name"
-                              ></el-option>
+                              <el-option v-for="item in weekData" :label="item.name" :value="item.val" :key="item.name"></el-option>
                             </el-select>
                           </el-form-item>
                         </el-col>
                         <el-col :span="4">
                           <el-form-item>
                             <el-select v-model="ruleForm.dshour" placeholder="请选择">
-                              <el-option
-                                v-for="(index,item) in hourData"
-                                :key="index"
-                                :label="item"
-                                :value="item"
-                              ></el-option>
+                              <el-option v-for="(index,item) in hourData" :key="index" :label="item" :value="item"></el-option>
                             </el-select>
                           </el-form-item>
                         </el-col>
@@ -285,12 +213,7 @@
                         <el-col :span="4">
                           <el-form-item>
                             <el-select v-model="ruleForm.dsmin" placeholder="请选择">
-                              <el-option
-                                v-for="(index,item) in minData"
-                                :key="index"
-                                :label="item"
-                                :value="item"
-                              ></el-option>
+                              <el-option v-for="(index,item) in minData" :key="index" :label="item" :value="item"></el-option>
                             </el-select>
                           </el-form-item>
                         </el-col>
@@ -314,12 +237,7 @@
                         <el-col :span="4">
                           <el-form-item>
                             <el-select v-model="ruleForm.dthour" placeholder="请选择">
-                              <el-option
-                                v-for="(index,item) in hourData"
-                                :key="index"
-                                :label="item"
-                                :value="item"
-                              ></el-option>
+                              <el-option v-for="(index,item) in hourData" :key="index" :label="item" :value="item"></el-option>
                             </el-select>
                           </el-form-item>
                         </el-col>
@@ -331,12 +249,7 @@
                         <el-col :span="4">
                           <el-form-item>
                             <el-select v-model="ruleForm.dtmin" placeholder="请选择">
-                              <el-option
-                                v-for="(index,item) in minData"
-                                :key="index"
-                                :label="item"
-                                :value="item"
-                              ></el-option>
+                              <el-option v-for="(index,item) in minData" :key="index" :label="item" :value="item"></el-option>
                             </el-select>
                           </el-form-item>
                         </el-col>
@@ -356,8 +269,8 @@
       </div>
     </el-form>
     <div class="mr-btn">
-      <el-button type="primary"  @click="pre()">上一步</el-button>
-      <el-button type="primary"  @click="finish()">完成</el-button>
+      <el-button type="primary" @click="pre()">上一步</el-button>
+      <el-button type="primary" @click="finish()">完成</el-button>
     </div>
   </div>
 </template>
@@ -385,7 +298,7 @@ export default {
       isregin: false,
       taskStatus: false,
       appId: "",
-
+      gethis: false,
       taskInfoId: "",
       accId: "",
       yid: "", //反写的增量字段id
@@ -396,7 +309,7 @@ export default {
         dLibrary: "", //接入目的库
         tablename: "", //建立的表名
         accessMode: "1", //接入方式
-        increment: "", //增量字段
+        increment: "_id", //增量字段
         actech: "JDBC", //采集技术
         cycleSet: "0", //周期设置
         jday: "", //间隔执行天数
@@ -413,6 +326,7 @@ export default {
         dtmin: "",
         accessPri: "1", //优先级
         taskSubMode: "true", //提交方式
+        history: false, //历史记录
         priority: "1"
       },
       formRules: {},
@@ -554,6 +468,7 @@ export default {
       //间隔执行
       var pollIntervalMs = -1;
       var actech = "JDBC";
+      var includeHistoryData = '';
       if (
         this.ruleForm.cycleSet == "0" &&
         this.ruleForm.accessMode != "0" &&
@@ -690,6 +605,12 @@ export default {
         }
         ctt = "0";
         actech = this.$route.params.type;
+        if (this.ruleForm.history == true) {
+          includeHistoryData = '1';
+
+        } else if (this.ruleForm.history == false) {
+          includeHistoryData = '0';
+        }
       } else {
         actech = this.$route.params.type + "_cycle";
       }
@@ -740,7 +661,9 @@ export default {
           timeType: this.radioSelect,
           startLocation: this.ruleForm.startLocation,
           xStreamServiceName: this.ruleForm.xStreamServiceName,
-          priority: this.ruleForm.priority
+          priority: this.ruleForm.priority,
+          includeHistoryData: includeHistoryData
+
         };
         this.loading = true;
         if (JSON.stringify(this.$store.state.userList) == "{}") {
@@ -825,7 +748,6 @@ export default {
         //注册
         var save = {
           accessSysObjDetails: this.increArr,
-
           jobType: actech,
           accessSysObjInfoId: this.rowList.id,
           pollIntervalMs: pollIntervalMs,
@@ -837,7 +759,8 @@ export default {
           timeType: this.radioSelect,
           startLocation: this.ruleForm.startLocation,
           xStreamServiceName: this.ruleForm.xStreamServiceName,
-          priority: this.ruleForm.priority
+          priority: this.ruleForm.priority,
+          includeHistoryData: includeHistoryData
         };
         this.loading = true;
         if (JSON.stringify(this.$store.state.userList) == "{}") {
@@ -927,13 +850,12 @@ export default {
     _getTree() {
       this.$ajax({
         method: "get",
-        url:
-          this.GLOBAL.api.API_DACM +
+        url: this.GLOBAL.api.API_DACM +
           "/caccesssysRelationWorkInfo/getDataAreaNode"
       }).then(res => {
         this.treeData = res.data;
         this.ruleForm.dLibrary = res.data[0].storageId;
-        console.log("this.ruleForm.dLibrary===",this.ruleForm.dLibrary);
+        console.log("this.ruleForm.dLibrary===", this.ruleForm.dLibrary);
       });
     },
     //获取修改内容
@@ -972,7 +894,7 @@ export default {
             this.yid = data.incrementColumnId; //增量字段的id
             //增量字段
             this.isdisable = true;
-            this.ruleForm.increment = data.incrementColumn;
+            this.ruleForm.increment = "_id";
             this.increArr = {};
             if (data.taskStatus == "0") {
               this.ruleForm.taskSubMode = "false";
@@ -981,6 +903,7 @@ export default {
               this.ruleForm.taskSubMode = "true";
               this.taskStatus = true;
             }
+            this.gethis = true;
             this.increArr.id = data.incrementColumnId;
             this.increArr.name = data.incrementColumn;
             this.increArr.datatype = data.incrementColumnDataType;
@@ -1036,10 +959,15 @@ export default {
             this.taskInfoId = data.task_info_id;
             this.isregin = true;
             this.ruleForm.xStreamServiceName = res.xStreamServiceName;
-            
+            if (data.includeHistoryData == '1') {
+              this.ruleForm.history = true;
+            } else {
+              data.includeHistoryData = false;
+            }
           }
           this.loading = false;
         } else {
+          this.loading = false; 
           this.editfalg = false;
         }
       });
@@ -1058,7 +986,7 @@ export default {
     increMap
   },
   mounted() {
-    
+
   },
   created() {
     this.initWebSocket();
@@ -1066,13 +994,13 @@ export default {
   watch: {
     msg() {
       if (!this.editfalg && this.msg == "third") {
-          this._monthData();
-          this._minData();
-          this._hourData();
-          this._weekData();
-          this._getTree();
-          this._getInit();
-      } else if(this.editfalg && this.msg == "third"){
+        this._monthData();
+        this._minData();
+        this._hourData();
+        this._weekData();
+        this._getTree();
+        this._getInit();
+      } else if (this.editfalg && this.msg == "third") {
         this.ruleForm = this.$store.state.thirdStepsData;
       }
     },
@@ -1090,6 +1018,7 @@ export default {
   },
   props: ["rowList", "msg"]
 };
+
 </script>
 <style lang="scss">
 @import "@/assets/css/base.scss";
@@ -1122,7 +1051,7 @@ export default {
   }
 }
 
-.el-radio + .el-radio {
+.el-radio+.el-radio {
   margin-left: 19px;
 }
 
@@ -1148,6 +1077,7 @@ export default {
   background: #f0f3f6;
   padding-top: 20px;
 }
+
 .increbtn.el-button--medium {
   padding: 7px 20px;
   margin-left: 10px;
@@ -1172,7 +1102,9 @@ export default {
     display: none;
   }
 }
+
 .hd30 .el-input.is-disabled .el-input__inner {
   height: 30px !important;
 }
+
 </style>

@@ -26,8 +26,8 @@
 .taskMDialog {
   text-align: left;
   .el-dialog {
-    max-height: 600px;
     overflow: auto;
+    max-height: 700px;
     .el-dialog__header {
       padding: 20px 40px 0px 40px;
       .el-dialog__title {
@@ -258,10 +258,13 @@
  */
 
 .icon-title {
-  font-size: 30px;
+  font-size: 21px;
   display: inline-block;
-  font-size: 30px;
+  margin-right: 7px;
   cursor: pointer;
+}
+.icon-title:active, .icon-title:hover{
+  color: #fff !important;
 }
 
 .tasktips {
@@ -336,8 +339,8 @@
 
 .enc-icon-zhuce {
   margin-right: 7px;
-  font-size: 27px;
-  line-height: 22px;
+  font-size: 21px;
+  line-height: 21px;
   vertical-align: text-top;
 }
 

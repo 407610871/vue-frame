@@ -1,15 +1,15 @@
 <template>
-  <div class="taskMDialog">
-    <div class="mr-btn">
+  <div>
+    <div class="clearfix" style="margin-top:20px;">
       <el-button type="primary"  @click="dialogVisible = true">新增</el-button>
     </div>
-    <el-dialog title="新增" :visible.sync="dialogVisible" width="73%" :before-close="closeDialog">
+    <el-dialog title="新增" :visible.sync="dialogVisible" width="60%" :before-close="closeDialog">
         <div class="title-gra plr30">
           <div class="grab gra-r">
             <span class="grab gra-l"></span>
           </div>
         </div>
-      <el-form :model="ruleForm" ref="ruleForm" label-width="100px" class="demo-ruleForm" :rules="formRules">
+      <el-form :model="ruleForm" ref="ruleForm" label-width="100px" class="demo-ruleForm" :rules="formRules" v-loading="loading">
             <el-col :span="10">
               <el-form-item label="hdfs主机名:" prop="hdfsname" required>
                 <el-input v-model="ruleForm.hdfsname"></el-input>
@@ -29,7 +29,7 @@
             <el-col :span="4" class="bank">bank</el-col>
             <el-col :span="10">
               <el-form-item label="连接串:" prop="connetstr">
-                <el-input v-model="'hdfs://'+ruleForm.hdfsname + ':' + ruleForm.hdfsport" disabled></el-input>
+                <el-input v-model="defaultUrl" disabled></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="10">
@@ -89,6 +89,7 @@ export default {
     return {
       dialogVisible: false,
       innerVisible: false,
+      loading:false,
       increArr: [],
       sys_impala_id:'',
       ruleForm: {
@@ -100,7 +101,6 @@ export default {
         isha: true,
         bakip: '',
         bakport: ''
-
       },
       formRules: {
         hdfsname: [
@@ -120,19 +120,18 @@ export default {
         ],
 
       },
-
-      // msgId:this.dialogMsg?this.dialogMsg[1]:''
+      defaultUrl: "",
     };
   },
   methods: {
     //关闭对话框
     closeDialog() {
       this.dialogVisible = false;
+      this.$emit("closeDiaChk");
       this.$refs['ruleForm'].resetFields();
     },
     //增量字段弹框的再次打开
     showIncrement() {
-
       this.innerVisible = false;
     },
     saveIncrement(value) {
@@ -183,10 +182,9 @@ export default {
                 confirmButtonText: '确定',
                 callback: action => {
                   this.$refs['ruleForm'].resetFields();
+                  this.$emit("closeDiaChk");
                   this.$emit('refresh');
                   this.dialogVisible = false;
-                 
-
                 }
               });
             } else {
@@ -202,18 +200,19 @@ export default {
     },
     //获取预设接口
     _getProData() {
-      console.log(this.GLOBAL);
+      this.loading = true;
       this.$ajax({
         method: "get",
         url: `${this.GLOBAL.api.API_DACM}/caccesssysRelationWorkInfo/presetData`,
-        // headers:{
-        //   'Content-Type':'application/json;charset=utf-8',
-        // },
       }).then(res => {
+        this.loading = false;
         if (res.data.result) {
           this.ruleForm.hdfsname = res.data.ip;
           this.ruleForm.hdfsport = res.data.port;
+          this.defaultUrl = 'hdfs://'+ this.ruleForm.hdfsname + ':' + this.ruleForm.hdfsport
         }
+      }).catch( err=>{
+        this.loading = false;
       })
     }
   },
