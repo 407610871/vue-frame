@@ -487,7 +487,10 @@ export default {
 
 .checkDiv .el-checkbox-group {
   display: inline-block;
-  margin-left: 20px;
+}
+.checkDiv .el-checkbox {
+  margin-left:15px;
+  margin-right: 0px;
 }
 .kettle-icon-span {
   font-size: 21px;

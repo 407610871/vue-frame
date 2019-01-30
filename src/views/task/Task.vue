@@ -19,7 +19,7 @@
             <i :class="!moreSearch?'el-icon-caret-bottom':'el-icon-caret-top'"></i>
           </span>
         </div>
-        <div class="checkDiv  task-query-form" v-if="moreSearch" @mouseleave="mouseleave()">
+        <div class="checkDiv  task-query-form" v-if="moreSearch" @mouseleave="mouseleave($event)">
           <el-form ref="form" label-width="110px">
             <el-form-item label="任务类型:">
               <el-checkbox-group v-model="taskPeriodType">
@@ -50,7 +50,7 @@
               </el-checkbox-group>
             </el-form-item>
             <el-form-item label="任务开始时间:">
-              <div @mouseleave="mouseleave()" style="margin-left:15px;">
+              <div @mouseleave="mouseleave($event)" style="margin-left:15px;">
                 <el-date-picker v-model="time" :picker-options="pickerOptions" type="datetimerange" start-placeholder="开始时间" end-placeholder="结束时间" value-format="yyyy-MM-dd HH:mm:ss" :default-time="timeDefaultShow"></el-date-picker>
               </div>
             </el-form-item>
@@ -1324,8 +1324,11 @@ export default {
         }
       }
     },
-    mouseleave() {
-      this.moreSearch = !this.moreSearch;
+    mouseleave(e) {
+      var o = e.relatedTarget || e.toElement;
+      if(o && o !=null){
+        this.moreSearch = !this.moreSearch;
+      } 
     }
   }
 };
@@ -1514,6 +1517,7 @@ export default {
   .task-query-form .el-checkbox {
     width: auto;
     margin-left: 15px;
+    margin-right: 0px;
   }
   .el-breadcrumb .el-form-item {
     margin-bottom: 0px !important;
