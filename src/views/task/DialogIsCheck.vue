@@ -40,7 +40,10 @@
               <li :title="resData.source_library">{{resData.source_library||"无"}}</li>
              
               <li :title="resData.source_tableNum">{{resData.source_tableNum||"无"}}</li>
-             <li v-if="resData.sourceMatchTables==undefined||resData.sourceMatchTables==null" :title="resData.source_tableName">{{resData.source_tableName||"无"}}</li>
+             <li v-if="resData.sourceMatchTables==undefined||resData.sourceMatchTables==null" :title="resData.source_tableName" :class="resData.source_tableName!=undefined&&resData.source_tableName.indexOf('*')!=-1?'sourceStyle':''">
+                <span v-if="resData.source_tableName==undefined||resData.source_tableName.indexOf('*')==-1">{{resData.source_tableName||"无"}}</span>
+                <span v-else style="display:block" v-for="(item,index) in resData.source_tableName.split('*')" :key="index">{{item}}</span>
+             </li>
               <li v-else style="height:80px;width:100%;overflow:auto;" class="jrborder">
                  <span style="display:block" v-for="(item, index) in resData.sourceMatchTables.split('*')" :key="index">{{item}}</span>
               </li>
@@ -255,6 +258,9 @@ export default {
           }
           //this.resData = res.datas;
           this.resData = res.data;
+          //console.log(this.resData.source_tableName);
+         // console.log(typeof(this.resData.source_tableName));
+          
           //不知道这个的展示有没有什么限制，所以暂时先不作什么限制
           that.queryTargetColumnList = res.data.listIncrementCon;
           if (
@@ -628,7 +634,9 @@ ${this.types=='ftp'?'源端对象':'源表'}：${res.data.source_tableName}\n
   text-decoration: underline;
   cursor: pointer;
 }
-
+.sourceStyle {
+  height:80px;width:100%;overflow:auto !important;border: 1px solid #c9cdd0
+}
 .resultIcon .yes {
   background: url("../../assets/images/data_ri.png") no-repeat;
   width: 16px;
