@@ -1,7 +1,7 @@
 <template>
   <div>
-    <div class="collapsepanel" v-if="pageReady && storageList.length>=pageSize*(pageNum-1)" >
-      <div v-for="(item,index) in storageList" :key="index"> 
+    <div class="collapsepanel" v-if="pageReady">
+      <div v-for="(item,index) in storageList" :key="index" v-show="index>=pageSize*(pageNum-1) && index<pageSize*pageNum"> 
         <div class="collapsepanel-title" v-show="index != activeIndex"
         v-on:click="activeIndex = index">{{item.storageName}}<i class="el-icon-arrow-right"></i></div>
         <el-row :gutter="20" v-show="index == activeIndex">
