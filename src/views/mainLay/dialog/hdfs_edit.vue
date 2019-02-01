@@ -1,6 +1,6 @@
 <template>
   <div class="taskMDialog ">
-    <el-button @click="dialogVisible = true" class="add-btn" type="primary">修改</el-button>
+    <el-button @click="dialogVisible = true" class="add-btn clearfix" type="primary">修改</el-button>
     <el-dialog title="修改" :visible.sync="dialogVisible" width="60%" :before-close="closeDialog">
         <div class="title-gra plr30">
           <div class="grab gra-r">
