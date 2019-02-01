@@ -121,7 +121,30 @@ export default {
         total: "",
         list: []
       },
-      formFilterData: [],
+      formFilterData: [{
+          name: "接入源类型：",
+          id: "dataSourceName",
+          type: "checkbox",
+          checkData: [],
+          seledData: [],
+          limit: 4
+        },
+        {
+          name: "接入数据来源：",
+          id: "network",
+          type: "checkbox",
+          checkData: [],
+          seledData: [],
+          limit: 4
+        },
+        {
+          name: "对接平台：",
+          id: "platform",
+          type: "checkbox",
+          checkData: [],
+          seledData: [],
+          limit: 4
+        }],
       pageSize: 20,
       key_word: "",
       deleteData: {}
@@ -271,31 +294,12 @@ export default {
       network == true ? [] : network;
       platform == true ? [] : platform;
       dataSourceName == true ? [] : dataSourceName;
-      this.formFilterData = [{
-          name: "接入源类型：",
-          id: "dataSourceName",
-          type: "checkbox",
-          checkData: this.$store.state.fliterItemList.dataSourceName.data,
-          seledData: dataSourceName,
-          limit: 4
-        },
-        {
-          name: "接入数据来源：",
-          id: "network",
-          type: "checkbox",
-          checkData: this.$store.state.fliterItemList.network.data,
-          seledData: network,
-          limit: 4
-        },
-        {
-          name: "对接平台：",
-          id: "platform",
-          type: "checkbox",
-          checkData: this.$store.state.fliterItemList.platform.data,
-          seledData: platform,
-          limit: 4
-        }
-      ];
+      this.formFilterData[0].checkData = this.$store.state.fliterItemList.dataSourceName.data;
+      this.formFilterData[0].seledData = dataSourceName;
+      this.formFilterData[1].checkData = this.$store.state.fliterItemList.network.data;
+      this.formFilterData[1].checkData = network;
+      this.formFilterData[2].checkData = this.$store.state.fliterItemList.platform.data;
+      this.formFilterData[2].checkData = platform;
       this.queryParamReady = true;
     },
     collapseExpand: function() {
@@ -347,6 +351,8 @@ export default {
             this.formFilterData[2].checkData = list;
           }
         });
+        var fliterItemList = this.$store.state.fliterItemList;
+        this.setFliter(fliterItemList);
         this.getDataList(paramsObj);
       });
     },
@@ -619,21 +625,8 @@ export default {
       this.setStore(fliterParams);
     },
     storeReady: function() {
-      var fliterItemList = this.$store.state.fliterItemList;
-      if (
-        fliterItemList.network.ready &&
-        fliterItemList.dataSourceName.ready &&
-        fliterItemList.platform.ready &&
-        this.$store.state.pageReady
-      ) {
-        this.setFliter(fliterItemList);
-        this.loadTable(this.$store.state.deptId);
-      } else {
-        var _self = this;
-        setTimeout(function() {
-          _self.storeReady();
-        }, 200);
-      }
+      this.loadTable(this.$store.state.deptId);
+
     },
     getPlatfrom(id) {
       if (!id) {
