@@ -42,7 +42,7 @@
         </el-popover>
       </div>
     </el-header>
-    <div style="display:flex; height: calc(100vh - 66px);" class="clearfix">
+    <el-container>
       <el-aside :width="sideBarWidth+'px'" class="enc-aside">
         <new-aside-tree></new-aside-tree>
         <div class="sidebar-control-btn" v-bind:style="{'left':sideBarWidth+'px'}" v-on:click="changeSideBar">
@@ -51,15 +51,9 @@
         </div>
       </el-aside>
       <el-main class="enc-main">
-        <!--
-          <el-breadcrumb separator="/">
-            <el-breadcrumb-item v-for="(item,index) in breadcrumb" :key="index">
-              <a href="javascript:void(0)" v-on:click="breadcrumbChange(index,item)">{{item.breadcrumbName}}</a>
-            </el-breadcrumb-item>
-          </el-breadcrumb>-->
         <app-main ref="mainTable" />
       </el-main>
-    </div>
+    </el-container>
     <release v-if="releaseflag" v-on:closeDia="releaseflag=false"></release>
     <Themes v-if="themesflag" v-on:closeDia="themesflag=false"></Themes>
   </el-container>
@@ -116,11 +110,10 @@ export default {
     },
   },
   mounted() {
-    var _self = this;
     if (window.localStorage.getItem('data-theme') != undefined) {
       window.document.documentElement.setAttribute('data-theme', window.localStorage.getItem('data-theme'));
     }
-    _self.warnurl = encodeURI(window.ENV.API_WARN + '/#/alert/dashboard?platform=数据工厂产品线');
+    this.warnurl = encodeURI(window.ENV.API_WARN + '/#/alert/dashboard?platform=数据工厂产品线');
     this.$ajax
       .get(window.ENV.API_DACM + "/caccesssysRelationWorkInfo/getSystemSet")
       .then(function(res) {
@@ -128,22 +121,18 @@ export default {
           var configs = JSON.parse(res.data.message);
           for (var value of configs) {
             if (value.key.trim() == "每页展示条数") {
-              _self.$store.commit("setPageSize", parseInt(value.name));
+              this.$store.commit("setPageSize", parseInt(value.name));
               break;
             }
           }
         }
-        _self.$store.commit("setPageReady");
+        this.$store.commit("setPageReady");
       })
       .catch(function(err) {
-        //console.log(err);
-        _self.$store.commit("setPageReady");
+        this.$store.commit("setPageReady");
       });
-    _self.updataFliterItemList();
-
   },
   created() {
-
     if (sessionStorage.getItem("store")) {
       var oldStore = JSON.parse(sessionStorage.getItem("store"));
       oldStore.app.token = this.$store.getters.token;
@@ -169,12 +158,8 @@ export default {
     $route(to, from) {
       this.getBreadcrumb();
       this.keyword = this.$route.query.keyword;
-      // this.$route.matched.forEach((item, index) => {
-      //   console.log(item)
-      // })
     },
     getUserThemes() {
-      //console.log("454245");
       this._getColor();
     }
   },
@@ -203,90 +188,6 @@ export default {
         this.warnicon = `${warnd}`;
         this.moreicon = `${mored}`;
       }
-    },
-    updataFliterItemList() {
-      //console.log("5656");
-      var _self = this;
-      this.$ajax
-        .get(window.ENV.API_DACM + "/caccess/sysdialect", {
-          params: {
-            type: 0
-          }
-        })
-        .then(function(res) {
-          if (res.data.success) {
-            _self.$store.commit("setFilterItmeList", {
-              name: "dataSourceName",
-              data: res.data.data
-            });
-            _self.formFilterData[0].checkData = list
-          }
-        })
-        .catch(function(err) {
-          //console.log(err);
-        });
-      this.$ajax
-        .get(window.ENV.API_DACM + "/commonInter/getListStaticDataOrder", {
-          params: {
-            dictCode: "NetWork"
-          }
-        })
-        .then(function(res) {
-          //  console.log(res)
-          if (res.data.success == false) {} else {
-            var list = [];
-            if (res.data != undefined) {
-              let objNet = JSON.stringify(res.data);
-              window.localStorage.setItem('NetWork', objNet);
-              for (var value of res.data) {
-                list.push({
-                  id: value.sTATIC_CODE,
-                  name: value.sTATIC_NAME
-                });
-              }
-              _self.$store.commit("setFilterItmeList", {
-                name: "network",
-                data: list
-              });
-              _self.formFilterData[1].checkData = list
-            }
-          }
-
-        })
-        .catch(function(err) {
-          //console.log(err);
-        });
-      this.$ajax
-        .get(window.ENV.API_DACM + "/commonInter/getListStaticDataOrder", {
-          params: {
-            dictCode: "ButtPlatForm"
-          }
-        })
-        .then(function(res) {
-          if (res.data.success == false) {
-
-          } else {
-            var list = [];
-            let objNet = JSON.stringify(res.data);
-            window.localStorage.setItem('ButtPlatForm', objNet);
-            for (var value of res.data) {
-              list.push({
-                id: value.sTATIC_CODE,
-                name: value.sTATIC_NAME
-              });
-            }
-            _self.$store.commit("setFilterItmeList", {
-              name: "platform",
-              data: list
-            });
-            _self.formFilterData[2].checkData = list
-            //console.log(_self.formFilterData);
-            //console.log(res.data);
-          }
-        })
-        .catch(function(err) {
-          //console.log(err);
-        });
     },
     _goWarn() {
       window.open(this.warnurl);
@@ -374,7 +275,6 @@ export default {
         var obj = {
           resetData: name
         };
-        //this.$store.commit("resetQueryParam", obj);
       }
       this.$router.push({ name: name });
     },
@@ -383,13 +283,6 @@ export default {
     },
     breadcrumbChange: function(index, item) {
       if (index != this.breadcrumb.length - 1) {
-        // var obj = {
-        // resetData:[]
-        // };
-        // for(var i = index+1;i<this.breadcrumb.length;i++){
-        // obj.resetData.push(this.breadcrumb[i].name)
-        // }
-        // this.$store.commit('resetQueryParam', obj);
         this.$router.push({
           name: item.name,
           params: item.params,
