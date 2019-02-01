@@ -363,6 +363,7 @@ export default {
   watch: {
     //监听树节点deptID,操作数据
     departmentId(newVal, oldVal) {
+      this.pageNum = 1;
       this.init("");
     },
     keyword() {

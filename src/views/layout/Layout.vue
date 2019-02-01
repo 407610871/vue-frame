@@ -114,6 +114,7 @@ export default {
       window.document.documentElement.setAttribute('data-theme', window.localStorage.getItem('data-theme'));
     }
     this.warnurl = encodeURI(window.ENV.API_WARN + '/#/alert/dashboard?platform=数据工厂产品线');
+    let  _this = this;
     this.$ajax
       .get(window.ENV.API_DACM + "/caccesssysRelationWorkInfo/getSystemSet")
       .then(function(res) {
@@ -129,7 +130,7 @@ export default {
         this.$store.commit("setPageReady");
       })
       .catch(function(err) {
-        this.$store.commit("setPageReady");
+        _this.$store.commit("setPageReady");
       });
   },
   created() {

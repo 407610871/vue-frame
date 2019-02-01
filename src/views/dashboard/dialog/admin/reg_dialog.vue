@@ -131,10 +131,8 @@
           <div class="daiInfo-box clearfix">
             <el-form-item class="my_form_item" label="接入源类型:" prop="syskind">
               <el-radio-group v-model="ruleForm.syskind" style="margin-top:-12px;">
-                <el-radio v-for="(item,index) in syskindList" :label="item.id" :key="item.id" v-if="index<5||accdiaFlag"><span>{{item.name}}</span><span v-if="item.id=='10010' || item.id=='10020'" class="enc-icon-beta betaspan"></span></el-radio>
-                <!-- <span class="curspan" style="display:inline-block !important; font-size:14px;" @click="more(accdiaFlag)">{{accdiaName}}</span> -->
+                <el-radio v-for="(item,index) in syskindList" :label="item.id" :key="item.id" v-show="index<5||accdiaFlag"><span>{{item.name}}</span><span v-if="item.id=='10010' || item.id=='10020'" class="enc-icon-beta betaspan"></span></el-radio>
               </el-radio-group>
-             <!--  <span class="curspan" @click="more(accdiaFlag)">{{accdiaName}}</span> -->
             </el-form-item>
             <div style="float:right;">
               <div style="text-align:right;margin-bottom:10px;">
@@ -741,7 +739,6 @@ export default {
                 }
               ]
             };
-            console.log(typeof save);
             this.$ajax({
               method: "get",
               url: this.GLOBAL.api.API_DACM + "/register/dataSourceCheck",
@@ -1145,6 +1142,7 @@ export default {
         }
       });
     },
+    // 
     //测试连接
     testForm(formName) {
       this.testflag = true;
