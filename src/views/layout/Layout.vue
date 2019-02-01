@@ -271,24 +271,7 @@ export default {
         })
     },
     goRoute: function(name) {
-      if (this.$store.state.queryParams[name]) {
-        var obj = {
-          resetData: name
-        };
-      }
       this.$router.push({ name: name });
-    },
-    search: function() {
-      this.$root.eventHub.$emit("search", this.keyword);
-    },
-    breadcrumbChange: function(index, item) {
-      if (index != this.breadcrumb.length - 1) {
-        this.$router.push({
-          name: item.name,
-          params: item.params,
-          query: item.query
-        });
-      }
     },
     getBreadcrumb() {
       var routeName = this.$route.name;
@@ -340,7 +323,6 @@ export default {
         });
         this.$set(this.$data, "breadcrumb", list);
       }
-      //end of getBreadcrumb
     }
   }
 };
