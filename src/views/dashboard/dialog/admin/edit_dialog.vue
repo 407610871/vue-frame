@@ -474,7 +474,6 @@ export default {
         }
         _self.SJLY = res.data.staticDatas.SJLY;
         _self.SSJZ = res.data.staticDatas.SSJZ;
-        console.log(_self.SSJZ);
         if (_self.ruleForm.resource == '') {
           _self.ruleForm.resource = _self.SJLY[0].sTATIC_CODE;
         }
@@ -532,7 +531,6 @@ export default {
         method: "post",
         url: this.GLOBAL.api.API_DACM + '/deptInfo/getDeptInfo',
       }).then(res => {
-        console.log(res);
         _self.treedata = res.data.datas;
         for (let i = 0; i < _self.treedata.length; i++) {
           _self.deptData.push({
@@ -562,10 +560,8 @@ export default {
     //保存信息
     submitForm(formName) {
       this.testflag = false;
-      console.log(this.ruleForm.syskind);
       var _self = this;
       var modifyFlag = '';
-      console.log(this.modyData['ipname']);
       if (_self.ruleForm.ipname != this.modyData[0].ipname || _self.ruleForm.username != this.modyData[3].username || _self.ruleForm.password != this.modyData[4].password || _self.ruleForm.iport != this.modyData[1].iport || _self.ruleForm.instanceName != this.modyData[2].instanceName || _self.ruleForm.model != this.modyData[5].model) {
         modifyFlag = '1';
       }
@@ -695,7 +691,6 @@ export default {
 
             ]
           }
-          console.log(typeof(save));
           this.$ajax({
             method: "get",
             url: this.GLOBAL.api.API_DACM + '/register/dataSourceCheck',
