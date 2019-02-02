@@ -37,11 +37,9 @@
           <div class="line"></div>
           <dataCount v-bind:dataObj="count2Data" class="countData"/>
           <div class="regbtn">
-            <reg-dialog
-              @refreshTable="loadTable"
-              @storeReady="storeReady"
-              @refreshCount="countTotal++"
-            ></reg-dialog>
+            <el-tooltip class="item" effect="light" content="注册" placement="top">
+              <el-button icon="enc-icon-zhuce icon-title" @click="regDialogVisible" type="primary">注册</el-button>
+            </el-tooltip>
           </div>
         </div>
       </div>
@@ -75,6 +73,9 @@
         </el-table-column>
       </el-table>
     </div>
+    <!--注册-->
+    <reg-dialog v-if="dialogVisible" ref="addOrUpdate" @refreshTable="loadTable"  @storeReady="storeReady"  @refreshCount="countTotal++"></reg-dialog>
+
     <div class="enc-pagination">
       <el-pagination v-if="queryParamReady" style="float:right; margin:10px;" @current-change="goPage" background :page-size.sync="pageSize" :total="mainTableDataTotal" layout="prev, pager, next, jumper" :current-page.sync="currentPage"></el-pagination>
     </div>
@@ -147,7 +148,8 @@ export default {
         }],
       pageSize: 20,
       key_word: "",
-      deleteData: {}
+      deleteData: {},
+      dialogVisible: false,
     };
   },
   computed: {
@@ -664,6 +666,12 @@ export default {
         keyword: ""
       };
       this.$store.commit("setMajorData", map);
+    },
+    regDialogVisible() {
+      this.dialogVisible = true;
+      this.$nextTick(()=>{
+        this.$refs.addOrUpdate.openRegVisible();
+      })
     }
   }
 };

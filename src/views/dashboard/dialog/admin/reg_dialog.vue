@@ -1,14 +1,10 @@
 <template>
-  <div class="taskMDialog icon-dai regcon reg_dialog1">
-    <el-tooltip class="item" effect="light" content="注册" placement="top">
-      <el-button icon="enc-icon-zhuce icon-title" @click="dialogVisible = true" type="primary">注册</el-button>
-    </el-tooltip>
     <el-dialog
       title="接入数据源"
       :visible.sync="dialogVisible"
       width="72%"
       :before-close="closeDialog"
-      class="reg-dialog"
+      class="taskMDialog"
       :close-on-click-modal="false"
     >
       <div class="title-gra plr30">
@@ -396,7 +392,6 @@
         </div>
       </el-form>
     </el-dialog>
-  </div>
 </template>
 <script>
 import { validateEmail } from "@/utils/validate.js";
@@ -649,6 +644,10 @@ export default {
     };
   },
   methods: {
+    // 显示弹框
+    openRegVisible() {
+      this.dialogVisible = true;
+    },
     //关闭对话框
     closeDialog() {
       this.dialogVisible = false;
