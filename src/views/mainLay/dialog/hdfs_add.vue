@@ -1,8 +1,4 @@
 <template>
-  <div>
-    <div class="clearfix" style="margin-top:20px;">
-      <el-button type="primary"  @click="dialogVisible = true">新增</el-button>
-    </div>
     <el-dialog title="新增" :visible.sync="dialogVisible" width="60%" :before-close="closeDialog">
         <div class="title-gra plr30">
           <div class="grab gra-r">
@@ -11,7 +7,7 @@
         </div>
       <el-form :model="ruleForm" ref="ruleForm" label-width="100px" class="demo-ruleForm" :rules="formRules" v-loading="loading">
             <el-col :span="10">
-              <el-form-item label="hdfs主机名:" prop="hdfsname" required>
+              <el-form-item label="hdfs主机名:" prop="hdfsname" >
                 <el-input v-model="ruleForm.hdfsname"></el-input>
               </el-form-item>
             </el-col>
@@ -64,7 +60,6 @@
         <el-button type="primary" @click="submitForm('ruleForm')">保存</el-button>
       </div>
     </el-dialog>
-  </div>
 </template>
 <script>
 import impalaMap from '@/views/mainLay/dialog/impala_map' //impala表
@@ -124,6 +119,9 @@ export default {
     };
   },
   methods: {
+    addDiagVisible(){
+      this.dialogVisible = true;
+    },
     //关闭对话框
     closeDialog() {
       this.dialogVisible = false;
