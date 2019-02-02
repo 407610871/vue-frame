@@ -152,16 +152,13 @@ export default {
   },
   computed: {
     tableParams: function() {
-      console.log(this.$store.state.queryParams.dashboard);
       return this.$store.state.queryParams.dashboard;
     },
     tableHeight: function() {
-      /**  return this.collapse ?
-         window.innerHeight - 375 :
-         (window.innerHeight - 510 - 20 * this.moreData < 400 ? 300 : window.innerHeight - 510 - 20); */
+      let a = document.getElementById("enc-breadcrumb-js");
       if (window.innerHeight > 768) {
-        return window.innerHeight - 325;
-      }
+        return a && a !=null ? window.innerHeight - 325 - a : window.innerHeight - 325;
+      } 
       return 360;
     },
     majorData() {
@@ -294,12 +291,13 @@ export default {
       network == true ? [] : network;
       platform == true ? [] : platform;
       dataSourceName == true ? [] : dataSourceName;
+      console.log("this.$store.state.fliterItemList===",this.$store.state.fliterItemList);
       this.formFilterData[0].checkData = this.$store.state.fliterItemList.dataSourceName.data;
       this.formFilterData[0].seledData = dataSourceName;
       this.formFilterData[1].checkData = this.$store.state.fliterItemList.network.data;
-      this.formFilterData[1].checkData = network;
+      this.formFilterData[1].seledData = network;
       this.formFilterData[2].checkData = this.$store.state.fliterItemList.platform.data;
-      this.formFilterData[2].checkData = platform;
+      this.formFilterData[2].seledData = platform;
       this.queryParamReady = true;
     },
     collapseExpand: function() {
