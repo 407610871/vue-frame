@@ -380,3 +380,18 @@ header {
 .table-tools .el-button--primary span , .table-tools .el-button--medium span {
   float:right;
 }
+.el-input__inner {
+  background: #fff;
+}
+.doCearch {
+  i {
+    font-size: 22px;
+  }
+}
+.doCearch, .doCearch:focus {
+  @include el-button--primary($el-primary-theme);
+}
+.searchDiv span {
+  background: #fff;
+  border: #fff;
+}
