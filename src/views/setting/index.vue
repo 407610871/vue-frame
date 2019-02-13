@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-breadcrumb separator="/">
-      <el-breadcrumb-item :to="{ path: '/dashboard' }">
+      <el-breadcrumb-item>
         系统参数
       </el-breadcrumb-item>
     </el-breadcrumb>

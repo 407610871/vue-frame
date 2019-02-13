@@ -6,6 +6,7 @@
       :before-close="closeDialog"
       class="taskMDialog"
       :close-on-click-modal="false"
+      :append-to-body="true"
     >
       <div class="title-gra plr30">
         <div class="grab gra-r">

@@ -1,5 +1,5 @@
 <template>
-    <el-dialog class="taskMDialog" title="修改" :visible.sync="dialogVisible" width="60%" :before-close="closeDialog">
+    <el-dialog class="taskMDialog" title="修改" :append-to-body="true" :visible.sync="dialogVisible" width="60%" :before-close="closeDialog">
       <div class="title-gra plr30">
         <div class="grab gra-r">
           <span class="grab gra-l"></span>

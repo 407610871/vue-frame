@@ -3,7 +3,7 @@
     <el-tooltip class="item" effect="light" content="编辑" placement="top">
       <i @click="dialogVisible = true" class="enc-icon-bianji table-action-btn"></i>
     </el-tooltip>
-    <el-dialog title="接入数据源" :visible.sync="dialogVisible" width="72%" :before-close="closeDialog" class="edit-dialog">
+    <el-dialog title="接入数据源" :visible.sync="dialogVisible" width="72%" :before-close="closeDialog" :append-to-body="true" class="edit-dialog">
         <div class="title-gra plr30">
           <div class="grab gra-r">
             <span class="grab gra-l"></span>

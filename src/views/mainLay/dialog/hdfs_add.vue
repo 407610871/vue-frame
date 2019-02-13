@@ -1,5 +1,5 @@
 <template>
-    <el-dialog title="新增" :visible.sync="dialogVisible" width="60%" :before-close="closeDialog">
+    <el-dialog title="新增" :visible.sync="dialogVisible" width="60%" :append-to-body="true" :before-close="closeDialog">
         <div class="title-gra plr30">
           <div class="grab gra-r">
             <span class="grab gra-l"></span>
