@@ -171,7 +171,7 @@ header {
     border-radius: 0;
     height: 35px;
     color: #fff !important;
-    line-height: 10px;
+    line-height: 1px;
     @include el-button--primary($el-button-default);
   }
   .el-button--primary:hover {
@@ -222,7 +222,7 @@ header {
   // 输入框
   .el-input--medium .el-input__inner {
     height: 35px;
-    line-height: 35px;
+    line-height: 1px;
     padding: 0 12px;
   }
   .el-form-item__label {
