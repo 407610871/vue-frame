@@ -262,6 +262,7 @@ export default {
       
     },
     objName() {
+     // console.log(this.$route.params.objName);
       if(this.$route.params.objName!=undefined){
         return decodeURI(this.$route.params.objName);
       }

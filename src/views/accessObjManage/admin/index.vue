@@ -1,14 +1,11 @@
 <template>
-  <div style="height:100%;" class="dashboard-container">
+  <div style="height:100%;" class="dashboard-container manage-container">
     <div>
       <el-breadcrumb separator="/">
         <el-breadcrumb-item :to="{path: '/dashboard'}">数据接入</el-breadcrumb-item>
         <el-breadcrumb-item>{{ breadcrumbName }}</el-breadcrumb-item>
       </el-breadcrumb>
-      <form-fliter v-if="cleanData" @highMore="moreHeight" @highSeaech="hightrue" 
-      v-bind:formCollapse="collapse" v-bind:dataObj="formFilterData" 
-      v-bind:key_word="key_word" v-bind:deleteData="deleteData" @doSearch="search" 
-      @formFilter="changeFormFilter" />
+      <form-fliter v-if="cleanData" @highMore="moreHeight" @highSeaech="hightrue" v-bind:formCollapse="collapse" v-bind:dataObj="formFilterData" v-bind:key_word="key_word" v-bind:deleteData="deleteData" @doSearch="search" @formFilter="changeFormFilter" />
     </div>
     <div id="enc-detail-js" class="el-breadcrumb" v-show="majorData.keyword!=''||( Object.keys(majorData.formSeledShow).length!=0 && (majorData.formSeledShow.dataSourceName.length!=0
             ||majorData.formSeledShow.network.length!=0||majorData.formSeledShow.platform.length!=0
@@ -30,175 +27,543 @@
         </el-form-item>
       </el-form>
     </div>
-    <div class="main main-content">
-      <div class="moreSearch" style="margin-bottom:10px;">
-        <div class="table-tools">
-          <el-tooltip v-if="type=='mysql'|| type=='oracle'|| type=='postgresql' || type=='sqlserver' || type=='file'" class="item" effect="light" content="批量采集" placement="top" style="margin-right:10px;">
-            <el-button @click="showTask" type="primary" icon="icon-title enc-icon-piliangcaiji">
-              批量采集</el-button>
-          </el-tooltip>
-          <table-inver v-if="type=='mysql'|| type=='oracle'|| type=='postgresql' || type=='sqlserver'||type=='mongodb'" :pdata="tablePa"></table-inver>
-          <path-ftp @refresh="loadTable" v-if="type=='ftp'"></path-ftp>
-          <el-tooltip v-if="type=='mysql'|| type=='oracle'|| type=='postgresql' || type=='sqlserver'||type=='mongodb'" class="item" effect="light" content="接入源更新" placement="top">
-            <el-button @click="updataSource" type="primary" icon="icon-title enc-icon-jieruyuangengxin">
-              接入源更新</el-button>
-          </el-tooltip>
-        </div>
+    <!-- tab页面切换 -->
+    <div class="moreSearch">
+      <div class="table-tools">
+        <el-tooltip v-if="(type=='mysql'|| type=='oracle'|| type=='postgresql' || type=='sqlserver' || type=='file')&&activeName=='first'" class="item" effect="light" content="批量采集" placement="top" style="margin-right:10px;">
+          <el-button @click="showTask" type="primary" icon="icon-title enc-icon-piliangcaiji">
+            批量采集</el-button>
+        </el-tooltip>
+        <table-inver v-if="(type=='mysql'|| type=='oracle'|| type=='postgresql' || type=='sqlserver'||type=='mongodb')" :pdata="tablePa"></table-inver>
+        <path-ftp @refresh="loadTable" v-if="type=='ftp'"></path-ftp>
+        <el-tooltip v-if="type=='mysql'|| type=='oracle'|| type=='postgresql' || type=='sqlserver'||type=='mongodb'" class="item" effect="light" content="接入源更新" placement="top">
+          <el-button @click="updataSource" type="primary" icon="icon-title enc-icon-jieruyuangengxin" style="margin-left: 0px;">
+            接入源更新</el-button>
+        </el-tooltip>
       </div>
-      <el-table ref="multipleTable" :height="tableHeight" v-loading="loading" :data="mainTableData" stripe style="width: 100%; margin-top:10px;" tooltip-effect="light" :row-class-name="tableRowClassName" @selection-change="handleSelectionChange">
-        <el-table-column type="selection" v-if="type!=='ftp'"></el-table-column>
-        <!-- ftp -->
-        <el-table-column label="状态" v-if="type=='ftp'||type=='mongodb'" show-overflow-tooltip>
-          <template slot-scope="scope">
-            <span>{{scope.row.collectName}}</span>
-          </template>
-        </el-table-column>
-        <el-table-column prop="name" label="文件夹名" v-if="type=='ftp'" show-overflow-tooltip></el-table-column>
-        <el-table-column prop="extendParams.filePath" label="路径" v-if="type=='ftp'" show-overflow-tooltip></el-table-column>
-        <el-table-column label="是否包含子目录" v-if="type=='ftp'" width="160" show-overflow-tooltip>
-          <template slot-scope="scope">
-            <span v-if="scope.row.extendParams.isSubDirectory=='true'">是</span>
-            <span v-if="scope.row.extendParams.isSubDirectory=='false'">否</span>
-          </template>
-        </el-table-column>
-        <el-table-column label="是否删除文件" v-if="type=='ftp'" width="160" show-overflow-tooltip>
-          <template slot-scope="scope">
-            <span v-if="scope.row.extendParams.isdelet=='true'">是</span>
-            <span v-if="scope.row.extendParams.isdelet=='false'">否</span>
-          </template>
-        </el-table-column>
-        <el-table-column prop="extendParams.diyComments" label="自定义注释" width="160" v-if="type=='ftp'" show-overflow-tooltip>
-          <template slot-scope="scope">
-            <div>
-              <el-tooltip class="item" effect="light" content="修改" placement="top" show-overflow-tooltip>
-                <i @click="editName(scope.row,scope.$index)" class="el-icon-edit-outline table-action-btn" v-show="!scope.row.showEdit" />
-              </el-tooltip>
-              <span v-show="!scope.row.showEdit">{{ scope.row.diyComments }}</span>
-              <input type="text" v-model="editingRow.diyComments" v-show="scope.row.showEdit" autofocus @blur="changeName(scope.$index, scope.row)">
-            </div>
-          </template>
-        </el-table-column>
-        <!-- mangoDB -->
-        <el-table-column prop="name" label="对象名" v-if="type=='mongodb'" show-overflow-tooltip></el-table-column>
-        <el-table-column prop="totalRows" label="数据量" v-if="type=='mongodb'" show-overflow-tooltip></el-table-column>
-        <el-table-column prop="owner" label="持有者" v-if="type=='mongodb'" show-overflow-tooltip></el-table-column>
-        <el-table-column prop="name" label="备注" v-if="type=='mongodb'" show-overflow-tooltip>
-          <template slot-scope="scope">
-            <span>{{scope.row.comments}}</span>
-          </template>
-        </el-table-column>
-        <el-table-column prop="lastChangeTime" label="最后更新时间" v-if="type=='mongodb'" min-width="180" show-overflow-tooltip></el-table-column>
-        <!-- RabbitMQ -->
-        <el-table-column prop="name" label="队列名称" v-if="type=='rabbitmq'" show-overflow-tooltip></el-table-column>
-        <el-table-column prop="diyComments" label="队列描述" v-if="type=='rabbitmq'" show-overflow-tooltip></el-table-column>
-        <!-- ActiveMQ -->
-        <el-table-column label="状态" v-if="type=='activemq'" show-overflow-tooltip>
-          <template slot-scope="scope">
-            <span>{{getPeriod(scope.row)}}</span>
-          </template>
-        </el-table-column>
-        <el-table-column prop="extendParams.objectType" label="类型" v-if="type=='activemq'" show-overflow-tooltip></el-table-column>
-        <el-table-column prop="name" label="消息名称" v-if="type=='activemq'" show-overflow-tooltip></el-table-column>
-        <el-table-column prop="extendParams.messageSize" label="队列汇总剩余消息数" v-if="type=='activemq'" show-overflow-tooltip></el-table-column>
-        <el-table-column prop="extendParams.consumers" label="消费者数量" v-if="type=='activemq'" show-overflow-tooltip></el-table-column>
-        <el-table-column prop="extendParams.messagesDequeued" label="进入队列消息数" v-if="type=='activemq'" show-overflow-tooltip></el-table-column>
-        <el-table-column prop="extendParams.messagesEnqueued" label="出队列消息数" v-if="type=='activemq'" show-overflow-tooltip></el-table-column>
-        <!-- 本地文件 -->
-        <el-table-column label="状态" v-if="type=='file'" show-overflow-tooltip>
-          <template slot-scope="scope">
-            <span>{{getPeriod(scope.row)}}</span>
-          </template>
-        </el-table-column>
-        <el-table-column prop="name" label="文件名称" v-if="type=='file'" show-overflow-tooltip></el-table-column>
-        <el-table-column prop="name" label="文件类型" v-if="type=='file'" show-overflow-tooltip>
-          <template slot-scope="scope">
-            <span>{{getFileType(scope.row.name)}}</span>
-          </template>
-        </el-table-column>
-        <el-table-column prop="lastChangeTime" label="最后修改时间" v-if="type=='file'" show-overflow-tooltip></el-table-column>
-        <el-table-column prop="extendParams.fileSize" label="文件大小" v-if="type=='file'" show-overflow-tooltip></el-table-column>
-        <el-table-column prop="extendParams.messagesDequeued" label="更新方式" v-if="type=='file'" show-overflow-tooltip>
-          <template>
-            <span>历史</span>
-          </template>
-        </el-table-column>
-        <el-table-column prop="extendParams.messagesEnqueued" label="注释" v-if="type=='file'" show-overflow-tooltip></el-table-column>
-        <!-- oracle，mysql，postgresql -->
-        <el-table-column label="资源名称" width="180" show-overflow-tooltip v-if="type=='oracle' || type=='mysql' || type=='postgresql'">
-          <template slot-scope="scope">
-            <div>
-              <el-tooltip class="item" effect="light" content="修改" placement="top" show-overflow-tooltip>
-                <i @click="editName(scope.row,scope.$index)" class="el-icon-edit-outline table-action-btn" v-show="!scope.row.showEdit" />
-              </el-tooltip>
-              <span v-show="!scope.row.showEdit">{{ scope.row.diyComments }}</span>
-              <input type="text" v-model="editingRow.diyComments" v-show="scope.row.showEdit" autofocus @blur="changeName(scope.$index, scope.row)">
-            </div>
-          </template>
-        </el-table-column>
-        <el-table-column label="接入对象" width="180" show-overflow-tooltip v-if="type=='oracle' || type=='mysql' || type=='postgresql'">
-          <template slot-scope="scope">
-            <a class="underdone" href="javascript:void(0)" v-on:click="goAccessObjInfo(scope.row)">{{ scope.row.name }}</a>
-          </template>
-        </el-table-column>
-        <el-table-column label="接入对象类型" v-if="type=='oracle' || type=='mysql' || type=='postgresql'" min-width="160">
-          <template slot-scope="scope">{{getObjType(scope.row.extendParams.objectType)}}</template>
-        </el-table-column>
-        <el-table-column prop="owner" label="持有者" v-if="type=='oracle' || type=='mysql' || type=='postgresql'" show-overflow-tooltip></el-table-column>
-        <el-table-column prop="totalRows" label="源端数据量" v-if="type=='oracle' || type=='mysql' || type=='postgresql'" min-width="160" show-overflow-tooltip></el-table-column>
-        <el-table-column prop="comments" label="描述" v-if="type=='oracle' || type=='mysql' || type=='postgresql'" show-overflow-tooltip></el-table-column>
-        <el-table-column prop="lastChangeTime" label="同步更新时间" v-if="type=='oracle' || type=='mysql' || type=='postgresql'" min-width="160" show-overflow-tooltip></el-table-column>
-        <el-table-column prop="dataRange" label="数据范围" v-if="type=='oracle' || type=='mysql' || type=='postgresql'" min-width="100" show-overflow-tooltip></el-table-column>
-        <el-table-column prop="objectStatus" label="状态信息" v-if="type=='oracle' || type=='mysql' || type=='postgresql'" min-width="160" show-overflow-tooltip>
-          <template slot-scope="scope">
-            <span style="cursor: pointer" v-if="scope.row.extendParams.taskInfoId!=undefined" @click="doDetail(scope.$index, scope.row)">{{scope.row.objectStatus}}</span>
-            <span v-if="scope.row.extendParams.taskInfoId==undefined">{{scope.row.objectStatus}}</span>
-          </template>
-        </el-table-column>
-        <el-table-column prop="collectName" label="数据采集方式" v-if="type=='oracle' || type=='mysql' || type=='postgresql'" min-width="160" show-overflow-tooltip></el-table-column>
-        <el-table-column label="操作" width="200">
-          <template slot-scope="scope">
-            <div :class="(type=='ftp'||type=='mongodb')?'icon-other':'icon-center'">
-              <div class="survey" v-if="type=='mysql'|| type=='oracle'|| type=='postgresql' || type=='sqlserver' || type=='mongodb'">
-                <el-tooltip class="item" effect="light" content="数据量更新" placement="top">
-                  <i class="enc-icon-shujugengxin" v-on:click="updataSourceSingle(scope.$index, scope.row)" title="数据量更新"></i>
-                </el-tooltip>
-              </div>
-              <div class="survey" v-if="type=='mysql'|| type=='oracle'|| type=='postgresql' 
+    </div>
+    <el-tabs v-model="activeName" type="card" @tab-click="handleClick" class="manage-tab">
+      <el-tab-pane label="未采集对象" name="first">
+        <div class="main main-content">
+          <el-table ref="multipleTable" :height="tableHeight" v-loading="loading" :data="mainTableData" stripe style="width: 100%;" tooltip-effect="light" :row-class-name="tableRowClassName" @selection-change="handleSelectionChange">
+            <el-table-column type="selection"></el-table-column>
+            <!-- ftp -->
+            <el-table-column label="状态" v-if="type=='ftp'||type=='mongodb'" show-overflow-tooltip>
+              <template slot-scope="scope">
+                <span>{{scope.row.collectName}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column prop="name" label="文件夹名" v-if="type=='ftp'" show-overflow-tooltip></el-table-column>
+            <el-table-column prop="extendParams.filePath" label="路径" v-if="type=='ftp'" show-overflow-tooltip></el-table-column>
+            <el-table-column label="是否包含子目录" v-if="type=='ftp'" width="160" show-overflow-tooltip>
+              <template slot-scope="scope">
+                <span v-if="scope.row.extendParams.isSubDirectory=='true'">是</span>
+                <span v-if="scope.row.extendParams.isSubDirectory=='false'">否</span>
+              </template>
+            </el-table-column>
+            <el-table-column label="是否删除文件" v-if="type=='ftp'" width="160" show-overflow-tooltip>
+              <template slot-scope="scope">
+                <span v-if="scope.row.extendParams.isdelet=='true'">是</span>
+                <span v-if="scope.row.extendParams.isdelet=='false'">否</span>
+              </template>
+            </el-table-column>
+            <el-table-column prop="extendParams.diyComments" label="自定义注释" width="160" v-if="type=='ftp'" show-overflow-tooltip>
+              <template slot-scope="scope">
+                <div>
+                  <el-tooltip class="item" effect="light" content="修改" placement="top" show-overflow-tooltip>
+                    <i @click="editName(scope.row,scope.$index)" class="el-icon-edit-outline table-action-btn" v-show="!scope.row.showEdit" />
+                  </el-tooltip>
+                  <span v-show="!scope.row.showEdit">{{ scope.row.diyComments }}</span>
+                  <input type="text" v-model="editingRow.diyComments" v-show="scope.row.showEdit" autofocus @blur="changeName(scope.$index, scope.row)">
+                </div>
+              </template>
+            </el-table-column>
+            <!-- mangoDB -->
+            <el-table-column prop="name" label="对象名" v-if="type=='mongodb'" show-overflow-tooltip></el-table-column>
+            <el-table-column prop="totalRows" label="数据量" v-if="type=='mongodb'" show-overflow-tooltip></el-table-column>
+            <el-table-column prop="owner" label="持有者" v-if="type=='mongodb'" show-overflow-tooltip></el-table-column>
+            <el-table-column prop="name" label="备注" v-if="type=='mongodb'" show-overflow-tooltip>
+              <template slot-scope="scope">
+                <span>{{scope.row.comments}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column prop="lastChangeTime" label="最后更新时间" v-if="type=='mongodb'" min-width="180" show-overflow-tooltip></el-table-column>
+            <!-- RabbitMQ -->
+            <el-table-column prop="name" label="队列名称" v-if="type=='rabbitmq'" show-overflow-tooltip></el-table-column>
+            <el-table-column prop="diyComments" label="队列描述" v-if="type=='rabbitmq'" show-overflow-tooltip></el-table-column>
+            <!-- ActiveMQ -->
+            <el-table-column label="状态" v-if="type=='activemq'" show-overflow-tooltip>
+              <template slot-scope="scope">
+                <span>{{getPeriod(scope.row)}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column prop="extendParams.objectType" label="类型" v-if="type=='activemq'" show-overflow-tooltip></el-table-column>
+            <el-table-column prop="name" label="消息名称" v-if="type=='activemq'" show-overflow-tooltip></el-table-column>
+            <el-table-column prop="extendParams.messageSize" label="队列汇总剩余消息数" v-if="type=='activemq'" show-overflow-tooltip></el-table-column>
+            <el-table-column prop="extendParams.consumers" label="消费者数量" v-if="type=='activemq'" show-overflow-tooltip></el-table-column>
+            <el-table-column prop="extendParams.messagesDequeued" label="进入队列消息数" v-if="type=='activemq'" show-overflow-tooltip></el-table-column>
+            <el-table-column prop="extendParams.messagesEnqueued" label="出队列消息数" v-if="type=='activemq'" show-overflow-tooltip></el-table-column>
+            <!-- 本地文件 -->
+            <el-table-column label="状态" v-if="type=='file'" show-overflow-tooltip>
+              <template slot-scope="scope">
+                <span>{{getPeriod(scope.row)}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column prop="name" label="文件名称" v-if="type=='file'" show-overflow-tooltip></el-table-column>
+            <el-table-column prop="name" label="文件类型" v-if="type=='file'" show-overflow-tooltip>
+              <template slot-scope="scope">
+                <span>{{getFileType(scope.row.name)}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column prop="lastChangeTime" label="最后修改时间" v-if="type=='file'" show-overflow-tooltip></el-table-column>
+            <el-table-column prop="extendParams.fileSize" label="文件大小" v-if="type=='file'" show-overflow-tooltip></el-table-column>
+            <el-table-column prop="extendParams.messagesDequeued" label="更新方式" v-if="type=='file'" show-overflow-tooltip>
+              <template>
+                <span>历史</span>
+              </template>
+            </el-table-column>
+            <el-table-column prop="extendParams.messagesEnqueued" label="注释" v-if="type=='file'" show-overflow-tooltip></el-table-column>
+            <!-- oracle，mysql，postgresql -->
+            <el-table-column label="资源名称" width="180" show-overflow-tooltip v-if="type=='oracle' || type=='mysql' || type=='postgresql'">
+              <template slot-scope="scope">
+                <div>
+                  <el-tooltip class="item" effect="light" content="修改" placement="top" show-overflow-tooltip>
+                    <i @click="editName(scope.row,scope.$index)" class="el-icon-edit-outline table-action-btn" v-show="!scope.row.showEdit" />
+                  </el-tooltip>
+                  <span v-show="!scope.row.showEdit">{{ scope.row.diyComments }}</span>
+                  <input type="text" v-model="editingRow.diyComments" v-show="scope.row.showEdit" autofocus @blur="changeName(scope.$index, scope.row)">
+                </div>
+              </template>
+            </el-table-column>
+            <el-table-column label="接入对象" width="180" show-overflow-tooltip v-if="type=='oracle' || type=='mysql' || type=='postgresql'">
+              <template slot-scope="scope">
+                <a class="underdone" href="javascript:void(0)" v-on:click="goAccessObjInfo(scope.row)">{{ scope.row.name }}</a>
+              </template>
+            </el-table-column>
+            <el-table-column label="接入对象类型" v-if="type=='oracle' || type=='mysql' || type=='postgresql'" min-width="160">
+              <template slot-scope="scope">{{getObjType(scope.row.extendParams.objectType)}}</template>
+            </el-table-column>
+            <el-table-column prop="owner" label="持有者" v-if="type=='oracle' || type=='mysql' || type=='postgresql'" show-overflow-tooltip></el-table-column>
+            <el-table-column prop="totalRows" label="源端数据量" v-if="type=='oracle' || type=='mysql' || type=='postgresql'" min-width="160" show-overflow-tooltip></el-table-column>
+            <el-table-column prop="comments" label="描述" v-if="type=='oracle' || type=='mysql' || type=='postgresql'" show-overflow-tooltip></el-table-column>
+            <el-table-column prop="lastChangeTime" label="同步更新时间" v-if="type=='oracle' || type=='mysql' || type=='postgresql'" min-width="160" show-overflow-tooltip></el-table-column>
+            <el-table-column prop="dataRange" label="数据范围" v-if="type=='oracle' || type=='mysql' || type=='postgresql'" min-width="100" show-overflow-tooltip></el-table-column>
+            <el-table-column prop="objectStatus" label="状态信息" v-if="type=='oracle' || type=='mysql' || type=='postgresql'" min-width="160" show-overflow-tooltip>
+              <template slot-scope="scope">
+                <span style="cursor: pointer" v-if="scope.row.extendParams.taskInfoId!=undefined" @click="doDetail(scope.$index, scope.row)">{{scope.row.objectStatus}}</span>
+                <span v-if="scope.row.extendParams.taskInfoId==undefined">{{scope.row.objectStatus}}</span>
+              </template>
+            </el-table-column>
+            <!-- <el-table-column prop="collectName" label="数据采集方式" v-if="type=='oracle' || type=='mysql' || type=='postgresql'" min-width="160" show-overflow-tooltip></el-table-column> -->
+            <el-table-column label="操作" width="200">
+              <template slot-scope="scope">
+                <div :class="(type=='ftp'||type=='mongodb')?'icon-other':'icon-center'">
+                  <div class="survey" v-if="type=='mysql'|| type=='oracle'|| type=='postgresql' || type=='sqlserver' || type=='mongodb'">
+                    <el-tooltip class="item" effect="light" content="数据量更新" placement="top">
+                      <i class="enc-icon-shujugengxin" v-on:click="updataSourceSingle(scope.$index, scope.row)" title="数据量更新"></i>
+                    </el-tooltip>
+                  </div>
+                  <div class="survey" v-if="type=='mysql'|| type=='oracle'|| type=='postgresql' 
                     || type=='sqlserver'">
-                <singleTask :pdata="scope.row" @fre="loadTable()"></singleTask>
-              </div>
-              <div class="survey" v-if="type=='mysql'|| type=='oracle'|| type=='postgresql' || type=='sqlserver'">
-                <userSurvey :pdata="scope.row" @fre="loadTable()"></userSurvey>
-              </div>
-              <div class="survey" v-if="type!='mysql' && type!='oracle' && type!='sqlserver' && type!='postgresql'">
-                <el-tooltip class="item" effect="light" :content="type=='ftp'?'单目录采集':'单表采集'" placement="top">
-                  <i class="enc-icon-danbiaocaiji" @click="setNoreVisible(scope.row,scope.$index)"></i>
-                </el-tooltip>
-                <!-- <norela-coll :pdata="scope.row" :type="type" @fre="loadTable()"></norela-coll> -->
-              </div>
-              <div class="survey" v-if="(type=='mysql'&&scope.row.accessConnectorSource!=undefined&&scope.row.accessConnectorSource.isPeriod!='0'&&(scope.row.extendParams.taskStatus=='1'||scope.row.extendParams.taskStatus=='2'||scope.row.extendParams.taskStatus=='4'))
+                    <singleTask :pdata="scope.row" @fre="loadTable()"></singleTask>
+                  </div>
+                  <div class="survey" v-if="type=='mysql'|| type=='oracle'|| type=='postgresql' || type=='sqlserver'">
+                    <userSurvey :pdata="scope.row" @fre="loadTable()"></userSurvey>
+                  </div>
+                  <div class="survey" v-if="type!='mysql' && type!='oracle' && type!='sqlserver' && type!='postgresql'">
+                    <el-tooltip class="item" effect="light" :content="type=='ftp'?'单目录采集':'单表采集'" placement="top">
+                      <i class="enc-icon-danbiaocaiji" @click="setNoreVisible(scope.row,scope.$index)"></i>
+                    </el-tooltip>
+                    <!-- <norela-coll :pdata="scope.row" :type="type" @fre="loadTable()"></norela-coll> -->
+                  </div>
+                  <!-- <div class="survey" v-if="(type=='mysql'&&scope.row.accessConnectorSource!=undefined&&scope.row.accessConnectorSource.isPeriod!='0'&&(scope.row.extendParams.taskStatus=='1'||scope.row.extendParams.taskStatus=='2'||scope.row.extendParams.taskStatus=='4'))
                     || (type=='oracle'&&scope.row.accessConnectorSource!=undefined&&scope.row.accessConnectorSource.isPeriod!='0'&&(scope.row.extendParams.taskStatus=='1'||scope.row.extendParams.taskStatus=='2'||scope.row.extendParams.taskStatus=='4'))
                     || (type=='postgresql'&&scope.row.accessConnectorSource!=undefined&&scope.row.accessConnectorSource.isPeriod!='0'&&(scope.row.extendParams.taskStatus=='1'||scope.row.extendParams.taskStatus=='2'||scope.row.extendParams.taskStatus=='4')) 
                     || (type=='sqlserver'&&scope.row.accessConnectorSource!=undefined&&scope.row.accessConnectorSource.isPeriod!='0'&&(scope.row.extendParams.taskStatus=='1'||scope.row.extendParams.taskStatus=='2'||scope.row.extendParams.taskStatus=='4'))
                     ||(type=='ftp'&&scope.row.accessConnectorSource!=undefined&&scope.row.accessConnectorSource.isPeriod!='0'&&(scope.row.extendParams.taskStatus=='1'||scope.row.extendParams.taskStatus=='2'||scope.row.extendParams.taskStatus=='4')&&scope.row.extendParams.isdelet=='false')
                     ||(type=='mongodb'&&scope.row.accessConnectorSource!=undefined&&scope.row.accessConnectorSource.isPeriod!='0'&&(scope.row.extendParams.taskStatus=='1'||scope.row.extendParams.taskStatus=='2'||scope.row.extendParams.taskStatus=='4'))">
-                <el-tooltip class="item" effect="light" content="数据核验" placement="top">
-                  <i class="enc-icon-shujuheyan" @click="dataInverCheck(scope.row)"></i>
-                </el-tooltip>
-              </div>
-              <div class="survey" v-if="type==='ftp' && !scope.row.exitTask">
-                <el-tooltip class="item" effect="light" content="删除" placement="top">
-                  <i class="enc-icon-shanchu" @click="deleteFtp(scope.row)"></i>
-                </el-tooltip>
-              </div>
-            </div>
-          </template>
-        </el-table-column>
-      </el-table>
-    </div>
-    <div class="enc-pagination">
-      <el-pagination v-if="queryParamReady" v-show="pageShow" style="float:right; margin:10px;" @current-change="goPage" background :page-size="pageSize" :total="mainTableDataTotal" layout="prev, pager, next, jumper" :current-page.sync="currentPage"></el-pagination>
-    </div>
+                    <el-tooltip class="item" effect="light" content="数据核验" placement="top">
+                      <i class="enc-icon-shujuheyan" @click="dataInverCheck(scope.row)"></i>
+                    </el-tooltip>
+                  </div> -->
+                  <div class="survey" v-if="type==='ftp' && !scope.row.exitTask">
+                    <el-tooltip class="item" effect="light" content="删除" placement="top">
+                      <i class="enc-icon-shanchu" @click="deleteFtp(scope.row)"></i>
+                    </el-tooltip>
+                  </div>
+                </div>
+              </template>
+            </el-table-column>
+          </el-table>
+        </div>
+        <div class="enc-pagination">
+          <el-pagination v-if="queryParamReady" v-show="pageShow" style="float:right; margin:10px;" @current-change="goPage" background :page-size="pageSize" :total="mainTableDataTotal" layout="prev, pager, next, jumper" :current-page.sync="currentPage"></el-pagination>
+        </div>
+      </el-tab-pane>
+      <el-tab-pane label="单对象采集" name="second">
+        <div class="main main-content">
+          <el-table ref="multipleTable" :height="tableHeight" v-loading="loading" :data="mainTableData" stripe style="width: 100%;" tooltip-effect="light" :row-class-name="tableRowClassName" @selection-change="handleSelectionChange">
+            <el-table-column type="selection"></el-table-column>
+            <!-- ftp -->
+            <el-table-column label="状态" v-if="type=='ftp'||type=='mongodb'" show-overflow-tooltip>
+              <template slot-scope="scope">
+                <span v-if="scope.row.extendParams.taskInfoId!=undefined&&scope.row.extendParams.taskStatus=='0'">新建</span>
+                <span v-if="scope.row.extendParams.taskInfoId!=undefined&&scope.row.extendParams.taskStatus=='1'">运行</span>
+                <span v-if="scope.row.extendParams.taskInfoId!=undefined&&scope.row.extendParams.taskStatus=='2'">暂停</span>
+                <span v-if="scope.row.extendParams.taskInfoId!=undefined&&scope.row.extendParams.taskStatus=='6'">采集失败</span>
+                <span v-if="scope.row.extendParams.taskInfoId!=undefined&&scope.row.extendParams.taskStatus=='7'">汇聚失败</span>
+                <span v-if="scope.row.extendParams.taskInfoId!=undefined&&scope.row.extendParams.taskStatus=='4'">完成</span>
+                <span v-if="scope.row.extendParams.taskInfoId!=undefined&&scope.row.extendParams.taskStatus=='5'">准备中</span>
+                <!-- <span>{{scope.row.collectName}}</span> -->
+              </template>
+            </el-table-column>
+            <el-table-column prop="name" label="文件夹名" v-if="type=='ftp'" show-overflow-tooltip></el-table-column>
+            <el-table-column prop="extendParams.filePath" label="路径" v-if="type=='ftp'" show-overflow-tooltip></el-table-column>
+            <el-table-column label="是否包含子目录" v-if="type=='ftp'" width="160" show-overflow-tooltip>
+              <template slot-scope="scope">
+                <span v-if="scope.row.extendParams.isSubDirectory=='true'">是</span>
+                <span v-if="scope.row.extendParams.isSubDirectory=='false'">否</span>
+              </template>
+            </el-table-column>
+            <el-table-column label="是否删除文件" v-if="type=='ftp'" width="160" show-overflow-tooltip>
+              <template slot-scope="scope">
+                <span v-if="scope.row.extendParams.isdelet=='true'">是</span>
+                <span v-if="scope.row.extendParams.isdelet=='false'">否</span>
+              </template>
+            </el-table-column>
+            <el-table-column prop="extendParams.diyComments" label="自定义注释" width="160" v-if="type=='ftp'" show-overflow-tooltip>
+              <template slot-scope="scope">
+                <div>
+                  <el-tooltip class="item" effect="light" content="修改" placement="top" show-overflow-tooltip>
+                    <i @click="editName(scope.row,scope.$index)" class="el-icon-edit-outline table-action-btn" v-show="!scope.row.showEdit" />
+                  </el-tooltip>
+                  <span v-show="!scope.row.showEdit">{{ scope.row.diyComments }}</span>
+                  <input type="text" v-model="editingRow.diyComments" v-show="scope.row.showEdit" autofocus @blur="changeName(scope.$index, scope.row)">
+                </div>
+              </template>
+            </el-table-column>
+            <!-- mangoDB -->
+            <el-table-column prop="name" label="对象名" v-if="type=='mongodb'" show-overflow-tooltip></el-table-column>
+            <el-table-column prop="totalRows" label="数据量" v-if="type=='mongodb'" show-overflow-tooltip></el-table-column>
+            <el-table-column prop="owner" label="持有者" v-if="type=='mongodb'" show-overflow-tooltip></el-table-column>
+            <el-table-column prop="name" label="备注" v-if="type=='mongodb'" show-overflow-tooltip>
+              <template slot-scope="scope">
+                <span>{{scope.row.comments}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column prop="lastChangeTime" label="最后更新时间" v-if="type=='mongodb'" min-width="180" show-overflow-tooltip></el-table-column>
+            <!-- RabbitMQ -->
+            <el-table-column prop="name" label="队列名称" v-if="type=='rabbitmq'" show-overflow-tooltip></el-table-column>
+            <el-table-column prop="diyComments" label="队列描述" v-if="type=='rabbitmq'" show-overflow-tooltip></el-table-column>
+            <!-- ActiveMQ -->
+            <el-table-column label="状态" v-if="type=='activemq'" show-overflow-tooltip>
+              <template slot-scope="scope">
+                <span>{{getPeriod(scope.row)}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column prop="extendParams.objectType" label="类型" v-if="type=='activemq'" show-overflow-tooltip></el-table-column>
+            <el-table-column prop="name" label="消息名称" v-if="type=='activemq'" show-overflow-tooltip></el-table-column>
+            <el-table-column prop="extendParams.messageSize" label="队列汇总剩余消息数" v-if="type=='activemq'" show-overflow-tooltip></el-table-column>
+            <el-table-column prop="extendParams.consumers" label="消费者数量" v-if="type=='activemq'" show-overflow-tooltip></el-table-column>
+            <el-table-column prop="extendParams.messagesDequeued" label="进入队列消息数" v-if="type=='activemq'" show-overflow-tooltip></el-table-column>
+            <el-table-column prop="extendParams.messagesEnqueued" label="出队列消息数" v-if="type=='activemq'" show-overflow-tooltip></el-table-column>
+            <!-- 本地文件 -->
+            <el-table-column label="状态" v-if="type=='file'" show-overflow-tooltip>
+              <template slot-scope="scope">
+                <span>{{getPeriod(scope.row)}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column prop="name" label="文件名称" v-if="type=='file'" show-overflow-tooltip></el-table-column>
+            <el-table-column prop="name" label="文件类型" v-if="type=='file'" show-overflow-tooltip>
+              <template slot-scope="scope">
+                <span>{{getFileType(scope.row.name)}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column prop="lastChangeTime" label="最后修改时间" v-if="type=='file'" show-overflow-tooltip></el-table-column>
+            <el-table-column prop="extendParams.fileSize" label="文件大小" v-if="type=='file'" show-overflow-tooltip></el-table-column>
+            <el-table-column prop="extendParams.messagesDequeued" label="更新方式" v-if="type=='file'" show-overflow-tooltip>
+              <template>
+                <span>历史</span>
+              </template>
+            </el-table-column>
+            <el-table-column prop="extendParams.messagesEnqueued" label="注释" v-if="type=='file'" show-overflow-tooltip></el-table-column>
+            <!-- oracle，mysql，postgresql -->
+            <el-table-column label="资源名称" width="180" show-overflow-tooltip v-if="type=='oracle' || type=='mysql' || type=='postgresql'">
+              <template slot-scope="scope">
+                <div>
+                  <el-tooltip class="item" effect="light" content="修改" placement="top" show-overflow-tooltip>
+                    <i @click="editName(scope.row,scope.$index)" class="el-icon-edit-outline table-action-btn" v-show="!scope.row.showEdit" />
+                  </el-tooltip>
+                  <span v-show="!scope.row.showEdit">{{ scope.row.diyComments }}</span>
+                  <input type="text" v-model="editingRow.diyComments" v-show="scope.row.showEdit" autofocus @blur="changeName(scope.$index, scope.row)">
+                </div>
+              </template>
+            </el-table-column>
+            <el-table-column label="接入对象" width="180" show-overflow-tooltip v-if="type=='oracle' || type=='mysql' || type=='postgresql'">
+              <template slot-scope="scope">
+                <a class="underdone" href="javascript:void(0)" v-on:click="goAccessObjInfo(scope.row)">{{ scope.row.name }}</a>
+              </template>
+            </el-table-column>
+            <el-table-column label="接入对象类型" v-if="type=='oracle' || type=='mysql' || type=='postgresql'" min-width="160">
+              <template slot-scope="scope">{{getObjType(scope.row.extendParams.objectType)}}</template>
+            </el-table-column>
+            <el-table-column prop="owner" label="持有者" v-if="type=='oracle' || type=='mysql' || type=='postgresql'" show-overflow-tooltip></el-table-column>
+            <el-table-column prop="totalRows" label="源端数据量" v-if="type=='oracle' || type=='mysql' || type=='postgresql'" min-width="160" show-overflow-tooltip></el-table-column>
+            <el-table-column prop="comments" label="描述" v-if="type=='oracle' || type=='mysql' || type=='postgresql'" show-overflow-tooltip></el-table-column>
+            <el-table-column prop="lastChangeTime" label="同步更新时间" v-if="type=='oracle' || type=='mysql' || type=='postgresql'" min-width="160" show-overflow-tooltip></el-table-column>
+            <el-table-column prop="dataRange" label="数据范围" v-if="type=='oracle' || type=='mysql' || type=='postgresql'" min-width="100" show-overflow-tooltip></el-table-column>
+            <el-table-column prop="objectStatus" label="状态信息" v-if="type=='oracle' || type=='mysql' || type=='postgresql'" min-width="160" show-overflow-tooltip>
+              <template slot-scope="scope">
+                <!-- <span style="cursor: pointer" v-if="scope.row.extendParams.taskInfoId!=undefined" @click="doDetail(scope.$index, scope.row)">{{scope.row.objectStatus}}</span>
+                <span v-if="scope.row.extendParams.taskInfoId==undefined">{{scope.row.objectStatus}}</span> -->
+                <span v-if="scope.row.extendParams.taskInfoId!=undefined&&scope.row.extendParams.taskStatus=='0'">新建</span>
+                <span v-if="scope.row.extendParams.taskInfoId!=undefined&&scope.row.extendParams.taskStatus=='1'">运行</span>
+                <span v-if="scope.row.extendParams.taskInfoId!=undefined&&scope.row.extendParams.taskStatus=='2'">暂停</span>
+                <span v-if="scope.row.extendParams.taskInfoId!=undefined&&scope.row.extendParams.taskStatus=='6'">采集失败</span>
+                <span v-if="scope.row.extendParams.taskInfoId!=undefined&&scope.row.extendParams.taskStatus=='7'">汇聚失败</span>
+                <span v-if="scope.row.extendParams.taskInfoId!=undefined&&scope.row.extendParams.taskStatus=='4'">完成</span>
+                <span v-if="scope.row.extendParams.taskInfoId!=undefined&&scope.row.extendParams.taskStatus=='5'">准备中</span>
+              </template>
+            </el-table-column>
+            <el-table-column prop="collectName" label="数据采集方式" v-if="type=='oracle' || type=='mysql' || type=='postgresql'" min-width="160" show-overflow-tooltip></el-table-column>
+            <el-table-column label="操作" width="200">
+              <template slot-scope="scope">
+                <div :class="(type=='ftp'||type=='mongodb')?'icon-other':'icon-center'">
+                  <div class="survey" v-if="type=='mysql'|| type=='oracle'|| type=='postgresql' || type=='sqlserver' || type=='mongodb'">
+                    <el-tooltip class="item" effect="light" content="数据量更新" placement="top">
+                      <i class="enc-icon-shujugengxin" v-on:click="updataSourceSingle(scope.$index, scope.row)" title="数据量更新"></i>
+                    </el-tooltip>
+                  </div>
+                  <div class="survey" v-if="type=='mysql'|| type=='oracle'|| type=='postgresql' 
+                    || type=='sqlserver'">
+                    <singleTask :pdata="scope.row" @fre="loadTable()"></singleTask>
+                  </div>
+                  <div class="survey" v-if="type=='mysql'|| type=='oracle'|| type=='postgresql' || type=='sqlserver'">
+                    <userSurvey :pdata="scope.row" @fre="loadTable()"></userSurvey>
+                  </div>
+                  <div class="survey" v-if="type!='mysql' && type!='oracle' && type!='sqlserver' && type!='postgresql'">
+                    <el-tooltip class="item" effect="light" :content="type=='ftp'?'单目录采集':'单表采集'" placement="top">
+                      <i class="enc-icon-danbiaocaiji" @click="setNoreVisible(scope.row,scope.$index)"></i>
+                    </el-tooltip>
+                    <!-- <norela-coll :pdata="scope.row" :type="type" @fre="loadTable()"></norela-coll> -->
+                  </div>
+                  <div class="survey" v-if="(type=='mysql'&&scope.row.accessConnectorSource!=undefined&&scope.row.accessConnectorSource.isPeriod!='0'&&(scope.row.extendParams.taskStatus=='1'||scope.row.extendParams.taskStatus=='2'||scope.row.extendParams.taskStatus=='4'))
+                    || (type=='oracle'&&scope.row.accessConnectorSource!=undefined&&scope.row.accessConnectorSource.isPeriod!='0'&&(scope.row.extendParams.taskStatus=='1'||scope.row.extendParams.taskStatus=='2'||scope.row.extendParams.taskStatus=='4'))
+                    || (type=='postgresql'&&scope.row.accessConnectorSource!=undefined&&scope.row.accessConnectorSource.isPeriod!='0'&&(scope.row.extendParams.taskStatus=='1'||scope.row.extendParams.taskStatus=='2'||scope.row.extendParams.taskStatus=='4')) 
+                    || (type=='sqlserver'&&scope.row.accessConnectorSource!=undefined&&scope.row.accessConnectorSource.isPeriod!='0'&&(scope.row.extendParams.taskStatus=='1'||scope.row.extendParams.taskStatus=='2'||scope.row.extendParams.taskStatus=='4'))
+                    ||(type=='ftp'&&scope.row.accessConnectorSource!=undefined&&scope.row.accessConnectorSource.isPeriod!='0'&&(scope.row.extendParams.taskStatus=='1'||scope.row.extendParams.taskStatus=='2'||scope.row.extendParams.taskStatus=='4')&&scope.row.extendParams.isdelet=='false')
+                    ||(type=='mongodb'&&scope.row.accessConnectorSource!=undefined&&scope.row.accessConnectorSource.isPeriod!='0'&&(scope.row.extendParams.taskStatus=='1'||scope.row.extendParams.taskStatus=='2'||scope.row.extendParams.taskStatus=='4'))">
+                    <el-tooltip class="item" effect="light" content="数据核验" placement="top">
+                      <i class="enc-icon-shujuheyan" @click="dataInverCheck(scope.row)"></i>
+                    </el-tooltip>
+                  </div>
+                  <!-- 任务详情 -->
+                  <div class="survey" v-if="scope.row.extendParams.taskInfoId!=undefined">
+                    <el-tooltip class="item" effect="light" content="任务详情" placement="top">
+                      <i class="enc-icon-fuwushengcheng1" @click="doDetail(scope.$index, scope.row)"></i>
+                    </el-tooltip>
+                  </div>
+                  <!-- 重新汇聚 -->
+                  <div class="survey" v-if="(scope.row.extendParams.taskStatus==2||scope.row.extendParams.taskStatus==4||scope.row.extendParams.taskStatus==6||scope.row.extendParams.taskStatus==7)&&scope.row.accessConnectorSource.isPeriod!=0&&scope.row.extendParams.isdelet!='true'">
+                    <el-tooltip class="item" effect="light" content="重新汇聚" placement="top">
+                      <i class="enc-icon-huiju" @click="doConverge(scope.$index, scope.row)"></i>
+                    </el-tooltip>
+                  </div>
+                  <div class="survey" v-if="type==='ftp' && !scope.row.exitTask">
+                    <el-tooltip class="item" effect="light" content="删除" placement="top">
+                      <i class="enc-icon-shanchu" @click="deleteFtp(scope.row)"></i>
+                    </el-tooltip>
+                  </div>
+                </div>
+              </template>
+            </el-table-column>
+          </el-table>
+        </div>
+        <div class="enc-pagination">
+          <el-pagination v-if="queryParamReady" v-show="pageShow" style="float:right; margin:10px;" @current-change="goPage" background :page-size="pageSize" :total="mainTableDataTotal" layout="prev, pager, next, jumper" :current-page.sync="currentPage"></el-pagination>
+        </div>
+      </el-tab-pane>
+      <el-tab-pane label="批量对象采集" name="third" v-if="type=='mysql'|| type=='oracle'|| type=='postgresql' || type=='sqlserver' || type=='file'">
+        <div class="main main-content">
+          <el-table ref="multipleTable" :height="tableHeight" v-loading="loading" :data="mainTableData" stripe style="width: 100%;" tooltip-effect="light" :row-class-name="tableRowClassName" @selection-change="handleSelectionChange" :span-method="objectSpanMethod">
+            <el-table-column type="selection" v-if="type!=='ftp'"></el-table-column>
+            <!-- ftp -->
+            <el-table-column label="状态" v-if="type=='ftp'||type=='mongodb'" show-overflow-tooltip>
+              <template slot-scope="scope">
+                <span>{{scope.row.collectName}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column prop="name" label="文件夹名" v-if="type=='ftp'" show-overflow-tooltip></el-table-column>
+            <el-table-column prop="extendParams.filePath" label="路径" v-if="type=='ftp'" show-overflow-tooltip></el-table-column>
+            <el-table-column label="是否包含子目录" v-if="type=='ftp'" width="160" show-overflow-tooltip>
+              <template slot-scope="scope">
+                <span v-if="scope.row.extendParams.isSubDirectory=='true'">是</span>
+                <span v-if="scope.row.extendParams.isSubDirectory=='false'">否</span>
+              </template>
+            </el-table-column>
+            <el-table-column label="是否删除文件" v-if="type=='ftp'" width="160" show-overflow-tooltip>
+              <template slot-scope="scope">
+                <span v-if="scope.row.extendParams.isdelet=='true'">是</span>
+                <span v-if="scope.row.extendParams.isdelet=='false'">否</span>
+              </template>
+            </el-table-column>
+            <el-table-column prop="extendParams.diyComments" label="自定义注释" width="160" v-if="type=='ftp'" show-overflow-tooltip>
+              <template slot-scope="scope">
+                <div>
+                  <el-tooltip class="item" effect="light" content="修改" placement="top" show-overflow-tooltip>
+                    <i @click="editName(scope.row,scope.$index)" class="el-icon-edit-outline table-action-btn" v-show="!scope.row.showEdit" />
+                  </el-tooltip>
+                  <span v-show="!scope.row.showEdit">{{ scope.row.diyComments }}</span>
+                  <input type="text" v-model="editingRow.diyComments" v-show="scope.row.showEdit" autofocus @blur="changeName(scope.$index, scope.row)">
+                </div>
+              </template>
+            </el-table-column>
+            <!-- mangoDB -->
+            <el-table-column prop="name" label="对象名" v-if="type=='mongodb'" show-overflow-tooltip></el-table-column>
+            <el-table-column prop="totalRows" label="数据量" v-if="type=='mongodb'" show-overflow-tooltip></el-table-column>
+            <el-table-column prop="owner" label="持有者" v-if="type=='mongodb'" show-overflow-tooltip></el-table-column>
+            <el-table-column prop="name" label="备注" v-if="type=='mongodb'" show-overflow-tooltip>
+              <template slot-scope="scope">
+                <span>{{scope.row.comments}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column prop="lastChangeTime" label="最后更新时间" v-if="type=='mongodb'" min-width="180" show-overflow-tooltip></el-table-column>
+            <!-- RabbitMQ -->
+            <el-table-column prop="name" label="队列名称" v-if="type=='rabbitmq'" show-overflow-tooltip></el-table-column>
+            <el-table-column prop="diyComments" label="队列描述" v-if="type=='rabbitmq'" show-overflow-tooltip></el-table-column>
+            <!-- ActiveMQ -->
+            <el-table-column label="状态" v-if="type=='activemq'" show-overflow-tooltip>
+              <template slot-scope="scope">
+                <span>{{getPeriod(scope.row)}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column prop="extendParams.objectType" label="类型" v-if="type=='activemq'" show-overflow-tooltip></el-table-column>
+            <el-table-column prop="name" label="消息名称" v-if="type=='activemq'" show-overflow-tooltip></el-table-column>
+            <el-table-column prop="extendParams.messageSize" label="队列汇总剩余消息数" v-if="type=='activemq'" show-overflow-tooltip></el-table-column>
+            <el-table-column prop="extendParams.consumers" label="消费者数量" v-if="type=='activemq'" show-overflow-tooltip></el-table-column>
+            <el-table-column prop="extendParams.messagesDequeued" label="进入队列消息数" v-if="type=='activemq'" show-overflow-tooltip></el-table-column>
+            <el-table-column prop="extendParams.messagesEnqueued" label="出队列消息数" v-if="type=='activemq'" show-overflow-tooltip></el-table-column>
+            <!-- 本地文件 -->
+            <el-table-column label="状态" v-if="type=='file'" show-overflow-tooltip>
+              <template slot-scope="scope">
+                <span>{{getPeriod(scope.row)}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column prop="name" label="文件名称" v-if="type=='file'" show-overflow-tooltip></el-table-column>
+            <el-table-column prop="name" label="文件类型" v-if="type=='file'" show-overflow-tooltip>
+              <template slot-scope="scope">
+                <span>{{getFileType(scope.row.name)}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column prop="lastChangeTime" label="最后修改时间" v-if="type=='file'" show-overflow-tooltip></el-table-column>
+            <el-table-column prop="extendParams.fileSize" label="文件大小" v-if="type=='file'" show-overflow-tooltip></el-table-column>
+            <el-table-column prop="extendParams.messagesDequeued" label="更新方式" v-if="type=='file'" show-overflow-tooltip>
+              <template>
+                <span>历史</span>
+              </template>
+            </el-table-column>
+            <el-table-column prop="extendParams.messagesEnqueued" label="注释" v-if="type=='file'" show-overflow-tooltip></el-table-column>
+            <!-- oracle，mysql，postgresql -->
+            <el-table-column label="资源名称" width="180" show-overflow-tooltip v-if="type=='oracle' || type=='mysql' || type=='postgresql'">
+              <template slot-scope="scope">
+                <div>
+                  <el-tooltip class="item" effect="light" content="修改" placement="top" show-overflow-tooltip>
+                    <i @click="editName(scope.row,scope.$index)" class="el-icon-edit-outline table-action-btn" v-show="!scope.row.showEdit" />
+                  </el-tooltip>
+                  <span v-show="!scope.row.showEdit">{{ scope.row.diyComments }}</span>
+                  <input type="text" v-model="editingRow.diyComments" v-show="scope.row.showEdit" autofocus @blur="changeName(scope.$index, scope.row)">
+                </div>
+              </template>
+            </el-table-column>
+            <el-table-column label="接入对象" width="180" show-overflow-tooltip v-if="type=='oracle' || type=='mysql' || type=='postgresql'">
+              <template slot-scope="scope">
+                <a class="underdone" href="javascript:void(0)" v-on:click="goAccessObjInfo(scope.row)">{{ scope.row.name }}</a>
+              </template>
+            </el-table-column>
+            <el-table-column label="接入对象类型" v-if="type=='oracle' || type=='mysql' || type=='postgresql'" min-width="160">
+              <template slot-scope="scope">{{getObjType(scope.row.extendParams.objectType)}}</template>
+            </el-table-column>
+            <el-table-column prop="owner" label="持有者" v-if="type=='oracle' || type=='mysql' || type=='postgresql'" show-overflow-tooltip></el-table-column>
+            <el-table-column prop="totalRows" label="源端数据量" v-if="type=='oracle' || type=='mysql' || type=='postgresql'" min-width="160" show-overflow-tooltip></el-table-column>
+            <el-table-column prop="comments" label="描述" v-if="type=='oracle' || type=='mysql' || type=='postgresql'" show-overflow-tooltip></el-table-column>
+            <el-table-column prop="lastChangeTime" label="同步更新时间" v-if="type=='oracle' || type=='mysql' || type=='postgresql'" min-width="160" show-overflow-tooltip></el-table-column>
+            <el-table-column prop="dataRange" label="数据范围" v-if="type=='oracle' || type=='mysql' || type=='postgresql'" min-width="100" show-overflow-tooltip></el-table-column>
+            <el-table-column prop="objectStatus" label="状态信息" v-if="type=='oracle' || type=='mysql' || type=='postgresql'" min-width="160" show-overflow-tooltip>
+              <template slot-scope="scope">
+                <!--  <span style="cursor: pointer" v-if="scope.row.extendParams.taskInfoId!=undefined" @click="doDetail(scope.$index, scope.row)">{{scope.row.objectStatus}}</span> -->
+                <span v-if="scope.row.extendParams.taskInfoId!=undefined&&scope.row.extendParams.taskStatus=='0'">新建</span>
+                <span v-if="scope.row.extendParams.taskInfoId!=undefined&&scope.row.extendParams.taskStatus=='1'">运行</span>
+                <span v-if="scope.row.extendParams.taskInfoId!=undefined&&scope.row.extendParams.taskStatus=='2'">暂停</span>
+                <span v-if="scope.row.extendParams.taskInfoId!=undefined&&scope.row.extendParams.taskStatus=='6'">采集失败</span>
+                <span v-if="scope.row.extendParams.taskInfoId!=undefined&&scope.row.extendParams.taskStatus=='7'">汇聚失败</span>
+                <span v-if="scope.row.extendParams.taskInfoId!=undefined&&scope.row.extendParams.taskStatus=='4'">完成</span>
+                <span v-if="scope.row.extendParams.taskInfoId!=undefined&&scope.row.extendParams.taskStatus=='5'">准备中</span>
+              </template>
+            </el-table-column>
+            <el-table-column label="数据采集方式" v-if="type=='oracle' || type=='mysql' || type=='postgresql'" min-width="160" show-overflow-tooltip>
+              <template slot-scope="scope">
+                <span style="display: block;white-space: normal;">{{scope.row.wildcard}}</span>
+                <span style="display:block">{{scope.row.collectName}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column label="操作" width="200">
+              <template slot-scope="scope">
+                <div :class="(type=='ftp'||type=='mongodb')?'icon-other':'icon-center'">
+                  <div class="survey" v-if="type=='mysql'|| type=='oracle'|| type=='postgresql' || type=='sqlserver' || type=='mongodb'">
+                    <el-tooltip class="item" effect="light" content="数据量更新" placement="top">
+                      <i class="enc-icon-shujugengxin" v-on:click="updataSourceSingle(scope.$index, scope.row)" title="数据量更新"></i>
+                    </el-tooltip>
+                  </div>
+                  <!-- <div class="survey" v-if="type=='mysql'|| type=='oracle'|| type=='postgresql' 
+                    || type=='sqlserver'">
+                    <singleTask :pdata="scope.row" @fre="loadTable()"></singleTask>
+                  </div> -->
+                  <div class="survey" v-if="type=='mysql'|| type=='oracle'|| type=='postgresql' || type=='sqlserver'">
+                    <userSurvey :pdata="scope.row" @fre="loadTable()"></userSurvey>
+                  </div>
+                  <!-- <div class="survey" v-if="type!='mysql' && type!='oracle' && type!='sqlserver' && type!='postgresql'">
+                    <el-tooltip class="item" effect="light" :content="type=='ftp'?'单目录采集':'单表采集'" placement="top">
+                      <i class="enc-icon-danbiaocaiji" @click="setNoreVisible(scope.row,scope.$index)"></i>
+                    </el-tooltip>
+                    <norela-coll :pdata="scope.row" :type="type" @fre="loadTable()"></norela-coll>
+                  </div> -->
+                  <div class="survey" v-if="(type=='mysql'&&scope.row.accessConnectorSource!=undefined&&scope.row.accessConnectorSource.isPeriod!='0'&&(scope.row.extendParams.taskStatus=='1'||scope.row.extendParams.taskStatus=='2'||scope.row.extendParams.taskStatus=='4'))
+                    || (type=='oracle'&&scope.row.accessConnectorSource!=undefined&&scope.row.accessConnectorSource.isPeriod!='0'&&(scope.row.extendParams.taskStatus=='1'||scope.row.extendParams.taskStatus=='2'||scope.row.extendParams.taskStatus=='4'))
+                    || (type=='postgresql'&&scope.row.accessConnectorSource!=undefined&&scope.row.accessConnectorSource.isPeriod!='0'&&(scope.row.extendParams.taskStatus=='1'||scope.row.extendParams.taskStatus=='2'||scope.row.extendParams.taskStatus=='4')) 
+                    || (type=='sqlserver'&&scope.row.accessConnectorSource!=undefined&&scope.row.accessConnectorSource.isPeriod!='0'&&(scope.row.extendParams.taskStatus=='1'||scope.row.extendParams.taskStatus=='2'||scope.row.extendParams.taskStatus=='4'))
+                    ||(type=='ftp'&&scope.row.accessConnectorSource!=undefined&&scope.row.accessConnectorSource.isPeriod!='0'&&(scope.row.extendParams.taskStatus=='1'||scope.row.extendParams.taskStatus=='2'||scope.row.extendParams.taskStatus=='4')&&scope.row.extendParams.isdelet=='false')
+                    ||(type=='mongodb'&&scope.row.accessConnectorSource!=undefined&&scope.row.accessConnectorSource.isPeriod!='0'&&(scope.row.extendParams.taskStatus=='1'||scope.row.extendParams.taskStatus=='2'||scope.row.extendParams.taskStatus=='4'))">
+                    <el-tooltip class="item" effect="light" content="数据核验" placement="top">
+                      <i class="enc-icon-shujuheyan" @click="dataInverCheck(scope.row)"></i>
+                    </el-tooltip>
+                  </div>
+                  <!-- 任务详情 -->
+                  <div class="survey" v-if="scope.row.extendParams.taskInfoId!=undefined">
+                    <el-tooltip class="item" effect="light" content="任务详情" placement="top">
+                      <i class="enc-icon-fuwushengcheng1" @click="doDetail(scope.$index, scope.row)"></i>
+                    </el-tooltip>
+                  </div>
+                  <!-- 重新汇聚 -->
+                  <div class="survey" v-if="(scope.row.extendParams.taskStatus==2||scope.row.extendParams.taskStatus==4||scope.row.extendParams.taskStatus==6||scope.row.extendParams.taskStatus==7)&&scope.row.accessConnectorSource.isPeriod!=0&&scope.row.extendParams.isdelet!='true'">
+                    <el-tooltip class="item" effect="light" content="重新汇聚" placement="top">
+                      <i class="enc-icon-huiju" @click="doConverge(scope.$index, scope.row)"></i>
+                    </el-tooltip>
+                  </div>
+                  <div class="survey" v-if="type==='ftp' && !scope.row.exitTask">
+                    <el-tooltip class="item" effect="light" content="删除" placement="top">
+                      <i class="enc-icon-shanchu" @click="deleteFtp(scope.row)"></i>
+                    </el-tooltip>
+                  </div>
+                </div>
+              </template>
+            </el-table-column>
+          </el-table>
+        </div>
+        <div class="enc-pagination">
+          <el-pagination v-if="queryParamReady" v-show="pageShow" style="float:right; margin:10px;" @current-change="goPage" background :page-size="pageSize" :total="mainTableDataTotal" layout="prev, pager, next, jumper" :current-page.sync="currentPage"></el-pagination>
+        </div>
+      </el-tab-pane>
+    </el-tabs>
     <!-- 任务详情 -->
     <dialogTaskDetail :reqObj="reqObj" v-if="showTaskDetail" v-on:closeDia="showTaskDetail=false"></dialogTaskDetail>
     <!--  批量采集 -->
@@ -227,7 +592,7 @@ import {
   refreshAmount,
   ctablesDelete
 } from "@/api/commonApi.js";
-
+const httpUrl = window.ENV.API_DOWN + "/";
 export default {
   data() {
     return {
@@ -310,11 +675,18 @@ export default {
       jrtype: "",
       accId: "",
       key_word: "",
-      deleteData: {}
+      deleteData: {},
+      activeName: 'first',
+      tabIndex: 1, //tab页调用后台的标志位
+      spanArr: [], //合并单元格数
+      position: 0, //合并的位置数
     };
   },
 
   computed: {
+    tabPage() {
+      return this.activeName;
+    },
     tableParams: function() {
       return this.$store.state.queryParams.accessObjManage;
     },
@@ -356,6 +728,17 @@ export default {
     DialogIsCheck
   },
   watch: {
+    tabPage(newVal, oldVal) {
+      //console.log(newVal);
+      //console.log("****");
+      // console.log(oldVal);
+      if (newVal != oldVal) {
+        this.tableParams.pageNum = 1;
+      }
+      /*console.log("-----------------");
+      console.log(this.tableParams.pageNum);
+      console.log("--------------");*/
+    },
     tableParams(newVal, oldVal) {
       if (JSON.stringify(newVal) != JSON.stringify(oldVal)) {
         if (newVal.deptId == undefined) {
@@ -368,14 +751,22 @@ export default {
     },
     $route(to, from) {
       this.cleanData = false;
+      if (to.fullPath.indexOf('dashboard') != -1) {
+        this.activeName = 'first';
+        this.tabIndex = '1';
+      }
       if (to.fullPath.indexOf('accessObjManage') != -1) {
+        if (from.fullPath.indexOf('dashboard') != -1) {
+          this.activeName = 'first';
+          this.tabIndex = '1';
+        }
         this.cleanData = true;
       } else {
         this.searchParams.condition = "";
         this.searchParams.objectType = [];
         this.searchParams.dataRange = [];
       }
-      if(this.$route.params.backType){
+      if (this.$route.params.backType) {
         this.setFliter();
       }
     }
@@ -389,6 +780,12 @@ export default {
   },
   created() {},
   methods: {
+    //tab页切换
+    handleClick(tab, event) {
+      //console.log(tab.index);
+      this.tabIndex = (parseInt(tab.index) + 1).toString();
+      this.loadTable(1);
+    },
     //非关系型采集
     setNoreVisible(data) {
       let _self = this;
@@ -581,7 +978,9 @@ export default {
         this.showSetTask = true;
       }
     },
-    loadTable: function() {
+    loadTable: function(pageNums) {
+      /*console.log(pageNums);
+      console.log("88888888888888888888");*/
       var _self = this;
       let objInfoIds = "";
       let urlIndex = decodeURI(_self.$route.query.objInfoIds).indexOf("[");
@@ -599,6 +998,14 @@ export default {
         pagNum: this.tableParams.pageNum,
         count: _self.pageSize
       };
+      if (pageNums != '' && pageNums != undefined && pageNums != null) {
+        paramsObj.pagNum = pageNums;
+      }
+      /*console.log("=========-");
+      console.log(this.tableParams.pageNum);
+      console.log("-------------------");
+      console.log(paramsObj.pagNum);
+      console.log("====================");*/
       paramsObj.condition = this.searchParams.condition ?
         this.searchParams.condition :
         "";
@@ -606,6 +1013,7 @@ export default {
       paramsObj.dataRange = this.searchParams.dataRange.join(",");
       paramsObj.accessSysId = parseInt(this.$route.params.sourceId);
       paramsObj.objInfoId = urlIds;
+      paramsObj.objQueryType = this.tabIndex;
       this.$ajax({
           url: window.ENV.API_DACM + ctablesDatas,
           /* url:'http://10.19.160.93:8080/DACM/ctables/datas',*/
@@ -617,9 +1025,10 @@ export default {
         })
         .then(res => {
           _self.cleanData = true;
-          
+
           if (res.data.success) {
             var data = res.data.data.list;
+
             if (this.$route.params.type == "ftp") {
               //ftp根据id进行倒叙排列
               data.sort((a, b) => {
@@ -636,7 +1045,10 @@ export default {
               value.showEdit = false;
             }
             _self.mainTableData = data;
-
+            console.log(_self.tabIndex);
+            if (_self.tabIndex == '3') {
+              _self.mergeLines();
+            }
             _self.mainTableDataTotal = res.data.data.total;
             if (res.data.data.list.length > 0) {
               _self.tablePa = res.data.data.list[0];
@@ -914,18 +1326,188 @@ export default {
         keyword: ""
       };
       this.$store.commit("setDetailMajorData", map);
+    },
+    //重新汇聚
+    doConverge(index, row) {
+      let _self = this;
+      _self.loading = true;
+      if (this.type == 'ftp') {
+        this.$ajax({
+          method: 'get',
+          url: this.GLOBAL.api.API_DACM + '/ctables/checkFtpTaskFileExist',
+          //url: 'http://10.19.160.59:8080/DACM/ctables/checkFtpTaskFileExist',
+          params: { 'taskId': row.extendParams.taskInfoId },
+        }).then(res => {
+          //_self.loading = false;
+          if (res.data.success && res.data.data.length > 0) {
+            res.data.data.forEach(res => {
+              if (res.isExitFile == 'true') {
+                this.$ajax({
+                  method: 'get',
+                  url: this.GLOBAL.api.API_DACM + '/taskManager/deleteStatistic',
+                  /*url:'http://10.19.160.213:8080/DACM/taskManager/deleteStatistic',*/
+                  params: { 'taskInfoId': row.extendParams.taskInfoId },
+                }).then(res => {
+                  if (res.data.code == '0000') {
+                    this.$ajax
+                      .put(httpUrl + "manager/taskOperate/converge/" + row.extendParams.taskInfoId)
+                      .then(function(res) {
+                        _self.loading = false;
+                        if (res.data.success) {
+                          _self.doMsg(
+                            "汇聚任务ID:" + row.extendParams.taskInfoId + "重新汇聚任务创建成功！",
+                            "success"
+                          );
+                          _self.init();
+                        } else {
+                          _self.loading = false;
+                          _self.doMsg(res.data.message, "error");
+                        }
+                      });
+                  } else {
+                    _self.loading = false;
+                    _self.doMsg(res.data.message, "error");
+                  }
+                });
+              } else {
+                _self.loading = false;
+                _self.doMsg(res.message, "error");
+              }
+            })
+          } else {
+            _self.loading = false;
+            _self.doMsg(res.data.message, "error");
+          }
+        })
+      } else {
+        this.$ajax({
+          method: 'get',
+          url: this.GLOBAL.api.API_DACM + '/taskManager/deleteStatistic',
+          /*url:'http://10.19.160.213:8080/DACM/taskManager/deleteStatistic',*/
+          params: { 'taskInfoId': row.extendParams.taskInfoId },
+        }).then(res => {
+          if (res.data.code == '0000') {
+            this.$ajax
+              .put(httpUrl + "manager/taskOperate/converge/" + row.extendParams.taskInfoId)
+              .then(function(res) {
+                _self.loading = false;
+                if (res.data.success) {
+                  _self.doMsg(
+                    "汇聚任务ID:" + row.extendParams.taskInfoId + "重新汇聚任务创建成功！",
+                    "success"
+                  );
+                  _self.loadTable();
+                } else {
+                  _self.doMsg(res.data.message, "error");
+                }
+              });
+          } else {
+            _self.loading = false;
+            _self.doMsg(res.data.message, "error");
+          }
+        });
+      }
+    },
+    //信息提示
+    doMsg(msg, type) {
+      this.$message({
+        showClose: true,
+        message: msg,
+        type: type,
+        duration: 3500
+      });
+    },
+    //合并单元格
+    mergeLines() {
+      console.log(this.mainTableData);
+
+      this.mainTableData.forEach((item, index) => {
+        console.log(index)
+        if (index === 0) {
+          this.spanArr.push(1);
+          this.position = 0;
+        } else {
+          if (this.mainTableData[index].extendParams.taskInfoId == this.mainTableData[index - 1].extendParams.taskInfoId) {
+            this.spanArr[this.position] += 1;
+            this.spanArr.push(0);
+          } else {
+            this.spanArr.push(1);
+            this.position = index;
+            console.log(this.position);
+          }
+        }
+      })
+    },
+    objectSpanMethod({ row, column, rowIndex, columnIndex }) {
+      if (columnIndex === 9) {
+        const _row = this.spanArr[rowIndex];
+        const _col = _row > 0 ? 1 : 0;
+        return {
+          rowspan: _row,
+          colspan: _col
+        }
+      }
+      if (columnIndex === 10) {
+        const _row = this.spanArr[rowIndex];
+        const _col = _row > 0 ? 1 : 0;
+        return {
+          rowspan: _row,
+          colspan: _col
+        }
+      }
+      if (columnIndex === 11) {
+        const _row = this.spanArr[rowIndex];
+        const _col = _row > 0 ? 1 : 0;
+        return {
+          rowspan: _row,
+          colspan: _col
+        }
+      }
     }
   }
 };
 
 </script>
 <style lang="scss">
+.manage-container {
+  .main-content {
+    margin-top: 0px;
+  }
+}
+
 .el-table .delete-row {
   color: red;
 }
 
 .el-table .add-row {
   color: red;
+}
+
+.manage-tab {
+  .el-tabs--card>.el-tabs__header {
+    margin-left: 20px;
+    border-bottom: none;
+    margin-bottom: 1px;
+  }
+  .el-tabs__nav {
+    text-align: left;
+    float: left;
+  }
+  .el-tabs__header {
+    margin-bottom: 0px;
+    margin-left: 20px;
+    width: 405px;
+  }
+}
+
+.moreSearch {
+  padding-top: 20px;
+  position: relative;
+  top: 31px;
+  right: 20px;
+  .table-tools {
+    margin-bottom: 0px;
+  }
 }
 
 </style>
