@@ -385,8 +385,8 @@
       </el-tab-pane>
       <el-tab-pane label="批量对象采集" name="third" v-if="type=='mysql'|| type=='oracle'|| type=='postgresql' || type=='sqlserver' || type=='file'">
         <div class="main main-content">
-          <el-table  ref="multipleTable" :height="tableHeight" v-loading="loading" :data="mainTableData" stripe style="width: 100%;" tooltip-effect="light" :row-class-name="tableRowClassName" @selection-change="handleSelectionChange" :span-method="objectSpanMethod">
-            <el-table-column type="selection"></el-table-column>
+          <el-table ref="multipleTable" :height="tableHeight" v-loading="loading" :data="mainTableData" stripe style="width: 100%;" tooltip-effect="light" :row-class-name="tableRowClassName" @selection-change="handleSelectionChange" :span-method="objectSpanMethod">
+            <el-table-column type="selection" v-if="type!=='ftp'"></el-table-column>
             <!-- ftp -->
             <el-table-column label="状态" v-if="type=='ftp'||type=='mongodb'" show-overflow-tooltip>
               <template slot-scope="scope">
@@ -500,9 +500,9 @@
                 <span v-if="scope.row.extendParams.taskInfoId!=undefined&&scope.row.extendParams.taskStatus=='5'">准备中</span>
               </template>
             </el-table-column>
-            <el-table-column  label="数据采集方式" v-if="type=='oracle' || type=='mysql' || type=='postgresql'" min-width="160" show-overflow-tooltip>
+            <el-table-column label="数据采集方式" v-if="type=='oracle' || type=='mysql' || type=='postgresql'" min-width="160" show-overflow-tooltip>
               <template slot-scope="scope">
-              <span style="display: block;white-space: normal;">{{scope.row.wildword}}</span>
+                <span style="display: block;white-space: normal;">{{scope.row.wildCard}}</span>
                 <span style="display:block">{{scope.row.collectName}}</span>
               </template>
             </el-table-column>
@@ -751,6 +751,10 @@ export default {
     },
     $route(to, from) {
       this.cleanData = false;
+      if (to.fullPath.indexOf('dashboard') != -1) {
+        this.activeName = 'first';
+        this.tabIndex = '1';
+      }
       if (to.fullPath.indexOf('accessObjManage') != -1) {
         if (from.fullPath.indexOf('dashboard') != -1) {
           this.activeName = 'first';
