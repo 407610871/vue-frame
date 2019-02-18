@@ -21,16 +21,16 @@
         </div>
         <div class="checkDiv  task-query-form" v-if="moreSearch" @mouseleave="mouseleave($event)">
           <el-form ref="form" label-width="110px">
-            <!-- <el-form-item label="任务类型:">
-              <el-checkbox-group v-model="taskPeriodType">
-                <el-checkbox label="0" name="taskPeriodType">实时</el-checkbox>
-                <el-checkbox label="1" name="taskPeriodType">周期间隔增量</el-checkbox>
-                <el-checkbox label="2" name="taskPeriodType">周期定时增量</el-checkbox>
-                <el-checkbox label="3" name="taskPeriodType">一次性接入</el-checkbox>
-                <el-checkbox label="4" name="taskPeriodType">周期间隔全量</el-checkbox>
-                <el-checkbox label="5" name="taskPeriodType">周期定时全量</el-checkbox>
-              </el-checkbox-group>
-            </el-form-item> -->
+           <el-form-item label="任务类型:">
+             <el-checkbox-group v-model="taskPeriodType">
+               <el-checkbox label="0" name="taskPeriodType">实时</el-checkbox>
+               <el-checkbox label="1" name="taskPeriodType">周期间隔增量</el-checkbox>
+               <el-checkbox label="2" name="taskPeriodType">周期定时增量</el-checkbox>
+               <el-checkbox label="3" name="taskPeriodType">一次性接入</el-checkbox>
+               <el-checkbox label="4" name="taskPeriodType">周期间隔全量</el-checkbox>
+               <el-checkbox label="5" name="taskPeriodType">周期定时全量</el-checkbox>
+             </el-checkbox-group>
+           </el-form-item>
             <el-form-item label="任务状态:">
               <el-checkbox-group v-model="status">
                 <el-checkbox label="0" name="status">新建</el-checkbox>
