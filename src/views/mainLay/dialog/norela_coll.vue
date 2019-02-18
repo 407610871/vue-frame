@@ -23,8 +23,6 @@
               </div>
             </div>
             <type-map :flag="msg" :rowList="pdata" @pre="next('first')" @next="next('third')" :msg="activeName"></type-map>
-            <div class="btn tcenter mt30">
-            </div>
           </el-tab-pane>
           <el-tab-pane name="third" disabled><span slot="label"><i class="el-icon-circle">3</i>设置接入信息</span>
             <div class="daiInfo proInfo">

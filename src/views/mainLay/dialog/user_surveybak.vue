@@ -103,7 +103,7 @@
                 </el-col>
                 <el-col :span="4" class="ml0 tcenter mt10">
                   <el-form-item>
-                    <el-button size="small" type="primary">资源目录规范下载</el-button>
+                    <el-button type="primary">资源目录规范下载</el-button>
                   </el-form-item>
                 </el-col>
               </el-form-item>

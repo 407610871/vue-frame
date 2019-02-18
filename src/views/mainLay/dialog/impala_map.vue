@@ -29,12 +29,10 @@
               </el-table-column>
             </el-table>
           </div>
-          <el-form-item>
-            <el-col :span="24" class="tcenter mt30">
-              <el-button type="primary" size="small" @click="save('')">保存</el-button>
-              <el-button @click="closeDialog()" size="small">关闭</el-button>
-            </el-col>
-          </el-form-item>
+          <div class="mr-btn">
+              <el-button type="primary" @click="save('')">保存</el-button>
+              <el-button type="primary" @click="closeDialog()" size="small">关闭</el-button>
+          </div>
         </div>
       </div>
     </el-dialog>
