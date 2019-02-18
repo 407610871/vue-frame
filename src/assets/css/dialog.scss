@@ -376,3 +376,9 @@
     @include el-color ($el-radio-btn);
   }
 }
+.manage-tab .taskSteps {
+   .el-tabs__header {
+    width:auto;
+    margin-left:0px;
+  }
+}
