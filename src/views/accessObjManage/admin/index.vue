@@ -502,7 +502,7 @@
             </el-table-column>
             <el-table-column label="数据采集方式" v-if="type=='oracle' || type=='mysql' || type=='postgresql'" min-width="160" show-overflow-tooltip>
               <template slot-scope="scope">
-                <span style="display: block;white-space: normal;">{{scope.row.wildCard}}</span>
+                <span style="display: block;white-space: normal;">{{scope.row.wildcard}}</span>
                 <span style="display:block">{{scope.row.collectName}}</span>
               </template>
             </el-table-column>
