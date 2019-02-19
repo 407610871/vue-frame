@@ -30,7 +30,8 @@ export const synchronize = '/ctables/synchronize';
 
 //ctables/refreshAmount
 export const refreshAmount = '/ctables/refreshAmount';
-
+//ctables/refreshAmountForRegexTask
+export const refreshAmountForRegexTask = '/ctables/refreshAmountForRegexTask';
 //ctables/delete
 export const ctablesDelete = '/ctables/delete';
 
