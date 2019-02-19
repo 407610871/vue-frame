@@ -787,10 +787,6 @@ export default {
 <style lang="scss">
 @import "@/assets/css/base.scss";
 @import "@/assets/css/dialog.scss";
-.userSurveyDialog .el-tabs__content {
-  overflow: auto;
-}
-
 .userSurveyDialog .el-dialog__body {
   padding-left: 0px;
   padding-right: 0px;
