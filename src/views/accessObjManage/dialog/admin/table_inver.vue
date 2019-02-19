@@ -352,15 +352,6 @@ export default {
   padding: 20px 30px;
 }
 
-.comTable {
-  .el-table .cell .el-button--primary {
-    color: #fff;
-    /*  background-color: #489bd9;
-   border-color: #489bd9; */
-    display: inline-block;
-  }
-}
-
 .proInfo-box {
   border-bottom: 1px solid $border-color-dai;
 }

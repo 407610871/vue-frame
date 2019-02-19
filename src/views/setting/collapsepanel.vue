@@ -130,9 +130,15 @@ export default {
         this.settingList = newVal;
         if (this.isDelPage != -1) {
           //删除之后跳转到操作页面并不展示内容
-          this.activeIndex = -1;
-          this.currentPage = this.isDelPage;
-          this.pageNum = this.isDelPage;
+          if(this.settingList.list.length%5==0){
+            this.activeIndex = 0;
+            this.currentPage = 1;
+            this.pageNum = 1;
+          } else {
+            this.activeIndex = -1;
+            this.currentPage = this.isDelPage;
+            this.pageNum = this.isDelPage;
+          }
         } else if (this.isAddFlag != -1) {
           //新增flag，新增之后跳到第一页第一个
           this.activeIndex = 0;

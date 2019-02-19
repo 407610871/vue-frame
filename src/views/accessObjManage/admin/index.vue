@@ -316,6 +316,7 @@
             <el-table-column prop="comments" label="描述" v-if="type=='oracle' || type=='mysql' || type=='postgresql'" show-overflow-tooltip></el-table-column>
             <el-table-column prop="lastChangeTime" label="同步更新时间" v-if="type=='oracle' || type=='mysql' || type=='postgresql'" min-width="160" show-overflow-tooltip></el-table-column>
             <el-table-column prop="dataRange" label="数据范围" v-if="type=='oracle' || type=='mysql' || type=='postgresql'" min-width="100" show-overflow-tooltip></el-table-column>
+            <el-table-column prop="extendParams.taskInfoId" label="任务ID" v-if="type=='oracle' || type=='mysql' || type=='postgresql'" min-width="100" show-overflow-tooltip></el-table-column>
             <el-table-column prop="objectStatus" label="状态信息" v-if="type=='oracle' || type=='mysql' || type=='postgresql'" min-width="160" show-overflow-tooltip>
               <template slot-scope="scope">
                 <!-- <span style="cursor: pointer" v-if="scope.row.extendParams.taskInfoId!=undefined" @click="doDetail(scope.$index, scope.row)">{{scope.row.objectStatus}}</span>
@@ -492,6 +493,7 @@
             <el-table-column prop="comments" label="描述" v-if="type=='oracle' || type=='mysql' || type=='postgresql'" show-overflow-tooltip></el-table-column>
             <el-table-column prop="lastChangeTime" label="同步更新时间" v-if="type=='oracle' || type=='mysql' || type=='postgresql'" min-width="160" show-overflow-tooltip></el-table-column>
             <el-table-column prop="dataRange" label="数据范围" v-if="type=='oracle' || type=='mysql' || type=='postgresql'" min-width="100" show-overflow-tooltip></el-table-column>
+            <el-table-column prop="extendParams.taskInfoId" label="任务ID" v-if="type=='oracle' || type=='mysql' || type=='postgresql'" min-width="100" show-overflow-tooltip></el-table-column>
             <el-table-column prop="objectStatus" label="状态信息" v-if="type=='oracle' || type=='mysql' || type=='postgresql'" min-width="160" show-overflow-tooltip>
               <template slot-scope="scope">
                 <!--  <span style="cursor: pointer" v-if="scope.row.extendParams.taskInfoId!=undefined" @click="doDetail(scope.$index, scope.row)">{{scope.row.objectStatus}}</span> -->
@@ -513,7 +515,7 @@
             <el-table-column label="操作" width="200">
               <template slot-scope="scope">
                 <div :class="(type=='ftp'||type=='mongodb')?'icon-other':'icon-centers'">
-                
+
                   <div class="survey" v-if="type=='mysql'|| type=='oracle'|| type=='postgresql' || type=='sqlserver' || type=='mongodb'">
                     <el-tooltip class="item" effect="light" content="数据量更新" placement="top">
                       <i class="enc-icon-shujugengxin" v-on:click="updataSourceSingle(scope.$index, scope.row)" title="数据量更新"></i>
@@ -587,7 +589,7 @@ import singleTask from "@/views/accessObjManage/dialog/admin/single_task";
 import tableInver from "@/views/accessObjManage/dialog/admin/table_inver";
 import pathFtp from "@/views/mainLay/dialog/path_ftp";
 import norelaColl from "@/views/mainLay/dialog/norela_coll";
-import DialogTaskDetail from "@/views/mainLay/dialog/DialogTaskDetails";
+import DialogTaskDetail from "@/views/task/DialogTaskDetail";
 import DialogIsCheck from "@/views/task/DialogIsCheck";
 import {
   getHdfsFormat,
@@ -1205,6 +1207,9 @@ export default {
               })
               .then(() => {
                 row.totalRows = res.data.data.totalRows;
+                for(let i=0; i<_self.mainTableData.length;i++){
+                  /*_self.mainTableData[0].owner = 'sjdflsjkfdjsdf';*/
+                }
               });
           } else {
             _self.$alert("更新失败", "提示", {
@@ -1285,6 +1290,12 @@ export default {
     //详情
     doDetail(index, row) {
       this.reqObj = row;
+      this.reqObj.taskName = '汇聚任务';
+      this.reqObj.status = row.extendParams.taskStatus;
+      this.reqObj.isPeriod = row.accessConnectorSource.isPeriod;
+      this.reqObj.taskInfoId = row.extendParams.taskInfoId;
+      this.reqObj.sourceObjType = row.extendParams.sourceObjType;
+      this.reqObj.taskInfoDetailId = row.extendParams.taskInfoDetailsId;
       this.showTaskDetail = true;
     },
     // ftp文件路径删除
@@ -1363,7 +1374,7 @@ export default {
                             "汇聚任务ID:" + row.extendParams.taskInfoId + "重新汇聚任务创建成功！",
                             "success"
                           );
-                          _self.init();
+                          _self.loadTable();
                         } else {
                           _self.loading = false;
                           _self.doMsg(res.data.message, "error");
@@ -1425,14 +1436,15 @@ export default {
     //合并单元格
     mergeLines() {
       console.log(this.mainTableData);
-
+      this.spanArr = [];
+      this.position = 0;
       this.mainTableData.forEach((item, index) => {
         console.log(index)
         if (index === 0) {
           this.spanArr.push(1);
           this.position = 0;
         } else {
-          if (this.mainTableData[index].extendParams.taskInfoId == this.mainTableData[index - 1].extendParams.taskInfoId) {
+          if (this.mainTableData[index].extendParams.taskInfoId === this.mainTableData[index - 1].extendParams.taskInfoId) {
             this.spanArr[this.position] += 1;
             this.spanArr.push(0);
           } else {
@@ -1461,6 +1473,14 @@ export default {
         }
       }
       if (columnIndex === 11) {
+        const _row = this.spanArr[rowIndex];
+        const _col = _row > 0 ? 1 : 0;
+        return {
+          rowspan: _row,
+          colspan: _col
+        }
+      }
+      if (columnIndex === 12) {
         const _row = this.spanArr[rowIndex];
         const _col = _row > 0 ? 1 : 0;
         return {

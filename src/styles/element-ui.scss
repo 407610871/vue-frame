@@ -243,11 +243,6 @@
    border-radius: 0px;
  }
 
- .comTable .el-table .cell .el-button--primary {
-
-   @include el-button--primary($el-primary-theme);
- }
-
  .tree-tools a :hover {
    @include el-color($el-primary-theme);
  }

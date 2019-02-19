@@ -465,7 +465,7 @@ ${this.types=='ftp'?'源端对象':'源表'}：${res.data.source_tableName}\n
       request({
         /* url: 'http://10.19.160.59:8080/DACM/ccheckData/downloadCheckDataById?id=32&browser=fox&accessName=ww',*/
         url: `${baseUrl}/ccheckData/downloadCheckDataById?id=${value}&browser=${browser}&accessName=${
-          this.msgCheck.targetTableName
+          this.resData.target_tableName
         }`,
         method: "GET",
         responseType: "blob"
