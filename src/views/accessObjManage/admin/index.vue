@@ -172,7 +172,7 @@
                     <singleTask :pdata="scope.row" @fre="loadTable()"></singleTask>
                   </div>
                   <div class="survey" v-if="type=='mysql'|| type=='oracle'|| type=='postgresql' || type=='sqlserver'">
-                    <userSurvey :pdata="scope.row" @fre="loadTable()"></userSurvey>
+                    <userSurvey :pdata="scope.row" :isBatch='false' @fre="loadTable()"></userSurvey>
                   </div>
                   <div class="survey" v-if="type!='mysql' && type!='oracle' && type!='sqlserver' && type!='postgresql'">
                     <el-tooltip class="item" effect="light" :content="type=='ftp'?'单目录采集':'单表采集'" placement="top">
@@ -344,7 +344,7 @@
                     <singleTask :pdata="scope.row" @fre="loadTable()"></singleTask>
                   </div>
                   <div class="survey" v-if="type=='mysql'|| type=='oracle'|| type=='postgresql' || type=='sqlserver'">
-                    <userSurvey :pdata="scope.row" @fre="loadTable()"></userSurvey>
+                    <userSurvey :pdata="scope.row" :isBatch='false' @fre="loadTable()"></userSurvey>
                   </div>
                   <div class="survey" v-if="type!='mysql' && type!='oracle' && type!='sqlserver' && type!='postgresql'">
                     <el-tooltip class="item" effect="light" :content="type=='ftp'?'单目录采集':'单表采集'" placement="top">
@@ -515,10 +515,9 @@
             <el-table-column label="操作" width="200">
               <template slot-scope="scope">
                 <div :class="(type=='ftp'||type=='mongodb')?'icon-other':'icon-centers'">
-
                   <div class="survey" v-if="type=='mysql'|| type=='oracle'|| type=='postgresql' || type=='sqlserver' || type=='mongodb'">
                     <el-tooltip class="item" effect="light" content="数据量更新" placement="top">
-                      <i class="enc-icon-shujugengxin" v-on:click="updataSourceSingle(scope.$index, scope.row)" title="数据量更新"></i>
+                      <i class="enc-icon-shujugengxin" v-on:click="updataSourceMultie(scope.$index, scope.row)" title="数据量更新"></i>
                     </el-tooltip>
                   </div>
                   <!-- <div class="survey" v-if="type=='mysql'|| type=='oracle'|| type=='postgresql' 
@@ -526,7 +525,7 @@
                     <singleTask :pdata="scope.row" @fre="loadTable()"></singleTask>
                   </div> -->
                   <div class="survey" v-if="type=='mysql'|| type=='oracle'|| type=='postgresql' || type=='sqlserver'">
-                    <userSurvey :pdata="scope.row" @fre="loadTable()"></userSurvey>
+                    <userSurvey :pdata="scope.row" :isBatch ='true'  @fre="loadTable()"></userSurvey>
                   </div>
                   <!-- <div class="survey" v-if="type!='mysql' && type!='oracle' && type!='sqlserver' && type!='postgresql'">
                     <el-tooltip class="item" effect="light" :content="type=='ftp'?'单目录采集':'单表采集'" placement="top">
@@ -597,6 +596,7 @@ import {
   diyComments,
   synchronize,
   refreshAmount,
+  refreshAmountForRegexTask,
   ctablesDelete
 } from "@/api/commonApi.js";
 const httpUrl = window.ENV.API_DOWN + "/";
@@ -1207,8 +1207,43 @@ export default {
               })
               .then(() => {
                 row.totalRows = res.data.data.totalRows;
-                for(let i=0; i<_self.mainTableData.length;i++){
-                  /*_self.mainTableData[0].owner = 'sjdflsjkfdjsdf';*/
+              });
+          } else {
+            _self.$alert("更新失败", "提示", {
+              confirmButtonText: "确定"
+            });
+          }
+        })
+        .catch(function(err) {
+          _self.$alert("更新失败", "提示", {
+            confirmButtonText: "确定"
+          });
+        });
+    },
+    updataSourceMultie: function(index, row) {
+      var _self = this;
+      _self.loading = true;
+      this.$ajax
+        .get(window.ENV.API_DACM + refreshAmountForRegexTask, {
+          params: {
+            taskInfoId: row.extendParams.taskInfoId
+          }
+        })
+        .then(function(res) {
+          _self.loading = false;
+          if (res.data.success) {
+            _self
+              .$alert("更新成功", "提示", {
+                confirmButtonText: "确定"
+              })
+              .then(() => {
+                let reqData = res.data.data;
+                for(let i=0; i<reqData.length;i++){
+                  for(let j=0 ; j<_self.mainTableData.length;j++){
+                    if(reqData[i].id==_self.mainTableData[j].id){
+                      _self.mainTableData[j].totalRows = reqData[i].totalRows;
+                    }
+                  }
                 }
               });
           } else {
@@ -1218,6 +1253,7 @@ export default {
           }
         })
         .catch(function(err) {
+          _self.loading = false;
           _self.$alert("更新失败", "提示", {
             confirmButtonText: "确定"
           });
@@ -1592,11 +1628,13 @@ export default {
   margin: auto;
   text-align: left;
 }
+
 .icon-centers {
   width: 160px;
   margin: auto;
   text-align: left;
 }
+
 .icon-other {
   width: 56px;
   margin: auto;
