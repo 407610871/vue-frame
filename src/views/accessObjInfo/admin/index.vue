@@ -131,7 +131,7 @@
               <el-table
                 :data="mainTableData2"
                 stripe
-                :height="tableHeight"
+                :height="tablePreviewHeight"
                 style="width: 100%"
                 tooltip-effect="light">
                 <el-table-column
@@ -142,9 +142,9 @@
                   width="width"
                   :key="index"
                 ></el-table-column>
-                <el-table-column label="描述">
+                <el-table-column label="描述" >
                   <template slot-scope="scope">
-                    <el-popover placement="left-start" width="400" trigger="hover">
+                    <el-popover placement="left-start"  trigger="hover">
                       <ul class="popup-menu">
                         <li
                           v-for="(val, key, index) in data2Columns"
@@ -251,9 +251,17 @@ export default {
     },
     tableHeight: function() {
       if (window.innerHeight > 768) {
-        return window.innerHeight - 284;
+        return window.innerHeight - 300;
       }
       return 520;
+    },
+    tablePreviewHeight: function() {
+      let counter = this.searchForm.length;
+      console.log("this.data2Columns.length===", counter);
+      if (window.innerHeight > 768) {
+        return window.innerHeight - 300 - 57*counter;
+      }
+      return 520 - 57*counter;
     },
     sourceName() {
       if(this.$route.params.sourceName!=undefined){
