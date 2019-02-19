@@ -172,7 +172,7 @@
                     <singleTask :pdata="scope.row" @fre="loadTable()"></singleTask>
                   </div>
                   <div class="survey" v-if="type=='mysql'|| type=='oracle'|| type=='postgresql' || type=='sqlserver'">
-                    <userSurvey :pdata="scope.row" :isBatch='false' @fre="loadTable()"></userSurvey>
+                    <userSurvey :pdata="scope.row" :isBatch='false'  @fre="loadTable()"></userSurvey>
                   </div>
                   <div class="survey" v-if="type!='mysql' && type!='oracle' && type!='sqlserver' && type!='postgresql'">
                     <el-tooltip class="item" effect="light" :content="type=='ftp'?'单目录采集':'单表采集'" placement="top">
@@ -514,7 +514,7 @@
             </el-table-column>
             <el-table-column label="操作" width="200">
               <template slot-scope="scope">
-                <div :class="(type=='ftp'||type=='mongodb')?'icon-other':'icon-centers'">
+                <div :class="(type=='ftp'||type=='mongodb')?'icon-other':'icon-center'">
                   <div class="survey" v-if="type=='mysql'|| type=='oracle'|| type=='postgresql' || type=='sqlserver' || type=='mongodb'">
                     <el-tooltip class="item" effect="light" content="数据量更新" placement="top">
                       <i class="enc-icon-shujugengxin" v-on:click="updataSourceMultie(scope.$index, scope.row)" title="数据量更新"></i>
@@ -525,7 +525,7 @@
                     <singleTask :pdata="scope.row" @fre="loadTable()"></singleTask>
                   </div> -->
                   <div class="survey" v-if="type=='mysql'|| type=='oracle'|| type=='postgresql' || type=='sqlserver'">
-                    <userSurvey :pdata="scope.row" :isBatch ='true'  @fre="loadTable()"></userSurvey>
+                    <userSurvey :pdata="scope.row" :isBatch ='true' @fre="loadTable()"></userSurvey>
                   </div>
                   <!-- <div class="survey" v-if="type!='mysql' && type!='oracle' && type!='sqlserver' && type!='postgresql'">
                     <el-tooltip class="item" effect="light" :content="type=='ftp'?'单目录采集':'单表采集'" placement="top">

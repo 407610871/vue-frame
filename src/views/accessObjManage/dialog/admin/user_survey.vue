@@ -6,11 +6,10 @@
     </el-tooltip>
     <el-dialog title="用户标记" :visible.sync="dialogVisible" width="73%" :before-close="closeDialog">
       <div class="title-gra plr30">
-          <div class="grab gra-r">
-            <span class="grab gra-l"></span>
-          </div>
+        <div class="grab gra-r">
+          <span class="grab gra-l"></span>
+        </div>
       </div>
-
       <el-form :model="ruleForm" ref="ruleForm" label-width="100px" class="demo-ruleForm" :rules="formRules" v-loading="loading">
         <div class="daiInfo proInfo">
           <div class="proInfo-box bornone clearfix">
@@ -143,7 +142,7 @@
       </el-form>
       <div class="mr-btn clearfix">
         <el-button type="primary" @click="closeForm()">取消</el-button>
-        <el-button type="primary" @click="submitForm('ruleForm')">完成</el-button>    
+        <el-button type="primary" @click="submitForm('ruleForm')">完成</el-button>
       </div>
     </el-dialog>
   </div>
@@ -261,23 +260,51 @@ export default {
           if (this.ruleForm.datarange == "4") { //行政区
             areaData = [{ "pro": this.ruleForm.pro }, { "city": this.ruleForm.city }, { "urban": this.ruleForm.urban }]
           }
-          var saveInfo = {
-            iD: "", //非必填
-            tABLE_ID: this.tableid, //表id
-            rESOURCE_DIRECTORY_NUMBER: this.rnum + this.ruleForm.industry + '-' + this.ruleForm.znb + '-' + this.ruleForm.fcc + this.ruleForm.tlc + this.ruleForm.bdc + this.ruleForm.abc + this.ruleForm.randomId, // '资源目录编号',
-            iNDUSTRY_CATEGORY: this.ruleForm.industry, // '行业类别',
-            pOLICE_BUSINESS: this.ruleForm.znb, // '公安业务',
-            fIRST_CLASS_CLASSIFICATION: this.ruleForm.fcc, //'一级分类',
-            tWO_LEVEL_CLASSIFICATION: this.ruleForm.tlc, // '二级分类',
-            tAXONOMY: this.ruleForm.bdc, //'细目分类',
-            aTTRIBUTE_CLASSIFICATION: this.ruleForm.abc, // '属性分类',
-            dATA_TIMELINESS: "", // '数据时效性',
-            dATA_UPDATE_MODE: this.ruleForm.datamode, // '数据更新方式',
-            iNITIAL_DATA_VOLUME: this.ruleForm.datanum, // '初始数据量',
-            dATA_RANGE: this.ruleForm.datarange, //'数据范围',
-            xzqy: areaData, //行政区域
-            remarks: "" //备注，非必填
+          var saveInfo;
+          //console.log(this.isBatch);
+          if (this.isBatch == true) {
+            let regexInfo = this.pdata.wildcard.substring(4);
+            //console.log(regexInfo);
+            saveInfo = {
+              iD: "", //非必填
+              tABLE_ID: this.tableid, //表id
+              isBatch:true,
+              isCustom:true,
+              regexInfo:regexInfo,
+              rESOURCE_DIRECTORY_NUMBER: this.rnum + this.ruleForm.industry + '-' + this.ruleForm.znb + '-' + this.ruleForm.fcc + this.ruleForm.tlc + this.ruleForm.bdc + this.ruleForm.abc + this.ruleForm.randomId, // '资源目录编号',
+              iNDUSTRY_CATEGORY: this.ruleForm.industry, // '行业类别',
+              pOLICE_BUSINESS: this.ruleForm.znb, // '公安业务',
+              fIRST_CLASS_CLASSIFICATION: this.ruleForm.fcc, //'一级分类',
+              tWO_LEVEL_CLASSIFICATION: this.ruleForm.tlc, // '二级分类',
+              tAXONOMY: this.ruleForm.bdc, //'细目分类',
+              aTTRIBUTE_CLASSIFICATION: this.ruleForm.abc, // '属性分类',
+              dATA_TIMELINESS: "", // '数据时效性',
+              dATA_UPDATE_MODE: this.ruleForm.datamode, // '数据更新方式',
+              iNITIAL_DATA_VOLUME: this.ruleForm.datanum, // '初始数据量',
+              dATA_RANGE: this.ruleForm.datarange, //'数据范围',
+              xzqy: areaData, //行政区域
+              remarks: "" //备注，非必填
+            }
+          } else {
+            saveInfo = {
+              iD: "", //非必填
+              tABLE_ID: this.tableid, //表id
+              rESOURCE_DIRECTORY_NUMBER: this.rnum + this.ruleForm.industry + '-' + this.ruleForm.znb + '-' + this.ruleForm.fcc + this.ruleForm.tlc + this.ruleForm.bdc + this.ruleForm.abc + this.ruleForm.randomId, // '资源目录编号',
+              iNDUSTRY_CATEGORY: this.ruleForm.industry, // '行业类别',
+              pOLICE_BUSINESS: this.ruleForm.znb, // '公安业务',
+              fIRST_CLASS_CLASSIFICATION: this.ruleForm.fcc, //'一级分类',
+              tWO_LEVEL_CLASSIFICATION: this.ruleForm.tlc, // '二级分类',
+              tAXONOMY: this.ruleForm.bdc, //'细目分类',
+              aTTRIBUTE_CLASSIFICATION: this.ruleForm.abc, // '属性分类',
+              dATA_TIMELINESS: "", // '数据时效性',
+              dATA_UPDATE_MODE: this.ruleForm.datamode, // '数据更新方式',
+              iNITIAL_DATA_VOLUME: this.ruleForm.datanum, // '初始数据量',
+              dATA_RANGE: this.ruleForm.datarange, //'数据范围',
+              xzqy: areaData, //行政区域
+              remarks: "" //备注，非必填
+            }
           }
+
           this.$ajax({
             method: 'post',
             url: this.GLOBAL.api.API_DACM + '/dataTable/inputSurvey',
@@ -438,7 +465,7 @@ export default {
         if (flag == 'city') {
           if (label == '2') {
             _self.ruleForm.city = '';
-             _self.ruleForm.urban = '';
+            _self.ruleForm.urban = '';
           }
           _self.cityArr = res.data.data;
         }
@@ -493,12 +520,12 @@ export default {
     //通过省查询市
     proChange() {
       console.log(this.ruleForm.pro);
-      this._queryCity(this.ruleForm.pro, 'city','2');
+      this._queryCity(this.ruleForm.pro, 'city', '2');
     },
     //通过市获取区域
     cityChange() {
       console.log(this.ruleForm.city);
-      this._queryCity(this.ruleForm.city, 'urban','2');
+      this._queryCity(this.ruleForm.city, 'urban', '2');
     },
     //查詢系統配置
     _querySys() {
@@ -570,7 +597,7 @@ export default {
     }
 
   },
-  props: ['pdata']
+  props: ['pdata', 'isBatch']
 
 };
 
@@ -639,14 +666,16 @@ export default {
   cursor: pointer;
   font-size: 20px;
 }
+
 @media screen and ( max-width: 1490px) {
- .sur {
-  .el-col-4 {
-     width:26%;
-  }
+  .sur {
+    .el-col-4 {
+      width: 26%;
+    }
     .el-col-6 {
-     width:36%;
+      width: 36%;
+    }
   }
- }
 }
+
 </style>
