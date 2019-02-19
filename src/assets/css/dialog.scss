@@ -72,20 +72,6 @@
   font-size: $font-size-small;
 }
 
-.el-table .cell .taskMDialog .el-button {
-  background: #fff;
-  border: 1px solid #dcdfe6;
-  color: #606266;
-}
-
-.el-table .cell .taskMDialog .el-button--primary {
-  color: #fff;
-  @include el-bgcolor($el-primary-theme);
-  @include el-border-color($el-primary-theme);
-  /*  background-color: #489bd9;
- border-color: #489bd9; */
-}
-
 .ml0 .el-form-item--medium .el-form-item__content {
   margin-left: 0px !important;
 }
@@ -180,15 +166,6 @@
 }
 
 //内部按钮
-.el-table .cell .taskMDialog .diabtn {
-  background: transparent;
-  border: none;
-}
-
-.el-table .cell .taskMDialog .incbtn {
-  color: $color-btn-inner;
-}
-
 .dataInfo-box {
   border: none !important;
 }
