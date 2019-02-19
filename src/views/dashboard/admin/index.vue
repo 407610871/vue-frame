@@ -7,10 +7,10 @@
       <form-fliter v-if="queryParamReady" @highMore="moreHeight" @highSeaech="hightrue" v-bind:formCollapse="collapse" v-bind:deleteData="deleteData" v-bind:dataObj="formFilterData" v-bind:key_word="key_word" @doSearch="search" @formFilter="changeFormFilter" />
     </div>
     <div
-      id="enc-breadcrumb-js"
+      id="enc-breadcrumb"
       class="el-breadcrumb"
       style="display: flex;justify-content: flex-end; flex-wrap: wrap;"
-      v-show="key_word!='' || majorData.length>0"
+      v-if="key_word!='' || majorData.length>0"
     >
       <div v-show="key_word!=''">
         <span class="lookstyle">
@@ -157,9 +157,8 @@ export default {
       return this.$store.state.queryParams.dashboard;
     },
     tableHeight: function() {
-      let a = document.getElementById("enc-breadcrumb-js");
       if (window.innerHeight > 768) {
-        return a && a !=null ? window.innerHeight - 325 - a : window.innerHeight - 325;
+        return window.innerHeight - 345;
       } 
       return 360;
     },

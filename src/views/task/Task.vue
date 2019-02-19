@@ -294,7 +294,7 @@
     </div>
     <!-- 分页 -->
     <el-footer>
-      <div class="enc-pagination">
+      <div class=" clearfix mr-btn enc-pagination">
         <el-pagination style="float:right; margin:10px;" @current-change="handleCurrentChange" background :current-page.sync="pageNum" :page-size="pageSize" :total="mainTableDataTotal" layout="prev, pager, next, jumper"></el-pagination>
       </div>
     </el-footer>
@@ -404,9 +404,9 @@ export default {
     tableHeight: function() {
       //return window.innerHeight - this.searchHeight - 224;
       if (window.innerHeight > 768) {
-        return window.innerHeight - 300;
+        return window.innerHeight - 320;
       } else {
-        return 440;
+        return 420;
       }
     },
     pageSize() {
