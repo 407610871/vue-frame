@@ -40,7 +40,7 @@
           <el-button @click="updataSource" type="primary" icon="icon-title enc-icon-jieruyuangengxin" style="margin-left: 0px;">
             接入源更新</el-button>
         </el-tooltip>
-        <el-tooltip v-if="(type=='mysql'|| type=='oracle'|| type=='postgresql' || type=='sqlserver'||type=='mongodb')&&activeName!='first'" class="item" effect="light" content="接入源更新" placement="top">
+        <el-tooltip v-if="(type=='mysql'|| type=='oracle'|| type=='postgresql' || type=='sqlserver'||type=='mongodb')&&activeName!='first'" class="item" effect="light" content="任务状态更新" placement="top">
           <el-button @click="loadTable()" type="primary" icon="icon-title enc-icon-shuaxin" style="margin-left: 10px;">
             任务状态更新</el-button>
         </el-tooltip>
@@ -1294,7 +1294,7 @@ export default {
       this.reqObj.status = row.extendParams.taskStatus;
       this.reqObj.isPeriod = row.accessConnectorSource.isPeriod;
       this.reqObj.taskInfoId = row.extendParams.taskInfoId;
-      this.reqObj.sourceObjType = row.extendParams.sourceObjType;
+      this.reqObj.sourceObjType = row.extendParams.taskType;
       this.reqObj.taskInfoDetailId = row.extendParams.taskInfoDetailsId;
       this.showTaskDetail = true;
     },
