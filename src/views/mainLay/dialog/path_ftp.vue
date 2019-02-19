@@ -52,7 +52,7 @@
           </el-col>
         </div>
       </el-form>
-      <div class="mr-btn">
+      <div class="mr-btn clearfix">
         <el-button type="primary" @click="closeDialog()">关闭</el-button>
         <el-button type="primary" @click="save()">保存</el-button>
       </div>

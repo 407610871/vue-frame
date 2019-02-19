@@ -136,7 +136,7 @@
         </div>
       </div>
     </el-form>
-    <div class="mr-btn">
+    <div class="mr-btn clearfix">
       <el-button type="primary" @click="close()">取消</el-button>
       <el-button type="primary"  @click="pre('ruleForm')">下一步</el-button>
     </div>

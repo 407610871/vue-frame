@@ -26,7 +26,7 @@
         </el-table-column>
       </el-table>
     </div>
-    <div class="mr-btn">
+    <div class="mr-btn clearfix">
       <el-button type="primary"  @click="pre()">上一步</el-button>
       <el-button type="primary"  @click="next()">下一步</el-button>
     </div>

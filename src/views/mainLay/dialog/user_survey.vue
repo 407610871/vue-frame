@@ -138,12 +138,10 @@
                 <el-input v-model="ruleForm.datanum" required></el-input>
               </el-form-item>
             </el-col>
-            <el-col :span="24" class="mr-btn">
-              <el-form-item>
-                <el-button type="primary" @click="submitForm('ruleForm')">完成</el-button>
-                <el-button type="primary" @click="closeForm()">取消</el-button>
-              </el-form-item>
-            </el-col>
+          </div>
+          <div class="mr-btn clearfix">
+              <el-button type="primary" @click="submitForm('ruleForm')">完成</el-button>
+              <el-button type="primary" @click="closeForm()">取消</el-button>
           </div>
         </div>
       </el-form>

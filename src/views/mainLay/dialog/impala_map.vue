@@ -29,7 +29,7 @@
               </el-table-column>
             </el-table>
           </div>
-          <div class="mr-btn">
+          <div class="mr-btn clearfix">
               <el-button type="primary" @click="save('')">保存</el-button>
               <el-button type="primary" @click="closeDialog()" size="small">关闭</el-button>
           </div>

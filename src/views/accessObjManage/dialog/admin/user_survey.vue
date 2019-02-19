@@ -141,7 +141,7 @@
           </div>
         </div>
       </el-form>
-      <div class="mr-btn">
+      <div class="mr-btn clearfix">
         <el-button type="primary" @click="closeForm()">取消</el-button>
         <el-button type="primary" @click="submitForm('ruleForm')">完成</el-button>    
       </div>

@@ -66,7 +66,7 @@
                 </template>
 					</el-table-column>
 				</el-table>
-				<div class="mr-btn">
+				<div class="mr-btn clearfix">
 					<el-button type="primary" @click="cancel">取消</el-button>
 					<el-button type="primary" @click="importCommit">确认导入</el-button>
 				</div>

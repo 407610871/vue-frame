@@ -18,7 +18,7 @@
               </div>
             </div>
             <user-surveybak></user-surveybak>
-            <div class="mr-btn">
+            <div class="mr-btn clearfix">
               <el-button type="primary"  @click="closeDialog">取消</el-button>
               <el-button type="primary"  @click="next('second')">下一步</el-button>
               
@@ -31,7 +31,7 @@
               </div>
             </div>
             <wild-card></wild-card>
-            <div class="mr-btn">
+            <div class="mr-btn clearfix">
              <el-button type="primary"  @click="next('first')">上一步</el-button>
               <el-button type="primary" @click="next('third')">下一步</el-button>
              
@@ -44,7 +44,7 @@
               </div>
             </div>
             <type-map></type-map>
-            <div class="mr-btn">
+            <div class="mr-btn clearfix">
             <el-button type="primary" @click="next('second')">上一步</el-button>
               <el-button type="primary" @click="next('fourth')">下一步</el-button>
               
@@ -56,7 +56,7 @@
               </div>
             </div>
             <coll-task></coll-task>
-            <div class="mr-btn">
+            <div class="mr-btn clearfix">
               <el-button type="primary"  @click="next('third')">上一步</el-button>
               <el-button type="primary" >完成</el-button>
             </div></el-tab-pane>
