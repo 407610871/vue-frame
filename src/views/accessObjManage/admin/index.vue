@@ -34,11 +34,15 @@
           <el-button @click="showTask" type="primary" icon="icon-title enc-icon-piliangcaiji">
             批量采集</el-button>
         </el-tooltip>
-        <table-inver v-if="(type=='mysql'|| type=='oracle'|| type=='postgresql' || type=='sqlserver'||type=='mongodb')" :pdata="tablePa"></table-inver>
+        <table-inver v-if="(type=='mysql'|| type=='oracle'|| type=='postgresql' || type=='sqlserver'||type=='mongodb')&&activeName!='first'" :pdata="tablePa"></table-inver>
         <path-ftp @refresh="loadTable" v-if="type=='ftp'"></path-ftp>
         <el-tooltip v-if="type=='mysql'|| type=='oracle'|| type=='postgresql' || type=='sqlserver'||type=='mongodb'" class="item" effect="light" content="接入源更新" placement="top">
           <el-button @click="updataSource" type="primary" icon="icon-title enc-icon-jieruyuangengxin" style="margin-left: 0px;">
             接入源更新</el-button>
+        </el-tooltip>
+        <el-tooltip v-if="(type=='mysql'|| type=='oracle'|| type=='postgresql' || type=='sqlserver'||type=='mongodb')&&activeName!='first'" class="item" effect="light" content="接入源更新" placement="top">
+          <el-button @click="loadTable()" type="primary" icon="icon-title enc-icon-shuaxin" style="margin-left: 10px;">
+            任务状态更新</el-button>
         </el-tooltip>
       </div>
     </div>
@@ -357,16 +361,16 @@
                       <i class="enc-icon-shujuheyan" @click="dataInverCheck(scope.row)"></i>
                     </el-tooltip>
                   </div>
-                  <!-- 任务详情 -->
-                  <div class="survey" v-if="scope.row.extendParams.taskInfoId!=undefined">
-                    <el-tooltip class="item" effect="light" content="任务详情" placement="top">
-                      <i class="enc-icon-fuwushengcheng1" @click="doDetail(scope.$index, scope.row)"></i>
-                    </el-tooltip>
-                  </div>
                   <!-- 重新汇聚 -->
                   <div class="survey" v-if="(scope.row.extendParams.taskStatus==2||scope.row.extendParams.taskStatus==4||scope.row.extendParams.taskStatus==6||scope.row.extendParams.taskStatus==7)&&scope.row.accessConnectorSource.isPeriod!=0&&scope.row.extendParams.isdelet!='true'">
                     <el-tooltip class="item" effect="light" content="重新汇聚" placement="top">
                       <i class="enc-icon-huiju" @click="doConverge(scope.$index, scope.row)"></i>
+                    </el-tooltip>
+                  </div>
+                  <!-- 任务详情 -->
+                  <div class="survey" v-if="scope.row.extendParams.taskInfoId!=undefined">
+                    <el-tooltip class="item" effect="light" content="任务详情" placement="top">
+                      <i class="enc-icon-fuwushenqing1" style="font-size: 18px;" @click="doDetail(scope.$index, scope.row)"></i>
                     </el-tooltip>
                   </div>
                   <div class="survey" v-if="type==='ftp' && !scope.row.exitTask">
@@ -537,16 +541,16 @@
                       <i class="enc-icon-shujuheyan" @click="dataInverCheck(scope.row)"></i>
                     </el-tooltip>
                   </div>
-                  <!-- 任务详情 -->
-                  <div class="survey" v-if="scope.row.extendParams.taskInfoId!=undefined">
-                    <el-tooltip class="item" effect="light" content="任务详情" placement="top">
-                      <i class="enc-icon-fuwushengcheng1" @click="doDetail(scope.$index, scope.row)"></i>
-                    </el-tooltip>
-                  </div>
                   <!-- 重新汇聚 -->
                   <div class="survey" v-if="(scope.row.extendParams.taskStatus==2||scope.row.extendParams.taskStatus==4||scope.row.extendParams.taskStatus==6||scope.row.extendParams.taskStatus==7)&&scope.row.accessConnectorSource.isPeriod!=0&&scope.row.extendParams.isdelet!='true'">
                     <el-tooltip class="item" effect="light" content="重新汇聚" placement="top">
                       <i class="enc-icon-huiju" @click="doConverge(scope.$index, scope.row)"></i>
+                    </el-tooltip>
+                  </div>
+                  <!-- 任务详情 -->
+                  <div class="survey" v-if="scope.row.extendParams.taskInfoId!=undefined">
+                    <el-tooltip class="item" effect="light" content="任务详情" placement="top">
+                      <i class="enc-icon-fuwushenqing1" style="font-size: 18px;" @click="doDetail(scope.$index, scope.row)"></i>
                     </el-tooltip>
                   </div>
                   <div class="survey" v-if="type==='ftp' && !scope.row.exitTask">
@@ -1501,7 +1505,7 @@ export default {
 }
 
 .moreSearch {
-  padding-top: 20px;
+  padding-top: 0px;
   position: relative;
   top: 31px;
   right: 20px;
@@ -1512,10 +1516,6 @@ export default {
 
 </style>
 <style rel="stylesheet/scss" lang="scss" scoped>
-.moreSearch {
-  padding-top: 20px;
-}
-
 .dashboard-container {
   background: #fff;
   display: flex;
