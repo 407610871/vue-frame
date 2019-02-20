@@ -50,7 +50,7 @@
       <el-tab-pane label="未采集对象" name="first">
         <div class="main main-content">
           <el-table ref="multipleTable" :height="tableHeight" v-loading="loading" :data="mainTableData" stripe style="width: 100%;" tooltip-effect="light" :row-class-name="tableRowClassName" @selection-change="handleSelectionChange">
-            <el-table-column type="selection"></el-table-column>
+            <el-table-column type="selection" v-if="type!=='ftp'"></el-table-column>
             <!-- ftp -->
             <el-table-column label="状态" v-if="type=='ftp'||type=='mongodb'" show-overflow-tooltip>
               <template slot-scope="scope">
@@ -207,7 +207,7 @@
       <el-tab-pane label="单对象采集" name="second">
         <div class="main main-content">
           <el-table ref="multipleTable" :height="tableHeight" v-loading="loading" :data="mainTableData" stripe style="width: 100%;" tooltip-effect="light" :row-class-name="tableRowClassName" @selection-change="handleSelectionChange">
-            <el-table-column type="selection"></el-table-column>
+            <el-table-column type="selection" v-if="type!=='ftp'"></el-table-column>
             <!-- ftp -->
             <el-table-column label="状态" v-if="type=='ftp'||type=='mongodb'" show-overflow-tooltip>
               <template slot-scope="scope">
