@@ -733,7 +733,29 @@ export default {
         pollIntervalMs = -1;
       }
       this._reveAcmode();
-      if (this.isregin) {
+
+      // oracle实时接口先对xstream的用户名，密码等校验
+      if(this.ruleForm.accessMode == "0" && this.$route.params.type == 'oracle'){
+        let params = {
+          "accessSysId": this.pdata.accessSysId,
+          "serviceName": this.ruleForm.xStreamServiceName,
+          "userName": this.ruleForm.userName,
+          "password": this.ruleForm.password,
+        }
+        this.$ajax.post(this.GLOBAL.api.API_DACM+ "/caccess/streamTestConnect", params).then(res=>{
+          if(res.data.code=="0000" && res.data.data){
+            this.saveDataHandel(pollIntervalMs, ctt, actech,includeHistoryData);
+          } else {
+            this.$message.warning("xStream连接失败");
+          }
+        })
+      } else {
+        this.saveDataHandel();
+      }
+    
+    },
+    saveDataHandel(pollIntervalMs, ctt, actech,includeHistoryData) {
+     if (this.isregin) {
         var save = {
           "incrementColumn": this.increArr.name,
           "incrementColumnType": this.increArr.datatype,
@@ -844,7 +866,6 @@ export default {
         var save = {
           "accessSysObjDetails": this.increArr,
           "priority": this.ruleForm.accessPri,
-          "jobType": actech,
           "accessSysObjInfoId": this.pdata.id,
           "pollIntervalMs": pollIntervalMs,
           "schemaMappingDTOList": this.$store.state.schemaList,
@@ -857,6 +878,7 @@ export default {
           "xStreamServiceName": this.ruleForm.xStreamServiceName,
           "xStreamUsername": this.ruleForm.userName,
           "xStreamPassword": this.ruleForm.password,
+          "jobType": actech,
           "includeHistoryData": includeHistoryData
         }
         this.loading = true;
