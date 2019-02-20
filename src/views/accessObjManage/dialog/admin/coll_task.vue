@@ -862,11 +862,11 @@ export default {
         this.loading = true;
         if (this.$store.state.isSign == "false" || this.$store.state.isSign == false) {
           let dataModeStyle = this.ruleForm.accessMode;
-          if(this.ruleForm.accessMode=='0'){
+          if (this.ruleForm.accessMode == '0') {
             dataModeStyle = '5';
           }
-          if(this.ruleForm.accessMode=='2'){
-            dataModeStyle ='4';
+          if (this.ruleForm.accessMode == '2') {
+            dataModeStyle = '4';
           }
           this.userLabel = {
             tABLE_ID: this.pdata.id,
@@ -906,12 +906,11 @@ export default {
                   });
                 }
               })
-            }
-            else{
-               this.loading = false;
-            this.$alert(res.data.message, '信息', {
-              confirmButtonText: '确定'
-            });
+            } else {
+              this.loading = false;
+              this.$alert(res.data.message, '信息', {
+                confirmButtonText: '确定'
+              });
             }
           })
 
