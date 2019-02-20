@@ -60,7 +60,6 @@
           </el-col>
           <el-col :span="24">
             <el-col :span="10" class="collbg" v-if="this.ruleForm.accessMode=='1'||((this.ruleForm.history==true)&&this.ruleForm.accessMode=='0')">
-
               <el-form-item label="增量字段:" prop="increment">
                 <el-input v-model="ruleForm.increment" class="fl" :disabled="this.ruleForm.accessMode=='0'&&gethis==true"></el-input>
                 <el-button type="primary" class="fl increbtn" @click="innerVisible = true" v-if="!(this.ruleForm.accessMode=='0'&&gethis==true)">选择</el-button>
@@ -323,7 +322,7 @@ export default {
       showflag: false,
       increArr: {},
       monthData: [],
-      gethis:false,
+      gethis: false,
       isdisable: false,
       minData: [],
       hourData: [],
@@ -862,38 +861,59 @@ export default {
         }
         this.loading = true;
         if (this.$store.state.isSign == "false" || this.$store.state.isSign == false) {
+          let dataModeStyle = this.ruleForm.accessMode;
+          if (this.ruleForm.accessMode == '0') {
+            dataModeStyle = '5';
+          }
+          if (this.ruleForm.accessMode == '2') {
+            dataModeStyle = '4';
+          }
           this.userLabel = {
             tABLE_ID: this.pdata.id,
-            dATA_UPDATE_MODE: this.$store.state.modeStyle
+            dATA_UPDATE_MODE: dataModeStyle
           }
           this.$ajax({
-            method: "post",
-            url: this.GLOBAL.api.API_DACM + '/task/saveHeliumTask',
-            data: save
-
+            method: 'post',
+            url: this.GLOBAL.api.API_DACM + '/dataTable/inputSurvey',
+            data: this.userLabel
           }).then(res => {
-            this.loading = false;
             if (res.data.success) {
-              this.websock.send(JSON.stringify(res.data.data));
-              let ctips = '采集任务启动成功！';
-              if (this.ruleForm.taskSubMode == "false") {
-                ctips = '采集任务创建成功！';
-              }
-              this.$alert(ctips, '信息', {
-                confirmButtonText: '确定',
-                callback: action => {
-                  this.$emit('fresh');
-                }
-              });
-            } else {
-              this.$alert(res.data.message, '信息', {
-                confirmButtonText: '确定',
-                callback: action => {
+              this.$ajax({
+                method: "post",
+                url: this.GLOBAL.api.API_DACM + '/task/saveHeliumTask',
+                data: save
 
+              }).then(res => {
+                this.loading = false;
+                if (res.data.success) {
+                  this.websock.send(JSON.stringify(res.data.data));
+                  let ctips = '采集任务启动成功！';
+                  if (this.ruleForm.taskSubMode == "false") {
+                    ctips = '采集任务创建成功！';
+                  }
+                  this.$alert(ctips, '信息', {
+                    confirmButtonText: '确定',
+                    callback: action => {
+                      this.$emit('fresh');
+                    }
+                  });
+                } else {
+                  this.$alert(res.data.message, '信息', {
+                    confirmButtonText: '确定',
+                    callback: action => {
+
+                    }
+                  });
                 }
+              })
+            } else {
+              this.loading = false;
+              this.$alert(res.data.message, '信息', {
+                confirmButtonText: '确定'
               });
             }
           })
+
         } else {
           this.userLabel = this.$store.state.userList;
           this.userLabel.dATA_UPDATE_MODE = this.$store.state.modeStyle;
@@ -1017,7 +1037,7 @@ export default {
             this.yid = data.incrementColumnId; //增量字段的id
             //增量字段
             this.isdisable = true;
-            
+
             this.ruleForm.increment = data.incrementColumn;
             this.increArr = {};
             if (data.taskStatus == '0') {
@@ -1160,7 +1180,7 @@ export default {
     radioSelect() {
       return this.ruleForm.cycleSet == "0" ? "" : this.radio;
     },
-    hisdis(){
+    hisdis() {
       return this.$store.state.hisdis;
     }
   },
