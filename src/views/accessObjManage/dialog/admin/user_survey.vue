@@ -255,9 +255,25 @@ export default {
             areaData = [{ "pro": this.ruleForm.pro }]
           }
           if (this.ruleForm.datarange == "1") { //全市
+            if (this.ruleForm.city == '') {
+              this.$message({
+                message: '请选择市',
+                type: 'warning'
+              });
+              this.loading = false;
+              return false;
+            }
             areaData = [{ "pro": this.ruleForm.pro }, { "city": this.ruleForm.city }]
           }
           if (this.ruleForm.datarange == "4") { //行政区
+            if (this.ruleForm.city == '' || this.ruleForm.urban == '') {
+              this.$message({
+                message: '请将行政区选择完整',
+                type: 'warning'
+              });
+              this.loading = false;
+              return false;
+            }
             areaData = [{ "pro": this.ruleForm.pro }, { "city": this.ruleForm.city }, { "urban": this.ruleForm.urban }]
           }
           var saveInfo;
@@ -268,9 +284,9 @@ export default {
             saveInfo = {
               iD: "", //非必填
               tABLE_ID: this.tableid, //表id
-              isBatch:true,
-              isCustom:true,
-              regexInfo:regexInfo,
+              isBatch: true,
+              isCustom: true,
+              regexInfo: regexInfo,
               rESOURCE_DIRECTORY_NUMBER: this.rnum + this.ruleForm.industry + '-' + this.ruleForm.znb + '-' + this.ruleForm.fcc + this.ruleForm.tlc + this.ruleForm.bdc + this.ruleForm.abc + this.ruleForm.randomId, // '资源目录编号',
               iNDUSTRY_CATEGORY: this.ruleForm.industry, // '行业类别',
               pOLICE_BUSINESS: this.ruleForm.znb, // '公安业务',

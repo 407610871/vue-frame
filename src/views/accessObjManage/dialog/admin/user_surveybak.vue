@@ -138,7 +138,7 @@
     </el-form>
     <div class="mr-btn clearfix">
       <el-button type="primary" @click="close()">取消</el-button>
-      <el-button type="primary"  @click="pre('ruleForm')">下一步</el-button>
+      <el-button type="primary" @click="pre('ruleForm')">下一步</el-button>
     </div>
   </div>
 </template>
@@ -210,9 +210,9 @@ export default {
         renumber: '',
         randomId: ''
       },
-      
+
       formRules: {
-       
+
       },
       // msgId:this.dialogMsg?this.dialogMsg[1]:''
     };
@@ -409,7 +409,7 @@ export default {
       })
     },
     //查询全省市
-    _queryCity(value, flag,label) {
+    _queryCity(value, flag, label) {
       this.$ajax({
         method: "get",
         url: this.GLOBAL.api.API_DACM + '/commonInter/getAreas?parentid=' + value,
@@ -425,14 +425,14 @@ export default {
           this.proArr = res.data.data;
         }
         if (flag == 'city') {
-          if(label=='2'){
+          if (label == '2') {
             this.ruleForm.city = '';
             this.ruleForm.urban = '';
           }
           this.cityArr = res.data.data;
         }
         if (flag == 'urban') {
-          if(label=='2'){
+          if (label == '2') {
             this.ruleForm.urban = '';
           }
           this.urbanArr = res.data.data;
@@ -474,12 +474,12 @@ export default {
     //通过省查询市
     proChange() {
       console.log(this.ruleForm.pro);
-      this._queryCity(this.ruleForm.pro, 'city','2');
+      this._queryCity(this.ruleForm.pro, 'city', '2');
     },
     //通过市获取区域
     cityChange() {
       console.log(this.ruleForm.city);
-      this._queryCity(this.ruleForm.city, 'urban','2');
+      this._queryCity(this.ruleForm.city, 'urban', '2');
     },
     //查詢系統配置
     _querySys() {
@@ -524,7 +524,7 @@ export default {
       this.setMode(this.ruleForm.datamode);
 
       console.log(this.$store.state.modeStyle);
-      this.$store.commit ('setNums',true);
+      this.$store.commit('setNums', true);
       this.$refs[formName].validate((valid) => {
         if (valid) {
           if (this.userflag == false) {
@@ -576,9 +576,24 @@ export default {
               areaData = [{ "pro": this.ruleForm.pro }]
             }
             if (this.ruleForm.datarange == "1") { //全市
+              if (this.ruleForm.city == '') {
+                this.$message({
+                  message: '请选择市',
+                  type: 'warning'
+                });
+                return false;
+              }
               areaData = [{ "pro": this.ruleForm.pro }, { "city": this.ruleForm.city }]
             }
             if (this.ruleForm.datarange == "4") { //行政区
+              if (this.ruleForm.city == '' || this.ruleForm.urban == '') {
+                this.$message({
+                  message: '请将行政区选择完整',
+                  type: 'warning'
+                });
+
+                return false;
+              }
               areaData = [{ "pro": this.ruleForm.pro }, { "city": this.ruleForm.city }, { "urban": this.ruleForm.urban }]
             }
             if (this.info.length == undefined) {
@@ -779,7 +794,7 @@ export default {
   computed: {
 
   },
-  props: ['info', 'msg','batch'],
+  props: ['info', 'msg', 'batch'],
 
 };
 
@@ -843,14 +858,16 @@ export default {
 .demo-ruleForm {
   padding: 0;
 }
+
 @media screen and ( max-width: 1490px) {
- .sur {
-  .el-col-4 {
-     width:26%;
-  }
+  .sur {
+    .el-col-4 {
+      width: 26%;
+    }
     .el-col-6 {
-     width:36%;
+      width: 36%;
+    }
   }
- }
 }
+
 </style>
