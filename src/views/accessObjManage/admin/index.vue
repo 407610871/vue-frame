@@ -1332,6 +1332,8 @@ export default {
       this.reqObj.taskInfoId = row.extendParams.taskInfoId;
       this.reqObj.sourceObjType = row.extendParams.taskType;
       this.reqObj.taskInfoDetailId = row.extendParams.taskInfoDetailsId;
+      this.reqObj.startTime = row.extendParams.taskStartTime;
+      this.reqObj.endTime = row.extendParams.taskEndTime;
       this.showTaskDetail = true;
     },
     // ftp文件路径删除
