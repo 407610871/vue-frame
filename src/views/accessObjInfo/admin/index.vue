@@ -151,9 +151,9 @@
                           :key="index"
                         >{{key}}：{{scope.row[key]}}</li>
                       </ul>
-                      <a slot="reference" href="javascript:void(0)">更多详情
+                      <span slot="reference" style="cursor: pointer">更多详情
                         <i class="el-icon-caret-bottom" style="display: inline-block;"></i>
-                      </a>
+                      </span>
                     </el-popover>
                   </template>
                 </el-table-column>
