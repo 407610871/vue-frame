@@ -750,7 +750,7 @@ export default {
           }
         })
       } else {
-        this.saveDataHandel();
+        this.saveDataHandel(pollIntervalMs, ctt, actech,includeHistoryData);
       }
     
     },
