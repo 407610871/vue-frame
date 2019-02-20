@@ -131,7 +131,9 @@
                 <el-radio v-for="item in syskindList" :label="item.id" :key="item.id" disabled><span>{{item.name}}</span><span v-if="item.id=='10010' || item.id=='10020'" class="enc-icon-beta betaspan"></span></el-radio>
               </el-radio-group>
             </el-form-item>
-            <el-button  type="primary" v-if="ruleForm.syskind!=''&&ruleForm.syskind!='10023'" @click="testForm('ruleForm')" v-loading.fullscreen.lock="fullscreenLoading">测试连接</el-button>
+            <div class="clearfix mr-btn">
+              <el-button  type="primary" v-if="ruleForm.syskind!=''&&ruleForm.syskind!='10023'" @click="testForm('ruleForm')" v-loading.fullscreen.lock="fullscreenLoading">测试连接</el-button>
+             </div>
             <el-row>
               <el-col style="text-align:right;margin-bottom:10px;" class="ctips">
                 <el-col :span="15" class="tleft">
