@@ -27,7 +27,7 @@
                           <el-input class="fl" v-model="ruleForm.baseStart"></el-input>
                           <span class="fl ml10 mr10">开头,以</span>
                           <el-select class="fl" v-model="ruleForm.baseEnd" placeholder="请选择">
-                            <el-option v-for="item in regxData" :label="item.dateFormat" :value="item.dateFormat"></el-option>
+                            <el-option v-for="(item, index) in regxData" :key="index" :label="item.dateFormat" :value="item.dateFormat"></el-option>
                           </el-select>
                           <span class="fl ml10">结尾</span>
                         </el-form-item>
@@ -128,6 +128,7 @@ export default {
         highMatch: '', //高级匹配
       },
       formRules: {},
+      accessSysId: "",
     };
   },
   methods: {
@@ -162,6 +163,7 @@ export default {
         let regend = '';
         var RegInfo;
         var saveInfo = {};
+        let newVaregex = "";
         //校验表结构
         //基础匹配
         if (this.ruleForm.typeKind == '0') {
@@ -216,7 +218,7 @@ export default {
               let start = this.ruleForm.baseStart;
               let end = this.ruleForm.baseEnd;
               varegex = new RegExp('^' + start + '.*' + regend + '$');
-
+              newVaregex = '^' + start + '.*' + regend + '$';
             } else {
               //高级匹配
               if (this.ruleForm.highMatch == '') {
@@ -240,6 +242,7 @@ export default {
                 return false;
               }
               varegex = new RegExp(this.ruleForm.highMatch);
+              newVaregex = this.ruleForm.highMatch;
             }
             for (let i = 0; i < this.rowList.length; i++) {
               if (varegex.test(this.rowList[i].name)) {
@@ -252,42 +255,59 @@ export default {
               this.$message.warning('表中有不匹配的表名');
               return false;
             } else {
-              if (this.ruleForm.typeKind == '0') {
-                if (this.ruleForm.baseEnd.indexOf('-') != -1) {
-                  RegInfo = {
-                    baseStart: this.ruleForm.baseStart,
-                    baseEnd: this.ruleForm.baseEnd,
-                    baseflag: false
-                  }
-                } else if (this.ruleForm.baseEnd.indexOf('/') != -1) {
-                  RegInfo = {
-                    baseStart: this.ruleForm.baseStart,
-                    baseEnd: this.ruleForm.baseEnd,
-                    baseflag: false
-                  }
-                } else if (this.ruleForm.baseEnd.indexOf(':') != -1) {
-                  RegInfo = {
-                    baseStart: this.ruleForm.baseStart,
-                    baseEnd: this.ruleForm.baseEnd,
-                    baseflag: false
-                  }
-                } else {
-                  RegInfo = {
-                    baseStart: this.ruleForm.baseStart,
-                    baseEnd: this.ruleForm.baseEnd,
-                    baseflag: false
-                  }
-                }
-                this.setRegInfo(RegInfo);
-              } else {
-                RegInfo = {
-                  baseStart: "",
-                  baseEnd: this.ruleForm.highMatch,
-                  baseflag: true
-                }
-                this.setRegInfo(RegInfo);
+              // 调用接口验证是否有表已经进行了采集，有：禁止操作。
+              let params = {
+                sourceId: this.accessSysId,
+                sourceObjType: "REGEX",
+                sourceObjectName: newVaregex,
               }
-              this.$emit('nre');
+              this.$ajax({
+                method: "get",
+                url: this.GLOBAL.api.API_DACM + '/taskManager/checkCollection',
+                params: params,
+              }).then(res=>{
+                if(!res.data.data){
+                  this.$message.warning('正则表达式匹配到了进行中的采集任务，无法进行批量采集。');
+                  return false;
+                } else {
+                  if (this.ruleForm.typeKind == '0') {
+                    if (this.ruleForm.baseEnd.indexOf('-') != -1) {
+                      RegInfo = {
+                        baseStart: this.ruleForm.baseStart,
+                        baseEnd: this.ruleForm.baseEnd,
+                        baseflag: false
+                      }
+                    } else if (this.ruleForm.baseEnd.indexOf('/') != -1) {
+                      RegInfo = {
+                        baseStart: this.ruleForm.baseStart,
+                        baseEnd: this.ruleForm.baseEnd,
+                        baseflag: false
+                      }
+                    } else if (this.ruleForm.baseEnd.indexOf(':') != -1) {
+                      RegInfo = {
+                        baseStart: this.ruleForm.baseStart,
+                        baseEnd: this.ruleForm.baseEnd,
+                        baseflag: false
+                      }
+                    } else {
+                      RegInfo = {
+                        baseStart: this.ruleForm.baseStart,
+                        baseEnd: this.ruleForm.baseEnd,
+                        baseflag: false
+                      }
+                    }
+                    this.setRegInfo(RegInfo);
+                  } else {
+                    RegInfo = {
+                      baseStart: "",
+                      baseEnd: this.ruleForm.highMatch,
+                      baseflag: true
+                    }
+                    this.setRegInfo(RegInfo);
+                  }
+                  this.$emit('nre');
+                }
+              })
             }
             if (this.ruleForm.matchType == '1') {
 
@@ -385,6 +405,7 @@ export default {
   props: ['rowList', 'msg', 'jrtype'],
   watch: {
     msg() {
+      console.log("rowList,", this.rowList)
       if (this.msg == "second") {
         if (this.jrtype == 'mysql' || this.jrtype == 'oracle' || this.jrtype == 'postgresql' || this.jrtype == 'sqlserver') {
           this.ruleForm.matchType = '0'
@@ -393,8 +414,10 @@ export default {
         }
         if (this.rowList.length != undefined) {
           this.accId = this.rowList[0].id;
+          this.accessSysId = this.rowList[0].accessSysId;
         } else {
           this.accId = this.rowList.id;
+          this.accessSysId = this.rowList.accessSysId;
         }
         this._getRegexList();
         this._getType();

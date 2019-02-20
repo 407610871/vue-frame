@@ -1,9 +1,16 @@
 <template>
   <div class="taskMDialog userSurveyDialog setTaskDia diaicon">
     <el-tooltip class="item" effect="light" content="单表采集" placement="top">
-      <i class="enc-icon-danbiaocaiji" @click="dialogVisible = true"></i>
+      <i class="enc-icon-danbiaocaiji" @click="singleClick"></i>
     </el-tooltip>
-    <el-dialog title="单表采集任务向导"   :visible.sync="dialogVisible" width="73%" :before-close="closeDialog" class="single-task-dialog" :close-on-click-modal="false">
+    <el-dialog
+      title="单表采集任务向导"
+      :visible.sync="dialogVisible"
+      width="73%"
+      :before-close="closeDialog"
+      class="single-task-dialog"
+      :close-on-click-modal="false"
+    >
       <div class="title-gra plr30">
         <div class="grab gra-r">
           <span class="grab gra-l"></span>
@@ -12,30 +19,57 @@
       <div class="taskSteps plr30">
         <el-tabs v-model="activeName">
           <el-tab-pane name="first" disabled>
-            <span slot="label"><i class="el-icon-circle">1</i>用户标记</span>
+            <span slot="label">
+              <i class="el-icon-circle">1</i>用户标记
+            </span>
             <div class="daiInfo proInfo">
               <div class="daiInfo-title proInfo-title">
                 <h2>提供方信息</h2>
               </div>
             </div>
-            <user-surveybak :msg="this.num" :batch="false" :info="this.pdata" @pre="next('second')" @closeuser="closeDialog()" ref="survey"></user-surveybak>
-
+            <user-surveybak
+              :msg="this.num"
+              :batch="false"
+              :info="this.pdata"
+              @pre="next('second')"
+              @closeuser="closeDialog()"
+              ref="survey"
+            ></user-surveybak>
           </el-tab-pane>
-          <el-tab-pane name="second" disabled><span slot="label"><i class="el-icon-circle">2</i> 建立数据映射关系</span>
+          <el-tab-pane name="second" disabled>
+            <span slot="label">
+              <i class="el-icon-circle">2</i> 建立数据映射关系
+            </span>
             <div class="daiInfo proInfo">
               <div class="daiInfo-title proInfo-title">
                 <h2>字段类型映射</h2>
               </div>
             </div>
-            <type-map :tableId="this.pdata.id" :msg="activeName" :maptype="this.$route.params.type" @pre="next('first')" @nre="next('third')"></type-map>
+            <type-map
+              :tableId="this.pdata.id"
+              :msg="activeName"
+              :maptype="this.$route.params.type"
+              @pre="next('first')"
+              @nre="next('third')"
+            ></type-map>
           </el-tab-pane>
-          <el-tab-pane name="third" disabled><span slot="label"><i class="el-icon-circle">3</i>设置接入信息</span>
+          <el-tab-pane name="third" disabled>
+            <span slot="label">
+              <i class="el-icon-circle">3</i>设置接入信息
+            </span>
             <div class="daiInfo proInfo">
               <div class="daiInfo-title proInfo-title">
                 <h2>设置采集任务</h2>
               </div>
             </div>
-            <coll-task :pdata="pdata" :msg="activeName" ref="collTask" @pre="next('second')" @close="closeDialog()" @fresh="fresh()"></coll-task>
+            <coll-task
+              :pdata="pdata"
+              :msg="activeName"
+              ref="collTask"
+              @pre="next('second')"
+              @close="closeDialog()"
+              @fresh="fresh()"
+            ></coll-task>
           </el-tab-pane>
         </el-tabs>
       </div>
@@ -43,47 +77,65 @@
   </div>
 </template>
 <script>
-import userSurveybak from '@/views/accessObjManage/dialog/admin/user_surveybak' //用户调研
-import wildCard from '@/views/accessObjManage/dialog/admin/wild_card' //设置通配符
-import typeMap from '@/views/accessObjManage/dialog/admin/type_map' //建立数据映射关系
-import collTask from '@/views/accessObjManage/dialog/admin/coll_task' //设置采集任务
+import userSurveybak from "@/views/accessObjManage/dialog/admin/user_surveybak"; //用户调研
+import wildCard from "@/views/accessObjManage/dialog/admin/wild_card"; //设置通配符
+import typeMap from "@/views/accessObjManage/dialog/admin/type_map"; //建立数据映射关系
+import collTask from "@/views/accessObjManage/dialog/admin/coll_task"; //设置采集任务
 export default {
   name: "userSurvey",
   data: function() {
     return {
-      activeName: 'first',
+      activeName: "first",
       dialogVisible: false,
-      tabs: '',
-      event: '',
+      tabs: "",
+      event: "",
       num: 0
     };
   },
   methods: {
     //关闭对话框
+    singleClick() {
+      let params = {
+        sourceId: this.pdata.accessSysId,
+        sourceObjType: this.pdata.extendParams.objectType,
+        sourceObjectName: this.pdata.name,
+      };
+      this.$ajax({
+        method: "get",
+        url: this.GLOBAL.api.API_DACM + "/taskManager/checkCollection",
+        params: params
+      }).then(res=>{
+        if(!res.data.data){
+          this.$message.warning('匹配到了进行中的采集任务，无法再次进行单表采集。');
+          return false;
+        } else {
+          this.dialogVisible = true;
+        }
+      });
+    },
     closeDialog() {
       this.$refs.collTask.websocketclose();
       this.dialogVisible = false;
-      this.activeName = 'first';
+      this.activeName = "first";
       this.$store.commit("setMode", "");
-      this.$store.commit ("setIsSign",false);
-      this.$store.commit("setSchemaList",[]);
+      this.$store.commit("setIsSign", false);
+      this.$store.commit("setSchemaList", []);
       //this.$refs.survey._clearForm();
     },
     //步骤条
     handleClick(tab, event) {
       console.log(tab, event);
       console.log(this.activeName);
-
     },
     next(steps) {
       this.activeName = steps;
     },
     fresh() {
-      this.$emit('fre');
-      this.activeName = 'first';
+      this.$emit("fre");
+      this.activeName = "first";
       this.$store.commit("setMode", "");
       this.dialogVisible = false;
-this.$store.commit("setSchemaList",[]);
+      this.$store.commit("setSchemaList", []);
     }
   },
   components: {
@@ -92,16 +144,10 @@ this.$store.commit("setSchemaList",[]);
     typeMap,
     collTask
   },
-  mounted() {
-
-  },
-  created() {
-
-  },
-  computed: {
-
-  },
-  props: ['pdata'],
+  mounted() {},
+  created() {},
+  computed: {},
+  props: ["pdata"],
   watch: {
     dialogVisible() {
       if (this.dialogVisible) {
@@ -109,9 +155,7 @@ this.$store.commit("setSchemaList",[]);
       }
     }
   }
-
 };
-
 </script>
 <style lang="scss">
 @import "@/assets/css/base.scss";
@@ -137,7 +181,7 @@ this.$store.commit("setSchemaList",[]);
   }
 }
 
-.el-radio+.el-radio {
+.el-radio + .el-radio {
   margin-left: 19px;
 }
 
@@ -179,7 +223,7 @@ this.$store.commit("setSchemaList",[]);
 }
 
 .el-tabs__item.is-active i {
-/*   background: $color-background-tabs; */
+  /*   background: $color-background-tabs; */
   color: #fff;
 }
 
@@ -210,5 +254,4 @@ this.$store.commit("setSchemaList",[]);
     min-width: 990px;
   }
 }
-
 </style>
