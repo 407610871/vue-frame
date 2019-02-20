@@ -791,7 +791,9 @@ export default {
     handleClick(tab, event) {
       //console.log(tab.index);
       this.tabIndex = (parseInt(tab.index) + 1).toString();
+      this.pageShow = false;
       this.loadTable(1);
+
     },
     //非关系型采集
     setNoreVisible(data) {
