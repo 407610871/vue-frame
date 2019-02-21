@@ -822,7 +822,9 @@ export default {
           params: {
             accessSysId: data.accessSysId,
             filePath: data.extendParams.filePath,
-            isSubDirectory: data.extendParams.isSubDirectory
+            isSubDirectory: data.extendParams.isSubDirectory,
+            taskType:'1'
+
           }
         }).then(res => {
           _self.loading = false;
@@ -877,7 +879,8 @@ export default {
           params: {
             accessSysId: row.accessSysId,
             filePath: row.extendParams.filePath,
-            isSubDirectory: row.extendParams.isSubDirectory
+            isSubDirectory: row.extendParams.isSubDirectory,
+            taskType:'0'
           }
         }).then(res => {
           _self.loading = false;
