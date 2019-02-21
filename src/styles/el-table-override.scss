@@ -84,7 +84,3 @@
   color: #fff;
   @include el-table-hover($el-table-td-hover);
 }
-.mesh .el-table--enable-row-hover .el-table__body tr:hover>td:nth-child(11) {
-  color: #fff;
-  background-color:none;
-}
