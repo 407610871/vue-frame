@@ -870,7 +870,7 @@ export default {
     },
     //分页切换
     handleCurrentChange() {
-      this.init(this.keyword);
+      this.init(this.keyword, true);
     },
     //信息提示
     doMsg(msg, type) {
@@ -882,7 +882,10 @@ export default {
       });
     },
     //表格数据获取
-    init(keyword) {
+    init(keyword, type) {
+      if(!type){// 如果不是分页调用该接口
+        this.allSecectData = {};
+      }
       console.log("this.allSecectData======",this.allSecectData);
       this.loading = true;
       let tableParams = {
@@ -941,12 +944,12 @@ export default {
     },
     //手动选择事件
     select(selection, row) {
-      console.log("1111111111111111", selection, row);
-      this.allSecectData[this.pageNum] = selection;
+      this.allSecectData[this.pageNum] = JSON.parse(JSON.stringify(selection));
     },
     //手动全选事件
     selectAll(selection) {
-      this.allSecectData[this.pageNum] = selection;
+      this.allSecectData[this.pageNum] = JSON.parse(JSON.stringify(selection));
+      console.log("this.allSecectData==================", this.allSecectData);
     },
     pLDataHandel(rowNew, params) {
       //批量汇聚
@@ -1003,32 +1006,26 @@ export default {
       let tableParams = [];
       let row = [];
       let row1 = Object.keys(this.allSecectData);
-      if (row1.length == 0) {
+      let counter = 0;
+      for (let i = 0; i < row1.length; i++) {
+        if (this.allSecectData[row1[i]].length !== 0) {
+          counter += 1;  
+        }
+      }
+      if (row1.length === 0 || counter===0) {
         this.$alert("请选择相应的任务！", "提示", {
           height: 50,
           dangerouslyUseHTMLString: true
         });
         return;
       }
-      for (let i = 0; i < row1.length; i++) {
-        if (this.allSecectData[row1[i]].length == 0 || row1.length == 0) {
-          this.$alert("请选择相应的任务！", "提示", {
-            dangerouslyUseHTMLString: true
-          });
-          return;
-        }
-      }
 
       for (let i = 0; i < row1.length; i++) {
         for (let j = 0; j < this.allSecectData[row1[i]].length; j++) {
           row.push(this.allSecectData[row1[i]][j]);
+          tableParams.push(this.allSecectData[row1[i]][j].taskInfoId);
         }
       }
-
-      for (let i = 0; i < row.length; i++) {
-        tableParams.push(row[i].taskInfoId);
-      }
-
       let params = {
         taskInfoIds: tableParams.join(",")
       };
