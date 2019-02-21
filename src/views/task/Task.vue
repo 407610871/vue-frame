@@ -564,7 +564,7 @@ export default {
             accessSysId: row.accessSysId,
             filePath: row.dataTableName,
             isSubDirectory: row.isSubDirectory,
-            taskType:'0',
+            taskType:'0'
           }
         }).then(res => {
           _self.loading = false;

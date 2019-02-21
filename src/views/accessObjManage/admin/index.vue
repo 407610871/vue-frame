@@ -1392,7 +1392,7 @@ export default {
           method: 'get',
           url: this.GLOBAL.api.API_DACM + '/ctables/checkFtpTaskFileExist',
           //url: 'http://10.19.160.59:8080/DACM/ctables/checkFtpTaskFileExist',
-          params: { 'taskId': row.extendParams.taskInfoId },
+          params: { 'taskId': row.extendParams.taskInfoId,'taskType':'1' },
         }).then(res => {
           //_self.loading = false;
           if (res.data.success && res.data.data.length > 0) {
