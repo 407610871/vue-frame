@@ -886,7 +886,6 @@ export default {
       if(!type){// 如果不是分页调用该接口
         this.allSecectData = {};
       }
-      console.log("this.allSecectData======",this.allSecectData);
       this.loading = true;
       let tableParams = {
         status: this.status.join(","),
@@ -940,7 +939,7 @@ export default {
     },
     //选中事件
     handleSelectionChange(val) {
-      this.selectionChangeData = val;
+      
     },
     //手动选择事件
     select(selection, row) {
@@ -949,7 +948,6 @@ export default {
     //手动全选事件
     selectAll(selection) {
       this.allSecectData[this.pageNum] = JSON.parse(JSON.stringify(selection));
-      console.log("this.allSecectData==================", this.allSecectData);
     },
     pLDataHandel(rowNew, params) {
       //批量汇聚
