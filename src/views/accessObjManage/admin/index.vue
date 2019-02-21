@@ -169,7 +169,7 @@
                   </div>
                   <div class="survey" v-if="type=='mysql'|| type=='oracle'|| type=='postgresql' 
                     || type=='sqlserver'">
-                    <singleTask :pdata="scope.row" @fre="loadTable()"></singleTask>
+                    <singleTask :pdata="scope.row" :objQueryType="'1'" @fre="loadTable()"></singleTask>
                   </div>
                   <div class="survey" v-if="type=='mysql'|| type=='oracle'|| type=='postgresql' || type=='sqlserver'">
                     <userSurvey :pdata="scope.row" :isBatch='false' @fre="loadTable()"></userSurvey>
@@ -343,7 +343,7 @@
                   </div>
                   <div class="survey" v-if="type=='mysql'|| type=='oracle'|| type=='postgresql' 
                     || type=='sqlserver'">
-                    <singleTask :pdata="scope.row" @fre="loadTable()"></singleTask>
+                    <singleTask :pdata="scope.row" :objQueryType="'2'" @fre="loadTable()"></singleTask>
                   </div>
                   <div class="survey" v-if="type=='mysql'|| type=='oracle'|| type=='postgresql' || type=='sqlserver'">
                     <userSurvey :pdata="scope.row" :isBatch='false' @fre="loadTable()"></userSurvey>

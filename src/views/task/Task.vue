@@ -489,7 +489,10 @@ export default {
       searchHeight: 71
     };
   },
-
+  components: {
+    DialogIsCheck,
+    DialogTaskDetail
+  },
   watch: {
     //监听树节点deptID,操作数据
     departmentId(newVal, oldVal) {
@@ -514,7 +517,6 @@ export default {
     time() {
       this.getSearchArea();
     },
-
     $route(to, from) {
       if (to.path == "/task") {
         this.init(this.keyword);
@@ -528,11 +530,10 @@ export default {
     dialogIsCheckTitile() {
       return `表${this.check.taskName}数据核验`;
     },
-    departmentId: function() {
+    departmentId() {
       return this.$store.state.deptId;
     },
-    tableHeight: function() {
-      //return window.innerHeight - this.searchHeight - 224;
+    tableHeight() {
       if (window.innerHeight > 768) {
         return window.innerHeight - 320;
       } else {
@@ -558,33 +559,7 @@ export default {
     this.$root.eventHub.$emit("selTreeNode", this.$store.state.deptId);
     this.$root.eventHub.$emit("setActiveNav", 3);
   },
-  components: {
-    DialogIsCheck,
-    DialogTaskDetail
-  },
   methods: {
-    formatDate(now) {
-      var year = now.getFullYear();
-      var month = now.getMonth() + 1;
-      var date = now.getDate();
-      var hour = now.getHours();
-      var minute = now.getMinutes();
-      var second = now.getSeconds();
-      return (
-        "20" +
-        year +
-        "-" +
-        month +
-        "-" +
-        date +
-        " " +
-        hour +
-        ":" +
-        minute +
-        ":" +
-        second
-      );
-    },
     removeCla() {
       this.tableData.forEach(item => {
         if (item.zc == 1) item.zc = 0;
@@ -605,7 +580,7 @@ export default {
         this.searchHeight = this.$refs.searchArea.clientHeight;
       });
     },
-    pop: function(val, arr) {
+    pop(val, arr) {
       if (arr.indexOf(val) > -1) {
         let ind = arr.indexOf(val);
         arr.splice(ind, 1);
@@ -626,7 +601,6 @@ export default {
     //数据接收
     websocketonmessage(e) {
       let redata = JSON.parse(e.data);
-      console.log(redata);
       let redataTrue = true;
       for (let i = 0; i < this.tableData.length; i++) {
         if (this.tableData[i].taskInfoId == redata.taskInfoId) {
@@ -660,8 +634,7 @@ export default {
     },
     // 刷新按钮
     refresh() {
-      let keyword = this.keyword;
-      this.init(keyword);
+      this.init(this.keyword);
     },
     //查询按钮
     search() {
@@ -691,17 +664,13 @@ export default {
       this.reqObj = row;
       this.showTaskDetail = true;
     },
-    //选择事件
-    select(val) {},
     //核验弹窗
     doCheck(index, row) {
       this.check = row;
       //ftp的核验
       if (row.sourceType == "ftp") {
-        var _self = this;
-        _self.loading = true;
-        _self
-          .$ajax({
+        this.loading = true;
+        this.$ajax({
             methods: "get",
             url: _self.GLOBAL.api.API_DACM + "/ctables/checkFtpFileExist",
             params: {
@@ -710,15 +679,13 @@ export default {
               isSubDirectory: row.isSubDirectory,
               taskType: "0"
             }
-          })
-          .then(res => {
-            _self.loading = false;
+          }).then(res => {
+            this.loading = false;
             if (res.data.success) {
               if (res.data.data.isExitFile == "true") {
                 //运行时弹出确认框
                 if (row.status == "1") {
-                  _self
-                    .$confirm(
+                  this.$confirm(
                       "当前任务正在运行中， 数据核验结果可能不精准，请确认是否要继续数据核验？",
                       "提示",
                       {
@@ -727,23 +694,21 @@ export default {
                         cancelButtonClass: "el-button--primary",
                         type: "warning"
                       }
-                    )
-                    .then(() => {
-                      _self.showTaskCheck = true;
-                    })
-                    .catch(() => {});
+                    ).then(() => {
+                      this.showTaskCheck = true;
+                    }).catch(() => {});
                 } else {
-                  _self.showTaskCheck = true;
+                  this.showTaskCheck = true;
                 }
               } else {
-                _self.$alert(res.data.data.message, "提示", {
+                this.$alert(res.data.data.message, "提示", {
                   confirmButtonText: "确定",
                   callback: action => {}
                 });
                 return false;
               }
             } else {
-              _self.$alert(res.data.message, "提示", {
+              this.$alert(res.data.message, "提示", {
                 confirmButtonText: "确定",
                 callback: action => {}
               });
@@ -773,265 +738,139 @@ export default {
     },
     //重新汇聚
     doConverge(index, row) {
-      let _self = this;
-      _self.loading = true;
+      this.loading = true;
       if (row.sourceType == "ftp") {
         this.$ajax({
           method: "get",
           url: this.GLOBAL.api.API_DACM + "/ctables/checkFtpTaskFileExist",
-          //url: 'http://10.19.160.59:8080/DACM/ctables/checkFtpTaskFileExist',
           params: { taskId: row.taskInfoId, taskType: "1" }
         }).then(res => {
-          //_self.loading = false;
           if (res.data.success && res.data.data.length > 0) {
             res.data.data.forEach(res => {
               if (res.isExitFile == "true") {
-                this.$ajax({
-                  method: "get",
-                  url:
-                    this.GLOBAL.api.API_DACM + "/taskManager/deleteStatistic",
-                  /*url:'http://10.19.160.213:8080/DACM/taskManager/deleteStatistic',*/
-                  params: { taskInfoId: row.taskInfoId }
-                }).then(res => {
-                  if (res.data.code == "0000") {
-                    this.$ajax
-                      .put(
-                        httpUrl +
-                          "manager/taskOperate/converge/" +
-                          row.taskInfoId
-                      )
-                      .then(function(res) {
-                        _self.loading = false;
-                        if (res.data.success) {
-                          _self.doMsg(
-                            "汇聚任务ID:" +
-                              row.taskInfoId +
-                              "重新汇聚任务创建成功！",
-                            "success"
-                          );
-                          _self.init();
-                        } else {
-                          _self.loading = false;
-                          _self.doMsg(res.data.message, "error");
-                        }
-                      });
-                  } else {
-                    _self.loading = false;
-                    _self.doMsg(res.data.message, "error");
-                  }
-                });
+                this.singleCoverHandel(row);
               } else {
-                _self.loading = false;
-                _self.doMsg(res.message, "error");
+                this.loading = false;
+                this.doMsg(res.message, "error");
               }
             });
           } else {
-            _self.loading = false;
-            _self.doMsg(res.data.message, "error");
+            this.loading = false;
+            this.doMsg(res.data.message, "error");
           }
         });
       } else {
+        this.singleCoverHandel(row);
+      }
+    },
+    singleCoverHandel(row){
         this.$ajax({
           method: "get",
           url: this.GLOBAL.api.API_DACM + "/taskManager/deleteStatistic",
-          /*url:'http://10.19.160.213:8080/DACM/taskManager/deleteStatistic',*/
           params: { taskInfoId: row.taskInfoId }
         }).then(res => {
           if (res.data.code == "0000") {
-            this.$ajax
-              .put(httpUrl + "manager/taskOperate/converge/" + row.taskInfoId)
-              .then(function(res) {
-                _self.loading = false;
+            this.$ajax.put(httpUrl + "manager/taskOperate/converge/" + row.taskInfoId).then(res=> {
+                this.loading = false;
                 if (res.data.success) {
-                  _self.doMsg(
-                    "汇聚任务ID:" + row.taskInfoId + "重新汇聚任务创建成功！",
-                    "success"
-                  );
-                  _self.init();
+                  this.doMsg(`汇聚任务ID:"${row.taskInfoId}重新汇聚任务创建成功！`,"success");
+                  this.init();
                 } else {
-                  _self.doMsg(res.data.message, "error");
+                  this.doMsg(res.data.message, "error");
                 }
               });
           } else {
-            _self.loading = false;
-            _self.doMsg(res.data.message, "error");
+            this.loading = false;
+            this.doMsg(res.data.message, "error");
           }
         });
-      }
     },
-    //处理完毕
+    //删除
     doDel(index, row) {
       this.$confirm("确定删除该任务?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         cancelButtonClass: "el-button--primary",
         type: "warning"
-      })
-        .then(() => {
-          let _self = this;
-          _self.loading = true;
-          this.$ajax
-            .get(
-              _self.GLOBAL.api.API_DACM +
-                "/taskManager/verifyDelete/" +
-                row.taskInfoId
-            )
-            .then(function(res) {
+      }).then(() => {
+          this.loading = true;
+          this.$ajax.get(`${this.GLOBAL.api.API_DACM}/taskManager/verifyDelete/${row.taskInfoId}`).then(res=> {
               if (res.data.code == "0000") {
-                _self
-                  .$confirm(
+                this.$confirm(
                     "当前任务的数据已经废止，请确认是否要删除任务和对应汇聚数据。",
                     "提示",
                     {
-                      /* confirmButtonText: '仅删除任务',*/
                       confirmButtonText: "删除任务和数据",
-                      /* cancelButtonText: '删除任务和数据',*/
                       cancelButtonText: "取消",
                       type: "warning"
                     }
-                  )
-                  .then(() => {
-                    /*_self.$ajax
-                  .put(httpUrl + "manager/taskOperate/delete/" + row.taskInfoId)
-                  .then(function(res) {
-                    _self.loading = false;
-                    if (res.data.success) {
-                      _self.doMsg("处理成功", "success");
-                      _self.init();
-                    } else {
-                      _self.doMsg(res.data.message, "error");
-                    }
-                  });*/
-                    _self.$ajax
-                      .put(
-                        httpUrl + "manager/taskOperate/delete/" + row.taskInfoId
-                      )
-                      .then(function(res) {
-                        _self.loading = false;
+                  ).then(() => {
+                    this.$ajax.put(`${httpUrl}manager/taskOperate/delete/${row.taskInfoId}`).then(res=> {
+                        this.loading = false;
                         if (res.data.success) {
                           // 调用/DACM/接口
-                          _self.$ajax.delete(
-                            window.ENV.API_DACM + deleteTask + row.taskInfoId
-                          );
-                          _self.doMsg("删除任务操作成功", "success");
-                          _self.init();
+                          this.$ajax.delete(`${window.ENV.API_DACM}${deleteTask}${row.taskInfoId}`);
+                          this.doMsg("删除任务操作成功", "success");
+                          this.init();
                         } else {
-                          _self.doMsg(res.data.message, "error");
+                          this.doMsg(res.data.message, "error");
                         }
                       });
                   })
-                  .catch(() => {
-                    _self.loading = false;
-                    /*_self.$ajax
-                  .put(httpUrl + "manager/taskOperate/delete/" + row.taskInfoId)
-                  .then(function(res) {
-                    _self.loading = false;
-                    if (res.data.success) {
-                      // 调用/DACM/接口
-                      _self.$ajax.delete(
-                        window.ENV.API_DACM + deleteTask + row.taskInfoId
-                      );
-                      _self.doMsg("处理成功", "success");
-                      _self.init();
-                    } else {
-                      _self.doMsg(res.data.message, "error");
-                    }
-                  });*/
-                  });
               } else {
-                _self.loading = false;
-                _self
-                  .$confirm(
+                this.loading = false;
+                this.$confirm(
                     "当前任务的数据已在提供服务，请先到数据资产去废止数据。",
                     "提示",
                     {
                       distinguishCancelAndClose: true,
-                      /*confirmButtonText: '仅删除任务',*/
                       confirmButtonText: "到数据资产",
-                      /* cancelButtonText: '到数据资产',*/
                       cancelButtonText: "取消",
                       cancelButtonClass: "el-button--primary",
                       type: "warning"
                     }
-                  )
-                  .then(() => {
-                    _self.loading = false;
-                    window.open(_self.GLOBAL.dam.API_DAM);
-                    /*_self.loading = true;
-                _self.$ajax
-                  .put(httpUrl + "manager/taskOperate/delete/" + row.taskInfoId)
-                  .then(function(res) {
-                    _self.loading = false;
-                    if (res.data.success) {
-                      _self.doMsg("处理成功", "success");
-                      _self.init();
-                    } else {
-                      _self.doMsg(res.data.message, "error");
-                    }
-                  });*/
+                  ).then(() => {
+                    this.loading = false;
+                    window.open(this.GLOBAL.dam.API_DAM);
                   })
-                  .catch(action => {
-                    _self.loading = false;
-                    /*if (action === 'cancel') {
-                  window.open(_self.GLOBAL.dam.API_DAM);
-                }*/
-                  });
-                /*_self.$confirm('当前任务的数据已在提供服务，请先到数据资产去废止数据。', '信息', {
-                confirmButtonText: '',
-                cancelButtonText: '',
-                callback: action => {
-                  this.$message({
-                    type: 'info',
-                    message: `12123`
-                  });
-                }
-              });*/
               }
             })
             .catch(() => {});
         })
-        .catch(() => {
-          /*  this.$message({
-            type: 'info',
-            message: '已取消删除'
-          });*/
-        });
     },
     //运行、暂停
     doRun(index, row) {
-      let _self = this;
       let url = "";
-      _self.loading = true;
+      this.loading = true;
       if (row.status == 0 || row.status == 2 || row.status == 3) {
         //执行运行
         url = httpUrl + "manager/taskOperate/start/" + row.taskInfoId;
-        this.$ajax.put(url).then(function(res) {
-          _self.loading = false;
+        this.$ajax.put(url).then(res => {
+          this.loading = false;
           if (res.data.success) {
-            _self.doMsg("运行成功", "success");
-            _self.init();
+            this.doMsg("运行成功", "success");
+            this.init();
           } else {
-            _self.doMsg(res.data.message, "error");
+            this.doMsg(res.data.message, "error");
           }
         });
       } else if (row.status == 1 || row.status == 5) {
         //执行暂停
         url = httpUrl + "manager/taskOperate/pause/" + row.taskInfoId;
-        this.$ajax.put(url).then(function(res) {
-          _self.loading = false;
+        this.$ajax.put(url).then(res => {
+          this.loading = false;
           if (res.data.code == "0000") {
-            _self.doMsg("暂停成功", "success");
+            this.doMsg("暂停成功", "success");
             row.status = 2;
           } else {
-            _self.doMsg(res.data.message, "error");
+            this.doMsg(res.data.message, "error");
           }
         });
       }
     },
     //分页切换
     handleCurrentChange() {
-      let keyword = this.keyword;
-      this.init(keyword);
+      this.init(this.keyword);
     },
     //信息提示
     doMsg(msg, type) {
@@ -1044,7 +883,7 @@ export default {
     },
     //表格数据获取
     init(keyword) {
-      var _self = this;
+      console.log("this.allSecectData======",this.allSecectData);
       this.loading = true;
       let tableParams = {
         status: this.status.join(","),
@@ -1055,16 +894,14 @@ export default {
         pageNum: this.pageNum,
         pageSize: this.pageSize,
         taskName: this.keyword,
-        departmentId: _self.departmentId.join(",")
+        departmentId: this.departmentId.join(",")
       };
-      this.$ajax
-        .get(httpUrl + "manager/task/show/0", {
+      this.$ajax.get(httpUrl + "manager/task/show/0", {
           params: tableParams
-        })
-        .then(function(res) {
+        }).then(res=> {
           if (res.data.code == 200) {
-            _self.tableData = res.data.data.result;
-            _self.tableData.forEach(res => {
+            this.tableData = res.data.data.result;
+            this.tableData.forEach(res => {
               if (res.status == 5) {
                 if (res.startTime) {
                   res.status = 1;
@@ -1075,32 +912,28 @@ export default {
                 }
               }
             });
-            tableZC = _self.tableData[0];
-            _self.mainTableDataTotal = res.data.data.total * 1;
-            _self.loading = false;
-            _self.$nextTick(function() {
+            tableZC = this.tableData[0];
+            this.mainTableDataTotal = res.data.data.total * 1;
+            this.loading = false;
+            this.$nextTick(()=> {
               let row = [];
-              let row1 = Object.keys(_self.allSecectData);
+              let row1 = Object.keys(this.allSecectData);
               for (let i = 0; i < row1.length; i++) {
-                for (let j = 0; j < _self.allSecectData[row1[i]].length; j++) {
-                  row.push(_self.allSecectData[row1[i]][j]);
+                for (let j = 0; j < this.allSecectData[row1[i]].length; j++) {
+                  row.push(this.allSecectData[row1[i]][j]);
                 }
               }
               for (let a = 0; a < row.length; a++) {
-                for (let z = 0; z < _self.tableData.length; z++) {
-                  if (row[a].taskInfoId == _self.tableData[z].taskInfoId) {
-                    row[a].status = _self.tableData[z].status;
-                    _self.$refs.multipleTable.toggleRowSelection(
-                      _self.tableData[z],
-                      true
-                    );
+                for (let z = 0; z < this.tableData.length; z++) {
+                  if (row[a].taskInfoId == this.tableData[z].taskInfoId) {
+                    row[a].status = this.tableData[z].status;
+                    this.$refs.multipleTable.toggleRowSelection( this.tableData[z], true);
                   }
                 }
               }
             });
           }
         })
-        .catch(function(err) {});
     },
     //选中事件
     handleSelectionChange(val) {
@@ -1108,6 +941,7 @@ export default {
     },
     //手动选择事件
     select(selection, row) {
+      console.log("1111111111111111", selection, row);
       this.allSecectData[this.pageNum] = selection;
     },
     //手动全选事件
@@ -1129,18 +963,21 @@ export default {
       if (errorData.length == 0) {
         this.loading = true;
         this.tips = "批量汇聚中...";
+        let tparams = {
+          taskInfoId: params.taskInfoIds
+        }
         this.$ajax({
           method: "get",
           url: this.GLOBAL.api.API_DACM + "/taskManager/deleteStatistic",
-          params: params
+          params: tparams
         }).then(res => {
           if (res.data.code == "0000") {
             this.$ajax({
                 url: httpUrl + "manager/taskOperate/batchConverge",
                 method: "POST",
                 params: params
-              }).then(function(res) {
-                infoTipsHandel(res, "批量汇聚", "汇聚");
+              }).then(res=> {
+                this.infoTipsHandel(res, "批量汇聚", "汇聚");
               })
           } else {
             this.loading = false;

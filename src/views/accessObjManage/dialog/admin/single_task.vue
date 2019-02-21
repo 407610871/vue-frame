@@ -93,26 +93,32 @@ export default {
     };
   },
   methods: {
-    //关闭对话框
+    //对未采集的数据进行单表采集时进行是否可以采集校验
     singleClick() {
-      let params = {
-        sourceId: this.pdata.accessSysId,
-        sourceObjType: this.pdata.extendParams.objectType,
-        sourceObjectName: this.pdata.name,
-      };
-      this.$ajax({
-        method: "get",
-        url: this.GLOBAL.api.API_DACM + "/taskManager/checkCollection",
-        params: params
-      }).then(res=>{
-        if(!res.data.data){
-          this.$message.warning('匹配到了进行中的采集任务，无法再次进行单表采集。');
-          return false;
-        } else {
-          this.dialogVisible = true;
-        }
-      });
+      console.log("this.pdata.objQueryType",this.objQueryType)
+      if(this.objQueryType==='1'){
+        let params = {
+          sourceId: this.pdata.accessSysId,
+          sourceObjType: this.pdata.extendParams.objectType,
+          sourceObjectName: this.pdata.name,
+        };
+        this.$ajax({
+          method: "get",
+          url: this.GLOBAL.api.API_DACM + "/taskManager/checkCollection",
+          params: params
+        }).then(res=>{
+          if(!res.data.data){
+            this.$message.warning('匹配到了进行中的采集任务，无法再次进行单表采集。');
+            return false;
+          } else {
+            this.dialogVisible = true;
+          }
+        });
+      } else {
+        this.dialogVisible = true;
+      }
     },
+    // 关闭对话框
     closeDialog() {
       this.$refs.collTask.websocketclose();
       this.dialogVisible = false;
@@ -147,7 +153,7 @@ export default {
   mounted() {},
   created() {},
   computed: {},
-  props: ["pdata"],
+  props: ["pdata","objQueryType"],
   watch: {
     dialogVisible() {
       if (this.dialogVisible) {
