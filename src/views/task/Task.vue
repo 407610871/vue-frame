@@ -563,7 +563,8 @@ export default {
           params: {
             accessSysId: row.accessSysId,
             filePath: row.dataTableName,
-            isSubDirectory: row.isSubDirectory
+            isSubDirectory: row.isSubDirectory,
+            taskType:'0',
           }
         }).then(res => {
           _self.loading = false;
@@ -627,7 +628,7 @@ export default {
           method: 'get',
           url: this.GLOBAL.api.API_DACM + '/ctables/checkFtpTaskFileExist',
           //url: 'http://10.19.160.59:8080/DACM/ctables/checkFtpTaskFileExist',
-          params: { 'taskId': row.taskInfoId },
+          params: { 'taskId': row.taskInfoId,taskType:'1' },
         }).then(res => {
           //_self.loading = false;
           if (res.data.success && res.data.data.length > 0) {
@@ -1104,7 +1105,7 @@ export default {
             method: 'get',
             url: this.GLOBAL.api.API_DACM + '/ctables/checkFtpTaskFileExist',
             //url: 'http://10.19.160.59:8080/DACM/ctables/checkFtpTaskFileExist',
-            params: { 'taskId': taskInfoId },
+            params: { 'taskId': taskInfoId ,'taskType':'1'},
           }).then(res => {
             if (res.data.success) {
               let ftpRespose = res.data.data.filter(val => {
