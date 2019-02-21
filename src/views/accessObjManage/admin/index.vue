@@ -50,7 +50,8 @@
       <el-tab-pane label="未采集对象" name="first">
         <div class="main main-content">
           <el-table ref="multipleTable" :height="tableHeight" v-loading="loading" :data="mainTableData" stripe style="width: 100%;" tooltip-effect="light" :row-class-name="tableRowClassName" @selection-change="handleSelectionChange">
-            <el-table-column type="selection" v-if="type!=='ftp'&&type!='mongodb'"></el-table-column>
+            <el-table-column type="selection" v-if="type=='mysql'|| type=='oracle'|| type=='postgresql' || type=='sqlserver' || type=='file'"></el-table-column>
+            
             <!-- ftp -->
             <!-- <el-table-column label="状态" v-if="type=='ftp'||type=='mongodb'" show-overflow-tooltip>
               <template slot-scope="scope">
@@ -207,10 +208,10 @@
       <el-tab-pane label="单对象采集" name="second">
         <div class="main main-content">
           <el-table ref="multipleTable" :height="tableHeight" v-loading="loading" :data="mainTableData" stripe style="width: 100%;" tooltip-effect="light" :row-class-name="tableRowClassName" @selection-change="handleSelectionChange">
-            <el-table-column type="selection" v-if="type!=='ftp'&&type!='mongodb'"></el-table-column>
+            <el-table-column type="selection" v-if="type=='mysql'|| type=='oracle'|| type=='postgresql' || type=='sqlserver' || type=='file'"></el-table-column>
             <!-- ftp -->
-            <el-table-column prop="name" label="文件夹名" v-if="type=='ftp'" show-overflow-tooltip></el-table-column>
-            <el-table-column prop="extendParams.filePath" label="路径" v-if="type=='ftp'" show-overflow-tooltip></el-table-column>
+            <el-table-column prop="name" label="文件夹名" v-if="type=='ftp'" show-overflow-tooltip width="220"></el-table-column>
+            <el-table-column prop="extendParams.filePath" label="路径" v-if="type=='ftp'" show-overflow-tooltip width="220"></el-table-column>
             <el-table-column label="是否包含子目录" v-if="type=='ftp'" width="160" show-overflow-tooltip>
               <template slot-scope="scope">
                 <span v-if="scope.row.extendParams.isSubDirectory=='true'">是</span>
@@ -251,7 +252,7 @@
                 <!-- <span>{{scope.row.collectName}}</span> -->
               </template>
             </el-table-column>
-            <el-table-column prop="collectName" label="数据采集方式" v-if="type=='mongodb' || type=='ftp'" min-width="160" show-overflow-tooltip></el-table-column>
+            <el-table-column prop="collectName" label="数据采集方式" v-if="type=='mongodb' || type=='ftp'" min-width="100" show-overflow-tooltip></el-table-column>
             <el-table-column prop="name" label="备注" v-if="type=='mongodb'" show-overflow-tooltip>
               <template slot-scope="scope">
                 <span>{{scope.row.comments}}</span>
@@ -1202,6 +1203,7 @@ export default {
     },
     updataSourceSingle: function(index, row) {
       var _self = this;
+      _self.loading = true;
       this.$ajax
         .get(window.ENV.API_DACM + refreshAmount, {
           params: {
@@ -1209,6 +1211,7 @@ export default {
           }
         })
         .then(function(res) {
+          _self.loading = false;
           if (res.data.success) {
             _self
               .$alert("更新成功", "提示", {
@@ -1224,6 +1227,7 @@ export default {
           }
         })
         .catch(function(err) {
+          _self.loading = false;
           _self.$alert("更新失败", "提示", {
             confirmButtonText: "确定"
           });
