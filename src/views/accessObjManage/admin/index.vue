@@ -40,7 +40,7 @@
           <el-button @click="updataSource" type="primary" icon="icon-title enc-icon-jieruyuangengxin" style="margin-left: 0px;">
             接入源更新</el-button>
         </el-tooltip>
-        <el-tooltip v-if="(type=='mysql'|| type=='oracle'|| type=='postgresql' || type=='sqlserver'||type=='mongodb')&&activeName!='first'" class="item" effect="light" content="任务状态更新" placement="top">
+        <el-tooltip v-if="(type=='mysql'|| type=='oracle'|| type=='postgresql' || type=='sqlserver'||type=='mongodb'||type=='ftp')&&activeName!='first'" class="item" effect="light" content="任务状态更新" placement="top">
           <el-button @click="loadTable()" type="primary" icon="icon-title enc-icon-shuaxin" style="margin-left: 10px;">
             任务状态更新</el-button>
         </el-tooltip>
@@ -50,13 +50,13 @@
       <el-tab-pane label="未采集对象" name="first">
         <div class="main main-content">
           <el-table ref="multipleTable" :height="tableHeight" v-loading="loading" :data="mainTableData" stripe style="width: 100%;" tooltip-effect="light" :row-class-name="tableRowClassName" @selection-change="handleSelectionChange">
-            <el-table-column type="selection" v-if="type!=='ftp'"></el-table-column>
+            <el-table-column type="selection" v-if="type!=='ftp'&&type!='mongodb'"></el-table-column>
             <!-- ftp -->
-            <el-table-column label="状态" v-if="type=='ftp'||type=='mongodb'" show-overflow-tooltip>
+            <!-- <el-table-column label="状态" v-if="type=='ftp'||type=='mongodb'" show-overflow-tooltip>
               <template slot-scope="scope">
                 <span>{{scope.row.collectName}}</span>
               </template>
-            </el-table-column>
+            </el-table-column> -->
             <el-table-column prop="name" label="文件夹名" v-if="type=='ftp'" show-overflow-tooltip></el-table-column>
             <el-table-column prop="extendParams.filePath" label="路径" v-if="type=='ftp'" show-overflow-tooltip></el-table-column>
             <el-table-column label="是否包含子目录" v-if="type=='ftp'" width="160" show-overflow-tooltip>
@@ -172,7 +172,7 @@
                     <singleTask :pdata="scope.row" @fre="loadTable()"></singleTask>
                   </div>
                   <div class="survey" v-if="type=='mysql'|| type=='oracle'|| type=='postgresql' || type=='sqlserver'">
-                    <userSurvey :pdata="scope.row" :isBatch='false'  @fre="loadTable()"></userSurvey>
+                    <userSurvey :pdata="scope.row" :isBatch='false' @fre="loadTable()"></userSurvey>
                   </div>
                   <div class="survey" v-if="type!='mysql' && type!='oracle' && type!='sqlserver' && type!='postgresql'">
                     <el-tooltip class="item" effect="light" :content="type=='ftp'?'单目录采集':'单表采集'" placement="top">
@@ -207,20 +207,8 @@
       <el-tab-pane label="单对象采集" name="second">
         <div class="main main-content">
           <el-table ref="multipleTable" :height="tableHeight" v-loading="loading" :data="mainTableData" stripe style="width: 100%;" tooltip-effect="light" :row-class-name="tableRowClassName" @selection-change="handleSelectionChange">
-            <el-table-column type="selection" v-if="type!=='ftp'"></el-table-column>
+            <el-table-column type="selection" v-if="type!=='ftp'&&type!='mongodb'"></el-table-column>
             <!-- ftp -->
-            <el-table-column label="状态" v-if="type=='ftp'||type=='mongodb'" show-overflow-tooltip>
-              <template slot-scope="scope">
-                <span v-if="scope.row.extendParams.taskInfoId!=undefined&&scope.row.extendParams.taskStatus=='0'">新建</span>
-                <span v-if="scope.row.extendParams.taskInfoId!=undefined&&scope.row.extendParams.taskStatus=='1'">运行</span>
-                <span v-if="scope.row.extendParams.taskInfoId!=undefined&&scope.row.extendParams.taskStatus=='2'">暂停</span>
-                <span v-if="scope.row.extendParams.taskInfoId!=undefined&&scope.row.extendParams.taskStatus=='6'">采集失败</span>
-                <span v-if="scope.row.extendParams.taskInfoId!=undefined&&scope.row.extendParams.taskStatus=='7'">汇聚失败</span>
-                <span v-if="scope.row.extendParams.taskInfoId!=undefined&&scope.row.extendParams.taskStatus=='4'">完成</span>
-                <span v-if="scope.row.extendParams.taskInfoId!=undefined&&scope.row.extendParams.taskStatus=='5'">准备中</span>
-                <!-- <span>{{scope.row.collectName}}</span> -->
-              </template>
-            </el-table-column>
             <el-table-column prop="name" label="文件夹名" v-if="type=='ftp'" show-overflow-tooltip></el-table-column>
             <el-table-column prop="extendParams.filePath" label="路径" v-if="type=='ftp'" show-overflow-tooltip></el-table-column>
             <el-table-column label="是否包含子目录" v-if="type=='ftp'" width="160" show-overflow-tooltip>
@@ -250,6 +238,20 @@
             <el-table-column prop="name" label="对象名" v-if="type=='mongodb'" show-overflow-tooltip></el-table-column>
             <el-table-column prop="totalRows" label="数据量" v-if="type=='mongodb'" show-overflow-tooltip></el-table-column>
             <el-table-column prop="owner" label="持有者" v-if="type=='mongodb'" show-overflow-tooltip></el-table-column>
+            <el-table-column prop="extendParams.taskInfoId" label="任务ID" v-if="type=='mongodb' || type=='ftp'" min-width="100" show-overflow-tooltip></el-table-column>
+            <el-table-column label="状态信息" v-if="type=='ftp'||type=='mongodb'" show-overflow-tooltip>
+              <template slot-scope="scope">
+                <span v-if="scope.row.extendParams.taskInfoId!=undefined&&scope.row.extendParams.taskStatus=='0'">新建</span>
+                <span v-if="scope.row.extendParams.taskInfoId!=undefined&&scope.row.extendParams.taskStatus=='1'">运行</span>
+                <span v-if="scope.row.extendParams.taskInfoId!=undefined&&scope.row.extendParams.taskStatus=='2'">暂停</span>
+                <span v-if="scope.row.extendParams.taskInfoId!=undefined&&scope.row.extendParams.taskStatus=='6'">采集失败</span>
+                <span v-if="scope.row.extendParams.taskInfoId!=undefined&&scope.row.extendParams.taskStatus=='7'">汇聚失败</span>
+                <span v-if="scope.row.extendParams.taskInfoId!=undefined&&scope.row.extendParams.taskStatus=='4'">完成</span>
+                <span v-if="scope.row.extendParams.taskInfoId!=undefined&&scope.row.extendParams.taskStatus=='5'">准备中</span>
+                <!-- <span>{{scope.row.collectName}}</span> -->
+              </template>
+            </el-table-column>
+            <el-table-column prop="collectName" label="数据采集方式" v-if="type=='mongodb' || type=='ftp'" min-width="160" show-overflow-tooltip></el-table-column>
             <el-table-column prop="name" label="备注" v-if="type=='mongodb'" show-overflow-tooltip>
               <template slot-scope="scope">
                 <span>{{scope.row.comments}}</span>
@@ -333,7 +335,7 @@
             <el-table-column prop="collectName" label="数据采集方式" v-if="type=='oracle' || type=='mysql' || type=='postgresql'" min-width="160" show-overflow-tooltip></el-table-column>
             <el-table-column label="操作" width="200">
               <template slot-scope="scope">
-                <div :class="(type=='ftp'||type=='mongodb')?'icon-other':'icon-centers'">
+                <div :class="(type=='ftp'||type=='mongodb')?'icon-others':'icon-centers'">
                   <div class="survey" v-if="type=='mysql'|| type=='oracle'|| type=='postgresql' || type=='sqlserver' || type=='mongodb'">
                     <el-tooltip class="item" effect="light" content="数据量更新" placement="top">
                       <i class="enc-icon-shujugengxin" v-on:click="updataSourceSingle(scope.$index, scope.row)" title="数据量更新"></i>
@@ -390,7 +392,7 @@
       </el-tab-pane>
       <el-tab-pane label="批量对象采集" name="third" v-if="type=='mysql'|| type=='oracle'|| type=='postgresql' || type=='sqlserver' || type=='file'">
         <div class="main main-content">
-          <el-table ref="multipleTable" :height="tableHeight" v-loading="loading" :data="mainTableData" stripe style="width: 100%;" tooltip-effect="light" :row-class-name="tableRowClassName" @selection-change="handleSelectionChange" :span-method="objectSpanMethod">
+          <el-table ref="multipleTable" :height="tableHeight" v-loading="loading" :data="mainTableData" stripe style="width: 100%;" tooltip-effect="light" :row-class-name="tableRowClassName" @selection-change="handleSelectionChange" :span-method="objectSpanMethod" class="mesh" @cell-mouse-enter="handleMouseEnter" @cell-mouse-leave="handleMouseLeave">
             <el-table-column type="selection" v-if="type!=='ftp'"></el-table-column>
             <!-- ftp -->
             <el-table-column label="状态" v-if="type=='ftp'||type=='mongodb'" show-overflow-tooltip>
@@ -493,7 +495,11 @@
             <el-table-column prop="comments" label="描述" v-if="type=='oracle' || type=='mysql' || type=='postgresql'" show-overflow-tooltip></el-table-column>
             <el-table-column prop="lastChangeTime" label="同步更新时间" v-if="type=='oracle' || type=='mysql' || type=='postgresql'" min-width="160" show-overflow-tooltip></el-table-column>
             <el-table-column prop="dataRange" label="数据范围" v-if="type=='oracle' || type=='mysql' || type=='postgresql'" min-width="100" show-overflow-tooltip></el-table-column>
-            <el-table-column prop="extendParams.taskInfoId" label="任务ID" v-if="type=='oracle' || type=='mysql' || type=='postgresql'" min-width="100" show-overflow-tooltip></el-table-column>
+            <el-table-column label="任务ID" v-if="type=='oracle' || type=='mysql' || type=='postgresql'" min-width="100" show-overflow-tooltip>
+              <template slot-scope="scope">
+                <span>{{scope.row.extendParams.taskInfoId}}</span>
+              </template>
+            </el-table-column>
             <el-table-column prop="objectStatus" label="状态信息" v-if="type=='oracle' || type=='mysql' || type=='postgresql'" min-width="160" show-overflow-tooltip>
               <template slot-scope="scope">
                 <!--  <span style="cursor: pointer" v-if="scope.row.extendParams.taskInfoId!=undefined" @click="doDetail(scope.$index, scope.row)">{{scope.row.objectStatus}}</span> -->
@@ -525,7 +531,7 @@
                     <singleTask :pdata="scope.row" @fre="loadTable()"></singleTask>
                   </div> -->
                   <div class="survey" v-if="type=='mysql'|| type=='oracle'|| type=='postgresql' || type=='sqlserver'">
-                    <userSurvey :pdata="scope.row" :isBatch ='true' @fre="loadTable()"></userSurvey>
+                    <userSurvey :pdata="scope.row" :isBatch='true' @fre="loadTable()"></userSurvey>
                   </div>
                   <!-- <div class="survey" v-if="type!='mysql' && type!='oracle' && type!='sqlserver' && type!='postgresql'">
                     <el-tooltip class="item" effect="light" :content="type=='ftp'?'单目录采集':'单表采集'" placement="top">
@@ -1161,6 +1167,7 @@ export default {
         timeFlag: new Date().getTime()
       });
       this.searchParams.condition = keyword;
+      this.pageShow = false;
       this.loadTable();
     },
 
@@ -1240,9 +1247,9 @@ export default {
               })
               .then(() => {
                 let reqData = res.data.data;
-                for(let i=0; i<reqData.length;i++){
-                  for(let j=0 ; j<_self.mainTableData.length;j++){
-                    if(reqData[i].id==_self.mainTableData[j].id){
+                for (let i = 0; i < reqData.length; i++) {
+                  for (let j = 0; j < _self.mainTableData.length; j++) {
+                    if (reqData[i].id == _self.mainTableData[j].id) {
                       _self.mainTableData[j].totalRows = reqData[i].totalRows;
                     }
                   }
@@ -1392,7 +1399,7 @@ export default {
           method: 'get',
           url: this.GLOBAL.api.API_DACM + '/ctables/checkFtpTaskFileExist',
           //url: 'http://10.19.160.59:8080/DACM/ctables/checkFtpTaskFileExist',
-          params: { 'taskId': row.extendParams.taskInfoId,'taskType':'1' },
+          params: { 'taskId': row.extendParams.taskInfoId, 'taskType': '1' },
         }).then(res => {
           //_self.loading = false;
           if (res.data.success && res.data.data.length > 0) {
@@ -1501,7 +1508,7 @@ export default {
         const _col = _row > 0 ? 1 : 0;
         return {
           rowspan: _row,
-          colspan: _col
+          colspan: _col,
         }
       }
       if (columnIndex === 10) {
@@ -1527,6 +1534,70 @@ export default {
           rowspan: _row,
           colspan: _col
         }
+      }
+    },
+    //批量互不影响的hover
+    handleMouseEnter(row, column, cell, event) {
+      let pchild = cell.parentNode.childNodes;
+      //let theme-color = '';
+      if (cell.rowSpan == 1) {
+        for (let i = 0; i < pchild.length; i++) {
+          if (pchild[i].rowSpan > 1) {
+            let psbackground = 'none';
+            if (cell.parentNode.getAttribute('class').indexOf('el-table__row--striped') != -1) {
+              psbackground = '#E6EAED'
+            }
+            pchild[i].style.background = psbackground;
+            pchild[i].style.color = '#566170';
+          }
+          else {
+           pchild[i].style.color = '#fff';
+            pchild[i].style.background = this._getColor(); 
+          }
+        }
+      } else if (cell.rowSpan > 1) {
+        for (let i = 0; i < pchild.length; i++) {
+          if (pchild[i].rowSpan == 1) {
+            let psbackground = 'none';
+            if (cell.parentNode.getAttribute('class').indexOf('el-table__row--striped') != -1) {
+              psbackground = '#E6EAED'
+            }
+            pchild[i].style.color = '#566170';
+            pchild[i].style.background = psbackground;
+          } else {
+            pchild[i].style.color = '#fff';
+            pchild[i].style.background = this._getColor();
+          }
+        }
+      }
+
+    },
+    handleMouseLeave(row, column, cell, event) {
+      let pchild = cell.parentNode.childNodes;
+      /*if (cell.rowSpan > 1) {*/
+        for (let i = 0; i < pchild.length; i++) {
+          let psbackground = 'none';
+          if (cell.parentNode.getAttribute('class').indexOf('el-table__row--striped') != -1) {
+            psbackground = '#E6EAED';
+          }
+          pchild[i].style.color = '#566170';
+          pchild[i].style.background = psbackground;
+
+        }
+     /* }
+*/
+    },
+    _getColor() {
+      if (window.localStorage.getItem('data-theme') == 'theme1') {
+         return '#7568A2'; 
+      } else if (window.localStorage.getItem('data-theme') == 'theme3') {
+         return '#68A277';
+      } else if (window.localStorage.getItem('data-theme') == 'theme2') {
+         return '#83B4D5';
+      } else if (window.localStorage.getItem('data-theme') == 'theme4') {
+        return '#BFA084';
+      } else {
+         return '#95a1b3';
       }
     }
   }
