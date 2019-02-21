@@ -1355,6 +1355,7 @@ export default {
   i {
     font-size: 24px;
     padding-right: 10px;
+    cursor: pointer;
   }
 }
 </style>
