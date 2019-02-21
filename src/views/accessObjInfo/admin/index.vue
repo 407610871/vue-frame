@@ -152,7 +152,7 @@
                         >{{key}}：{{scope.row[key]}}</li>
                       </ul>
                       <span slot="reference" style="cursor: pointer">更多详情
-                        <i class="el-icon-caret-bottom" style="display: inline-block;"></i>
+                        <i class="el-icon-caret-bottom" style="display: inline-block;    position: absolute;top: 18px;    margin-left: 1px;"></i>
                       </span>
                     </el-popover>
                   </template>

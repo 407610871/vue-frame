@@ -50,7 +50,8 @@
       <el-tab-pane label="未采集对象" name="first">
         <div class="main main-content">
           <el-table ref="multipleTable" :height="tableHeight" v-loading="loading" :data="mainTableData" stripe style="width: 100%;" tooltip-effect="light" :row-class-name="tableRowClassName" @selection-change="handleSelectionChange">
-            <el-table-column type="selection" v-if="type!=='ftp'&&type!='mongodb'"></el-table-column>
+            <el-table-column type="selection" v-if="type=='mysql'|| type=='oracle'|| type=='postgresql' || type=='sqlserver' || type=='file'"></el-table-column>
+            
             <!-- ftp -->
             <!-- <el-table-column label="状态" v-if="type=='ftp'||type=='mongodb'" show-overflow-tooltip>
               <template slot-scope="scope">
@@ -207,10 +208,10 @@
       <el-tab-pane label="单对象采集" name="second">
         <div class="main main-content">
           <el-table ref="multipleTable" :height="tableHeight" v-loading="loading" :data="mainTableData" stripe style="width: 100%;" tooltip-effect="light" :row-class-name="tableRowClassName" @selection-change="handleSelectionChange">
-            <el-table-column type="selection" v-if="type!=='ftp'&&type!='mongodb'"></el-table-column>
+            <el-table-column type="selection" v-if="type=='mysql'|| type=='oracle'|| type=='postgresql' || type=='sqlserver' || type=='file'"></el-table-column>
             <!-- ftp -->
-            <el-table-column prop="name" label="文件夹名" v-if="type=='ftp'" show-overflow-tooltip></el-table-column>
-            <el-table-column prop="extendParams.filePath" label="路径" v-if="type=='ftp'" show-overflow-tooltip></el-table-column>
+            <el-table-column prop="name" label="文件夹名" v-if="type=='ftp'" show-overflow-tooltip width="220"></el-table-column>
+            <el-table-column prop="extendParams.filePath" label="路径" v-if="type=='ftp'" show-overflow-tooltip width="220"></el-table-column>
             <el-table-column label="是否包含子目录" v-if="type=='ftp'" width="160" show-overflow-tooltip>
               <template slot-scope="scope">
                 <span v-if="scope.row.extendParams.isSubDirectory=='true'">是</span>
@@ -251,7 +252,7 @@
                 <!-- <span>{{scope.row.collectName}}</span> -->
               </template>
             </el-table-column>
-            <el-table-column prop="collectName" label="数据采集方式" v-if="type=='mongodb' || type=='ftp'" min-width="160" show-overflow-tooltip></el-table-column>
+            <el-table-column prop="collectName" label="数据采集方式" v-if="type=='mongodb' || type=='ftp'" min-width="100" show-overflow-tooltip></el-table-column>
             <el-table-column prop="name" label="备注" v-if="type=='mongodb'" show-overflow-tooltip>
               <template slot-scope="scope">
                 <span>{{scope.row.comments}}</span>
@@ -1060,7 +1061,7 @@ export default {
               value.showEdit = false;
             }
             _self.mainTableData = data;
-            console.log(_self.tabIndex);
+            //console.log(_self.tabIndex);
             if (_self.tabIndex == '3') {
               _self.mergeLines();
             }
@@ -1202,6 +1203,7 @@ export default {
     },
     updataSourceSingle: function(index, row) {
       var _self = this;
+      _self.loading = true;
       this.$ajax
         .get(window.ENV.API_DACM + refreshAmount, {
           params: {
@@ -1209,6 +1211,7 @@ export default {
           }
         })
         .then(function(res) {
+          _self.loading = false;
           if (res.data.success) {
             _self
               .$alert("更新成功", "提示", {
@@ -1224,6 +1227,7 @@ export default {
           }
         })
         .catch(function(err) {
+          _self.loading = false;
           _self.$alert("更新失败", "提示", {
             confirmButtonText: "确定"
           });
@@ -1482,11 +1486,11 @@ export default {
     },
     //合并单元格
     mergeLines() {
-      console.log(this.mainTableData);
+      //console.log(this.mainTableData);
       this.spanArr = [];
       this.position = 0;
       this.mainTableData.forEach((item, index) => {
-        console.log(index)
+        //console.log(index)
         if (index === 0) {
           this.spanArr.push(1);
           this.position = 0;
@@ -1497,7 +1501,7 @@ export default {
           } else {
             this.spanArr.push(1);
             this.position = index;
-            console.log(this.position);
+            //console.log(this.position);
           }
         }
       })
@@ -1549,10 +1553,9 @@ export default {
             }
             pchild[i].style.background = psbackground;
             pchild[i].style.color = '#566170';
-          }
-          else {
-           pchild[i].style.color = '#fff';
-            pchild[i].style.background = this._getColor(); 
+          } else {
+            pchild[i].style.color = '#fff';
+            pchild[i].style.background = this._getColor();
           }
         }
       } else if (cell.rowSpan > 1) {
@@ -1575,29 +1578,29 @@ export default {
     handleMouseLeave(row, column, cell, event) {
       let pchild = cell.parentNode.childNodes;
       /*if (cell.rowSpan > 1) {*/
-        for (let i = 0; i < pchild.length; i++) {
-          let psbackground = 'none';
-          if (cell.parentNode.getAttribute('class').indexOf('el-table__row--striped') != -1) {
-            psbackground = '#E6EAED';
-          }
-          pchild[i].style.color = '#566170';
-          pchild[i].style.background = psbackground;
-
+      for (let i = 0; i < pchild.length; i++) {
+        let psbackground = 'none';
+        if (cell.parentNode.getAttribute('class').indexOf('el-table__row--striped') != -1) {
+          psbackground = '#E6EAED';
         }
-     /* }
-*/
+        pchild[i].style.color = '#566170';
+        pchild[i].style.background = psbackground;
+
+      }
+      /* }
+       */
     },
     _getColor() {
       if (window.localStorage.getItem('data-theme') == 'theme1') {
-         return '#7568A2'; 
+        return '#7568A2';
       } else if (window.localStorage.getItem('data-theme') == 'theme3') {
-         return '#68A277';
+        return '#68A277';
       } else if (window.localStorage.getItem('data-theme') == 'theme2') {
-         return '#83B4D5';
+        return '#83B4D5';
       } else if (window.localStorage.getItem('data-theme') == 'theme4') {
         return '#BFA084';
       } else {
-         return '#95a1b3';
+        return '#95a1b3';
       }
     }
   }
