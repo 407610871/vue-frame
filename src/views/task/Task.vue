@@ -444,7 +444,6 @@ var tableZC;
 export default {
   name: "task",
   data() {
-    var that = this;
     return {
       tips: "",
       loading: false,
@@ -486,7 +485,6 @@ export default {
           return time.getTime() > Date.now();
         }
       },
-      searchHeight: 71
     };
   },
   components: {
@@ -498,24 +496,6 @@ export default {
     departmentId(newVal, oldVal) {
       this.pageNum = 1;
       this.init("");
-    },
-    keyword() {
-      this.getSearchArea();
-    },
-    taskPeriodType() {
-      this.getSearchArea();
-    },
-    status() {
-      this.getSearchArea();
-    },
-    priority() {
-      this.getSearchArea();
-    },
-    moreSearch() {
-      this.getSearchArea();
-    },
-    time() {
-      this.getSearchArea();
     },
     $route(to, from) {
       if (to.path == "/task") {
@@ -574,11 +554,6 @@ export default {
       } else {
         return "";
       }
-    },
-    getSearchArea() {
-      this.$nextTick(() => {
-        this.searchHeight = this.$refs.searchArea.clientHeight;
-      });
     },
     pop(val, arr) {
       if (arr.indexOf(val) > -1) {
@@ -939,7 +914,7 @@ export default {
     },
     //选中事件
     handleSelectionChange(val) {
-      
+
     },
     //手动选择事件
     select(selection, row) {
