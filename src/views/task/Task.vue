@@ -427,6 +427,7 @@
       v-on:closeDiaChk="showTaskCheck=false"
       :msgCheck="check"
       :title="dialogIsCheckTitile"
+      :types = "checktype"
     ></DialogIsCheck>
   </div>
 </template>
@@ -453,6 +454,7 @@ export default {
       status: JSON.parse(JSON.stringify(this.$store.state.taskParam.status)), //任务状态
       time: JSON.parse(JSON.stringify(this.$store.state.taskParam.time)),
       check: "",
+      checktype:'',
       priority: JSON.parse(
         JSON.stringify(this.$store.state.taskParam.priority)
       ),
@@ -642,6 +644,7 @@ export default {
     //核验弹窗
     doCheck(index, row) {
       this.check = row;
+      this.checktype = row.sourceType;
       //ftp的核验
       if (row.sourceType == "ftp") {
         this.loading = true;
