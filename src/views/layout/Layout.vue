@@ -122,12 +122,12 @@ export default {
           var configs = JSON.parse(res.data.message);
           for (var value of configs) {
             if (value.key.trim() == "每页展示条数") {
-              this.$store.commit("setPageSize", parseInt(value.name));
+              _this.$store.commit("setPageSize", parseInt(value.name));
               break;
             }
           }
         }
-        this.$store.commit("setPageReady");
+        _this.$store.commit("setPageReady");
       })
       .catch(function(err) {
         _this.$store.commit("setPageReady");
