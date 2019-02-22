@@ -751,7 +751,7 @@ export default {
             this.$ajax.put(httpUrl + "manager/taskOperate/converge/" + row.taskInfoId).then(res=> {
                 this.loading = false;
                 if (res.data.success) {
-                  this.doMsg(`汇聚任务ID:"${row.taskInfoId}重新汇聚任务创建成功！`,"success");
+                  this.doMsg(`汇聚任务ID:${row.taskInfoId}重新汇聚任务创建成功！`,"success");
                   this.init();
                 } else {
                   this.doMsg(res.data.message, "error");
