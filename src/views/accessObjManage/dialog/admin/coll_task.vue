@@ -892,7 +892,8 @@ export default {
           }
           this.userLabel = {
             tABLE_ID: this.pdata.id,
-            dATA_UPDATE_MODE: dataModeStyle
+            dATA_UPDATE_MODE: dataModeStyle,
+            damCheckFlag : false
           }
           this.$ajax({
             method: 'post',
@@ -939,6 +940,7 @@ export default {
         } else {
           this.userLabel = this.$store.state.userList;
           this.userLabel.dATA_UPDATE_MODE = this.$store.state.modeStyle;
+          this.userLabel.damCheckFlag = true;
           this.$ajax({
             method: 'post',
             url: this.GLOBAL.api.API_DACM + '/dataTable/inputSurvey',

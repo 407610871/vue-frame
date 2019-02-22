@@ -601,6 +601,8 @@ export default {
         saves.isCustom = this.$store.state.regInfo.baseflag;
         saves.isBatch = true;
         saves.regexInfo = this.$store.state.regInfo.baseEnd;
+        saves.tableCommonName = this.$store.state.regInfo.baseStart;
+        saves.damCheckFlag = false;
         this.$ajax({
           method: 'post',
           url: this.GLOBAL.api.API_DACM + '/dataTable/inputSurvey',
@@ -653,6 +655,7 @@ export default {
         saves.isBatch = true;
         saves.regexInfo = this.$store.state.regInfo.baseEnd;
         saves.tableCommonName = this.$store.state.regInfo.baseStart;
+        saves.damCheckFlag = true;
         this.$ajax({
           method: 'post',
           url: this.GLOBAL.api.API_DACM + '/dataTable/inputSurvey',
