@@ -1583,10 +1583,20 @@ export default {
       /*if (cell.rowSpan > 1) {*/
       for (let i = 0; i < pchild.length; i++) {
         let psbackground = 'none';
+        let colored = '#566170';
+        if(cell.parentNode.getAttribute('class').indexOf('add-row')!=-1){
+            colored ='red';
+        }
         if (cell.parentNode.getAttribute('class').indexOf('el-table__row--striped') != -1) {
           psbackground = '#E6EAED';
         }
-        pchild[i].style.color = '#566170';
+        if(pchild[i].rowSpan>1){
+         pchild[i].style.color = '#566170'; 
+        }
+        else {
+           pchild[i].style.color = colored; 
+        }
+        
         pchild[i].style.background = psbackground;
 
       }
