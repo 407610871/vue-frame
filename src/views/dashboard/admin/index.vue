@@ -570,7 +570,7 @@ export default {
               pageNum: 1,
               timeFlag: new Date().getTime()
             });
-            _self.loadTable();
+            _self.loadTable(_self.$store.state.deptId);
             _self.countTotal++;
           })
           .catch(function(err) {
