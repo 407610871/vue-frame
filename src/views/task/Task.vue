@@ -647,7 +647,7 @@ export default {
         this.loading = true;
         this.$ajax({
             methods: "get",
-            url: _self.GLOBAL.api.API_DACM + "/ctables/checkFtpFileExist",
+            url: this.GLOBAL.api.API_DACM + "/ctables/checkFtpFileExist",
             params: {
               accessSysId: row.accessSysId,
               filePath: row.dataTableName,
