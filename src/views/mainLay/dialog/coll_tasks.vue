@@ -603,6 +603,7 @@ export default {
         saves.regexInfo = this.$store.state.regInfo.baseEnd;
         saves.tableCommonName = this.$store.state.regInfo.baseStart;
         saves.damCheckFlag = false;
+        
         this.$ajax({
           method: 'post',
           url: this.GLOBAL.api.API_DACM + '/dataTable/inputSurvey',
