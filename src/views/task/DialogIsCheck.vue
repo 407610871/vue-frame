@@ -1,6 +1,13 @@
 <template>
   <div class="taskMDialog">
-    <el-dialog width="65%" :title="title" :visible.sync="showInnerDialog" class="check-data-dialog" @closed="closeDiaChk" :close-on-click-modal="false">
+    <el-dialog
+      width="65%"
+      :title="title"
+      :visible.sync="showInnerDialog"
+      class="check-data-dialog"
+      @closed="closeDiaChk"
+      :close-on-click-modal="false"
+    >
       <div slot="title">
         <span class="el-dialog__title">{{title}}</span>
         <div class="title-gra plr30">
@@ -10,20 +17,64 @@
         </div>
       </div>
       <!-- loading -->
-      <div v-loading="loading" element-loading-text="核验中，请稍等..." element-loading-spinner="el-icon-loading" element-loading-background="rgba(255, 251, 251, 0.77)">
+      <div
+        v-loading="loading"
+        element-loading-text="核验中，请稍等..."
+        element-loading-spinner="el-icon-loading"
+        element-loading-background="rgba(255, 251, 251, 0.77)"
+      >
         <div class="checkData" style="padding-left: 40px;">校验设置：
-          <el-radio v-model="radio" label="0" @change="checkChange" style="color:rgb(96, 98, 102);">全量核验</el-radio>
-          <el-radio v-model="radio" label="1" @change="checkChange" style="color:rgb(96, 98, 102);" :disabled="!this.queryTargetColumnList.length" v-if="types!='mongodb'&&types!='ftp'">根据时间范围核验</el-radio>
+          <el-radio
+            v-model="radio"
+            label="0"
+            @change="checkChange"
+            style="color:rgb(96, 98, 102);"
+          >全量核验</el-radio>
+          <el-radio
+            v-model="radio"
+            label="1"
+            @change="checkChange"
+            style="color:rgb(96, 98, 102);"
+            :disabled="!this.queryTargetColumnList.length"
+            v-if="types!='mongodb'&&types!='ftp'"
+          >根据时间范围核验</el-radio>
           <el-button type="primary" size="small" class="checkBtn" @click="doCheck">{{status}}</el-button>
           <div class>
             <div class="range">
               <span style="color:rgb(96, 98, 102);">核验误差范围:&nbsp;&nbsp;</span>
-              <el-input-number v-model="range" controls-position="right" size="small" :min="0" :max="100" :step="1" @change="checkNumber"></el-input-number>%
+              <el-input-number
+                v-model="range"
+                controls-position="right"
+                size="small"
+                :min="0"
+                :max="100"
+                :step="1"
+                @change="checkNumber"
+              ></el-input-number>%
             </div>
             <div class="time" v-show="timeCheck">
-              <el-date-picker size="small" :picker-options="pickerOptions" v-model="startTime" type="daterange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" value-format="yyyy-MM-dd"></el-date-picker>
-              <el-select v-model="queryTargetColumn" placeholder="选择核验时间字段" style="width:160px;margin-left:5px;top:-3px;" class="timeselect">
-                <el-option v-for="item in queryTargetColumnList" :key="item" :label="item" :value="item"></el-option>
+              <el-date-picker
+                size="small"
+                :picker-options="pickerOptions"
+                v-model="startTime"
+                type="daterange"
+                range-separator="至"
+                start-placeholder="开始日期"
+                end-placeholder="结束日期"
+                value-format="yyyy-MM-dd"
+              ></el-date-picker>
+              <el-select
+                v-model="queryTargetColumn"
+                placeholder="选择核验时间字段"
+                style="width:160px;margin-left:5px;top:-3px;"
+                class="timeselect"
+              >
+                <el-option
+                  v-for="item in queryTargetColumnList"
+                  :key="item"
+                  :label="item"
+                  :value="item"
+                ></el-option>
               </el-select>
             </div>
           </div>
@@ -32,20 +83,39 @@
           <div class="contanst_source">
             <ul>
               <li>源库：</li>
-             
+
               <li>源端数据量：</li>
-               <li>{{types=='ftp'?'源端对象：':'源对象：'}}</li>
+              <li>{{types=='ftp'?'源端对象：':'源对象：'}}</li>
             </ul>
             <ul>
               <li :title="resData.source_library">{{resData.source_library||"无"}}</li>
-             
+
               <li :title="resData.source_tableNum">{{resData.source_tableNum||"无"}}</li>
-             <li v-if="resData.sourceMatchTables==undefined||resData.sourceMatchTables==null" :title="resData.source_tableName" :class="resData.source_tableName!=undefined&&resData.source_tableName.indexOf('*')!=-1&&resData.status=='1'?'sourceStyle':''">
-                <span v-if="(resData.source_tableName==undefined||resData.source_tableName.indexOf('*')==-1)&&resData.status=='1'">{{resData.source_tableName||"无"}}</span>
-                <span v-else-if="resData.status=='1'" style="display:block" v-for="(item,index) in resData.source_tableName.split('*')" :key="index">{{item}}</span>
-             </li>
-              <li v-else-if="resData.status=='1'" style="height:80px;width:100%;overflow:auto;" class="jrborder">
-                 <span style="display:block" v-for="(item, index) in resData.sourceMatchTables.split('*')" :key="index">{{item}}</span>
+              <li
+                v-if="resData.sourceMatchTables==undefined||resData.sourceMatchTables==null"
+                :title="resData.source_tableName"
+                :class="resData.source_tableName!=undefined&&resData.source_tableName.indexOf('*')!=-1&&resData.status=='1'?'sourceStyle':''"
+              >
+                <span
+                  v-if="(resData.source_tableName==undefined||resData.source_tableName.indexOf('*')==-1)&&resData.status=='1'"
+                >{{resData.source_tableName||"无"}}</span>
+                <span
+                  v-else-if="resData.status=='1'"
+                  style="display:block"
+                  v-for="(item,index) in resData.source_tableName.split('*')"
+                  :key="index"
+                >{{item}}</span>
+              </li>
+              <li
+                v-else-if="resData.status=='1'"
+                style="height:80px;width:100%;overflow:auto;"
+                class="jrborder"
+              >
+                <span
+                  style="display:block"
+                  v-for="(item, index) in resData.sourceMatchTables.split('*')"
+                  :key="index"
+                >{{item}}</span>
               </li>
             </ul>
           </div>
@@ -54,13 +124,13 @@
             <ul>
               <li>目标库</li>
               <li>目标数据量：</li>
-               <li>目标表：</li>
+              <li>目标表：</li>
             </ul>
             <ul>
               <li :title="resData.target_library">{{resData.target_library||"无"}}</li>
-             
+
               <li :title="resData.target_tableNum">{{resData.target_tableNum||"无"}}</li>
-               <li :title="resData.target_tableName">{{resData.target_tableName||"无"}}</li>
+              <li :title="resData.target_tableName">{{resData.target_tableName||"无"}}</li>
             </ul>
           </div>
         </div>
@@ -88,10 +158,21 @@
             </ul>
             <ul>
               <li class="manual_check_result">
-                <span v-if="this.resData.testresults_manual_check_result==null" style="color:#606266">无</span>
+                <span
+                  v-if="this.resData.testresults_manual_check_result==null"
+                  style="color:#606266"
+                >无</span>
                 <template v-else>
-                  <el-radio v-model="resData.testresults_manual_check_result" label="0" @change="error()">合格</el-radio>
-                  <el-radio v-model="resData.testresults_manual_check_result" label="1" @change="error()">不合格</el-radio>
+                  <el-radio
+                    v-model="resData.testresults_manual_check_result"
+                    label="0"
+                    @change="error()"
+                  >合格</el-radio>
+                  <el-radio
+                    v-model="resData.testresults_manual_check_result"
+                    label="1"
+                    @change="error()"
+                  >不合格</el-radio>
                 </template>
               </li>
               <li style="opacity:0">h</li>
@@ -121,14 +202,27 @@
             <el-table-column label="核验结果">
               <template slot-scope="scope">
                 <span v-if="scope.row.testresults_manual_check_result == '1'">失败</span>
-                <span v-else-if="scope.row.testresults_manual_check_result == undefined||scope.row.testresults_manual_check_result == null">核验中</span>
+                <span
+                  v-else-if="scope.row.testresults_manual_check_result == undefined||scope.row.testresults_manual_check_result == null"
+                >核验中</span>
                 <span v-else>成功</span>
               </template>
             </el-table-column>
             <el-table-column label="核验报告">
               <template slot-scope="scope">
-                <el-button @click="downTxt(scope.row.id)" type="primary" size="small" v-if="scope.row.status == '1'">导出</el-button>
-                <el-button @click="downTxt(scope.row.id)" type="primary" size="small" v-else disabled>导出</el-button>
+                <el-button
+                  @click="downTxt(scope.row.id)"
+                  type="primary"
+                  size="small"
+                  v-if="scope.row.status == '1'"
+                >导出</el-button>
+                <el-button
+                  @click="downTxt(scope.row.id)"
+                  type="primary"
+                  size="small"
+                  v-else
+                  disabled
+                >导出</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -152,7 +246,7 @@ export default {
     this.getHistory();
     this.init();
   },
-  data: function() {
+  data() {
     return {
       queryTargetColumn: "",
       queryTargetColumnList: [],
@@ -228,22 +322,15 @@ export default {
     },
     openDialog() {
       this.dialogVisible = true;
-      // this.diaTitle = `表 ${this.msgCheck.dataTableName}  数据核验`;
-      // this.init();
     },
     init() {
-      let that = this;
-      // this.loading = true;
       this.$ajax
         .get(baseUrl + "/ccheckData/tableNum", {
-          //this.$ajax.get('http://10.19.160.25:8080/DACM/ccheckData/tableNum', {
           params: {
-            taskId: that.msgCheck.taskInfoId
-            //taskId: '68377'
+            taskId: this.msgCheck.taskInfoId
           }
         })
         .then(res => {
-          //  this.loading = false;
           res = res.data;
           if (
             res.data.result == "false" ||
@@ -253,34 +340,24 @@ export default {
               confirmButtonText: "确定"
             });
           }
-          if (!this.dialogVisible) {
-            //return;
-          }
-          //this.resData = res.datas;
           this.resData = res.data;
-          //console.log(this.resData.source_tableName);
-         // console.log(typeof(this.resData.source_tableName));
-          
+
           //不知道这个的展示有没有什么限制，所以暂时先不作什么限制
-          that.queryTargetColumnList = res.data.listIncrementCon;
+          this.queryTargetColumnList = res.data.listIncrementCon;
           if (
-            that.queryTargetColumnList.length != 0 &&
-            that.queryTargetColumnList.length != undefined
+            this.queryTargetColumnList.length != 0 &&
+            this.queryTargetColumnList.length != undefined
           ) {
-            that.queryTargetColumn = that.queryTargetColumnList[0];
+            this.queryTargetColumn = this.queryTargetColumnList[0];
           }
           if (res.data.status == "1") {
             this.textShow = false;
-
             window.clearTimeout(this.timer);
             this.timer = null;
             this.loading = false;
             this.status = "开始核验";
             this.radio = res.data.config_key;
-            this.radio == 1 ?
-              (this.timeCheck = true) :
-              (this.timeCheck = false);
-
+            this.radio == 1 ? (this.timeCheck = true) : (this.timeCheck = false);
             if (res.data.config_key == 1) {
               this.startTime = [
                 res.data.config_startTime,
@@ -291,33 +368,26 @@ export default {
             }
 
             this.range = res.data.config_range;
-            if (
-              res.data.queryTargetColumn != "" &&
-              res.data.queryTargetColumn != undefined
-            ) {
+            if ( res.data.queryTargetColumn ) {
               this.queryTargetColumn = res.data.queryTargetColumn;
             }
             //核验历史记录
             this.getHistory();
             //更新父级
             this.updateDataCheckLog();
-            //  let loadingInstance = Loading.service({text:"核验中，请稍等...",target:document.getElementsByName("el-dialog")});
           } else if (res.data.status == "0") {
-            //   this.loading = true;
-             this.range = res.data.config_range;
+            this.range = res.data.config_range;
             this.setTimer();
             this.status = "核验中";
           }
-          // this.liData = res.data.result;
         });
     },
     //获取核验历史记录
     getHistory() {
-      let that = this;
       this.$ajax
         .get(baseUrl + "/ccheckData/tableNumAllByTaskId", {
           params: {
-            taskId: that.msgCheck.taskInfoId
+            taskId: this.msgCheck.taskInfoId
           }
         })
         .then(res => {
@@ -384,7 +454,6 @@ export default {
           }
         })
         .then(res => {
-          // this.loading = false;
           res.data = res.data.data;
           if (res.data.result) {
             this.$alert(res.data.message, "核验结果", {
@@ -403,11 +472,10 @@ export default {
     //查看日志按钮
     doDetail() {
       this.loading2 = true;
-      let that = this;
       this.$ajax
         .get(baseUrl + "/ccheckData/checkLog", {
           params: {
-            id: that.resData.id
+            id: this.resData.id
           }
         })
         .then(res => {
@@ -420,7 +488,6 @@ export default {
               confirmButtonText: "确定"
             });
           } else {
-            // this.textShow = true;
             if (res.data.result == false) {
               this.textShow = false;
               this.$message.warning(res.data.message);
@@ -440,7 +507,7 @@ export default {
                 source_sqls = res.data.source_sql;
               }
               this.loginfo = `源库：${res.data.source_library}\n
-${this.types=='ftp'?'源端对象':'源表'}：${res.data.source_tableName}\n
+${this.types == "ftp" ? "源端对象" : "源表"}：${res.data.source_tableName}\n
 执行结果：${res.data.source_tableNum}\n
 数据核验查询语句：${source_sqls}\n
 \n
@@ -463,7 +530,6 @@ ${this.types=='ftp'?'源端对象':'源表'}：${res.data.source_tableName}\n
         browser = "IE";
       }
       request({
-        /* url: 'http://10.19.160.59:8080/DACM/ccheckData/downloadCheckDataById?id=32&browser=fox&accessName=ww',*/
         url: `${baseUrl}/ccheckData/downloadCheckDataById?id=${value}&browser=${browser}&accessName=${
           this.resData.target_tableName
         }`,
@@ -471,7 +537,8 @@ ${this.types=='ftp'?'源端对象':'源表'}：${res.data.source_tableName}\n
         responseType: "blob"
       }).then(res => {
         var blob = new Blob([res.data], {
-          type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8"
+          type:
+            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8"
         }); //application/vnd.openxmlformats-officedocument.spreadsheetml.sheet这里表示xlsx类型
         var userAgent = navigator.userAgent; //取得浏览器的userAgent字符串
         var isIE =
@@ -499,7 +566,6 @@ ${this.types=='ftp'?'源端对象':'源表'}：${res.data.source_tableName}\n
           window.URL.revokeObjectURL(href); //释放掉blob对象
         }
       });
-      /*window.location.href = `${this.GLOBAL.api.API_DACM}/ccheckData/downloadCheckDataById?id=${item.id}&browser=${browser}&accessName=${this.$route.params.sourceName}`*/
     },
     //更新父级数据核验日志信息
     updateDataCheckLog() {
@@ -518,7 +584,6 @@ ${this.types=='ftp'?'源端对象':'源表'}：${res.data.source_tableName}\n
   },
   components: {}
 };
-
 </script>
 <style lang="scss" scoped>
 @import "@/assets/css/base.scss";
@@ -635,7 +700,10 @@ ${this.types=='ftp'?'源端对象':'源表'}：${res.data.source_tableName}\n
   cursor: pointer;
 }
 .sourceStyle {
-  height:80px;width:100%;overflow:auto !important;border: 1px solid #c9cdd0
+  height: 80px;
+  width: 100%;
+  overflow: auto !important;
+  border: 1px solid #c9cdd0;
 }
 .resultIcon .yes {
   background: url("../../assets/images/data_ri.png") no-repeat;
@@ -658,7 +726,6 @@ h5 {
   font-size: 14px;
   margin-bottom: 10px;
 }
-
 </style>
 <style lang="scss">
 .el-picker-panel__icon-btn {
@@ -676,7 +743,7 @@ h5 {
   line-height: 32px;
 }
 .timeselect .el-select .el-input__suffix {
-  top:2px;
+  top: 2px;
 }
 .timeselect .el-input--medium .el-input__inner {
   height: 32px;

@@ -13,7 +13,7 @@
             :disabled="loading3"
             placeholder="请选择"
             @change="changeStatus"
-            class="select taskselect"
+            class="detail-select taskselect"
           >
             <el-option
               v-for="(item,index) in operateList"
@@ -259,7 +259,6 @@
 .el-radio+.el-radio {
   margin-left: 19px;
 }
-
 .label-color {
   display: inline-block;
   margin-right: 8px;
@@ -267,19 +266,6 @@
   height: 12px;
   border-radius: 6px;
 }
-
-.el-radio+.el-radio {
-  margin-left: 19px;
-}
-
-.label-color {
-  display: inline-block;
-  margin-right: 8px;
-  width: 12px;
-  height: 12px;
-  border-radius: 6px;
-}
-
 .dataCheck-tab {
   padding-left: 12px;
   padding-top: 12px;
@@ -309,7 +295,7 @@
   color: #a7a2a2;
 }
 
-.select {
+.detail-select {
   width: 70%;
 }
 
@@ -332,17 +318,12 @@
   height: 35px !important;
 }
 
-.taskselect .el-input__inner {
-  height: 35px !important;
-}
-
 </style>
 <script>
-import axios from "axios";
 import DialogIsCheck from "./DialogIsCheck";
 export default {
   name: "taskMDialog",
-  data: function() {
+  data() {
     return {
       //外层loading
       loading1: true, //接入基本信息的loading
@@ -445,97 +426,32 @@ export default {
     closeDiaChk() {
       this.showCheckData = false;
     },
-    setHeadStyle() {
-      return {
-        background: "#fff",
-        color: "#909399"
-      };
-    },
     //关闭对话框
     closeDia() {
       this.$emit("closeDia");
     },
     //切换当前任务状态
     changeStatus() {
-      let that = this;
       this.loading3 = true;
       let statusKey = [
         { stop: "pause/", run: "start/" },
         { stop: 2, run: 1 },
         { stop: "run", run: "stop" }
       ];
-      axios
-        .put(
-          this.httpUrl +
-          "manager/taskOperate/" +
-          statusKey[0][this.flagDesc] +
-          this.reqObj.taskInfoId
-        )
-        .then(res => {
-          res = res.data;
+      this.$ajax.put(`${this.httpUrl}manager/taskOperate/${statusKey[0][this.flagDesc]}${this.reqObj.taskInfoId}`).then(res => {
           this.loading3 = false;
-          if (res.success) {
-            this.doMsg(res.message, "success");
+          if (res.data && res.data.success) {
+            this.doMsg(res.data.message, "success");
             this.reqObj.status = statusKey[1][this.flagDesc];
             this.getTaskInfo();
           } else {
             this.doMsg(res.message, "error");
             this.flagDesc = statusKey[2][this.flagDesc];
           }
-        })
-        .catch(err => {
+        }).catch(err => {
           this.loading3 = false;
           this.flagDesc = statusKey[2][this.flagDesc];
         });
-
-      /* if(that.flagDesc=='stop'){
-        //调用暂停接口
-        axios.put(that.httpUrl+'manager/taskOperate/pause/'+that.reqObj.taskInfoId).then(
-          function(res){
-            if(res.data.code!='200'&&res.data.code!='0000'){
-              that.doMsg(res.data.message,'error');
-              //如果任务状态未切换成功，任务状态下拉框仍显示原来的值“run--运行”
-              that.flagDesc ='run';
-              that.loading3 = false;
-                        
-
-            }else{
-              that.doMsg(res.data.message,'success');
-              that.reqObj.status = 2;
-              //重新查询任务基本信息
-                 
-              that.getTaskInfo();
-            }
-          }  
-        ).catch(function(err){
-          //如果任务状态未切换成功，任务状态下拉框仍显示原来的值“run--运行”
-          that.flagDesc=='run';
-          that.loading3 = false;
-        })
-      }else if(that.flagDesc=='run'){
-        //调用运行接口
-        axios.put(that.httpUrl+'manager/taskOperate/start/'+that.reqObj.taskInfoId).then(
-          function(res){
-            if(res.data.code!='200'&&res.data.code!='0000'){
-              that.doMsg(res.data.message,'error');
-              //如果任务状态未切换成功，任务状态下拉框仍显示原来的值“stop--暂停”
-              that.flagDesc ='stop';
-              that.loading3 = false;
-             
-            }else{
-              that.doMsg(res.data.message,'success');
-              that.reqObj.status = 1;
-              //重新查询任务基本信息
-             
-              that.getTaskInfo();
-            }
-          }
-        ).catch(function(err){
-          //如果任务状态未切换成功，任务状态下拉框仍显示原来的值“stop--暂停”
-          that.flagDesc=='stop';
-          that.loading3 = false;
-        })
-      } */
     },
     //将毫秒转换成周期
     translatePeriodFromMS(ms) {
@@ -600,79 +516,73 @@ export default {
     },
     //查询接入基本信息
     getSourceInfo() {
-      let that = this;
-      that.loading1 = true;
+      this.loading1 = true;
       let reqData = {
         params: {
-          taskInfoDetailId: that.reqObj.taskInfoDetailId,
-          sourceObjType: that.reqObj.sourceObjType
+          taskInfoDetailId: this.reqObj.taskInfoDetailId,
+          sourceObjType: this.reqObj.sourceObjType
         }
       };
-      axios
-        .get(that.httpUrl + "manager/task/detail/source", reqData)
-        .then(function(res) {
+      this.$ajax.get(`${this.httpUrl}manager/task/detail/source`, reqData).then(res=> {
           if (
             res.data.code == undefined ||
             res.data.code == null ||
             res.data.code == ""
           ) {
-            that.doMsg("“/manager/task/detail/source”服务响应为空！", "error");
-            that.loading1 = false;
+            this.doMsg("“/manager/task/detail/source”服务响应为空！", "error");
+            this.loading1 = false;
             return;
           }
           if (res.data.code != "200" && res.data.code != "0000") {
-            that.doMsg(
+            this.doMsg(
               "“/manager/task/detail/source”" + res.data.message,
               "error"
             );
-            that.loading1 = false;
+            this.loading1 = false;
             return;
           }
           let sourceObjNameList = res.data.data.sourceTableName;
           let sourceObjNameStr = "";
-          let len = res.data.data.sourceTableName.length;
+          let len = sourceObjNameList.length;
           for (let i = 0; i < len; i++) {
             if (
-              res.data.data.sourceTableName[i].type != "VIEW" &&
-              res.data.data.sourceTableName[i].type != "TABLE"
+              sourceObjNameList[i].type != "VIEW" &&
+              sourceObjNameList[i].type != "TABLE"
             ) {
-              sourceObjNameStr =
-                sourceObjNameStr + res.data.data.sourceTableName[i].tableName;
+              sourceObjNameStr += sourceObjNameList[i].tableName;
               sourceObjNameStr = sourceObjNameStr + (i == len - 1 ? "" : ",");
             }
           }
           let innerReqData = {
             params: {
-              taskInfoDetailId: that.reqObj.taskInfoDetailId,
-              sourceTableName: res.data.data.sourceTableName[0].tableName
+              taskInfoDetailId: this.reqObj.taskInfoDetailId,
+              sourceTableName: sourceObjNameList[0].tableName
             }
           };
-          axios
-            .get(that.httpUrl + "manager/task/detail/target", innerReqData)
-            .then(function(innerRes) {
+          this.$ajax.get(`${this.httpUrl}manager/task/detail/target`, innerReqData).then(innerRes=> {
               if (
                 innerRes.data.code == undefined ||
                 innerRes.data.code == null ||
                 innerRes.data.code == ""
               ) {
-                that.doMsg(
+                this.doMsg(
                   "“/manager/task/detail/target”服务响应为空！",
                   "error"
                 );
-                that.loading1 = false;
+                this.loading1 = false;
                 return;
               }
               if (innerRes.data.code != "200" && innerRes.data.code != "0000") {
-                that.doMsg(
+                this.doMsg(
                   "“/manager/task/detail/target”" + innerRes.data.message,
                   "error"
                 );
-                that.loading1 = false;
+                this.loading1 = false;
                 return;
               }
 
-              that.sourceBaseInfo = innerRes.data.data;
-              that.sourceBaseInfo.dbType = res.data.data.dbType;
+              this.sourceBaseInfo = innerRes.data.data;
+              this.sourceBaseInfo.dbType = res.data.data.dbType;
               let periodMap = {
                 0: "实时",
                 1: "周期间隔增量",
@@ -682,48 +592,39 @@ export default {
                 5: "周期定时全量"
               };
               //接入类型翻译
-              that.sourceBaseInfo.period = innerRes.data.data.period;
-              that.sourceBaseInfo.periodDesc =
-                periodMap[innerRes.data.data.period];
+              this.sourceBaseInfo.period = innerRes.data.data.period;
+              this.sourceBaseInfo.periodDesc = periodMap[innerRes.data.data.period];
               //接入对象展示集合
-              that.sourceBaseInfo.sourceObjNameList = sourceObjNameList;
-              that.sourceBaseInfo.sourceObjNameStr = sourceObjNameStr;
+              this.sourceBaseInfo.sourceObjNameList = sourceObjNameList;
+              this.sourceBaseInfo.sourceObjNameStr = sourceObjNameStr;
               //接入源名称
-              that.sourceBaseInfo.resourceName = res.data.data.sourceSysName;
-              that.loading1 = false;
-            })
-            .catch(function(err) {
-              console.log(err);
-              that.loading1 = false;
+              this.sourceBaseInfo.resourceName = res.data.data.sourceSysName;
+              this.loading1 = false;
+            }).catch(err=> {
+              this.loading1 = false;
             });
         })
-        .catch(function(err) {
-          console.log(err);
-          that.loading1 = false;
+        .catch(err=> {
+          this.loading1 = false;
         });
     },
     //查询任务基本信息
     getTaskInfo() {
-      let that = this;
-      that.loading3 = true;
+      this.loading3 = true;
       //数据获取
       let searchData = {
         params: {
-          taskInfoId: that.reqObj.taskInfoId
+          taskInfoId: this.reqObj.taskInfoId
         }
       };
-      axios
-        .get(that.httpUrl + "manager/task/taskinfo", searchData)
-        .then(function(response) {
+      this.$ajax.get(`${this.httpUrl}manager/task/taskinfo`, searchData).then(response=> {
           if (response.data.code != "200" && response.data.code != "0000") {
-            that.doMsg("/manager/task/taskinfo" + response.data.message, error);
-            that.loading3 = false;
+            this.doMsg("/manager/task/taskinfo" + response.data.message, error);
+            this.loading3 = false;
           } else {
-            that.taskBaseInfo = response.data.data;
+            this.taskBaseInfo = response.data.data;
             //创建人
-            that.taskBaseInfo.creater = that.taskBaseInfo.creater ?
-              that.taskBaseInfo.creater.split("/")[1] :
-              "";
+            this.taskBaseInfo.creater = this.taskBaseInfo.creater ? this.taskBaseInfo.creater.split("/")[1] : "";
             let statusMap = {
               0: "创建",
               1: "运行",
@@ -734,30 +635,24 @@ export default {
               5: "准备中"
             };
             //网络指示灯判断
-            that.newWorkTrans(
-              that.taskBaseInfo.networkStatus,
+            this.newWorkTrans(
+              this.taskBaseInfo.networkStatus,
               response.data.data.speed,
               true
             );
             //可操作类型
-            let t = that.taskBaseInfo.status;
-            that.flagDesc = t == 0 || t == 1 || t == 5 ? "run" : "stop";
-            //that.reqObj.status = t;
-            that.taskBaseInfo.statusDesc =
-              that.reqObj.status == 1 ?
-              "运行" :
-              statusMap[that.taskBaseInfo.status];
-            if (that.flagDesc == "stop") {
-              that.operateList[1].disabled = false;
-              that.operateList[0].disabled = true;
+            let t = this.taskBaseInfo.status;
+            this.flagDesc = t == 0 || t == 1 || t == 5 ? "run" : "stop";
+            this.taskBaseInfo.statusDesc = this.reqObj.status == 1 ? "运行" : statusMap[this.taskBaseInfo.status];
+            if (this.flagDesc == "stop") {
+              this.operateList[1].disabled = false;
+              this.operateList[0].disabled = true;
             } else {
-              that.operateList[1].disabled = true;
-              that.operateList[0].disabled = false;
+              this.operateList[1].disabled = true;
+              this.operateList[0].disabled = false;
             }
             //获取周期设置信息 periodSet
-            if (that.reqObj.isPeriod == 0 || that.reqObj.isPeriod == 3) {
-              //如果任务类型为一次性任务或实时任务，则页面不展示周期设置，所以在此不需要获取，无需操作
-            } else {
+            if (this.reqObj.isPeriod != 0 && this.reqObj.isPeriod != 3) {
               //如果任务类型为全量或增量，需要对接口返回的周期任务做转换，显示成可读数据，展示在页面
               /**
                * 周期任务返回规则：(但是interval_ms字段并没有用到，根据入参即可判断任务周期类型)
@@ -765,274 +660,222 @@ export default {
                * 如果interval_ms不为-1且timeType不等于2、3、4即为间隔执行单位为ms
                * 如果interval_ms不为-1且timeType等于2、3、4即为定时执行执行，interval_ms为corn表达式
                */
-              let timeType = that.taskBaseInfo.timeType;
-              let intervalMs = that.taskBaseInfo.intervalMs;
+              let timeType = this.taskBaseInfo.timeType;
+              let intervalMs = this.taskBaseInfo.intervalMs;
               if (timeType != 2 && timeType != 3 && timeType != 4) {
                 //timeType不等于2、3、4即为间隔执行单位为ms
-                that.taskBaseInfo.periodSet = that.translatePeriodFromMS(
-                  intervalMs
-                );
+                this.taskBaseInfo.periodSet = this.translatePeriodFromMS(intervalMs);
               } else if (timeType == 2 || timeType == 3 || timeType == 4) {
                 //timeType等于2、3、4即为定时执行执行，interval_ms为corn表达式
-                that.taskBaseInfo.periodSet = that.translatePeriodFromCorn(
-                  intervalMs,
-                  timeType
-                );
+                this.taskBaseInfo.periodSet = this.translatePeriodFromCorn(intervalMs, timeType);
               }
             }
-            that.loading3 = false;
+            this.loading3 = false;
           }
-        })
-        .catch(function(err) {
-          console.log(err);
-          that.loading3 = false;
+        }).catch(err=> {
+          this.loading3 = false;
         });
     },
     //数据核验按钮点击
     checkData() {
       //isTestLink控制是否展示数据核验弹框
-      var _self = this;
-      _self.isCheckLoading = true;
-      _self.jrtype = _self.sourceBaseInfo.dbType;
-      if (_self.jrtype == 'ftp') {
-        _self.$ajax({
+      this.isCheckLoading = true;
+      this.jrtype = this.sourceBaseInfo.dbType;
+      if (this.jrtype == 'ftp') {
+        this.$ajax({
           method: 'get',
-          url: _self.GLOBAL.api.API_DACM + '/ctables/checkFtpTaskFileExist',
-          //url: 'http://10.19.160.59:8080/DACM/ctables/checkFtpTaskFileExist',
-          params: { 'taskId': _self.reqObj.taskInfoId },
+          url: this.GLOBAL.api.API_DACM + '/ctables/checkFtpTaskFileExist',
+          params: { 'taskId': this.reqObj.taskInfoId },
         }).then(res => {
-          _self.loading = false;
+          this.loading = false;
           if (res.data.success && res.data.data.length > 0) {
             res.data.data.forEach(res => {
               if (res.isExitFile == 'true') {
-                if (_self.taskBaseInfo.statusDesc == '运行') {
-                  _self.$confirm('当前任务正在运行中， 数据核验结果可能不精准，请确认是否要继续数据核验？', '提示', {
+                if (this.taskBaseInfo.statusDesc == '运行') {
+                  this.$confirm('当前任务正在运行中， 数据核验结果可能不精准，请确认是否要继续数据核验？', '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
                     cancelButtonClass: "el-button--primary",
                     type: 'warning'
                   }).then(() => {
-                    _self.showCheckData = true;
-                    _self.entFromCheck = false;
+                    this.showCheckData = true;
+                    this.entFromCheck = false;
                     //接入数据更新是否通过测试连接接口展示loading，这个时候是点击“数据核验”时加载的loading
-                    _self.isCheckLoading = false;
-                    _self.loading3 = false;
+                    this.isCheckLoading = false;
+                    this.loading3 = false;
                   }).catch(() => {
-                    _self.isCheckLoading = false;
-                    _self.loading3 = false;
+                    this.isCheckLoading = false;
+                    this.loading3 = false;
                   })
                 } else {
-                  _self.showCheckData = true;
-                  _self.entFromCheck = false;
+                  this.showCheckData = true;
+                  this.entFromCheck = false;
                   //接入数据更新是否通过测试连接接口展示loading，这个时候是点击“数据核验”时加载的loading
-                  _self.isCheckLoading = false;
-                  _self.loading3 = false;
+                  this.isCheckLoading = false;
+                  this.loading3 = false;
                 }
-
               } else {
-                _self.isCheckLoading = false;
-                _self.loading3 = false;
-                _self.doMsg(res.message, "error");
+                this.isCheckLoading = false;
+                this.loading3 = false;
+                this.doMsg(res.message, "error");
               }
             })
           } else {
-            _self.isCheckLoading = false;
-            _self.loading3 = false;
-            _self.doMsg(res.data.message, "error");
+            this.isCheckLoading = false;
+            this.loading3 = false;
+            this.doMsg(res.data.message, "error");
           }
         })
       } else {
-        if (_self.taskBaseInfo.statusDesc == '运行') {
-          _self.$confirm('当前任务正在运行中， 数据核验结果可能不精准，请确认是否要继续数据核验？', '提示', {
+        if (this.taskBaseInfo.statusDesc == '运行') {
+          this.$confirm('当前任务正在运行中， 数据核验结果可能不精准，请确认是否要继续数据核验？', '提示', {
             confirmButtonText: '确定',
             cancelButtonText: '取消',
             cancelButtonClass: "el-button--primary",
             type: 'warning'
           }).then(() => {
-            _self.showCheckData = true;
-            _self.entFromCheck = false;
+            this.showCheckData = true;
+            this.entFromCheck = false;
             //接入数据更新是否通过测试连接接口展示loading，这个时候是点击“数据核验”时加载的loading
-            _self.isCheckLoading = false;
-            _self.loading3 = false;
+            this.isCheckLoading = false;
+            this.loading3 = false;
           }).catch(() => {
-            _self.isCheckLoading = false;
-            _self.loading3 = false;
+            this.isCheckLoading = false;
+            this.loading3 = false;
           })
         } else {
-          _self.showCheckData = true;
-          _self.entFromCheck = false;
+          this.showCheckData = true;
+          this.entFromCheck = false;
           //接入数据更新是否通过测试连接接口展示loading，这个时候是点击“数据核验”时加载的loading
-          _self.isCheckLoading = false;
-          _self.loading3 = false;
+          this.isCheckLoading = false;
+          this.loading3 = false;
         }
       }
 
     },
     //点击测试连接按钮，进行接口条用
     testConnect() {
-      let that = this;
-      that.loading3 = true;
+      this.loading3 = true;
       let reqData = {
         params: {
-          taskInfoId: that.reqObj.taskInfoId
+          taskInfoId: this.reqObj.taskInfoId
         }
       };
-      axios
-        .get(that.httpUrl + "manager/task/testTaskNetworkStatus", reqData)
-        .then(function(res) {
+      this.$ajax.get(`${this.httpUrl}manager/task/testTaskNetworkStatus`, reqData).then(res=> {
           if (res.data == undefined || res.data == null || res.data === "") {
-            that.doMsg("服务无数据返回", "error");
+            this.doMsg("服务无数据返回", "error");
           } else if (res.data.code != "200" && res.data.code != "0000") {
-            that.doMsg(
+            this.doMsg(
               "/manager/task/testTaskNetworkStatus:" + res.data.message,
               "error"
             );
           } else {
-            that.taskBaseInfo.networkStatus = res.data.data.networkStatus;
-            that.newWorkTrans(
-              that.taskBaseInfo.networkStatus,
-              res.data.data.speed
-            );
-            if (that.taskBaseInfo.networkStatus == 2) {
-              that.isTestLink = false;
-              if (that.entFromCheck) {
-                that.doMsg("数据核验失败！", "error");
+            this.taskBaseInfo.networkStatus = res.data.data.networkStatus;
+            this.newWorkTrans(this.taskBaseInfo.networkStatus,res.data.data.speed);
+            if (this.taskBaseInfo.networkStatus == 2) {
+              this.isTestLink = false;
+              if (this.entFromCheck) {
+                this.doMsg("数据核验失败！", "error");
               }
             } else {
-              that.isTestLink = true;
+              this.isTestLink = true;
             }
           }
-          that.loading3 = false;
-          that.isCheckLoading = false;
-          that.entFromCheck = false;
-        })
-        .catch(function(err) {
-          console.log(err);
-          that.loading3 = false;
-          that.isCheckLoading = false;
-          that.entFromCheck = false;
+          this.loading3 = false;
+          this.isCheckLoading = false;
+          this.entFromCheck = false;
+        }).catch(err=> {
+          this.loading3 = false;
+          this.isCheckLoading = false;
+          this.entFromCheck = false;
         });
     },
     //查询接入数据更新
     getSourceDataInfo() {
-      let that = this;
-      that.loading2 = true;
-      axios
-        .put(
-          that.httpUrl +
-          "manager/taskOperate/dataInfo/" +
-          that.reqObj.taskInfoId
-        )
-        .then(function(res) {
+      this.loading2 = true;
+      this.$ajax.put(`${this.httpUrl}manager/taskOperate/dataInfo/${this.reqObj.taskInfoId}`).then(res=> {
           if (res.data == undefined || res.data == null || res.data === "") {
-            that.doMsg("服务无数据返回", "error");
+            this.doMsg("服务无数据返回", "error");
           } else if (res.data.code != "0000" && res.data.code != "200") {
-            that.doMsg(
+            this.doMsg(
               "/manager/taskOperate/dataInfo/" + res.data.data.message,
               "error"
             );
           } else {
-            if (that.reqObj.status != "5") {
-              that.sourceDataInfo = res.data.data;
+            if (this.reqObj.status != "5") {
+              this.sourceDataInfo = res.data.data;
             }
           }
-          that.loading2 = false;
-        })
-        .catch(function(err) {
-          that.loading2 = false;
+          this.loading2 = false;
+        }).catch(err => {
+          this.loading2 = false;
         });
     },
     //查询接入任务日志信息
     getSourceTaskLog() {
-      let that = this;
-      that.loading4 = true;
-      axios
-        .put(
-          that.httpUrl +
-          "manager/taskOperate/taskLogInfo/" +
-          that.reqObj.taskInfoId
-        )
-        .then(function(res) {
+      this.loading4 = true;
+      this.$ajax.put(`${this.httpUrl}manager/taskOperate/taskLogInfo/${this.reqObj.taskInfoId}`).then(res=> {
           //判断响应是否异常
           if (res.data.code != "200" && res.data.code != "0000") {
-            that.doMsg(
+            this.doMsg(
               "/manager/taskOperate/taskLogInfo/" + res.data.data.message,
               "error"
             );
           } else {
-            that.taskLog =
-              (res.data.data.logInfo || "") == "" ?
-              "" :
-              `\t${res.data.data.logInfo}`;
+            this.taskLog = (res.data.data.logInfo || "") == "" ? "" : `\t${res.data.data.logInfo}`;
           }
-          that.loading4 = false;
-        })
-        .catch(function(err) {
-          console.log(err);
-          that.loading4 = false;
+          this.loading4 = false;
+        }).catch(err=> {
+          this.loading4 = false;
         });
     },
     //查询数据核验日志信息
     getDataCheckLog() {
-      let that = this;
-      that.loading5 = true;
+      this.loading5 = true;
       let reqData = {
         params: {
-          taskId: that.reqObj.taskInfoId
+          taskId: this.reqObj.taskInfoId
         }
       };
-      axios
-        .get(that.httpUrl2 + "ccheckData/checkLogByTaskId", reqData)
-        .then(function(res) {
+      this.$ajax.get(`${this.httpUrl2}ccheckData/checkLogByTaskId`, reqData).then(res=> {
           if (res.data.code != "200" && res.data.code != "0000") {
-            that.doMsg(
+            this.doMsg(
               "/ccheckData/checkLogByTaskId" + res.data.message,
               "error"
             );
           } else {
-            that.dataCheckList = res.data.data;
+            this.dataCheckList = res.data.data;
           }
-          that.loading5 = false;
-        })
-        .catch(function(err) {
-          console.log(err);
-          that.loading5 = false;
+          this.loading5 = false;
+        }).catch(err=> {
+          this.loading5 = false;
         });
     },
     //查询数据预览
     getDataViews() {
-      let that = this;
-      that.loading6 = true;
-      axios
-        .put(
-          that.httpUrl +
-          "manager/taskOperate/dataPreview/" +
-          that.reqObj.taskInfoId
-        )
-        .then(function(res) {
+      this.loading6 = true;
+      this.$ajax.put(`${this.httpUrl}manager/taskOperate/dataPreview/${this.reqObj.taskInfoId}`).then(res=> {
           if (res.data.code != "200" && res.data.code != "0000") {
-            that.doMsg(
+            this.doMsg(
               "/manager/taskOperate/dataPreview：" + res.data.message,
               "error"
             );
           } else if (res.data.data.length != 0) {
-            that.dataViewsList = res.data.data;
-            that.keyList = [];
-            for (var p in that.dataViewsList[0]) {
-              let value = that.dataViewsList[0][p];
+            this.dataViewsList = res.data.data;
+            this.keyList = [];
+            for (var p in this.dataViewsList[0]) {
+              let value = this.dataViewsList[0][p];
               let headerValue = p.split("/")[0];
               let newMap = {
                 label: headerValue,
                 prop: headerValue
               };
-              that.keyList.push(newMap);
+              this.keyList.push(newMap);
             }
-            console.log("that.keyList===",that.keyList)
           }
-          that.loading6 = false;
-        })
-        .catch(function(err) {
-          that.loading6 = false;
+          this.loading6 = false;
+        }).catch(err=> {
+          this.loading6 = false;
         });
     },
     //网络测试指示灯及内容翻译
@@ -1052,8 +895,7 @@ export default {
         this.taskBaseInfo.newWorkDesc = newWorkDescMap[value];
       } else {
         speed = speed || 0;
-        this.taskBaseInfo.newWorkDesc =
-          newWorkDescMap[value] + " " + speed + "kb/s";
+        this.taskBaseInfo.newWorkDesc = `${newWorkDescMap[value]} ${speed}kb/s`;
       }
     },
     //信息提示
