@@ -794,6 +794,8 @@ export default {
                           this.doMsg(res.data.message, "error");
                         }
                       });
+                  }).catch(()=>{
+                    this.loading = false;
                   })
               } else {
                 this.loading = false;
@@ -810,6 +812,8 @@ export default {
                   ).then(() => {
                     this.loading = false;
                     window.open(this.GLOBAL.dam.API_DAM);
+                  }).catch(()=>{
+                    this.loading = false;
                   })
               }
             })
