@@ -1347,11 +1347,6 @@ export default {
   .el-table .cell .el-button i {
     font-size: 21px;
   }
-  .el-tleft {
-    /* width:100px;
-    text-align: left;
-    margin:auto; */
-  }
 }
 
 .task-btn .el-button--primary span,
@@ -1360,7 +1355,7 @@ export default {
 }
 .el-tleft {
   i {
-    font-size: 24px;
+    font-size: 21px;
     padding-right: 10px;
     cursor: pointer;
   }
