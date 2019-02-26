@@ -208,7 +208,7 @@
       </el-form>
     </div>
     <!-- 操作按钮 -->
-    <div class="count-operate main-content clearfix">
+    <div class="mr-btn main-content clearfix">
       <div class="task-btn">
         <el-tooltip class="item" effect="light" content="重新汇聚" placement="top">
           <el-button
@@ -1191,12 +1191,6 @@ export default {
   width: 95px;
 }
 
-.count-operate {
-  div {
-    float: right;
-  }
-}
-
 .indicate {
   display: inline-block;
   width: 15px;
@@ -1273,19 +1267,6 @@ export default {
   width: 700px;
   right: 0px;
 }
-
-.el-message-box {
-  max-height: 50%;
-  overflow: auto;
-}
-
-.el-message-box__wrapper {
-  .el-message-box {
-    max-height: 50%;
-    overflow: auto;
-  }
-}
-
 .right-tools {
   float: right;
   margin-left: 10px;
@@ -1318,17 +1299,11 @@ export default {
     /*  background-color: #95a1b3 !important; */
     color: #fff;
   }
-  .el-message-box {
-    max-height: 50%;
-    overflow: auto;
-  }
+
   .mainTable .el-table .success-row {
     background: #d9f9c8;
   }
-  .el-message-box__wrapper .el-message-box {
-    max-height: 50%;
-    overflow: auto;
-  }
+
   .task-query-form .el-checkbox {
     width: auto;
     margin-left: 15px;
@@ -1349,10 +1324,6 @@ export default {
   }
 }
 
-.task-btn .el-button--primary span,
-.task-btn .el-button--medium span {
-  float: right;
-}
 .el-tleft {
   i {
     font-size: 21px;
