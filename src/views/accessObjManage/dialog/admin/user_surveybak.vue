@@ -709,6 +709,9 @@ export default {
     },
     close() {
       this.$emit('closeuser');
+    },
+    initUserFlag(){
+      this.userflag = false;
     }
 
   },
@@ -754,6 +757,7 @@ export default {
   },
   watch: {
     msg() {
+      this.userflag = false;
       if (this.info.id != undefined) {
         this.tableid = this.info.id;
         this.tableids = this.info.id;

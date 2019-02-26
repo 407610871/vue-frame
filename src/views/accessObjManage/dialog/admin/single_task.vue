@@ -126,6 +126,7 @@ export default {
       this.$store.commit("setMode", "");
       this.$store.commit("setIsSign", false);
       this.$store.commit("setSchemaList", []);
+      this.$refs.survey.initUserFlag();
       //this.$refs.survey._clearForm();
     },
     //步骤条

@@ -168,6 +168,9 @@ export default {
     //合并行
     arraySpanMethod() {
 
+    },
+    initMap(){
+      this.cincreArr = [];
     }
   },
   components: {

@@ -60,10 +60,10 @@
           </el-col>
           <el-col :span="24">
             <el-col :span="10" class="collbg" v-if="this.ruleForm.accessMode=='1'||((this.ruleForm.history==true)&&this.ruleForm.accessMode=='0')">
-              <el-form-item label="增量字段:" prop="increment">
+              <el-form-item label="增量字段:" prop="increment" ref="incrementForm">
                 <el-input v-model="ruleForm.increment" class="fl" :disabled="this.ruleForm.accessMode=='0'&&gethis==true"></el-input>
                 <el-button type="primary" class="fl increbtn" @click="innerVisible = true" v-if="!(this.ruleForm.accessMode=='0'&&gethis==true)">选择</el-button>
-                <incre-map :msg='innerVisible' :incid="pdata.id" :yid="yid" :alincre="this.increArr" @showIncre="showIncrement()" @saveIncre="saveIncrement($event)"></incre-map>
+                <incre-map :msg='innerVisible' :incid="pdata.id" :yid="yid" :alincre="this.increArr" @showIncre="showIncrement()" @saveIncre="saveIncrement($event)" ref="incremap"></incre-map>
               </el-form-item>
             </el-col>
           </el-col>
@@ -364,6 +364,32 @@ export default {
         history: false, //历史记录
         taskSubMode: 'true' //提交方式
       },
+      ruleFormNew: {
+        startLocation: '', //接入起始点
+        dLibrary: '', //接入目的库
+        tablename: '', //建立的表名
+        accessMode: '1', //接入方式
+        increment: '', //增量字段
+        actech: 'JDBC', //采集技术
+        cycleSet: '0', //周期设置
+        jday: '', //间隔执行天数
+        jmin: '',
+        jhour: '',
+        xStreamServiceName: '',
+        userName: '',
+        password: '',
+        dfmon: '', //定时执行月数
+        dfmin: '',
+        dsmin: '',
+        dshour: '',
+        dsweek: '',
+        dfhour: '',
+        dthour: '',
+        dtmin: '',
+        accessPri: '1', //优先级
+        history: false, //历史记录
+        taskSubMode: 'true' //提交方式
+      },
       formRules: {
         xStreamServiceName: [{
           required: true,
@@ -412,6 +438,7 @@ export default {
     //清空非选中项
     cleanData(val) {
       if (val == '0') {
+        this.radio ='';
         this.ruleForm.dfmon = "";
         this.ruleForm.dfhour = "";
         this.ruleForm.dfmin = "";
@@ -796,6 +823,7 @@ export default {
                 confirmButtonText: '确定',
                 callback: action => {
                   this.isregin = false;
+                  this.ruleForm = Object.assign({}, this.ruleFormNew);
                   this.$emit('fresh');
                 }
               });
@@ -835,6 +863,7 @@ export default {
                     confirmButtonText: '确定',
                     callback: action => {
                       this.isregin = false;
+                      this.ruleForm = Object.assign({}, this.ruleFormNew);
                       this.$emit('fresh');
                     }
                   });
@@ -914,9 +943,14 @@ export default {
                   if (this.ruleForm.taskSubMode == "false") {
                     ctips = '采集任务创建成功！';
                   }
+                  
                   this.$alert(ctips, '信息', {
                     confirmButtonText: '确定',
                     callback: action => {
+                      this.ruleForm = Object.assign({}, this.ruleFormNew);
+                     this.increArr = {};
+                     this.$refs.incremap.initMap();
+                      this.yid = '';
                       this.$emit('fresh');
                     }
                   });
@@ -961,9 +995,14 @@ export default {
                   if (this.ruleForm.taskSubMode == "false") {
                     ctips = '采集任务创建成功！';
                   }
+                   
                   this.$alert(ctips, '信息', {
                     confirmButtonText: '确定',
                     callback: action => {
+                      this.ruleForm = Object.assign({}, this.ruleFormNew);
+                      this.increArr = {};
+                      this.$refs.incremap.initMap();
+                      this.yid = '';
                       this.$emit('fresh');
                     }
                   });
