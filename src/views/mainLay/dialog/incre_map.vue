@@ -172,6 +172,7 @@ export default {
     },
     initMap(){
       this.cincreArr = [];
+      this.radio = '';
     }
   },
   components: {
