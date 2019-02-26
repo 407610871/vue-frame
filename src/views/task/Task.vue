@@ -209,7 +209,6 @@
     </div>
     <!-- 操作按钮 -->
     <div class="mr-btn main-content clearfix">
-      <div class="task-btn">
         <el-tooltip class="item" effect="light" content="重新汇聚" placement="top">
           <el-button
             type="primary"
@@ -234,7 +233,6 @@
         <el-tooltip class="item" effect="light" content="刷新" placement="top">
           <el-button type="primary" icon="icon-title enc-icon-shuaxin" @click="refresh">刷新</el-button>
         </el-tooltip>
-      </div>
     </div>
     <!-- 表格数据 -->
     <div class="mainTable main-content clearfix">
@@ -375,15 +373,6 @@
                 <i class="enc-icon-zanting" @click="doRun(scope.$index, scope.row)"></i>
               </el-tooltip>
               <el-tooltip
-                v-if="scope.row.status!=1"
-                class="item"
-                effect="light"
-                content="删除"
-                placement="top"
-              >
-                <i class="enc-icon-shanchu" @click="doDel(scope.$index, scope.row)"></i>
-              </el-tooltip>
-              <el-tooltip
                 v-if="(scope.row.status==1||scope.row.status==2||scope.row.status==4)&&scope.row.isPeriod!=0&&scope.row.ftpIsDelete!='true'"
                 class="item"
                 effect="light"
@@ -400,6 +389,15 @@
                 placement="top"
               >
                 <i class="enc-icon-huiju" @click="doConverge(scope.$index, scope.row)"></i>
+              </el-tooltip>
+              <el-tooltip
+                v-if="scope.row.status!=1"
+                class="item"
+                effect="light"
+                content="删除"
+                placement="top"
+              >
+                <i class="enc-icon-shanchu" @click="doDel(scope.$index, scope.row)"></i>
               </el-tooltip>
             </div>
           </template>
