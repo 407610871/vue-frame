@@ -77,7 +77,7 @@ export default {
       this.innerVisible = false;
     },
     _getIncreType() {
-      this.cincreArr = [];
+      //this.cincreArr = [];
       var map = {
         objectInfoId: this.incid,
         pagNum: 1,
