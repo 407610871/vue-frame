@@ -1076,6 +1076,7 @@ export default {
     },
     //获取修改内容
     _getInit() {
+      this.$refs.incrementForm.clearValidate();
       let acmode = 'JDBC';
       if (this.pdata.collectName == '实时接入') {
         acmode = this.$route.params.type;
@@ -1183,6 +1184,7 @@ export default {
 
         } else {
           this.editfalg = false;
+
           if (this.$store.state.modeStyle == '1') { //增量接入
             this.ruleForm.accessMode = '1'
           }
