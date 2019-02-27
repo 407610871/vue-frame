@@ -438,7 +438,7 @@ export default {
     //清空非选中项
     cleanData(val) {
       if (val == '0') {
-        this.radio ='';
+        this.radio = '';
         this.ruleForm.dfmon = "";
         this.ruleForm.dfhour = "";
         this.ruleForm.dfmin = "";
@@ -762,27 +762,27 @@ export default {
       this._reveAcmode();
 
       // oracle实时接口先对xstream的用户名，密码等校验
-      if(this.ruleForm.accessMode == "0" && this.$route.params.type == 'oracle'){
+      if (this.ruleForm.accessMode == "0" && this.$route.params.type == 'oracle') {
         let params = {
           "accessSysId": this.pdata.accessSysId,
           "serviceName": this.ruleForm.xStreamServiceName,
           "userName": this.ruleForm.userName,
           "password": this.ruleForm.password,
         }
-        this.$ajax.post(this.GLOBAL.api.API_DACM+ "/caccess/streamTestConnect", params).then(res=>{
-          if(res.data.code=="0000" && res.data.data){
-            this.saveDataHandel(pollIntervalMs, ctt, actech,includeHistoryData);
+        this.$ajax.post(this.GLOBAL.api.API_DACM + "/caccess/streamTestConnect", params).then(res => {
+          if (res.data.code == "0000" && res.data.data) {
+            this.saveDataHandel(pollIntervalMs, ctt, actech, includeHistoryData);
           } else {
             this.$message.warning("xStream连接失败");
           }
         })
       } else {
-        this.saveDataHandel(pollIntervalMs, ctt, actech,includeHistoryData);
+        this.saveDataHandel(pollIntervalMs, ctt, actech, includeHistoryData);
       }
-    
+
     },
-    saveDataHandel(pollIntervalMs, ctt, actech,includeHistoryData) {
-     if (this.isregin) {
+    saveDataHandel(pollIntervalMs, ctt, actech, includeHistoryData) {
+      if (this.isregin) {
         var save = {
           "incrementColumn": this.increArr.name,
           "incrementColumnType": this.increArr.datatype,
@@ -922,7 +922,7 @@ export default {
           this.userLabel = {
             tABLE_ID: this.pdata.id,
             dATA_UPDATE_MODE: dataModeStyle,
-            damCheckFlag : false
+            damCheckFlag: false
           }
           this.$ajax({
             method: 'post',
@@ -943,14 +943,17 @@ export default {
                   if (this.ruleForm.taskSubMode == "false") {
                     ctips = '采集任务创建成功！';
                   }
-                  
+
                   this.$alert(ctips, '信息', {
                     confirmButtonText: '确定',
                     callback: action => {
+                      this.increArr = {};
+                      //console.log(this.ruleForm.accessMode);
+                      if (this.ruleForm.accessMode == '1' || this.ruleForm.accessMode == '3') {
+                        this.$refs.incremap.initMap();
+                        this.yid = '';
+                      }
                       this.ruleForm = Object.assign({}, this.ruleFormNew);
-                     this.increArr = {};
-                     this.$refs.incremap.initMap();
-                      this.yid = '';
                       this.$emit('fresh');
                     }
                   });
@@ -995,14 +998,15 @@ export default {
                   if (this.ruleForm.taskSubMode == "false") {
                     ctips = '采集任务创建成功！';
                   }
-                   
                   this.$alert(ctips, '信息', {
                     confirmButtonText: '确定',
                     callback: action => {
-                      this.ruleForm = Object.assign({}, this.ruleFormNew);
                       this.increArr = {};
-                      this.$refs.incremap.initMap();
-                      this.yid = '';
+                      if (this.ruleForm.accessMode == '1' || this.ruleForm.accessMode == '3') {
+                        this.$refs.incremap.initMap();
+                        this.yid = '';
+                      }
+                      this.ruleForm = Object.assign({}, this.ruleFormNew);
                       this.$emit('fresh');
                     }
                   });
