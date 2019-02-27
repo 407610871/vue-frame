@@ -763,6 +763,7 @@ export default {
     },
     //删除
     doDel(index, row) {
+      console.log(row.status)
       this.$confirm("确定删除该任务?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
@@ -772,12 +773,19 @@ export default {
           this.loading = true;
           this.$ajax.get(`${this.GLOBAL.api.API_DACM}/taskManager/verifyDelete/${row.taskInfoId}`).then(res=> {
               if (res.data.code == "0000") {
+                let message = "当前任务的数据已经废止，请确认是否要删除任务和对应汇聚数据。";
+                let message_btn = "删除任务和数据";
+                if(row.status=='0'){
+                  message = "请确认是否要删除新建的任务。"
+                  message_btn = "删除任务"
+                }
                 this.$confirm(
-                    "当前任务的数据已经废止，请确认是否要删除任务和对应汇聚数据。",
+                    message,
                     "提示",
                     {
-                      confirmButtonText: "删除任务和数据",
+                      confirmButtonText: message_btn,
                       cancelButtonText: "取消",
+                      cancelButtonClass: "el-button--primary",
                       type: "warning"
                     }
                   ).then(() => {
@@ -816,7 +824,9 @@ export default {
               }
             })
             .catch(() => {});
-        })
+        }).catch(()=>{
+
+        });
     },
     //运行、暂停
     doRun(index, row) {
