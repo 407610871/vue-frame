@@ -949,11 +949,12 @@ export default {
                     callback: action => {
                       this.increArr = {};
                       //console.log(this.ruleForm.accessMode);
-                      if (this.ruleForm.accessMode == '1' || this.ruleForm.accessMode == '3') {
+                      if (this.ruleForm.accessMode == '1' ||(this.ruleForm.history==true&&this.ruleForm.accessMode=='0') ) {
                         this.$refs.incremap.initMap();
                         this.yid = '';
                       }
                       this.ruleForm = Object.assign({}, this.ruleFormNew);
+                      this.ruleForm.dLibrary = this.treeData[0].storageId;
                       this.$emit('fresh');
                     }
                   });
@@ -1002,11 +1003,12 @@ export default {
                     confirmButtonText: '确定',
                     callback: action => {
                       this.increArr = {};
-                      if (this.ruleForm.accessMode == '1' || this.ruleForm.accessMode == '3') {
+                      if (this.ruleForm.accessMode == '1' ||(this.ruleForm.history==true&&this.ruleForm.accessMode=='0') ) {
                         this.$refs.incremap.initMap();
                         this.yid = '';
                       }
                       this.ruleForm = Object.assign({}, this.ruleFormNew);
+                      this.ruleForm.dLibrary = this.treeData[0].storageId;
                       this.$emit('fresh');
                     }
                   });
