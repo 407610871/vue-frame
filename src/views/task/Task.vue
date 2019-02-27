@@ -892,6 +892,10 @@ export default {
           params: tableParams
         }).then(res=> {
           if (res.data.code == 200) {
+            if(res.data.data.result.length==0&&this.pageNum!=1){
+              this.pageNum = 1;
+              this.init();
+            }
             this.tableData = res.data.data.result;
             this.tableData.forEach(res => {
               if (res.status == 5) {

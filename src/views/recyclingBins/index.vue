@@ -92,7 +92,7 @@ export default {
       }
     },
     $route(to, from) {
-      if(to.fullPath.indexOf('recyclingBins')!=-1){
+      if (to.fullPath.indexOf('recyclingBins') != -1) {
         this.loadTable(this.$store.state.deptId);
       }
       if (from.fullPath.indexOf('recyclingBins') != -1) {
@@ -107,9 +107,9 @@ export default {
           timeFlag: 0
         }
 
-        this.$store.commit('setQueryParams',{name:'recyclingBins',data:data} );
+        this.$store.commit('setQueryParams', { name: 'recyclingBins', data: data });
         //console.log(this.$store.state.queryParams.recyclingBins);
-        this.$refs.formFliters.clearFormFilter();//调用子组件的方法
+        this.$refs.formFliters.clearFormFilter(); //调用子组件的方法
       }
     },
     $route(to, form) {
@@ -145,7 +145,7 @@ export default {
       var queryParams = this.$store.state.queryParams[this.$route.name];
       //console.log(queryParams);
       //console.log("38417827341823");
-      if(queryParams.dataSourceName==true||queryParams.dataSourceName==false){
+      if (queryParams.dataSourceName == true || queryParams.dataSourceName == false) {
         queryParams.dataSourceName = [];
       }
       var network = queryParams.network ? queryParams.network : [];
@@ -193,10 +193,16 @@ export default {
       paramsObj.deptIds = ids;
       this.$ajax.post(window.ENV.API_DACM + '/caccess/query', paramsObj).then(function(res) {
           if (res.data.success) {
-            _self.mainTableData = res.data.data.list;
-            _self.mainTableDataTotal = res.data.data.total;
-            _self.currentPage = _self.tableParams.pageNum;
-            _self.pageShow = true;
+            if (res.data.data.list.length == 0 && _self.tableParams.pageNum != 1) {
+              _self.tableParams.pageNum =1;
+              _self.loadTable(_self.$store.state.deptId);
+            } else {
+              _self.mainTableData = res.data.data.list;
+              _self.mainTableDataTotal = res.data.data.total;
+              _self.currentPage = _self.tableParams.pageNum;
+              _self.pageShow = true;
+            }
+
           } else {
             _self.mainTableData = [];
             _self.pageShow = false;
@@ -261,7 +267,9 @@ export default {
               id: row.id
             }
           }).then(function(res) {
-            if (res.data.success) {
+            //console.log(res.data.success);
+            if (res.data.success==true) {
+              //console.log(mainTableData);
               _self.loadTable(_self.$store.state.deptId);
             } else {
               _self.$alert('删除失败', '提示', {
