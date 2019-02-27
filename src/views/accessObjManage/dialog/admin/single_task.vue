@@ -24,7 +24,7 @@
             </span>
             <div class="daiInfo proInfo">
               <div class="daiInfo-title proInfo-title">
-                <h2>提供方信息</h2>
+                <h2>用户标记</h2>
               </div>
             </div>
             <user-surveybak

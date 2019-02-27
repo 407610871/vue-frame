@@ -17,7 +17,7 @@
             <span slot="label"><i class="el-icon-circle">1</i>用户标记</span>
             <div class="daiInfo proInfo">
               <div class="daiInfo-title proInfo-title">
-                <h2>提供方信息</h2>
+                <h2>用户标记</h2>
               </div>
             </div>
             <user-surveybak :msg ="this.num" :batch="true" :info="rowList" @pre="next('second')" @closeuser="closeDialog()" ref="survey"></user-surveybak>
