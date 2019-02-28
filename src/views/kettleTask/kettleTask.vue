@@ -289,7 +289,7 @@ export default {
           this.loading = false;
           if (res.success) {
             if(res.data.result.length==0 && this.pageNum!=1){
-              this.pageNum = 1;
+              this.pageNum = this.pageNum-1;
               this.init();
             } else {
               this.pageNum = res.data.pageNum;

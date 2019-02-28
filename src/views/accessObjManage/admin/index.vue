@@ -1039,7 +1039,7 @@ export default {
           if (res.data.success) {
             if(res.data.data.list.length==0 && _self.tableParams.pageNum !=1){
               _self.setStore({
-                pageNum: 1
+                pageNum: _self.tableParams.pageNum - 1
               });
               _self.loadTable();
             } else {

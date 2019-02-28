@@ -893,7 +893,7 @@ export default {
         }).then(res=> {
           if (res.data.code == 200) {
             if(res.data.data.result.length==0&&this.pageNum!=1){
-              this.pageNum = 1;
+              this.pageNum = this.pageNum -1;
               this.init();
             }
             this.tableData = res.data.data.result;

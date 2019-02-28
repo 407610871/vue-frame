@@ -194,7 +194,9 @@ export default {
       this.$ajax.post(window.ENV.API_DACM + '/caccess/query', paramsObj).then(function(res) {
           if (res.data.success) {
             if (res.data.data.list.length == 0 && _self.tableParams.pageNum != 1) {
-              _self.tableParams.pageNum =1;
+              _self.setStore({
+                pageNum: _self.tableParams.pageNum - 1
+              });
               _self.loadTable(_self.$store.state.deptId);
             } else {
               _self.mainTableData = res.data.data.list;

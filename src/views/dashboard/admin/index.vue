@@ -490,10 +490,9 @@ export default {
           if (res.data.code == "0000") {
             if(res.data.data.list.length==0 && _self.tableParams.pageNum !=1){ //最后一页所有被删除的话，默认回到首页
               _self.setStore({
-                pageNum: 1
+                pageNum: _self.tableParams.pageNum -1 
               });
               let paramsObj = _self.listParams();
-              console.log("paramsObj===",paramsObj,_self.tableParams.pageNum);
               _self.getDataList(paramsObj);
             } else {
               _self.mainTableData = res.data.data.list;
