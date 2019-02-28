@@ -1347,6 +1347,7 @@ export default {
       this.reqObj.taskInfoId = row.extendParams.taskInfoId;
       this.reqObj.sourceObjType = row.extendParams.taskType;
       this.reqObj.taskInfoDetailId = row.extendParams.taskInfoDetailsId;
+      this.reqObj.ftpIsDelete = row.extendParams.isdelet;
       this.reqObj.startTime = row.extendParams.taskStartTime;
       this.reqObj.endTime = row.extendParams.taskEndTime;
       this.showTaskDetail = true;

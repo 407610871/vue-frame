@@ -685,7 +685,7 @@ export default {
         this.$ajax({
           method: 'get',
           url: this.GLOBAL.api.API_DACM + '/ctables/checkFtpTaskFileExist',
-          params: { 'taskId': this.reqObj.taskInfoId },
+          params: { 'taskId': this.reqObj.taskInfoId, taskType:'0' },
         }).then(res => {
           this.loading = false;
           if (res.data.success && res.data.data.length > 0) {
