@@ -51,7 +51,6 @@
         <div class="main main-content">
           <el-table ref="multipleTable" :height="tableHeight" v-loading="loading" :data="mainTableData" stripe style="width: 100%;" tooltip-effect="light" :row-class-name="tableRowClassName" @selection-change="handleSelectionChange">
             <el-table-column type="selection" v-if="type=='mysql'|| type=='oracle'|| type=='postgresql' || type=='sqlserver' || type=='file'"></el-table-column>
-            
             <!-- ftp -->
             <!-- <el-table-column label="状态" v-if="type=='ftp'||type=='mongodb'" show-overflow-tooltip>
               <template slot-scope="scope">
@@ -819,7 +818,7 @@ export default {
             accessSysId: data.accessSysId,
             filePath: data.extendParams.filePath,
             isSubDirectory: data.extendParams.isSubDirectory,
-            taskType:'1'
+            taskType: '1'
 
           }
         }).then(res => {
@@ -876,7 +875,7 @@ export default {
             accessSysId: row.accessSysId,
             filePath: row.extendParams.filePath,
             isSubDirectory: row.extendParams.isSubDirectory,
-            taskType:'0'
+            taskType: '0'
           }
         }).then(res => {
           _self.loading = false;
@@ -895,6 +894,10 @@ export default {
                 }).catch(() => {
 
                 })
+              } else {
+                _self.dialogVisible = true;
+                _self.msgCheck.taskInfoId = row.accessConnectorSource.taskInfoId;
+                _self.msgCheck.targetTableName = row.name;
               }
 
             } else {
@@ -1037,7 +1040,7 @@ export default {
           _self.cleanData = true;
 
           if (res.data.success) {
-            if(res.data.data.list.length==0 && _self.tableParams.pageNum !=1){
+            if (res.data.data.list.length == 0 && _self.tableParams.pageNum != 1) {
               _self.setStore({
                 pageNum: _self.tableParams.pageNum - 1
               });
@@ -1584,19 +1587,18 @@ export default {
       for (let i = 0; i < pchild.length; i++) {
         let psbackground = 'none';
         let colored = '#566170';
-        if(cell.parentNode.getAttribute('class').indexOf('add-row')!=-1){
-            colored ='red';
+        if (cell.parentNode.getAttribute('class').indexOf('add-row') != -1) {
+          colored = 'red';
         }
         if (cell.parentNode.getAttribute('class').indexOf('el-table__row--striped') != -1) {
           psbackground = '#E6EAED';
         }
-        if(pchild[i].rowSpan>1){
-         pchild[i].style.color = '#566170'; 
+        if (pchild[i].rowSpan > 1) {
+          pchild[i].style.color = '#566170';
+        } else {
+          pchild[i].style.color = colored;
         }
-        else {
-           pchild[i].style.color = colored; 
-        }
-        
+
         pchild[i].style.background = psbackground;
 
       }
