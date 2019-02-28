@@ -288,6 +288,14 @@ export default {
           res = res.data;
           this.loading = false;
           if (res.success) {
+            if(res.data.result.length==0 && this.pageNum!=1){
+              this.pageNum = 1;
+              this.init();
+            } else {
+              this.pageNum = res.data.pageNum;
+              this.totalPage = res.data.total;
+              this.tableData = res.data.result;
+            }
             this.pageNum = res.data.pageNum;
             this.totalPage = res.data.total;
             this.tableData = res.data.result;

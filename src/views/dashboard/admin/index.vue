@@ -457,12 +457,9 @@ export default {
         _self.formFilterData[2].checkData = butList;
       }
     },
-    loadTable: function(id) {
-      //此处vuex获取的值，比$root慢
+    listParams(id){
       var ids = [];
       id ? (ids = id) : (ids = this.tableParams.deptId);
-      var _self = this;
-      _self.loading = true;
       this.pageSize = Number(this.$store.state.pageSize);
       var paramsObj = {
         pageSize: this.$store.state.pageSize,
@@ -470,18 +467,17 @@ export default {
         domain: "0",
         _: new Date().getTime()
       };
-      paramsObj.condition = this.tableParams.condition ?
-        this.tableParams.condition :
-        "";
-      paramsObj.network = this.tableParams.network ?
-        this.tableParams.network : [];
-      paramsObj.dataSourceName = this.tableParams.dataSourceName ?
-        this.tableParams.dataSourceName : [];
-      paramsObj.platform = this.tableParams.platform ?
-        this.tableParams.platform : [];
+      paramsObj.condition = this.tableParams.condition ? this.tableParams.condition : "";
+      paramsObj.network = this.tableParams.network ? this.tableParams.network : [];
+      paramsObj.dataSourceName = this.tableParams.dataSourceName ? this.tableParams.dataSourceName : [];
+      paramsObj.platform = this.tableParams.platform ? this.tableParams.platform : [];
       paramsObj.deptIds = ids;
-      //_self.updataFliterItemList();
-      _self.getAllRalationApi(paramsObj);
+      return paramsObj;
+    },
+    loadTable: function(id) {
+      this.loading = true;
+      let paramsObj = this.listParams(id);
+      this.getAllRalationApi(paramsObj);
 
     },
     // 列表数据接口
@@ -492,10 +488,20 @@ export default {
         .then(function(res) {
           _self.loading = false;
           if (res.data.code == "0000") {
-            _self.mainTableData = res.data.data.list;
-            _self.mainTableDataTotal = res.data.data.total;
-            _self.currentPage = _self.tableParams.pageNum;
-            _self.countTotal = res.data.data.total;
+            if(res.data.data.list.length==0 && _self.tableParams.pageNum !=1){ //最后一页所有被删除的话，默认回到首页
+              _self.setStore({
+                pageNum: 1
+              });
+              let paramsObj = _self.listParams();
+              console.log("paramsObj===",paramsObj,_self.tableParams.pageNum);
+              _self.getDataList(paramsObj);
+            } else {
+              _self.mainTableData = res.data.data.list;
+              _self.mainTableDataTotal = res.data.data.total;
+              _self.currentPage = _self.tableParams.pageNum;
+              _self.countTotal = res.data.data.total;
+            }
+            
           } else if (res.data.code == "5000") {
             _self.mainTableData = [];
             _self.mainTableDataTotal = 1;
@@ -539,16 +545,14 @@ export default {
         resetData: "accessObjManage"
       });
       var dataSourceName =
-        this.mainTableData[index].dataSourceName == "本地文件" ?
-        "file" :
-        this.mainTableData[index].dataSourceName;
-      this.$router.push({
-        name: "accessObjManage",
-        params: {
-          sourceId: this.mainTableData[index].id,
-          sourceName: encodeURI(this.mainTableData[index].name),
-          type: dataSourceName
-        }
+        this.mainTableData[index].dataSourceName == "本地文件" ? "file" : this.mainTableData[index].dataSourceName;
+        this.$router.push({
+          name: "accessObjManage",
+          params: {
+            sourceId: this.mainTableData[index].id,
+            sourceName: encodeURI(this.mainTableData[index].name),
+            type: dataSourceName
+          }
       });
     },
     handleCopy: function(index, row) {

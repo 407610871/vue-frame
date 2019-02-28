@@ -705,10 +705,6 @@ export default {
       return this.$store.state.queryParams.accessObjManage;
     },
     tableHeight: function() {
-      /** 
-      return this.collapse ?
-        window.innerHeight - 300 :
-        window.innerHeight - 400 - 40 * this.moreData; */
       if (window.innerHeight > 768) {
         return window.innerHeight - 275;
       }
@@ -998,8 +994,7 @@ export default {
       }
     },
     loadTable: function(pageNums) {
-      /*console.log(pageNums);
-      console.log("88888888888888888888");*/
+
       var _self = this;
       let objInfoIds = "";
       let urlIndex = decodeURI(_self.$route.query.objInfoIds).indexOf("[");
@@ -1020,11 +1015,7 @@ export default {
       if (pageNums != '' && pageNums != undefined && pageNums != null) {
         paramsObj.pagNum = pageNums;
       }
-      /*console.log("=========-");
-      console.log(this.tableParams.pageNum);
-      console.log("-------------------");
-      console.log(paramsObj.pagNum);
-      console.log("====================");*/
+
       paramsObj.condition = this.searchParams.condition ?
         this.searchParams.condition :
         "";
@@ -1046,38 +1037,46 @@ export default {
           _self.cleanData = true;
 
           if (res.data.success) {
-            var data = res.data.data.list;
-
-            if (this.$route.params.type == "ftp") {
-              //ftp根据id进行倒叙排列
-              data.sort((a, b) => {
-                if (a.id > b.id) {
-                  return -1;
-                } else if (a.id == b.id) {
-                  return 0;
-                } else {
-                  return 1;
-                }
+            if(res.data.data.list.length==0 && _self.tableParams.pageNum !=1){
+              _self.setStore({
+                pageNum: 1
               });
+              _self.loadTable();
+            } else {
+              var data = res.data.data.list;
+
+              if (this.$route.params.type == "ftp") {
+                //ftp根据id进行倒叙排列
+                data.sort((a, b) => {
+                  if (a.id > b.id) {
+                    return -1;
+                  } else if (a.id == b.id) {
+                    return 0;
+                  } else {
+                    return 1;
+                  }
+                });
+              }
+              for (var value of data) {
+                value.showEdit = false;
+              }
+              _self.mainTableData = data;
+              //console.log(_self.tabIndex);
+              if (_self.tabIndex == '3') {
+                _self.mergeLines();
+              }
+              _self.mainTableDataTotal = res.data.data.total;
+              if (res.data.data.list.length > 0) {
+                _self.tablePa = res.data.data.list[0];
+                this.$store.commit(
+                  "setSeparator",
+                  res.data.data.list[0].extendParams.separator
+                );
+              }
+              _self.currentPage = _self.tableParams.pageNum;
+              _self.pageShow = true;
             }
-            for (var value of data) {
-              value.showEdit = false;
-            }
-            _self.mainTableData = data;
-            //console.log(_self.tabIndex);
-            if (_self.tabIndex == '3') {
-              _self.mergeLines();
-            }
-            _self.mainTableDataTotal = res.data.data.total;
-            if (res.data.data.list.length > 0) {
-              _self.tablePa = res.data.data.list[0];
-              this.$store.commit(
-                "setSeparator",
-                res.data.data.list[0].extendParams.separator
-              );
-            }
-            _self.currentPage = _self.tableParams.pageNum;
-            _self.pageShow = true;
+
           } else {
             _self.$alert("加载接入对象列表失败，因为数据源连接错误或者源端没有数据。", "提示", {
               confirmButtonText: "确定"
