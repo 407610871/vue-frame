@@ -279,21 +279,22 @@
                   <el-input v-model="ruleForm.instanceName"></el-input>
                 </el-form-item>
               </el-col>
-              <el-col :span="2" class="bank" v-if="ruleForm.syskind=='10002'">bank</el-col>
+              <el-col :span="2" class="bank" v-if="ruleForm.syskind=='10002' || ruleForm.syskind=='10004'">bank</el-col>
               <el-col :span="10" class="uncol">
                 <span
                   class="fl"
-                  v-show="this.ruleForm.author=='true'&&(ruleForm.syskind=='10002')"
+                  v-show="this.ruleForm.author=='true'&&(ruleForm.syskind=='10002' || ruleForm.syskind=='10004')"
                 >*</span>
                 <el-form-item
                   class="fl unrequired"
-                  label="模式名/架构/Schema:"
+                  :label="ruleForm.syskind=='10002' ? '模式名/架构/Schema:':'模式:'"
                   prop="model"
-                  v-if="ruleForm.syskind=='10002'"
+                  v-if="ruleForm.syskind=='10002' || ruleForm.syskind=='10004'"
                 >
                   <el-input v-model="ruleForm.model"></el-input>
                 </el-form-item>
               </el-col>
+
               <el-col :span="10" class="uncol">
                 <span
                   class="fl"
