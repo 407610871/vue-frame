@@ -22,7 +22,7 @@
                   <span :class="scope.$index!=flag? '':'red'">{{scope.row.datatype}}</span>
                 </template>
               </el-table-column>
-              <el-table-column prop="diyComments" label="字段描述" width="180">
+              <el-table-column prop="comments" label="字段描述" width="180">
               </el-table-column>
             </el-table>
           </div>
