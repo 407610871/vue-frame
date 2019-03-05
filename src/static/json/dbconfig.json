@@ -1,0 +1,14 @@
+[
+    {
+        "dataCenterType": "SUBJECT",
+        "ftpPassword": "2",
+        "ftpUser": "1",
+        "nameSpace": "nanjing-jc",
+        "serviceDatabase": "subjectd",
+        "serviceIp": "10.38.240.34",
+        "serviceName": "service3",
+        "servicePort": 31193,
+        "serviceUrl": "jdbc:impala://10.38.240.34:31193/subjectd;AuthMech=1;KrbRealm=ENNCLOUD.COM;KrbHostFQDN=a4-haproxy1-ex.nj-devenv.svc.enn.cn;KrbServiceName=root",
+        "type": "0"
+    }
+]

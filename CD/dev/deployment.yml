@@ -1,0 +1,83 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: web-dacm-front
+  namespace: nj-devenv-web
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        name: web-dacm-front
+        version: v1
+    spec:
+      containers:
+      - name: web-dacm-front
+        image: 10.19.248.12:30100/library/gongan-dev-web-dacm-front:latest
+        imagePullPolicy: Always
+        env:
+        - name: NODE_IP
+          valueFrom:
+            configMapKeyRef:
+              name: sjsn-all-web-configmap
+              key: cluster-ip
+        - name: VUE_APP_AUTH_SERVER_URL_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: sjsn-all-web-configmap
+              key: tool-keycloak                
+        - name: VUE_APP_AUTH_SERVER_URL
+          value: 'http://$(NODE_IP):$(VUE_APP_AUTH_SERVER_URL_PORT)/auth'
+        - name: VUE_APP_REALM
+          value: 'nj-stagingenv-web'
+        - name: VUE_APP_RESOURCE
+          value: 'DACM'
+        - name: VUE_APP_CREDENTIALS_SECRET
+          value: 'b4530972-edca-4b6b-8525-29908dc9b926'
+#web-dacm
+        - name: API_DACM_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: sjsn-all-web-configmap
+              key: web-dacm
+        - name: API_DACM
+          value: 'http://$(NODE_IP):$(API_DACM_PORT)/DACM'
+#web-domn
+        - name: API_DOWN_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: sjsn-all-web-configmap
+              key: web-domn
+#web-amc-platform            
+        - name: API_DOWN
+          value: 'http://$(NODE_IP):$(API_DOWN_PORT)/DOMN'  
+        - name: API_WARN_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: sjsn-all-web-configmap
+              key: web-amc-platform-front
+        - name: API_WARN
+          value: 'http://$(NODE_IP):$(API_WARN_PORT)'  
+#web-bcm
+        - name: API_SKIN_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: sjsn-all-web-configmap
+              key: web-bcm
+        - name: API_SKIN
+          value: 'http://$(NODE_IP):$(API_SKIN_PORT)'     
+ #web-dam           
+        - name: API_DAM_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: sjsn-all-web-configmap
+              key: web-dam-front           
+        - name: API_DAM
+          value: 'http://$(NODE_IP):$(API_DAM_PORT)'          
+        resources:
+          limits:
+            cpu: 300m
+            memory: 800Mi
+          requests:
+            cpu: 200m
+            memory: 500Mi

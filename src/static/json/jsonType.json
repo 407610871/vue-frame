@@ -1,0 +1,220 @@
+[{
+		"type": "impala",
+		"datas": [
+		    "STRING",
+			"BIGINT",
+			"INT",
+			"DOUBLE",
+			"FLOAT",
+			"DECIMAL",
+			"TIMESTAMP"
+		],
+		"datas_mapping": [
+		    "STRING",
+			"BIGINT",
+			"INT",
+			"DOUBLE",
+			"FLOAT",
+			"DECIMAL",
+			"TIMESTAMP"
+		]
+	},
+	{
+		"type": "mysql",
+		"datas": [
+			"BIGINT",
+			"INT",
+			"LONG",
+			"DOUBLE",
+			"FLOAT",
+			"DECIMAL",
+			"VARCHAR",
+			"CHAR",
+			"DATE",
+			"DATETIME",
+			"TIMESTAMP",
+			"BLOB",
+			"CLOB",
+			"YEAR",
+			"TIME"
+		],
+		"datas_mapping": [
+			"BIGINT",
+			"INT",
+			"BIGINT",
+			"DOUBLE",
+			"FLOAT",
+			"DECIMAL",
+			"STRING",
+			"STRING",
+			"TIMESTAMP",
+			"TIMESTAMP",
+			"TIMESTAMP",
+			"STRING",
+			"STRING",
+			"TIMESTAMP",
+			"TIMESTAMP"
+		]
+	},
+	{
+		"type": "oracle",
+		"datas": [
+			"INT",
+			"NUMBER",
+			"VARCHAR",
+			"TIMESTAMP",
+			"DATE",
+			"FLOAT"
+		],
+		"datas_mapping": [
+			"INT",
+			"FLOAT",
+			"STRING",
+			"TIMESTAMP",
+			"TIMESTAMP",
+			"FLOAT"
+		]
+	},
+	{
+		"type": "sqlserver",
+		"datas": [
+			"VARCHAR",
+			"INT",
+			"TIMESTAMP"
+		],
+		"datas_mapping": [
+			"STRING",
+			"INT",
+			"TIMESTAMP"
+		]
+	},
+	{
+		"type": "activemq",
+		"datas": [
+			"STRING",
+			"INT"
+		],
+		"datas_mapping": [
+			"STRING",
+			"INT"
+		]
+	},
+	{
+		"type": "ftp",
+		"datas": [
+			"STRING",
+			"INT"
+		],
+		"datas_mapping": [
+			"STRING",
+			"INT"
+		]
+	},
+	{
+		"type": "sftp",
+		"datas": [
+			"STRING",
+			"INT"
+		],
+		"datas_mapping": [
+			"STRING",
+			"INT"
+		]
+	},
+	{
+		"type": "rabbitmq",
+		"datas": [
+			"STRING",
+			"INT"
+		],
+		"datas_mapping": [
+			"STRING",
+			"INT"
+		]
+	},
+	{
+		"type": "hive",
+		"datas": [
+			"STRING",
+			"INT"
+		],
+		"datas_mapping": [
+			"STRING",
+			"INT"
+		]
+	},
+	{
+		"type": "mongodb",
+		"datas": [
+			"STRING",
+			"INTEGER",
+			"BOOLEAN",
+			"DOUBLE",
+			"ARRAYS",
+			"TIMESTAMP",
+			"OBJECT",
+			"DATE"
+		],
+		"datas_mapping": [
+			"STRING",
+			"INT",
+			"BOOLEAN",
+			"DOUBLE",
+			"ARRAYS",
+			"TIMESTAMP",
+			"STRING",
+			"TIMESTAMP"
+		]
+	},
+	{
+		"type": "postgresql",
+		"datas": [
+			"INT",
+			"INTEGER",
+			"TINYINT",
+			"BIGINT",
+			"SMALLINT",
+			"MEDIUMINT",
+			"LONG",
+			"INT2",
+			"INT4",
+			"INT8",
+			"DECIMAL",
+			"FLOAT",
+			"DOUBLE",
+			"NUMBER",
+			"FLOAT4",
+			"FLOAT8",
+			"TIMESTAMP",
+			"DATE",
+			"TIME",
+			"BOOLEAN",
+			"BLOB",
+			"CLOB"
+		  ],
+		  "datas_mapping": [
+			"BIGINT",
+			"BIGINT",
+			"BIGINT",
+			"BIGINT",
+			"BIGINT",
+			"BIGINT",
+			"BIGINT",
+			"BIGINT",
+			"BIGINT",
+			"BIGINT",
+			"DOUBLE",
+			"DOUBLE",
+			"DOUBLE",
+			"DOUBLE",
+			"DOUBLE",
+			"DOUBLE",
+			"STRING",
+			"STRING",
+			"STRING",
+			"BOOLEAN",
+			"STRING",
+			"STRING"
+		  ]
+	}
+]

@@ -1,0 +1,50 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: web-dacm-front
+  namespace: nj-stagingenv-web
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        name: web-dacm-front
+        version: v1
+    spec:
+      containers:
+      - name: web-dacm-front
+        image: 10.19.248.12:30100/staging/gongan-staging-web-dacm-front:latest
+        imagePullPolicy: Always
+        env:
+        - name: NODE_IP
+          value: '10.19.248.200'
+        - name: VUE_APP_AUTH_SERVER_URL
+          value: 'http://$(NODE_IP):29530/auth'
+        - name: VUE_APP_REALM
+          value: 'nj-stagingenv-web'
+        - name: VUE_APP_RESOURCE
+          value: 'DACM'
+        - name: VUE_APP_CREDENTIALS_SECRET
+          value: 'b4530972-edca-4b6b-8525-29908dc9b926'
+#web-dacm
+        - name: API_DACM
+          value: 'http://$(NODE_IP):29022/DACM'
+#web-domn
+        - name: API_DOWN
+          value: 'http://$(NODE_IP):29023/DOMN'
+#amc-platform
+        - name: API_WARN
+          value: 'http://$(NODE_IP):29533'
+#web-bcm
+        - name: API_SKIN
+          value: 'http://$(NODE_IP):29540'
+#web-dam
+        - name: API_DAM
+          value: 'http://$(NODE_IP):29024'
+        resources:
+          limits:
+            cpu: 300m
+            memory: 800Mi
+          requests:
+            cpu: 200m
+            memory: 500Mi
