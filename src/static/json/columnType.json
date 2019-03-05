@@ -194,18 +194,18 @@
     "BOOLEAN",
     "BLOB",
     "CLOB"
-  ],
-  "datas_mapping": [
-    "LONG",
-    "LONG",
-    "LONG",
-    "LONG",
-    "LONG",
-    "LONG",
-    "LONG",
-    "LONG",
-    "LONG",
-    "LONG",
+    ],
+    "datas_mapping": [
+    "BIGINT",
+    "BIGINT",
+    "BIGINT",
+    "BIGINT",
+    "BIGINT",
+    "BIGINT",
+    "BIGINT",
+    "BIGINT",
+    "BIGINT",
+    "BIGINT",
     "DOUBLE",
     "DOUBLE",
     "DOUBLE",
@@ -218,5 +218,5 @@
     "BOOLEAN",
     "STRING",
     "STRING"
-  ]
+    ]
 }]
