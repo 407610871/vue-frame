@@ -90,23 +90,23 @@
 }
 
 @mixin el-button--primary($color) {
-  background-color: $color !important;
-  border-color: $color !important;
+  background-color: $color ;
+  border-color: $color;
   [data-theme='theme1'] & {
-    background: $el-primary-theme1 !important;
-    border-color: $el-primary-theme1 !important;
+    background: $el-primary-theme1;
+    border-color: $el-primary-theme1;
   }
   [data-theme='theme2'] & {
-    background: $el-primary-theme2 !important;
-    border-color: $el-primary-theme2 !important;
+    background: $el-primary-theme2;
+    border-color: $el-primary-theme2;
   }
   [data-theme='theme3'] & {
-    background: $el-primary-theme3 !important;
-    border-color: $el-primary-theme3 !important;
+    background: $el-primary-theme3;
+    border-color: $el-primary-theme3;
   }
   [data-theme='theme4'] & {
-    background: $el-primary-theme4 !important;
-    border-color: $el-primary-theme4 !important;
+    background: $el-primary-theme4;
+    border-color: $el-primary-theme4;
   }
 }
 

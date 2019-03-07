@@ -138,13 +138,6 @@ export default {
         });
     }
   },
-  components: {
-
-  },
-  watch: {
-
-  }
-
 };
 
 </script>
