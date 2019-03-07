@@ -7,8 +7,12 @@
         </div>
       </div>
       <el-col :span="4" class="regdia">
-        <el-tabs tab-position="left" @tab-click="handleClick">
-          <el-tab-pane v-for="(item, index) in versionData" :key="index" :label="item"></el-tab-pane>
+        <el-tabs tab-position="left" v-model="typeName"  @tab-click="handleTypeClick">
+            <el-tab-pane v-for="(item, index) in versionType" :key="index" :label="item" :name="item">
+                <el-tabs tab-position="left" v-model="versionValue"  @tab-click="handleClick">
+                    <el-tab-pane v-for="(v, i) in versionData" :key="i" :label="v" :name="v"></el-tab-pane>
+                </el-tabs>
+            </el-tab-pane>
         </el-tabs>
       </el-col>
       <el-col :span="20" class="release-box release-ver-con">
@@ -85,17 +89,20 @@ export default {
       versionDes: '',
       versionDate: '',
       loading: false,
+      versionType: ['数据工厂', '数据资产', '数据质量', '数据服务'],
       versionData: [
         '1.3.0','1.2.0','1.1.1', '1.1.0', '1.0.1', '1.0.0'
       ],
       tableData: [],
       changeData: [],
       finishData: [],
-      knownData: []
+      knownData: [],
+      typeName:"数据工厂",
+      versionValue: "1.3.0",
     };
   },
   mounted() {
-    this._getVersion('1.3.0');
+    this._getVersion();
   },
   methods: {
     //关闭对话框
@@ -103,12 +110,11 @@ export default {
       this.$emit('closeDia', );
       this.dialogVisible = false;
     },
+    handleTypeClick(tab, event) {
+        this._getVersion();
+    },
     handleClick(tab, event) {
-      if (tab.label == '当前') {
-        this._getVersion('1.3.0');
-      } else {
-        this._getVersion(tab.label);
-      }
+        this._getVersion();
     },
     //版本信息滚动
     goAnchor(selector) {
@@ -118,24 +124,32 @@ export default {
     godToId(ID) {
       $('html,body').animate({ scrollTop: $("#" + ID).offset().top }, 500);
     },
-    _getVersion(url) {
+    _getVersion() {
       this.loading = true;
-      let _self = this;
-      this.$ajax.get(`/data/version${url}.xml`).then(function(res) {
-          _self.loading = false;
-          xml2js.parseString(res.data, function(err, jsonObj){
-            _self.tableData = jsonObj.note.specialityList[0].item;
-            _self.changeData = jsonObj.note.changeList[0].item;
-            _self.finishData = jsonObj.note.finishedPunchList[0].item;
-            _self.knownData = Array.isArray(jsonObj.note.questionList[0].item) ? jsonObj.note.questionList[0].item : 
+      let apiUrl = `/API_GC/data/version${this.versionValue}.xml`;
+      switch(this.typeName){
+        case "数据资产" :
+            apiUrl = `/API_ZC/data/version${this.versionValue}.xml`;
+            break;
+        case "数据质量" :
+            apiUrl = `/API_ZL/data/version${this.versionValue}.xml`;
+            break;
+        case "数据服务" :
+            apiUrl = `/API_FW/data/version${this.versionValue}.xml`;
+            break;  
+      }
+      this.$ajax.get(apiUrl).then((res)=> {
+          this.loading = false;
+          xml2js.parseString(res.data, (err, jsonObj)=>{
+            this.tableData = jsonObj.note.specialityList[0].item;
+            this.changeData = jsonObj.note.changeList[0].item;
+            this.finishData = jsonObj.note.finishedPunchList[0].item;
+            this.knownData = Array.isArray(jsonObj.note.questionList[0].item) ? jsonObj.note.questionList[0].item : 
             [jsonObj.note.questionList[0].item];
-            _self.versionDes = jsonObj.note.name;
-            _self.versionDate = jsonObj.note.date;
+            this.versionDes = jsonObj.note.name;
+            this.versionDate = jsonObj.note.date;
           })
         })
-        .catch(function(err) {
-          _self.loading = false;
-        });
     }
   },
 };

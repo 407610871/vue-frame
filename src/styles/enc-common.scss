@@ -8,11 +8,14 @@
     padding: 0;
     height: 66px !important;
     line-height: 66px;
-    background: #E6EAED;
+    background: #26a7ff;
+    font-size: 24px;
+    color: #fff;
   }
 .right-menu {
     float: right;
     height: 100%;
+    margin-top: -52px;
     //右侧图标
     .el-popover {
         padding: 17px 0px;
@@ -20,18 +23,20 @@
         top: 66px !important;
     }
     .el-button {
-      width: 66px;
-      height: 100%;
+      width: 40px;
+      height: 40px;
       margin: 0;
       border-radius: 0;
-      border: 0;
+      border: 1px solid #fff;
       padding: 0;
+      border-radius: 50%;
       float: left;
+      background: transparent;
       &.user {
         background: #cac fd5;
         vertical-align: top;
         i {
-          font-size: 32px;
+          font-size: 18px;
           color: #fff;
         }
       }
@@ -39,7 +44,7 @@
         background: #50609c;
         vertical-align: top;
         i {
-          font-size: 32px;
+          font-size: 18px;
           color: #fff;
         }
       }
@@ -47,7 +52,7 @@
         background: #479bd9;
         vertical-align: top;
         i {
-          font-size: 32px;
+          font-size: 18px;
           color: #fff;
         }
       }

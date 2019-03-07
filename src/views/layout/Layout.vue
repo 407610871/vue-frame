@@ -1,23 +1,26 @@
 <template>
   <el-container>
     <el-header class="enc-header">
+      <div style="margin-left: 20px;">
+        <img :src="logo" alt="" style="vertical-align: middle;"> 数据枢纽平台
+      </div>
       <div class="right-menu">
-        <el-popover placement="bottom" width="100" trigger="hover">
+        <el-popover placement="bottom" trigger="hover">
           <ul class="user">
             <li>{{ userName }}</li>
             <li v-on:click="changeSkin">主题</li>
             <li v-on:click="loginOut">退出</li>
           </ul>
           <el-button slot="reference">
-            <i class="enc-icon-user" style="font-size: 32px; color: #fff;"></i>
+            <i class="enc-icon-user" style="font-size: 18px; color: #fff;"></i>
           </el-button>
         </el-popover>
-        <el-popover placement="bottom" width="100" trigger="hover">
+        <el-popover placement="bottom" trigger="hover">
           <ul class="user">
             <li v-on:click="_release">版本信息</li>
           </ul>
-          <el-button slot="reference" class="topic">
-            <i class="enc-icon-gengduo-caidanlan" style="font-size: 21px; color: #fff;"></i>
+          <el-button slot="reference" class="topic" style="margin:0 20px 0 20px">
+            <i class="enc-icon-gengduo-caidanlan" style="font-size: 18px; color: #fff;"></i>
           </el-button>
         </el-popover>
       </div>
@@ -34,7 +37,7 @@
 </template>
 <script>
 import { AppMain} from "./components";
-import logo from "@/assets/images/enc-logo.png";
+import logo from "@/assets/images/logo-header.png";
 
 import Themes from '@/views/layout/components/themes';
 import Release from "@/views/layout/components/release";
@@ -43,7 +46,7 @@ export default {
   name: "Layout",
   data() {
     return {
-      logo: logo + '?' + +new Date(),
+      logo: logo,
       userName: "",
       roleName: '',
       themesflag: false,

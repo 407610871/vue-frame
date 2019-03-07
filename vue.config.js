@@ -22,22 +22,47 @@ module.exports = {
         });
       });
     config.plugin("copy").tap(args => {
-      args[0].push({ from: require('path').resolve("env.js"), to: require('path').resolve("dist") });
+      args[0].push({
+        from: require('path').resolve("env.js"),
+        to: require('path').resolve("dist")
+      });
       return args;
     })
   },
-  // baseUrl: process.env.NODE_ENV === 'production'? "": "/DAM/",
-  // devServer: {
-  //   proxy: {
-  //     '/DAM': {
-  //       target: 'http://127.0.0.1:8080/DAM/',
-  //       headers:{
-  //         "Cookie":"JSESSIONID=1E7DF00899421C71C388FF7C168C8F47"
-  //       },
-  //       pathRewrite:{"^/DAM":""},
-  //       ws: true,
-  //       changeOrigin: true
-  //     }
-  //   }
-  // }
+  devServer: {
+    proxy: {
+      "/API_GC": {
+        target: "http://10.19.248.200:30830",
+        pathRewrite: {
+          "^/API_GC": ""
+        },
+        ws: true,
+        changeOrigin: true
+      },
+      "/API_ZC": {
+        target: "http://10.19.248.200:31678",
+        pathRewrite: {
+          "^/API_ZC": ""
+        },
+        ws: true,
+        changeOrigin: true
+      },
+      "/API_ZL": {
+        target: "http://10.19.248.200:31688",
+        pathRewrite: {
+          "^/API_ZL": ""
+        },
+        ws: true,
+        changeOrigin: true
+      },
+      "/API_FW": {
+        target: "http://10.19.248.200:31289",
+        pathRewrite: {
+          "^/API_FW": ""
+        },
+        ws: true,
+        changeOrigin: true
+      }
+    }
+  }
 };
