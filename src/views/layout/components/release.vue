@@ -138,7 +138,13 @@ export default {
             apiUrl = `/API_FW/data/version${this.versionValue}.xml`;
             break;  
       }
-      this.$ajax.get(apiUrl).then((res)=> {
+      this.$ajax.get(apiUrl,{
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'Access-Control-Allow-Credentials': true
+          },
+          withCredentials: false
+          }).then((res)=> {
           this.loading = false;
           xml2js.parseString(res.data, (err, jsonObj)=>{
             this.tableData = jsonObj.note.specialityList[0].item;

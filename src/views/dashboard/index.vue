@@ -103,7 +103,7 @@
   .main {
     width: 100%;
     height: 100%;
-    background-image: url(/img/main-background.c59c7245.png);
+    background-image: url('../../assets/images/main-background.png');
     background-size: 100% 100%;
     background-repeat: no-repeat;
   }
