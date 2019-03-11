@@ -26,21 +26,46 @@ spec:
           value: 'DACM'
         - name: VUE_APP_CREDENTIALS_SECRET
           value: 'b4530972-edca-4b6b-8525-29908dc9b926'
-#web-dacm
-        - name: API_DACM
-          value: 'http://$(NODE_IP):29022/DACM'
-#web-domn
-        - name: API_DOWN
-          value: 'http://$(NODE_IP):29023/DOMN'
-#amc-platform
-        - name: API_WARN
-          value: 'http://$(NODE_IP):29533'
+#web-gc
+        - name: API_GC_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: sjsn-all-web-configmap
+              key: web-gc
+        - name: API_GC
+          value: 'http://$(NODE_IP):$(API_GC_PORT)'
+#web-zc
+        - name: API_ZC_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: sjsn-all-web-configmap
+              key: web-zc           
+        - name: API_ZC
+          value: 'http://$(NODE_IP):$(API_ZC_PORT)'  
+#web-zl 
+        - name: API_ZL_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: sjsn-all-web-configmap
+              key: web-zl
+        - name: API_ZL
+          value: 'http://$(NODE_IP):$(API_ZL_PORT)'
+#web-fw           
+        - name: API_FW_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: sjsn-all-web-configmap
+              key: web-fw-front           
+        - name: API_FW
+          value: 'http://$(NODE_IP):$(API_FW_PORT)' 
 #web-bcm
+        - name: API_SKIN_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: sjsn-all-web-configmap
+              key: web-bcm
         - name: API_SKIN
-          value: 'http://$(NODE_IP):29540'
-#web-dam
-        - name: API_DAM
-          value: 'http://$(NODE_IP):29024'
+          value: 'http://$(NODE_IP):$(API_SKIN_PORT)'
         resources:
           limits:
             cpu: 300m

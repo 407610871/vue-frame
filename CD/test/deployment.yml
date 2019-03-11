@@ -34,30 +34,38 @@ spec:
           value: 'DACM'
         - name: VUE_APP_CREDENTIALS_SECRET
           value: 'b4530972-edca-4b6b-8525-29908dc9b926'
-#web-dacm
-        - name: API_DACM_PORT
+#web-gc
+        - name: API_GC_PORT
           valueFrom:
             configMapKeyRef:
               name: sjsn-all-web-configmap
-              key: web-dacm
-        - name: API_DACM
-          value: 'http://$(NODE_IP):$(API_DACM_PORT)/DACM'
-#web-domn
-        - name: API_DOWN_PORT
+              key: web-gc
+        - name: API_GC
+          value: 'http://$(NODE_IP):$(API_GC_PORT)'
+#web-zc
+        - name: API_ZC_PORT
           valueFrom:
             configMapKeyRef:
               name: sjsn-all-web-configmap
-              key: web-domn
-#web-amc-platform            
-        - name: API_DOWN
-          value: 'http://$(NODE_IP):$(API_DOWN_PORT)/DOMN'  
-        - name: API_WARN_PORT
+              key: web-zc           
+        - name: API_ZC
+          value: 'http://$(NODE_IP):$(API_ZC_PORT)'  
+#web-zl 
+        - name: API_ZL_PORT
           valueFrom:
             configMapKeyRef:
               name: sjsn-all-web-configmap
-              key: web-amc-platform-front
-        - name: API_WARN
-          value: 'http://$(NODE_IP):$(API_WARN_PORT)'  
+              key: web-zl
+        - name: API_ZL
+          value: 'http://$(NODE_IP):$(API_ZL_PORT)'
+#web-fw           
+        - name: API_FW_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: sjsn-all-web-configmap
+              key: web-fw-front           
+        - name: API_FW
+          value: 'http://$(NODE_IP):$(API_FW_PORT)' 
 #web-bcm
         - name: API_SKIN_PORT
           valueFrom:
@@ -65,15 +73,7 @@ spec:
               name: sjsn-all-web-configmap
               key: web-bcm
         - name: API_SKIN
-          value: 'http://$(NODE_IP):$(API_SKIN_PORT)'     
- #web-dam           
-        - name: API_DAM_PORT
-          valueFrom:
-            configMapKeyRef:
-              name: sjsn-all-web-configmap
-              key: web-dam-front            
-        - name: API_DAM
-          value: 'http://$(NODE_IP):$(API_DAM_PORT)'          
+          value: 'http://$(NODE_IP):$(API_SKIN_PORT)'         
         resources:
           limits:
             cpu: 300m
