@@ -13,7 +13,7 @@ spec:
     spec:
       containers:
       - name: web-dacm-front
-        image: 10.19.248.12:30100/library/gongan-dev-web-dacm-front:latest
+        image: 10.19.248.12:30100/library/gongan-dev-web-sjsn-front:latest
         imagePullPolicy: Always
         env:
         - name: NODE_IP
