@@ -39,7 +39,7 @@ spec:
           valueFrom:
             configMapKeyRef:
               name: sjsn-all-web-configmap
-              key: web-gc
+              key: web-dacm-front
         - name: API_GC
           value: 'http://$(NODE_IP):$(API_GC_PORT)'
 #web-zc
@@ -47,7 +47,7 @@ spec:
           valueFrom:
             configMapKeyRef:
               name: sjsn-all-web-configmap
-              key: web-zc           
+              key: web-dam-front           
         - name: API_ZC
           value: 'http://$(NODE_IP):$(API_ZC_PORT)'  
 #web-zl 
@@ -55,7 +55,7 @@ spec:
           valueFrom:
             configMapKeyRef:
               name: sjsn-all-web-configmap
-              key: web-zl
+              key: web-dqmp-front
         - name: API_ZL
           value: 'http://$(NODE_IP):$(API_ZL_PORT)'
 #web-fw           
@@ -63,7 +63,7 @@ spec:
           valueFrom:
             configMapKeyRef:
               name: sjsn-all-web-configmap
-              key: web-fw-front           
+              key: web-register-server-front           
         - name: API_FW
           value: 'http://$(NODE_IP):$(API_FW_PORT)' 
 #web-bcm
