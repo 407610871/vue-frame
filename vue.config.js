@@ -31,34 +31,34 @@ module.exports = {
   },
   devServer: {
     proxy: {
-      "/API_GC": {
+      "/GC": {
         target: "http://10.19.248.200:30830",
         pathRewrite: {
-          "^/API_GC": ""
+          "^/GC": ""
         },
         ws: true,
         changeOrigin: true
       },
-      "/API_ZC": {
+      "/ZC": {
         target: "http://10.19.248.200:31678",
         pathRewrite: {
-          "^/API_ZC": ""
+          "^/ZC": ""
         },
         ws: true,
         changeOrigin: true
       },
-      "/API_ZL": {
+      "/ZL": {
         target: "http://10.19.248.200:31688",
         pathRewrite: {
-          "^/API_ZL": ""
+          "^/ZL": ""
         },
         ws: true,
         changeOrigin: true
       },
-      "/API_FW": {
+      "/FW": {
         target: "http://10.19.248.200:31289",
         pathRewrite: {
-          "^/API_FW": ""
+          "^/FW": ""
         },
         ws: true,
         changeOrigin: true

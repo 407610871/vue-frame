@@ -8,9 +8,10 @@
     padding: 0;
     height: 66px !important;
     line-height: 66px;
-    background: #26a7ff;
+    //background: #26a7ff;
     font-size: 24px;
     color: #fff;
+    @include el-bgcolor($el-page-theme);
   }
 .right-menu {
     float: right;
@@ -27,11 +28,11 @@
       height: 40px;
       margin: 0;
       border-radius: 0;
-      border: 1px solid #fff;
+      border: 1px solid #fff !important;
       padding: 0;
       border-radius: 50%;
       float: left;
-      background: transparent;
+      background: transparent !important;
       &.user {
         background: #cac fd5;
         vertical-align: top;

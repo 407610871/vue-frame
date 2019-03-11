@@ -81,6 +81,7 @@
 <script>
 
 import xml2js from 'xml2js';
+
 export default {
   name: "taskMDialog",
   data: function() {
@@ -126,25 +127,19 @@ export default {
     },
     _getVersion() {
       this.loading = true;
-      let apiUrl = `/API_GC/data/version${this.versionValue}.xml`;
+      let apiUrl = `/GC/data/version${this.versionValue}.xml`;
       switch(this.typeName){
         case "数据资产" :
-            apiUrl = `/API_ZC/data/version${this.versionValue}.xml`;
+            apiUrl = `/ZC/data/version${this.versionValue}.xml`;
             break;
         case "数据质量" :
-            apiUrl = `/API_ZL/data/version${this.versionValue}.xml`;
+            apiUrl = `/ZL/data/version${this.versionValue}.xml`;
             break;
         case "数据服务" :
-            apiUrl = `/API_FW/data/version${this.versionValue}.xml`;
+            apiUrl = `/FW/data/version${this.versionValue}.xml`;
             break;  
       }
-      this.$ajax.get(apiUrl,{
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-            'Access-Control-Allow-Credentials': true
-          },
-          withCredentials: false
-          }).then((res)=> {
+      this.$ajax.get(apiUrl).then((res)=> {
           this.loading = false;
           xml2js.parseString(res.data, (err, jsonObj)=>{
             this.tableData = jsonObj.note.specialityList[0].item;

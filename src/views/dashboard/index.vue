@@ -99,7 +99,9 @@
 </script>
 
 
-<style scoped >
+<style rel="stylesheet/scss" lang="scss" scoped>
+@import "src/styles/variables.scss";
+@import "src/styles/mixin.scss";
   .main {
     width: 100%;
     height: 100%;
@@ -126,8 +128,9 @@
     width: 240px;
     margin: 0 40px 0 40px;
     border-radius: 0;
-    border-bottom: 4px solid #26a7ff;
+    //border-bottom: 4px solid #26a7ff;
     cursor: pointer;
+    @include el-border-bottom($el-page-theme);
   }
   .enc-img-style {
     text-align: center;

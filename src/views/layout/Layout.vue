@@ -58,8 +58,23 @@ export default {
     Themes,
     Release,
   },
+  computed: {
+    getUserThemes() {
+      return this.$store.state.userThemes;
+    },
+  },
+  watch: {
+    getUserThemes() {
+      this.getSkin();
+    }
+  },
   created() {
     this.userName =  this.$keycloak.tokenParsed.name;
+  },
+  mounted() {
+    this.$nextTick(res=>{
+      this.getSkin();
+    })
   },
   methods: {
     changeSkin() {
@@ -70,12 +85,55 @@ export default {
     },
     loginOut() {
       this.$keycloak.logout();
-    }
+    },
+    //换肤
+    getSkin() {
+      this.$ajax({
+          method: "POST",
+          url: `${window.ENV.API_SKIN}/BCM/skin/query`,
+          data: {
+            userId: this.$keycloak.tokenParsed.sub,
+            appId: this.$keycloak.tokenParsed.aud
+          }
+        })
+        .then(res => {
+          if (res.data.success && res.data.data) {
+            let values = 'theme';
+            if (res.data.data.color == 'PURPLE') {
+              values = 'theme1';
+            }
+            else if (res.data.data.color == 'GREEN') {
+              values = 'theme3';
+            }
+            else if (res.data.data.color == 'BLUE') {
+              values = 'theme2';
+            }
+            else if (res.data.data.color == 'GOLDEN') {
+              values = 'theme4';
+            }
+            this.$store.commit('setThemes', res.data.data.color);
+            window.localStorage.setItem('data-theme', values);
+            window.document.documentElement.setAttribute('data-theme', values);
+          } else {
+            this.$store.commit('setThemes', "DEFAULT");
+            window.localStorage.setItem('data-theme', "theme");
+            window.document.documentElement.setAttribute('data-theme', "theme");
+          }
+        }).catch(err=>{
+          this.$store.commit('setThemes', "DEFAULT");
+          window.localStorage.setItem('data-theme', "theme");
+          window.document.documentElement.setAttribute('data-theme', "theme");
+        })
+    },
   }
 };
 
 </script>
-<style scoped>
+
+<style rel="stylesheet/scss" lang="scss" scoped>
+@import "src/styles/variables.scss";
+@import "src/styles/mixin.scss";
+
   .topic {
     background-color: #009DDF;
   }
@@ -98,8 +156,8 @@ export default {
     cursor: pointer;
   }
   li:hover {
-    color: #fff!important;
-    background-color: #4a60a2;
+    color: #fff !important;
+    @include el-bgcolor($el-page-theme);
 }
 </style>
 

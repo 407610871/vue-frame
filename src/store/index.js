@@ -12,13 +12,19 @@ const store = new Vuex.Store({
       userName: "",
       roleName: "",
       userId: ""
-    }
+    },
+    userThemes: "DEFAULT"
   },
   mutations: {
     setUserInfo(state, obj) {
       state.userInfo.userName = obj.userName;
       state.userInfo.roleName = obj.roleName;
       state.userInfo.userId = obj.userId;
+    },
+    //主题颜色
+    setThemes(state, obj) {
+      state.userThemes = "";
+      state.userThemes = obj;
     }
   },
   modules: {

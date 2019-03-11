@@ -385,3 +385,18 @@
     color: $el-kittle-icon-span4;
   }
 }
+@mixin el-border-bottom($color) {
+  border-bottom: 4px solid $color;
+  [data-theme='theme1'] & {
+    border-bottom: 4px solid $el-kittle-icon-span1;
+  }
+  [data-theme='theme2'] & {
+    border-bottom: 4px solid $el-kittle-icon-span2;
+  }
+  [data-theme='theme3'] & {
+    border-bottom: 4px solid $el-kittle-icon-span3;
+  }
+  [data-theme='theme4'] & {
+    border-bottom: 4px solid $el-kittle-icon-span4;
+  }
+}

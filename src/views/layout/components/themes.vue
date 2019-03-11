@@ -57,22 +57,32 @@ export default {
           "appId": this.$keycloak.tokenParsed.aud,
       }
       this.$ajax.post(`${window.ENV.API_SKIN}/BCM/skin/query`, params).then((res)=>{
+          let values = "theme"
           if (res.data.success && res.data.data) {
             let userProperty = res.data.data.color;
             if (userProperty == 'PURPLE') {
                 this.ruleForm.themeName = 'PURPLE';
+                values = 'theme1';
             } else if (userProperty == 'BLUE') {
                 this.ruleForm.themeName = 'BLUE';
+                values = 'theme2';
             } else if (userProperty == 'GREEN') {
                 this.ruleForm.themeName = 'GREEN';
+                values = 'theme3';
             } else if (userProperty == 'GOLDEN') {
                 this.ruleForm.themeName = 'GOLDEN';
+                values = 'theme4';
             } else {
                 this.ruleForm.themeName = 'DEFAULT';
+                values = 'theme';
             }
           } else {
             this.ruleForm.themeName = 'DEFAULT';
+            values = 'theme';
           }
+          this.$store.commit('setThemes', res.data.data.color);
+          window.localStorage.setItem('data-theme', values);
+          window.document.documentElement.setAttribute('data-theme', values);
       })
     },
     //关闭对话框
@@ -97,7 +107,7 @@ export default {
           this.$alert("设置主题成功", "信息", {
             confirmButtonText: "确定",
             callback: action => {
-                
+              this.$store.commit('setThemes', this.ruleForm.themeName);  
               this.$emit('closeDia', );
             }
           });
