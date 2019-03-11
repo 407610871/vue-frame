@@ -1,16 +1,16 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: web-dacm-front
+  name: web-sjsn-front
   namespace: nj-devenv-web
   labels:
-    name: web-dacm-front
+    name: web-sjsn-front
 spec: 
   type: NodePort
   selector:
-    name: web-dacm-front
+    name: web-sjsn-front
   ports:
   - port: 3000
     targetPort: 3000
-    nodePort: 30830
+    nodePort: 32569
     name: tcpport
