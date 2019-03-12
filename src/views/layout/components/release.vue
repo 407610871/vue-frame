@@ -127,16 +127,16 @@ export default {
     },
     _getVersion() {
       this.loading = true;
-      let apiUrl = `/GC/data/version${this.versionValue}.xml`;
+      let apiUrl = `/data/gc/version${this.versionValue}.xml`;
       switch(this.typeName){
         case "数据资产" :
-            apiUrl = `/ZC/data/version${this.versionValue}.xml`;
+            apiUrl = `/data/zc/version${this.versionValue}.xml`;
             break;
         case "数据质量" :
-            apiUrl = `/ZL/data/version${this.versionValue}.xml`;
+            apiUrl = `/data/zl/version${this.versionValue}.xml`;
             break;
         case "数据服务" :
-            apiUrl = `/FW/data/version${this.versionValue}.xml`;
+            apiUrl = `/data/fw/version${this.versionValue}.xml`;
             break;  
       }
       this.$ajax.get(apiUrl).then((res)=> {

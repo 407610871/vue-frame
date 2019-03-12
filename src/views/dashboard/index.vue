@@ -4,7 +4,7 @@
       <div @mouseenter="mouseenter(1,$event)" @mouseleave="mouseleave($event)" @click="goToRoute(1)">
         <el-card shadow="hover" :class="type==1 ? 'enc-card-hover' : 'enc-card'" >
           <div class="enc-img-style">
-            <img :src="logo_gc" alt="">
+            <i class="enc-icon-shujuzhiliang"></i>
           </div>
           <div class="enc-title-style">
               数据工厂
@@ -14,7 +14,7 @@
       <div @mouseenter="mouseenter(2, $event)" @mouseleave="mouseleave($event)" @click="goToRoute(2)">
         <el-card shadow="hover" :class="type==2 ? 'enc-card-hover' : 'enc-card'">
           <div class="enc-img-style">
-            <img :src="logo_zc" alt="">
+            <i class="enc-icon-shujuzichan"></i>
           </div>
           <div class="enc-title-style" >
               数据资产
@@ -24,7 +24,7 @@
       <div @mouseenter="mouseenter(3, $event)" @mouseleave="mouseleave($event)" @click="goToRoute(3)">
         <el-card shadow="hover" :class="type==3 ? 'enc-card-hover' : 'enc-card'">
           <div class="enc-img-style">
-            <img :src="logo_zl" alt="">
+            <i class="enc-icon-shujugongchang"></i>
           </div>
           <div class="enc-title-style" >
               数据质量
@@ -34,7 +34,7 @@
       <div @mouseenter="mouseenter(4, $event)" @mouseleave="mouseleave($event)" @click="goToRoute(4)">
         <el-card shadow="hover" :class="type==4 ? 'enc-card-hover' : 'enc-card'" >
           <div class="enc-img-style">
-            <img :src="logo_fw" alt="">
+            <i class="enc-icon-shujufuwuLOGO"></i>
           </div>
           <div class="enc-title-style" >
               数据服务
@@ -69,16 +69,16 @@
       goToRoute(key) {
           switch(key) {
             case 1:
-              window.open(`${window.ENV.API_GC}`, "_blank");
+              window.open(`${window.ENV.API_GC}`, "_self");
               break;
             case 2:
-              window.open(`${window.ENV.API_ZC}`, "_blank");
+              window.open(`${window.ENV.API_ZC}`, "_self");
               break;
             case 3:
-              window.open(`${window.ENV.API_ZL}`, "_blank");
+              window.open(`${window.ENV.API_ZL}`, "_self");
               break;
             case 4:
-              window.open(`${window.ENV.API_FW}`, "_blank");
+              window.open(`${window.ENV.API_FW}`, "_self");
               break;
 
           }
@@ -138,6 +138,11 @@
     vertical-align: middle;
     width: 240px;
     display: table-cell;
+  }
+  .enc-img-style {
+    i{
+      font-size: 100px;
+    }
   }
   .enc-title-style {
     font-size: 24px;

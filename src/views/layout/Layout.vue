@@ -72,6 +72,7 @@ export default {
     this.userName =  this.$keycloak.tokenParsed.name;
   },
   mounted() {
+    console.log("111111",this.$keycloak);
     this.$nextTick(res=>{
       this.getSkin();
     })
@@ -84,6 +85,7 @@ export default {
       this.releaseflag = true;
     },
     loginOut() {
+      console.log("111111",this.$keycloak);
       this.$keycloak.logout();
     },
     //换肤

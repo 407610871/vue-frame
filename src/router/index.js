@@ -9,15 +9,15 @@ export const constantRouterMap = [
   {
     path: "",
     component: Layout,
-    redirect: "dashboard",
+    redirect: "home",
     children: [
       {
-        path: "dashboard",
+        path: "home",
         component: () => import("@/views/dashboard/index"),
-        name: "dashboard",
+        name: "home",
         meta: {
-          title: "数据接入",
-          icon: "dashboard",
+          title: "数据枢纽平台",
+          icon: "home",
           noCache: true
         }
       }

@@ -29,40 +29,40 @@ module.exports = {
       return args;
     })
   },
-  devServer: {
-    proxy: {
-      "/GC": {
-        target: "http://10.19.248.200:30830",
-        pathRewrite: {
-          "^/GC": ""
-        },
-        ws: true,
-        changeOrigin: true
-      },
-      "/ZC": {
-        target: "http://10.19.248.200:31678",
-        pathRewrite: {
-          "^/ZC": ""
-        },
-        ws: true,
-        changeOrigin: true
-      },
-      "/ZL": {
-        target: "http://10.19.248.200:31688",
-        pathRewrite: {
-          "^/ZL": ""
-        },
-        ws: true,
-        changeOrigin: true
-      },
-      "/FW": {
-        target: "http://10.19.248.200:31289",
-        pathRewrite: {
-          "^/FW": ""
-        },
-        ws: true,
-        changeOrigin: true
-      }
-    }
-  }
+  //devServer: {
+  // proxy: {
+  //"/GC": {
+  //   target: "http://10.19.248.200:30830",
+  //      pathRewrite: {
+  //        "^/GC": ""
+  //      },
+  //    ws: true,
+  //  changeOrigin: true
+  //     },
+  //     "/ZC": {
+  //     target: "http://10.19.248.200:31678",
+  //   pathRewrite: {
+  //       "^/ZC": ""
+  //    },
+  //    ws: true,
+  //    changeOrigin: true
+  //  },
+  //  "/ZL": {
+  //   target: "http://10.19.248.200:31688",
+  //   pathRewrite: {
+  //    "^/ZL": ""
+  //  },
+  //   ws: true,
+  //  changeOrigin: true
+  //  },
+  //  "/FW": {
+  //    target: "http://10.19.248.200:31289",
+  //    pathRewrite: {
+  //     "^/FW": ""
+  //  },
+  //    ws: true,
+  //    changeOrigin: true
+  //  }
+  // }
+  // }
 };
