@@ -85,7 +85,6 @@ export default {
       this.releaseflag = true;
     },
     loginOut() {
-      console.log("111111",this.$keycloak);
       this.$keycloak.logout();
     },
     //换肤
