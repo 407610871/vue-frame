@@ -72,7 +72,7 @@ export default {
     this.userName =  this.$keycloak.tokenParsed.name;
   },
   mounted() {
-    console.log("111111",this.$keycloak);
+    console.log("111111",this.$route);
     this.$nextTick(res=>{
       this.getSkin();
     })
