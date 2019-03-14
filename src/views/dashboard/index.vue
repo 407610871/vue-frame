@@ -34,7 +34,7 @@
       <div @mouseenter="mouseenter(4, $event)" @mouseleave="mouseleave($event)" @click="goToRoute(4)">
         <el-card shadow="hover" :class="type==4 ? 'enc-card-hover' : 'enc-card'" >
           <div class="enc-img-style">
-            <i class="enc-icon-shujufuwuLOGO"></i>
+            <i class="enc-icon-shujufuwuLOGO" style="font-size:83px !important;"></i>
           </div>
           <div class="enc-title-style" >
               数据服务
