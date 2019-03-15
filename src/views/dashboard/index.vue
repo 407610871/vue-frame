@@ -4,7 +4,7 @@
       <div @mouseenter="mouseenter(1,$event)" @mouseleave="mouseleave($event)" @click="goToRoute(1)">
         <el-card shadow="hover" :class="type==1 ? 'enc-card-hover' : 'enc-card'" >
           <div class="enc-img-style">
-            <i class="enc-icon-shujuzhiliang"></i>
+            <i class="enc-icon-shujugongchang"></i>
           </div>
           <div class="enc-title-style">
               数据工厂
@@ -24,7 +24,7 @@
       <div @mouseenter="mouseenter(3, $event)" @mouseleave="mouseleave($event)" @click="goToRoute(3)">
         <el-card shadow="hover" :class="type==3 ? 'enc-card-hover' : 'enc-card'">
           <div class="enc-img-style">
-            <i class="enc-icon-shujugongchang"></i>
+            <i class="enc-icon-shujuzhiliang"></i>
           </div>
           <div class="enc-title-style" >
               数据质量
