@@ -9,8 +9,17 @@
       <el-col :span="4" class="regdia">
         <el-tabs tab-position="left" v-model="typeName"  @tab-click="handleTypeClick">
             <el-tab-pane v-for="(item, index) in versionType" :key="index" :label="item" :name="item">
-                <el-tabs tab-position="left" v-model="versionValue"  @tab-click="handleClick">
-                    <el-tab-pane v-for="(v, i) in versionData" :key="i" :label="v" :name="v"></el-tab-pane>
+                <el-tabs v-if="item=='数据工厂'" tab-position="left" v-model="versionValueGC"  @tab-click="handleClick">
+                    <el-tab-pane v-for="(v, i) in versionDataGC" :key="i" :label="v" :name="v"></el-tab-pane>
+                </el-tabs>
+                <el-tabs v-if="item=='数据资产'" tab-position="left" v-model="versionValueZC"  @tab-click="handleClick">
+                    <el-tab-pane v-for="(v, i) in versionDataZC" :key="i" :label="v" :name="v"></el-tab-pane>
+                </el-tabs>
+                <el-tabs v-if="item=='数据质量'" tab-position="left" v-model="versionValueZL"  @tab-click="handleClick">
+                    <el-tab-pane v-for="(v, i) in versionDataZL" :key="i" :label="v" :name="v"></el-tab-pane>
+                </el-tabs>
+                <el-tabs v-if="item=='数据服务'" tab-position="left" v-model="versionValueFW"  @tab-click="handleClick">
+                    <el-tab-pane v-for="(v, i) in versionDataFW" :key="i" :label="v" :name="v"></el-tab-pane>
                 </el-tabs>
             </el-tab-pane>
         </el-tabs>
@@ -91,15 +100,27 @@ export default {
       versionDate: '',
       loading: false,
       versionType: ['数据工厂', '数据资产', '数据质量', '数据服务'],
-      versionData: [
+      versionDataGC: [
+        '1.4.0', '1.3.0','1.2.0','1.1.1', '1.1.0', '1.0.1', '1.0.0'
+      ],
+      versionDataFW: [
+        '1.4.0', '1.3.0','1.2.0','1.1.1', '1.1.0', '1.0.1', '1.0.0'
+      ],
+      versionDataZC: [
         '1.3.0','1.2.0','1.1.1', '1.1.0', '1.0.1', '1.0.0'
+      ],
+      versionDataZL: [
+        '1.3.0','1.2.0','1.1.1', '1.1.0', '1.0.0'
       ],
       tableData: [],
       changeData: [],
       finishData: [],
       knownData: [],
       typeName:"数据工厂",
-      versionValue: "1.3.0",
+      versionValueGC: "1.4.0",
+      versionValueZC: "1.3.0",
+      versionValueZL: "1.3.0",
+      versionValueFW: "1.4.0",
     };
   },
   mounted() {
@@ -127,16 +148,16 @@ export default {
     },
     _getVersion() {
       this.loading = true;
-      let apiUrl = `/data/gc/version${this.versionValue}.xml`;
+      let apiUrl = `/data/gc/version${this.versionValueGC}.xml`;
       switch(this.typeName){
         case "数据资产" :
-            apiUrl = `/data/zc/version${this.versionValue}.xml`;
+            apiUrl = `/data/zc/version${this.versionValueZC}.xml`;
             break;
         case "数据质量" :
-            apiUrl = `/data/zl/version${this.versionValue}.xml`;
+            apiUrl = `/data/zl/version${this.versionValueZL}.xml`;
             break;
         case "数据服务" :
-            apiUrl = `/data/fw/version${this.versionValue}.xml`;
+            apiUrl = `/data/fw/version${this.versionValueFW}.xml`;
             break;  
       }
       this.$ajax.get(apiUrl).then((res)=> {
