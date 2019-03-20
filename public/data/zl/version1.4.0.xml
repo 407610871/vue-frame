@@ -1,18 +1,18 @@
 ﻿<note>
-	<name>数据质量版本发布说明20190228（V1.3.0）</name>
-	<date>2019/02/28</date>
+	<name>数据质量版本发布说明20190320（V1.4.0）</name>
+	<date>2019/03/20</date>
 	<specialityList>
 		<name>清单特性</name>
 		<item>
-			<Introduction>查询优化</Introduction>
-			<content>质量方案与质量报告查询优化。</content>
-			<sysName>查询功能</sysName>
+			<Introduction>优化</Introduction>
+			<content>稳定性优化。</content>
+			<sysName>数据质量</sysName>
 			<remark></remark>
 		</item>
 		<item>
 			<Introduction>新功能</Introduction>
-			<content>质量方案中资源信息预览数据</content>
-			<sysName>质量方案</sysName>
+			<content>增加返回数据枢纽平台功能</content>
+			<sysName>数据质量</sysName>
 			<remark></remark>
 		</item>
  

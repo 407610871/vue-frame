@@ -107,10 +107,10 @@ export default {
         '1.4.0', '1.3.0','1.2.0','1.1.1', '1.1.0', '1.0.1', '1.0.0'
       ],
       versionDataZC: [
-        '1.3.0','1.2.0','1.1.1', '1.1.0', '1.0.1', '1.0.0'
+        '1.4.0', '1.3.0','1.2.0','1.1.1', '1.1.0', '1.0.1', '1.0.0'
       ],
       versionDataZL: [
-        '1.3.0','1.2.0','1.1.1', '1.1.0', '1.0.0'
+        '1.4.0', '1.3.0','1.2.0','1.1.1', '1.1.0', '1.0.0'
       ],
       tableData: [],
       changeData: [],
@@ -118,8 +118,8 @@ export default {
       knownData: [],
       typeName:"数据工厂",
       versionValueGC: "1.4.0",
-      versionValueZC: "1.3.0",
-      versionValueZL: "1.3.0",
+      versionValueZC: "1.4.0",
+      versionValueZL: "1.4.0",
       versionValueFW: "1.4.0",
     };
   },
