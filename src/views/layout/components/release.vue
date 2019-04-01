@@ -166,8 +166,7 @@ export default {
             this.tableData = jsonObj.note.specialityList[0].item;
             this.changeData = jsonObj.note.changeList[0].item;
             this.finishData = jsonObj.note.finishedPunchList[0].item;
-            this.knownData = Array.isArray(jsonObj.note.questionList[0].item) ? jsonObj.note.questionList[0].item : 
-            [jsonObj.note.questionList[0].item];
+            this.knownData = Array.isArray(jsonObj.note.questionList[0].item) ? jsonObj.note.questionList[0].item : [];
             this.versionDes = jsonObj.note.name;
             this.versionDate = jsonObj.note.date;
           })
