@@ -5,13 +5,13 @@
     <name>清单特性</name>
     <item>
       <Introduction>新增功能</Introduction>
-      <content>postgresql采集</content>
-      <sysName>postgresql采集</sysName>
+      <content>PostgreSQL采集</content>
+      <sysName>PostgreSQL采集</sysName>
       <remark></remark>
     </item>
     <item>
       <Introduction>新增功能</Introduction>
-      <content>增量字段支持string类型采集</content>
+      <content>增量字段支持String类型采集</content>
       <sysName>周期增量</sysName>
       <remark></remark>
     </item>
@@ -35,13 +35,13 @@
     <name>解决问题清单</name>
     <item>
       <Introduction>问题修复</Introduction>
-      <content>修复：postgresql数据源，持有者显示错误，应该显示为库名，而不是用户登录名（SJGC-860）</content>
+      <content>修复：PostgreSQL数据源，持有者显示错误，应该显示为库名，而不是用户登录名（SJGC-860）</content>
       <sysName>数据汇聚</sysName>
       <remark></remark>
     </item>
     <item>
       <Introduction>问题修复</Introduction>
-      <content>修复：postgersql，批量采集，按表进行匹配，提示存在部分表字段数量或者字段名称和类型与其他表不符（SJGC-859）</content>
+      <content>修复：PostgreSQL，批量采集，按表进行匹配，提示存在部分表字段数量或者字段名称和类型与其他表不符（SJGC-859）</content>
       <sysName>数据汇聚</sysName>
       <remark></remark>
     </item>
@@ -53,7 +53,7 @@
     </item>
     <item>
       <Introduction>问题修复</Introduction>
-      <content>修复：postgresql多种模式下，数据预览重复，导致无法正常采集（SJGC-857）</content>
+      <content>修复：PostgreSQL多种模式下，数据预览重复，导致无法正常采集（SJGC-857）</content>
       <sysName>数据汇聚</sysName>
       <remark></remark>
     </item>
@@ -71,13 +71,13 @@
     </item>
     <item>
       <Introduction>问题修复</Introduction>
-      <content>修复：修改postgresql数据源模式，新的模式下不显示源端数据量（SJGC-853）</content>
+      <content>修复：修改PostgreSQL数据源模式，新的模式下不显示源端数据量（SJGC-853）</content>
       <sysName>数据汇聚</sysName>
       <remark></remark>
     </item>
     <item>
       <Introduction>问题修复</Introduction>
-      <content>修复：使用postgresql数据源，数据源列表显示所有模式下的数据信息（SJGC-852）</content>
+      <content>修复：使用PostgreSQL数据源，数据源列表显示所有模式下的数据信息（SJGC-852）</content>
       <sysName>数据汇聚</sysName>
       <remark></remark>
     </item>

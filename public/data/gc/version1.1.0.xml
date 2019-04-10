@@ -23,7 +23,7 @@
 		</item>
 		<item>
 			<Introduction>新增功能</Introduction>
-			<content>Connector - 增加ftp、mongo的一次性和重新汇聚</content>
+			<content>Connector - 增加FTP、MongoDB的一次性和重新汇聚</content>
 			<sysName>数据汇聚</sysName>
 			<remark></remark>
 		</item>
@@ -64,7 +64,7 @@
 			<sysName>数据汇聚</sysName>
 			<remark></remark>
 		</item>
-<item>
+		<item>
 			<Introduction>问题修复</Introduction>
 			<content>修复数据汇聚任务状态显示延时，包含任务开始，结束以及接入数据量</content>
 			<sysName>数据汇聚</sysName>

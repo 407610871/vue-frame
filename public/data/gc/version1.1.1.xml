@@ -23,7 +23,7 @@
         </item>
         <item>
             <Introduction>功能优化</Introduction>
-            <content>优化：MongoDB时间类型保持和Oracle and Mysql一致，改long类型为基于String指定时间格式:YYYY-MM-DD HH24:Mi:SS</content>
+            <content>优化：MongoDB时间类型保持和Oracle and MySQL一致，改Long类型为基于String指定时间格式:YYYY-MM-DD HH24:Mi:SS</content>
             <sysName>数据汇聚</sysName>
             <remark></remark>
         </item>
@@ -47,7 +47,7 @@
         </item>
         <item>
             <Introduction>Connector优化</Introduction>
-            <content>1)ftp文件清理功能重构；2)MongoDB时间类型定制化format:YYYY-MM-DD HH24:Mi:SS；3)所有类型任务间隔执行统一为等待下一周期执行；4)任务pause状态下保留任务meta信息； 5)实时任务启停时间重构
+            <content>1)FTP文件清理功能重构；2)MongoDB时间类型定制化format:YYYY-MM-DD HH24:Mi:SS；3)所有类型任务间隔执行统一为等待下一周期执行；4)任务pause状态下保留任务meta信息； 5)实时任务启停时间重构
             </content>
             <sysName>数据工厂</sysName>
             <remark></remark>
@@ -60,7 +60,7 @@
         <name>解决问题清单</name>
         <item>
             <Introduction>问题修复</Introduction>
-            <content> 支持数据汇聚过程中，数据工厂和数据资产数据一致性，主要解决当数据工厂数据汇聚过程中，元数据信息写入资产mysql失败，但是数据已经汇聚到impala原始库，从而导致工厂和资产数据不一致</content>
+            <content> 支持数据汇聚过程中，数据工厂和数据资产数据一致性，主要解决当数据工厂数据汇聚过程中，元数据信息写入资产MySQL失败，但是数据已经汇聚到Impala原始库，从而导致工厂和资产数据不一致</content>
             <sysName>数据汇聚</sysName>
             <remark></remark>
         </item>

@@ -5,7 +5,7 @@
     <name>清单特性</name>
     <item>
       <Introduction>功能优化</Introduction>
-      <content>POSTGRESQL接入源类型支持</content>
+      <content>PostgreSQL接入源类型支持</content>
       <sysName>数据工厂接入源类型优化</sysName>
       <remark></remark>
     </item>

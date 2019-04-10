@@ -41,7 +41,7 @@
     </item>
     <item>
       <Introduction>问题修复</Introduction>
-      <content>修复：设置任务 创建impala表失败 源端表字段名包含impala关键字</content>
+      <content>修复：设置任务 创建Impala表失败 源端表字段名包含Impala关键字</content>
       <sysName>接入汇聚</sysName>
       <remark></remark>
     </item>

@@ -17,7 +17,7 @@
 		</item>
 		<item>
 			<Introduction>新增功能</Introduction>
-			<content>批流结合 - 赋能流式，批式多数据源数据接入，包含Oracle，Mysql，Mango和FTP；并提供用户友好的界面对所有的有效的数据源进行集中全方位管理</content>
+			<content>批流结合 - 赋能流式，批式多数据源数据接入，包含Oracle，MySQL，MongoDB和FTP；并提供用户友好的界面对所有的有效的数据源进行集中全方位管理</content>
 			<sysName>数据接入</sysName>
 			<remark></remark>
 		</item>
@@ -41,7 +41,7 @@
 		</item>
 		<item>
 			<Introduction>原有功能集成</Introduction>
-			<content>Kettle任务管控 - 对已有kettle任务进行集中管理</content>
+			<content>Kettle任务管控 - 对已有Kettle任务进行集中管理</content>
 			<sysName>数据汇聚</sysName>
 			<remark></remark>
 		</item>

@@ -11,7 +11,7 @@
 		</item>
 		<item>
 			<Introduction>新增功能</Introduction>
-			<content>MongodDB接入 - 增加MongoDB实时，周期增量接入</content>
+			<content>MongoDB接入 - 增加MongoDB实时，周期增量接入</content>
 			<sysName>数据接入</sysName>
 			<remark></remark>
 		</item>
@@ -23,7 +23,7 @@
 		</item>
 		<item>
 			<Introduction>新增功能</Introduction>
-			<content>Connector - 增加支持Mysql binlog  Oracle xstream状态接口</content>
+			<content>Connector - 增加支持MySQL binlog  Oracle xstream状态接口</content>
 			<sysName>数据汇聚</sysName>
 			<remark></remark>
 		</item>
@@ -35,7 +35,7 @@
 		</item>
 		<item>
 			<Introduction>重构优化</Introduction>
-			<content>Connnector - 1）支持重新汇聚过程中，确保数据服务提供不间断 2）支持零延时汇聚数据即时提供数据服务（CPYS-66／CPYS-101）</content>
+			<content>Connector - 1）支持重新汇聚过程中，确保数据服务提供不间断 2）支持零延时汇聚数据即时提供数据服务（CPYS-66／CPYS-101）</content>
 			<sysName>数据汇聚</sysName>
 			<remark></remark>
 		</item>
@@ -48,7 +48,7 @@
         <name>解决问题清单</name>
         <item>
             <Introduction>1130问题修复</Introduction>
-            <content>Connnector - 修复POD任务重启，导致任务状态丢失（CPYS-98）</content>
+            <content>Connector - 修复POD任务重启，导致任务状态丢失（CPYS-98）</content>
             <sysName>数据汇聚</sysName>
             <remark></remark>
         </item>
@@ -66,7 +66,7 @@
         </item>
         <item>
             <Introduction>1213-1214廊坊验收问题修复</Introduction>
-            <content>修复1）数据接入源数据预览，时间类型字段不支持等于和模糊查询2）批量接入多张大数据表，任务状态显示不对 3）Mysql多版本问题导致一次性接入不工作</content>
+            <content>修复1）数据接入源数据预览，时间类型字段不支持等于和模糊查询2）批量接入多张大数据表，任务状态显示不对 3）MySQL多版本问题导致一次性接入不工作</content>
             <sysName>数据接入</sysName>
             <remark></remark>
         </item>
