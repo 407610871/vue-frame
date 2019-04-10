@@ -1,0 +1,37 @@
+﻿<note>
+	<name>数据质量版本发布说明20190411（V1.4.1）</name>
+	<date>2019/04/11</date>
+	<specialityList>
+		<name>清单特性</name>
+		<item>
+			<Introduction>场景修复</Introduction>
+			<content>质检方案数据预览功能字段转义导致显示异常。</content>
+			<sysName>质检方案</sysName>
+			<remark></remark>
+		</item>	
+		<item>
+			<Introduction>产品优化</Introduction>
+			<content>统一UI样式，优化提示样式，优化页面排版。</content>
+			<sysName>产品优化</sysName>
+			<remark></remark>
+		</item>			
+	</specialityList>
+	<changeList>
+		<name>重大变更列表</name>
+                    <item>
+			<content>无</content>
+		</item>          
+	</changeList>
+	<finishedPunchList>
+		<name>解决问题清单</name>
+		
+	</finishedPunchList>
+	<questionList>
+		<name>已知问题和限制</name>	
+    	<!-- <item>
+			<content></content>
+			<Influence></Influence>
+			<solve></solve>
+		</item>	 -->
+	</questionList>
+</note>

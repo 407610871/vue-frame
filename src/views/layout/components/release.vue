@@ -110,7 +110,7 @@ export default {
         '1.4.0', '1.3.1', '1.3.0','1.2.0','1.1.1', '1.1.0', '1.0.1', '1.0.0'
       ],
       versionDataZL: [
-        '1.4.0', '1.3.1', '1.3.0','1.2.0','1.1.1', '1.1.0', '1.0.0'
+        '1.4.1', '1.4.0', '1.3.1', '1.3.0','1.2.0','1.1.1', '1.1.0', '1.0.0'
       ],
       tableData: [],
       changeData: [],
@@ -119,7 +119,7 @@ export default {
       typeName:"数据工厂",
       versionValueGC: "1.4.1",
       versionValueZC: "1.4.0",
-      versionValueZL: "1.4.0",
+      versionValueZL: "1.4.1",
       versionValueFW: "1.4.1",
     };
   },
