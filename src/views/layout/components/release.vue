@@ -101,7 +101,7 @@ export default {
       loading: false,
       versionType: ['数据工厂', '数据资产', '数据质量', '数据服务'],
       versionDataGC: [
-        '1.4.0', '1.3.1', '1.3.0','1.2.0','1.1.1', '1.1.0', '1.0.1', '1.0.0'
+        '1.4.1', '1.4.0', '1.3.1', '1.3.0','1.2.0','1.1.1', '1.1.0', '1.0.1', '1.0.0'
       ],
       versionDataFW: [
         '1.4.0', '1.3.1', '1.3.0','1.2.0','1.1.1', '1.1.0', '1.0.1', '1.0.0'
@@ -117,7 +117,7 @@ export default {
       finishData: [],
       knownData: [],
       typeName:"数据工厂",
-      versionValueGC: "1.4.0",
+      versionValueGC: "1.4.1",
       versionValueZC: "1.4.0",
       versionValueZL: "1.4.0",
       versionValueFW: "1.4.0",
