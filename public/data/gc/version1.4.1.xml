@@ -1,6 +1,6 @@
 <note>
   <name>数据引擎产品版本发布说明书（V1.4.1）</name>
-  <date>2019/04/20</date>
+  <date>2019/04/10</date>
   <specialityList>
     <name>清单特性</name>
     <item>
@@ -23,7 +23,7 @@
     <name>解决问题清单</name>
     <item>
       <Introduction>问题修复</Introduction>
-      <content>修复：源端表字段名包含impala关键字，采集后数据显示为NULL</content>
+      <content>修复：源端表字段名包含Impala关键字，采集后数据显示为NULL</content>
       <sysName>接入汇聚</sysName>
       <remark></remark>
     </item>

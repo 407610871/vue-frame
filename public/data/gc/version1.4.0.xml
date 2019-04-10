@@ -65,7 +65,7 @@
     </item>
     <item>
       <Introduction>问题修复</Introduction>
-      <content>修复：修改批量采集字段类型映射页面展示的是源表字段，不应该展示入到impala表后增加的时间戳和类型这两个字段（SJGC-854）</content>
+      <content>修复：修改批量采集字段类型映射页面展示的是源表字段，不应该展示入到Impala表后增加的时间戳和类型这两个字段（SJGC-854）</content>
       <sysName>数据汇聚</sysName>
       <remark></remark>
     </item>
