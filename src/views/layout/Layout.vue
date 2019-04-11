@@ -8,8 +8,8 @@
         <el-popover placement="bottom" trigger="hover">
           <ul class="user">
             <li>{{ userName }}</li>
-            <li v-on:click="changeSkin">主题</li>
-            <li v-on:click="loginOut">退出</li>
+            <li class="point" v-on:click="changeSkin">主题</li>
+            <li class="point" v-on:click="loginOut">退出</li>
           </ul>
           <el-button slot="reference">
             <i class="enc-icon-user" style="font-size: 18px; color: #fff;"></i>
@@ -154,11 +154,13 @@ export default {
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
-    cursor: pointer;
   }
   li:hover {
     color: #fff !important;
     @include el-bgcolor($el-page-theme);
-}
+  }
+  .point {
+    cursor: pointer;
+  }
 </style>
 
