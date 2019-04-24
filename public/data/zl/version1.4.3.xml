@@ -1,0 +1,43 @@
+<note>
+	<name>数据质量版本发布说明20190425（V1.4.3）</name>
+	<date>2019/04/25</date>
+	<specialityList>
+		<name>特性清单</name>
+		<item>
+			<Introduction>功能优化</Introduction>
+			<content> 质检方案设计规则修改保存逻辑优化，功能优化，周期方案信息展示优化，规则描述长度限制</content>
+			<sysName> 质检方案</sysName>
+			<remark></remark>
+		</item>	
+		<item>
+			<Introduction>功能优化</Introduction>
+			<content> 质检结果柱状图展示优化，合格率展示格式统一</content>
+			<sysName> 质检报告</sysName>
+			<remark></remark>
+		</item>	
+			<item>
+			<Introduction>功能优化</Introduction>
+			<content> 高级搜索刷新功能优化</content>
+			<sysName> 质检方案、质检报告 </sysName>
+			<remark></remark>
+		</item>	
+	</specialityList>
+	<changeList>
+		<name>重大变更列表</name>
+                    <item>
+			<content>无</content>
+		</item>          
+	</changeList>
+	<finishedPunchList>
+		<name>解决问题清单</name>
+		
+	</finishedPunchList>
+	<questionList>
+		<name>已知问题和限制</name>	
+    	<!-- <item>
+			<content></content>
+			<Influence></Influence>
+			<solve></solve>
+		</item>	 -->
+	</questionList>
+</note>
