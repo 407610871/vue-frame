@@ -4,7 +4,7 @@ import Router from "vue-router";
 Vue.use(Router);
 
 import Layout from "@/views/layout/Layout";
-
+import Login from "@/views/layout/Login";
 export const constantRouterMap = [
   {
     path: "",
@@ -18,6 +18,22 @@ export const constantRouterMap = [
         meta: {
           title: "数据枢纽平台",
           icon: "home",
+          noCache: true
+        }
+      }
+    ]
+  },
+  {
+    path: '',
+    component: Login,
+    children: [
+      {
+        path: "login",
+        component: () => import("@/views/login/login"),
+        name: "login",
+        meta: {
+          title: "数据枢纽平台",
+          icon: "login",
           noCache: true
         }
       }
