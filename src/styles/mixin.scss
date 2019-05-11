@@ -400,3 +400,33 @@
     border-bottom: 4px solid $el-kittle-icon-span4;
   }
 }
+@mixin el-scrollColor($color) {
+  background: $color;
+  [data-theme='theme1'] & {
+    background: $el-theme-scroll-color1;
+  }
+  [data-theme='theme2'] & {
+    background: $el-theme-scroll-color2;
+  }
+  [data-theme='theme3'] & {
+    background: $el-theme-scroll-color3;
+  }
+  [data-theme='theme4'] & {
+    background: $el-theme-scroll-color4;
+  }
+}
+@mixin el-dialog-contanst-lp($border) {
+  border-bottom: 4px solid $border;
+  [data-theme='theme1'] & {
+    border-bottom: 4px solid $el-table-hover-theme1;
+  }
+  [data-theme='theme2'] & {
+    border-bottom: 4px solid $el-table-hover-theme2;
+  }
+  [data-theme='theme3'] & {
+    border-bottom: 4px solid $el-table-hover-theme3;
+  }
+  [data-theme='theme4'] & {
+    border-bottom: 4px solid $el-table-hover-theme4;
+  }
+}

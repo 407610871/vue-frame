@@ -1,14 +1,11 @@
 @import './variables.scss';
 @import './mixin.scss';
-.clearfix {
-    clear: both;
-}
 // header 布局
 .enc-header {
-  padding: 0;
-  height: 66px!important;
-  line-height: 66px;
-  background: #e6eaed;
+    padding: 0;
+    height: 66px !important;
+    line-height: 66px;
+    background: #E6EAED;
   }
 .right-menu {
     float: right;
@@ -28,7 +25,7 @@
       padding: 0;
       float: left;
       &.user {
-        background: #cac fd5;
+        background: #50609c;
         vertical-align: top;
         i {
           font-size: 32px;
@@ -123,20 +120,17 @@ header {
       }
     }
   }
-  .el-popover {
-    padding: 0;
-  }
   .warn-popover li:hover{
     color: #fff !important;
     @include el-table-hover($el-page-theme);
   }
   //面包屑样式
   .el-breadcrumb {
-    min-height: 40px;
+    min-height: 45px;
     font-size: 15px;
-    line-height: 40px;
-    margin: 3px 0px 0px 0px;
-    padding: 0px 20px 0px 20px;
+    line-height: 45px;
+    margin: 5px 0px 0px 0px;
+    padding: 5px 20px 5px 20px;
     background: #E6EAED;
     color: #425365;
   }
@@ -148,7 +142,11 @@ header {
     overflow: hidden;
     background: #fff;
   }
-  
+  // 内容区布局
+  .main-content {
+    padding: 0 20px 0 20px;
+    margin: 20px 0 0 0;
+  }
   
   // 按钮样式
   .el-button--medium {
@@ -206,23 +204,33 @@ header {
     overflow: hidden;
   }
   ::-webkit-scrollbar-thumb{
-    @include el-bgcolor($el-page-theme);
+    @include el-scrollColor($el-theme-scroll-primary);
     border-radius: 4px;
   }
   ::-webkit-resizer {
       display: none;
   }
+  ::-webkit-scrollbar-corner {
+    display: none;
+  }
   
   // 输入框
-  .el-input__inner {
+  .el-pagination__editor.el-input .el-input__inner {
+    height: 28px !important;
+    line-height: 28px;
+  }
+  .el-input--medium .el-input__inner {
     height: 35px !important;
-    line-height: 1px;
+    line-height: 35px;
     padding: 0 12px;
   }
   .el-form-item__label {
     line-height: 35px;
   }
   // 下拉选择框
+  .el-select {
+    width: 100%;
+  }
   .el-select .el-input__suffix {
     display: inline-block;
     width: 29px;
@@ -273,15 +281,13 @@ header {
     .gra-l {
       width: 50px !important;
       float: left;
-      border-bottom: 4px solid #4A60A2 !important;
+      @include el-dialog-contanst($el-page-theme);
+     // @include  el-dialog-contanst-lp($el-primary-theme1);
     }
     .gra-r {
       width: 100% !important;
-      @include el-dialog-contanst($el-page-theme);      
+      @include  el-dialog-contanst-lp($el-primary-theme1);
     }
-  }
-  .plr30{
-    padding: 0 !important;
   }
   // 弹出框按钮右对齐
   .mr-btn {
@@ -314,7 +320,7 @@ header {
   }
   .el-table--enable-row-hover .el-table__body tr:hover>td {
     color: #fff;
-    @include el-table-hover($el-table-td-hover);
+    @include el-scrollColor($el-theme-scroll-primary);
   }
 
   // 左侧栏的收缩
@@ -354,6 +360,9 @@ header {
 .el-date-editor .el-range__icon {
     font-size: 21px;
 }
+.el-date-editor .el-range-separator {
+  width: 10%;
+}
 // check-box 
 .el-checkbox__label {
     padding-left: 7px;
@@ -362,20 +371,8 @@ header {
 [class*="enc-icon"]:hover, [class*="enc-icon"]:active{
      @include el-icon-color($el-kittle-icon-span);
 }
-[class*="enc-icon"]{
-  @include el-icon-color($el-kittle-icon-span);
-}
 .el-radio-button--medium .el-radio-button__inner {
   border-radius: 0px !important;
-}
-
-.table-tools {
-  display: flex;
-  justify-content: flex-end;
-  margin-bottom: 20px
-}
-.table-tools .el-button--primary span , .table-tools .el-button--medium span {
-  float:right;
 }
 .el-input__inner {
   background: #fff;
@@ -391,4 +388,38 @@ header {
 .searchDiv span {
   background: #fff;
   border: #fff;
+}
+// 提示框的样式
+.el-message-box {
+  padding: 40px;
+  border-radius: 0px; 
+}
+.el-message-box__header {
+  padding: 0px;
+}
+.el-message-box__content {
+  padding: 24px 0px 40px 0px;
+}
+.el-message-box__btns {
+  padding: 0px;
+}
+.el-message-box__title {
+  padding: 0px;
+}
+.el-message-box__headerbtn {
+  top: 0px;
+  right: 0px;
+}
+.el-message-box__status {
+  top: 42%;
+}
+
+.el-tooltip.focusing {
+  outline: none;
+}
+
+.dialog-body-auto {
+  max-height: 550px;
+  overflow: auto;
+  padding: 0px 20px 0px 20px;
 }

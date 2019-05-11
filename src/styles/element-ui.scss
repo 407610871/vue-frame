@@ -93,18 +93,11 @@
      // line-height: 36px;
      color: #b2b6b9;
    }
-
-   .el-dropdown-menu__item--divided:before,
-   .el-menu,
-   .el-menu--horizontal>.el-menu-item:not(.is-disabled):focus,
-   .el-menu--horizontal>.el-menu-item:not(.is-disabled):hover,
-   .el-menu--horizontal>.el-submenu .el-submenu__title:hover {
-     background-color: #469bde;
-     color: #fff!important;
-   }
  }
 
- .el-menu--horizontal .el-menu-item:not(.is-disabled):focus,
+ .el-menu--horizontal .el-menu-item:not(.is-disabled):focus {
+   background: transparent;
+ }
  .el-menu--horizontal .el-menu-item:not(.is-disabled):hover {
    background: #469bde;
    color: #fff!important;
@@ -120,13 +113,11 @@
 
  .enc-header .el-dropdown-menu__item--divided:before,
  .enc-header .el-menu,
- .enc-header .el-menu--horizontal>.el-menu-item:not(.is-disabled):focus,
  .enc-header .el-menu--horizontal>.el-menu-item:not(.is-disabled):hover,
  .enc-header .el-menu--horizontal>.el-submenu .el-submenu__title:hover {
    @include el-bgcolor($el-primary-theme);
  }
 
- .el-menu--horizontal .el-menu-item:not(.is-disabled):focus,
  .el-menu--horizontal .el-menu-item:not(.is-disabled):hover {
    @include el-backcolor($el-primary-theme);
  }

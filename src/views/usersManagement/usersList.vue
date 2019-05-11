@@ -1,7 +1,16 @@
 <template>
-<div>
-  dssdssdfasafsdf
-</div>
+  <div>
+    <el-breadcrumb separator>
+      <el-breadcrumb-item>用户管理</el-breadcrumb-item>
+    </el-breadcrumb>
+    <div class="main main-content">
+      <div class="mr-btn">
+        <el-button type="primary">增加用户</el-button>
+        <el-button type="primary">删除</el-button>
+      </div>
+    </div>
+
+  </div>
 </template>
 
 <script>

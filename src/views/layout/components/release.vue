@@ -78,7 +78,6 @@
 
 import xml2js from 'xml2js';
 import {getVersionList} from "@/api/userApi.js";
-console.log("getVersionList",getVersionList)
 export default {
   name: "taskMDialog",
   data: function() {

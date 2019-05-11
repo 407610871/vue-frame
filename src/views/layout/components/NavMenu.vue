@@ -6,12 +6,13 @@
       text-color="#425365"
       :default-active="activeRoutePath"     
       @select="handleSelect"
+      router
     >
-      <el-menu-item index="/userManagement">
+      <el-menu-item index="user">
         <i class="enc-icon-taskShow navIcon"/>
         <span class="tit">用户管理</span>
       </el-menu-item>
-      <el-menu-item index="/userJS">
+      <el-menu-item index="role">
         <i class="enc-icon-taskShow navIcon"/>
         <span class="tit">角色管理</span>
       </el-menu-item>
@@ -23,44 +24,25 @@
 export default {
   data() {
     return {
-      ifCreateShow: false,
-      activeRoutePath: ""
+      activeRoutePath: "user"
     };
   },
   created() {
-    this.switchRoute(this.$route.name);
-    this.activeRoutePath = `/${this.$route.name}`;
+    this.activeRoutePath = `${this.$route.name}`;
   },
   mounted() {},
   computed: {
-    // activeRoutePath() {
-    //   return `/${this.$route.name}`;
-    // }
+ 
   },
   watch: {
     $route(to) {
-      console.log(to);
-      this.switchRoute(to.name);
-      this.activeRoutePath = `/${this.$route.name}`;
+      this.activeRoutePath = `${this.$route.name}`;
     }
   },
   methods: {
     handleSelect(key, keyPath) {
 
     },
-    switchRoute(name) {
-      switch (name) {
-        case "taskShow":
-          this.ifCreateShow = false;
-          break;
-        case "taskCreate":
-          this.ifCreateShow = true;
-          break;
-        default:
-          this.ifCreateShow = false;
-          break;
-      }
-    }
   }
 };
 </script>

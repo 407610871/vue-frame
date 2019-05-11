@@ -7,18 +7,31 @@ import Layout from "@/views/layout/Layout";
 
 export const constantRouterMap = [
   {
-    path: "",
+    path: "/",
     component: Layout,
     redirect: "user",
     children: [
       {
         path: "user",
-        component: () => import("@/views/dashboard/index"),
+        component: () => import("@/views/usersManagement/usersList"),
         name: "user",
         meta: {
           title: "用户管理",
           icon: "user",
-          noCache: true
+          noCache: true,
+          keepAlive: false
+  
+        }
+      },
+      {
+        path: "role",
+        component: () => import("@/views/rolesManagement/rolesList"),
+        name: "role",
+        meta: {
+          title: "角色管理",
+          icon: "role",
+          noCache: true,
+          keepAlive: false  
         }
       }
     ]
