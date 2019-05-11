@@ -1,0 +1,129 @@
+@import './variables.scss';
+@import './mixin.scss';
+/* checkbox */
+.el-checkbox {
+    color: #425365;
+}
+
+.el-checkbox__inner {
+   @include el-border($el-all-number);
+  background-color: #fff;
+  border-radius: 0;
+}
+
+.el-checkbox__input.is-checked .el-checkbox__inner, .el-checkbox__input.is-indeterminate .el-checkbox__inner {
+  /* background-color: #425365;
+  border-color: #425365; */
+   @include  el-border-color($el-all-number);
+    @include el-bgcolor($el-all-number);
+
+}
+
+.el-checkbox__input.is-checked+.el-checkbox__label {
+   color: #425365;
+}
+
+
+/* radio */
+.el-radio {
+ color: #425365;
+}
+
+.el-radio__inner {
+ /*  border: 1px solid #425365; */
+  @include el-border($el-all-number);
+  background-color: #fff;
+}
+
+.el-radio__input.is-checked .el-radio__inner {
+
+   @include  el-border-color($el-all-number);
+ 
+  background: #fff;
+}
+
+.el-radio__inner::after {
+  width: 6px;
+  height: 6px;
+  border-radius: 100%;
+
+    @include el-bgcolor($el-all-number);
+}
+
+.el-radio__input.is-checked+.el-radio__label {
+ color: #425365;
+}
+
+.el-form-item__label {
+ color: #425365;
+}
+
+.el-input__inner {
+  background-color: #f0f3f6;
+  color: #4f609d;
+  border-radius: 0;
+  border: 1px solid #c9cdd0;
+}
+
+.el-select .el-input.is-focus .el-input__inner {
+  border-color: #c9cdd0;
+}
+
+.el-input--medium .el-input__inner {
+  height: 30px;
+  line-height: 30px;
+}
+
+.el-form-item--medium .el-form-item__content, .el-form-item--medium .el-form-item__label {
+  line-height: 30px;
+}
+
+.el-select .el-input__inner:focus {
+  border-color: #c9cdd0;
+}
+
+.el-input--medium .el-input__icon {
+  width: 24px;
+  line-height: 24px;
+}
+
+.el-select .el-input .el-select__caret {
+  color: #fff;
+  vertical-align: top;
+}
+
+.el-select .el-input__suffix {
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  top: 3px;
+  @include el-bgcolor($el-input-suffix);
+}
+
+.el-select-dropdown {
+  border-radius: 0;
+}
+
+.el-textarea__inner {
+  color: #4f609d;
+  background-color: #f0f3f6;
+  border: 1px solid #c9cdd0;
+  border-radius: 0;
+}
+
+.el-switch.is-checked .el-switch__core {
+  border-color: #489bd9;
+  background-color: #489bd9;
+}
+
+.el-button--primary {
+  color: #fff;
+  @include el-button--primary($el-primary-theme);
+}
+
+.el-select-dropdown__item.selected{
+  @include el-color($el-select-dropdown-selected);
+}
+.el-container .el-form-item.is-success .el-input__inner, .el-form-item.is-success .el-input__inner:focus, .el-form-item.is-success .el-textarea__inner, .el-form-item.is-success .el-textarea__inner:focus {
+   @include el-border-color($el-input-success);
+}

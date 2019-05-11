@@ -1,0 +1,365 @@
+//elementui form
+.el-dialog .el-form-item__label {
+  font-size: $font-size-small;
+}
+
+.hr {
+  width: 100%;
+  border-top: 1px solid $color-background;
+}
+
+//con
+.el-icon-info {
+  margin-right: 10px;
+  color: #0095e7;
+  cursor: pointer;
+}
+
+.bornone {
+  border: none !important;
+}
+
+.bank {
+  opacity: 0;
+}
+
+.taskMDialog {
+  text-align: left;
+  .el-dialog {
+    overflow: auto;
+    max-height: 700px;
+    .el-dialog__header {
+      padding: 20px 40px 0px 40px;
+      .el-dialog__title {
+        font-size: $font-size-medium;
+        @include el-color($color-text-title);
+      }
+    }
+    .el-dialog__headerbtn {
+      /* top: -15px;
+      right: -15px;
+      font-size: 16px;
+      background-color: $color-background;
+      width: 30px;
+      height: 30px;
+      border-radius: 15px;
+      font-size: 14px; */
+      .el-dialog__close {
+        /*  color: #fff; */
+      }
+    }
+  }
+
+  .el-dialog__body {
+    .daiInfo-title {
+      border-bottom: 1px solid $border-color-dai;
+      margin-bottom: 20px;
+    }
+    h2 {
+      font-size: $font-size-medium;
+      @include el-color-ys($color-text-stitle);
+      padding: 0;
+      margin: 0;
+      line-height: 40px;
+    }
+    .daiInfo-box {
+      padding: 0 20px;
+    }
+  }
+}
+
+.el-radio__label {
+  font-size: $font-size-small;
+}
+
+.ml0 .el-form-item--medium .el-form-item__content {
+  margin-left: 0px !important;
+}
+
+.tcenter .el-form-item--medium .el-form-item__content {
+  text-align: center;
+}
+
+.mt20 {
+  margin-top: 20px;
+}
+
+.mt10 {
+  margin-top: 10px;
+}
+
+.mt30 {
+  margin-top: 30px;
+}
+
+.mt25 {
+  margin-top: 25px;
+}
+
+.mt50 {
+  margin-top: 50px;
+}
+
+.mb20 {
+  margin-bottom: 20px;
+}
+
+.plr10 {
+  padding-left: 10px;
+}
+
+.plr60 {
+  padding-left: 60px;
+}
+
+.mr10 {
+  margin-right: 10px;
+}
+
+.mr5 {
+  margin-right: 5px;
+}
+
+.ml10 {
+  margin-left: 10px;
+}
+
+.ml25 {
+  margin-left: 25px;
+}
+
+.ptb20 {
+  padding: 20px 0px;
+}
+
+.tcenter {
+  text-align: center;
+}
+
+.el-icon-circle {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: inline-block;
+  border: 1px solid #d8dbdd;
+  line-height: 30px;
+  color: #d8dbdd;
+  text-align: center;
+  margin-right: 5px;
+}
+
+.surveybg {
+  background: #f0f3f6;
+  padding-top: 20px;
+}
+
+//表格
+.comTable .el-table th>.cell {
+  line-height: 20px;
+  font-size: $font-size-medium;
+  font-weight: bold;
+}
+
+.comTable .el-table--medium td,
+.el-table--medium th {
+  padding: 8px 0;
+}
+
+//内部按钮
+.dataInfo-box {
+  border: none !important;
+}
+
+.bornone {
+  border: none !important;
+}
+
+.cutoff-line {
+  border-bottom: 1px solid #c9cdd0;
+  margin-bottom: 20px;
+}
+
+
+
+
+/* treeStyle */
+
+.tleft {
+  text-align: left;
+}
+
+.treeAuto {
+  height: 300px;
+  overflow: auto;
+}
+
+.disele .el-input.is-disabled .el-input__inner {
+  background-color: #f0f3f6;
+  color: #4f609d;
+  border-radius: 0;
+  border: 1px solid #c9cdd0;
+}
+
+.curspan {
+  cursor: pointer;
+  margin-left: 10px;
+}
+
+
+
+
+
+/* .el-dialog::-webkit-scrollbar-thumb {
+  background: #50609c;
+  border-radius: 4px;
+}
+
+.el-dialog::-webkit-scrollbar-track {
+  background: #489bd9;
+  border-radius: 5px;
+}
+
+.el-dialog::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+  background: transparent;
+}
+
+.el-dialog::-webkit-scrollbar-button {
+  background-color: #f6f6f6;
+}
+
+.el-dialog::-webkit-scrollbar-corner {
+  background: transparent;
+}
+ */
+
+.icon-title {
+  font-size: 21px;
+  display: inline-block;
+  margin-right: 7px;
+  cursor: pointer;
+}
+.icon-title:active, .icon-title:hover{
+  color: #fff !important;
+}
+
+.tasktips {
+  font-size: $font-size-small;
+  color: red;
+}
+
+.respan {
+  color: red;
+  display: inline-block;
+}
+
+.el-picker-panel__icon-btn {
+  color: #303133 !important;
+}
+
+.setTaskDia .el-tabs__item.is-active {
+  @include el-color($color-background-tabs);
+}
+
+.el-tabs__item.is-active i {
+  @include el-backcolor($color-background-tabs);
+}
+
+
+
+
+
+/* 任务中心 */
+
+.taskMDialog .checkBtn {
+  @include el-bgcolor($el-btn-color);
+}
+
+.taskMDialog .contanst {
+  @include el-border-contanst($el-btn-color);
+}
+
+.taskMDialog {
+  .contanst_vs {
+    @include el-color($color-background);
+  }
+  .checkResult a {
+    @include el-color($color-background);
+  }
+  .export-btn .el-button {
+    @include el-bgcolor($color-background);
+  }
+}
+
+.el-input.is-active .el-input__inner,
+.el-input__inner:focus {
+  @include el-border-color($el-radio-btn);
+}
+
+.topInver .el-dialog__title {
+  font-size: $font-size-medium;
+  @include el-color($color-text-title);
+}
+
+.el-container .el-form-item.is-success .el-input__inner,
+.el-form-item.is-success .el-input__inner:focus,
+.el-form-item.is-success .el-textarea__inner,
+.el-form-item.is-success .el-textarea__inner:focus {
+  @include el-color($el-input-success);
+}
+
+.enc-icon-zhuce:hover,
+.enc-icon-zhuce:active {
+  color: #fff !important;
+}
+
+.enc-icon-zhuce {
+  margin-right: 7px;
+  font-size: 21px;
+  line-height: 21px;
+  vertical-align: text-top;
+}
+
+@media screen and (max-width: 1399px) {
+  .task-Detail-dialog {
+    .el-dialog {
+      width: 80%;
+      height: 480px;
+    }
+  }
+}
+
+@media screen and (min-width: 1400px) {
+  .task-Detail-dialog {
+    .el-dialog {
+      width: 60%;
+      height: 600px;
+    }
+  }
+}
+
+.task-Detail-dialog {
+  .el-dialog {
+    overflow: auto;
+    .el-tabs__nav {
+      text-align: left;
+    }
+  }
+}
+
+.refresha {
+  i {
+    @include el-color ($el-radio-btn);
+  }
+}
+.manage-tab .taskSteps {
+   .el-tabs__header {
+    width:auto;
+    margin-left:0px;
+  }
+  .el-tabs__nav {
+    float: none;
+    text-align: center;
+  }
+}

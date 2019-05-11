@@ -1,0 +1,53 @@
+{
+  "name": "enc-vue-boilerplate",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build",
+    "lint": "vue-cli-service lint",
+    "test:e2e": "vue-cli-service test:e2e",
+    "test:unit": "vue-cli-service test:unit"
+  },
+  "dependencies": {
+    "@antv/data-set": "^0.9.6",
+    "@babel/polyfill": "^7.0.0",
+    "animate.css": "^3.7.0",
+    "axios": "^0.18.0",
+    "element-ui": "^2.4.8",
+    "js-cookie": "^2.2.0",
+    "keycloak-js": "^4.5.0",
+    "moment": "^2.22.2",
+    "normalize.css": "^8.0.0",
+    "register-service-worker": "^1.0.0",
+    "smooth-scrollbar": "^8.3.1",
+    "viser-vue": "^2.4.1",
+    "vue": "^2.5.17",
+    "vue-i18n": "^8.1.0",
+    "vue-jstree": "^2.1.6",
+    "vue-router": "^3.0.1",
+    "vuex": "^3.0.1",
+    "x2js": "^3.2.1",
+    "xml-loader": "^1.2.1",
+    "xml2js": "^0.4.19"
+  },
+  "devDependencies": {
+    "@cypress/webpack-preprocessor": "^3.0.0",
+    "@vue/cli-plugin-babel": "^3.0.5",
+    "@vue/cli-plugin-e2e-cypress": "^3.0.5",
+    "@vue/cli-plugin-eslint": "^3.0.5",
+    "@vue/cli-plugin-pwa": "^3.0.5",
+    "@vue/cli-plugin-unit-jest": "^3.0.5",
+    "@vue/cli-service": "^3.0.5",
+    "@vue/eslint-config-prettier": "^3.0.5",
+    "@vue/test-utils": "^1.0.0-beta.20",
+    "babel-core": "7.0.0-bridge.0",
+    "babel-jest": "^23.0.1",
+    "babel-polyfill": "^6.26.0",
+    "element-theme-chalk": "^2.4.8",
+    "mockjs": "^1.0.1-beta3",
+    "node-sass": "^4.9.0",
+    "sass-loader": "^7.0.1",
+    "vue-template-compiler": "^2.5.17"
+  }
+}

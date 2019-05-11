@@ -1,0 +1,58 @@
+<note>
+	<name>数据工厂产品版本发布说明书（V1.0.0）</name>
+	<date>2018/11/30</date>
+	<specialityList>
+		<name>清单特性</name>
+		<item>
+			<Introduction>重构优化</Introduction>
+			<content>统一用户界面 - 统一的界面风格，友好的用户交互</content>
+			<sysName>数据工厂</sysName>
+			<remark></remark>
+		</item>
+		<item>
+			<Introduction>重构优化</Introduction>
+			<content>统一总体架构 - 确保系统高性能，易扩展</content>
+			<sysName>数据工厂</sysName>
+			<remark></remark>
+		</item>
+		<item>
+			<Introduction>新增功能</Introduction>
+			<content>批流结合 - 赋能流式，批式多数据源数据接入，包含Oracle，MySQL，MongoDB和FTP；并提供用户友好的界面对所有的有效的数据源进行集中全方位管理</content>
+			<sysName>数据接入</sysName>
+			<remark></remark>
+		</item>
+		<item>
+			<Introduction>新增功能</Introduction>
+			<content>汇聚任务 - 融合增量，全量，实时以及一次性多种汇聚任务全力支撑海量数据高效汇聚，并通过用户友好的界面对所有的汇聚任务进行全方位监控和管理</content>
+			<sysName>数据汇聚</sysName>
+			<remark></remark>
+		</item>
+		<item>
+			<Introduction>新增功能</Introduction>
+			<content>即时核验 - 批式接入的数据源即时全量和时间范围内数据量的核验，确保接入汇聚数据质量即时可见</content>
+			<sysName>数据工厂</sysName>
+			<remark></remark>
+		</item>
+		<item>
+			<Introduction>新增功能</Introduction>
+			<content>监控报警 - 定期全方面核心资源监测和异常预警，并和数据保障平台通力合作，确保系统运维全面高效。目前系统支持四种核心异常告警：数据源异常，元数据变更，汇聚任务异常以及数据量核验异常</content>
+			<sysName>数据工厂</sysName>
+			<remark></remark>
+		</item>
+		<item>
+			<Introduction>原有功能集成</Introduction>
+			<content>Kettle任务管控 - 对已有Kettle任务进行集中管理</content>
+			<sysName>数据汇聚</sysName>
+			<remark></remark>
+		</item>
+	</specialityList>
+	<changeList>
+		<name>重大变更列表</name>
+	</changeList>
+	<finishedPunchList>
+		<name>解决问题清单</name>
+	</finishedPunchList>
+	<questionList>
+		<name>已知问题和限制</name>
+	</questionList>
+</note>

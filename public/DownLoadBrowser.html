@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>download</title>
+    <style>
+        #downLoadPage{
+            padding: 160px 0 0 260px
+        }
+        #chromeIcon{
+            width: 84px;
+            height: 84px;
+            float: left;
+        }
+        #chromeTitle{
+            display: inline-block;
+            padding: 0 0 0 20px;
+            font-size: 30px;
+            color: #7a7a7a;
+            line-height: 84px;
+        }
+        #imgContainer{
+            margin: 50px 0 0;
+        }
+        #imgContainer img{
+            width: 66px;
+            height: 66px;
+        }
+        #imgContainer .tipsLeft{
+            margin-left: 25px;
+        }
+        #chromeIntro{
+            margin-bottom: 20px;
+            font-size: 15px;
+            line-height: 60px;
+            letter-spacing: 2px;
+            color: #141414;
+        }
+        #setHref{
+            text-decoration: none;
+        }
+        #downChrome{
+            background: #333333;
+            padding: 16px 22px;
+            letter-spacing: 3px;
+            font-size: 15px;
+            color: #ffffff;
+        }
+    </style>
+</head>
+<body>
+    <div id="downLoadPage">
+        <div>
+            <img id="chromeIcon" src="/img/browser/icon-google.png">
+            <div id="chromeTitle"><span>CHROME</span></div>
+        </div>
+        <div id="imgContainer">
+            <img src="/img/browser/icon-word1.png">
+            <img class="tipsLeft" src="/img/browser/icon-word2.png">
+            <img class="tipsLeft" src="/img/browser/icon-word3.png">
+            <img class="tipsLeft" src="/img/browser/icon-word4.png">
+        </div>
+        <div id="chromeIntro">
+            GOOGLE CHROME浏览器适合在所有设备上使用。
+        </div>
+        <div>
+            <a id="setHref" href="" download="" target="_blank">
+                <span id="downChrome">下载 CHROME</span>
+            </a>
+        </div>
+    </div>
+
+<script type="text/javascript">
+
+    var browser = checkBrowserVersion();
+    var bitNumber = (!browser[1] || browser[1] == undefined) ? 32 : browser[1];
+    var browserUrl = '/browser/70.0.3538.110_chrome_installer_' + bitNumber + '.exe';
+    document.getElementById("setHref").href = browserUrl;
+
+    function checkBrowserVersion(){
+        var userAgent = navigator.userAgent.toLowerCase();
+        var isIE = userAgent.indexOf("compatible") > -1 && userAgent.indexOf("msie") > -1; //判断是否IE<11浏览器
+        var isEdge = userAgent.indexOf("edge") > -1 && !isIE; //判断是否IE的Edge浏览器
+        var isIE11 = userAgent.indexOf('trident') > -1 && userAgent.indexOf("rv:11.0") > -1;
+        var arr = userAgent.split(' ');
+        var chromeVersion = '';
+        var computerBit = '';
+        var needDownLoad = false;
+        if (userAgent.indexOf("win32") >= 0 || userAgent.indexOf("wow32") >= 0) {  //判断电脑为64位还是32位
+            computerBit = 32;
+        }
+        if (userAgent.indexOf("win64") >= 0 || userAgent.indexOf("wow64") >= 0) {
+            computerBit = 64;
+        }
+        if(isIE || isEdge ) {
+            needDownLoad = true;
+        } else if(isIE11) {
+            needDownLoad = false;
+        } else{
+            for(var i=0;i < arr.length;i++){         //判断浏览器版本
+                if(/chrome/i.test(arr[i])){
+                    chromeVersion = Number(arr[i].split('/')[1].split('.')[0]);
+                    if(chromeVersion <= 35){
+                        needDownLoad = true;
+                    }
+                }
+            }
+        }
+        return [needDownLoad,computerBit];
+    }
+</script>
+</body>
+</html>
