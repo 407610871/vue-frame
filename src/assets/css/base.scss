@@ -1,0 +1,21 @@
+@import '../../styles/variables.scss';
+@import 'variable.scss';
+@import '../../styles/mixin.scss';
+body,
+html {
+ 
+}
+.clearfix{
+    clear:both;
+    overflow: hidden;
+}
+ .router-link-active{
+    color:#fff
+ }
+ .fl{float: left;}
+ .fr{
+    float: right;
+ }
+ li{
+    list-style: none;
+ }

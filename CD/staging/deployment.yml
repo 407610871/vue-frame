@@ -1,0 +1,75 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: web-dacm-front
+  namespace: nj-stagingenv-web
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        name: web-dacm-front
+        version: v1
+    spec:
+      containers:
+      - name: web-dacm-front
+        image: 10.19.248.12:30100/staging/gongan-staging-web-dacm-front:latest
+        imagePullPolicy: Always
+        env:
+        - name: NODE_IP
+          value: '10.19.248.200'
+        - name: VUE_APP_AUTH_SERVER_URL
+          value: 'http://$(NODE_IP):29530/auth'
+        - name: VUE_APP_REALM
+          value: 'nj-stagingenv-web'
+        - name: VUE_APP_RESOURCE
+          value: 'DACM'
+        - name: VUE_APP_CREDENTIALS_SECRET
+          value: 'b4530972-edca-4b6b-8525-29908dc9b926'
+#web-gc
+        - name: API_GC_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: sjsn-all-web-configmap
+              key: web-gc
+        - name: API_GC
+          value: 'http://$(NODE_IP):$(API_GC_PORT)'
+#web-zc
+        - name: API_ZC_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: sjsn-all-web-configmap
+              key: web-zc           
+        - name: API_ZC
+          value: 'http://$(NODE_IP):$(API_ZC_PORT)'  
+#web-zl 
+        - name: API_ZL_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: sjsn-all-web-configmap
+              key: web-zl
+        - name: API_ZL
+          value: 'http://$(NODE_IP):$(API_ZL_PORT)'
+#web-fw           
+        - name: API_FW_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: sjsn-all-web-configmap
+              key: web-fw-front           
+        - name: API_FW
+          value: 'http://$(NODE_IP):$(API_FW_PORT)' 
+#web-bcm
+        - name: API_SKIN_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: sjsn-all-web-configmap
+              key: web-bcm
+        - name: API_SKIN
+          value: 'http://$(NODE_IP):$(API_SKIN_PORT)'
+        resources:
+          limits:
+            cpu: 300m
+            memory: 800Mi
+          requests:
+            cpu: 200m
+            memory: 500Mi

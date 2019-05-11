@@ -1,0 +1,53 @@
+﻿<note>
+	<name>数据服务版本发布说明20190424（V1.4.3）</name>
+	<date>2019/04/24</date>
+	<specialityList>
+
+		<name>清单特性</name>
+		<item>
+			<Introduction>功能优化</Introduction>
+			<content>注册服务增加发布方式</content>
+			<sysName>服务生成</sysName>
+			<remark></remark>
+		</item>
+		<item>
+			<Introduction>功能优化</Introduction>
+			<content>日志审计“应用系统名称”调整为全部应用</content>
+			<sysName>日志审计</sysName>
+			<remark></remark>
+		</item>
+		<item>
+			<Introduction>功能优化</Introduction>
+			<content>“插件中心”调整为单独的菜单</content>
+			<sysName>插件中心</sysName>
+			<remark></remark>
+		</item>
+		<item>
+			<Introduction>新增功能</Introduction>
+			<content>所有高级搜索增加确定按钮，方便用户查询操作</content>
+			<sysName>全平台</sysName>
+			<remark></remark>
+		</item>
+	</specialityList>
+	<changeList>
+		<item>
+			<content></content>
+		</item>
+		<name>重大变更列表</name>
+	</changeList>
+	<finishedPunchList>
+		<name>解决问题清单</name>
+		<item>
+			<content></content>
+		</item>
+		<item>
+			<content>问题修复：修复现场反馈的一些问题。</content>
+		</item>
+		<!-- <item>
+			<content>问题修复：修复访问数据服务页面偶现401的问题。</content>
+		</item> -->
+	</finishedPunchList>
+	<questionList>
+		<name>已知问题和限制</name>		
+	</questionList>
+</note>

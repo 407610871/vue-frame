@@ -1,0 +1,39 @@
+﻿<note>
+	<name>数据质量版本发布说明20190320（V1.4.0）</name>
+	<date>2019/03/20</date>
+	<specialityList>
+		<name>清单特性</name>
+		<item>
+			<Introduction>优化</Introduction>
+			<content>稳定性优化。</content>
+			<sysName>数据质量</sysName>
+			<remark></remark>
+		</item>
+		<item>
+			<Introduction>新功能</Introduction>
+			<content>增加返回数据枢纽平台功能</content>
+			<sysName>数据质量</sysName>
+			<remark></remark>
+		</item>
+ 
+			 
+	</specialityList>
+	<changeList>
+		<name>重大变更列表</name>
+                    <item>
+			<content>无</content>
+		</item>          
+	</changeList>
+	<finishedPunchList>
+		<name>解决问题清单</name>
+		
+	</finishedPunchList>
+	<questionList>
+		<name>已知问题和限制</name>	
+    	<!-- <item>
+			<content></content>
+			<Influence></Influence>
+			<solve></solve>
+		</item>	 -->
+	</questionList>
+</note>

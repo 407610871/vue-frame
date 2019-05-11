@@ -1,0 +1,402 @@
+@mixin clearfix {
+  &:after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+}
+
+@mixin scrollBar {
+  &::-webkit-scrollbar-track-piece {
+    background: #d3dce6;
+  }
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: #99a9bf;
+    border-radius: 20px;
+  }
+}
+
+@mixin relative {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+@mixin pct($pct) {
+  width: #{$pct};
+  position: relative;
+  margin: 0 auto;
+}
+
+@mixin triangle($width, $height, $color, $direction) {
+  $width: $width/2;
+  $color-border-style: $height solid $color;
+  $transparent-border-style: $width solid transparent;
+  height: 0;
+  width: 0;
+  @if $direction==up {
+    border-bottom: $color-border-style;
+    border-left: $transparent-border-style;
+    border-right: $transparent-border-style;
+  }
+  @else if $direction==right {
+    border-left: $color-border-style;
+    border-top: $transparent-border-style;
+    border-bottom: $transparent-border-style;
+  }
+  @else if $direction==down {
+    border-top: $color-border-style;
+    border-left: $transparent-border-style;
+    border-right: $transparent-border-style;
+  }
+  @else if $direction==left {
+    border-right: $color-border-style;
+    border-top: $transparent-border-style;
+    border-bottom: $transparent-border-style;
+  }
+}
+
+@mixin aside-bg-color($color) {
+  background: $color;
+  [data-theme='theme1'] & {
+    background: $enc-aside-background-theme1;
+  }
+}
+
+@mixin tree-tools-bg-color($color) {
+  background: $color;
+  [data-theme='theme1'] & {
+    background: $tree-tools-background-theme1;
+  }
+}
+
+@mixin table-thead-bg-color($color) {
+  background: $color;
+  [data-theme='theme1'] & {
+    background: $el-primary-theme1;
+  }
+  [data-theme='theme2'] & {
+    background: $el-primary-theme2;
+  }
+  [data-theme='theme3'] & {
+    background: $el-primary-theme3;
+  }
+  [data-theme='theme4'] & {
+    background: $el-primary-theme4;
+  }
+}
+
+@mixin el-button--primary($color) {
+  background-color: $color ;
+  border-color: $color;
+  [data-theme='theme1'] & {
+    background: $el-primary-theme1;
+    border-color: $el-primary-theme1;
+  }
+  [data-theme='theme2'] & {
+    background: $el-primary-theme2;
+    border-color: $el-primary-theme2;
+  }
+  [data-theme='theme3'] & {
+    background: $el-primary-theme3;
+    border-color: $el-primary-theme3;
+  }
+  [data-theme='theme4'] & {
+    background: $el-primary-theme4;
+    border-color: $el-primary-theme4;
+  }
+}
+
+@mixin el-menu-item-active($color, $border) {
+  border-bottom: 2px solid $border;
+  color: $color;
+  [data-theme='theme1'] & {
+    border-bottom: 2px solid $el-primary-theme1;
+    color: $el-primary-theme1;
+  }
+  [data-theme='theme2'] & {
+    border-bottom: 2px solid $el-primary-theme2;
+    color: $el-primary-theme2;
+  }
+  [data-theme='theme3'] & {
+    border-bottom: 2px solid $el-primary-theme3;
+    color: $el-primary-theme3;
+  }
+  [data-theme='theme4'] & {
+    border-bottom: 2px solid $el-primary-theme4;
+    color: $el-primary-theme4;
+  }
+}
+@mixin el-btn-disabled($color) {
+  border-color:$color;
+  background-color: $color;
+  [data-theme='theme1'] & {
+   border-color:$el-table-hover-theme1;
+  background-color: $el-table-hover-theme1;
+  }
+  [data-theme='theme2'] & {
+   border-color:$el-table-hover-theme2;
+  background-color: $el-table-hover-theme2;
+  }
+  [data-theme='theme3'] & {
+   border-color:$el-table-hover-theme3;
+  background-color: $el-table-hover-theme3;
+  }
+  [data-theme='theme4'] & {
+   border-color:$el-table-hover-theme4;
+  background-color: $el-table-hover-theme4;
+  }
+}
+@mixin el-border-contanst($border) {
+  border-bottom: 1px solid $border;
+  [data-theme='theme1'] & {
+    border-bottom: 1px solid $el-primary-theme1;
+  }
+  [data-theme='theme2'] & {
+    border-bottom: 1px solid $el-primary-theme2;
+  }
+  [data-theme='theme3'] & {
+    border-bottom: 1px solid $el-primary-theme3;
+  }
+  [data-theme='theme4'] & {
+    border-bottom: 1px solid $el-primary-theme4;
+  }
+}
+
+@mixin el-color($color) {
+  color: $color;
+  [data-theme='theme1'] & {
+    color: $el-primary-theme1;
+  }
+  [data-theme='theme2'] & {
+    color: $el-primary-theme2;
+  }
+  [data-theme='theme3'] & {
+    color: $el-primary-theme3;
+  }
+  [data-theme='theme4'] & {
+    color: $el-primary-theme4;
+  }
+}
+@mixin el-color-ys($color) {
+  color: $color;
+  [data-theme='theme1'] & {
+    color: $el-table-hover-theme1;
+  }
+  [data-theme='theme2'] & {
+    color: $el-table-hover-theme2;
+  }
+  [data-theme='theme3'] & {
+    color: $el-table-hover-theme3;
+  }
+  [data-theme='theme4'] & {
+    color: $el-table-hover-theme4;
+  }
+}
+@mixin el-page-color($color) {
+  color: $color;
+  [data-theme='theme1'] & {
+    color: $el-table-hover-theme1;
+  }
+  [data-theme='theme2'] & {
+    color: $el-table-hover-theme2;
+  }
+  [data-theme='theme3'] & {
+    color: $el-table-hover-theme3;
+  }
+  [data-theme='theme4'] & {
+    color: $el-table-hover-theme4;
+  }
+}
+@mixin el-bgcolor($color) {
+  background-color: $color;
+  [data-theme='theme1'] & {
+    background-color: $el-primary-theme1;
+  }
+  [data-theme='theme2'] & {
+    background-color: $el-primary-theme2;
+  }
+  [data-theme='theme3'] & {
+    background-color: $el-primary-theme3;
+  }
+  [data-theme='theme4'] & {
+    background-color: $el-primary-theme4;
+  }
+}
+
+@mixin el-backcolor($color) {
+  background: $color;
+  [data-theme='theme1'] & {
+    background: $el-primary-theme1;
+  }
+  [data-theme='theme2'] & {
+    background: $el-primary-theme2;
+  }
+  [data-theme='theme3'] & {
+    background: $el-primary-theme3;
+  }
+  [data-theme='theme4'] & {
+    background: $el-primary-theme4;
+  }
+}
+
+@mixin el-color-lp($color) {
+  background: $color;
+  [data-theme='theme1'] & {
+    background: $el-color-lp-theme1;
+  }
+  [data-theme='theme2'] & {
+    background: $el-primary-theme2;
+  }
+  [data-theme='theme3'] & {
+    background: $el-primary-theme3;
+  }
+  [data-theme='theme4'] & {
+    background: $el-primary-theme4;
+  }
+}
+@mixin el-color-rp($color) {
+  background: $color;
+  [data-theme='theme1'] & {
+    background: $el-table-hover-theme1;
+  }
+  [data-theme='theme2'] & {
+    background: $el-table-hover-theme2;
+  }
+  [data-theme='theme3'] & {
+    background: $el-table-hover-theme3;
+  }
+  [data-theme='theme4'] & {
+    background: $el-table-hover-theme4;
+  }
+}
+@mixin el-table-hover($color) {
+  background-color: $color;
+  [data-theme='theme1'] & {
+    background: $el-table-hover-theme1;
+  }
+  [data-theme='theme2'] & {
+    background: $el-table-hover-theme2;
+  }
+  [data-theme='theme3'] & {
+    background: $el-table-hover-theme3;
+  }
+  [data-theme='theme4'] & {
+    background: $el-table-hover-theme4;
+  }
+}
+
+@mixin el-border-color($color) {
+  border-color: $color;
+  [data-theme='theme1'] & {
+    border-color: $el-primary-theme1;
+  }
+  [data-theme='theme2'] & {
+    border-color: $el-primary-theme2;
+  }
+  [data-theme='theme3'] & {
+    border-color: $el-primary-theme3;
+  }
+  [data-theme='theme4'] & {
+    border-color: $el-primary-theme4;
+  }
+}
+@mixin el-border($color) {
+  border: 1px solid $color;
+  [data-theme='theme1'] & {
+     border: 1px solid $el-primary-theme1;
+  }
+  [data-theme='theme2'] & {
+    border: 1px solid $el-primary-theme2;
+  }
+  [data-theme='theme3'] & {
+     border: 1px solid $el-primary-theme3;
+  }
+  [data-theme='theme4'] & {
+    border: 1px solid $el-primary-theme4;
+  }
+}
+@mixin el-shadow($color) {
+  -webkit-box-shadow: -1px 0 0 0 $color;
+  box-shadow: -1px 0 0 0 $color;
+  [data-theme='theme1'] & {
+    -webkit-box-shadow: -1px 0 0 0 $el-primary-theme1;
+    box-shadow: -1px 0 0 0 $el-primary-theme1;
+  }
+  [data-theme='theme1'] & {
+    -webkit-box-shadow: -1px 0 0 0 $el-primary-theme2;
+    box-shadow: -1px 0 0 0 $el-primary-theme2;
+  }
+  [data-theme='theme3'] & {
+    -webkit-box-shadow: -1px 0 0 0 $el-primary-theme3;
+    box-shadow: -1px 0 0 0 $el-primary-theme3;
+  }
+  [data-theme='theme4'] & {
+    -webkit-box-shadow: -1px 0 0 0 $el-primary-theme4;
+    box-shadow: -1px 0 0 0 $el-primary-theme4;
+  }
+}
+
+@mixin el-loading-spinner($color) {
+  stroke: $color;
+  [data-theme='theme1'] & {
+    stroke: $el-primary-theme1;
+  }
+  [data-theme='theme2'] & {
+    stroke: $el-primary-theme2;
+  }
+  [data-theme='theme3'] & {
+    stroke: $el-primary-theme3;
+  }
+  [data-theme='theme4'] & {
+    stroke: $el-primary-theme4;
+  }
+}
+@mixin el-dialog-contanst($border) {
+  border-bottom: 4px solid $border;
+  [data-theme='theme1'] & {
+    border-bottom: 4px solid $el-primary-theme1;
+  }
+  [data-theme='theme2'] & {
+    border-bottom: 4px solid $el-primary-theme2;
+  }
+  [data-theme='theme3'] & {
+    border-bottom: 4px solid $el-primary-theme3;
+  }
+  [data-theme='theme4'] & {
+    border-bottom: 4px solid $el-primary-theme4;
+  }
+}
+@mixin el-icon-color($color) {
+  color: $color;
+  [data-theme='theme1'] & {
+    color: $el-kittle-icon-span1;
+  }
+  [data-theme='theme2'] & {
+    color: $el-kittle-icon-span2;
+  }
+  [data-theme='theme3'] & {
+    color: $el-kittle-icon-span3;
+  }
+  [data-theme='theme4'] & {
+    color: $el-kittle-icon-span4;
+  }
+}
+@mixin el-border-bottom($color) {
+  border-bottom: 4px solid $color;
+  [data-theme='theme1'] & {
+    border-bottom: 4px solid $el-kittle-icon-span1;
+  }
+  [data-theme='theme2'] & {
+    border-bottom: 4px solid $el-kittle-icon-span2;
+  }
+  [data-theme='theme3'] & {
+    border-bottom: 4px solid $el-kittle-icon-span3;
+  }
+  [data-theme='theme4'] & {
+    border-bottom: 4px solid $el-kittle-icon-span4;
+  }
+}

@@ -1,0 +1,40 @@
+﻿<note>
+	<name>数据质量版本发布说明20190115（V1.1.1）</name>
+	<date>2019/01/15</date>
+	<specialityList>
+		<name>清单特性</name>
+		<item>
+			<Introduction>产品通用功能</Introduction>
+			<content>数据质量产品换肤功能，支持包含默认主题五种主题切换。</content>
+			<sysName>产品换肤</sysName>
+			<remark></remark>
+		</item>
+		<item>
+			<Introduction>优化</Introduction>
+			<content>周期性任务耗时开始时间依据运行时间判定。</content>
+			<sysName>任务监控</sysName>
+			<remark></remark>
+		</item>
+			 
+	</specialityList>
+	<changeList>
+		<name>重大变更列表</name>
+                    <item>
+			<content>无</content>
+		</item>          
+	</changeList>
+	<finishedPunchList>
+		<name>解决问题清单</name>
+<item>
+			<content>1、质量方案检查表中字段去除产品缺省字段（时间戳与类型）</content>
+		</item> 		
+	</finishedPunchList>
+	<questionList>
+		<name>已知问题和限制</name>	
+   <!--  	<item>
+			<content></content>
+			<Influence></Influence>
+			<solve></solve>
+		</item>	 -->
+	</questionList>
+</note>

@@ -1,0 +1,39 @@
+﻿<note>
+	<name>数据质量版本发布说明20190228（V1.3.0）</name>
+	<date>2019/02/28</date>
+	<specialityList>
+		<name>清单特性</name>
+		<item>
+			<Introduction>查询优化</Introduction>
+			<content>质量方案与质量报告查询优化。</content>
+			<sysName>查询功能</sysName>
+			<remark></remark>
+		</item>
+		<item>
+			<Introduction>新功能</Introduction>
+			<content>质量方案中资源信息预览数据</content>
+			<sysName>质量方案</sysName>
+			<remark></remark>
+		</item>
+ 
+			 
+	</specialityList>
+	<changeList>
+		<name>重大变更列表</name>
+                    <item>
+			<content>无</content>
+		</item>          
+	</changeList>
+	<finishedPunchList>
+		<name>解决问题清单</name>
+		
+	</finishedPunchList>
+	<questionList>
+		<name>已知问题和限制</name>	
+    	<!-- <item>
+			<content></content>
+			<Influence></Influence>
+			<solve></solve>
+		</item>	 -->
+	</questionList>
+</note>
