@@ -5,18 +5,14 @@
 }
 // header 布局
 .enc-header {
-    padding: 0;
-    height: 66px !important;
-    line-height: 66px;
-    //background: #26a7ff;
-    font-size: 24px;
-    color: #fff;
-    @include el-bgcolor($el-page-theme);
+  padding: 0;
+  height: 66px!important;
+  line-height: 66px;
+  background: #e6eaed;
   }
 .right-menu {
     float: right;
     height: 100%;
-    margin-top: -52px;
     //右侧图标
     .el-popover {
         padding: 17px 0px;
@@ -24,36 +20,33 @@
         top: 66px !important;
     }
     .el-button {
-      width: 40px;
-      height: 40px;
+      width: 66px;
+      height: 100%;
       margin: 0;
       border-radius: 0;
-      border: 1px solid #fff !important;
+      border: 0;
       padding: 0;
-      border-radius: 50%;
       float: left;
-      background: transparent !important;
       &.user {
         background: #cac fd5;
         vertical-align: top;
         i {
-          font-size: 18px;
+          font-size: 32px;
           color: #fff;
         }
       }
       &.setting {
-        background: #50609c;
+        background: transparent;
         vertical-align: top;
         i {
-          font-size: 18px;
-          color: #fff;
+          font-size: 32px;
         }
       }
       &.document {
         background: #479bd9;
         vertical-align: top;
         i {
-          font-size: 18px;
+          font-size: 32px;
           color: #fff;
         }
       }
@@ -70,7 +63,6 @@ header {
       text-align: center;
       vertical-align: top;
       img {
-        width: 159px;
         vertical-align: middle;
       }
     }

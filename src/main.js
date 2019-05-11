@@ -17,32 +17,10 @@ import store from "./store";
 import i18n from "./lang"; // Internationalization
 import "./icons"; // icon
 import "./errorLog"; // error log
-//import "./mock"; // simulation data
 import * as filters from "./filters"; // global filters
-
 import "./registerServiceWorker";
 
-//展宏加入
-import axios from "axios";
-Vue.prototype.$ajax = axios;
-Vue.prototype.$ajax.interceptors.request.use(
-  config => {
-    // Do something before request is sent
-    if (store.getters.token) {
-      // 让每个请求携带token-- ['X-Token']为自定义key 请根据实际情况自行修改
-      config.headers["Authorization"] = store.getters.token;
-    }
-    return config;
-  },
-  error => {
-    // Do something with request error
-    console.log(error); // for debug
-    Promise.reject(error);
-  }
-);
-//require('animate.css/animate.min.css');
 import Authen from "./Authen.js";
-import VJstree from "vue-jstree";
 import Viser from "viser-vue";
 
 // function loadScript(url, callback) {
@@ -71,7 +49,6 @@ function bootstrap(env) {
     }
   });
   Vue.use(Viser);
-  Vue.use(VJstree);
 
   Vue.use(Element, {
     size: Cookies.get("size") || "medium", // set element-ui default size

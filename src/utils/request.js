@@ -2,13 +2,10 @@ import axios from "axios";
 import { Message } from "element-ui";
 import store from "@/store";
 import { getToken } from "@/utils/auth";
+import vue from "vue";
 
 // create an axios instance
-const service = axios.create({
-  baseURL: process.env.BASE_API, // api 的 base_url
-  timeout: 10000 // request timeout
-});
-
+const service = axios.create({});
 // request interceptor
 service.interceptors.request.use(
   config => {
@@ -17,6 +14,7 @@ service.interceptors.request.use(
       // 让每个请求携带token-- ['X-Token']为自定义key 请根据实际情况自行修改
       config.headers["Authorization"] = store.getters.token;
     }
+    // console.log(store.getters.token)
     return config;
   },
   error => {
@@ -64,11 +62,14 @@ service.interceptors.response.use(
   // },
   error => {
     console.log("err" + error); // for debug
-    Message({
-      message: error.message,
-      type: "error",
-      duration: 5 * 1000
-    });
+    if (error.response && error.response.status == "401") {
+      let $keycloak = vue.prototype.$keycloak;   //调取已绑定在vue原型中的keycloak
+      $keycloak.updateToken(300).then(refreshed => {
+        if (refreshed) {
+          store.commit( "SET_TOKEN", $keycloak.tokenParsed.typ + " " + $keycloak.token);
+        }
+      });
+    }
     return Promise.reject(error);
   }
 );

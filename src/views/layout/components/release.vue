@@ -7,22 +7,9 @@
         </div>
       </div>
       <el-col :span="4" class="regdia">
-        <el-tabs tab-position="left" v-model="typeName"  @tab-click="handleTypeClick">
-            <el-tab-pane v-for="(item, index) in versionType" :key="index" :label="item" :name="item">
-                <el-tabs v-if="item=='数据工厂'" tab-position="left" v-model="versionValueGC"  @tab-click="handleClick">
-                    <el-tab-pane v-for="(v, i) in versionDataGC" :key="i" :label="v" :name="v"></el-tab-pane>
-                </el-tabs>
-                <el-tabs v-if="item=='数据资产'" tab-position="left" v-model="versionValueZC"  @tab-click="handleClick">
-                    <el-tab-pane v-for="(v, i) in versionDataZC" :key="i" :label="v" :name="v"></el-tab-pane>
-                </el-tabs>
-                <el-tabs v-if="item=='数据质量'" tab-position="left" v-model="versionValueZL"  @tab-click="handleClick">
-                    <el-tab-pane v-for="(v, i) in versionDataZL" :key="i" :label="v" :name="v"></el-tab-pane>
-                </el-tabs>
-                <el-tabs v-if="item=='数据服务'" tab-position="left" v-model="versionValueFW"  @tab-click="handleClick">
-                    <el-tab-pane v-for="(v, i) in versionDataFW" :key="i" :label="v" :name="v"></el-tab-pane>
-                </el-tabs>
-            </el-tab-pane>
-        </el-tabs>
+        <el-tabs tab-position="left" @tab-click="handleClick">
+            <el-tab-pane v-for="(item, index) in versionData" :key="index" :label="item"></el-tab-pane>
+          </el-tabs>
       </el-col>
       <el-col :span="20" class="release-box release-ver-con">
         <div class="proInfo-box release-Info bornone clearfix">
@@ -90,7 +77,8 @@
 <script>
 
 import xml2js from 'xml2js';
-
+import {getVersionList} from "@/api/userApi.js";
+console.log("getVersionList",getVersionList)
 export default {
   name: "taskMDialog",
   data: function() {
@@ -99,32 +87,17 @@ export default {
       versionDes: '',
       versionDate: '',
       loading: false,
-      versionType: ['数据工厂', '数据资产', '数据质量', '数据服务'],
-      versionDataGC: [
+      versionData: [
         '1.4.3','1.4.2', '1.4.1', '1.4.0', '1.3.1', '1.3.0','1.2.0','1.1.1', '1.1.0', '1.0.1', '1.0.0'
-      ],
-      versionDataFW: [
-        '1.4.3','1.4.2', '1.4.1', '1.4.0', '1.3.1', '1.3.0','1.2.0','1.1.1', '1.1.0', '1.0.1', '1.0.0'
-      ],
-      versionDataZC: [
-        '1.4.3','1.4.2', '1.4.1', '1.4.0', '1.3.1', '1.3.0','1.2.0','1.1.1', '1.1.0', '1.0.1', '1.0.0'
-      ],
-      versionDataZL: [
-        '1.4.3','1.4.2', '1.4.1', '1.4.0', '1.3.1', '1.3.0','1.2.0','1.1.1', '1.1.0', '1.0.0'
       ],
       tableData: [],
       changeData: [],
       finishData: [],
       knownData: [],
-      typeName:"数据工厂",
-      versionValueGC: "1.4.3",
-      versionValueZC: "1.4.3",
-      versionValueZL: "1.4.3",
-      versionValueFW: "1.4.3",
     };
   },
   mounted() {
-    this._getVersion();
+    this._getVersion("1.4.3");
   },
   methods: {
     //关闭对话框
@@ -132,11 +105,8 @@ export default {
       this.$emit('closeDia', );
       this.dialogVisible = false;
     },
-    handleTypeClick(tab, event) {
-        this._getVersion();
-    },
     handleClick(tab, event) {
-        this._getVersion();
+        this._getVersion(tab.label);
     },
     //版本信息滚动
     goAnchor(selector) {
@@ -146,21 +116,10 @@ export default {
     godToId(ID) {
       $('html,body').animate({ scrollTop: $("#" + ID).offset().top }, 500);
     },
-    _getVersion() {
+    _getVersion(val) {
       this.loading = true;
-      let apiUrl = `/data/gc/version${this.versionValueGC}.xml`;
-      switch(this.typeName){
-        case "数据资产" :
-            apiUrl = `/data/zc/version${this.versionValueZC}.xml`;
-            break;
-        case "数据质量" :
-            apiUrl = `/data/zl/version${this.versionValueZL}.xml`;
-            break;
-        case "数据服务" :
-            apiUrl = `/data/fw/version${this.versionValueFW}.xml`;
-            break;  
-      }
-      this.$ajax.get(apiUrl).then((res)=> {
+      let apiUrl = `/data/version${val}.xml`;
+      getVersionList(apiUrl).then((res)=> {
           this.loading = false;
           xml2js.parseString(res.data, (err, jsonObj)=>{
             this.tableData = jsonObj.note.specialityList[0].item;

@@ -4,36 +4,20 @@ import Router from "vue-router";
 Vue.use(Router);
 
 import Layout from "@/views/layout/Layout";
-import Login from "@/views/layout/Login";
+
 export const constantRouterMap = [
   {
     path: "",
     component: Layout,
-    redirect: "home",
+    redirect: "user",
     children: [
       {
-        path: "home",
+        path: "user",
         component: () => import("@/views/dashboard/index"),
-        name: "home",
+        name: "user",
         meta: {
-          title: "数据枢纽平台",
-          icon: "home",
-          noCache: true
-        }
-      }
-    ]
-  },
-  {
-    path: '',
-    component: Login,
-    children: [
-      {
-        path: "login",
-        component: () => import("@/views/login/login"),
-        name: "login",
-        meta: {
-          title: "数据枢纽平台",
-          icon: "login",
+          title: "用户管理",
+          icon: "user",
           noCache: true
         }
       }
